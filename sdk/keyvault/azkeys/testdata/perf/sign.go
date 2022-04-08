@@ -22,7 +22,7 @@ type signTestOptions struct{}
 
 var signTestOpts signTestOptions = signTestOptions{}
 
-type SignTest struct {
+type signTest struct {
 	perf.PerfTestOptions
 	keyName      string
 	client       *azkeys.Client
@@ -31,9 +31,9 @@ type SignTest struct {
 	digest       []byte
 }
 
-// NewSignTest is called once per process
-func NewSignTest(ctx context.Context, options perf.PerfTestOptions) (perf.GlobalPerfTest, error) {
-	d := &SignTest{
+// newSignTest is called once per process
+func newSignTest(ctx context.Context, options perf.PerfTestOptions) (perf.GlobalPerfTest, error) {
+	d := &signTest{
 		PerfTestOptions: options,
 		keyName:         "livekvtestsignperfkey",
 		signAlg:         crypto.SignatureAlgRS256,
@@ -85,7 +85,7 @@ func NewSignTest(ctx context.Context, options perf.PerfTestOptions) (perf.Global
 	return d, nil
 }
 
-func (gct *SignTest) GlobalCleanup(ctx context.Context) error {
+func (gct *signTest) GlobalCleanup(ctx context.Context) error {
 	poller, err := gct.client.BeginDeleteKey(ctx, gct.keyName, nil)
 	if err != nil {
 		return err
@@ -100,25 +100,25 @@ func (gct *SignTest) GlobalCleanup(ctx context.Context) error {
 	return err
 }
 
-type SignPerfTest struct {
+type signPerfTest struct {
 	cryptoClient *crypto.Client
 	alg          crypto.SignatureAlg
 	digest       []byte
 }
 
 // NewPerfTest is called once per goroutine
-func (gct *SignTest) NewPerfTest(ctx context.Context, options *perf.PerfTestOptions) (perf.PerfTest, error) {
-	return &SignPerfTest{
-		alg:             gct.signAlg,
-		digest:          gct.digest,
+func (gct *signTest) NewPerfTest(ctx context.Context, options *perf.PerfTestOptions) (perf.PerfTest, error) {
+	return &signPerfTest{
+		alg:    gct.signAlg,
+		digest: gct.digest,
 	}, nil
 }
 
-func (gcpt *SignPerfTest) Run(ctx context.Context) error {
+func (gcpt *signPerfTest) Run(ctx context.Context) error {
 	_, err := gcpt.cryptoClient.Sign(ctx, gcpt.alg, gcpt.digest, nil)
 	return err
 }
 
-func (*SignPerfTest) Cleanup(ctx context.Context) error {
+func (*signPerfTest) Cleanup(ctx context.Context) error {
 	return nil
 }

@@ -51,7 +51,7 @@ func NewListSecretsTest(ctx context.Context, options perf.PerfTestOptions) (perf
 		panic(err)
 	}
 
-	client, err := azsecret.NewClient(vaultURL, cred, &azsecret.ClientOptions{
+	client, err := azsecrets.NewClient(vaultURL, cred, &azsecrets.ClientOptions{
 		ClientOptions: azcore.ClientOptions{
 			Transport: options.Transporter,
 		},
@@ -96,8 +96,8 @@ type ListSecretsPerfTest struct {
 // NewPerfTest is called once per goroutine
 func (gct *ListSecretsTest) NewPerfTest(ctx context.Context, options *perf.PerfTestOptions) (perf.PerfTest, error) {
 	return &ListSecretsPerfTest{
-		client:          gct.client,
-		secretName:      gct.secretName,
+		client:     gct.client,
+		secretName: gct.secretName,
 	}, nil
 }
 

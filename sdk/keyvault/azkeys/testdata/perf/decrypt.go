@@ -21,7 +21,7 @@ type decryptTestOptions struct{}
 
 var decryptTestOpts decryptTestOptions = decryptTestOptions{}
 
-type DecryptTest struct {
+type decryptTest struct {
 	perf.PerfTestOptions
 	keyName      string
 	client       *azkeys.Client
@@ -30,9 +30,9 @@ type DecryptTest struct {
 	cipherText   []byte
 }
 
-// NewDecryptTest is called once per process
-func NewDecryptTest(ctx context.Context, options perf.PerfTestOptions) (perf.GlobalPerfTest, error) {
-	d := &DecryptTest{
+// newDecryptTest is called once per process
+func newDecryptTest(ctx context.Context, options perf.PerfTestOptions) (perf.GlobalPerfTest, error) {
+	d := &decryptTest{
 		PerfTestOptions: options,
 		keyName:         "livekvtestdecryptperfkey",
 		encrypAlg:       crypto.EncryptionAlgRSAOAEP256,
@@ -88,7 +88,7 @@ func NewDecryptTest(ctx context.Context, options perf.PerfTestOptions) (perf.Glo
 	return d, nil
 }
 
-func (gct *DecryptTest) GlobalCleanup(ctx context.Context) error {
+func (gct *decryptTest) GlobalCleanup(ctx context.Context) error {
 	poller, err := gct.client.BeginDeleteKey(ctx, gct.keyName, nil)
 	if err != nil {
 		return err
@@ -103,8 +103,8 @@ func (gct *DecryptTest) GlobalCleanup(ctx context.Context) error {
 	return err
 }
 
-type DecryptPerfTest struct {
-	*DecryptTest
+type decryptPerfTest struct {
+	*decryptTest
 	perf.PerfTestOptions
 	cryptoClient *crypto.Client
 	alg          crypto.EncryptionAlg
@@ -112,20 +112,20 @@ type DecryptPerfTest struct {
 }
 
 // NewPerfTest is called once per goroutine
-func (gct *DecryptTest) NewPerfTest(ctx context.Context, options *perf.PerfTestOptions) (perf.PerfTest, error) {
-	return &DecryptPerfTest{
-		DecryptTest:     gct,
+func (gct *decryptTest) NewPerfTest(ctx context.Context, options *perf.PerfTestOptions) (perf.PerfTest, error) {
+	return &decryptPerfTest{
+		decryptTest:     gct,
 		PerfTestOptions: *options,
 		alg:             gct.encrypAlg,
 		cipher:          gct.cipherText,
 	}, nil
 }
 
-func (gcpt *DecryptPerfTest) Run(ctx context.Context) error {
+func (gcpt *decryptPerfTest) Run(ctx context.Context) error {
 	_, err := gcpt.cryptoClient.Decrypt(ctx, gcpt.alg, gcpt.cipher, nil)
 	return err
 }
 
-func (*DecryptPerfTest) Cleanup(ctx context.Context) error {
+func (*decryptPerfTest) Cleanup(ctx context.Context) error {
 	return nil
 }

@@ -21,7 +21,7 @@ type unwrapTestOptions struct{}
 
 var unwrapTestOpts unwrapTestOptions = unwrapTestOptions{}
 
-type UnwrapTest struct {
+type unwrapTest struct {
 	perf.PerfTestOptions
 	keyName      string
 	client       *azkeys.Client
@@ -30,9 +30,9 @@ type UnwrapTest struct {
 	encryptedKey []byte
 }
 
-// NewUnwrapTest is called once per process
-func NewUnwrapTest(ctx context.Context, options perf.PerfTestOptions) (perf.GlobalPerfTest, error) {
-	d := &UnwrapTest{
+// newUnwrapTest is called once per process
+func newUnwrapTest(ctx context.Context, options perf.PerfTestOptions) (perf.GlobalPerfTest, error) {
+	d := &unwrapTest{
 		PerfTestOptions: options,
 		keyName:         "livekvtestunwrapperfkey",
 		alg:             crypto.WrapAlgRSAOAEP256,
@@ -88,7 +88,7 @@ func NewUnwrapTest(ctx context.Context, options perf.PerfTestOptions) (perf.Glob
 	return d, nil
 }
 
-func (gct *UnwrapTest) GlobalCleanup(ctx context.Context) error {
+func (gct *unwrapTest) GlobalCleanup(ctx context.Context) error {
 	poller, err := gct.client.BeginDeleteKey(ctx, gct.keyName, nil)
 	if err != nil {
 		return err
@@ -103,26 +103,26 @@ func (gct *UnwrapTest) GlobalCleanup(ctx context.Context) error {
 	return err
 }
 
-type UnwrapPerfTest struct {
+type unwrapPerfTest struct {
 	cryptoClient *crypto.Client
 	alg          crypto.WrapAlg
 	encryptedKey []byte
 }
 
 // NewPerfTest is called once per goroutine
-func (gct *UnwrapTest) NewPerfTest(ctx context.Context, options *perf.PerfTestOptions) (perf.PerfTest, error) {
-	return &UnwrapPerfTest{
+func (gct *unwrapTest) NewPerfTest(ctx context.Context, options *perf.PerfTestOptions) (perf.PerfTest, error) {
+	return &unwrapPerfTest{
 		cryptoClient: gct.cryptoClient,
 		alg:          gct.alg,
 		encryptedKey: gct.encryptedKey,
 	}, nil
 }
 
-func (gcpt *UnwrapPerfTest) Run(ctx context.Context) error {
+func (gcpt *unwrapPerfTest) Run(ctx context.Context) error {
 	_, err := gcpt.cryptoClient.UnwrapKey(ctx, gcpt.alg, gcpt.encryptedKey, nil)
 	return err
 }
 
-func (*UnwrapPerfTest) Cleanup(ctx context.Context) error {
+func (*unwrapPerfTest) Cleanup(ctx context.Context) error {
 	return nil
 }

@@ -7,9 +7,9 @@ import "github.com/Azure/azure-sdk-for-go/sdk/internal/perf"
 
 func main() {
 	perf.Run(map[string]perf.PerfMethods{
-		"GetKeyTest":  {Register: nil, New: NewGetCertificateTest},
-		"DecryptTest": {Register: nil, New: NewDecryptTest},
-		"SignTest":    {Register: nil, New: NewSignTest},
-		"UnwrapTest":  {Register: nil, New: NewUnwrapTest},
+		"GetKeyTest":  {Register: nil, New: newGetKeyTest},
+		"DecryptTest": {Register: nil, New: newDecryptTest},
+		"SignTest":    {Register: nil, New: newSignTest},
+		"UnwrapTest":  {Register: nil, New: newUnwrapTest},
 	})
 }

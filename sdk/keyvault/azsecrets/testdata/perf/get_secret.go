@@ -9,6 +9,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/perf"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets"
@@ -79,8 +80,8 @@ type GetSecretPerfTest struct {
 // NewPerfTest is called once per goroutine
 func (gct *GetSecretTest) NewPerfTest(ctx context.Context, options *perf.PerfTestOptions) (perf.PerfTest, error) {
 	return &GetSecretPerfTest{
-		client:          gct.client,
-		secretName:      gct.secretName,
+		client:     gct.client,
+		secretName: gct.secretName,
 	}, nil
 }
 

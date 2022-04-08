@@ -19,15 +19,15 @@ type getKeyTestOptions struct{}
 
 var getKeyTestOpts getKeyTestOptions = getKeyTestOptions{}
 
-type GetKeyTest struct {
+type getKeyTest struct {
 	perf.PerfTestOptions
 	keyName string
 	client  *azkeys.Client
 }
 
-// NewGetKeyTest is called once per process
-func NewGetKeyTest(ctx context.Context, options perf.PerfTestOptions) (perf.GlobalPerfTest, error) {
-	d := &GetKeyTest{
+// newGetKeyTest is called once per process
+func newGetKeyTest(ctx context.Context, options perf.PerfTestOptions) (perf.GlobalPerfTest, error) {
+	d := &getKeyTest{
 		PerfTestOptions: options,
 		keyName:         "livekvtestgetkeyperfkey",
 	}
@@ -57,7 +57,7 @@ func NewGetKeyTest(ctx context.Context, options perf.PerfTestOptions) (perf.Glob
 	return d, nil
 }
 
-func (gct *GetKeyTest) GlobalCleanup(ctx context.Context) error {
+func (gct *getKeyTest) GlobalCleanup(ctx context.Context) error {
 	poller, err := gct.client.BeginDeleteKey(ctx, gct.keyName, nil)
 	if err != nil {
 		return err
@@ -72,24 +72,24 @@ func (gct *GetKeyTest) GlobalCleanup(ctx context.Context) error {
 	return err
 }
 
-type GetKeyPerfTest struct {
+type getKeyPerfTest struct {
 	client  *azkeys.Client
 	keyName string
 }
 
 // NewPerfTest is called once per goroutine
-func (gct *GetKeyTest) NewPerfTest(ctx context.Context, options *perf.PerfTestOptions) (perf.PerfTest, error) {
-	return &GetKeyPerfTest{
-		client:          gct.client,
-		keyName:         gct.keyName,
+func (gct *getKeyTest) NewPerfTest(ctx context.Context, options *perf.PerfTestOptions) (perf.PerfTest, error) {
+	return &getKeyPerfTest{
+		client:  gct.client,
+		keyName: gct.keyName,
 	}, nil
 }
 
-func (gcpt *GetKeyPerfTest) Run(ctx context.Context) error {
+func (gcpt *getKeyPerfTest) Run(ctx context.Context) error {
 	_, err := gcpt.client.GetKey(ctx, gcpt.keyName, nil)
 	return err
 }
 
-func (*GetKeyPerfTest) Cleanup(ctx context.Context) error {
+func (*getKeyPerfTest) Cleanup(ctx context.Context) error {
 	return nil
 }

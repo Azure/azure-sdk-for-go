@@ -1,0 +1,15 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
+
+package main
+
+import "github.com/Azure/azure-sdk-for-go/sdk/internal/perf"
+
+func main() {
+	perf.Run(map[string]perf.PerfMethods{
+		"GetKeyTest":  {Register: nil, New: NewGetCertificateTest},
+		"DecryptTest": {Register: nil, New: NewDecryptTest},
+		"SignTest":    {Register: nil, New: NewSignTest},
+		"UnwrapTest":  {Register: nil, New: NewUnwrapTest},
+	})
+}

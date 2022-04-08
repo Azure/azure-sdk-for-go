@@ -60,8 +60,8 @@ func NewGetCertificateTest(ctx context.Context, options perf.PerfTestOptions) (p
 	return d, nil
 }
 
-func (d *GetCertificateTest) GlobalCleanup(ctx context.Context) error {
-	poller, err := d.client.BeginDeleteCertificate(ctx, d.certificateName, nil)
+func (gct *GetCertificateTest) GlobalCleanup(ctx context.Context) error {
+	poller, err := gct.client.BeginDeleteCertificate(ctx, gct.certificateName, nil)
 	if err != nil {
 		return err
 	}
@@ -78,17 +78,17 @@ type GetCertificatePerfTest struct {
 }
 
 // NewPerfTest is called once per goroutine
-func (g *GetCertificateTest) NewPerfTest(ctx context.Context, options *perf.PerfTestOptions) (perf.PerfTest, error) {
+func (gct *GetCertificateTest) NewPerfTest(ctx context.Context, options *perf.PerfTestOptions) (perf.PerfTest, error) {
 	return &GetCertificatePerfTest{
-		GetCertificateTest: g,
+		GetCertificateTest: gct,
 		PerfTestOptions:    *options,
-		client:             g.client,
-		certificateName:    g.certificateName,
+		client:             gct.client,
+		certificateName:    gct.certificateName,
 	}, nil
 }
 
-func (d *GetCertificatePerfTest) Run(ctx context.Context) error {
-	_, err := d.client.GetCertificate(ctx, d.certificateName, nil)
+func (gcpt *GetCertificatePerfTest) Run(ctx context.Context) error {
+	_, err := gcpt.client.GetCertificate(ctx, gcpt.certificateName, nil)
 	return err
 }
 

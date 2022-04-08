@@ -32,10 +32,9 @@ type DecryptTest struct {
 
 // NewDecryptTest is called once per process
 func NewDecryptTest(ctx context.Context, options perf.PerfTestOptions) (perf.GlobalPerfTest, error) {
-	certName := "livekvtestgetcertperfkey"
 	d := &DecryptTest{
 		PerfTestOptions: options,
-		keyName:         certName,
+		keyName:         "livekvtestdecryptperfkey",
 		encrypAlg:       crypto.EncryptionAlgRSAOAEP256,
 	}
 

@@ -9,6 +9,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/perf"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
@@ -26,10 +27,9 @@ type GetKeyTest struct {
 
 // NewGetCertificateTest is called once per process
 func NewGetCertificateTest(ctx context.Context, options perf.PerfTestOptions) (perf.GlobalPerfTest, error) {
-	certName := "livekvtestgetcertperfkey"
 	d := &GetKeyTest{
 		PerfTestOptions: options,
-		keyName:         certName,
+		keyName:         "livekvtestgetkeyperfkey",
 	}
 
 	vaultURL, ok := os.LookupEnv("AZURE_KEYVAULT_URL")
@@ -42,10 +42,11 @@ func NewGetCertificateTest(ctx context.Context, options perf.PerfTestOptions) (p
 		panic(err)
 	}
 
-	client, err := azkeys.NewClient(vaultURL, cred, nil)
-	if err != nil {
-		return nil, err
-	}
+	client, err := azkeys.NewClient(vaultURL, cred, &azkeys.ClientOptions{
+		ClientOptions: azcore.ClientOptions{
+			Transport: options.Transporter,
+		},
+	})
 
 	_, err = client.CreateRSAKey(ctx, d.keyName, nil)
 	if err != nil {

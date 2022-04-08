@@ -33,10 +33,9 @@ type SignTest struct {
 
 // NewSignTest is called once per process
 func NewSignTest(ctx context.Context, options perf.PerfTestOptions) (perf.GlobalPerfTest, error) {
-	certName := "livekvtestgetcertperfkey"
 	d := &SignTest{
 		PerfTestOptions: options,
-		keyName:         certName,
+		keyName:         "livekvtestsignperfkey",
 		encrypAlg:       crypto.SignatureAlgRS256,
 	}
 

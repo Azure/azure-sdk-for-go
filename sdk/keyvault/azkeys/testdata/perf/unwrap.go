@@ -32,10 +32,9 @@ type UnwrapTest struct {
 
 // NewUnwrapTest is called once per process
 func NewUnwrapTest(ctx context.Context, options perf.PerfTestOptions) (perf.GlobalPerfTest, error) {
-	certName := "livekvtestgetcertperfkey"
 	d := &UnwrapTest{
 		PerfTestOptions: options,
-		keyName:         certName,
+		keyName:         "livekvtestunwrapperfkey",
 		wrapAlg:         crypto.WrapAlgRSAOAEP256,
 	}
 

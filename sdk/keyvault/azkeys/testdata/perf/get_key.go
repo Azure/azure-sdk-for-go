@@ -15,9 +15,9 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
 )
 
-type getKeysTestOptions struct{}
+type getKeyTestOptions struct{}
 
-var getCertTestOpts getKeysTestOptions = getKeysTestOptions{}
+var getCertTestOpts getKeyTestOptions = getKeyTestOptions{}
 
 type GetKeyTest struct {
 	perf.PerfTestOptions
@@ -25,8 +25,8 @@ type GetKeyTest struct {
 	client  *azkeys.Client
 }
 
-// NewGetCertificateTest is called once per process
-func NewGetCertificateTest(ctx context.Context, options perf.PerfTestOptions) (perf.GlobalPerfTest, error) {
+// NewGetKeyTest is called once per process
+func NewGetKeyTest(ctx context.Context, options perf.PerfTestOptions) (perf.GlobalPerfTest, error) {
 	d := &GetKeyTest{
 		PerfTestOptions: options,
 		keyName:         "livekvtestgetkeyperfkey",

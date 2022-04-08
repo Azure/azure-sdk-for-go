@@ -8,9 +8,49 @@ package operationalinsightsapi
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/services/operationalinsights/mgmt/2020-10-01/operationalinsights"
+	"github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2021-12-01-preview/operationalinsights"
 	"github.com/Azure/go-autorest/autorest"
 )
+
+// OperationsClientAPI contains the set of methods on the OperationsClient type.
+type OperationsClientAPI interface {
+	List(ctx context.Context) (result operationalinsights.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result operationalinsights.OperationListResultIterator, err error)
+}
+
+var _ OperationsClientAPI = (*operationalinsights.OperationsClient)(nil)
+
+// WorkspacesClientAPI contains the set of methods on the WorkspacesClient type.
+type WorkspacesClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, parameters operationalinsights.Workspace) (result operationalinsights.WorkspacesCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, workspaceName string, force *bool) (result operationalinsights.WorkspacesDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, workspaceName string) (result operationalinsights.Workspace, err error)
+	List(ctx context.Context) (result operationalinsights.WorkspaceListResult, err error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result operationalinsights.WorkspaceListResult, err error)
+	Update(ctx context.Context, resourceGroupName string, workspaceName string, parameters operationalinsights.WorkspacePatch) (result operationalinsights.Workspace, err error)
+}
+
+var _ WorkspacesClientAPI = (*operationalinsights.WorkspacesClient)(nil)
+
+// DeletedWorkspacesClientAPI contains the set of methods on the DeletedWorkspacesClient type.
+type DeletedWorkspacesClientAPI interface {
+	List(ctx context.Context) (result operationalinsights.WorkspaceListResult, err error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result operationalinsights.WorkspaceListResult, err error)
+}
+
+var _ DeletedWorkspacesClientAPI = (*operationalinsights.DeletedWorkspacesClient)(nil)
+
+// TablesClientAPI contains the set of methods on the TablesClient type.
+type TablesClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, tableName string, parameters operationalinsights.Table) (result operationalinsights.TablesCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, workspaceName string, tableName string) (result operationalinsights.TablesDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, workspaceName string, tableName string) (result operationalinsights.Table, err error)
+	ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string) (result operationalinsights.TablesListResult, err error)
+	Migrate(ctx context.Context, resourceGroupName string, workspaceName string, tableName string) (result autorest.Response, err error)
+	Update(ctx context.Context, resourceGroupName string, workspaceName string, tableName string, parameters operationalinsights.Table) (result operationalinsights.TablesUpdateFuture, err error)
+}
+
+var _ TablesClientAPI = (*operationalinsights.TablesClient)(nil)
 
 // DataExportsClientAPI contains the set of methods on the DataExportsClient type.
 type DataExportsClientAPI interface {
@@ -141,15 +181,6 @@ type WorkspacePurgeClientAPI interface {
 
 var _ WorkspacePurgeClientAPI = (*operationalinsights.WorkspacePurgeClient)(nil)
 
-// TablesClientAPI contains the set of methods on the TablesClient type.
-type TablesClientAPI interface {
-	Get(ctx context.Context, resourceGroupName string, workspaceName string, tableName string) (result operationalinsights.Table, err error)
-	ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string) (result operationalinsights.TablesListResult, err error)
-	Update(ctx context.Context, resourceGroupName string, workspaceName string, tableName string, parameters operationalinsights.Table) (result operationalinsights.Table, err error)
-}
-
-var _ TablesClientAPI = (*operationalinsights.TablesClient)(nil)
-
 // ClustersClientAPI contains the set of methods on the ClustersClient type.
 type ClustersClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, parameters operationalinsights.Cluster) (result operationalinsights.ClustersCreateOrUpdateFuture, err error)
@@ -159,35 +190,7 @@ type ClustersClientAPI interface {
 	ListComplete(ctx context.Context) (result operationalinsights.ClusterListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result operationalinsights.ClusterListResultPage, err error)
 	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result operationalinsights.ClusterListResultIterator, err error)
-	Update(ctx context.Context, resourceGroupName string, clusterName string, parameters operationalinsights.ClusterPatch) (result operationalinsights.Cluster, err error)
+	Update(ctx context.Context, resourceGroupName string, clusterName string, parameters operationalinsights.ClusterPatch) (result operationalinsights.ClustersUpdateFuture, err error)
 }
 
 var _ ClustersClientAPI = (*operationalinsights.ClustersClient)(nil)
-
-// OperationsClientAPI contains the set of methods on the OperationsClient type.
-type OperationsClientAPI interface {
-	List(ctx context.Context) (result operationalinsights.OperationListResultPage, err error)
-	ListComplete(ctx context.Context) (result operationalinsights.OperationListResultIterator, err error)
-}
-
-var _ OperationsClientAPI = (*operationalinsights.OperationsClient)(nil)
-
-// WorkspacesClientAPI contains the set of methods on the WorkspacesClient type.
-type WorkspacesClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, parameters operationalinsights.Workspace) (result operationalinsights.WorkspacesCreateOrUpdateFuture, err error)
-	Delete(ctx context.Context, resourceGroupName string, workspaceName string, force *bool) (result operationalinsights.WorkspacesDeleteFuture, err error)
-	Get(ctx context.Context, resourceGroupName string, workspaceName string) (result operationalinsights.Workspace, err error)
-	List(ctx context.Context) (result operationalinsights.WorkspaceListResult, err error)
-	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result operationalinsights.WorkspaceListResult, err error)
-	Update(ctx context.Context, resourceGroupName string, workspaceName string, parameters operationalinsights.WorkspacePatch) (result operationalinsights.Workspace, err error)
-}
-
-var _ WorkspacesClientAPI = (*operationalinsights.WorkspacesClient)(nil)
-
-// DeletedWorkspacesClientAPI contains the set of methods on the DeletedWorkspacesClient type.
-type DeletedWorkspacesClientAPI interface {
-	List(ctx context.Context) (result operationalinsights.WorkspaceListResult, err error)
-	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result operationalinsights.WorkspaceListResult, err error)
-}
-
-var _ DeletedWorkspacesClientAPI = (*operationalinsights.DeletedWorkspacesClient)(nil)

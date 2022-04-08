@@ -78,7 +78,7 @@ func (client DeletedWorkspacesClient) ListPreparer(ctx context.Context) (*http.R
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-08-01"
+	const APIVersion = "2021-12-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -161,7 +161,7 @@ func (client DeletedWorkspacesClient) ListByResourceGroupPreparer(ctx context.Co
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-08-01"
+	const APIVersion = "2021-12-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

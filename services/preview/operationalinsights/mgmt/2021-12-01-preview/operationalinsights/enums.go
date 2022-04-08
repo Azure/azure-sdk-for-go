@@ -59,6 +59,73 @@ func PossibleClusterSkuNameEnumValues() []ClusterSkuNameEnum {
 	return []ClusterSkuNameEnum{CapacityReservation}
 }
 
+// ColumnDataTypeHintEnum enumerates the values for column data type hint enum.
+type ColumnDataTypeHintEnum string
+
+const (
+	// ArmPath An Azure Resource Model (ARM) path:
+	// /subscriptions/{...}/resourceGroups/{...}/providers/Microsoft.{...}/{...}/{...}/{...}...
+	ArmPath ColumnDataTypeHintEnum = "armPath"
+	// GUID A standard 128-bit GUID following the standard shape, xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+	GUID ColumnDataTypeHintEnum = "guid"
+	// IP A standard V4/V6 ip address following the standard shape, x.x.x.x/y:y:y:y:y:y:y:y
+	IP ColumnDataTypeHintEnum = "ip"
+	// URI A string that matches the pattern of a URI, for example,
+	// scheme://username:password@host:1234/this/is/a/path?k1=v1&k2=v2#fragment
+	URI ColumnDataTypeHintEnum = "uri"
+)
+
+// PossibleColumnDataTypeHintEnumValues returns an array of possible values for the ColumnDataTypeHintEnum const type.
+func PossibleColumnDataTypeHintEnumValues() []ColumnDataTypeHintEnum {
+	return []ColumnDataTypeHintEnum{ArmPath, GUID, IP, URI}
+}
+
+// ColumnTypeEnum enumerates the values for column type enum.
+type ColumnTypeEnum string
+
+const (
+	// ColumnTypeEnumBoolean ...
+	ColumnTypeEnumBoolean ColumnTypeEnum = "boolean"
+	// ColumnTypeEnumDateTime ...
+	ColumnTypeEnumDateTime ColumnTypeEnum = "dateTime"
+	// ColumnTypeEnumDynamic ...
+	ColumnTypeEnumDynamic ColumnTypeEnum = "dynamic"
+	// ColumnTypeEnumGUID ...
+	ColumnTypeEnumGUID ColumnTypeEnum = "guid"
+	// ColumnTypeEnumInt ...
+	ColumnTypeEnumInt ColumnTypeEnum = "int"
+	// ColumnTypeEnumLong ...
+	ColumnTypeEnumLong ColumnTypeEnum = "long"
+	// ColumnTypeEnumReal ...
+	ColumnTypeEnumReal ColumnTypeEnum = "real"
+	// ColumnTypeEnumString ...
+	ColumnTypeEnumString ColumnTypeEnum = "string"
+)
+
+// PossibleColumnTypeEnumValues returns an array of possible values for the ColumnTypeEnum const type.
+func PossibleColumnTypeEnumValues() []ColumnTypeEnum {
+	return []ColumnTypeEnum{ColumnTypeEnumBoolean, ColumnTypeEnumDateTime, ColumnTypeEnumDynamic, ColumnTypeEnumGUID, ColumnTypeEnumInt, ColumnTypeEnumLong, ColumnTypeEnumReal, ColumnTypeEnumString}
+}
+
+// CreatedByType enumerates the values for created by type.
+type CreatedByType string
+
+const (
+	// Application ...
+	Application CreatedByType = "Application"
+	// Key ...
+	Key CreatedByType = "Key"
+	// ManagedIdentity ...
+	ManagedIdentity CreatedByType = "ManagedIdentity"
+	// User ...
+	User CreatedByType = "User"
+)
+
+// PossibleCreatedByTypeValues returns an array of possible values for the CreatedByType const type.
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return []CreatedByType{Application, Key, ManagedIdentity, User}
+}
+
 // DataIngestionStatus enumerates the values for data ingestion status.
 type DataIngestionStatus string
 
@@ -214,6 +281,25 @@ func PossibleLinkedServiceEntityStatusValues() []LinkedServiceEntityStatus {
 	return []LinkedServiceEntityStatus{LinkedServiceEntityStatusDeleting, LinkedServiceEntityStatusProvisioningAccount, LinkedServiceEntityStatusSucceeded, LinkedServiceEntityStatusUpdating}
 }
 
+// ProvisioningStateEnum enumerates the values for provisioning state enum.
+type ProvisioningStateEnum string
+
+const (
+	// ProvisioningStateEnumInProgress Table schema is stable and without changes, table data is being updated.
+	ProvisioningStateEnumInProgress ProvisioningStateEnum = "InProgress"
+	// ProvisioningStateEnumSucceeded Table state is stable and without changes, table is unlocked and open for
+	// new updates.
+	ProvisioningStateEnumSucceeded ProvisioningStateEnum = "Succeeded"
+	// ProvisioningStateEnumUpdating Table schema is still being built and updated, table is currently locked
+	// for any changes till the procedure is done.
+	ProvisioningStateEnumUpdating ProvisioningStateEnum = "Updating"
+)
+
+// PossibleProvisioningStateEnumValues returns an array of possible values for the ProvisioningStateEnum const type.
+func PossibleProvisioningStateEnumValues() []ProvisioningStateEnum {
+	return []ProvisioningStateEnum{ProvisioningStateEnumInProgress, ProvisioningStateEnumSucceeded, ProvisioningStateEnumUpdating}
+}
+
 // PublicNetworkAccessType enumerates the values for public network access type.
 type PublicNetworkAccessType string
 
@@ -284,6 +370,22 @@ func PossibleSkuNameEnumValues() []SkuNameEnum {
 	return []SkuNameEnum{SkuNameEnumCapacityReservation, SkuNameEnumFree, SkuNameEnumPerGB2018, SkuNameEnumPerNode, SkuNameEnumPremium, SkuNameEnumStandalone, SkuNameEnumStandard}
 }
 
+// SourceEnum enumerates the values for source enum.
+type SourceEnum string
+
+const (
+	// Customer Tables created by the owner of the Workspace, and only found in this Workspace.
+	Customer SourceEnum = "customer"
+	// Microsoft Tables provisioned by the system, as collected via Diagnostic Settings, the Agents, or any
+	// other standard data collection means.
+	Microsoft SourceEnum = "microsoft"
+)
+
+// PossibleSourceEnumValues returns an array of possible values for the SourceEnum const type.
+func PossibleSourceEnumValues() []SourceEnum {
+	return []SourceEnum{Customer, Microsoft}
+}
+
 // StorageInsightState enumerates the values for storage insight state.
 type StorageInsightState string
 
@@ -297,6 +399,60 @@ const (
 // PossibleStorageInsightStateValues returns an array of possible values for the StorageInsightState const type.
 func PossibleStorageInsightStateValues() []StorageInsightState {
 	return []StorageInsightState{ERROR, OK}
+}
+
+// TablePlanEnum enumerates the values for table plan enum.
+type TablePlanEnum string
+
+const (
+	// Analytics Logs  that allow monitoring and analytics.
+	Analytics TablePlanEnum = "Analytics"
+	// Basic Logs  that are adjusted to support high volume low value verbose logs.
+	Basic TablePlanEnum = "Basic"
+)
+
+// PossibleTablePlanEnumValues returns an array of possible values for the TablePlanEnum const type.
+func PossibleTablePlanEnumValues() []TablePlanEnum {
+	return []TablePlanEnum{Analytics, Basic}
+}
+
+// TableSubTypeEnum enumerates the values for table sub type enum.
+type TableSubTypeEnum string
+
+const (
+	// Any The default subtype with which built-in tables are created.
+	Any TableSubTypeEnum = "Any"
+	// Classic Indicates a table created through the Data Collector API or with the custom logs feature of the
+	// MMA agent, or any table against which Custom Fields were created.
+	Classic TableSubTypeEnum = "Classic"
+	// DataCollectionRuleBased A table eligible to have data sent into it via any of the means supported by
+	// Data Collection Rules: the Data Collection Endpoint API, ingestion-time transformations, or any other
+	// mechanism provided by Data Collection Rules
+	DataCollectionRuleBased TableSubTypeEnum = "DataCollectionRuleBased"
+)
+
+// PossibleTableSubTypeEnumValues returns an array of possible values for the TableSubTypeEnum const type.
+func PossibleTableSubTypeEnumValues() []TableSubTypeEnum {
+	return []TableSubTypeEnum{Any, Classic, DataCollectionRuleBased}
+}
+
+// TableTypeEnum enumerates the values for table type enum.
+type TableTypeEnum string
+
+const (
+	// TableTypeEnumCustomLog Custom log table.
+	TableTypeEnumCustomLog TableTypeEnum = "CustomLog"
+	// TableTypeEnumMicrosoft Standard data collected by Azure Monitor.
+	TableTypeEnumMicrosoft TableTypeEnum = "Microsoft"
+	// TableTypeEnumRestoredLogs Restored data.
+	TableTypeEnumRestoredLogs TableTypeEnum = "RestoredLogs"
+	// TableTypeEnumSearchResults Data collected by a search job.
+	TableTypeEnumSearchResults TableTypeEnum = "SearchResults"
+)
+
+// PossibleTableTypeEnumValues returns an array of possible values for the TableTypeEnum const type.
+func PossibleTableTypeEnumValues() []TableTypeEnum {
+	return []TableTypeEnum{TableTypeEnumCustomLog, TableTypeEnumMicrosoft, TableTypeEnumRestoredLogs, TableTypeEnumSearchResults}
 }
 
 // Type enumerates the values for type.

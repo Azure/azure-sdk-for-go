@@ -18,7 +18,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go/services/operationalinsights/mgmt/2020-10-01/operationalinsights"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2021-12-01-preview/operationalinsights"
 
 // AssociatedWorkspace the list of Log Analytics workspaces associated with the cluster.
 type AssociatedWorkspace struct {
@@ -605,6 +605,88 @@ type ClusterSku struct {
 	Capacity *int64 `json:"capacity,omitempty"`
 	// Name - The name of the SKU. Possible values include: 'CapacityReservation'
 	Name ClusterSkuNameEnum `json:"name,omitempty"`
+}
+
+// ClustersUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type ClustersUpdateFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ClustersClient) (Cluster, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *ClustersUpdateFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for ClustersUpdateFuture.Result.
+func (future *ClustersUpdateFuture) result(client ClustersClient) (c Cluster, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "operationalinsights.ClustersUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		c.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("operationalinsights.ClustersUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if c.Response.Response, err = future.GetResult(sender); err == nil && c.Response.Response.StatusCode != http.StatusNoContent {
+		c, err = client.UpdateResponder(c.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "operationalinsights.ClustersUpdateFuture", "Result", c.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// Column table column.
+type Column struct {
+	// Name - Column name.
+	Name *string `json:"name,omitempty"`
+	// Type - Column data type. Possible values include: 'ColumnTypeEnumString', 'ColumnTypeEnumInt', 'ColumnTypeEnumLong', 'ColumnTypeEnumReal', 'ColumnTypeEnumBoolean', 'ColumnTypeEnumDateTime', 'ColumnTypeEnumGUID', 'ColumnTypeEnumDynamic'
+	Type ColumnTypeEnum `json:"type,omitempty"`
+	// DataTypeHint - Column data type logical hint. Possible values include: 'URI', 'GUID', 'ArmPath', 'IP'
+	DataTypeHint ColumnDataTypeHintEnum `json:"dataTypeHint,omitempty"`
+	// DisplayName - Column display name.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - Column description.
+	Description *string `json:"description,omitempty"`
+	// IsDefaultDisplay - READ-ONLY; Is displayed by default.
+	IsDefaultDisplay *bool `json:"isDefaultDisplay,omitempty"`
+	// IsHidden - READ-ONLY; Is column hidden.
+	IsHidden *bool `json:"isHidden,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Column.
+func (c Column) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if c.Name != nil {
+		objectMap["name"] = c.Name
+	}
+	if c.Type != "" {
+		objectMap["type"] = c.Type
+	}
+	if c.DataTypeHint != "" {
+		objectMap["dataTypeHint"] = c.DataTypeHint
+	}
+	if c.DisplayName != nil {
+		objectMap["displayName"] = c.DisplayName
+	}
+	if c.Description != nil {
+		objectMap["description"] = c.Description
+	}
+	return json.Marshal(objectMap)
 }
 
 // CoreSummary the core summary of a search.
@@ -1775,6 +1857,30 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// RestoredLogs restore parameters.
+type RestoredLogs struct {
+	// StartRestoreTime - The timestamp to start the restore from (UTC).
+	StartRestoreTime *date.Time `json:"startRestoreTime,omitempty"`
+	// EndRestoreTime - The timestamp to end the restore by (UTC).
+	EndRestoreTime *date.Time `json:"endRestoreTime,omitempty"`
+	// SourceTable - The table to restore data from.
+	SourceTable *string `json:"sourceTable,omitempty"`
+}
+
+// ResultStatistics search job execution statistics.
+type ResultStatistics struct {
+	// Progress - READ-ONLY; Search job completion percentage.
+	Progress *float64 `json:"progress,omitempty"`
+	// IngestedRecords - READ-ONLY; The number of rows that were returned by the search job.
+	IngestedRecords *int32 `json:"ingestedRecords,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ResultStatistics.
+func (rs ResultStatistics) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // SavedSearch value object for saved search results.
 type SavedSearch struct {
 	autorest.Response `json:"-"`
@@ -1887,6 +1993,54 @@ type SavedSearchProperties struct {
 	Tags *[]Tag `json:"tags,omitempty"`
 }
 
+// Schema table's schema.
+type Schema struct {
+	// Name - Table name.
+	Name *string `json:"name,omitempty"`
+	// DisplayName - Table display name.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - Table description.
+	Description *string `json:"description,omitempty"`
+	// Columns - A list of table custom columns.
+	Columns *[]Column `json:"columns,omitempty"`
+	// StandardColumns - READ-ONLY; A list of table standard columns.
+	StandardColumns *[]Column `json:"standardColumns,omitempty"`
+	// Categories - READ-ONLY; Table category.
+	Categories *[]string `json:"categories,omitempty"`
+	// Labels - READ-ONLY; Table labels.
+	Labels *[]string `json:"labels,omitempty"`
+	// Source - READ-ONLY; Table's creator. Possible values include: 'Microsoft', 'Customer'
+	Source SourceEnum `json:"source,omitempty"`
+	// TableType - READ-ONLY; Table's creator. Possible values include: 'TableTypeEnumMicrosoft', 'TableTypeEnumCustomLog', 'TableTypeEnumRestoredLogs', 'TableTypeEnumSearchResults'
+	TableType TableTypeEnum `json:"tableType,omitempty"`
+	// TableSubType - READ-ONLY; The subtype describes what APIs can be used to interact with the table, and what features are available against it. Possible values include: 'Any', 'Classic', 'DataCollectionRuleBased'
+	TableSubType TableSubTypeEnum `json:"tableSubType,omitempty"`
+	// Solutions - READ-ONLY; List of solutions the table is affiliated with
+	Solutions *[]string `json:"solutions,omitempty"`
+	// SearchResults - READ-ONLY; Parameters of the search job that initiated this table.
+	SearchResults *SearchResults `json:"searchResults,omitempty"`
+	// RestoredLogs - READ-ONLY; Parameters of the restore operation that initiated this table.
+	RestoredLogs *RestoredLogs `json:"restoredLogs,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Schema.
+func (s Schema) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if s.Name != nil {
+		objectMap["name"] = s.Name
+	}
+	if s.DisplayName != nil {
+		objectMap["displayName"] = s.DisplayName
+	}
+	if s.Description != nil {
+		objectMap["description"] = s.Description
+	}
+	if s.Columns != nil {
+		objectMap["columns"] = s.Columns
+	}
+	return json.Marshal(objectMap)
+}
+
 // SearchGetSchemaResponse the get schema operation response.
 type SearchGetSchemaResponse struct {
 	autorest.Response `json:"-"`
@@ -1940,6 +2094,43 @@ type SearchMetadataSchema struct {
 	Name *string `json:"name,omitempty"`
 	// Version - The version of the metadata schema.
 	Version *int32 `json:"version,omitempty"`
+}
+
+// SearchResults parameters of the search job that initiated this table.
+type SearchResults struct {
+	// Query - Search job query.
+	Query *string `json:"query,omitempty"`
+	// Description - Search job Description.
+	Description *string `json:"description,omitempty"`
+	// Limit - Limit the search job to return up to specified number of rows.
+	Limit *int32 `json:"limit,omitempty"`
+	// StartSearchTime - The timestamp to start the search from (UTC)
+	StartSearchTime *date.Time `json:"startSearchTime,omitempty"`
+	// EndSearchTime - The timestamp to end the search by (UTC)
+	EndSearchTime *date.Time `json:"endSearchTime,omitempty"`
+	// SourceTable - READ-ONLY; The table used in the search job.
+	SourceTable *string `json:"sourceTable,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SearchResults.
+func (sr SearchResults) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sr.Query != nil {
+		objectMap["query"] = sr.Query
+	}
+	if sr.Description != nil {
+		objectMap["description"] = sr.Description
+	}
+	if sr.Limit != nil {
+		objectMap["limit"] = sr.Limit
+	}
+	if sr.StartSearchTime != nil {
+		objectMap["startSearchTime"] = sr.StartSearchTime
+	}
+	if sr.EndSearchTime != nil {
+		objectMap["endSearchTime"] = sr.EndSearchTime
+	}
+	return json.Marshal(objectMap)
 }
 
 // SearchSchemaValue value object for schema results.
@@ -2280,11 +2471,29 @@ type StorageInsightStatus struct {
 	Description *string `json:"description,omitempty"`
 }
 
+// SystemData metadata pertaining to creation and last modification of the resource.
+type SystemData struct {
+	// CreatedBy - The identity that created the resource.
+	CreatedBy *string `json:"createdBy,omitempty"`
+	// CreatedByType - The type of identity that created the resource. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
+	CreatedByType CreatedByType `json:"createdByType,omitempty"`
+	// CreatedAt - The timestamp of resource creation (UTC).
+	CreatedAt *date.Time `json:"createdAt,omitempty"`
+	// LastModifiedBy - The identity that last modified the resource.
+	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	// LastModifiedByType - The type of identity that last modified the resource. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
+	LastModifiedByType CreatedByType `json:"lastModifiedByType,omitempty"`
+	// LastModifiedAt - The timestamp of resource last modification (UTC)
+	LastModifiedAt *date.Time `json:"lastModifiedAt,omitempty"`
+}
+
 // Table workspace data table definition.
 type Table struct {
 	autorest.Response `json:"-"`
-	// TableProperties - Table properties.
+	// TableProperties - Table's properties.
 	*TableProperties `json:"properties,omitempty"`
+	// SystemData - READ-ONLY
+	SystemData *SystemData `json:"systemData,omitempty"`
 	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
@@ -2319,6 +2528,15 @@ func (t *Table) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				t.TableProperties = &tableProperties
+			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				t.SystemData = &systemData
 			}
 		case "id":
 			if v != nil {
@@ -2355,8 +2573,132 @@ func (t *Table) UnmarshalJSON(body []byte) error {
 
 // TableProperties table properties.
 type TableProperties struct {
-	// RetentionInDays - The data table data retention in days, between 30 and 730. Setting this property to null will default to the workspace retention.
+	// RetentionInDays - The table retention in days, between 4 and 730. Setting this property to -1 will default to the workspace retention.
 	RetentionInDays *int32 `json:"retentionInDays,omitempty"`
+	// TotalRetentionInDays - The table total retention in days, between 4 and 2555. Setting this property to -1 will default to table retention.
+	TotalRetentionInDays *int32 `json:"totalRetentionInDays,omitempty"`
+	// ArchiveRetentionInDays - READ-ONLY; The table data archive retention in days. Calculated as (totalRetentionInDays-retentionInDays)
+	ArchiveRetentionInDays *int32 `json:"archiveRetentionInDays,omitempty"`
+	// SearchResults - Parameters of the search job that initiated this table.
+	SearchResults *SearchResults `json:"searchResults,omitempty"`
+	// RestoredLogs - Parameters of the restore operation that initiated this table.
+	RestoredLogs *RestoredLogs `json:"restoredLogs,omitempty"`
+	// ResultStatistics - Search job execution statistics.
+	ResultStatistics *ResultStatistics `json:"resultStatistics,omitempty"`
+	// Plan - Instruct the system how to handle and charge the logs ingested to this table. Possible values include: 'Basic', 'Analytics'
+	Plan TablePlanEnum `json:"plan,omitempty"`
+	// LastPlanModifiedDate - READ-ONLY; The timestamp that table plan was last modified (UTC).
+	LastPlanModifiedDate *string `json:"lastPlanModifiedDate,omitempty"`
+	// Schema - Table schema.
+	Schema *Schema `json:"schema,omitempty"`
+	// ProvisioningState - READ-ONLY; Table's current provisioning state. If set to 'updating', indicates a resource lock due to ongoing operation, forbidding any update to the table until the ongoing operation is concluded. Possible values include: 'ProvisioningStateEnumUpdating', 'ProvisioningStateEnumInProgress', 'ProvisioningStateEnumSucceeded'
+	ProvisioningState ProvisioningStateEnum `json:"provisioningState,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for TableProperties.
+func (tp TableProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if tp.RetentionInDays != nil {
+		objectMap["retentionInDays"] = tp.RetentionInDays
+	}
+	if tp.TotalRetentionInDays != nil {
+		objectMap["totalRetentionInDays"] = tp.TotalRetentionInDays
+	}
+	if tp.SearchResults != nil {
+		objectMap["searchResults"] = tp.SearchResults
+	}
+	if tp.RestoredLogs != nil {
+		objectMap["restoredLogs"] = tp.RestoredLogs
+	}
+	if tp.ResultStatistics != nil {
+		objectMap["resultStatistics"] = tp.ResultStatistics
+	}
+	if tp.Plan != "" {
+		objectMap["plan"] = tp.Plan
+	}
+	if tp.Schema != nil {
+		objectMap["schema"] = tp.Schema
+	}
+	return json.Marshal(objectMap)
+}
+
+// TablesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type TablesCreateOrUpdateFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(TablesClient) (Table, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *TablesCreateOrUpdateFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for TablesCreateOrUpdateFuture.Result.
+func (future *TablesCreateOrUpdateFuture) result(client TablesClient) (t Table, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "operationalinsights.TablesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		t.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("operationalinsights.TablesCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if t.Response.Response, err = future.GetResult(sender); err == nil && t.Response.Response.StatusCode != http.StatusNoContent {
+		t, err = client.CreateOrUpdateResponder(t.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "operationalinsights.TablesCreateOrUpdateFuture", "Result", t.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// TablesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+type TablesDeleteFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(TablesClient) (autorest.Response, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *TablesDeleteFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for TablesDeleteFuture.Result.
+func (future *TablesDeleteFuture) result(client TablesClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "operationalinsights.TablesDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		ar.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("operationalinsights.TablesDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
 }
 
 // TablesListResult the list tables operation response.
@@ -2364,6 +2706,48 @@ type TablesListResult struct {
 	autorest.Response `json:"-"`
 	// Value - A list of data tables.
 	Value *[]Table `json:"value,omitempty"`
+}
+
+// TablesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+type TablesUpdateFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(TablesClient) (Table, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *TablesUpdateFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for TablesUpdateFuture.Result.
+func (future *TablesUpdateFuture) result(client TablesClient) (t Table, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "operationalinsights.TablesUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		t.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("operationalinsights.TablesUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if t.Response.Response, err = future.GetResult(sender); err == nil && t.Response.Response.StatusCode != http.StatusNoContent {
+		t, err = client.UpdateResponder(t.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "operationalinsights.TablesUpdateFuture", "Result", t.Response.Response, "Failure responding to request")
+		}
+	}
+	return
 }
 
 // Tag a tag of a saved search.
@@ -2436,6 +2820,8 @@ type Workspace struct {
 	autorest.Response `json:"-"`
 	// WorkspaceProperties - Workspace properties.
 	*WorkspaceProperties `json:"properties,omitempty"`
+	// SystemData - READ-ONLY
+	SystemData *SystemData `json:"systemData,omitempty"`
 	// ETag - The ETag of the workspace.
 	ETag *string `json:"eTag,omitempty"`
 	// Tags - Resource tags.
@@ -2485,6 +2871,15 @@ func (w *Workspace) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				w.WorkspaceProperties = &workspaceProperties
+			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				w.SystemData = &systemData
 			}
 		case "eTag":
 			if v != nil {
@@ -2699,7 +3094,7 @@ func (wp *WorkspacePatch) UnmarshalJSON(body []byte) error {
 
 // WorkspaceProperties workspace properties.
 type WorkspaceProperties struct {
-	// ProvisioningState - The provisioning state of the workspace. Possible values include: 'WorkspaceEntityStatusCreating', 'WorkspaceEntityStatusSucceeded', 'WorkspaceEntityStatusFailed', 'WorkspaceEntityStatusCanceled', 'WorkspaceEntityStatusDeleting', 'WorkspaceEntityStatusProvisioningAccount', 'WorkspaceEntityStatusUpdating'
+	// ProvisioningState - READ-ONLY; The provisioning state of the workspace. Possible values include: 'WorkspaceEntityStatusCreating', 'WorkspaceEntityStatusSucceeded', 'WorkspaceEntityStatusFailed', 'WorkspaceEntityStatusCanceled', 'WorkspaceEntityStatusDeleting', 'WorkspaceEntityStatusProvisioningAccount', 'WorkspaceEntityStatusUpdating'
 	ProvisioningState WorkspaceEntityStatus `json:"provisioningState,omitempty"`
 	// CustomerID - READ-ONLY; This is a read-only property. Represents the ID associated with the workspace.
 	CustomerID *string `json:"customerId,omitempty"`
@@ -2723,14 +3118,13 @@ type WorkspaceProperties struct {
 	PrivateLinkScopedResources *[]PrivateLinkScopedResource `json:"privateLinkScopedResources,omitempty"`
 	// Features - Workspace features.
 	Features *WorkspaceFeatures `json:"features,omitempty"`
+	// DefaultDataCollectionRuleResourceID - The resource ID of the default Data Collection Rule to use for this workspace. Expected format is - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/dataCollectionRules/{dcrName}.
+	DefaultDataCollectionRuleResourceID *string `json:"defaultDataCollectionRuleResourceId,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for WorkspaceProperties.
 func (wp WorkspaceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if wp.ProvisioningState != "" {
-		objectMap["provisioningState"] = wp.ProvisioningState
-	}
 	if wp.Sku != nil {
 		objectMap["sku"] = wp.Sku
 	}
@@ -2751,6 +3145,9 @@ func (wp WorkspaceProperties) MarshalJSON() ([]byte, error) {
 	}
 	if wp.Features != nil {
 		objectMap["features"] = wp.Features
+	}
+	if wp.DefaultDataCollectionRuleResourceID != nil {
+		objectMap["defaultDataCollectionRuleResourceId"] = wp.DefaultDataCollectionRuleResourceID
 	}
 	return json.Marshal(objectMap)
 }
@@ -2873,7 +3270,7 @@ func (future *WorkspacesDeleteFuture) result(client WorkspacesClient) (ar autore
 type WorkspaceSku struct {
 	// Name - The name of the SKU. Possible values include: 'WorkspaceSkuNameEnumFree', 'WorkspaceSkuNameEnumStandard', 'WorkspaceSkuNameEnumPremium', 'WorkspaceSkuNameEnumPerNode', 'WorkspaceSkuNameEnumPerGB2018', 'WorkspaceSkuNameEnumStandalone', 'WorkspaceSkuNameEnumCapacityReservation', 'WorkspaceSkuNameEnumLACluster'
 	Name WorkspaceSkuNameEnum `json:"name,omitempty"`
-	// CapacityReservationLevel - The capacity reservation level for this workspace, when CapacityReservation sku is selected.
+	// CapacityReservationLevel - The capacity reservation level in GB for this workspace, when CapacityReservation sku is selected.
 	CapacityReservationLevel *int32 `json:"capacityReservationLevel,omitempty"`
 	// LastSkuUpdate - READ-ONLY; The last time when the sku was updated.
 	LastSkuUpdate *string `json:"lastSkuUpdate,omitempty"`

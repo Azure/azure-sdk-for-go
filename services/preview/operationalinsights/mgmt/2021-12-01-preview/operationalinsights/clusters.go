@@ -83,7 +83,7 @@ func (client ClustersClient) CreateOrUpdatePreparer(ctx context.Context, resourc
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-10-01"
+	const APIVersion = "2021-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -173,7 +173,7 @@ func (client ClustersClient) DeletePreparer(ctx context.Context, resourceGroupNa
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-10-01"
+	const APIVersion = "2021-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -267,7 +267,7 @@ func (client ClustersClient) GetPreparer(ctx context.Context, resourceGroupName 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-10-01"
+	const APIVersion = "2021-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -349,7 +349,7 @@ func (client ClustersClient) ListPreparer(ctx context.Context) (*http.Request, e
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-10-01"
+	const APIVersion = "2021-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -474,7 +474,7 @@ func (client ClustersClient) ListByResourceGroupPreparer(ctx context.Context, re
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-10-01"
+	const APIVersion = "2021-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -547,13 +547,13 @@ func (client ClustersClient) ListByResourceGroupComplete(ctx context.Context, re
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // clusterName - name of the Log Analytics Cluster.
 // parameters - the parameters required to patch a Log Analytics cluster.
-func (client ClustersClient) Update(ctx context.Context, resourceGroupName string, clusterName string, parameters ClusterPatch) (result Cluster, err error) {
+func (client ClustersClient) Update(ctx context.Context, resourceGroupName string, clusterName string, parameters ClusterPatch) (result ClustersUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ClustersClient.Update")
 		defer func() {
 			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -573,16 +573,9 @@ func (client ClustersClient) Update(ctx context.Context, resourceGroupName strin
 		return
 	}
 
-	resp, err := client.UpdateSender(req)
+	result, err = client.UpdateSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "operationalinsights.ClustersClient", "Update", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.UpdateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "operationalinsights.ClustersClient", "Update", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.ClustersClient", "Update", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -597,7 +590,7 @@ func (client ClustersClient) UpdatePreparer(ctx context.Context, resourceGroupNa
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-10-01"
+	const APIVersion = "2021-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -614,8 +607,18 @@ func (client ClustersClient) UpdatePreparer(ctx context.Context, resourceGroupNa
 
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
-func (client ClustersClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+func (client ClustersClient) UpdateSender(req *http.Request) (future ClustersUpdateFuture, err error) {
+	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = future.result
+	return
 }
 
 // UpdateResponder handles the response to the Update request. The method always

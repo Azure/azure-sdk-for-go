@@ -83,11 +83,12 @@ func (client WorkspacesClient) CreateOrUpdatePreparer(ctx context.Context, resou
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
-	const APIVersion = "2020-08-01"
+	const APIVersion = "2021-12-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
 
+	parameters.SystemData = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
@@ -181,7 +182,7 @@ func (client WorkspacesClient) DeletePreparer(ctx context.Context, resourceGroup
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
-	const APIVersion = "2020-08-01"
+	const APIVersion = "2021-12-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -282,7 +283,7 @@ func (client WorkspacesClient) GetPreparer(ctx context.Context, resourceGroupNam
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
-	const APIVersion = "2020-08-01"
+	const APIVersion = "2021-12-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -359,7 +360,7 @@ func (client WorkspacesClient) ListPreparer(ctx context.Context) (*http.Request,
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-08-01"
+	const APIVersion = "2021-12-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -442,7 +443,7 @@ func (client WorkspacesClient) ListByResourceGroupPreparer(ctx context.Context, 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-08-01"
+	const APIVersion = "2021-12-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -532,7 +533,7 @@ func (client WorkspacesClient) UpdatePreparer(ctx context.Context, resourceGroup
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
-	const APIVersion = "2020-08-01"
+	const APIVersion = "2021-12-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

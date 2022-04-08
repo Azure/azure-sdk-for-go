@@ -26,7 +26,7 @@ type UnwrapTest struct {
 	keyName      string
 	client       *azkeys.Client
 	cryptoClient *crypto.Client
-	wrapAlg      crypto.WrapAlg
+	alg          crypto.WrapAlg
 	encryptedKey []byte
 }
 
@@ -35,7 +35,7 @@ func NewUnwrapTest(ctx context.Context, options perf.PerfTestOptions) (perf.Glob
 	d := &UnwrapTest{
 		PerfTestOptions: options,
 		keyName:         "livekvtestunwrapperfkey",
-		wrapAlg:         crypto.WrapAlgRSAOAEP256,
+		alg:             crypto.WrapAlgRSAOAEP256,
 	}
 
 	vaultURL, ok := os.LookupEnv("AZURE_KEYVAULT_URL")
@@ -77,7 +77,7 @@ func NewUnwrapTest(ctx context.Context, options perf.PerfTestOptions) (perf.Glob
 		return nil, err
 	}
 
-	result, err := cryptoClient.WrapKey(ctx, d.wrapAlg, b, nil)
+	result, err := cryptoClient.WrapKey(ctx, d.alg, b, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -104,8 +104,6 @@ func (gct *UnwrapTest) GlobalCleanup(ctx context.Context) error {
 }
 
 type UnwrapPerfTest struct {
-	*UnwrapTest
-	perf.PerfTestOptions
 	cryptoClient *crypto.Client
 	alg          crypto.WrapAlg
 	encryptedKey []byte
@@ -114,10 +112,9 @@ type UnwrapPerfTest struct {
 // NewPerfTest is called once per goroutine
 func (gct *UnwrapTest) NewPerfTest(ctx context.Context, options *perf.PerfTestOptions) (perf.PerfTest, error) {
 	return &UnwrapPerfTest{
-		UnwrapTest:      gct,
-		PerfTestOptions: *options,
-		alg:             gct.wrapAlg,
-		encryptedKey:    gct.encryptedKey,
+		cryptoClient: gct.cryptoClient,
+		alg:          gct.alg,
+		encryptedKey: gct.encryptedKey,
 	}, nil
 }
 

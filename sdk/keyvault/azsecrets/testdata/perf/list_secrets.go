@@ -25,7 +25,7 @@ var getListSecretsTestOpts getListSecretsTestOptions = getListSecretsTestOptions
 }
 
 func registerListSecrets() {
-	flag.IntVar(&getListSecretsTestOpts.count, "count", 10, "number of secrets to create")
+	flag.IntVar(&getListSecretsTestOpts.count, "count", 100, "number of secrets to create")
 }
 
 type ListSecretsTest struct {
@@ -89,8 +89,6 @@ func (gct *ListSecretsTest) GlobalCleanup(ctx context.Context) error {
 }
 
 type ListSecretsPerfTest struct {
-	*ListSecretsTest
-	perf.PerfTestOptions
 	client     *azsecrets.Client
 	secretName string
 }
@@ -98,8 +96,6 @@ type ListSecretsPerfTest struct {
 // NewPerfTest is called once per goroutine
 func (gct *ListSecretsTest) NewPerfTest(ctx context.Context, options *perf.PerfTestOptions) (perf.PerfTest, error) {
 	return &ListSecretsPerfTest{
-		ListSecretsTest: gct,
-		PerfTestOptions: *options,
 		client:          gct.client,
 		secretName:      gct.secretName,
 	}, nil

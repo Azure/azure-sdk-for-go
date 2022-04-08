@@ -27,7 +27,7 @@ type SignTest struct {
 	keyName      string
 	client       *azkeys.Client
 	cryptoClient *crypto.Client
-	encrypAlg    crypto.SignatureAlg
+	signAlg      crypto.SignatureAlg
 	digest       []byte
 }
 
@@ -36,7 +36,7 @@ func NewSignTest(ctx context.Context, options perf.PerfTestOptions) (perf.Global
 	d := &SignTest{
 		PerfTestOptions: options,
 		keyName:         "livekvtestsignperfkey",
-		encrypAlg:       crypto.SignatureAlgRS256,
+		signAlg:         crypto.SignatureAlgRS256,
 	}
 
 	vaultURL, ok := os.LookupEnv("AZURE_KEYVAULT_URL")
@@ -113,7 +113,7 @@ func (gct *SignTest) NewPerfTest(ctx context.Context, options *perf.PerfTestOpti
 	return &SignPerfTest{
 		SignTest:        gct,
 		PerfTestOptions: *options,
-		alg:             gct.encrypAlg,
+		alg:             gct.signAlg,
 		digest:          gct.digest,
 	}, nil
 }

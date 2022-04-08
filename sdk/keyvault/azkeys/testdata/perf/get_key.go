@@ -17,7 +17,7 @@ import (
 
 type getKeyTestOptions struct{}
 
-var getCertTestOpts getKeyTestOptions = getKeyTestOptions{}
+var getKeyTestOpts getKeyTestOptions = getKeyTestOptions{}
 
 type GetKeyTest struct {
 	perf.PerfTestOptions
@@ -73,8 +73,6 @@ func (gct *GetKeyTest) GlobalCleanup(ctx context.Context) error {
 }
 
 type GetKeyPerfTest struct {
-	*GetKeyTest
-	perf.PerfTestOptions
 	client  *azkeys.Client
 	keyName string
 }
@@ -82,8 +80,6 @@ type GetKeyPerfTest struct {
 // NewPerfTest is called once per goroutine
 func (gct *GetKeyTest) NewPerfTest(ctx context.Context, options *perf.PerfTestOptions) (perf.PerfTest, error) {
 	return &GetKeyPerfTest{
-		GetKeyTest:      gct,
-		PerfTestOptions: *options,
 		client:          gct.client,
 		keyName:         gct.keyName,
 	}, nil

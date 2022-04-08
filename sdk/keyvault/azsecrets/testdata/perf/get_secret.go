@@ -72,8 +72,6 @@ func (gct *GetSecretTest) GlobalCleanup(ctx context.Context) error {
 }
 
 type GetSecretPerfTest struct {
-	*GetSecretTest
-	perf.PerfTestOptions
 	client     *azsecrets.Client
 	secretName string
 }
@@ -81,8 +79,6 @@ type GetSecretPerfTest struct {
 // NewPerfTest is called once per goroutine
 func (gct *GetSecretTest) NewPerfTest(ctx context.Context, options *perf.PerfTestOptions) (perf.PerfTest, error) {
 	return &GetSecretPerfTest{
-		GetSecretTest:   gct,
-		PerfTestOptions: *options,
 		client:          gct.client,
 		secretName:      gct.secretName,
 	}, nil

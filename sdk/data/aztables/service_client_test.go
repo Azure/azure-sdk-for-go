@@ -109,7 +109,6 @@ func TestQueryTable(t *testing.T) {
 				require.LessOrEqual(t, len(resp.Tables), 2)
 				resultCount += len(resp.Tables)
 				pageCount++
-				fmt.Printf("pageCount: %d\tresultCount: %d\n", pageCount, resultCount)
 			}
 
 			require.Equal(t, resultCount, tableCount-1)

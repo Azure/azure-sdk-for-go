@@ -14,6 +14,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
 )
@@ -150,7 +151,7 @@ func initClientTest(t *testing.T, service string, createTable bool) (*Client, fu
 
 	return client, func() {
 		_, err = client.Delete(ctx, nil)
-		require.NoError(t, err)
+		// require.NoError(t, err)
 		err = recording.Stop(t, nil)
 		require.NoError(t, err)
 	}
@@ -188,16 +189,22 @@ func getSharedKeyCredential(t *testing.T) (*SharedKeyCredential, error) {
 }
 
 func createStorageClient(t *testing.T) (*Client, error) {
-	var cred *SharedKeyCredential
+	var cred azcore.TokenCredential
 	var err error
 	accountName := recording.GetEnvVariable("TABLES_STORAGE_ACCOUNT_NAME", "fakeaccount")
-	accountKey := recording.GetEnvVariable("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY", "fakeaccountkey")
+	// accountKey := recording.GetEnvVariable("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY", "fakeaccountkey")
 
 	if recording.GetRecordMode() == "playback" {
-		cred, err = getSharedKeyCredential(t)
-		require.NoError(t, err)
+		cred = &FakeCredential{accountName: "fakeaccountname", accountKey: "fakeaccountkey"}
+		// require.NoError(t, err)
 	} else {
-		cred, err = NewSharedKeyCredential(accountName, accountKey)
+		cred, err = azidentity.NewClientSecretCredential(
+			os.Getenv("AZTABLES_TENANT_ID"),
+			os.Getenv("AZTABLES_CLIENT_ID"),
+			os.Getenv("AZTABLES_CLIENT_SECRET"),
+			nil)
+
+		// cred, err = NewSharedKeyCredential(accountName, accountKey)
 		require.NoError(t, err)
 	}
 
@@ -206,7 +213,20 @@ func createStorageClient(t *testing.T) (*Client, error) {
 	tableName, err := createRandomName(t, tableNamePrefix)
 	require.NoError(t, err)
 
-	return createClientForRecording(t, tableName, serviceURL, *cred)
+	client, err := recording.NewRecordingHTTPClient(t, nil)
+	require.NoError(t, err)
+
+	options := &ClientOptions{ClientOptions: azcore.ClientOptions{
+		Transport: client,
+	}}
+	if !strings.HasSuffix(serviceURL, "/") && tableName != "" {
+		serviceURL += "/"
+	}
+	serviceURL += tableName
+
+	return NewClient(serviceURL, cred, options)
+
+	// return createClientForRecording(t, tableName, serviceURL, cred)
 }
 
 func createCosmosClient(t *testing.T) (*Client, error) {

@@ -32,8 +32,8 @@ func NewServiceClient(serviceURL string, cred azcore.TokenCredential, options *C
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, runtime.NewBearerTokenPolicy(cred, []string{"https://storage.azure.com/.default"}, nil))
 	con := generated.NewConnection(serviceURL, conOptions)
 	return &ServiceClient{
-		client:  generated.NewTableClient(serviceURL, generated.Enum0TwoThousandNineteen0202, conOptions),
-		service: generated.NewServiceClient(serviceURL, generated.Enum0TwoThousandNineteen0202, conOptions),
+		client:  generated.NewTableClient(serviceURL, generated.Enum0("2020-12-06"), conOptions),
+		service: generated.NewServiceClient(serviceURL, generated.Enum0("2020-12-06"), conOptions),
 		con:     con,
 	}, nil
 }
@@ -45,8 +45,8 @@ func NewServiceClientWithNoCredential(serviceURL string, options *ClientOptions)
 	conOptions := getConnectionOptions(serviceURL, options)
 	con := generated.NewConnection(serviceURL, conOptions)
 	return &ServiceClient{
-		client:  generated.NewTableClient(serviceURL, generated.Enum0TwoThousandNineteen0202, conOptions),
-		service: generated.NewServiceClient(serviceURL, generated.Enum0TwoThousandNineteen0202, conOptions),
+		client:  generated.NewTableClient(serviceURL, generated.Enum0("2020-12-06"), conOptions),
+		service: generated.NewServiceClient(serviceURL, generated.Enum0("2020-12-06"), conOptions),
 		con:     con,
 	}, nil
 }
@@ -59,8 +59,8 @@ func NewServiceClientWithSharedKey(serviceURL string, cred *SharedKeyCredential,
 
 	con := generated.NewConnection(serviceURL, conOptions)
 	return &ServiceClient{
-		client:  generated.NewTableClient(serviceURL, generated.Enum0TwoThousandNineteen0202, conOptions),
-		service: generated.NewServiceClient(serviceURL, generated.Enum0TwoThousandNineteen0202, conOptions),
+		client:  generated.NewTableClient(serviceURL, generated.Enum0("2020-12-06"), conOptions),
+		service: generated.NewServiceClient(serviceURL, generated.Enum0("2020-12-06"), conOptions),
 		cred:    cred,
 		con:     con,
 	}, nil

@@ -101,8 +101,6 @@ func (gct *SignTest) GlobalCleanup(ctx context.Context) error {
 }
 
 type SignPerfTest struct {
-	*SignTest
-	perf.PerfTestOptions
 	cryptoClient *crypto.Client
 	alg          crypto.SignatureAlg
 	digest       []byte
@@ -111,8 +109,6 @@ type SignPerfTest struct {
 // NewPerfTest is called once per goroutine
 func (gct *SignTest) NewPerfTest(ctx context.Context, options *perf.PerfTestOptions) (perf.PerfTest, error) {
 	return &SignPerfTest{
-		SignTest:        gct,
-		PerfTestOptions: *options,
 		alg:             gct.signAlg,
 		digest:          gct.digest,
 	}, nil

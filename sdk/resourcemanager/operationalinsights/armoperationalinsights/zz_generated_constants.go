@@ -10,7 +10,7 @@ package armoperationalinsights
 
 const (
 	moduleName    = "armoperationalinsights"
-	moduleVersion = "v0.3.1"
+	moduleVersion = "v0.4.0"
 )
 
 // BillingType - Configures whether billing will be only on the cluster or each workspace will be billed by its proportional
@@ -374,21 +374,29 @@ func (c DataSourceType) ToPtr() *DataSourceType {
 	return &c
 }
 
-// IdentityType - Type of managed service identity.
+// IdentityType - The type of identity that creates/modifies resources
 type IdentityType string
 
 const (
-	IdentityTypeSystemAssigned IdentityType = "SystemAssigned"
-	IdentityTypeUserAssigned   IdentityType = "UserAssigned"
-	IdentityTypeNone           IdentityType = "None"
+	IdentityTypeApplication     IdentityType = "application"
+	IdentityTypeKey             IdentityType = "key"
+	IdentityTypeManagedIdentity IdentityType = "managedIdentity"
+	IdentityTypeNone            IdentityType = "None"
+	IdentityTypeSystemAssigned  IdentityType = "SystemAssigned"
+	IdentityTypeUser            IdentityType = "user"
+	IdentityTypeUserAssigned    IdentityType = "UserAssigned"
 )
 
 // PossibleIdentityTypeValues returns the possible values for the IdentityType const type.
 func PossibleIdentityTypeValues() []IdentityType {
 	return []IdentityType{
-		IdentityTypeSystemAssigned,
-		IdentityTypeUserAssigned,
+		IdentityTypeApplication,
+		IdentityTypeKey,
+		IdentityTypeManagedIdentity,
 		IdentityTypeNone,
+		IdentityTypeSystemAssigned,
+		IdentityTypeUser,
+		IdentityTypeUserAssigned,
 	}
 }
 
@@ -591,13 +599,13 @@ func (c StorageInsightState) ToPtr() *StorageInsightState {
 	return &c
 }
 
-// TablePlanEnum - The table plan.
+// TablePlanEnum - Instruct the system how to handle and charge the logs ingested to this table.
 type TablePlanEnum string
 
 const (
-	// TablePlanEnumAnalytics - Analytics - logs that allow monitoring and analytics.
+	// TablePlanEnumAnalytics - Logs that allow monitoring and analytics.
 	TablePlanEnumAnalytics TablePlanEnum = "Analytics"
-	// TablePlanEnumBasic - Basic - logs that are adjusted to support high volume / low value verbose logs.
+	// TablePlanEnumBasic - Logs that are adjusted to support high volume low value verbose logs.
 	TablePlanEnumBasic TablePlanEnum = "Basic"
 )
 

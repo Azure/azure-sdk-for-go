@@ -559,6 +559,138 @@ type OperationsClientListResult struct {
 	OperationListResult
 }
 
+// QueriesClientDeleteResponse contains the response from method QueriesClient.Delete.
+type QueriesClientDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// QueriesClientGetResponse contains the response from method QueriesClient.Get.
+type QueriesClientGetResponse struct {
+	QueriesClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// QueriesClientGetResult contains the result from method QueriesClient.Get.
+type QueriesClientGetResult struct {
+	LogAnalyticsQueryPackQuery
+}
+
+// QueriesClientListResponse contains the response from method QueriesClient.List.
+type QueriesClientListResponse struct {
+	QueriesClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// QueriesClientListResult contains the result from method QueriesClient.List.
+type QueriesClientListResult struct {
+	LogAnalyticsQueryPackQueryListResult
+}
+
+// QueriesClientPutResponse contains the response from method QueriesClient.Put.
+type QueriesClientPutResponse struct {
+	QueriesClientPutResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// QueriesClientPutResult contains the result from method QueriesClient.Put.
+type QueriesClientPutResult struct {
+	LogAnalyticsQueryPackQuery
+}
+
+// QueriesClientSearchResponse contains the response from method QueriesClient.Search.
+type QueriesClientSearchResponse struct {
+	QueriesClientSearchResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// QueriesClientSearchResult contains the result from method QueriesClient.Search.
+type QueriesClientSearchResult struct {
+	LogAnalyticsQueryPackQueryListResult
+}
+
+// QueriesClientUpdateResponse contains the response from method QueriesClient.Update.
+type QueriesClientUpdateResponse struct {
+	QueriesClientUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// QueriesClientUpdateResult contains the result from method QueriesClient.Update.
+type QueriesClientUpdateResult struct {
+	LogAnalyticsQueryPackQuery
+}
+
+// QueryPacksClientCreateOrUpdateResponse contains the response from method QueryPacksClient.CreateOrUpdate.
+type QueryPacksClientCreateOrUpdateResponse struct {
+	QueryPacksClientCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// QueryPacksClientCreateOrUpdateResult contains the result from method QueryPacksClient.CreateOrUpdate.
+type QueryPacksClientCreateOrUpdateResult struct {
+	LogAnalyticsQueryPack
+}
+
+// QueryPacksClientDeleteResponse contains the response from method QueryPacksClient.Delete.
+type QueryPacksClientDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// QueryPacksClientGetResponse contains the response from method QueryPacksClient.Get.
+type QueryPacksClientGetResponse struct {
+	QueryPacksClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// QueryPacksClientGetResult contains the result from method QueryPacksClient.Get.
+type QueryPacksClientGetResult struct {
+	LogAnalyticsQueryPack
+}
+
+// QueryPacksClientListByResourceGroupResponse contains the response from method QueryPacksClient.ListByResourceGroup.
+type QueryPacksClientListByResourceGroupResponse struct {
+	QueryPacksClientListByResourceGroupResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// QueryPacksClientListByResourceGroupResult contains the result from method QueryPacksClient.ListByResourceGroup.
+type QueryPacksClientListByResourceGroupResult struct {
+	LogAnalyticsQueryPackListResult
+}
+
+// QueryPacksClientListResponse contains the response from method QueryPacksClient.List.
+type QueryPacksClientListResponse struct {
+	QueryPacksClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// QueryPacksClientListResult contains the result from method QueryPacksClient.List.
+type QueryPacksClientListResult struct {
+	LogAnalyticsQueryPackListResult
+}
+
+// QueryPacksClientUpdateTagsResponse contains the response from method QueryPacksClient.UpdateTags.
+type QueryPacksClientUpdateTagsResponse struct {
+	QueryPacksClientUpdateTagsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// QueryPacksClientUpdateTagsResult contains the result from method QueryPacksClient.UpdateTags.
+type QueryPacksClientUpdateTagsResult struct {
+	LogAnalyticsQueryPack
+}
+
 // SavedSearchesClientCreateOrUpdateResponse contains the response from method SavedSearchesClient.CreateOrUpdate.
 type SavedSearchesClientCreateOrUpdateResponse struct {
 	SavedSearchesClientCreateOrUpdateResult
@@ -799,6 +931,12 @@ type TablesClientListByWorkspaceResponse struct {
 // TablesClientListByWorkspaceResult contains the result from method TablesClient.ListByWorkspace.
 type TablesClientListByWorkspaceResult struct {
 	TablesListResult
+}
+
+// TablesClientMigrateResponse contains the response from method TablesClient.Migrate.
+type TablesClientMigrateResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
 }
 
 // TablesClientUpdatePollerResponse contains the response from method TablesClient.Update.

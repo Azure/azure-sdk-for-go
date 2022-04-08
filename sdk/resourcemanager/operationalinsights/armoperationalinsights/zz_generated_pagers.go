@@ -232,6 +232,222 @@ func (p *OperationsClientListPager) PageResponse() OperationsClientListResponse 
 	return p.current
 }
 
+// QueriesClientListPager provides operations for iterating over paged responses.
+type QueriesClientListPager struct {
+	client    *QueriesClient
+	current   QueriesClientListResponse
+	err       error
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, QueriesClientListResponse) (*policy.Request, error)
+}
+
+// Err returns the last error encountered while paging.
+func (p *QueriesClientListPager) Err() error {
+	return p.err
+}
+
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *QueriesClientListPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.LogAnalyticsQueryPackQueryListResult.NextLink == nil || len(*p.current.LogAnalyticsQueryPackQueryListResult.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.pl.Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		p.err = runtime.NewResponseError(resp)
+		return false
+	}
+	result, err := p.client.listHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+// PageResponse returns the current QueriesClientListResponse page.
+func (p *QueriesClientListPager) PageResponse() QueriesClientListResponse {
+	return p.current
+}
+
+// QueriesClientSearchPager provides operations for iterating over paged responses.
+type QueriesClientSearchPager struct {
+	client    *QueriesClient
+	current   QueriesClientSearchResponse
+	err       error
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, QueriesClientSearchResponse) (*policy.Request, error)
+}
+
+// Err returns the last error encountered while paging.
+func (p *QueriesClientSearchPager) Err() error {
+	return p.err
+}
+
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *QueriesClientSearchPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.LogAnalyticsQueryPackQueryListResult.NextLink == nil || len(*p.current.LogAnalyticsQueryPackQueryListResult.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.pl.Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		p.err = runtime.NewResponseError(resp)
+		return false
+	}
+	result, err := p.client.searchHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+// PageResponse returns the current QueriesClientSearchResponse page.
+func (p *QueriesClientSearchPager) PageResponse() QueriesClientSearchResponse {
+	return p.current
+}
+
+// QueryPacksClientListByResourceGroupPager provides operations for iterating over paged responses.
+type QueryPacksClientListByResourceGroupPager struct {
+	client    *QueryPacksClient
+	current   QueryPacksClientListByResourceGroupResponse
+	err       error
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, QueryPacksClientListByResourceGroupResponse) (*policy.Request, error)
+}
+
+// Err returns the last error encountered while paging.
+func (p *QueryPacksClientListByResourceGroupPager) Err() error {
+	return p.err
+}
+
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *QueryPacksClientListByResourceGroupPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.LogAnalyticsQueryPackListResult.NextLink == nil || len(*p.current.LogAnalyticsQueryPackListResult.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.pl.Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		p.err = runtime.NewResponseError(resp)
+		return false
+	}
+	result, err := p.client.listByResourceGroupHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+// PageResponse returns the current QueryPacksClientListByResourceGroupResponse page.
+func (p *QueryPacksClientListByResourceGroupPager) PageResponse() QueryPacksClientListByResourceGroupResponse {
+	return p.current
+}
+
+// QueryPacksClientListPager provides operations for iterating over paged responses.
+type QueryPacksClientListPager struct {
+	client    *QueryPacksClient
+	current   QueryPacksClientListResponse
+	err       error
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, QueryPacksClientListResponse) (*policy.Request, error)
+}
+
+// Err returns the last error encountered while paging.
+func (p *QueryPacksClientListPager) Err() error {
+	return p.err
+}
+
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *QueryPacksClientListPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.LogAnalyticsQueryPackListResult.NextLink == nil || len(*p.current.LogAnalyticsQueryPackListResult.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.pl.Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		p.err = runtime.NewResponseError(resp)
+		return false
+	}
+	result, err := p.client.listHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+// PageResponse returns the current QueryPacksClientListResponse page.
+func (p *QueryPacksClientListPager) PageResponse() QueryPacksClientListResponse {
+	return p.current
+}
+
 // StorageInsightConfigsClientListByWorkspacePager provides operations for iterating over paged responses.
 type StorageInsightConfigsClientListByWorkspacePager struct {
 	client    *StorageInsightConfigsClient

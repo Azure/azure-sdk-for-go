@@ -34,17 +34,17 @@ type TablesClient struct {
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
 func NewTablesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *TablesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
 	client := &TablesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           string(ep),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
 	}
 	return client
 }
@@ -306,6 +306,58 @@ func (client *TablesClient) listByWorkspaceHandleResponse(resp *http.Response) (
 		return TablesClientListByWorkspaceResponse{}, err
 	}
 	return result, nil
+}
+
+// Migrate - Migrate a Log Analytics table from support of the Data Collector API and Custom Fields features to support of
+// Data Collection Rule-based Custom Logs.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// tableName - The name of the table.
+// options - TablesClientMigrateOptions contains the optional parameters for the TablesClient.Migrate method.
+func (client *TablesClient) Migrate(ctx context.Context, resourceGroupName string, workspaceName string, tableName string, options *TablesClientMigrateOptions) (TablesClientMigrateResponse, error) {
+	req, err := client.migrateCreateRequest(ctx, resourceGroupName, workspaceName, tableName, options)
+	if err != nil {
+		return TablesClientMigrateResponse{}, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return TablesClientMigrateResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return TablesClientMigrateResponse{}, runtime.NewResponseError(resp)
+	}
+	return TablesClientMigrateResponse{RawResponse: resp}, nil
+}
+
+// migrateCreateRequest creates the Migrate request.
+func (client *TablesClient) migrateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, tableName string, options *TablesClientMigrateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/tables/{tableName}/migrate"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if workspaceName == "" {
+		return nil, errors.New("parameter workspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+	if tableName == "" {
+		return nil, errors.New("parameter tableName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{tableName}", url.PathEscape(tableName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-12-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, nil
 }
 
 // BeginUpdate - Update a Log Analytics workspace table.

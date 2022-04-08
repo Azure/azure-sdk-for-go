@@ -7,7 +7,7 @@ import (
 	"context"
 	"errors"
 	testframework "github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	"io/ioutil"
 	"os"
 	"sync/atomic"
@@ -26,7 +26,7 @@ func generateFile(fileName string, fileSize int) []byte {
 }
 
 //nolint
-func performUploadStreamToBlockBlobTest(_assert *assert.Assertions, testName string, blobSize, bufferSize, maxBuffers int) {
+func performUploadStreamToBlockBlobTest(_require *require.Assertions, testName string, blobSize, bufferSize, maxBuffers int) {
 	_context := getTestContext(testName)
 	var recording *testframework.Recording
 	if _context != nil {
@@ -34,12 +34,12 @@ func performUploadStreamToBlockBlobTest(_assert *assert.Assertions, testName str
 	}
 	svcClient, err := getServiceClient(recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		_require.Fail("Unable to fetch service client because " + err.Error())
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(_require, containerName, svcClient)
+	defer deleteContainer(_require, containerClient)
 
 	// Set up test blob
 	blobName := generateBlobName(testName)
@@ -53,18 +53,18 @@ func performUploadStreamToBlockBlobTest(_assert *assert.Assertions, testName str
 		UploadStreamToBlockBlobOptions{BufferSize: bufferSize, MaxBuffers: maxBuffers})
 
 	// Assert that upload was successful
-	_assert.Equal(err, nil)
-	_assert.Equal(uploadResp.RawResponse.StatusCode, 201)
+	_require.Equal(err, nil)
+	_require.Equal(uploadResp.RawResponse.StatusCode, 201)
 
 	// Download the blob to verify
 	downloadResponse, err := blobClient.Download(ctx, nil)
-	_assert.Nil(err)
+	_require.Nil(err)
 
 	// Assert that the content is correct
 	actualBlobData, err := ioutil.ReadAll(downloadResponse.RawResponse.Body)
-	_assert.Nil(err)
-	_assert.Equal(len(actualBlobData), blobSize)
-	_assert.EqualValues(actualBlobData, blobData)
+	_require.Nil(err)
+	_require.Equal(len(actualBlobData), blobSize)
+	_require.EqualValues(actualBlobData, blobData)
 }
 
 //nolint
@@ -72,9 +72,9 @@ func (s *azblobUnrecordedTestSuite) TestUploadStreamToBlockBlobInChunks() {
 	blobSize := 8 * 1024
 	bufferSize := 1024
 	maxBuffers := 3
-	_assert := assert.New(s.T())
+	_require := require.New(s.T())
 	testName := s.T().Name()
-	performUploadStreamToBlockBlobTest(_assert, testName, blobSize, bufferSize, maxBuffers)
+	performUploadStreamToBlockBlobTest(_require, testName, blobSize, bufferSize, maxBuffers)
 }
 
 //nolint
@@ -82,9 +82,9 @@ func (s *azblobUnrecordedTestSuite) TestUploadStreamToBlockBlobSingleBuffer() {
 	blobSize := 8 * 1024
 	bufferSize := 1024
 	maxBuffers := 1
-	_assert := assert.New(s.T())
+	_require := require.New(s.T())
 	testName := s.T().Name()
-	performUploadStreamToBlockBlobTest(_assert, testName, blobSize, bufferSize, maxBuffers)
+	performUploadStreamToBlockBlobTest(_require, testName, blobSize, bufferSize, maxBuffers)
 }
 
 //nolint
@@ -92,9 +92,9 @@ func (s *azblobUnrecordedTestSuite) TestUploadStreamToBlockBlobSingleIO() {
 	blobSize := 1024
 	bufferSize := 8 * 1024
 	maxBuffers := 3
-	_assert := assert.New(s.T())
+	_require := require.New(s.T())
 	testName := s.T().Name()
-	performUploadStreamToBlockBlobTest(_assert, testName, blobSize, bufferSize, maxBuffers)
+	performUploadStreamToBlockBlobTest(_require, testName, blobSize, bufferSize, maxBuffers)
 }
 
 //nolint
@@ -102,9 +102,9 @@ func (s *azblobUnrecordedTestSuite) TestUploadStreamToBlockBlobSingleIOEdgeCase(
 	blobSize := 8 * 1024
 	bufferSize := 8 * 1024
 	maxBuffers := 3
-	_assert := assert.New(s.T())
+	_require := require.New(s.T())
 	testName := s.T().Name()
-	performUploadStreamToBlockBlobTest(_assert, testName, blobSize, bufferSize, maxBuffers)
+	performUploadStreamToBlockBlobTest(_require, testName, blobSize, bufferSize, maxBuffers)
 }
 
 //nolint
@@ -112,20 +112,20 @@ func (s *azblobUnrecordedTestSuite) TestUploadStreamToBlockBlobEmpty() {
 	blobSize := 0
 	bufferSize := 8 * 1024
 	maxBuffers := 3
-	_assert := assert.New(s.T())
+	_require := require.New(s.T())
 	testName := s.T().Name()
-	performUploadStreamToBlockBlobTest(_assert, testName, blobSize, bufferSize, maxBuffers)
+	performUploadStreamToBlockBlobTest(_require, testName, blobSize, bufferSize, maxBuffers)
 }
 
 //nolint
-func performUploadAndDownloadFileTest(_assert *assert.Assertions, testName string, fileSize, blockSize, parallelism, downloadOffset, downloadCount int) {
+func performUploadAndDownloadFileTest(_require *require.Assertions, testName string, fileSize, blockSize, parallelism, downloadOffset, downloadCount int) {
 	// Set up file to upload
 	fileName := "BigFile.bin"
 	fileData := generateFile(fileName, fileSize)
 
 	// Open the file to upload
 	file, err := os.Open(fileName)
-	_assert.Equal(err, nil)
+	_require.Equal(err, nil)
 	defer func(file *os.File) {
 		_ = file.Close()
 	}(file)
@@ -140,11 +140,11 @@ func performUploadAndDownloadFileTest(_assert *assert.Assertions, testName strin
 	}
 	svcClient, err := getServiceClient(recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		_require.Fail("Unable to fetch service client because " + err.Error())
 	}
 
-	containerClient := createNewContainer(_assert, generateContainerName(testName), svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(_require, generateContainerName(testName), svcClient)
+	defer deleteContainer(_require, containerClient)
 
 	// Set up test blob
 	bbClient, _ := getBlockBlobClient(generateBlobName(testName), containerClient)
@@ -156,16 +156,16 @@ func performUploadAndDownloadFileTest(_assert *assert.Assertions, testName strin
 			Parallelism: uint16(parallelism),
 			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
 			Progress: func(bytesTransferred int64) {
-				_assert.Equal(bytesTransferred > 0 && bytesTransferred <= int64(fileSize), true)
+				_require.Equal(bytesTransferred > 0 && bytesTransferred <= int64(fileSize), true)
 			},
 		})
-	_assert.Equal(err, nil)
-	_assert.Equal(response.StatusCode, 201)
+	_require.Equal(err, nil)
+	_require.Equal(response.StatusCode, 201)
 
 	// Set up file to download the blob to
 	destFileName := "BigFile-downloaded.bin"
 	destFile, err := os.Create(destFileName)
-	_assert.Equal(err, nil)
+	_require.Equal(err, nil)
 	defer func(destFile *os.File) {
 		_ = destFile.Close()
 
@@ -183,12 +183,12 @@ func performUploadAndDownloadFileTest(_assert *assert.Assertions, testName strin
 			Parallelism: uint16(parallelism),
 			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
 			Progress: func(bytesTransferred int64) {
-				_assert.Equal(bytesTransferred > 0 && bytesTransferred <= int64(fileSize), true)
+				_require.Equal(bytesTransferred > 0 && bytesTransferred <= int64(fileSize), true)
 			},
 		})
 
 	// Assert download was successful
-	_assert.Equal(err, nil)
+	_require.Equal(err, nil)
 
 	// Assert downloaded data is consistent
 	var destBuffer []byte
@@ -199,17 +199,17 @@ func performUploadAndDownloadFileTest(_assert *assert.Assertions, testName strin
 	}
 
 	n, err := destFile.Read(destBuffer)
-	_assert.Equal(err, nil)
+	_require.Equal(err, nil)
 
 	if downloadOffset == 0 && downloadCount == 0 {
-		_assert.EqualValues(destBuffer, fileData)
+		_require.EqualValues(destBuffer, fileData)
 	} else {
 		if downloadCount == 0 {
-			_assert.Equal(n, fileSize-downloadOffset)
-			_assert.EqualValues(destBuffer, fileData[downloadOffset:])
+			_require.Equal(n, fileSize-downloadOffset)
+			_require.EqualValues(destBuffer, fileData[downloadOffset:])
 		} else {
-			_assert.Equal(n, downloadCount)
-			_assert.EqualValues(destBuffer, fileData[downloadOffset:downloadOffset+downloadCount])
+			_require.Equal(n, downloadCount)
+			_require.EqualValues(destBuffer, fileData[downloadOffset:downloadOffset+downloadCount])
 		}
 	}
 }
@@ -219,9 +219,9 @@ func (s *azblobUnrecordedTestSuite) TestUploadAndDownloadFileInChunks() {
 	fileSize := 8 * 1024
 	blockSize := 1024
 	parallelism := 3
-	_assert := assert.New(s.T())
+	_require := require.New(s.T())
 	testName := s.T().Name()
-	performUploadAndDownloadFileTest(_assert, testName, fileSize, blockSize, parallelism, 0, 0)
+	performUploadAndDownloadFileTest(_require, testName, fileSize, blockSize, parallelism, 0, 0)
 }
 
 //nolint
@@ -229,9 +229,9 @@ func (s *azblobUnrecordedTestSuite) TestUploadAndDownloadFileSingleIO() {
 	fileSize := 1024
 	blockSize := 2048
 	parallelism := 3
-	_assert := assert.New(s.T())
+	_require := require.New(s.T())
 	testName := s.T().Name()
-	performUploadAndDownloadFileTest(_assert, testName, fileSize, blockSize, parallelism, 0, 0)
+	performUploadAndDownloadFileTest(_require, testName, fileSize, blockSize, parallelism, 0, 0)
 }
 
 //nolint
@@ -239,9 +239,9 @@ func (s *azblobUnrecordedTestSuite) TestUploadAndDownloadFileSingleRoutine() {
 	fileSize := 8 * 1024
 	blockSize := 1024
 	parallelism := 1
-	_assert := assert.New(s.T())
+	_require := require.New(s.T())
 	testName := s.T().Name()
-	performUploadAndDownloadFileTest(_assert, testName, fileSize, blockSize, parallelism, 0, 0)
+	performUploadAndDownloadFileTest(_require, testName, fileSize, blockSize, parallelism, 0, 0)
 }
 
 //nolint
@@ -249,9 +249,9 @@ func (s *azblobUnrecordedTestSuite) TestUploadAndDownloadFileEmpty() {
 	fileSize := 0
 	blockSize := 1024
 	parallelism := 3
-	_assert := assert.New(s.T())
+	_require := require.New(s.T())
 	testName := s.T().Name()
-	performUploadAndDownloadFileTest(_assert, testName, fileSize, blockSize, parallelism, 0, 0)
+	performUploadAndDownloadFileTest(_require, testName, fileSize, blockSize, parallelism, 0, 0)
 }
 
 //nolint
@@ -261,9 +261,9 @@ func (s *azblobUnrecordedTestSuite) TestUploadAndDownloadFileNonZeroOffset() {
 	parallelism := 3
 	downloadOffset := 1000
 	downloadCount := 0
-	_assert := assert.New(s.T())
+	_require := require.New(s.T())
 	testName := s.T().Name()
-	performUploadAndDownloadFileTest(_assert, testName, fileSize, blockSize, parallelism, downloadOffset, downloadCount)
+	performUploadAndDownloadFileTest(_require, testName, fileSize, blockSize, parallelism, downloadOffset, downloadCount)
 }
 
 //nolint
@@ -273,9 +273,9 @@ func (s *azblobUnrecordedTestSuite) TestUploadAndDownloadFileNonZeroCount() {
 	parallelism := 3
 	downloadOffset := 0
 	downloadCount := 6000
-	_assert := assert.New(s.T())
+	_require := require.New(s.T())
 	testName := s.T().Name()
-	performUploadAndDownloadFileTest(_assert, testName, fileSize, blockSize, parallelism, downloadOffset, downloadCount)
+	performUploadAndDownloadFileTest(_require, testName, fileSize, blockSize, parallelism, downloadOffset, downloadCount)
 }
 
 //nolint
@@ -285,13 +285,13 @@ func (s *azblobUnrecordedTestSuite) TestUploadAndDownloadFileNonZeroOffsetAndCou
 	parallelism := 3
 	downloadOffset := 1000
 	downloadCount := 6000
-	_assert := assert.New(s.T())
+	_require := require.New(s.T())
 	testName := s.T().Name()
-	performUploadAndDownloadFileTest(_assert, testName, fileSize, blockSize, parallelism, downloadOffset, downloadCount)
+	performUploadAndDownloadFileTest(_require, testName, fileSize, blockSize, parallelism, downloadOffset, downloadCount)
 }
 
 //nolint
-func performUploadAndDownloadBufferTest(_assert *assert.Assertions, testName string, blobSize, blockSize, parallelism, downloadOffset, downloadCount int) {
+func performUploadAndDownloadBufferTest(_require *require.Assertions, testName string, blobSize, blockSize, parallelism, downloadOffset, downloadCount int) {
 	// Set up buffer to upload
 	_, bytesToUpload := generateData(blobSize)
 
@@ -303,10 +303,10 @@ func performUploadAndDownloadBufferTest(_assert *assert.Assertions, testName str
 	}
 	svcClient, err := getServiceClient(recording, testAccountDefault, nil)
 	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
+		_require.Fail("Unable to fetch service client because " + err.Error())
 	}
-	containerClient := createNewContainer(_assert, generateContainerName(testName), svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(_require, generateContainerName(testName), svcClient)
+	defer deleteContainer(_require, containerClient)
 
 	// Set up test blob
 	bbClient, _ := getBlockBlobClient(generateBlobName(testName), containerClient)
@@ -318,11 +318,11 @@ func performUploadAndDownloadBufferTest(_assert *assert.Assertions, testName str
 			Parallelism: uint16(parallelism),
 			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
 			Progress: func(bytesTransferred int64) {
-				_assert.Equal(bytesTransferred > 0 && bytesTransferred <= int64(blobSize), true)
+				_require.Equal(bytesTransferred > 0 && bytesTransferred <= int64(blobSize), true)
 			},
 		})
-	_assert.Equal(err, nil)
-	_assert.Equal(response.StatusCode, 201)
+	_require.Equal(err, nil)
+	_require.Equal(response.StatusCode, 201)
 
 	// Set up buffer to download the blob to
 	var destBuffer []byte
@@ -339,19 +339,19 @@ func performUploadAndDownloadBufferTest(_assert *assert.Assertions, testName str
 			Parallelism: uint16(parallelism),
 			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
 			Progress: func(bytesTransferred int64) {
-				_assert.Equal(bytesTransferred > 0 && bytesTransferred <= int64(blobSize), true)
+				_require.Equal(bytesTransferred > 0 && bytesTransferred <= int64(blobSize), true)
 			},
 		})
 
-	_assert.Equal(err, nil)
+	_require.Equal(err, nil)
 
 	if downloadOffset == 0 && downloadCount == 0 {
-		_assert.EqualValues(destBuffer, bytesToUpload)
+		_require.EqualValues(destBuffer, bytesToUpload)
 	} else {
 		if downloadCount == 0 {
-			_assert.EqualValues(destBuffer, bytesToUpload[downloadOffset:])
+			_require.EqualValues(destBuffer, bytesToUpload[downloadOffset:])
 		} else {
-			_assert.EqualValues(destBuffer, bytesToUpload[downloadOffset:downloadOffset+downloadCount])
+			_require.EqualValues(destBuffer, bytesToUpload[downloadOffset:downloadOffset+downloadCount])
 		}
 	}
 }
@@ -361,9 +361,9 @@ func (s *azblobUnrecordedTestSuite) TestUploadAndDownloadBufferInChunks() {
 	blobSize := 8 * 1024
 	blockSize := 1024
 	parallelism := 3
-	_assert := assert.New(s.T())
+	_require := require.New(s.T())
 	testName := s.T().Name()
-	performUploadAndDownloadBufferTest(_assert, testName, blobSize, blockSize, parallelism, 0, 0)
+	performUploadAndDownloadBufferTest(_require, testName, blobSize, blockSize, parallelism, 0, 0)
 }
 
 //nolint
@@ -371,9 +371,9 @@ func (s *azblobUnrecordedTestSuite) TestUploadAndDownloadBufferSingleIO() {
 	blobSize := 1024
 	blockSize := 8 * 1024
 	parallelism := 3
-	_assert := assert.New(s.T())
+	_require := require.New(s.T())
 	testName := s.T().Name()
-	performUploadAndDownloadBufferTest(_assert, testName, blobSize, blockSize, parallelism, 0, 0)
+	performUploadAndDownloadBufferTest(_require, testName, blobSize, blockSize, parallelism, 0, 0)
 }
 
 //nolint
@@ -381,9 +381,9 @@ func (s *azblobUnrecordedTestSuite) TestUploadAndDownloadBufferSingleRoutine() {
 	blobSize := 8 * 1024
 	blockSize := 1024
 	parallelism := 1
-	_assert := assert.New(s.T())
+	_require := require.New(s.T())
 	testName := s.T().Name()
-	performUploadAndDownloadBufferTest(_assert, testName, blobSize, blockSize, parallelism, 0, 0)
+	performUploadAndDownloadBufferTest(_require, testName, blobSize, blockSize, parallelism, 0, 0)
 }
 
 //nolint
@@ -391,9 +391,9 @@ func (s *azblobUnrecordedTestSuite) TestUploadAndDownloadBufferEmpty() {
 	blobSize := 0
 	blockSize := 1024
 	parallelism := 3
-	_assert := assert.New(s.T())
+	_require := require.New(s.T())
 	testName := s.T().Name()
-	performUploadAndDownloadBufferTest(_assert, testName, blobSize, blockSize, parallelism, 0, 0)
+	performUploadAndDownloadBufferTest(_require, testName, blobSize, blockSize, parallelism, 0, 0)
 }
 
 //nolint
@@ -403,9 +403,9 @@ func (s *azblobUnrecordedTestSuite) TestDownloadBufferWithNonZeroOffset() {
 	parallelism := 3
 	downloadOffset := 1000
 	downloadCount := 0
-	_assert := assert.New(s.T())
+	_require := require.New(s.T())
 	testName := s.T().Name()
-	performUploadAndDownloadBufferTest(_assert, testName, blobSize, blockSize, parallelism, downloadOffset, downloadCount)
+	performUploadAndDownloadBufferTest(_require, testName, blobSize, blockSize, parallelism, downloadOffset, downloadCount)
 }
 
 //nolint
@@ -415,9 +415,9 @@ func (s *azblobUnrecordedTestSuite) TestDownloadBufferWithNonZeroCount() {
 	parallelism := 3
 	downloadOffset := 0
 	downloadCount := 6000
-	_assert := assert.New(s.T())
+	_require := require.New(s.T())
 	testName := s.T().Name()
-	performUploadAndDownloadBufferTest(_assert, testName, blobSize, blockSize, parallelism, downloadOffset, downloadCount)
+	performUploadAndDownloadBufferTest(_require, testName, blobSize, blockSize, parallelism, downloadOffset, downloadCount)
 }
 
 //nolint
@@ -427,14 +427,14 @@ func (s *azblobUnrecordedTestSuite) TestDownloadBufferWithNonZeroOffsetAndCount(
 	parallelism := 3
 	downloadOffset := 2000
 	downloadCount := 6 * 1024
-	_assert := assert.New(s.T())
+	_require := require.New(s.T())
 	testName := s.T().Name()
-	performUploadAndDownloadBufferTest(_assert, testName, blobSize, blockSize, parallelism, downloadOffset, downloadCount)
+	performUploadAndDownloadBufferTest(_require, testName, blobSize, blockSize, parallelism, downloadOffset, downloadCount)
 }
 
 //nolint
 func (s *azblobUnrecordedTestSuite) TestBasicDoBatchTransfer() {
-	_assert := assert.New(s.T())
+	_require := require.New(s.T())
 	// test the basic multi-routine processing
 	type testInstance struct {
 		transferSize int64
@@ -472,11 +472,11 @@ func (s *azblobUnrecordedTestSuite) TestBasicDoBatchTransfer() {
 		})
 
 		if test.expectError {
-			_assert.NotNil(err)
+			_require.NotNil(err)
 		} else {
-			_assert.Nil(err)
-			_assert.Equal(totalSizeCount, test.transferSize)
-			_assert.Equal(runCount, ((test.transferSize-1)/test.chunkSize)+1)
+			_require.Nil(err)
+			_require.Equal(totalSizeCount, test.transferSize)
+			_require.Equal(runCount, ((test.transferSize-1)/test.chunkSize)+1)
 		}
 	}
 }
@@ -485,7 +485,7 @@ func (s *azblobUnrecordedTestSuite) TestBasicDoBatchTransfer() {
 //nolint
 type mockMMF struct {
 	isClosed   bool
-	failHandle *assert.Assertions
+	failHandle *require.Assertions
 }
 
 // accept input
@@ -499,9 +499,9 @@ func (m *mockMMF) write(_ string) {
 
 //nolint
 func (s *azblobUnrecordedTestSuite) TestDoBatchTransferWithError() {
-	_assert := assert.New(s.T())
+	_require := require.New(s.T())
 	ctx := context.Background()
-	mmf := mockMMF{failHandle: _assert}
+	mmf := mockMMF{failHandle: _require}
 	expectedFirstError := errors.New("#3 means trouble")
 
 	err := DoBatchTransfer(ctx, BatchTransferOptions{
@@ -522,7 +522,7 @@ func (s *azblobUnrecordedTestSuite) TestDoBatchTransferWithError() {
 				// anything after offset=3 are canceled
 				// so verify that the context indeed got canceled
 				ctxErr := ctx.Err()
-				_assert.Equal(ctxErr, context.Canceled)
+				_require.Equal(ctxErr, context.Canceled)
 				return ctxErr
 			}
 
@@ -532,7 +532,7 @@ func (s *azblobUnrecordedTestSuite) TestDoBatchTransferWithError() {
 		OperationName: "TestErrorPath",
 	})
 
-	_assert.Equal(err, expectedFirstError)
+	_require.Equal(err, expectedFirstError)
 
 	// simulate closing the mmf and make sure no panic occurs (as reported in #139)
 	mmf.isClosed = true
@@ -541,7 +541,7 @@ func (s *azblobUnrecordedTestSuite) TestDoBatchTransferWithError() {
 
 //nolint
 func (s *azblobUnrecordedTestSuite) TestUploadStreamToBlobProperties() {
-	_assert := assert.New(s.T())
+	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 	if err != nil {
@@ -553,13 +553,13 @@ func (s *azblobUnrecordedTestSuite) TestUploadStreamToBlobProperties() {
 	maxBuffers := 3
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(_require, containerName, svcClient)
+	defer deleteContainer(_require, containerClient)
 
 	// Set up test blob
 	blobName := generateBlobName(testName)
 	bbClient, err := getBlockBlobClient(blobName, containerClient)
-	_assert.Nil(err)
+	_require.Nil(err)
 	// Create some data to test the upload stream
 	blobContentReader, blobData := generateData(blobSize)
 
@@ -574,29 +574,29 @@ func (s *azblobUnrecordedTestSuite) TestUploadStreamToBlobProperties() {
 		})
 
 	// Assert that upload was successful
-	_assert.Equal(err, nil)
-	_assert.Equal(uploadResp.RawResponse.StatusCode, 201)
+	_require.Equal(err, nil)
+	_require.Equal(uploadResp.RawResponse.StatusCode, 201)
 
 	getPropertiesResp, err := bbClient.GetProperties(ctx, nil)
-	_assert.NoError(err)
-	_assert.EqualValues(getPropertiesResp.Metadata, basicMetadata)
-	_assert.Equal(*getPropertiesResp.TagCount, int64(len(basicBlobTagsMap)))
-	_assert.Equal(getPropertiesResp.GetHTTPHeaders(), basicHeaders)
+	_require.NoError(err)
+	_require.EqualValues(getPropertiesResp.Metadata, basicMetadata)
+	_require.Equal(*getPropertiesResp.TagCount, int64(len(basicBlobTagsMap)))
+	_require.Equal(getPropertiesResp.GetHTTPHeaders(), basicHeaders)
 
 	getTagsResp, err := bbClient.GetTags(ctx, nil)
-	_assert.NoError(err)
-	_assert.Len(getTagsResp.BlobTagSet, 3)
+	_require.NoError(err)
+	_require.Len(getTagsResp.BlobTagSet, 3)
 	for _, blobTag := range getTagsResp.BlobTagSet {
-		_assert.Equal(basicBlobTagsMap[*blobTag.Key], *blobTag.Value)
+		_require.Equal(basicBlobTagsMap[*blobTag.Key], *blobTag.Value)
 	}
 
 	// Download the blob to verify
 	downloadResponse, err := bbClient.Download(ctx, nil)
-	_assert.NoError(err)
+	_require.NoError(err)
 
 	// Assert that the content is correct
 	actualBlobData, err := ioutil.ReadAll(downloadResponse.RawResponse.Body)
-	_assert.NoError(err)
-	_assert.Equal(len(actualBlobData), blobSize)
-	_assert.EqualValues(actualBlobData, blobData)
+	_require.NoError(err)
+	_require.Equal(len(actualBlobData), blobSize)
+	_require.EqualValues(actualBlobData, blobData)
 }

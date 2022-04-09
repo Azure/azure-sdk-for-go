@@ -37,7 +37,7 @@ func NewServiceClientWithBaseURI(baseURI string, subscriptionID string) ServiceC
 // accountName - cosmos DB database account name.
 // serviceName - cosmos DB service name.
 // createUpdateParameters - the Service resource parameters.
-func (client ServiceClient) Create(ctx context.Context, resourceGroupName string, accountName string, serviceName string, createUpdateParameters ServiceResource) (result ServiceCreateFuture, err error) {
+func (client ServiceClient) Create(ctx context.Context, resourceGroupName string, accountName string, serviceName string, createUpdateParameters ServiceResourceCreateUpdateParameters) (result ServiceCreateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ServiceClient.Create")
 		defer func() {
@@ -53,15 +53,19 @@ func (client ServiceClient) Create(ctx context.Context, resourceGroupName string
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: accountName,
 			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
 				{Target: "accountName", Name: validation.Pattern, Rule: `^[a-z0-9]+(-[a-z0-9]+)*`, Chain: nil}}},
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
-				{Target: "serviceName", Name: validation.MinLength, Rule: 3, Chain: nil}}}}); err != nil {
+				{Target: "serviceName", Name: validation.MinLength, Rule: 3, Chain: nil}}},
+		{TargetValue: createUpdateParameters,
+			Constraints: []validation.Constraint{{Target: "createUpdateParameters.ServiceResourceCreateUpdateProperties", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "createUpdateParameters.ServiceResourceCreateUpdateProperties.InstanceCount", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "createUpdateParameters.ServiceResourceCreateUpdateProperties.InstanceCount", Name: validation.InclusiveMinimum, Rule: int64(0), Chain: nil}}},
+				}}}}}); err != nil {
 		return result, validation.NewError("documentdb.ServiceClient", "Create", err.Error())
 	}
 
@@ -81,7 +85,7 @@ func (client ServiceClient) Create(ctx context.Context, resourceGroupName string
 }
 
 // CreatePreparer prepares the Create request.
-func (client ServiceClient) CreatePreparer(ctx context.Context, resourceGroupName string, accountName string, serviceName string, createUpdateParameters ServiceResource) (*http.Request, error) {
+func (client ServiceClient) CreatePreparer(ctx context.Context, resourceGroupName string, accountName string, serviceName string, createUpdateParameters ServiceResourceCreateUpdateParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -153,8 +157,7 @@ func (client ServiceClient) Delete(ctx context.Context, resourceGroupName string
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: accountName,
 			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
@@ -250,8 +253,7 @@ func (client ServiceClient) Get(ctx context.Context, resourceGroupName string, a
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: accountName,
 			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
@@ -344,8 +346,7 @@ func (client ServiceClient) List(ctx context.Context, resourceGroupName string, 
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: accountName,
 			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},

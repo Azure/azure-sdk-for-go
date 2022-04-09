@@ -32,8 +32,9 @@ func NewRestorableMongodbResourcesClientWithBaseURI(baseURI string, subscription
 	return RestorableMongodbResourcesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// List lists all the restorable Azure Cosmos DB MongoDB resources available for a specific database account at a given
-// time and location.
+// List return a list of database and collection combo that exist on the account at the given timestamp and location.
+// This helps in scenarios to validate what resources exist at given timestamp and location. This API requires
+// 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read' permission.
 // Parameters:
 // location - cosmos DB region, with spaces between words and each word capitalized.
 // instanceID - the instanceId GUID of a restorable database account.

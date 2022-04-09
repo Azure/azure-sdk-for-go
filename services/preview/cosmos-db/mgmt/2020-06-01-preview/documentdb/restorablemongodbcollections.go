@@ -33,11 +33,13 @@ func NewRestorableMongodbCollectionsClientWithBaseURI(baseURI string, subscripti
 	return RestorableMongodbCollectionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// List lists all the restorable Azure Cosmos DB MongoDB collection available for a specific database.
+// List show the event feed of all mutations done on all the Azure Cosmos DB MongoDB collections under a specific
+// database.  This helps in scenario where container was accidentally deleted.  This API requires
+// 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read' permission
 // Parameters:
 // location - cosmos DB region, with spaces between words and each word capitalized.
 // instanceID - the instanceId GUID of a restorable database account.
-// restorableMongodbDatabaseRid - the resource id of the restorable Mongo database.
+// restorableMongodbDatabaseRid - the resource ID of the MongoDB database.
 func (client RestorableMongodbCollectionsClient) List(ctx context.Context, location string, instanceID string, restorableMongodbDatabaseRid string) (result RestorableMongodbCollectionsListResult, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RestorableMongodbCollectionsClient.List")

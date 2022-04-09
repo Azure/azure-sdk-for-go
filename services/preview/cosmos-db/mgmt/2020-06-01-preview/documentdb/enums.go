@@ -29,6 +29,23 @@ func PossibleAPITypeValues() []APIType {
 	return []APIType{Cassandra, Gremlin, GremlinV2, MongoDB, SQL, Table}
 }
 
+// BackupStorageRedundancy enumerates the values for backup storage redundancy.
+type BackupStorageRedundancy string
+
+const (
+	// Geo ...
+	Geo BackupStorageRedundancy = "Geo"
+	// Local ...
+	Local BackupStorageRedundancy = "Local"
+	// Zone ...
+	Zone BackupStorageRedundancy = "Zone"
+)
+
+// PossibleBackupStorageRedundancyValues returns an array of possible values for the BackupStorageRedundancy const type.
+func PossibleBackupStorageRedundancyValues() []BackupStorageRedundancy {
+	return []BackupStorageRedundancy{Geo, Local, Zone}
+}
+
 // CompositePathSortOrder enumerates the values for composite path sort order.
 type CompositePathSortOrder string
 

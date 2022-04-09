@@ -7216,6 +7216,8 @@ type KeyWrapMetadata struct {
 	Type *string `json:"type,omitempty"`
 	// Value - Reference / link to the KeyEncryptionKey.
 	Value *string `json:"value,omitempty"`
+	// Algorithm - Algorithm used in wrapping and unwrapping of the data encryption key.
+	Algorithm *string `json:"algorithm,omitempty"`
 }
 
 // ListBackups list of restorable backups for a Cassandra cluster.

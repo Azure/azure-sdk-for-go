@@ -22,19 +22,19 @@ import (
 	"strings"
 )
 
-// RestorableMongodbDatabasesClient contains the methods for the RestorableMongodbDatabases group.
-// Don't use this type directly, use NewRestorableMongodbDatabasesClient() instead.
-type RestorableMongodbDatabasesClient struct {
+// RestorableTablesClient contains the methods for the RestorableTables group.
+// Don't use this type directly, use NewRestorableTablesClient() instead.
+type RestorableTablesClient struct {
 	host           string
 	subscriptionID string
 	pl             runtime.Pipeline
 }
 
-// NewRestorableMongodbDatabasesClient creates a new instance of RestorableMongodbDatabasesClient with the specified values.
+// NewRestorableTablesClient creates a new instance of RestorableTablesClient with the specified values.
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewRestorableMongodbDatabasesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RestorableMongodbDatabasesClient, error) {
+func NewRestorableTablesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RestorableTablesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
@@ -46,7 +46,7 @@ func NewRestorableMongodbDatabasesClient(subscriptionID string, credential azcor
 	if err != nil {
 		return nil, err
 	}
-	client := &RestorableMongodbDatabasesClient{
+	client := &RestorableTablesClient{
 		subscriptionID: subscriptionID,
 		host:           ep,
 		pl:             pl,
@@ -54,30 +54,29 @@ func NewRestorableMongodbDatabasesClient(subscriptionID string, credential azcor
 	return client, nil
 }
 
-// List - Show the event feed of all mutations done on all the Azure Cosmos DB MongoDB databases under the restorable account.
-// This helps in scenario where database was accidentally deleted to get the deletion
-// time. This API requires 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/…/read' permission
+// List - Show the event feed of all mutations done on all the Azure Cosmos DB Tables. This helps in scenario where table
+// was accidentally deleted. This API requires
+// 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/…/read' permission
 // If the operation fails it returns an *azcore.ResponseError type.
 // location - Cosmos DB region, with spaces between words and each word capitalized.
 // instanceID - The instanceId GUID of a restorable database account.
-// options - RestorableMongodbDatabasesClientListOptions contains the optional parameters for the RestorableMongodbDatabasesClient.List
-// method.
-func (client *RestorableMongodbDatabasesClient) List(location string, instanceID string, options *RestorableMongodbDatabasesClientListOptions) *runtime.Pager[RestorableMongodbDatabasesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[RestorableMongodbDatabasesClientListResponse]{
-		More: func(page RestorableMongodbDatabasesClientListResponse) bool {
+// options - RestorableTablesClientListOptions contains the optional parameters for the RestorableTablesClient.List method.
+func (client *RestorableTablesClient) List(location string, instanceID string, options *RestorableTablesClientListOptions) *runtime.Pager[RestorableTablesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[RestorableTablesClientListResponse]{
+		More: func(page RestorableTablesClientListResponse) bool {
 			return false
 		},
-		Fetcher: func(ctx context.Context, page *RestorableMongodbDatabasesClientListResponse) (RestorableMongodbDatabasesClientListResponse, error) {
+		Fetcher: func(ctx context.Context, page *RestorableTablesClientListResponse) (RestorableTablesClientListResponse, error) {
 			req, err := client.listCreateRequest(ctx, location, instanceID, options)
 			if err != nil {
-				return RestorableMongodbDatabasesClientListResponse{}, err
+				return RestorableTablesClientListResponse{}, err
 			}
 			resp, err := client.pl.Do(req)
 			if err != nil {
-				return RestorableMongodbDatabasesClientListResponse{}, err
+				return RestorableTablesClientListResponse{}, err
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return RestorableMongodbDatabasesClientListResponse{}, runtime.NewResponseError(resp)
+				return RestorableTablesClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -85,8 +84,8 @@ func (client *RestorableMongodbDatabasesClient) List(location string, instanceID
 }
 
 // listCreateRequest creates the List request.
-func (client *RestorableMongodbDatabasesClient) listCreateRequest(ctx context.Context, location string, instanceID string, options *RestorableMongodbDatabasesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{instanceId}/restorableMongodbDatabases"
+func (client *RestorableTablesClient) listCreateRequest(ctx context.Context, location string, instanceID string, options *RestorableTablesClientListOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{instanceId}/restorableTables"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -105,16 +104,22 @@ func (client *RestorableMongodbDatabasesClient) listCreateRequest(ctx context.Co
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-02-15-preview")
+	if options != nil && options.StartTime != nil {
+		reqQP.Set("startTime", *options.StartTime)
+	}
+	if options != nil && options.EndTime != nil {
+		reqQP.Set("endTime", *options.EndTime)
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *RestorableMongodbDatabasesClient) listHandleResponse(resp *http.Response) (RestorableMongodbDatabasesClientListResponse, error) {
-	result := RestorableMongodbDatabasesClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.RestorableMongodbDatabasesListResult); err != nil {
-		return RestorableMongodbDatabasesClientListResponse{}, err
+func (client *RestorableTablesClient) listHandleResponse(resp *http.Response) (RestorableTablesClientListResponse, error) {
+	result := RestorableTablesClientListResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RestorableTablesListResult); err != nil {
+		return RestorableTablesClientListResponse{}, err
 	}
 	return result, nil
 }

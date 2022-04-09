@@ -22,19 +22,19 @@ import (
 	"strings"
 )
 
-// RestorableMongodbDatabasesClient contains the methods for the RestorableMongodbDatabases group.
-// Don't use this type directly, use NewRestorableMongodbDatabasesClient() instead.
-type RestorableMongodbDatabasesClient struct {
+// RestorableGremlinDatabasesClient contains the methods for the RestorableGremlinDatabases group.
+// Don't use this type directly, use NewRestorableGremlinDatabasesClient() instead.
+type RestorableGremlinDatabasesClient struct {
 	host           string
 	subscriptionID string
 	pl             runtime.Pipeline
 }
 
-// NewRestorableMongodbDatabasesClient creates a new instance of RestorableMongodbDatabasesClient with the specified values.
+// NewRestorableGremlinDatabasesClient creates a new instance of RestorableGremlinDatabasesClient with the specified values.
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewRestorableMongodbDatabasesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RestorableMongodbDatabasesClient, error) {
+func NewRestorableGremlinDatabasesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RestorableGremlinDatabasesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
@@ -46,7 +46,7 @@ func NewRestorableMongodbDatabasesClient(subscriptionID string, credential azcor
 	if err != nil {
 		return nil, err
 	}
-	client := &RestorableMongodbDatabasesClient{
+	client := &RestorableGremlinDatabasesClient{
 		subscriptionID: subscriptionID,
 		host:           ep,
 		pl:             pl,
@@ -54,30 +54,30 @@ func NewRestorableMongodbDatabasesClient(subscriptionID string, credential azcor
 	return client, nil
 }
 
-// List - Show the event feed of all mutations done on all the Azure Cosmos DB MongoDB databases under the restorable account.
+// List - Show the event feed of all mutations done on all the Azure Cosmos DB Gremlin databases under the restorable account.
 // This helps in scenario where database was accidentally deleted to get the deletion
 // time. This API requires 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/…/read' permission
 // If the operation fails it returns an *azcore.ResponseError type.
 // location - Cosmos DB region, with spaces between words and each word capitalized.
 // instanceID - The instanceId GUID of a restorable database account.
-// options - RestorableMongodbDatabasesClientListOptions contains the optional parameters for the RestorableMongodbDatabasesClient.List
+// options - RestorableGremlinDatabasesClientListOptions contains the optional parameters for the RestorableGremlinDatabasesClient.List
 // method.
-func (client *RestorableMongodbDatabasesClient) List(location string, instanceID string, options *RestorableMongodbDatabasesClientListOptions) *runtime.Pager[RestorableMongodbDatabasesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[RestorableMongodbDatabasesClientListResponse]{
-		More: func(page RestorableMongodbDatabasesClientListResponse) bool {
+func (client *RestorableGremlinDatabasesClient) List(location string, instanceID string, options *RestorableGremlinDatabasesClientListOptions) *runtime.Pager[RestorableGremlinDatabasesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[RestorableGremlinDatabasesClientListResponse]{
+		More: func(page RestorableGremlinDatabasesClientListResponse) bool {
 			return false
 		},
-		Fetcher: func(ctx context.Context, page *RestorableMongodbDatabasesClientListResponse) (RestorableMongodbDatabasesClientListResponse, error) {
+		Fetcher: func(ctx context.Context, page *RestorableGremlinDatabasesClientListResponse) (RestorableGremlinDatabasesClientListResponse, error) {
 			req, err := client.listCreateRequest(ctx, location, instanceID, options)
 			if err != nil {
-				return RestorableMongodbDatabasesClientListResponse{}, err
+				return RestorableGremlinDatabasesClientListResponse{}, err
 			}
 			resp, err := client.pl.Do(req)
 			if err != nil {
-				return RestorableMongodbDatabasesClientListResponse{}, err
+				return RestorableGremlinDatabasesClientListResponse{}, err
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return RestorableMongodbDatabasesClientListResponse{}, runtime.NewResponseError(resp)
+				return RestorableGremlinDatabasesClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -85,8 +85,8 @@ func (client *RestorableMongodbDatabasesClient) List(location string, instanceID
 }
 
 // listCreateRequest creates the List request.
-func (client *RestorableMongodbDatabasesClient) listCreateRequest(ctx context.Context, location string, instanceID string, options *RestorableMongodbDatabasesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{instanceId}/restorableMongodbDatabases"
+func (client *RestorableGremlinDatabasesClient) listCreateRequest(ctx context.Context, location string, instanceID string, options *RestorableGremlinDatabasesClientListOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{instanceId}/restorableGremlinDatabases"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -111,10 +111,10 @@ func (client *RestorableMongodbDatabasesClient) listCreateRequest(ctx context.Co
 }
 
 // listHandleResponse handles the List response.
-func (client *RestorableMongodbDatabasesClient) listHandleResponse(resp *http.Response) (RestorableMongodbDatabasesClientListResponse, error) {
-	result := RestorableMongodbDatabasesClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.RestorableMongodbDatabasesListResult); err != nil {
-		return RestorableMongodbDatabasesClientListResponse{}, err
+func (client *RestorableGremlinDatabasesClient) listHandleResponse(resp *http.Response) (RestorableGremlinDatabasesClientListResponse, error) {
+	result := RestorableGremlinDatabasesClientListResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RestorableGremlinDatabasesListResult); err != nil {
+		return RestorableGremlinDatabasesClientListResponse{}, err
 	}
 	return result, nil
 }

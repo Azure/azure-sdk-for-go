@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,98 @@ type SQLResourcesClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewSQLResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SQLResourcesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewSQLResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SQLResourcesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &SQLResourcesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
+}
+
+// BeginCreateUpdateClientEncryptionKey - Create or update a ClientEncryptionKey. This API is meant to be invoked via tools
+// such as the Azure Powershell (instead of directly).
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// databaseName - Cosmos DB database name.
+// clientEncryptionKeyName - Cosmos DB ClientEncryptionKey name.
+// createUpdateClientEncryptionKeyParameters - The parameters to provide for the client encryption key.
+// options - SQLResourcesClientBeginCreateUpdateClientEncryptionKeyOptions contains the optional parameters for the SQLResourcesClient.BeginCreateUpdateClientEncryptionKey
+// method.
+func (client *SQLResourcesClient) BeginCreateUpdateClientEncryptionKey(ctx context.Context, resourceGroupName string, accountName string, databaseName string, clientEncryptionKeyName string, createUpdateClientEncryptionKeyParameters ClientEncryptionKeyCreateUpdateParameters, options *SQLResourcesClientBeginCreateUpdateClientEncryptionKeyOptions) (*armruntime.Poller[SQLResourcesClientCreateUpdateClientEncryptionKeyResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createUpdateClientEncryptionKey(ctx, resourceGroupName, accountName, databaseName, clientEncryptionKeyName, createUpdateClientEncryptionKeyParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[SQLResourcesClientCreateUpdateClientEncryptionKeyResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[SQLResourcesClientCreateUpdateClientEncryptionKeyResponse](options.ResumeToken, client.pl, nil)
+	}
+}
+
+// CreateUpdateClientEncryptionKey - Create or update a ClientEncryptionKey. This API is meant to be invoked via tools such
+// as the Azure Powershell (instead of directly).
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SQLResourcesClient) createUpdateClientEncryptionKey(ctx context.Context, resourceGroupName string, accountName string, databaseName string, clientEncryptionKeyName string, createUpdateClientEncryptionKeyParameters ClientEncryptionKeyCreateUpdateParameters, options *SQLResourcesClientBeginCreateUpdateClientEncryptionKeyOptions) (*http.Response, error) {
+	req, err := client.createUpdateClientEncryptionKeyCreateRequest(ctx, resourceGroupName, accountName, databaseName, clientEncryptionKeyName, createUpdateClientEncryptionKeyParameters, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(resp)
+	}
+	return resp, nil
+}
+
+// createUpdateClientEncryptionKeyCreateRequest creates the CreateUpdateClientEncryptionKey request.
+func (client *SQLResourcesClient) createUpdateClientEncryptionKeyCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, clientEncryptionKeyName string, createUpdateClientEncryptionKeyParameters ClientEncryptionKeyCreateUpdateParameters, options *SQLResourcesClientBeginCreateUpdateClientEncryptionKeyOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/clientEncryptionKeys/{clientEncryptionKeyName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if databaseName == "" {
+		return nil, errors.New("parameter databaseName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
+	if clientEncryptionKeyName == "" {
+		return nil, errors.New("parameter clientEncryptionKeyName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{clientEncryptionKeyName}", url.PathEscape(clientEncryptionKeyName))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-02-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, createUpdateClientEncryptionKeyParameters)
 }
 
 // BeginCreateUpdateSQLContainer - Create or update an Azure Cosmos DB SQL container
@@ -58,22 +137,16 @@ func NewSQLResourcesClient(subscriptionID string, credential azcore.TokenCredent
 // createUpdateSQLContainerParameters - The parameters to provide for the current SQL container.
 // options - SQLResourcesClientBeginCreateUpdateSQLContainerOptions contains the optional parameters for the SQLResourcesClient.BeginCreateUpdateSQLContainer
 // method.
-func (client *SQLResourcesClient) BeginCreateUpdateSQLContainer(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, createUpdateSQLContainerParameters SQLContainerCreateUpdateParameters, options *SQLResourcesClientBeginCreateUpdateSQLContainerOptions) (SQLResourcesClientCreateUpdateSQLContainerPollerResponse, error) {
-	resp, err := client.createUpdateSQLContainer(ctx, resourceGroupName, accountName, databaseName, containerName, createUpdateSQLContainerParameters, options)
-	if err != nil {
-		return SQLResourcesClientCreateUpdateSQLContainerPollerResponse{}, err
+func (client *SQLResourcesClient) BeginCreateUpdateSQLContainer(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, createUpdateSQLContainerParameters SQLContainerCreateUpdateParameters, options *SQLResourcesClientBeginCreateUpdateSQLContainerOptions) (*armruntime.Poller[SQLResourcesClientCreateUpdateSQLContainerResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createUpdateSQLContainer(ctx, resourceGroupName, accountName, databaseName, containerName, createUpdateSQLContainerParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[SQLResourcesClientCreateUpdateSQLContainerResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[SQLResourcesClientCreateUpdateSQLContainerResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SQLResourcesClientCreateUpdateSQLContainerPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SQLResourcesClient.CreateUpdateSQLContainer", "", resp, client.pl)
-	if err != nil {
-		return SQLResourcesClientCreateUpdateSQLContainerPollerResponse{}, err
-	}
-	result.Poller = &SQLResourcesClientCreateUpdateSQLContainerPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateUpdateSQLContainer - Create or update an Azure Cosmos DB SQL container
@@ -121,7 +194,7 @@ func (client *SQLResourcesClient) createUpdateSQLContainerCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, createUpdateSQLContainerParameters)
@@ -135,22 +208,16 @@ func (client *SQLResourcesClient) createUpdateSQLContainerCreateRequest(ctx cont
 // createUpdateSQLDatabaseParameters - The parameters to provide for the current SQL database.
 // options - SQLResourcesClientBeginCreateUpdateSQLDatabaseOptions contains the optional parameters for the SQLResourcesClient.BeginCreateUpdateSQLDatabase
 // method.
-func (client *SQLResourcesClient) BeginCreateUpdateSQLDatabase(ctx context.Context, resourceGroupName string, accountName string, databaseName string, createUpdateSQLDatabaseParameters SQLDatabaseCreateUpdateParameters, options *SQLResourcesClientBeginCreateUpdateSQLDatabaseOptions) (SQLResourcesClientCreateUpdateSQLDatabasePollerResponse, error) {
-	resp, err := client.createUpdateSQLDatabase(ctx, resourceGroupName, accountName, databaseName, createUpdateSQLDatabaseParameters, options)
-	if err != nil {
-		return SQLResourcesClientCreateUpdateSQLDatabasePollerResponse{}, err
+func (client *SQLResourcesClient) BeginCreateUpdateSQLDatabase(ctx context.Context, resourceGroupName string, accountName string, databaseName string, createUpdateSQLDatabaseParameters SQLDatabaseCreateUpdateParameters, options *SQLResourcesClientBeginCreateUpdateSQLDatabaseOptions) (*armruntime.Poller[SQLResourcesClientCreateUpdateSQLDatabaseResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createUpdateSQLDatabase(ctx, resourceGroupName, accountName, databaseName, createUpdateSQLDatabaseParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[SQLResourcesClientCreateUpdateSQLDatabaseResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[SQLResourcesClientCreateUpdateSQLDatabaseResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SQLResourcesClientCreateUpdateSQLDatabasePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SQLResourcesClient.CreateUpdateSQLDatabase", "", resp, client.pl)
-	if err != nil {
-		return SQLResourcesClientCreateUpdateSQLDatabasePollerResponse{}, err
-	}
-	result.Poller = &SQLResourcesClientCreateUpdateSQLDatabasePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateUpdateSQLDatabase - Create or update an Azure Cosmos DB SQL database
@@ -194,7 +261,7 @@ func (client *SQLResourcesClient) createUpdateSQLDatabaseCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, createUpdateSQLDatabaseParameters)
@@ -208,22 +275,16 @@ func (client *SQLResourcesClient) createUpdateSQLDatabaseCreateRequest(ctx conte
 // createUpdateSQLRoleAssignmentParameters - The properties required to create or update a Role Assignment.
 // options - SQLResourcesClientBeginCreateUpdateSQLRoleAssignmentOptions contains the optional parameters for the SQLResourcesClient.BeginCreateUpdateSQLRoleAssignment
 // method.
-func (client *SQLResourcesClient) BeginCreateUpdateSQLRoleAssignment(ctx context.Context, roleAssignmentID string, resourceGroupName string, accountName string, createUpdateSQLRoleAssignmentParameters SQLRoleAssignmentCreateUpdateParameters, options *SQLResourcesClientBeginCreateUpdateSQLRoleAssignmentOptions) (SQLResourcesClientCreateUpdateSQLRoleAssignmentPollerResponse, error) {
-	resp, err := client.createUpdateSQLRoleAssignment(ctx, roleAssignmentID, resourceGroupName, accountName, createUpdateSQLRoleAssignmentParameters, options)
-	if err != nil {
-		return SQLResourcesClientCreateUpdateSQLRoleAssignmentPollerResponse{}, err
+func (client *SQLResourcesClient) BeginCreateUpdateSQLRoleAssignment(ctx context.Context, roleAssignmentID string, resourceGroupName string, accountName string, createUpdateSQLRoleAssignmentParameters SQLRoleAssignmentCreateUpdateParameters, options *SQLResourcesClientBeginCreateUpdateSQLRoleAssignmentOptions) (*armruntime.Poller[SQLResourcesClientCreateUpdateSQLRoleAssignmentResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createUpdateSQLRoleAssignment(ctx, roleAssignmentID, resourceGroupName, accountName, createUpdateSQLRoleAssignmentParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[SQLResourcesClientCreateUpdateSQLRoleAssignmentResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[SQLResourcesClientCreateUpdateSQLRoleAssignmentResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SQLResourcesClientCreateUpdateSQLRoleAssignmentPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SQLResourcesClient.CreateUpdateSQLRoleAssignment", "", resp, client.pl)
-	if err != nil {
-		return SQLResourcesClientCreateUpdateSQLRoleAssignmentPollerResponse{}, err
-	}
-	result.Poller = &SQLResourcesClientCreateUpdateSQLRoleAssignmentPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateUpdateSQLRoleAssignment - Creates or updates an Azure Cosmos DB SQL Role Assignment.
@@ -267,7 +328,7 @@ func (client *SQLResourcesClient) createUpdateSQLRoleAssignmentCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, createUpdateSQLRoleAssignmentParameters)
@@ -281,22 +342,16 @@ func (client *SQLResourcesClient) createUpdateSQLRoleAssignmentCreateRequest(ctx
 // createUpdateSQLRoleDefinitionParameters - The properties required to create or update a Role Definition.
 // options - SQLResourcesClientBeginCreateUpdateSQLRoleDefinitionOptions contains the optional parameters for the SQLResourcesClient.BeginCreateUpdateSQLRoleDefinition
 // method.
-func (client *SQLResourcesClient) BeginCreateUpdateSQLRoleDefinition(ctx context.Context, roleDefinitionID string, resourceGroupName string, accountName string, createUpdateSQLRoleDefinitionParameters SQLRoleDefinitionCreateUpdateParameters, options *SQLResourcesClientBeginCreateUpdateSQLRoleDefinitionOptions) (SQLResourcesClientCreateUpdateSQLRoleDefinitionPollerResponse, error) {
-	resp, err := client.createUpdateSQLRoleDefinition(ctx, roleDefinitionID, resourceGroupName, accountName, createUpdateSQLRoleDefinitionParameters, options)
-	if err != nil {
-		return SQLResourcesClientCreateUpdateSQLRoleDefinitionPollerResponse{}, err
+func (client *SQLResourcesClient) BeginCreateUpdateSQLRoleDefinition(ctx context.Context, roleDefinitionID string, resourceGroupName string, accountName string, createUpdateSQLRoleDefinitionParameters SQLRoleDefinitionCreateUpdateParameters, options *SQLResourcesClientBeginCreateUpdateSQLRoleDefinitionOptions) (*armruntime.Poller[SQLResourcesClientCreateUpdateSQLRoleDefinitionResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createUpdateSQLRoleDefinition(ctx, roleDefinitionID, resourceGroupName, accountName, createUpdateSQLRoleDefinitionParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[SQLResourcesClientCreateUpdateSQLRoleDefinitionResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[SQLResourcesClientCreateUpdateSQLRoleDefinitionResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SQLResourcesClientCreateUpdateSQLRoleDefinitionPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SQLResourcesClient.CreateUpdateSQLRoleDefinition", "", resp, client.pl)
-	if err != nil {
-		return SQLResourcesClientCreateUpdateSQLRoleDefinitionPollerResponse{}, err
-	}
-	result.Poller = &SQLResourcesClientCreateUpdateSQLRoleDefinitionPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateUpdateSQLRoleDefinition - Creates or updates an Azure Cosmos DB SQL Role Definition.
@@ -340,7 +395,7 @@ func (client *SQLResourcesClient) createUpdateSQLRoleDefinitionCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, createUpdateSQLRoleDefinitionParameters)
@@ -356,22 +411,16 @@ func (client *SQLResourcesClient) createUpdateSQLRoleDefinitionCreateRequest(ctx
 // createUpdateSQLStoredProcedureParameters - The parameters to provide for the current SQL storedProcedure.
 // options - SQLResourcesClientBeginCreateUpdateSQLStoredProcedureOptions contains the optional parameters for the SQLResourcesClient.BeginCreateUpdateSQLStoredProcedure
 // method.
-func (client *SQLResourcesClient) BeginCreateUpdateSQLStoredProcedure(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, storedProcedureName string, createUpdateSQLStoredProcedureParameters SQLStoredProcedureCreateUpdateParameters, options *SQLResourcesClientBeginCreateUpdateSQLStoredProcedureOptions) (SQLResourcesClientCreateUpdateSQLStoredProcedurePollerResponse, error) {
-	resp, err := client.createUpdateSQLStoredProcedure(ctx, resourceGroupName, accountName, databaseName, containerName, storedProcedureName, createUpdateSQLStoredProcedureParameters, options)
-	if err != nil {
-		return SQLResourcesClientCreateUpdateSQLStoredProcedurePollerResponse{}, err
+func (client *SQLResourcesClient) BeginCreateUpdateSQLStoredProcedure(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, storedProcedureName string, createUpdateSQLStoredProcedureParameters SQLStoredProcedureCreateUpdateParameters, options *SQLResourcesClientBeginCreateUpdateSQLStoredProcedureOptions) (*armruntime.Poller[SQLResourcesClientCreateUpdateSQLStoredProcedureResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createUpdateSQLStoredProcedure(ctx, resourceGroupName, accountName, databaseName, containerName, storedProcedureName, createUpdateSQLStoredProcedureParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[SQLResourcesClientCreateUpdateSQLStoredProcedureResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[SQLResourcesClientCreateUpdateSQLStoredProcedureResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SQLResourcesClientCreateUpdateSQLStoredProcedurePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SQLResourcesClient.CreateUpdateSQLStoredProcedure", "", resp, client.pl)
-	if err != nil {
-		return SQLResourcesClientCreateUpdateSQLStoredProcedurePollerResponse{}, err
-	}
-	result.Poller = &SQLResourcesClientCreateUpdateSQLStoredProcedurePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateUpdateSQLStoredProcedure - Create or update an Azure Cosmos DB SQL storedProcedure
@@ -423,7 +472,7 @@ func (client *SQLResourcesClient) createUpdateSQLStoredProcedureCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, createUpdateSQLStoredProcedureParameters)
@@ -439,22 +488,16 @@ func (client *SQLResourcesClient) createUpdateSQLStoredProcedureCreateRequest(ct
 // createUpdateSQLTriggerParameters - The parameters to provide for the current SQL trigger.
 // options - SQLResourcesClientBeginCreateUpdateSQLTriggerOptions contains the optional parameters for the SQLResourcesClient.BeginCreateUpdateSQLTrigger
 // method.
-func (client *SQLResourcesClient) BeginCreateUpdateSQLTrigger(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, triggerName string, createUpdateSQLTriggerParameters SQLTriggerCreateUpdateParameters, options *SQLResourcesClientBeginCreateUpdateSQLTriggerOptions) (SQLResourcesClientCreateUpdateSQLTriggerPollerResponse, error) {
-	resp, err := client.createUpdateSQLTrigger(ctx, resourceGroupName, accountName, databaseName, containerName, triggerName, createUpdateSQLTriggerParameters, options)
-	if err != nil {
-		return SQLResourcesClientCreateUpdateSQLTriggerPollerResponse{}, err
+func (client *SQLResourcesClient) BeginCreateUpdateSQLTrigger(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, triggerName string, createUpdateSQLTriggerParameters SQLTriggerCreateUpdateParameters, options *SQLResourcesClientBeginCreateUpdateSQLTriggerOptions) (*armruntime.Poller[SQLResourcesClientCreateUpdateSQLTriggerResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createUpdateSQLTrigger(ctx, resourceGroupName, accountName, databaseName, containerName, triggerName, createUpdateSQLTriggerParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[SQLResourcesClientCreateUpdateSQLTriggerResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[SQLResourcesClientCreateUpdateSQLTriggerResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SQLResourcesClientCreateUpdateSQLTriggerPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SQLResourcesClient.CreateUpdateSQLTrigger", "", resp, client.pl)
-	if err != nil {
-		return SQLResourcesClientCreateUpdateSQLTriggerPollerResponse{}, err
-	}
-	result.Poller = &SQLResourcesClientCreateUpdateSQLTriggerPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateUpdateSQLTrigger - Create or update an Azure Cosmos DB SQL trigger
@@ -506,7 +549,7 @@ func (client *SQLResourcesClient) createUpdateSQLTriggerCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, createUpdateSQLTriggerParameters)
@@ -522,22 +565,16 @@ func (client *SQLResourcesClient) createUpdateSQLTriggerCreateRequest(ctx contex
 // createUpdateSQLUserDefinedFunctionParameters - The parameters to provide for the current SQL userDefinedFunction.
 // options - SQLResourcesClientBeginCreateUpdateSQLUserDefinedFunctionOptions contains the optional parameters for the SQLResourcesClient.BeginCreateUpdateSQLUserDefinedFunction
 // method.
-func (client *SQLResourcesClient) BeginCreateUpdateSQLUserDefinedFunction(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, userDefinedFunctionName string, createUpdateSQLUserDefinedFunctionParameters SQLUserDefinedFunctionCreateUpdateParameters, options *SQLResourcesClientBeginCreateUpdateSQLUserDefinedFunctionOptions) (SQLResourcesClientCreateUpdateSQLUserDefinedFunctionPollerResponse, error) {
-	resp, err := client.createUpdateSQLUserDefinedFunction(ctx, resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName, createUpdateSQLUserDefinedFunctionParameters, options)
-	if err != nil {
-		return SQLResourcesClientCreateUpdateSQLUserDefinedFunctionPollerResponse{}, err
+func (client *SQLResourcesClient) BeginCreateUpdateSQLUserDefinedFunction(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, userDefinedFunctionName string, createUpdateSQLUserDefinedFunctionParameters SQLUserDefinedFunctionCreateUpdateParameters, options *SQLResourcesClientBeginCreateUpdateSQLUserDefinedFunctionOptions) (*armruntime.Poller[SQLResourcesClientCreateUpdateSQLUserDefinedFunctionResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createUpdateSQLUserDefinedFunction(ctx, resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName, createUpdateSQLUserDefinedFunctionParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[SQLResourcesClientCreateUpdateSQLUserDefinedFunctionResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[SQLResourcesClientCreateUpdateSQLUserDefinedFunctionResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SQLResourcesClientCreateUpdateSQLUserDefinedFunctionPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SQLResourcesClient.CreateUpdateSQLUserDefinedFunction", "", resp, client.pl)
-	if err != nil {
-		return SQLResourcesClientCreateUpdateSQLUserDefinedFunctionPollerResponse{}, err
-	}
-	result.Poller = &SQLResourcesClientCreateUpdateSQLUserDefinedFunctionPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateUpdateSQLUserDefinedFunction - Create or update an Azure Cosmos DB SQL userDefinedFunction
@@ -589,7 +626,7 @@ func (client *SQLResourcesClient) createUpdateSQLUserDefinedFunctionCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, createUpdateSQLUserDefinedFunctionParameters)
@@ -603,22 +640,16 @@ func (client *SQLResourcesClient) createUpdateSQLUserDefinedFunctionCreateReques
 // containerName - Cosmos DB container name.
 // options - SQLResourcesClientBeginDeleteSQLContainerOptions contains the optional parameters for the SQLResourcesClient.BeginDeleteSQLContainer
 // method.
-func (client *SQLResourcesClient) BeginDeleteSQLContainer(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesClientBeginDeleteSQLContainerOptions) (SQLResourcesClientDeleteSQLContainerPollerResponse, error) {
-	resp, err := client.deleteSQLContainer(ctx, resourceGroupName, accountName, databaseName, containerName, options)
-	if err != nil {
-		return SQLResourcesClientDeleteSQLContainerPollerResponse{}, err
+func (client *SQLResourcesClient) BeginDeleteSQLContainer(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesClientBeginDeleteSQLContainerOptions) (*armruntime.Poller[SQLResourcesClientDeleteSQLContainerResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteSQLContainer(ctx, resourceGroupName, accountName, databaseName, containerName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[SQLResourcesClientDeleteSQLContainerResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[SQLResourcesClientDeleteSQLContainerResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SQLResourcesClientDeleteSQLContainerPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SQLResourcesClient.DeleteSQLContainer", "", resp, client.pl)
-	if err != nil {
-		return SQLResourcesClientDeleteSQLContainerPollerResponse{}, err
-	}
-	result.Poller = &SQLResourcesClientDeleteSQLContainerPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // DeleteSQLContainer - Deletes an existing Azure Cosmos DB SQL container.
@@ -666,7 +697,7 @@ func (client *SQLResourcesClient) deleteSQLContainerCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -678,22 +709,16 @@ func (client *SQLResourcesClient) deleteSQLContainerCreateRequest(ctx context.Co
 // databaseName - Cosmos DB database name.
 // options - SQLResourcesClientBeginDeleteSQLDatabaseOptions contains the optional parameters for the SQLResourcesClient.BeginDeleteSQLDatabase
 // method.
-func (client *SQLResourcesClient) BeginDeleteSQLDatabase(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *SQLResourcesClientBeginDeleteSQLDatabaseOptions) (SQLResourcesClientDeleteSQLDatabasePollerResponse, error) {
-	resp, err := client.deleteSQLDatabase(ctx, resourceGroupName, accountName, databaseName, options)
-	if err != nil {
-		return SQLResourcesClientDeleteSQLDatabasePollerResponse{}, err
+func (client *SQLResourcesClient) BeginDeleteSQLDatabase(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *SQLResourcesClientBeginDeleteSQLDatabaseOptions) (*armruntime.Poller[SQLResourcesClientDeleteSQLDatabaseResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteSQLDatabase(ctx, resourceGroupName, accountName, databaseName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[SQLResourcesClientDeleteSQLDatabaseResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[SQLResourcesClientDeleteSQLDatabaseResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SQLResourcesClientDeleteSQLDatabasePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SQLResourcesClient.DeleteSQLDatabase", "", resp, client.pl)
-	if err != nil {
-		return SQLResourcesClientDeleteSQLDatabasePollerResponse{}, err
-	}
-	result.Poller = &SQLResourcesClientDeleteSQLDatabasePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // DeleteSQLDatabase - Deletes an existing Azure Cosmos DB SQL database.
@@ -737,7 +762,7 @@ func (client *SQLResourcesClient) deleteSQLDatabaseCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -749,22 +774,16 @@ func (client *SQLResourcesClient) deleteSQLDatabaseCreateRequest(ctx context.Con
 // accountName - Cosmos DB database account name.
 // options - SQLResourcesClientBeginDeleteSQLRoleAssignmentOptions contains the optional parameters for the SQLResourcesClient.BeginDeleteSQLRoleAssignment
 // method.
-func (client *SQLResourcesClient) BeginDeleteSQLRoleAssignment(ctx context.Context, roleAssignmentID string, resourceGroupName string, accountName string, options *SQLResourcesClientBeginDeleteSQLRoleAssignmentOptions) (SQLResourcesClientDeleteSQLRoleAssignmentPollerResponse, error) {
-	resp, err := client.deleteSQLRoleAssignment(ctx, roleAssignmentID, resourceGroupName, accountName, options)
-	if err != nil {
-		return SQLResourcesClientDeleteSQLRoleAssignmentPollerResponse{}, err
+func (client *SQLResourcesClient) BeginDeleteSQLRoleAssignment(ctx context.Context, roleAssignmentID string, resourceGroupName string, accountName string, options *SQLResourcesClientBeginDeleteSQLRoleAssignmentOptions) (*armruntime.Poller[SQLResourcesClientDeleteSQLRoleAssignmentResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteSQLRoleAssignment(ctx, roleAssignmentID, resourceGroupName, accountName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[SQLResourcesClientDeleteSQLRoleAssignmentResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[SQLResourcesClientDeleteSQLRoleAssignmentResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SQLResourcesClientDeleteSQLRoleAssignmentPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SQLResourcesClient.DeleteSQLRoleAssignment", "", resp, client.pl)
-	if err != nil {
-		return SQLResourcesClientDeleteSQLRoleAssignmentPollerResponse{}, err
-	}
-	result.Poller = &SQLResourcesClientDeleteSQLRoleAssignmentPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // DeleteSQLRoleAssignment - Deletes an existing Azure Cosmos DB SQL Role Assignment.
@@ -808,7 +827,7 @@ func (client *SQLResourcesClient) deleteSQLRoleAssignmentCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -821,22 +840,16 @@ func (client *SQLResourcesClient) deleteSQLRoleAssignmentCreateRequest(ctx conte
 // accountName - Cosmos DB database account name.
 // options - SQLResourcesClientBeginDeleteSQLRoleDefinitionOptions contains the optional parameters for the SQLResourcesClient.BeginDeleteSQLRoleDefinition
 // method.
-func (client *SQLResourcesClient) BeginDeleteSQLRoleDefinition(ctx context.Context, roleDefinitionID string, resourceGroupName string, accountName string, options *SQLResourcesClientBeginDeleteSQLRoleDefinitionOptions) (SQLResourcesClientDeleteSQLRoleDefinitionPollerResponse, error) {
-	resp, err := client.deleteSQLRoleDefinition(ctx, roleDefinitionID, resourceGroupName, accountName, options)
-	if err != nil {
-		return SQLResourcesClientDeleteSQLRoleDefinitionPollerResponse{}, err
+func (client *SQLResourcesClient) BeginDeleteSQLRoleDefinition(ctx context.Context, roleDefinitionID string, resourceGroupName string, accountName string, options *SQLResourcesClientBeginDeleteSQLRoleDefinitionOptions) (*armruntime.Poller[SQLResourcesClientDeleteSQLRoleDefinitionResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteSQLRoleDefinition(ctx, roleDefinitionID, resourceGroupName, accountName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[SQLResourcesClientDeleteSQLRoleDefinitionResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[SQLResourcesClientDeleteSQLRoleDefinitionResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SQLResourcesClientDeleteSQLRoleDefinitionPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SQLResourcesClient.DeleteSQLRoleDefinition", "", resp, client.pl)
-	if err != nil {
-		return SQLResourcesClientDeleteSQLRoleDefinitionPollerResponse{}, err
-	}
-	result.Poller = &SQLResourcesClientDeleteSQLRoleDefinitionPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // DeleteSQLRoleDefinition - Deletes an existing Azure Cosmos DB SQL Role Definition.
@@ -880,7 +893,7 @@ func (client *SQLResourcesClient) deleteSQLRoleDefinitionCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -895,22 +908,16 @@ func (client *SQLResourcesClient) deleteSQLRoleDefinitionCreateRequest(ctx conte
 // storedProcedureName - Cosmos DB storedProcedure name.
 // options - SQLResourcesClientBeginDeleteSQLStoredProcedureOptions contains the optional parameters for the SQLResourcesClient.BeginDeleteSQLStoredProcedure
 // method.
-func (client *SQLResourcesClient) BeginDeleteSQLStoredProcedure(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, storedProcedureName string, options *SQLResourcesClientBeginDeleteSQLStoredProcedureOptions) (SQLResourcesClientDeleteSQLStoredProcedurePollerResponse, error) {
-	resp, err := client.deleteSQLStoredProcedure(ctx, resourceGroupName, accountName, databaseName, containerName, storedProcedureName, options)
-	if err != nil {
-		return SQLResourcesClientDeleteSQLStoredProcedurePollerResponse{}, err
+func (client *SQLResourcesClient) BeginDeleteSQLStoredProcedure(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, storedProcedureName string, options *SQLResourcesClientBeginDeleteSQLStoredProcedureOptions) (*armruntime.Poller[SQLResourcesClientDeleteSQLStoredProcedureResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteSQLStoredProcedure(ctx, resourceGroupName, accountName, databaseName, containerName, storedProcedureName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[SQLResourcesClientDeleteSQLStoredProcedureResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[SQLResourcesClientDeleteSQLStoredProcedureResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SQLResourcesClientDeleteSQLStoredProcedurePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SQLResourcesClient.DeleteSQLStoredProcedure", "", resp, client.pl)
-	if err != nil {
-		return SQLResourcesClientDeleteSQLStoredProcedurePollerResponse{}, err
-	}
-	result.Poller = &SQLResourcesClientDeleteSQLStoredProcedurePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // DeleteSQLStoredProcedure - Deletes an existing Azure Cosmos DB SQL storedProcedure.
@@ -962,7 +969,7 @@ func (client *SQLResourcesClient) deleteSQLStoredProcedureCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -976,22 +983,16 @@ func (client *SQLResourcesClient) deleteSQLStoredProcedureCreateRequest(ctx cont
 // triggerName - Cosmos DB trigger name.
 // options - SQLResourcesClientBeginDeleteSQLTriggerOptions contains the optional parameters for the SQLResourcesClient.BeginDeleteSQLTrigger
 // method.
-func (client *SQLResourcesClient) BeginDeleteSQLTrigger(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, triggerName string, options *SQLResourcesClientBeginDeleteSQLTriggerOptions) (SQLResourcesClientDeleteSQLTriggerPollerResponse, error) {
-	resp, err := client.deleteSQLTrigger(ctx, resourceGroupName, accountName, databaseName, containerName, triggerName, options)
-	if err != nil {
-		return SQLResourcesClientDeleteSQLTriggerPollerResponse{}, err
+func (client *SQLResourcesClient) BeginDeleteSQLTrigger(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, triggerName string, options *SQLResourcesClientBeginDeleteSQLTriggerOptions) (*armruntime.Poller[SQLResourcesClientDeleteSQLTriggerResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteSQLTrigger(ctx, resourceGroupName, accountName, databaseName, containerName, triggerName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[SQLResourcesClientDeleteSQLTriggerResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[SQLResourcesClientDeleteSQLTriggerResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SQLResourcesClientDeleteSQLTriggerPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SQLResourcesClient.DeleteSQLTrigger", "", resp, client.pl)
-	if err != nil {
-		return SQLResourcesClientDeleteSQLTriggerPollerResponse{}, err
-	}
-	result.Poller = &SQLResourcesClientDeleteSQLTriggerPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // DeleteSQLTrigger - Deletes an existing Azure Cosmos DB SQL trigger.
@@ -1043,7 +1044,7 @@ func (client *SQLResourcesClient) deleteSQLTriggerCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -1057,22 +1058,16 @@ func (client *SQLResourcesClient) deleteSQLTriggerCreateRequest(ctx context.Cont
 // userDefinedFunctionName - Cosmos DB userDefinedFunction name.
 // options - SQLResourcesClientBeginDeleteSQLUserDefinedFunctionOptions contains the optional parameters for the SQLResourcesClient.BeginDeleteSQLUserDefinedFunction
 // method.
-func (client *SQLResourcesClient) BeginDeleteSQLUserDefinedFunction(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, userDefinedFunctionName string, options *SQLResourcesClientBeginDeleteSQLUserDefinedFunctionOptions) (SQLResourcesClientDeleteSQLUserDefinedFunctionPollerResponse, error) {
-	resp, err := client.deleteSQLUserDefinedFunction(ctx, resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName, options)
-	if err != nil {
-		return SQLResourcesClientDeleteSQLUserDefinedFunctionPollerResponse{}, err
+func (client *SQLResourcesClient) BeginDeleteSQLUserDefinedFunction(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, userDefinedFunctionName string, options *SQLResourcesClientBeginDeleteSQLUserDefinedFunctionOptions) (*armruntime.Poller[SQLResourcesClientDeleteSQLUserDefinedFunctionResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteSQLUserDefinedFunction(ctx, resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[SQLResourcesClientDeleteSQLUserDefinedFunctionResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[SQLResourcesClientDeleteSQLUserDefinedFunctionResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SQLResourcesClientDeleteSQLUserDefinedFunctionPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SQLResourcesClient.DeleteSQLUserDefinedFunction", "", resp, client.pl)
-	if err != nil {
-		return SQLResourcesClientDeleteSQLUserDefinedFunctionPollerResponse{}, err
-	}
-	result.Poller = &SQLResourcesClientDeleteSQLUserDefinedFunctionPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // DeleteSQLUserDefinedFunction - Deletes an existing Azure Cosmos DB SQL userDefinedFunction.
@@ -1124,9 +1119,75 @@ func (client *SQLResourcesClient) deleteSQLUserDefinedFunctionCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
+}
+
+// GetClientEncryptionKey - Gets the ClientEncryptionKey under an existing Azure Cosmos DB SQL database.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// databaseName - Cosmos DB database name.
+// clientEncryptionKeyName - Cosmos DB ClientEncryptionKey name.
+// options - SQLResourcesClientGetClientEncryptionKeyOptions contains the optional parameters for the SQLResourcesClient.GetClientEncryptionKey
+// method.
+func (client *SQLResourcesClient) GetClientEncryptionKey(ctx context.Context, resourceGroupName string, accountName string, databaseName string, clientEncryptionKeyName string, options *SQLResourcesClientGetClientEncryptionKeyOptions) (SQLResourcesClientGetClientEncryptionKeyResponse, error) {
+	req, err := client.getClientEncryptionKeyCreateRequest(ctx, resourceGroupName, accountName, databaseName, clientEncryptionKeyName, options)
+	if err != nil {
+		return SQLResourcesClientGetClientEncryptionKeyResponse{}, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return SQLResourcesClientGetClientEncryptionKeyResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return SQLResourcesClientGetClientEncryptionKeyResponse{}, runtime.NewResponseError(resp)
+	}
+	return client.getClientEncryptionKeyHandleResponse(resp)
+}
+
+// getClientEncryptionKeyCreateRequest creates the GetClientEncryptionKey request.
+func (client *SQLResourcesClient) getClientEncryptionKeyCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, clientEncryptionKeyName string, options *SQLResourcesClientGetClientEncryptionKeyOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/clientEncryptionKeys/{clientEncryptionKeyName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if databaseName == "" {
+		return nil, errors.New("parameter databaseName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
+	if clientEncryptionKeyName == "" {
+		return nil, errors.New("parameter clientEncryptionKeyName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{clientEncryptionKeyName}", url.PathEscape(clientEncryptionKeyName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-02-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, nil
+}
+
+// getClientEncryptionKeyHandleResponse handles the GetClientEncryptionKey response.
+func (client *SQLResourcesClient) getClientEncryptionKeyHandleResponse(resp *http.Response) (SQLResourcesClientGetClientEncryptionKeyResponse, error) {
+	result := SQLResourcesClientGetClientEncryptionKeyResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ClientEncryptionKeyGetResults); err != nil {
+		return SQLResourcesClientGetClientEncryptionKeyResponse{}, err
+	}
+	return result, nil
 }
 
 // GetSQLContainer - Gets the SQL container under an existing Azure Cosmos DB database account.
@@ -1180,7 +1241,7 @@ func (client *SQLResourcesClient) getSQLContainerCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -1188,7 +1249,7 @@ func (client *SQLResourcesClient) getSQLContainerCreateRequest(ctx context.Conte
 
 // getSQLContainerHandleResponse handles the GetSQLContainer response.
 func (client *SQLResourcesClient) getSQLContainerHandleResponse(resp *http.Response) (SQLResourcesClientGetSQLContainerResponse, error) {
-	result := SQLResourcesClientGetSQLContainerResponse{RawResponse: resp}
+	result := SQLResourcesClientGetSQLContainerResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLContainerGetResults); err != nil {
 		return SQLResourcesClientGetSQLContainerResponse{}, err
 	}
@@ -1246,7 +1307,7 @@ func (client *SQLResourcesClient) getSQLContainerThroughputCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -1254,7 +1315,7 @@ func (client *SQLResourcesClient) getSQLContainerThroughputCreateRequest(ctx con
 
 // getSQLContainerThroughputHandleResponse handles the GetSQLContainerThroughput response.
 func (client *SQLResourcesClient) getSQLContainerThroughputHandleResponse(resp *http.Response) (SQLResourcesClientGetSQLContainerThroughputResponse, error) {
-	result := SQLResourcesClientGetSQLContainerThroughputResponse{RawResponse: resp}
+	result := SQLResourcesClientGetSQLContainerThroughputResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ThroughputSettingsGetResults); err != nil {
 		return SQLResourcesClientGetSQLContainerThroughputResponse{}, err
 	}
@@ -1307,7 +1368,7 @@ func (client *SQLResourcesClient) getSQLDatabaseCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -1315,7 +1376,7 @@ func (client *SQLResourcesClient) getSQLDatabaseCreateRequest(ctx context.Contex
 
 // getSQLDatabaseHandleResponse handles the GetSQLDatabase response.
 func (client *SQLResourcesClient) getSQLDatabaseHandleResponse(resp *http.Response) (SQLResourcesClientGetSQLDatabaseResponse, error) {
-	result := SQLResourcesClientGetSQLDatabaseResponse{RawResponse: resp}
+	result := SQLResourcesClientGetSQLDatabaseResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLDatabaseGetResults); err != nil {
 		return SQLResourcesClientGetSQLDatabaseResponse{}, err
 	}
@@ -1369,7 +1430,7 @@ func (client *SQLResourcesClient) getSQLDatabaseThroughputCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -1377,7 +1438,7 @@ func (client *SQLResourcesClient) getSQLDatabaseThroughputCreateRequest(ctx cont
 
 // getSQLDatabaseThroughputHandleResponse handles the GetSQLDatabaseThroughput response.
 func (client *SQLResourcesClient) getSQLDatabaseThroughputHandleResponse(resp *http.Response) (SQLResourcesClientGetSQLDatabaseThroughputResponse, error) {
-	result := SQLResourcesClientGetSQLDatabaseThroughputResponse{RawResponse: resp}
+	result := SQLResourcesClientGetSQLDatabaseThroughputResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ThroughputSettingsGetResults); err != nil {
 		return SQLResourcesClientGetSQLDatabaseThroughputResponse{}, err
 	}
@@ -1430,7 +1491,7 @@ func (client *SQLResourcesClient) getSQLRoleAssignmentCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -1438,7 +1499,7 @@ func (client *SQLResourcesClient) getSQLRoleAssignmentCreateRequest(ctx context.
 
 // getSQLRoleAssignmentHandleResponse handles the GetSQLRoleAssignment response.
 func (client *SQLResourcesClient) getSQLRoleAssignmentHandleResponse(resp *http.Response) (SQLResourcesClientGetSQLRoleAssignmentResponse, error) {
-	result := SQLResourcesClientGetSQLRoleAssignmentResponse{RawResponse: resp}
+	result := SQLResourcesClientGetSQLRoleAssignmentResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLRoleAssignmentGetResults); err != nil {
 		return SQLResourcesClientGetSQLRoleAssignmentResponse{}, err
 	}
@@ -1491,7 +1552,7 @@ func (client *SQLResourcesClient) getSQLRoleDefinitionCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -1499,7 +1560,7 @@ func (client *SQLResourcesClient) getSQLRoleDefinitionCreateRequest(ctx context.
 
 // getSQLRoleDefinitionHandleResponse handles the GetSQLRoleDefinition response.
 func (client *SQLResourcesClient) getSQLRoleDefinitionHandleResponse(resp *http.Response) (SQLResourcesClientGetSQLRoleDefinitionResponse, error) {
-	result := SQLResourcesClientGetSQLRoleDefinitionResponse{RawResponse: resp}
+	result := SQLResourcesClientGetSQLRoleDefinitionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLRoleDefinitionGetResults); err != nil {
 		return SQLResourcesClientGetSQLRoleDefinitionResponse{}, err
 	}
@@ -1562,7 +1623,7 @@ func (client *SQLResourcesClient) getSQLStoredProcedureCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -1570,7 +1631,7 @@ func (client *SQLResourcesClient) getSQLStoredProcedureCreateRequest(ctx context
 
 // getSQLStoredProcedureHandleResponse handles the GetSQLStoredProcedure response.
 func (client *SQLResourcesClient) getSQLStoredProcedureHandleResponse(resp *http.Response) (SQLResourcesClientGetSQLStoredProcedureResponse, error) {
-	result := SQLResourcesClientGetSQLStoredProcedureResponse{RawResponse: resp}
+	result := SQLResourcesClientGetSQLStoredProcedureResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLStoredProcedureGetResults); err != nil {
 		return SQLResourcesClientGetSQLStoredProcedureResponse{}, err
 	}
@@ -1633,7 +1694,7 @@ func (client *SQLResourcesClient) getSQLTriggerCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -1641,7 +1702,7 @@ func (client *SQLResourcesClient) getSQLTriggerCreateRequest(ctx context.Context
 
 // getSQLTriggerHandleResponse handles the GetSQLTrigger response.
 func (client *SQLResourcesClient) getSQLTriggerHandleResponse(resp *http.Response) (SQLResourcesClientGetSQLTriggerResponse, error) {
-	result := SQLResourcesClientGetSQLTriggerResponse{RawResponse: resp}
+	result := SQLResourcesClientGetSQLTriggerResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLTriggerGetResults); err != nil {
 		return SQLResourcesClientGetSQLTriggerResponse{}, err
 	}
@@ -1704,7 +1765,7 @@ func (client *SQLResourcesClient) getSQLUserDefinedFunctionCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -1712,11 +1773,153 @@ func (client *SQLResourcesClient) getSQLUserDefinedFunctionCreateRequest(ctx con
 
 // getSQLUserDefinedFunctionHandleResponse handles the GetSQLUserDefinedFunction response.
 func (client *SQLResourcesClient) getSQLUserDefinedFunctionHandleResponse(resp *http.Response) (SQLResourcesClientGetSQLUserDefinedFunctionResponse, error) {
-	result := SQLResourcesClientGetSQLUserDefinedFunctionResponse{RawResponse: resp}
+	result := SQLResourcesClientGetSQLUserDefinedFunctionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLUserDefinedFunctionGetResults); err != nil {
 		return SQLResourcesClientGetSQLUserDefinedFunctionResponse{}, err
 	}
 	return result, nil
+}
+
+// ListClientEncryptionKeys - Lists the ClientEncryptionKeys under an existing Azure Cosmos DB SQL database.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// databaseName - Cosmos DB database name.
+// options - SQLResourcesClientListClientEncryptionKeysOptions contains the optional parameters for the SQLResourcesClient.ListClientEncryptionKeys
+// method.
+func (client *SQLResourcesClient) ListClientEncryptionKeys(resourceGroupName string, accountName string, databaseName string, options *SQLResourcesClientListClientEncryptionKeysOptions) *runtime.Pager[SQLResourcesClientListClientEncryptionKeysResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SQLResourcesClientListClientEncryptionKeysResponse]{
+		More: func(page SQLResourcesClientListClientEncryptionKeysResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *SQLResourcesClientListClientEncryptionKeysResponse) (SQLResourcesClientListClientEncryptionKeysResponse, error) {
+			req, err := client.listClientEncryptionKeysCreateRequest(ctx, resourceGroupName, accountName, databaseName, options)
+			if err != nil {
+				return SQLResourcesClientListClientEncryptionKeysResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SQLResourcesClientListClientEncryptionKeysResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SQLResourcesClientListClientEncryptionKeysResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listClientEncryptionKeysHandleResponse(resp)
+		},
+	})
+}
+
+// listClientEncryptionKeysCreateRequest creates the ListClientEncryptionKeys request.
+func (client *SQLResourcesClient) listClientEncryptionKeysCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *SQLResourcesClientListClientEncryptionKeysOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/clientEncryptionKeys"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if databaseName == "" {
+		return nil, errors.New("parameter databaseName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-02-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, nil
+}
+
+// listClientEncryptionKeysHandleResponse handles the ListClientEncryptionKeys response.
+func (client *SQLResourcesClient) listClientEncryptionKeysHandleResponse(resp *http.Response) (SQLResourcesClientListClientEncryptionKeysResponse, error) {
+	result := SQLResourcesClientListClientEncryptionKeysResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ClientEncryptionKeysListResult); err != nil {
+		return SQLResourcesClientListClientEncryptionKeysResponse{}, err
+	}
+	return result, nil
+}
+
+// BeginListSQLContainerPartitionMerge - Merges the partitions of a SQL Container
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// databaseName - Cosmos DB database name.
+// containerName - Cosmos DB container name.
+// mergeParameters - The parameters for the merge operation.
+// options - SQLResourcesClientBeginListSQLContainerPartitionMergeOptions contains the optional parameters for the SQLResourcesClient.BeginListSQLContainerPartitionMerge
+// method.
+func (client *SQLResourcesClient) BeginListSQLContainerPartitionMerge(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, mergeParameters MergeParameters, options *SQLResourcesClientBeginListSQLContainerPartitionMergeOptions) (*armruntime.Poller[SQLResourcesClientListSQLContainerPartitionMergeResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.listSQLContainerPartitionMerge(ctx, resourceGroupName, accountName, databaseName, containerName, mergeParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[SQLResourcesClientListSQLContainerPartitionMergeResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[SQLResourcesClientListSQLContainerPartitionMergeResponse](options.ResumeToken, client.pl, nil)
+	}
+}
+
+// ListSQLContainerPartitionMerge - Merges the partitions of a SQL Container
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SQLResourcesClient) listSQLContainerPartitionMerge(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, mergeParameters MergeParameters, options *SQLResourcesClientBeginListSQLContainerPartitionMergeOptions) (*http.Response, error) {
+	req, err := client.listSQLContainerPartitionMergeCreateRequest(ctx, resourceGroupName, accountName, databaseName, containerName, mergeParameters, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(resp)
+	}
+	return resp, nil
+}
+
+// listSQLContainerPartitionMergeCreateRequest creates the ListSQLContainerPartitionMerge request.
+func (client *SQLResourcesClient) listSQLContainerPartitionMergeCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, mergeParameters MergeParameters, options *SQLResourcesClientBeginListSQLContainerPartitionMergeOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/partitionMerge"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if databaseName == "" {
+		return nil, errors.New("parameter databaseName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
+	if containerName == "" {
+		return nil, errors.New("parameter containerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{containerName}", url.PathEscape(containerName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-02-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, mergeParameters)
 }
 
 // ListSQLContainers - Lists the SQL container under an existing Azure Cosmos DB database account.
@@ -1726,19 +1929,26 @@ func (client *SQLResourcesClient) getSQLUserDefinedFunctionHandleResponse(resp *
 // databaseName - Cosmos DB database name.
 // options - SQLResourcesClientListSQLContainersOptions contains the optional parameters for the SQLResourcesClient.ListSQLContainers
 // method.
-func (client *SQLResourcesClient) ListSQLContainers(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *SQLResourcesClientListSQLContainersOptions) (SQLResourcesClientListSQLContainersResponse, error) {
-	req, err := client.listSQLContainersCreateRequest(ctx, resourceGroupName, accountName, databaseName, options)
-	if err != nil {
-		return SQLResourcesClientListSQLContainersResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return SQLResourcesClientListSQLContainersResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SQLResourcesClientListSQLContainersResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listSQLContainersHandleResponse(resp)
+func (client *SQLResourcesClient) ListSQLContainers(resourceGroupName string, accountName string, databaseName string, options *SQLResourcesClientListSQLContainersOptions) *runtime.Pager[SQLResourcesClientListSQLContainersResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SQLResourcesClientListSQLContainersResponse]{
+		More: func(page SQLResourcesClientListSQLContainersResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *SQLResourcesClientListSQLContainersResponse) (SQLResourcesClientListSQLContainersResponse, error) {
+			req, err := client.listSQLContainersCreateRequest(ctx, resourceGroupName, accountName, databaseName, options)
+			if err != nil {
+				return SQLResourcesClientListSQLContainersResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SQLResourcesClientListSQLContainersResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SQLResourcesClientListSQLContainersResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listSQLContainersHandleResponse(resp)
+		},
+	})
 }
 
 // listSQLContainersCreateRequest creates the ListSQLContainers request.
@@ -1765,7 +1975,7 @@ func (client *SQLResourcesClient) listSQLContainersCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -1773,7 +1983,7 @@ func (client *SQLResourcesClient) listSQLContainersCreateRequest(ctx context.Con
 
 // listSQLContainersHandleResponse handles the ListSQLContainers response.
 func (client *SQLResourcesClient) listSQLContainersHandleResponse(resp *http.Response) (SQLResourcesClientListSQLContainersResponse, error) {
-	result := SQLResourcesClientListSQLContainersResponse{RawResponse: resp}
+	result := SQLResourcesClientListSQLContainersResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLContainerListResult); err != nil {
 		return SQLResourcesClientListSQLContainersResponse{}, err
 	}
@@ -1786,19 +1996,26 @@ func (client *SQLResourcesClient) listSQLContainersHandleResponse(resp *http.Res
 // accountName - Cosmos DB database account name.
 // options - SQLResourcesClientListSQLDatabasesOptions contains the optional parameters for the SQLResourcesClient.ListSQLDatabases
 // method.
-func (client *SQLResourcesClient) ListSQLDatabases(ctx context.Context, resourceGroupName string, accountName string, options *SQLResourcesClientListSQLDatabasesOptions) (SQLResourcesClientListSQLDatabasesResponse, error) {
-	req, err := client.listSQLDatabasesCreateRequest(ctx, resourceGroupName, accountName, options)
-	if err != nil {
-		return SQLResourcesClientListSQLDatabasesResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return SQLResourcesClientListSQLDatabasesResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SQLResourcesClientListSQLDatabasesResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listSQLDatabasesHandleResponse(resp)
+func (client *SQLResourcesClient) ListSQLDatabases(resourceGroupName string, accountName string, options *SQLResourcesClientListSQLDatabasesOptions) *runtime.Pager[SQLResourcesClientListSQLDatabasesResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SQLResourcesClientListSQLDatabasesResponse]{
+		More: func(page SQLResourcesClientListSQLDatabasesResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *SQLResourcesClientListSQLDatabasesResponse) (SQLResourcesClientListSQLDatabasesResponse, error) {
+			req, err := client.listSQLDatabasesCreateRequest(ctx, resourceGroupName, accountName, options)
+			if err != nil {
+				return SQLResourcesClientListSQLDatabasesResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SQLResourcesClientListSQLDatabasesResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SQLResourcesClientListSQLDatabasesResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listSQLDatabasesHandleResponse(resp)
+		},
+	})
 }
 
 // listSQLDatabasesCreateRequest creates the ListSQLDatabases request.
@@ -1821,7 +2038,7 @@ func (client *SQLResourcesClient) listSQLDatabasesCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -1829,7 +2046,7 @@ func (client *SQLResourcesClient) listSQLDatabasesCreateRequest(ctx context.Cont
 
 // listSQLDatabasesHandleResponse handles the ListSQLDatabases response.
 func (client *SQLResourcesClient) listSQLDatabasesHandleResponse(resp *http.Response) (SQLResourcesClientListSQLDatabasesResponse, error) {
-	result := SQLResourcesClientListSQLDatabasesResponse{RawResponse: resp}
+	result := SQLResourcesClientListSQLDatabasesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLDatabaseListResult); err != nil {
 		return SQLResourcesClientListSQLDatabasesResponse{}, err
 	}
@@ -1842,19 +2059,26 @@ func (client *SQLResourcesClient) listSQLDatabasesHandleResponse(resp *http.Resp
 // accountName - Cosmos DB database account name.
 // options - SQLResourcesClientListSQLRoleAssignmentsOptions contains the optional parameters for the SQLResourcesClient.ListSQLRoleAssignments
 // method.
-func (client *SQLResourcesClient) ListSQLRoleAssignments(ctx context.Context, resourceGroupName string, accountName string, options *SQLResourcesClientListSQLRoleAssignmentsOptions) (SQLResourcesClientListSQLRoleAssignmentsResponse, error) {
-	req, err := client.listSQLRoleAssignmentsCreateRequest(ctx, resourceGroupName, accountName, options)
-	if err != nil {
-		return SQLResourcesClientListSQLRoleAssignmentsResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return SQLResourcesClientListSQLRoleAssignmentsResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SQLResourcesClientListSQLRoleAssignmentsResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listSQLRoleAssignmentsHandleResponse(resp)
+func (client *SQLResourcesClient) ListSQLRoleAssignments(resourceGroupName string, accountName string, options *SQLResourcesClientListSQLRoleAssignmentsOptions) *runtime.Pager[SQLResourcesClientListSQLRoleAssignmentsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SQLResourcesClientListSQLRoleAssignmentsResponse]{
+		More: func(page SQLResourcesClientListSQLRoleAssignmentsResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *SQLResourcesClientListSQLRoleAssignmentsResponse) (SQLResourcesClientListSQLRoleAssignmentsResponse, error) {
+			req, err := client.listSQLRoleAssignmentsCreateRequest(ctx, resourceGroupName, accountName, options)
+			if err != nil {
+				return SQLResourcesClientListSQLRoleAssignmentsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SQLResourcesClientListSQLRoleAssignmentsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SQLResourcesClientListSQLRoleAssignmentsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listSQLRoleAssignmentsHandleResponse(resp)
+		},
+	})
 }
 
 // listSQLRoleAssignmentsCreateRequest creates the ListSQLRoleAssignments request.
@@ -1877,7 +2101,7 @@ func (client *SQLResourcesClient) listSQLRoleAssignmentsCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -1885,7 +2109,7 @@ func (client *SQLResourcesClient) listSQLRoleAssignmentsCreateRequest(ctx contex
 
 // listSQLRoleAssignmentsHandleResponse handles the ListSQLRoleAssignments response.
 func (client *SQLResourcesClient) listSQLRoleAssignmentsHandleResponse(resp *http.Response) (SQLResourcesClientListSQLRoleAssignmentsResponse, error) {
-	result := SQLResourcesClientListSQLRoleAssignmentsResponse{RawResponse: resp}
+	result := SQLResourcesClientListSQLRoleAssignmentsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLRoleAssignmentListResult); err != nil {
 		return SQLResourcesClientListSQLRoleAssignmentsResponse{}, err
 	}
@@ -1898,19 +2122,26 @@ func (client *SQLResourcesClient) listSQLRoleAssignmentsHandleResponse(resp *htt
 // accountName - Cosmos DB database account name.
 // options - SQLResourcesClientListSQLRoleDefinitionsOptions contains the optional parameters for the SQLResourcesClient.ListSQLRoleDefinitions
 // method.
-func (client *SQLResourcesClient) ListSQLRoleDefinitions(ctx context.Context, resourceGroupName string, accountName string, options *SQLResourcesClientListSQLRoleDefinitionsOptions) (SQLResourcesClientListSQLRoleDefinitionsResponse, error) {
-	req, err := client.listSQLRoleDefinitionsCreateRequest(ctx, resourceGroupName, accountName, options)
-	if err != nil {
-		return SQLResourcesClientListSQLRoleDefinitionsResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return SQLResourcesClientListSQLRoleDefinitionsResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SQLResourcesClientListSQLRoleDefinitionsResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listSQLRoleDefinitionsHandleResponse(resp)
+func (client *SQLResourcesClient) ListSQLRoleDefinitions(resourceGroupName string, accountName string, options *SQLResourcesClientListSQLRoleDefinitionsOptions) *runtime.Pager[SQLResourcesClientListSQLRoleDefinitionsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SQLResourcesClientListSQLRoleDefinitionsResponse]{
+		More: func(page SQLResourcesClientListSQLRoleDefinitionsResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *SQLResourcesClientListSQLRoleDefinitionsResponse) (SQLResourcesClientListSQLRoleDefinitionsResponse, error) {
+			req, err := client.listSQLRoleDefinitionsCreateRequest(ctx, resourceGroupName, accountName, options)
+			if err != nil {
+				return SQLResourcesClientListSQLRoleDefinitionsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SQLResourcesClientListSQLRoleDefinitionsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SQLResourcesClientListSQLRoleDefinitionsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listSQLRoleDefinitionsHandleResponse(resp)
+		},
+	})
 }
 
 // listSQLRoleDefinitionsCreateRequest creates the ListSQLRoleDefinitions request.
@@ -1933,7 +2164,7 @@ func (client *SQLResourcesClient) listSQLRoleDefinitionsCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -1941,7 +2172,7 @@ func (client *SQLResourcesClient) listSQLRoleDefinitionsCreateRequest(ctx contex
 
 // listSQLRoleDefinitionsHandleResponse handles the ListSQLRoleDefinitions response.
 func (client *SQLResourcesClient) listSQLRoleDefinitionsHandleResponse(resp *http.Response) (SQLResourcesClientListSQLRoleDefinitionsResponse, error) {
-	result := SQLResourcesClientListSQLRoleDefinitionsResponse{RawResponse: resp}
+	result := SQLResourcesClientListSQLRoleDefinitionsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLRoleDefinitionListResult); err != nil {
 		return SQLResourcesClientListSQLRoleDefinitionsResponse{}, err
 	}
@@ -1956,19 +2187,26 @@ func (client *SQLResourcesClient) listSQLRoleDefinitionsHandleResponse(resp *htt
 // containerName - Cosmos DB container name.
 // options - SQLResourcesClientListSQLStoredProceduresOptions contains the optional parameters for the SQLResourcesClient.ListSQLStoredProcedures
 // method.
-func (client *SQLResourcesClient) ListSQLStoredProcedures(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesClientListSQLStoredProceduresOptions) (SQLResourcesClientListSQLStoredProceduresResponse, error) {
-	req, err := client.listSQLStoredProceduresCreateRequest(ctx, resourceGroupName, accountName, databaseName, containerName, options)
-	if err != nil {
-		return SQLResourcesClientListSQLStoredProceduresResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return SQLResourcesClientListSQLStoredProceduresResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SQLResourcesClientListSQLStoredProceduresResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listSQLStoredProceduresHandleResponse(resp)
+func (client *SQLResourcesClient) ListSQLStoredProcedures(resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesClientListSQLStoredProceduresOptions) *runtime.Pager[SQLResourcesClientListSQLStoredProceduresResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SQLResourcesClientListSQLStoredProceduresResponse]{
+		More: func(page SQLResourcesClientListSQLStoredProceduresResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *SQLResourcesClientListSQLStoredProceduresResponse) (SQLResourcesClientListSQLStoredProceduresResponse, error) {
+			req, err := client.listSQLStoredProceduresCreateRequest(ctx, resourceGroupName, accountName, databaseName, containerName, options)
+			if err != nil {
+				return SQLResourcesClientListSQLStoredProceduresResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SQLResourcesClientListSQLStoredProceduresResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SQLResourcesClientListSQLStoredProceduresResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listSQLStoredProceduresHandleResponse(resp)
+		},
+	})
 }
 
 // listSQLStoredProceduresCreateRequest creates the ListSQLStoredProcedures request.
@@ -1999,7 +2237,7 @@ func (client *SQLResourcesClient) listSQLStoredProceduresCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -2007,7 +2245,7 @@ func (client *SQLResourcesClient) listSQLStoredProceduresCreateRequest(ctx conte
 
 // listSQLStoredProceduresHandleResponse handles the ListSQLStoredProcedures response.
 func (client *SQLResourcesClient) listSQLStoredProceduresHandleResponse(resp *http.Response) (SQLResourcesClientListSQLStoredProceduresResponse, error) {
-	result := SQLResourcesClientListSQLStoredProceduresResponse{RawResponse: resp}
+	result := SQLResourcesClientListSQLStoredProceduresResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLStoredProcedureListResult); err != nil {
 		return SQLResourcesClientListSQLStoredProceduresResponse{}, err
 	}
@@ -2022,19 +2260,26 @@ func (client *SQLResourcesClient) listSQLStoredProceduresHandleResponse(resp *ht
 // containerName - Cosmos DB container name.
 // options - SQLResourcesClientListSQLTriggersOptions contains the optional parameters for the SQLResourcesClient.ListSQLTriggers
 // method.
-func (client *SQLResourcesClient) ListSQLTriggers(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesClientListSQLTriggersOptions) (SQLResourcesClientListSQLTriggersResponse, error) {
-	req, err := client.listSQLTriggersCreateRequest(ctx, resourceGroupName, accountName, databaseName, containerName, options)
-	if err != nil {
-		return SQLResourcesClientListSQLTriggersResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return SQLResourcesClientListSQLTriggersResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SQLResourcesClientListSQLTriggersResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listSQLTriggersHandleResponse(resp)
+func (client *SQLResourcesClient) ListSQLTriggers(resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesClientListSQLTriggersOptions) *runtime.Pager[SQLResourcesClientListSQLTriggersResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SQLResourcesClientListSQLTriggersResponse]{
+		More: func(page SQLResourcesClientListSQLTriggersResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *SQLResourcesClientListSQLTriggersResponse) (SQLResourcesClientListSQLTriggersResponse, error) {
+			req, err := client.listSQLTriggersCreateRequest(ctx, resourceGroupName, accountName, databaseName, containerName, options)
+			if err != nil {
+				return SQLResourcesClientListSQLTriggersResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SQLResourcesClientListSQLTriggersResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SQLResourcesClientListSQLTriggersResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listSQLTriggersHandleResponse(resp)
+		},
+	})
 }
 
 // listSQLTriggersCreateRequest creates the ListSQLTriggers request.
@@ -2065,7 +2310,7 @@ func (client *SQLResourcesClient) listSQLTriggersCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -2073,7 +2318,7 @@ func (client *SQLResourcesClient) listSQLTriggersCreateRequest(ctx context.Conte
 
 // listSQLTriggersHandleResponse handles the ListSQLTriggers response.
 func (client *SQLResourcesClient) listSQLTriggersHandleResponse(resp *http.Response) (SQLResourcesClientListSQLTriggersResponse, error) {
-	result := SQLResourcesClientListSQLTriggersResponse{RawResponse: resp}
+	result := SQLResourcesClientListSQLTriggersResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLTriggerListResult); err != nil {
 		return SQLResourcesClientListSQLTriggersResponse{}, err
 	}
@@ -2088,19 +2333,26 @@ func (client *SQLResourcesClient) listSQLTriggersHandleResponse(resp *http.Respo
 // containerName - Cosmos DB container name.
 // options - SQLResourcesClientListSQLUserDefinedFunctionsOptions contains the optional parameters for the SQLResourcesClient.ListSQLUserDefinedFunctions
 // method.
-func (client *SQLResourcesClient) ListSQLUserDefinedFunctions(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesClientListSQLUserDefinedFunctionsOptions) (SQLResourcesClientListSQLUserDefinedFunctionsResponse, error) {
-	req, err := client.listSQLUserDefinedFunctionsCreateRequest(ctx, resourceGroupName, accountName, databaseName, containerName, options)
-	if err != nil {
-		return SQLResourcesClientListSQLUserDefinedFunctionsResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return SQLResourcesClientListSQLUserDefinedFunctionsResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SQLResourcesClientListSQLUserDefinedFunctionsResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listSQLUserDefinedFunctionsHandleResponse(resp)
+func (client *SQLResourcesClient) ListSQLUserDefinedFunctions(resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesClientListSQLUserDefinedFunctionsOptions) *runtime.Pager[SQLResourcesClientListSQLUserDefinedFunctionsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SQLResourcesClientListSQLUserDefinedFunctionsResponse]{
+		More: func(page SQLResourcesClientListSQLUserDefinedFunctionsResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *SQLResourcesClientListSQLUserDefinedFunctionsResponse) (SQLResourcesClientListSQLUserDefinedFunctionsResponse, error) {
+			req, err := client.listSQLUserDefinedFunctionsCreateRequest(ctx, resourceGroupName, accountName, databaseName, containerName, options)
+			if err != nil {
+				return SQLResourcesClientListSQLUserDefinedFunctionsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SQLResourcesClientListSQLUserDefinedFunctionsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SQLResourcesClientListSQLUserDefinedFunctionsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listSQLUserDefinedFunctionsHandleResponse(resp)
+		},
+	})
 }
 
 // listSQLUserDefinedFunctionsCreateRequest creates the ListSQLUserDefinedFunctions request.
@@ -2131,7 +2383,7 @@ func (client *SQLResourcesClient) listSQLUserDefinedFunctionsCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -2139,7 +2391,7 @@ func (client *SQLResourcesClient) listSQLUserDefinedFunctionsCreateRequest(ctx c
 
 // listSQLUserDefinedFunctionsHandleResponse handles the ListSQLUserDefinedFunctions response.
 func (client *SQLResourcesClient) listSQLUserDefinedFunctionsHandleResponse(resp *http.Response) (SQLResourcesClientListSQLUserDefinedFunctionsResponse, error) {
-	result := SQLResourcesClientListSQLUserDefinedFunctionsResponse{RawResponse: resp}
+	result := SQLResourcesClientListSQLUserDefinedFunctionsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLUserDefinedFunctionListResult); err != nil {
 		return SQLResourcesClientListSQLUserDefinedFunctionsResponse{}, err
 	}
@@ -2154,22 +2406,16 @@ func (client *SQLResourcesClient) listSQLUserDefinedFunctionsHandleResponse(resp
 // containerName - Cosmos DB container name.
 // options - SQLResourcesClientBeginMigrateSQLContainerToAutoscaleOptions contains the optional parameters for the SQLResourcesClient.BeginMigrateSQLContainerToAutoscale
 // method.
-func (client *SQLResourcesClient) BeginMigrateSQLContainerToAutoscale(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesClientBeginMigrateSQLContainerToAutoscaleOptions) (SQLResourcesClientMigrateSQLContainerToAutoscalePollerResponse, error) {
-	resp, err := client.migrateSQLContainerToAutoscale(ctx, resourceGroupName, accountName, databaseName, containerName, options)
-	if err != nil {
-		return SQLResourcesClientMigrateSQLContainerToAutoscalePollerResponse{}, err
+func (client *SQLResourcesClient) BeginMigrateSQLContainerToAutoscale(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesClientBeginMigrateSQLContainerToAutoscaleOptions) (*armruntime.Poller[SQLResourcesClientMigrateSQLContainerToAutoscaleResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.migrateSQLContainerToAutoscale(ctx, resourceGroupName, accountName, databaseName, containerName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[SQLResourcesClientMigrateSQLContainerToAutoscaleResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[SQLResourcesClientMigrateSQLContainerToAutoscaleResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SQLResourcesClientMigrateSQLContainerToAutoscalePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SQLResourcesClient.MigrateSQLContainerToAutoscale", "", resp, client.pl)
-	if err != nil {
-		return SQLResourcesClientMigrateSQLContainerToAutoscalePollerResponse{}, err
-	}
-	result.Poller = &SQLResourcesClientMigrateSQLContainerToAutoscalePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // MigrateSQLContainerToAutoscale - Migrate an Azure Cosmos DB SQL container from manual throughput to autoscale
@@ -2217,7 +2463,7 @@ func (client *SQLResourcesClient) migrateSQLContainerToAutoscaleCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -2231,22 +2477,16 @@ func (client *SQLResourcesClient) migrateSQLContainerToAutoscaleCreateRequest(ct
 // containerName - Cosmos DB container name.
 // options - SQLResourcesClientBeginMigrateSQLContainerToManualThroughputOptions contains the optional parameters for the
 // SQLResourcesClient.BeginMigrateSQLContainerToManualThroughput method.
-func (client *SQLResourcesClient) BeginMigrateSQLContainerToManualThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesClientBeginMigrateSQLContainerToManualThroughputOptions) (SQLResourcesClientMigrateSQLContainerToManualThroughputPollerResponse, error) {
-	resp, err := client.migrateSQLContainerToManualThroughput(ctx, resourceGroupName, accountName, databaseName, containerName, options)
-	if err != nil {
-		return SQLResourcesClientMigrateSQLContainerToManualThroughputPollerResponse{}, err
+func (client *SQLResourcesClient) BeginMigrateSQLContainerToManualThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesClientBeginMigrateSQLContainerToManualThroughputOptions) (*armruntime.Poller[SQLResourcesClientMigrateSQLContainerToManualThroughputResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.migrateSQLContainerToManualThroughput(ctx, resourceGroupName, accountName, databaseName, containerName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[SQLResourcesClientMigrateSQLContainerToManualThroughputResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[SQLResourcesClientMigrateSQLContainerToManualThroughputResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SQLResourcesClientMigrateSQLContainerToManualThroughputPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SQLResourcesClient.MigrateSQLContainerToManualThroughput", "", resp, client.pl)
-	if err != nil {
-		return SQLResourcesClientMigrateSQLContainerToManualThroughputPollerResponse{}, err
-	}
-	result.Poller = &SQLResourcesClientMigrateSQLContainerToManualThroughputPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // MigrateSQLContainerToManualThroughput - Migrate an Azure Cosmos DB SQL container from autoscale to manual throughput
@@ -2294,7 +2534,7 @@ func (client *SQLResourcesClient) migrateSQLContainerToManualThroughputCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -2307,22 +2547,16 @@ func (client *SQLResourcesClient) migrateSQLContainerToManualThroughputCreateReq
 // databaseName - Cosmos DB database name.
 // options - SQLResourcesClientBeginMigrateSQLDatabaseToAutoscaleOptions contains the optional parameters for the SQLResourcesClient.BeginMigrateSQLDatabaseToAutoscale
 // method.
-func (client *SQLResourcesClient) BeginMigrateSQLDatabaseToAutoscale(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *SQLResourcesClientBeginMigrateSQLDatabaseToAutoscaleOptions) (SQLResourcesClientMigrateSQLDatabaseToAutoscalePollerResponse, error) {
-	resp, err := client.migrateSQLDatabaseToAutoscale(ctx, resourceGroupName, accountName, databaseName, options)
-	if err != nil {
-		return SQLResourcesClientMigrateSQLDatabaseToAutoscalePollerResponse{}, err
+func (client *SQLResourcesClient) BeginMigrateSQLDatabaseToAutoscale(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *SQLResourcesClientBeginMigrateSQLDatabaseToAutoscaleOptions) (*armruntime.Poller[SQLResourcesClientMigrateSQLDatabaseToAutoscaleResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.migrateSQLDatabaseToAutoscale(ctx, resourceGroupName, accountName, databaseName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[SQLResourcesClientMigrateSQLDatabaseToAutoscaleResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[SQLResourcesClientMigrateSQLDatabaseToAutoscaleResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SQLResourcesClientMigrateSQLDatabaseToAutoscalePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SQLResourcesClient.MigrateSQLDatabaseToAutoscale", "", resp, client.pl)
-	if err != nil {
-		return SQLResourcesClientMigrateSQLDatabaseToAutoscalePollerResponse{}, err
-	}
-	result.Poller = &SQLResourcesClientMigrateSQLDatabaseToAutoscalePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // MigrateSQLDatabaseToAutoscale - Migrate an Azure Cosmos DB SQL database from manual throughput to autoscale
@@ -2366,7 +2600,7 @@ func (client *SQLResourcesClient) migrateSQLDatabaseToAutoscaleCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -2379,22 +2613,16 @@ func (client *SQLResourcesClient) migrateSQLDatabaseToAutoscaleCreateRequest(ctx
 // databaseName - Cosmos DB database name.
 // options - SQLResourcesClientBeginMigrateSQLDatabaseToManualThroughputOptions contains the optional parameters for the SQLResourcesClient.BeginMigrateSQLDatabaseToManualThroughput
 // method.
-func (client *SQLResourcesClient) BeginMigrateSQLDatabaseToManualThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *SQLResourcesClientBeginMigrateSQLDatabaseToManualThroughputOptions) (SQLResourcesClientMigrateSQLDatabaseToManualThroughputPollerResponse, error) {
-	resp, err := client.migrateSQLDatabaseToManualThroughput(ctx, resourceGroupName, accountName, databaseName, options)
-	if err != nil {
-		return SQLResourcesClientMigrateSQLDatabaseToManualThroughputPollerResponse{}, err
+func (client *SQLResourcesClient) BeginMigrateSQLDatabaseToManualThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *SQLResourcesClientBeginMigrateSQLDatabaseToManualThroughputOptions) (*armruntime.Poller[SQLResourcesClientMigrateSQLDatabaseToManualThroughputResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.migrateSQLDatabaseToManualThroughput(ctx, resourceGroupName, accountName, databaseName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[SQLResourcesClientMigrateSQLDatabaseToManualThroughputResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[SQLResourcesClientMigrateSQLDatabaseToManualThroughputResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SQLResourcesClientMigrateSQLDatabaseToManualThroughputPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SQLResourcesClient.MigrateSQLDatabaseToManualThroughput", "", resp, client.pl)
-	if err != nil {
-		return SQLResourcesClientMigrateSQLDatabaseToManualThroughputPollerResponse{}, err
-	}
-	result.Poller = &SQLResourcesClientMigrateSQLDatabaseToManualThroughputPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // MigrateSQLDatabaseToManualThroughput - Migrate an Azure Cosmos DB SQL database from autoscale to manual throughput
@@ -2438,7 +2666,7 @@ func (client *SQLResourcesClient) migrateSQLDatabaseToManualThroughputCreateRequ
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -2453,22 +2681,18 @@ func (client *SQLResourcesClient) migrateSQLDatabaseToManualThroughputCreateRequ
 // location - The name of the continuous backup restore location.
 // options - SQLResourcesClientBeginRetrieveContinuousBackupInformationOptions contains the optional parameters for the SQLResourcesClient.BeginRetrieveContinuousBackupInformation
 // method.
-func (client *SQLResourcesClient) BeginRetrieveContinuousBackupInformation(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, location ContinuousBackupRestoreLocation, options *SQLResourcesClientBeginRetrieveContinuousBackupInformationOptions) (SQLResourcesClientRetrieveContinuousBackupInformationPollerResponse, error) {
-	resp, err := client.retrieveContinuousBackupInformation(ctx, resourceGroupName, accountName, databaseName, containerName, location, options)
-	if err != nil {
-		return SQLResourcesClientRetrieveContinuousBackupInformationPollerResponse{}, err
+func (client *SQLResourcesClient) BeginRetrieveContinuousBackupInformation(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, location ContinuousBackupRestoreLocation, options *SQLResourcesClientBeginRetrieveContinuousBackupInformationOptions) (*armruntime.Poller[SQLResourcesClientRetrieveContinuousBackupInformationResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.retrieveContinuousBackupInformation(ctx, resourceGroupName, accountName, databaseName, containerName, location, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[SQLResourcesClientRetrieveContinuousBackupInformationResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[SQLResourcesClientRetrieveContinuousBackupInformationResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SQLResourcesClientRetrieveContinuousBackupInformationPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SQLResourcesClient.RetrieveContinuousBackupInformation", "location", resp, client.pl)
-	if err != nil {
-		return SQLResourcesClientRetrieveContinuousBackupInformationPollerResponse{}, err
-	}
-	result.Poller = &SQLResourcesClientRetrieveContinuousBackupInformationPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // RetrieveContinuousBackupInformation - Retrieves continuous backup information for a container resource.
@@ -2516,7 +2740,7 @@ func (client *SQLResourcesClient) retrieveContinuousBackupInformationCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, location)
@@ -2531,22 +2755,16 @@ func (client *SQLResourcesClient) retrieveContinuousBackupInformationCreateReque
 // updateThroughputParameters - The parameters to provide for the RUs per second of the current SQL container.
 // options - SQLResourcesClientBeginUpdateSQLContainerThroughputOptions contains the optional parameters for the SQLResourcesClient.BeginUpdateSQLContainerThroughput
 // method.
-func (client *SQLResourcesClient) BeginUpdateSQLContainerThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *SQLResourcesClientBeginUpdateSQLContainerThroughputOptions) (SQLResourcesClientUpdateSQLContainerThroughputPollerResponse, error) {
-	resp, err := client.updateSQLContainerThroughput(ctx, resourceGroupName, accountName, databaseName, containerName, updateThroughputParameters, options)
-	if err != nil {
-		return SQLResourcesClientUpdateSQLContainerThroughputPollerResponse{}, err
+func (client *SQLResourcesClient) BeginUpdateSQLContainerThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *SQLResourcesClientBeginUpdateSQLContainerThroughputOptions) (*armruntime.Poller[SQLResourcesClientUpdateSQLContainerThroughputResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.updateSQLContainerThroughput(ctx, resourceGroupName, accountName, databaseName, containerName, updateThroughputParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[SQLResourcesClientUpdateSQLContainerThroughputResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[SQLResourcesClientUpdateSQLContainerThroughputResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SQLResourcesClientUpdateSQLContainerThroughputPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SQLResourcesClient.UpdateSQLContainerThroughput", "", resp, client.pl)
-	if err != nil {
-		return SQLResourcesClientUpdateSQLContainerThroughputPollerResponse{}, err
-	}
-	result.Poller = &SQLResourcesClientUpdateSQLContainerThroughputPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // UpdateSQLContainerThroughput - Update RUs per second of an Azure Cosmos DB SQL container
@@ -2594,7 +2812,7 @@ func (client *SQLResourcesClient) updateSQLContainerThroughputCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, updateThroughputParameters)
@@ -2608,22 +2826,16 @@ func (client *SQLResourcesClient) updateSQLContainerThroughputCreateRequest(ctx 
 // updateThroughputParameters - The parameters to provide for the RUs per second of the current SQL database.
 // options - SQLResourcesClientBeginUpdateSQLDatabaseThroughputOptions contains the optional parameters for the SQLResourcesClient.BeginUpdateSQLDatabaseThroughput
 // method.
-func (client *SQLResourcesClient) BeginUpdateSQLDatabaseThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *SQLResourcesClientBeginUpdateSQLDatabaseThroughputOptions) (SQLResourcesClientUpdateSQLDatabaseThroughputPollerResponse, error) {
-	resp, err := client.updateSQLDatabaseThroughput(ctx, resourceGroupName, accountName, databaseName, updateThroughputParameters, options)
-	if err != nil {
-		return SQLResourcesClientUpdateSQLDatabaseThroughputPollerResponse{}, err
+func (client *SQLResourcesClient) BeginUpdateSQLDatabaseThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *SQLResourcesClientBeginUpdateSQLDatabaseThroughputOptions) (*armruntime.Poller[SQLResourcesClientUpdateSQLDatabaseThroughputResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.updateSQLDatabaseThroughput(ctx, resourceGroupName, accountName, databaseName, updateThroughputParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[SQLResourcesClientUpdateSQLDatabaseThroughputResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[SQLResourcesClientUpdateSQLDatabaseThroughputResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SQLResourcesClientUpdateSQLDatabaseThroughputPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SQLResourcesClient.UpdateSQLDatabaseThroughput", "", resp, client.pl)
-	if err != nil {
-		return SQLResourcesClientUpdateSQLDatabaseThroughputPollerResponse{}, err
-	}
-	result.Poller = &SQLResourcesClientUpdateSQLDatabaseThroughputPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // UpdateSQLDatabaseThroughput - Update RUs per second of an Azure Cosmos DB SQL database
@@ -2667,7 +2879,7 @@ func (client *SQLResourcesClient) updateSQLDatabaseThroughputCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, updateThroughputParameters)

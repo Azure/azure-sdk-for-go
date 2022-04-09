@@ -22,19 +22,19 @@ import (
 	"strings"
 )
 
-// RestorableMongodbDatabasesClient contains the methods for the RestorableMongodbDatabases group.
-// Don't use this type directly, use NewRestorableMongodbDatabasesClient() instead.
-type RestorableMongodbDatabasesClient struct {
+// RestorableGremlinResourcesClient contains the methods for the RestorableGremlinResources group.
+// Don't use this type directly, use NewRestorableGremlinResourcesClient() instead.
+type RestorableGremlinResourcesClient struct {
 	host           string
 	subscriptionID string
 	pl             runtime.Pipeline
 }
 
-// NewRestorableMongodbDatabasesClient creates a new instance of RestorableMongodbDatabasesClient with the specified values.
+// NewRestorableGremlinResourcesClient creates a new instance of RestorableGremlinResourcesClient with the specified values.
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewRestorableMongodbDatabasesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RestorableMongodbDatabasesClient, error) {
+func NewRestorableGremlinResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RestorableGremlinResourcesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
@@ -46,7 +46,7 @@ func NewRestorableMongodbDatabasesClient(subscriptionID string, credential azcor
 	if err != nil {
 		return nil, err
 	}
-	client := &RestorableMongodbDatabasesClient{
+	client := &RestorableGremlinResourcesClient{
 		subscriptionID: subscriptionID,
 		host:           ep,
 		pl:             pl,
@@ -54,30 +54,30 @@ func NewRestorableMongodbDatabasesClient(subscriptionID string, credential azcor
 	return client, nil
 }
 
-// List - Show the event feed of all mutations done on all the Azure Cosmos DB MongoDB databases under the restorable account.
-// This helps in scenario where database was accidentally deleted to get the deletion
-// time. This API requires 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/…/read' permission
+// List - Return a list of gremlin database and graphs combo that exist on the account at the given timestamp and location.
+// This helps in scenarios to validate what resources exist at given timestamp and
+// location. This API requires 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/…/read' permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 // location - Cosmos DB region, with spaces between words and each word capitalized.
 // instanceID - The instanceId GUID of a restorable database account.
-// options - RestorableMongodbDatabasesClientListOptions contains the optional parameters for the RestorableMongodbDatabasesClient.List
+// options - RestorableGremlinResourcesClientListOptions contains the optional parameters for the RestorableGremlinResourcesClient.List
 // method.
-func (client *RestorableMongodbDatabasesClient) List(location string, instanceID string, options *RestorableMongodbDatabasesClientListOptions) *runtime.Pager[RestorableMongodbDatabasesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[RestorableMongodbDatabasesClientListResponse]{
-		More: func(page RestorableMongodbDatabasesClientListResponse) bool {
+func (client *RestorableGremlinResourcesClient) List(location string, instanceID string, options *RestorableGremlinResourcesClientListOptions) *runtime.Pager[RestorableGremlinResourcesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[RestorableGremlinResourcesClientListResponse]{
+		More: func(page RestorableGremlinResourcesClientListResponse) bool {
 			return false
 		},
-		Fetcher: func(ctx context.Context, page *RestorableMongodbDatabasesClientListResponse) (RestorableMongodbDatabasesClientListResponse, error) {
+		Fetcher: func(ctx context.Context, page *RestorableGremlinResourcesClientListResponse) (RestorableGremlinResourcesClientListResponse, error) {
 			req, err := client.listCreateRequest(ctx, location, instanceID, options)
 			if err != nil {
-				return RestorableMongodbDatabasesClientListResponse{}, err
+				return RestorableGremlinResourcesClientListResponse{}, err
 			}
 			resp, err := client.pl.Do(req)
 			if err != nil {
-				return RestorableMongodbDatabasesClientListResponse{}, err
+				return RestorableGremlinResourcesClientListResponse{}, err
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return RestorableMongodbDatabasesClientListResponse{}, runtime.NewResponseError(resp)
+				return RestorableGremlinResourcesClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -85,8 +85,8 @@ func (client *RestorableMongodbDatabasesClient) List(location string, instanceID
 }
 
 // listCreateRequest creates the List request.
-func (client *RestorableMongodbDatabasesClient) listCreateRequest(ctx context.Context, location string, instanceID string, options *RestorableMongodbDatabasesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{instanceId}/restorableMongodbDatabases"
+func (client *RestorableGremlinResourcesClient) listCreateRequest(ctx context.Context, location string, instanceID string, options *RestorableGremlinResourcesClientListOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{instanceId}/restorableGremlinResources"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -105,16 +105,22 @@ func (client *RestorableMongodbDatabasesClient) listCreateRequest(ctx context.Co
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-02-15-preview")
+	if options != nil && options.RestoreLocation != nil {
+		reqQP.Set("restoreLocation", *options.RestoreLocation)
+	}
+	if options != nil && options.RestoreTimestampInUTC != nil {
+		reqQP.Set("restoreTimestampInUtc", *options.RestoreTimestampInUTC)
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *RestorableMongodbDatabasesClient) listHandleResponse(resp *http.Response) (RestorableMongodbDatabasesClientListResponse, error) {
-	result := RestorableMongodbDatabasesClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.RestorableMongodbDatabasesListResult); err != nil {
-		return RestorableMongodbDatabasesClientListResponse{}, err
+func (client *RestorableGremlinResourcesClient) listHandleResponse(resp *http.Response) (RestorableGremlinResourcesClientListResponse, error) {
+	result := RestorableGremlinResourcesClientListResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RestorableGremlinResourcesListResult); err != nil {
+		return RestorableGremlinResourcesClientListResponse{}, err
 	}
 	return result, nil
 }

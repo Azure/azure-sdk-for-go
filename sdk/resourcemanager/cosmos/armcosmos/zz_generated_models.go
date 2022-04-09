@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,12 +8,7 @@
 
 package armcosmos
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
 
 type APIProperties struct {
 	// Describes the ServerVersion of an a MongoDB account.
@@ -35,6 +30,9 @@ type ARMProxyResource struct {
 
 // ARMResourceProperties - The core properties of ARM resources.
 type ARMResourceProperties struct {
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+
 	// The location of the resource group to which the resource belongs.
 	Location *string `json:"location,omitempty"`
 
@@ -55,21 +53,32 @@ type ARMResourceProperties struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ARMResourceProperties.
-func (a ARMResourceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", a.ID)
-	populate(objectMap, "location", a.Location)
-	populate(objectMap, "name", a.Name)
-	populate(objectMap, "tags", a.Tags)
-	populate(objectMap, "type", a.Type)
-	return json.Marshal(objectMap)
-}
-
 // AnalyticalStorageConfiguration - Analytical storage specific properties.
 type AnalyticalStorageConfiguration struct {
 	// Describes the types of schema for analytical storage.
 	SchemaType *AnalyticalStorageSchemaType `json:"schemaType,omitempty"`
+}
+
+// AuthenticationMethodLdapProperties - Ldap authentication method properties. This feature is in preview.
+type AuthenticationMethodLdapProperties struct {
+	// Distinguished name of the object to start the recursive search of users from.
+	SearchBaseDistinguishedName *string `json:"searchBaseDistinguishedName,omitempty"`
+
+	// Template to use for searching. Defaults to (cn=%s) where %s will be replaced by the username used to login.
+	SearchFilterTemplate *string        `json:"searchFilterTemplate,omitempty"`
+	ServerCertificates   []*Certificate `json:"serverCertificates,omitempty"`
+
+	// Hostname of the LDAP server.
+	ServerHostname *string `json:"serverHostname,omitempty"`
+
+	// Port of the LDAP server.
+	ServerPort *int32 `json:"serverPort,omitempty"`
+
+	// Distinguished name of the look up user account, who can look up user details on authentication.
+	ServiceUserDistinguishedName *string `json:"serviceUserDistinguishedName,omitempty"`
+
+	// Password of the look up user.
+	ServiceUserPassword *string `json:"serviceUserPassword,omitempty"`
 }
 
 // AutoUpgradePolicyResource - Cosmos DB resource auto-upgrade policy
@@ -93,6 +102,16 @@ type AutoscaleSettingsResource struct {
 
 	// READ-ONLY; Represents target maximum throughput container can scale up to once offer is no longer in pending state.
 	TargetMaxThroughput *int32 `json:"targetMaxThroughput,omitempty" azure:"ro"`
+}
+
+// AzureBlobDataTransferDataSourceSink - An Azure Blob Storage data source/sink
+type AzureBlobDataTransferDataSourceSink struct {
+	// REQUIRED
+	Component *DataTransferComponent `json:"component,omitempty"`
+
+	// REQUIRED
+	ContainerName *string `json:"containerName,omitempty"`
+	EndpointURL   *string `json:"endpointUrl,omitempty"`
 }
 
 // BackupInformation - Backup information of a resource.
@@ -119,9 +138,6 @@ type BackupPolicy struct {
 	MigrationState *BackupPolicyMigrationState `json:"migrationState,omitempty"`
 }
 
-// GetBackupPolicy implements the BackupPolicyClassification interface for type BackupPolicy.
-func (b *BackupPolicy) GetBackupPolicy() *BackupPolicy { return b }
-
 // BackupPolicyMigrationState - The object representing the state of the migration between the backup policies.
 type BackupPolicyMigrationState struct {
 	// Time at which the backup policy migration started (ISO-8601 format).
@@ -134,39 +150,23 @@ type BackupPolicyMigrationState struct {
 	TargetType *BackupPolicyType `json:"targetType,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type BackupPolicyMigrationState.
-func (b BackupPolicyMigrationState) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "startTime", b.StartTime)
-	populate(objectMap, "status", b.Status)
-	populate(objectMap, "targetType", b.TargetType)
-	return json.Marshal(objectMap)
+// BackupResource - A restorable backup of a Cassandra cluster.
+type BackupResource struct {
+	Properties *BackupResourceProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The unique resource identifier of the database account.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the database account.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of Azure resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type BackupPolicyMigrationState.
-func (b *BackupPolicyMigrationState) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "startTime":
-			err = unpopulateTimeRFC3339(val, &b.StartTime)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &b.Status)
-			delete(rawMsg, key)
-		case "targetType":
-			err = unpopulate(val, &b.TargetType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
+type BackupResourceProperties struct {
+	// The time this backup was taken, formatted like 2021-01-21T17:35:21
+	Timestamp *time.Time `json:"timestamp,omitempty"`
 }
 
 // Capability - Cosmos DB capability object
@@ -195,16 +195,6 @@ type CassandraClusterPublicStatus struct {
 	ReaperStatus *ManagedCassandraReaperStatus                  `json:"reaperStatus,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CassandraClusterPublicStatus.
-func (c CassandraClusterPublicStatus) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "connectionErrors", c.ConnectionErrors)
-	populate(objectMap, "dataCenters", c.DataCenters)
-	populate(objectMap, "eTag", c.ETag)
-	populate(objectMap, "reaperStatus", c.ReaperStatus)
-	return json.Marshal(objectMap)
-}
-
 type CassandraClusterPublicStatusDataCentersItem struct {
 	// The name of this Datacenter.
 	Name  *string                                                                                              `json:"name,omitempty"`
@@ -214,52 +204,60 @@ type CassandraClusterPublicStatusDataCentersItem struct {
 	SeedNodes []*string `json:"seedNodes,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CassandraClusterPublicStatusDataCentersItem.
-func (c CassandraClusterPublicStatusDataCentersItem) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "name", c.Name)
-	populate(objectMap, "nodes", c.Nodes)
-	populate(objectMap, "seedNodes", c.SeedNodes)
-	return json.Marshal(objectMap)
-}
-
 // CassandraClustersClientBeginCreateUpdateOptions contains the optional parameters for the CassandraClustersClient.BeginCreateUpdate
 // method.
 type CassandraClustersClientBeginCreateUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // CassandraClustersClientBeginDeallocateOptions contains the optional parameters for the CassandraClustersClient.BeginDeallocate
 // method.
 type CassandraClustersClientBeginDeallocateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // CassandraClustersClientBeginDeleteOptions contains the optional parameters for the CassandraClustersClient.BeginDelete
 // method.
 type CassandraClustersClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // CassandraClustersClientBeginInvokeCommandOptions contains the optional parameters for the CassandraClustersClient.BeginInvokeCommand
 // method.
 type CassandraClustersClientBeginInvokeCommandOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // CassandraClustersClientBeginStartOptions contains the optional parameters for the CassandraClustersClient.BeginStart method.
 type CassandraClustersClientBeginStartOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // CassandraClustersClientBeginUpdateOptions contains the optional parameters for the CassandraClustersClient.BeginUpdate
 // method.
 type CassandraClustersClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// CassandraClustersClientGetBackupOptions contains the optional parameters for the CassandraClustersClient.GetBackup method.
+type CassandraClustersClientGetBackupOptions struct {
 	// placeholder for future optional parameters
 }
 
 // CassandraClustersClientGetOptions contains the optional parameters for the CassandraClustersClient.Get method.
 type CassandraClustersClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CassandraClustersClientListBackupsOptions contains the optional parameters for the CassandraClustersClient.ListBackups
+// method.
+type CassandraClustersClientListBackupsOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -283,19 +281,22 @@ type CassandraClustersClientStatusOptions struct {
 // CassandraDataCentersClientBeginCreateUpdateOptions contains the optional parameters for the CassandraDataCentersClient.BeginCreateUpdate
 // method.
 type CassandraDataCentersClientBeginCreateUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // CassandraDataCentersClientBeginDeleteOptions contains the optional parameters for the CassandraDataCentersClient.BeginDelete
 // method.
 type CassandraDataCentersClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // CassandraDataCentersClientBeginUpdateOptions contains the optional parameters for the CassandraDataCentersClient.BeginUpdate
 // method.
 type CassandraDataCentersClientBeginUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // CassandraDataCentersClientGetOptions contains the optional parameters for the CassandraDataCentersClient.Get method.
@@ -308,10 +309,25 @@ type CassandraDataCentersClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// CassandraDataTransferDataSourceSink - A CosmosDB Cassandra API data source/sink
+type CassandraDataTransferDataSourceSink struct {
+	// REQUIRED
+	Component *DataTransferComponent `json:"component,omitempty"`
+
+	// REQUIRED
+	KeyspaceName *string `json:"keyspaceName,omitempty"`
+
+	// REQUIRED
+	TableName *string `json:"tableName,omitempty"`
+}
+
 // CassandraKeyspaceCreateUpdateParameters - Parameters to create and update Cosmos DB Cassandra keyspace.
 type CassandraKeyspaceCreateUpdateParameters struct {
 	// REQUIRED; Properties to create and update Azure Cosmos DB Cassandra keyspace.
 	Properties *CassandraKeyspaceCreateUpdateProperties `json:"properties,omitempty"`
+
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
 
 	// The location of the resource group to which the resource belongs.
 	Location *string `json:"location,omitempty"`
@@ -331,18 +347,6 @@ type CassandraKeyspaceCreateUpdateParameters struct {
 
 	// READ-ONLY; The type of Azure resource.
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CassandraKeyspaceCreateUpdateParameters.
-func (c CassandraKeyspaceCreateUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", c.ID)
-	populate(objectMap, "location", c.Location)
-	populate(objectMap, "name", c.Name)
-	populate(objectMap, "properties", c.Properties)
-	populate(objectMap, "tags", c.Tags)
-	populate(objectMap, "type", c.Type)
-	return json.Marshal(objectMap)
 }
 
 // CassandraKeyspaceCreateUpdateProperties - Properties to create and update Azure Cosmos DB Cassandra keyspace.
@@ -385,6 +389,9 @@ type CassandraKeyspaceGetPropertiesResource struct {
 
 // CassandraKeyspaceGetResults - An Azure Cosmos DB Cassandra keyspace.
 type CassandraKeyspaceGetResults struct {
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+
 	// The location of the resource group to which the resource belongs.
 	Location *string `json:"location,omitempty"`
 
@@ -408,29 +415,10 @@ type CassandraKeyspaceGetResults struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CassandraKeyspaceGetResults.
-func (c CassandraKeyspaceGetResults) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", c.ID)
-	populate(objectMap, "location", c.Location)
-	populate(objectMap, "name", c.Name)
-	populate(objectMap, "properties", c.Properties)
-	populate(objectMap, "tags", c.Tags)
-	populate(objectMap, "type", c.Type)
-	return json.Marshal(objectMap)
-}
-
 // CassandraKeyspaceListResult - The List operation response, that contains the Cassandra keyspaces and their properties.
 type CassandraKeyspaceListResult struct {
 	// READ-ONLY; List of Cassandra keyspaces and their properties.
 	Value []*CassandraKeyspaceGetResults `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CassandraKeyspaceListResult.
-func (c CassandraKeyspaceListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", c.Value)
-	return json.Marshal(objectMap)
 }
 
 // CassandraKeyspaceResource - Cosmos DB Cassandra keyspace resource object
@@ -448,61 +436,106 @@ type CassandraPartitionKey struct {
 // CassandraResourcesClientBeginCreateUpdateCassandraKeyspaceOptions contains the optional parameters for the CassandraResourcesClient.BeginCreateUpdateCassandraKeyspace
 // method.
 type CassandraResourcesClientBeginCreateUpdateCassandraKeyspaceOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // CassandraResourcesClientBeginCreateUpdateCassandraTableOptions contains the optional parameters for the CassandraResourcesClient.BeginCreateUpdateCassandraTable
 // method.
 type CassandraResourcesClientBeginCreateUpdateCassandraTableOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// CassandraResourcesClientBeginCreateUpdateCassandraViewOptions contains the optional parameters for the CassandraResourcesClient.BeginCreateUpdateCassandraView
+// method.
+type CassandraResourcesClientBeginCreateUpdateCassandraViewOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // CassandraResourcesClientBeginDeleteCassandraKeyspaceOptions contains the optional parameters for the CassandraResourcesClient.BeginDeleteCassandraKeyspace
 // method.
 type CassandraResourcesClientBeginDeleteCassandraKeyspaceOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // CassandraResourcesClientBeginDeleteCassandraTableOptions contains the optional parameters for the CassandraResourcesClient.BeginDeleteCassandraTable
 // method.
 type CassandraResourcesClientBeginDeleteCassandraTableOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// CassandraResourcesClientBeginDeleteCassandraViewOptions contains the optional parameters for the CassandraResourcesClient.BeginDeleteCassandraView
+// method.
+type CassandraResourcesClientBeginDeleteCassandraViewOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // CassandraResourcesClientBeginMigrateCassandraKeyspaceToAutoscaleOptions contains the optional parameters for the CassandraResourcesClient.BeginMigrateCassandraKeyspaceToAutoscale
 // method.
 type CassandraResourcesClientBeginMigrateCassandraKeyspaceToAutoscaleOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // CassandraResourcesClientBeginMigrateCassandraKeyspaceToManualThroughputOptions contains the optional parameters for the
 // CassandraResourcesClient.BeginMigrateCassandraKeyspaceToManualThroughput method.
 type CassandraResourcesClientBeginMigrateCassandraKeyspaceToManualThroughputOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // CassandraResourcesClientBeginMigrateCassandraTableToAutoscaleOptions contains the optional parameters for the CassandraResourcesClient.BeginMigrateCassandraTableToAutoscale
 // method.
 type CassandraResourcesClientBeginMigrateCassandraTableToAutoscaleOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // CassandraResourcesClientBeginMigrateCassandraTableToManualThroughputOptions contains the optional parameters for the CassandraResourcesClient.BeginMigrateCassandraTableToManualThroughput
 // method.
 type CassandraResourcesClientBeginMigrateCassandraTableToManualThroughputOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// CassandraResourcesClientBeginMigrateCassandraViewToAutoscaleOptions contains the optional parameters for the CassandraResourcesClient.BeginMigrateCassandraViewToAutoscale
+// method.
+type CassandraResourcesClientBeginMigrateCassandraViewToAutoscaleOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// CassandraResourcesClientBeginMigrateCassandraViewToManualThroughputOptions contains the optional parameters for the CassandraResourcesClient.BeginMigrateCassandraViewToManualThroughput
+// method.
+type CassandraResourcesClientBeginMigrateCassandraViewToManualThroughputOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // CassandraResourcesClientBeginUpdateCassandraKeyspaceThroughputOptions contains the optional parameters for the CassandraResourcesClient.BeginUpdateCassandraKeyspaceThroughput
 // method.
 type CassandraResourcesClientBeginUpdateCassandraKeyspaceThroughputOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // CassandraResourcesClientBeginUpdateCassandraTableThroughputOptions contains the optional parameters for the CassandraResourcesClient.BeginUpdateCassandraTableThroughput
 // method.
 type CassandraResourcesClientBeginUpdateCassandraTableThroughputOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// CassandraResourcesClientBeginUpdateCassandraViewThroughputOptions contains the optional parameters for the CassandraResourcesClient.BeginUpdateCassandraViewThroughput
+// method.
+type CassandraResourcesClientBeginUpdateCassandraViewThroughputOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // CassandraResourcesClientGetCassandraKeyspaceOptions contains the optional parameters for the CassandraResourcesClient.GetCassandraKeyspace
@@ -529,6 +562,18 @@ type CassandraResourcesClientGetCassandraTableThroughputOptions struct {
 	// placeholder for future optional parameters
 }
 
+// CassandraResourcesClientGetCassandraViewOptions contains the optional parameters for the CassandraResourcesClient.GetCassandraView
+// method.
+type CassandraResourcesClientGetCassandraViewOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CassandraResourcesClientGetCassandraViewThroughputOptions contains the optional parameters for the CassandraResourcesClient.GetCassandraViewThroughput
+// method.
+type CassandraResourcesClientGetCassandraViewThroughputOptions struct {
+	// placeholder for future optional parameters
+}
+
 // CassandraResourcesClientListCassandraKeyspacesOptions contains the optional parameters for the CassandraResourcesClient.ListCassandraKeyspaces
 // method.
 type CassandraResourcesClientListCassandraKeyspacesOptions struct {
@@ -538,6 +583,12 @@ type CassandraResourcesClientListCassandraKeyspacesOptions struct {
 // CassandraResourcesClientListCassandraTablesOptions contains the optional parameters for the CassandraResourcesClient.ListCassandraTables
 // method.
 type CassandraResourcesClientListCassandraTablesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CassandraResourcesClientListCassandraViewsOptions contains the optional parameters for the CassandraResourcesClient.ListCassandraViews
+// method.
+type CassandraResourcesClientListCassandraViewsOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -553,19 +604,13 @@ type CassandraSchema struct {
 	PartitionKeys []*CassandraPartitionKey `json:"partitionKeys,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CassandraSchema.
-func (c CassandraSchema) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "clusterKeys", c.ClusterKeys)
-	populate(objectMap, "columns", c.Columns)
-	populate(objectMap, "partitionKeys", c.PartitionKeys)
-	return json.Marshal(objectMap)
-}
-
 // CassandraTableCreateUpdateParameters - Parameters to create and update Cosmos DB Cassandra table.
 type CassandraTableCreateUpdateParameters struct {
 	// REQUIRED; Properties to create and update Azure Cosmos DB Cassandra table.
 	Properties *CassandraTableCreateUpdateProperties `json:"properties,omitempty"`
+
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
 
 	// The location of the resource group to which the resource belongs.
 	Location *string `json:"location,omitempty"`
@@ -585,18 +630,6 @@ type CassandraTableCreateUpdateParameters struct {
 
 	// READ-ONLY; The type of Azure resource.
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CassandraTableCreateUpdateParameters.
-func (c CassandraTableCreateUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", c.ID)
-	populate(objectMap, "location", c.Location)
-	populate(objectMap, "name", c.Name)
-	populate(objectMap, "properties", c.Properties)
-	populate(objectMap, "tags", c.Tags)
-	populate(objectMap, "type", c.Type)
-	return json.Marshal(objectMap)
 }
 
 // CassandraTableCreateUpdateProperties - Properties to create and update Azure Cosmos DB Cassandra table.
@@ -648,6 +681,9 @@ type CassandraTableGetPropertiesResource struct {
 
 // CassandraTableGetResults - An Azure Cosmos DB Cassandra table.
 type CassandraTableGetResults struct {
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+
 	// The location of the resource group to which the resource belongs.
 	Location *string `json:"location,omitempty"`
 
@@ -671,29 +707,10 @@ type CassandraTableGetResults struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CassandraTableGetResults.
-func (c CassandraTableGetResults) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", c.ID)
-	populate(objectMap, "location", c.Location)
-	populate(objectMap, "name", c.Name)
-	populate(objectMap, "properties", c.Properties)
-	populate(objectMap, "tags", c.Tags)
-	populate(objectMap, "type", c.Type)
-	return json.Marshal(objectMap)
-}
-
 // CassandraTableListResult - The List operation response, that contains the Cassandra tables and their properties.
 type CassandraTableListResult struct {
 	// READ-ONLY; List of Cassandra tables and their properties.
 	Value []*CassandraTableGetResults `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CassandraTableListResult.
-func (c CassandraTableListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", c.Value)
-	return json.Marshal(objectMap)
 }
 
 // CassandraTableResource - Cosmos DB Cassandra table resource object
@@ -711,9 +728,222 @@ type CassandraTableResource struct {
 	Schema *CassandraSchema `json:"schema,omitempty"`
 }
 
+// CassandraViewCreateUpdateParameters - Parameters to create and update Cosmos DB Cassandra view.
+type CassandraViewCreateUpdateParameters struct {
+	// REQUIRED; Properties to create and update Azure Cosmos DB Cassandra view.
+	Properties *CassandraViewCreateUpdateProperties `json:"properties,omitempty"`
+
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+
+	// The location of the resource group to which the resource belongs.
+	Location *string `json:"location,omitempty"`
+
+	// Tags are a list of key-value pairs that describe the resource. These tags can be used in viewing and grouping this resource
+	// (across resource groups). A maximum of 15 tags can be provided for a
+	// resource. Each tag must have a key no greater than 128 characters and value no greater than 256 characters. For example,
+	// the default experience for a template type is set with "defaultExperience":
+	// "Cassandra". Current "defaultExperience" values also include "Table", "Graph", "DocumentDB", and "MongoDB".
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; The unique resource identifier of the ARM resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the ARM resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of Azure resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// CassandraViewCreateUpdateProperties - Properties to create and update Azure Cosmos DB Cassandra view.
+type CassandraViewCreateUpdateProperties struct {
+	// REQUIRED; The standard JSON format of a Cassandra view
+	Resource *CassandraViewResource `json:"resource,omitempty"`
+
+	// A key-value pair of options to be applied for the request. This corresponds to the headers sent with the request.
+	Options *CreateUpdateOptions `json:"options,omitempty"`
+}
+
+// CassandraViewGetProperties - The properties of an Azure Cosmos DB Cassandra view
+type CassandraViewGetProperties struct {
+	Options  *CassandraViewGetPropertiesOptions  `json:"options,omitempty"`
+	Resource *CassandraViewGetPropertiesResource `json:"resource,omitempty"`
+}
+
+type CassandraViewGetPropertiesOptions struct {
+	// Specifies the Autoscale settings.
+	AutoscaleSettings *AutoscaleSettings `json:"autoscaleSettings,omitempty"`
+
+	// Value of the Cosmos DB resource throughput or autoscaleSettings. Use the ThroughputSetting resource when retrieving offer
+	// details.
+	Throughput *int32 `json:"throughput,omitempty"`
+}
+
+type CassandraViewGetPropertiesResource struct {
+	// REQUIRED; Name of the Cosmos DB Cassandra view
+	ID *string `json:"id,omitempty"`
+
+	// REQUIRED; View Definition of the Cosmos DB Cassandra view
+	ViewDefinition *string `json:"viewDefinition,omitempty"`
+
+	// READ-ONLY; A system generated property representing the resource etag required for optimistic concurrency control.
+	Etag *string `json:"_etag,omitempty" azure:"ro"`
+
+	// READ-ONLY; A system generated property. A unique identifier.
+	Rid *string `json:"_rid,omitempty" azure:"ro"`
+
+	// READ-ONLY; A system generated property that denotes the last updated timestamp of the resource.
+	Ts *float32 `json:"_ts,omitempty" azure:"ro"`
+}
+
+// CassandraViewGetResults - An Azure Cosmos DB Cassandra view.
+type CassandraViewGetResults struct {
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+
+	// The location of the resource group to which the resource belongs.
+	Location *string `json:"location,omitempty"`
+
+	// The properties of an Azure Cosmos DB Cassandra view
+	Properties *CassandraViewGetProperties `json:"properties,omitempty"`
+
+	// Tags are a list of key-value pairs that describe the resource. These tags can be used in viewing and grouping this resource
+	// (across resource groups). A maximum of 15 tags can be provided for a
+	// resource. Each tag must have a key no greater than 128 characters and value no greater than 256 characters. For example,
+	// the default experience for a template type is set with "defaultExperience":
+	// "Cassandra". Current "defaultExperience" values also include "Table", "Graph", "DocumentDB", and "MongoDB".
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; The unique resource identifier of the ARM resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the ARM resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of Azure resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// CassandraViewListResult - The List operation response, that contains the Cassandra views and their properties.
+type CassandraViewListResult struct {
+	// READ-ONLY; List of Cassandra views and their properties.
+	Value []*CassandraViewGetResults `json:"value,omitempty" azure:"ro"`
+}
+
+// CassandraViewResource - Cosmos DB Cassandra view resource object
+type CassandraViewResource struct {
+	// REQUIRED; Name of the Cosmos DB Cassandra view
+	ID *string `json:"id,omitempty"`
+
+	// REQUIRED; View Definition of the Cosmos DB Cassandra view
+	ViewDefinition *string `json:"viewDefinition,omitempty"`
+}
+
 type Certificate struct {
 	// PEM formatted public key.
 	Pem *string `json:"pem,omitempty"`
+}
+
+// ClientEncryptionIncludedPath - .
+type ClientEncryptionIncludedPath struct {
+	// REQUIRED; The identifier of the Client Encryption Key to be used to encrypt the path.
+	ClientEncryptionKeyID *string `json:"clientEncryptionKeyId,omitempty"`
+
+	// REQUIRED; The encryption algorithm which will be used. Eg - AEADAES256CBCHMAC_SHA256.
+	EncryptionAlgorithm *string `json:"encryptionAlgorithm,omitempty"`
+
+	// REQUIRED; The type of encryption to be performed. Eg - Deterministic, Randomized.
+	EncryptionType *string `json:"encryptionType,omitempty"`
+
+	// REQUIRED; Path that needs to be encrypted.
+	Path *string `json:"path,omitempty"`
+}
+
+// ClientEncryptionKeyCreateUpdateParameters - Parameters to create and update ClientEncryptionKey.
+type ClientEncryptionKeyCreateUpdateParameters struct {
+	// REQUIRED; Properties to create and update ClientEncryptionKey.
+	Properties *ClientEncryptionKeyCreateUpdateProperties `json:"properties,omitempty"`
+}
+
+// ClientEncryptionKeyCreateUpdateProperties - Properties to create and update ClientEncryptionKey.
+type ClientEncryptionKeyCreateUpdateProperties struct {
+	// REQUIRED; The standard JSON format of a ClientEncryptionKey
+	Resource *ClientEncryptionKeyResource `json:"resource,omitempty"`
+}
+
+// ClientEncryptionKeyGetProperties - The properties of a ClientEncryptionKey resource
+type ClientEncryptionKeyGetProperties struct {
+	Resource *ClientEncryptionKeyGetPropertiesResource `json:"resource,omitempty"`
+}
+
+type ClientEncryptionKeyGetPropertiesResource struct {
+	// Encryption algorithm that will be used along with this client encryption key to encrypt/decrypt data.
+	EncryptionAlgorithm *string `json:"encryptionAlgorithm,omitempty"`
+
+	// Name of the ClientEncryptionKey
+	ID *string `json:"id,omitempty"`
+
+	// Metadata for the wrapping provider that can be used to unwrap the wrapped client encryption key.
+	KeyWrapMetadata *KeyWrapMetadata `json:"keyWrapMetadata,omitempty"`
+
+	// Wrapped (encrypted) form of the key represented as a byte array.
+	WrappedDataEncryptionKey []byte `json:"wrappedDataEncryptionKey,omitempty"`
+
+	// READ-ONLY; A system generated property representing the resource etag required for optimistic concurrency control.
+	Etag *string `json:"_etag,omitempty" azure:"ro"`
+
+	// READ-ONLY; A system generated property. A unique identifier.
+	Rid *string `json:"_rid,omitempty" azure:"ro"`
+
+	// READ-ONLY; A system generated property that denotes the last updated timestamp of the resource.
+	Ts *float32 `json:"_ts,omitempty" azure:"ro"`
+}
+
+// ClientEncryptionKeyGetResults - Client Encryption Key.
+type ClientEncryptionKeyGetResults struct {
+	// The properties of a ClientEncryptionKey
+	Properties *ClientEncryptionKeyGetProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The unique resource identifier of the database account.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the database account.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of Azure resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// ClientEncryptionKeyResource - Cosmos DB client encryption key resource object.
+type ClientEncryptionKeyResource struct {
+	// Encryption algorithm that will be used along with this client encryption key to encrypt/decrypt data.
+	EncryptionAlgorithm *string `json:"encryptionAlgorithm,omitempty"`
+
+	// Name of the ClientEncryptionKey
+	ID *string `json:"id,omitempty"`
+
+	// Metadata for the wrapping provider that can be used to unwrap the wrapped client encryption key.
+	KeyWrapMetadata *KeyWrapMetadata `json:"keyWrapMetadata,omitempty"`
+
+	// Wrapped (encrypted) form of the key represented as a byte array.
+	WrappedDataEncryptionKey []byte `json:"wrappedDataEncryptionKey,omitempty"`
+}
+
+// ClientEncryptionKeysListResult - The List operation response, that contains the client encryption keys and their properties.
+type ClientEncryptionKeysListResult struct {
+	// READ-ONLY; List of client encryption keys and their properties.
+	Value []*ClientEncryptionKeyGetResults `json:"value,omitempty" azure:"ro"`
+}
+
+// ClientEncryptionPolicy - Cosmos DB client encryption policy.
+type ClientEncryptionPolicy struct {
+	// REQUIRED; Paths of the item that need encryption along with path-specific settings.
+	IncludedPaths []*ClientEncryptionIncludedPath `json:"includedPaths,omitempty"`
+
+	// Version of the client encryption policy definition. Please note, user passed value is ignored. Default policy version is
+	// 1.
+	PolicyFormatVersion *int32 `json:"policyFormatVersion,omitempty"`
 }
 
 // CloudError - An error response from the service.
@@ -759,24 +989,11 @@ type ClusterResource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ClusterResource.
-func (c ClusterResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", c.ID)
-	populate(objectMap, "identity", c.Identity)
-	populate(objectMap, "location", c.Location)
-	populate(objectMap, "name", c.Name)
-	populate(objectMap, "properties", c.Properties)
-	populate(objectMap, "tags", c.Tags)
-	populate(objectMap, "type", c.Type)
-	return json.Marshal(objectMap)
-}
-
 // ClusterResourceProperties - Properties of a managed Cassandra cluster.
 type ClusterResourceProperties struct {
 	// Which authentication method Cassandra should use to authenticate clients. 'None' turns off authentication, so should not
 	// be used except in emergencies. 'Cassandra' is the default password based
-	// authentication. The default is 'Cassandra'.
+	// authentication. The default is 'Cassandra'. 'Ldap' is in preview.
 	AuthenticationMethod *AuthenticationMethod `json:"authenticationMethod,omitempty"`
 
 	// Whether Cassandra audit logging is enabled
@@ -813,7 +1030,7 @@ type ClusterResourceProperties struct {
 	// nodes.
 	ExternalSeedNodes []*SeedNode `json:"externalSeedNodes,omitempty"`
 
-	// Number of hours to wait between taking a backup of the cluster. To disable backups, set this property to 0.
+	// Number of hours to wait between taking a backup of the cluster.
 	HoursBetweenBackups *int32 `json:"hoursBetweenBackups,omitempty"`
 
 	// Initial password for clients connecting as admin to the cluster. Should be changed after cluster creation. Returns null
@@ -843,29 +1060,6 @@ type ClusterResourceProperties struct {
 	// READ-ONLY; List of IP addresses of seed nodes in the managed data centers. These should be added to the seed node lists
 	// of all unmanaged nodes.
 	SeedNodes []*SeedNode `json:"seedNodes,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ClusterResourceProperties.
-func (c ClusterResourceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "authenticationMethod", c.AuthenticationMethod)
-	populate(objectMap, "cassandraAuditLoggingEnabled", c.CassandraAuditLoggingEnabled)
-	populate(objectMap, "cassandraVersion", c.CassandraVersion)
-	populate(objectMap, "clientCertificates", c.ClientCertificates)
-	populate(objectMap, "clusterNameOverride", c.ClusterNameOverride)
-	populate(objectMap, "deallocated", c.Deallocated)
-	populate(objectMap, "delegatedManagementSubnetId", c.DelegatedManagementSubnetID)
-	populate(objectMap, "externalGossipCertificates", c.ExternalGossipCertificates)
-	populate(objectMap, "externalSeedNodes", c.ExternalSeedNodes)
-	populate(objectMap, "gossipCertificates", c.GossipCertificates)
-	populate(objectMap, "hoursBetweenBackups", c.HoursBetweenBackups)
-	populate(objectMap, "initialCassandraAdminPassword", c.InitialCassandraAdminPassword)
-	populate(objectMap, "prometheusEndpoint", c.PrometheusEndpoint)
-	populate(objectMap, "provisioningState", c.ProvisioningState)
-	populate(objectMap, "repairEnabled", c.RepairEnabled)
-	populate(objectMap, "restoreFromBackupId", c.RestoreFromBackupID)
-	populate(objectMap, "seedNodes", c.SeedNodes)
-	return json.Marshal(objectMap)
 }
 
 // CollectionClientListMetricDefinitionsOptions contains the optional parameters for the CollectionClient.ListMetricDefinitions
@@ -944,17 +1138,6 @@ type CommandPostBody struct {
 	Readwrite *bool `json:"readwrite,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CommandPostBody.
-func (c CommandPostBody) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "arguments", c.Arguments)
-	populate(objectMap, "cassandra-stop-start", c.CassandraStopStart)
-	populate(objectMap, "command", c.Command)
-	populate(objectMap, "host", c.Host)
-	populate(objectMap, "readwrite", c.Readwrite)
-	return json.Marshal(objectMap)
-}
-
 type Components1Jq1T4ISchemasManagedserviceidentityPropertiesUserassignedidentitiesAdditionalproperties struct {
 	// READ-ONLY; The client id of user assigned identity.
 	ClientID *string `json:"clientId,omitempty" azure:"ro"`
@@ -1005,33 +1188,11 @@ type ComponentsM9L909SchemasCassandraclusterpublicstatusPropertiesDatacentersIte
 	State  *NodeState `json:"state,omitempty"`
 	Status *string    `json:"status,omitempty"`
 
-	// The timestamp when these statistics were captured.
+	// The timestamp at which that snapshot of these usage statistics were taken.
 	Timestamp *string `json:"timestamp,omitempty"`
 
 	// List of tokens this node covers.
 	Tokens []*string `json:"tokens,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ComponentsM9L909SchemasCassandraclusterpublicstatusPropertiesDatacentersItemsPropertiesNodesItems.
-func (c ComponentsM9L909SchemasCassandraclusterpublicstatusPropertiesDatacentersItemsPropertiesNodesItems) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "address", c.Address)
-	populate(objectMap, "cpuUsage", c.CPUUsage)
-	populate(objectMap, "diskFreeKB", c.DiskFreeKB)
-	populate(objectMap, "diskUsedKB", c.DiskUsedKB)
-	populate(objectMap, "hostID", c.HostID)
-	populate(objectMap, "load", c.Load)
-	populate(objectMap, "memoryBuffersAndCachedKB", c.MemoryBuffersAndCachedKB)
-	populate(objectMap, "memoryFreeKB", c.MemoryFreeKB)
-	populate(objectMap, "memoryTotalKB", c.MemoryTotalKB)
-	populate(objectMap, "memoryUsedKB", c.MemoryUsedKB)
-	populate(objectMap, "rack", c.Rack)
-	populate(objectMap, "size", c.Size)
-	populate(objectMap, "state", c.State)
-	populate(objectMap, "status", c.Status)
-	populate(objectMap, "timestamp", c.Timestamp)
-	populate(objectMap, "tokens", c.Tokens)
-	return json.Marshal(objectMap)
 }
 
 type CompositePath struct {
@@ -1103,16 +1264,6 @@ type ContainerPartitionKey struct {
 	SystemKey *bool `json:"systemKey,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ContainerPartitionKey.
-func (c ContainerPartitionKey) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "kind", c.Kind)
-	populate(objectMap, "paths", c.Paths)
-	populate(objectMap, "systemKey", c.SystemKey)
-	populate(objectMap, "version", c.Version)
-	return json.Marshal(objectMap)
-}
-
 // ContinuousBackupInformation - Information about the status of continuous backups.
 type ContinuousBackupInformation struct {
 	// The latest restorable timestamp for a resource.
@@ -1130,47 +1281,17 @@ type ContinuousModeBackupPolicy struct {
 	// REQUIRED; Describes the mode of backups.
 	Type *BackupPolicyType `json:"type,omitempty"`
 
+	// Configuration values for continuous mode backup
+	ContinuousModeProperties *ContinuousModeProperties `json:"continuousModeProperties,omitempty"`
+
 	// The object representing the state of the migration between the backup policies.
 	MigrationState *BackupPolicyMigrationState `json:"migrationState,omitempty"`
 }
 
-// GetBackupPolicy implements the BackupPolicyClassification interface for type ContinuousModeBackupPolicy.
-func (c *ContinuousModeBackupPolicy) GetBackupPolicy() *BackupPolicy {
-	return &BackupPolicy{
-		Type:           c.Type,
-		MigrationState: c.MigrationState,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ContinuousModeBackupPolicy.
-func (c ContinuousModeBackupPolicy) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "migrationState", c.MigrationState)
-	objectMap["type"] = BackupPolicyTypeContinuous
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ContinuousModeBackupPolicy.
-func (c *ContinuousModeBackupPolicy) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "migrationState":
-			err = unpopulate(val, &c.MigrationState)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &c.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
+// ContinuousModeProperties - Configuration values for periodic mode backup
+type ContinuousModeProperties struct {
+	// Enum to indicate type of Continuos backup mode
+	Tier *ContinuousTier `json:"tier,omitempty"`
 }
 
 // CorsPolicy - The CORS policy for the Cosmos DB database account.
@@ -1189,6 +1310,21 @@ type CorsPolicy struct {
 
 	// The maximum amount time that a browser should cache the preflight OPTIONS request.
 	MaxAgeInSeconds *int64 `json:"maxAgeInSeconds,omitempty"`
+}
+
+// CreateJobRequest - Parameters to create Data Transfer Job
+type CreateJobRequest struct {
+	// REQUIRED; Data Transfer Create Job Properties
+	Properties *DataTransferJobProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The unique resource identifier of the database account.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the database account.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of Azure resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // CreateUpdateOptions are a list of key-value pairs that describe the resource. Supported keys are "If-Match", "If-None-Match",
@@ -1216,20 +1352,13 @@ type DataCenterResource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DataCenterResource.
-func (d DataCenterResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", d.ID)
-	populate(objectMap, "name", d.Name)
-	populate(objectMap, "properties", d.Properties)
-	populate(objectMap, "type", d.Type)
-	return json.Marshal(objectMap)
-}
-
 // DataCenterResourceProperties - Properties of a managed Cassandra data center.
 type DataCenterResourceProperties struct {
-	// If the azure data center has Availability Zone support, apply it to the Virtual Machine ScaleSet that host the cassandra
-	// data center virtual machines.
+	// Ldap authentication method properties. This feature is in preview.
+	AuthenticationMethodLdapProperties *AuthenticationMethodLdapProperties `json:"authenticationMethodLdapProperties,omitempty"`
+
+	// If the data center has Availability Zone feature, apply it to the Virtual Machine ScaleSet that host the cassandra data
+	// center virtual machines.
 	AvailabilityZone *bool `json:"availabilityZone,omitempty"`
 
 	// Indicates the Key Uri of the customer key to use for encryption of the backup storage account.
@@ -1276,22 +1405,128 @@ type DataCenterResourceProperties struct {
 	SeedNodes []*SeedNode `json:"seedNodes,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DataCenterResourceProperties.
-func (d DataCenterResourceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "availabilityZone", d.AvailabilityZone)
-	populate(objectMap, "backupStorageCustomerKeyUri", d.BackupStorageCustomerKeyURI)
-	populate(objectMap, "base64EncodedCassandraYamlFragment", d.Base64EncodedCassandraYamlFragment)
-	populate(objectMap, "dataCenterLocation", d.DataCenterLocation)
-	populate(objectMap, "delegatedSubnetId", d.DelegatedSubnetID)
-	populate(objectMap, "diskCapacity", d.DiskCapacity)
-	populate(objectMap, "diskSku", d.DiskSKU)
-	populate(objectMap, "managedDiskCustomerKeyUri", d.ManagedDiskCustomerKeyURI)
-	populate(objectMap, "nodeCount", d.NodeCount)
-	populate(objectMap, "provisioningState", d.ProvisioningState)
-	populate(objectMap, "sku", d.SKU)
-	populate(objectMap, "seedNodes", d.SeedNodes)
-	return json.Marshal(objectMap)
+// DataTransferDataSourceSinkClassification provides polymorphic access to related types.
+// Call the interface's GetDataTransferDataSourceSink() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *AzureBlobDataTransferDataSourceSink, *CassandraDataTransferDataSourceSink, *DataTransferDataSourceSink, *SQLDataTransferDataSourceSink
+type DataTransferDataSourceSinkClassification interface {
+	// GetDataTransferDataSourceSink returns the DataTransferDataSourceSink content of the underlying type.
+	GetDataTransferDataSourceSink() *DataTransferDataSourceSink
+}
+
+// DataTransferDataSourceSink - Base class for all DataTransfer source/sink
+type DataTransferDataSourceSink struct {
+	// REQUIRED
+	Component *DataTransferComponent `json:"component,omitempty"`
+}
+
+// DataTransferJobFeedResults - The List operation response, that contains the Data Transfer jobs and their properties.
+type DataTransferJobFeedResults struct {
+	// READ-ONLY; URL to get the next set of Data Transfer job list results if there are any.
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+
+	// READ-ONLY; List of Data Transfer jobs and their properties.
+	Value []*DataTransferJobGetResults `json:"value,omitempty" azure:"ro"`
+}
+
+// DataTransferJobGetResults - A Cosmos DB Data Transfer Job
+type DataTransferJobGetResults struct {
+	// The properties of a DataTransfer Job
+	Properties *DataTransferJobProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The unique resource identifier of the database account.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the database account.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of Azure resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// DataTransferJobProperties - The properties of a DataTransfer Job
+type DataTransferJobProperties struct {
+	// REQUIRED; Destination DataStore details
+	Destination DataTransferDataSourceSinkClassification `json:"destination,omitempty"`
+
+	// REQUIRED; Source DataStore details
+	Source DataTransferDataSourceSinkClassification `json:"source,omitempty"`
+
+	// Worker count
+	WorkerCount *int32 `json:"workerCount,omitempty"`
+
+	// READ-ONLY; Error response for Faulted job
+	Error *ErrorResponse `json:"error,omitempty" azure:"ro"`
+
+	// READ-ONLY; Job Name
+	JobName *string `json:"jobName,omitempty" azure:"ro"`
+
+	// READ-ONLY; Last Updated Time (ISO-8601 format).
+	LastUpdatedUTCTime *time.Time `json:"lastUpdatedUtcTime,omitempty" azure:"ro"`
+
+	// READ-ONLY; Percentage of completion.
+	PercentageComplete *float32 `json:"percentageComplete,omitempty" azure:"ro"`
+
+	// READ-ONLY; Job Status
+	Status *string `json:"status,omitempty" azure:"ro"`
+}
+
+// DataTransferJobsClientCreateOptions contains the optional parameters for the DataTransferJobsClient.Create method.
+type DataTransferJobsClientCreateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DataTransferJobsClientGetOptions contains the optional parameters for the DataTransferJobsClient.Get method.
+type DataTransferJobsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DataTransferJobsClientListByDatabaseAccountOptions contains the optional parameters for the DataTransferJobsClient.ListByDatabaseAccount
+// method.
+type DataTransferJobsClientListByDatabaseAccountOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DataTransferRegionalServiceResource - Resource for a regional service location.
+type DataTransferRegionalServiceResource struct {
+	// READ-ONLY; The location name.
+	Location *string `json:"location,omitempty" azure:"ro"`
+
+	// READ-ONLY; The regional service name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Describes the status of a service.
+	Status *ServiceStatus `json:"status,omitempty" azure:"ro"`
+}
+
+// DataTransferServiceResource - Describes the service response property.
+type DataTransferServiceResource struct {
+	// Properties for DataTransferServiceResource.
+	Properties *DataTransferServiceResourceProperties `json:"properties,omitempty"`
+}
+
+// DataTransferServiceResourceProperties - Properties for DataTransferServiceResource.
+type DataTransferServiceResourceProperties struct {
+	// REQUIRED; ServiceType for the service.
+	ServiceType *ServiceType `json:"serviceType,omitempty"`
+
+	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
+	AdditionalProperties map[string]interface{}
+
+	// Instance count for the service.
+	InstanceCount *int32 `json:"instanceCount,omitempty"`
+
+	// Instance type for the service.
+	InstanceSize *ServiceSize `json:"instanceSize,omitempty"`
+
+	// READ-ONLY; Time of the last state change (ISO-8601 format).
+	CreationTime *time.Time `json:"creationTime,omitempty" azure:"ro"`
+
+	// READ-ONLY; An array that contains all of the locations for the service.
+	Locations []*DataTransferRegionalServiceResource `json:"locations,omitempty" azure:"ro"`
+
+	// READ-ONLY; Describes the status of a service.
+	Status *ServiceStatus `json:"status,omitempty" azure:"ro"`
 }
 
 // DatabaseAccountConnectionString - Connection string for the Cosmos DB account
@@ -1334,20 +1569,6 @@ type DatabaseAccountCreateUpdateParameters struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DatabaseAccountCreateUpdateParameters.
-func (d DatabaseAccountCreateUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", d.ID)
-	populate(objectMap, "identity", d.Identity)
-	populate(objectMap, "kind", d.Kind)
-	populate(objectMap, "location", d.Location)
-	populate(objectMap, "name", d.Name)
-	populate(objectMap, "properties", d.Properties)
-	populate(objectMap, "tags", d.Tags)
-	populate(objectMap, "type", d.Type)
-	return json.Marshal(objectMap)
-}
-
 // DatabaseAccountCreateUpdateProperties - Properties to create and update Azure Cosmos DB database accounts.
 type DatabaseAccountCreateUpdateProperties struct {
 	// REQUIRED; The offer type for the database
@@ -1388,6 +1609,9 @@ type DatabaseAccountCreateUpdateProperties struct {
 	// "SystemAssignedIdentity" and more.
 	DefaultIdentity *string `json:"defaultIdentity,omitempty"`
 
+	// The Object representing the different Diagnostic log settings for the Cosmos DB Account.
+	DiagnosticLogSettings *DiagnosticLogSettings `json:"diagnosticLogSettings,omitempty"`
+
 	// Disable write operations on metadata resources (databases, containers, throughput) via account keys
 	DisableKeyBasedMetadataWriteAccess *bool `json:"disableKeyBasedMetadataWriteAccess,omitempty"`
 
@@ -1407,6 +1631,9 @@ type DatabaseAccountCreateUpdateProperties struct {
 
 	// Flag to indicate whether Free Tier is enabled.
 	EnableFreeTier *bool `json:"enableFreeTier,omitempty"`
+
+	// Flag to indicate whether to enable MaterializedViews on the Cosmos DB account
+	EnableMaterializedViews *bool `json:"enableMaterializedViews,omitempty"`
 
 	// Enables the account to write in multiple locations
 	EnableMultipleWriteLocations *bool `json:"enableMultipleWriteLocations,omitempty"`
@@ -1434,137 +1661,6 @@ type DatabaseAccountCreateUpdateProperties struct {
 
 	// List of Virtual Network ACL rules configured for the Cosmos DB account.
 	VirtualNetworkRules []*VirtualNetworkRule `json:"virtualNetworkRules,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DatabaseAccountCreateUpdateProperties.
-func (d DatabaseAccountCreateUpdateProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "apiProperties", d.APIProperties)
-	populate(objectMap, "analyticalStorageConfiguration", d.AnalyticalStorageConfiguration)
-	populate(objectMap, "backupPolicy", d.BackupPolicy)
-	populate(objectMap, "capabilities", d.Capabilities)
-	populate(objectMap, "capacity", d.Capacity)
-	populate(objectMap, "connectorOffer", d.ConnectorOffer)
-	populate(objectMap, "consistencyPolicy", d.ConsistencyPolicy)
-	populate(objectMap, "cors", d.Cors)
-	populate(objectMap, "createMode", d.CreateMode)
-	populate(objectMap, "databaseAccountOfferType", d.DatabaseAccountOfferType)
-	populate(objectMap, "defaultIdentity", d.DefaultIdentity)
-	populate(objectMap, "disableKeyBasedMetadataWriteAccess", d.DisableKeyBasedMetadataWriteAccess)
-	populate(objectMap, "disableLocalAuth", d.DisableLocalAuth)
-	populate(objectMap, "enableAnalyticalStorage", d.EnableAnalyticalStorage)
-	populate(objectMap, "enableAutomaticFailover", d.EnableAutomaticFailover)
-	populate(objectMap, "enableCassandraConnector", d.EnableCassandraConnector)
-	populate(objectMap, "enableFreeTier", d.EnableFreeTier)
-	populate(objectMap, "enableMultipleWriteLocations", d.EnableMultipleWriteLocations)
-	populate(objectMap, "ipRules", d.IPRules)
-	populate(objectMap, "isVirtualNetworkFilterEnabled", d.IsVirtualNetworkFilterEnabled)
-	populate(objectMap, "keyVaultKeyUri", d.KeyVaultKeyURI)
-	populate(objectMap, "locations", d.Locations)
-	populate(objectMap, "networkAclBypass", d.NetworkACLBypass)
-	populate(objectMap, "networkAclBypassResourceIds", d.NetworkACLBypassResourceIDs)
-	populate(objectMap, "publicNetworkAccess", d.PublicNetworkAccess)
-	populate(objectMap, "restoreParameters", d.RestoreParameters)
-	populate(objectMap, "virtualNetworkRules", d.VirtualNetworkRules)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type DatabaseAccountCreateUpdateProperties.
-func (d *DatabaseAccountCreateUpdateProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "apiProperties":
-			err = unpopulate(val, &d.APIProperties)
-			delete(rawMsg, key)
-		case "analyticalStorageConfiguration":
-			err = unpopulate(val, &d.AnalyticalStorageConfiguration)
-			delete(rawMsg, key)
-		case "backupPolicy":
-			d.BackupPolicy, err = unmarshalBackupPolicyClassification(val)
-			delete(rawMsg, key)
-		case "capabilities":
-			err = unpopulate(val, &d.Capabilities)
-			delete(rawMsg, key)
-		case "capacity":
-			err = unpopulate(val, &d.Capacity)
-			delete(rawMsg, key)
-		case "connectorOffer":
-			err = unpopulate(val, &d.ConnectorOffer)
-			delete(rawMsg, key)
-		case "consistencyPolicy":
-			err = unpopulate(val, &d.ConsistencyPolicy)
-			delete(rawMsg, key)
-		case "cors":
-			err = unpopulate(val, &d.Cors)
-			delete(rawMsg, key)
-		case "createMode":
-			err = unpopulate(val, &d.CreateMode)
-			delete(rawMsg, key)
-		case "databaseAccountOfferType":
-			err = unpopulate(val, &d.DatabaseAccountOfferType)
-			delete(rawMsg, key)
-		case "defaultIdentity":
-			err = unpopulate(val, &d.DefaultIdentity)
-			delete(rawMsg, key)
-		case "disableKeyBasedMetadataWriteAccess":
-			err = unpopulate(val, &d.DisableKeyBasedMetadataWriteAccess)
-			delete(rawMsg, key)
-		case "disableLocalAuth":
-			err = unpopulate(val, &d.DisableLocalAuth)
-			delete(rawMsg, key)
-		case "enableAnalyticalStorage":
-			err = unpopulate(val, &d.EnableAnalyticalStorage)
-			delete(rawMsg, key)
-		case "enableAutomaticFailover":
-			err = unpopulate(val, &d.EnableAutomaticFailover)
-			delete(rawMsg, key)
-		case "enableCassandraConnector":
-			err = unpopulate(val, &d.EnableCassandraConnector)
-			delete(rawMsg, key)
-		case "enableFreeTier":
-			err = unpopulate(val, &d.EnableFreeTier)
-			delete(rawMsg, key)
-		case "enableMultipleWriteLocations":
-			err = unpopulate(val, &d.EnableMultipleWriteLocations)
-			delete(rawMsg, key)
-		case "ipRules":
-			err = unpopulate(val, &d.IPRules)
-			delete(rawMsg, key)
-		case "isVirtualNetworkFilterEnabled":
-			err = unpopulate(val, &d.IsVirtualNetworkFilterEnabled)
-			delete(rawMsg, key)
-		case "keyVaultKeyUri":
-			err = unpopulate(val, &d.KeyVaultKeyURI)
-			delete(rawMsg, key)
-		case "locations":
-			err = unpopulate(val, &d.Locations)
-			delete(rawMsg, key)
-		case "networkAclBypass":
-			err = unpopulate(val, &d.NetworkACLBypass)
-			delete(rawMsg, key)
-		case "networkAclBypassResourceIds":
-			err = unpopulate(val, &d.NetworkACLBypassResourceIDs)
-			delete(rawMsg, key)
-		case "publicNetworkAccess":
-			err = unpopulate(val, &d.PublicNetworkAccess)
-			delete(rawMsg, key)
-		case "restoreParameters":
-			err = unpopulate(val, &d.RestoreParameters)
-			delete(rawMsg, key)
-		case "virtualNetworkRules":
-			err = unpopulate(val, &d.VirtualNetworkRules)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // DatabaseAccountGetProperties - Properties for the database account.
@@ -1601,6 +1697,9 @@ type DatabaseAccountGetProperties struct {
 	// "SystemAssignedIdentity" and more.
 	DefaultIdentity *string `json:"defaultIdentity,omitempty"`
 
+	// The Object representing the different Diagnostic log settings for the Cosmos DB Account.
+	DiagnosticLogSettings *DiagnosticLogSettings `json:"diagnosticLogSettings,omitempty"`
+
 	// Disable write operations on metadata resources (databases, containers, throughput) via account keys
 	DisableKeyBasedMetadataWriteAccess *bool `json:"disableKeyBasedMetadataWriteAccess,omitempty"`
 
@@ -1620,6 +1719,9 @@ type DatabaseAccountGetProperties struct {
 
 	// Flag to indicate whether Free Tier is enabled.
 	EnableFreeTier *bool `json:"enableFreeTier,omitempty"`
+
+	// Flag to indicate whether to enable MaterializedViews on the Cosmos DB account
+	EnableMaterializedViews *bool `json:"enableMaterializedViews,omitempty"`
 
 	// Enables the account to write in multiple locations
 	EnableMultipleWriteLocations *bool `json:"enableMultipleWriteLocations,omitempty"`
@@ -1681,165 +1783,6 @@ type DatabaseAccountGetProperties struct {
 	WriteLocations []*Location `json:"writeLocations,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DatabaseAccountGetProperties.
-func (d DatabaseAccountGetProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "apiProperties", d.APIProperties)
-	populate(objectMap, "analyticalStorageConfiguration", d.AnalyticalStorageConfiguration)
-	populate(objectMap, "backupPolicy", d.BackupPolicy)
-	populate(objectMap, "capabilities", d.Capabilities)
-	populate(objectMap, "capacity", d.Capacity)
-	populate(objectMap, "connectorOffer", d.ConnectorOffer)
-	populate(objectMap, "consistencyPolicy", d.ConsistencyPolicy)
-	populate(objectMap, "cors", d.Cors)
-	populate(objectMap, "createMode", d.CreateMode)
-	populate(objectMap, "databaseAccountOfferType", d.DatabaseAccountOfferType)
-	populate(objectMap, "defaultIdentity", d.DefaultIdentity)
-	populate(objectMap, "disableKeyBasedMetadataWriteAccess", d.DisableKeyBasedMetadataWriteAccess)
-	populate(objectMap, "disableLocalAuth", d.DisableLocalAuth)
-	populate(objectMap, "documentEndpoint", d.DocumentEndpoint)
-	populate(objectMap, "enableAnalyticalStorage", d.EnableAnalyticalStorage)
-	populate(objectMap, "enableAutomaticFailover", d.EnableAutomaticFailover)
-	populate(objectMap, "enableCassandraConnector", d.EnableCassandraConnector)
-	populate(objectMap, "enableFreeTier", d.EnableFreeTier)
-	populate(objectMap, "enableMultipleWriteLocations", d.EnableMultipleWriteLocations)
-	populate(objectMap, "failoverPolicies", d.FailoverPolicies)
-	populate(objectMap, "ipRules", d.IPRules)
-	populate(objectMap, "instanceId", d.InstanceID)
-	populate(objectMap, "isVirtualNetworkFilterEnabled", d.IsVirtualNetworkFilterEnabled)
-	populate(objectMap, "keyVaultKeyUri", d.KeyVaultKeyURI)
-	populate(objectMap, "locations", d.Locations)
-	populate(objectMap, "networkAclBypass", d.NetworkACLBypass)
-	populate(objectMap, "networkAclBypassResourceIds", d.NetworkACLBypassResourceIDs)
-	populate(objectMap, "privateEndpointConnections", d.PrivateEndpointConnections)
-	populate(objectMap, "provisioningState", d.ProvisioningState)
-	populate(objectMap, "publicNetworkAccess", d.PublicNetworkAccess)
-	populate(objectMap, "readLocations", d.ReadLocations)
-	populate(objectMap, "restoreParameters", d.RestoreParameters)
-	populate(objectMap, "virtualNetworkRules", d.VirtualNetworkRules)
-	populate(objectMap, "writeLocations", d.WriteLocations)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type DatabaseAccountGetProperties.
-func (d *DatabaseAccountGetProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "apiProperties":
-			err = unpopulate(val, &d.APIProperties)
-			delete(rawMsg, key)
-		case "analyticalStorageConfiguration":
-			err = unpopulate(val, &d.AnalyticalStorageConfiguration)
-			delete(rawMsg, key)
-		case "backupPolicy":
-			d.BackupPolicy, err = unmarshalBackupPolicyClassification(val)
-			delete(rawMsg, key)
-		case "capabilities":
-			err = unpopulate(val, &d.Capabilities)
-			delete(rawMsg, key)
-		case "capacity":
-			err = unpopulate(val, &d.Capacity)
-			delete(rawMsg, key)
-		case "connectorOffer":
-			err = unpopulate(val, &d.ConnectorOffer)
-			delete(rawMsg, key)
-		case "consistencyPolicy":
-			err = unpopulate(val, &d.ConsistencyPolicy)
-			delete(rawMsg, key)
-		case "cors":
-			err = unpopulate(val, &d.Cors)
-			delete(rawMsg, key)
-		case "createMode":
-			err = unpopulate(val, &d.CreateMode)
-			delete(rawMsg, key)
-		case "databaseAccountOfferType":
-			err = unpopulate(val, &d.DatabaseAccountOfferType)
-			delete(rawMsg, key)
-		case "defaultIdentity":
-			err = unpopulate(val, &d.DefaultIdentity)
-			delete(rawMsg, key)
-		case "disableKeyBasedMetadataWriteAccess":
-			err = unpopulate(val, &d.DisableKeyBasedMetadataWriteAccess)
-			delete(rawMsg, key)
-		case "disableLocalAuth":
-			err = unpopulate(val, &d.DisableLocalAuth)
-			delete(rawMsg, key)
-		case "documentEndpoint":
-			err = unpopulate(val, &d.DocumentEndpoint)
-			delete(rawMsg, key)
-		case "enableAnalyticalStorage":
-			err = unpopulate(val, &d.EnableAnalyticalStorage)
-			delete(rawMsg, key)
-		case "enableAutomaticFailover":
-			err = unpopulate(val, &d.EnableAutomaticFailover)
-			delete(rawMsg, key)
-		case "enableCassandraConnector":
-			err = unpopulate(val, &d.EnableCassandraConnector)
-			delete(rawMsg, key)
-		case "enableFreeTier":
-			err = unpopulate(val, &d.EnableFreeTier)
-			delete(rawMsg, key)
-		case "enableMultipleWriteLocations":
-			err = unpopulate(val, &d.EnableMultipleWriteLocations)
-			delete(rawMsg, key)
-		case "failoverPolicies":
-			err = unpopulate(val, &d.FailoverPolicies)
-			delete(rawMsg, key)
-		case "ipRules":
-			err = unpopulate(val, &d.IPRules)
-			delete(rawMsg, key)
-		case "instanceId":
-			err = unpopulate(val, &d.InstanceID)
-			delete(rawMsg, key)
-		case "isVirtualNetworkFilterEnabled":
-			err = unpopulate(val, &d.IsVirtualNetworkFilterEnabled)
-			delete(rawMsg, key)
-		case "keyVaultKeyUri":
-			err = unpopulate(val, &d.KeyVaultKeyURI)
-			delete(rawMsg, key)
-		case "locations":
-			err = unpopulate(val, &d.Locations)
-			delete(rawMsg, key)
-		case "networkAclBypass":
-			err = unpopulate(val, &d.NetworkACLBypass)
-			delete(rawMsg, key)
-		case "networkAclBypassResourceIds":
-			err = unpopulate(val, &d.NetworkACLBypassResourceIDs)
-			delete(rawMsg, key)
-		case "privateEndpointConnections":
-			err = unpopulate(val, &d.PrivateEndpointConnections)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &d.ProvisioningState)
-			delete(rawMsg, key)
-		case "publicNetworkAccess":
-			err = unpopulate(val, &d.PublicNetworkAccess)
-			delete(rawMsg, key)
-		case "readLocations":
-			err = unpopulate(val, &d.ReadLocations)
-			delete(rawMsg, key)
-		case "restoreParameters":
-			err = unpopulate(val, &d.RestoreParameters)
-			delete(rawMsg, key)
-		case "virtualNetworkRules":
-			err = unpopulate(val, &d.VirtualNetworkRules)
-			delete(rawMsg, key)
-		case "writeLocations":
-			err = unpopulate(val, &d.WriteLocations)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // DatabaseAccountGetResults - An Azure Cosmos DB database account.
 type DatabaseAccountGetResults struct {
 	// Identity for the resource.
@@ -1874,32 +1817,10 @@ type DatabaseAccountGetResults struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DatabaseAccountGetResults.
-func (d DatabaseAccountGetResults) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", d.ID)
-	populate(objectMap, "identity", d.Identity)
-	populate(objectMap, "kind", d.Kind)
-	populate(objectMap, "location", d.Location)
-	populate(objectMap, "name", d.Name)
-	populate(objectMap, "properties", d.Properties)
-	populate(objectMap, "systemData", d.SystemData)
-	populate(objectMap, "tags", d.Tags)
-	populate(objectMap, "type", d.Type)
-	return json.Marshal(objectMap)
-}
-
 // DatabaseAccountListConnectionStringsResult - The connection strings for the given database account.
 type DatabaseAccountListConnectionStringsResult struct {
 	// An array that contains the connection strings for the Cosmos DB account.
 	ConnectionStrings []*DatabaseAccountConnectionString `json:"connectionStrings,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DatabaseAccountListConnectionStringsResult.
-func (d DatabaseAccountListConnectionStringsResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "connectionStrings", d.ConnectionStrings)
-	return json.Marshal(objectMap)
 }
 
 // DatabaseAccountListKeysResult - The access keys for the given database account.
@@ -1957,16 +1878,6 @@ type DatabaseAccountUpdateParameters struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DatabaseAccountUpdateParameters.
-func (d DatabaseAccountUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "identity", d.Identity)
-	populate(objectMap, "location", d.Location)
-	populate(objectMap, "properties", d.Properties)
-	populate(objectMap, "tags", d.Tags)
-	return json.Marshal(objectMap)
-}
-
 // DatabaseAccountUpdateProperties - Properties to update Azure Cosmos DB database accounts.
 type DatabaseAccountUpdateProperties struct {
 	// API specific properties. Currently, supported only for MongoDB API.
@@ -1998,6 +1909,9 @@ type DatabaseAccountUpdateProperties struct {
 	// "SystemAssignedIdentity" and more.
 	DefaultIdentity *string `json:"defaultIdentity,omitempty"`
 
+	// The Object representing the different Diagnostic log settings for the Cosmos DB Account.
+	DiagnosticLogSettings *DiagnosticLogSettings `json:"diagnosticLogSettings,omitempty"`
+
 	// Disable write operations on metadata resources (databases, containers, throughput) via account keys
 	DisableKeyBasedMetadataWriteAccess *bool `json:"disableKeyBasedMetadataWriteAccess,omitempty"`
 
@@ -2017,6 +1931,9 @@ type DatabaseAccountUpdateProperties struct {
 
 	// Flag to indicate whether Free Tier is enabled.
 	EnableFreeTier *bool `json:"enableFreeTier,omitempty"`
+
+	// Flag to indicate whether to enable MaterializedViews on the Cosmos DB account
+	EnableMaterializedViews *bool `json:"enableMaterializedViews,omitempty"`
 
 	// Enables the account to write in multiple locations
 	EnableMultipleWriteLocations *bool `json:"enableMultipleWriteLocations,omitempty"`
@@ -2046,163 +1963,51 @@ type DatabaseAccountUpdateProperties struct {
 	VirtualNetworkRules []*VirtualNetworkRule `json:"virtualNetworkRules,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DatabaseAccountUpdateProperties.
-func (d DatabaseAccountUpdateProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "apiProperties", d.APIProperties)
-	populate(objectMap, "analyticalStorageConfiguration", d.AnalyticalStorageConfiguration)
-	populate(objectMap, "backupPolicy", d.BackupPolicy)
-	populate(objectMap, "capabilities", d.Capabilities)
-	populate(objectMap, "capacity", d.Capacity)
-	populate(objectMap, "connectorOffer", d.ConnectorOffer)
-	populate(objectMap, "consistencyPolicy", d.ConsistencyPolicy)
-	populate(objectMap, "cors", d.Cors)
-	populate(objectMap, "defaultIdentity", d.DefaultIdentity)
-	populate(objectMap, "disableKeyBasedMetadataWriteAccess", d.DisableKeyBasedMetadataWriteAccess)
-	populate(objectMap, "disableLocalAuth", d.DisableLocalAuth)
-	populate(objectMap, "enableAnalyticalStorage", d.EnableAnalyticalStorage)
-	populate(objectMap, "enableAutomaticFailover", d.EnableAutomaticFailover)
-	populate(objectMap, "enableCassandraConnector", d.EnableCassandraConnector)
-	populate(objectMap, "enableFreeTier", d.EnableFreeTier)
-	populate(objectMap, "enableMultipleWriteLocations", d.EnableMultipleWriteLocations)
-	populate(objectMap, "ipRules", d.IPRules)
-	populate(objectMap, "isVirtualNetworkFilterEnabled", d.IsVirtualNetworkFilterEnabled)
-	populate(objectMap, "keyVaultKeyUri", d.KeyVaultKeyURI)
-	populate(objectMap, "locations", d.Locations)
-	populate(objectMap, "networkAclBypass", d.NetworkACLBypass)
-	populate(objectMap, "networkAclBypassResourceIds", d.NetworkACLBypassResourceIDs)
-	populate(objectMap, "publicNetworkAccess", d.PublicNetworkAccess)
-	populate(objectMap, "virtualNetworkRules", d.VirtualNetworkRules)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type DatabaseAccountUpdateProperties.
-func (d *DatabaseAccountUpdateProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "apiProperties":
-			err = unpopulate(val, &d.APIProperties)
-			delete(rawMsg, key)
-		case "analyticalStorageConfiguration":
-			err = unpopulate(val, &d.AnalyticalStorageConfiguration)
-			delete(rawMsg, key)
-		case "backupPolicy":
-			d.BackupPolicy, err = unmarshalBackupPolicyClassification(val)
-			delete(rawMsg, key)
-		case "capabilities":
-			err = unpopulate(val, &d.Capabilities)
-			delete(rawMsg, key)
-		case "capacity":
-			err = unpopulate(val, &d.Capacity)
-			delete(rawMsg, key)
-		case "connectorOffer":
-			err = unpopulate(val, &d.ConnectorOffer)
-			delete(rawMsg, key)
-		case "consistencyPolicy":
-			err = unpopulate(val, &d.ConsistencyPolicy)
-			delete(rawMsg, key)
-		case "cors":
-			err = unpopulate(val, &d.Cors)
-			delete(rawMsg, key)
-		case "defaultIdentity":
-			err = unpopulate(val, &d.DefaultIdentity)
-			delete(rawMsg, key)
-		case "disableKeyBasedMetadataWriteAccess":
-			err = unpopulate(val, &d.DisableKeyBasedMetadataWriteAccess)
-			delete(rawMsg, key)
-		case "disableLocalAuth":
-			err = unpopulate(val, &d.DisableLocalAuth)
-			delete(rawMsg, key)
-		case "enableAnalyticalStorage":
-			err = unpopulate(val, &d.EnableAnalyticalStorage)
-			delete(rawMsg, key)
-		case "enableAutomaticFailover":
-			err = unpopulate(val, &d.EnableAutomaticFailover)
-			delete(rawMsg, key)
-		case "enableCassandraConnector":
-			err = unpopulate(val, &d.EnableCassandraConnector)
-			delete(rawMsg, key)
-		case "enableFreeTier":
-			err = unpopulate(val, &d.EnableFreeTier)
-			delete(rawMsg, key)
-		case "enableMultipleWriteLocations":
-			err = unpopulate(val, &d.EnableMultipleWriteLocations)
-			delete(rawMsg, key)
-		case "ipRules":
-			err = unpopulate(val, &d.IPRules)
-			delete(rawMsg, key)
-		case "isVirtualNetworkFilterEnabled":
-			err = unpopulate(val, &d.IsVirtualNetworkFilterEnabled)
-			delete(rawMsg, key)
-		case "keyVaultKeyUri":
-			err = unpopulate(val, &d.KeyVaultKeyURI)
-			delete(rawMsg, key)
-		case "locations":
-			err = unpopulate(val, &d.Locations)
-			delete(rawMsg, key)
-		case "networkAclBypass":
-			err = unpopulate(val, &d.NetworkACLBypass)
-			delete(rawMsg, key)
-		case "networkAclBypassResourceIds":
-			err = unpopulate(val, &d.NetworkACLBypassResourceIDs)
-			delete(rawMsg, key)
-		case "publicNetworkAccess":
-			err = unpopulate(val, &d.PublicNetworkAccess)
-			delete(rawMsg, key)
-		case "virtualNetworkRules":
-			err = unpopulate(val, &d.VirtualNetworkRules)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // DatabaseAccountsClientBeginCreateOrUpdateOptions contains the optional parameters for the DatabaseAccountsClient.BeginCreateOrUpdate
 // method.
 type DatabaseAccountsClientBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // DatabaseAccountsClientBeginDeleteOptions contains the optional parameters for the DatabaseAccountsClient.BeginDelete method.
 type DatabaseAccountsClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // DatabaseAccountsClientBeginFailoverPriorityChangeOptions contains the optional parameters for the DatabaseAccountsClient.BeginFailoverPriorityChange
 // method.
 type DatabaseAccountsClientBeginFailoverPriorityChangeOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // DatabaseAccountsClientBeginOfflineRegionOptions contains the optional parameters for the DatabaseAccountsClient.BeginOfflineRegion
 // method.
 type DatabaseAccountsClientBeginOfflineRegionOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // DatabaseAccountsClientBeginOnlineRegionOptions contains the optional parameters for the DatabaseAccountsClient.BeginOnlineRegion
 // method.
 type DatabaseAccountsClientBeginOnlineRegionOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // DatabaseAccountsClientBeginRegenerateKeyOptions contains the optional parameters for the DatabaseAccountsClient.BeginRegenerateKey
 // method.
 type DatabaseAccountsClientBeginRegenerateKeyOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // DatabaseAccountsClientBeginUpdateOptions contains the optional parameters for the DatabaseAccountsClient.BeginUpdate method.
 type DatabaseAccountsClientBeginUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // DatabaseAccountsClientCheckNameExistsOptions contains the optional parameters for the DatabaseAccountsClient.CheckNameExists
@@ -2274,13 +2079,6 @@ type DatabaseAccountsListResult struct {
 	Value []*DatabaseAccountGetResults `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DatabaseAccountsListResult.
-func (d DatabaseAccountsListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", d.Value)
-	return json.Marshal(objectMap)
-}
-
 // DatabaseClientListMetricDefinitionsOptions contains the optional parameters for the DatabaseClient.ListMetricDefinitions
 // method.
 type DatabaseClientListMetricDefinitionsOptions struct {
@@ -2308,12 +2106,10 @@ type DatabaseRestoreResource struct {
 	DatabaseName *string `json:"databaseName,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DatabaseRestoreResource.
-func (d DatabaseRestoreResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "collectionNames", d.CollectionNames)
-	populate(objectMap, "databaseName", d.DatabaseName)
-	return json.Marshal(objectMap)
+// DiagnosticLogSettings - Indicates what diagnostic log settings are to be enabled.
+type DiagnosticLogSettings struct {
+	// Describe the level of detail with which queries are to be logged.
+	EnableFullTextQuery *EnableFullTextQuery `json:"enableFullTextQuery,omitempty"`
 }
 
 // ErrorResponse - Error Response.
@@ -2349,13 +2145,6 @@ type FailoverPolicies struct {
 	FailoverPolicies []*FailoverPolicy `json:"failoverPolicies,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type FailoverPolicies.
-func (f FailoverPolicies) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "failoverPolicies", f.FailoverPolicies)
-	return json.Marshal(objectMap)
-}
-
 // FailoverPolicy - The failover policy for a given region of a database account.
 type FailoverPolicy struct {
 	// The failover priority of the region. A failover priority of 0 indicates a write region. The maximum value for a failover
@@ -2370,10 +2159,67 @@ type FailoverPolicy struct {
 	ID *string `json:"id,omitempty" azure:"ro"`
 }
 
-// GremlinDatabaseCreateUpdateParameters - Parameters to create and update Cosmos DB Gremlin database.
-type GremlinDatabaseCreateUpdateParameters struct {
-	// REQUIRED; Properties to create and update Azure Cosmos DB Gremlin database.
-	Properties *GremlinDatabaseCreateUpdateProperties `json:"properties,omitempty"`
+// GraphAPIComputeRegionalServiceResource - Resource for a regional service location.
+type GraphAPIComputeRegionalServiceResource struct {
+	// READ-ONLY; The regional endpoint for GraphAPICompute.
+	GraphAPIComputeEndpoint *string `json:"graphApiComputeEndpoint,omitempty" azure:"ro"`
+
+	// READ-ONLY; The location name.
+	Location *string `json:"location,omitempty" azure:"ro"`
+
+	// READ-ONLY; The regional service name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Describes the status of a service.
+	Status *ServiceStatus `json:"status,omitempty" azure:"ro"`
+}
+
+// GraphAPIComputeServiceResource - Describes the service response property for GraphAPICompute.
+type GraphAPIComputeServiceResource struct {
+	// Properties for GraphAPIComputeServiceResource.
+	Properties *GraphAPIComputeServiceResourceProperties `json:"properties,omitempty"`
+}
+
+// GraphAPIComputeServiceResourceProperties - Properties for GraphAPIComputeServiceResource.
+type GraphAPIComputeServiceResourceProperties struct {
+	// REQUIRED; ServiceType for the service.
+	ServiceType *ServiceType `json:"serviceType,omitempty"`
+
+	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
+	AdditionalProperties map[string]interface{}
+
+	// GraphAPICompute endpoint for the service.
+	GraphAPIComputeEndpoint *string `json:"graphApiComputeEndpoint,omitempty"`
+
+	// Instance count for the service.
+	InstanceCount *int32 `json:"instanceCount,omitempty"`
+
+	// Instance type for the service.
+	InstanceSize *ServiceSize `json:"instanceSize,omitempty"`
+
+	// READ-ONLY; Time of the last state change (ISO-8601 format).
+	CreationTime *time.Time `json:"creationTime,omitempty" azure:"ro"`
+
+	// READ-ONLY; An array that contains all of the locations for the service.
+	Locations []*GraphAPIComputeRegionalServiceResource `json:"locations,omitempty" azure:"ro"`
+
+	// READ-ONLY; Describes the status of a service.
+	Status *ServiceStatus `json:"status,omitempty" azure:"ro"`
+}
+
+// GraphResource - Cosmos DB Graph resource object
+type GraphResource struct {
+	// REQUIRED; Name of the Cosmos DB Graph
+	ID *string `json:"id,omitempty"`
+}
+
+// GraphResourceCreateUpdateParameters - Parameters to create and update Cosmos DB Graph resource.
+type GraphResourceCreateUpdateParameters struct {
+	// REQUIRED; Properties to create and update Azure Cosmos DB Graph resource.
+	Properties *GraphResourceCreateUpdateProperties `json:"properties,omitempty"`
+
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
 
 	// The location of the resource group to which the resource belongs.
 	Location *string `json:"location,omitempty"`
@@ -2395,16 +2241,119 @@ type GremlinDatabaseCreateUpdateParameters struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type GremlinDatabaseCreateUpdateParameters.
-func (g GremlinDatabaseCreateUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", g.ID)
-	populate(objectMap, "location", g.Location)
-	populate(objectMap, "name", g.Name)
-	populate(objectMap, "properties", g.Properties)
-	populate(objectMap, "tags", g.Tags)
-	populate(objectMap, "type", g.Type)
-	return json.Marshal(objectMap)
+// GraphResourceCreateUpdateProperties - Properties to create and update Azure Cosmos DB Graph resource.
+type GraphResourceCreateUpdateProperties struct {
+	// REQUIRED; The standard JSON format of a Graph resource
+	Resource *GraphResource `json:"resource,omitempty"`
+
+	// A key-value pair of options to be applied for the request. This corresponds to the headers sent with the request.
+	Options *CreateUpdateOptions `json:"options,omitempty"`
+}
+
+// GraphResourceGetProperties - The properties of an Azure Cosmos DB SQL database
+type GraphResourceGetProperties struct {
+	Options  *GraphResourceGetPropertiesOptions  `json:"options,omitempty"`
+	Resource *GraphResourceGetPropertiesResource `json:"resource,omitempty"`
+}
+
+type GraphResourceGetPropertiesOptions struct {
+	// Specifies the Autoscale settings.
+	AutoscaleSettings *AutoscaleSettings `json:"autoscaleSettings,omitempty"`
+
+	// Value of the Cosmos DB resource throughput or autoscaleSettings. Use the ThroughputSetting resource when retrieving offer
+	// details.
+	Throughput *int32 `json:"throughput,omitempty"`
+}
+
+type GraphResourceGetPropertiesResource struct {
+	// REQUIRED; Name of the Cosmos DB Graph
+	ID *string `json:"id,omitempty"`
+}
+
+// GraphResourceGetResults - An Azure Cosmos DB Graph resource.
+type GraphResourceGetResults struct {
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+
+	// The location of the resource group to which the resource belongs.
+	Location *string `json:"location,omitempty"`
+
+	// The properties of an Azure Cosmos DB Graph resource.
+	Properties *GraphResourceGetProperties `json:"properties,omitempty"`
+
+	// Tags are a list of key-value pairs that describe the resource. These tags can be used in viewing and grouping this resource
+	// (across resource groups). A maximum of 15 tags can be provided for a
+	// resource. Each tag must have a key no greater than 128 characters and value no greater than 256 characters. For example,
+	// the default experience for a template type is set with "defaultExperience":
+	// "Cassandra". Current "defaultExperience" values also include "Table", "Graph", "DocumentDB", and "MongoDB".
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; The unique resource identifier of the ARM resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the ARM resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of Azure resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GraphResourcesClientBeginCreateUpdateGraphOptions contains the optional parameters for the GraphResourcesClient.BeginCreateUpdateGraph
+// method.
+type GraphResourcesClientBeginCreateUpdateGraphOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// GraphResourcesClientBeginDeleteGraphResourceOptions contains the optional parameters for the GraphResourcesClient.BeginDeleteGraphResource
+// method.
+type GraphResourcesClientBeginDeleteGraphResourceOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// GraphResourcesClientGetGraphOptions contains the optional parameters for the GraphResourcesClient.GetGraph method.
+type GraphResourcesClientGetGraphOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GraphResourcesClientListGraphsOptions contains the optional parameters for the GraphResourcesClient.ListGraphs method.
+type GraphResourcesClientListGraphsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GraphResourcesListResult - The List operation response, that contains the Graph resource and their properties.
+type GraphResourcesListResult struct {
+	// READ-ONLY; List of Graph resource and their properties.
+	Value []*GraphResourceGetResults `json:"value,omitempty" azure:"ro"`
+}
+
+// GremlinDatabaseCreateUpdateParameters - Parameters to create and update Cosmos DB Gremlin database.
+type GremlinDatabaseCreateUpdateParameters struct {
+	// REQUIRED; Properties to create and update Azure Cosmos DB Gremlin database.
+	Properties *GremlinDatabaseCreateUpdateProperties `json:"properties,omitempty"`
+
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+
+	// The location of the resource group to which the resource belongs.
+	Location *string `json:"location,omitempty"`
+
+	// Tags are a list of key-value pairs that describe the resource. These tags can be used in viewing and grouping this resource
+	// (across resource groups). A maximum of 15 tags can be provided for a
+	// resource. Each tag must have a key no greater than 128 characters and value no greater than 256 characters. For example,
+	// the default experience for a template type is set with "defaultExperience":
+	// "Cassandra". Current "defaultExperience" values also include "Table", "Graph", "DocumentDB", and "MongoDB".
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; The unique resource identifier of the ARM resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the ARM resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of Azure resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // GremlinDatabaseCreateUpdateProperties - Properties to create and update Azure Cosmos DB Gremlin database.
@@ -2447,6 +2396,9 @@ type GremlinDatabaseGetPropertiesResource struct {
 
 // GremlinDatabaseGetResults - An Azure Cosmos DB Gremlin database.
 type GremlinDatabaseGetResults struct {
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+
 	// The location of the resource group to which the resource belongs.
 	Location *string `json:"location,omitempty"`
 
@@ -2470,29 +2422,10 @@ type GremlinDatabaseGetResults struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type GremlinDatabaseGetResults.
-func (g GremlinDatabaseGetResults) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", g.ID)
-	populate(objectMap, "location", g.Location)
-	populate(objectMap, "name", g.Name)
-	populate(objectMap, "properties", g.Properties)
-	populate(objectMap, "tags", g.Tags)
-	populate(objectMap, "type", g.Type)
-	return json.Marshal(objectMap)
-}
-
 // GremlinDatabaseListResult - The List operation response, that contains the Gremlin databases and their properties.
 type GremlinDatabaseListResult struct {
 	// READ-ONLY; List of Gremlin databases and their properties.
 	Value []*GremlinDatabaseGetResults `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type GremlinDatabaseListResult.
-func (g GremlinDatabaseListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", g.Value)
-	return json.Marshal(objectMap)
 }
 
 // GremlinDatabaseResource - Cosmos DB Gremlin database resource object
@@ -2501,10 +2434,22 @@ type GremlinDatabaseResource struct {
 	ID *string `json:"id,omitempty"`
 }
 
+// GremlinDatabaseRestoreResource - Specific Gremlin Databases to restore.
+type GremlinDatabaseRestoreResource struct {
+	// The name of the gremlin database available for restore.
+	DatabaseName *string `json:"databaseName,omitempty"`
+
+	// The names of the graphs available for restore.
+	GraphNames []*string `json:"graphNames,omitempty"`
+}
+
 // GremlinGraphCreateUpdateParameters - Parameters to create and update Cosmos DB Gremlin graph.
 type GremlinGraphCreateUpdateParameters struct {
 	// REQUIRED; Properties to create and update Azure Cosmos DB Gremlin graph.
 	Properties *GremlinGraphCreateUpdateProperties `json:"properties,omitempty"`
+
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
 
 	// The location of the resource group to which the resource belongs.
 	Location *string `json:"location,omitempty"`
@@ -2524,18 +2469,6 @@ type GremlinGraphCreateUpdateParameters struct {
 
 	// READ-ONLY; The type of Azure resource.
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type GremlinGraphCreateUpdateParameters.
-func (g GremlinGraphCreateUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", g.ID)
-	populate(objectMap, "location", g.Location)
-	populate(objectMap, "name", g.Name)
-	populate(objectMap, "properties", g.Properties)
-	populate(objectMap, "tags", g.Tags)
-	populate(objectMap, "type", g.Type)
-	return json.Marshal(objectMap)
 }
 
 // GremlinGraphCreateUpdateProperties - Properties to create and update Azure Cosmos DB Gremlin graph.
@@ -2594,6 +2527,9 @@ type GremlinGraphGetPropertiesResource struct {
 
 // GremlinGraphGetResults - An Azure Cosmos DB Gremlin graph.
 type GremlinGraphGetResults struct {
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+
 	// The location of the resource group to which the resource belongs.
 	Location *string `json:"location,omitempty"`
 
@@ -2617,29 +2553,10 @@ type GremlinGraphGetResults struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type GremlinGraphGetResults.
-func (g GremlinGraphGetResults) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", g.ID)
-	populate(objectMap, "location", g.Location)
-	populate(objectMap, "name", g.Name)
-	populate(objectMap, "properties", g.Properties)
-	populate(objectMap, "tags", g.Tags)
-	populate(objectMap, "type", g.Type)
-	return json.Marshal(objectMap)
-}
-
 // GremlinGraphListResult - The List operation response, that contains the graphs and their properties.
 type GremlinGraphListResult struct {
 	// READ-ONLY; List of graphs and their properties.
 	Value []*GremlinGraphGetResults `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type GremlinGraphListResult.
-func (g GremlinGraphListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", g.Value)
-	return json.Marshal(objectMap)
 }
 
 // GremlinGraphResource - Cosmos DB Gremlin graph resource object
@@ -2667,61 +2584,78 @@ type GremlinGraphResource struct {
 // GremlinResourcesClientBeginCreateUpdateGremlinDatabaseOptions contains the optional parameters for the GremlinResourcesClient.BeginCreateUpdateGremlinDatabase
 // method.
 type GremlinResourcesClientBeginCreateUpdateGremlinDatabaseOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // GremlinResourcesClientBeginCreateUpdateGremlinGraphOptions contains the optional parameters for the GremlinResourcesClient.BeginCreateUpdateGremlinGraph
 // method.
 type GremlinResourcesClientBeginCreateUpdateGremlinGraphOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // GremlinResourcesClientBeginDeleteGremlinDatabaseOptions contains the optional parameters for the GremlinResourcesClient.BeginDeleteGremlinDatabase
 // method.
 type GremlinResourcesClientBeginDeleteGremlinDatabaseOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // GremlinResourcesClientBeginDeleteGremlinGraphOptions contains the optional parameters for the GremlinResourcesClient.BeginDeleteGremlinGraph
 // method.
 type GremlinResourcesClientBeginDeleteGremlinGraphOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // GremlinResourcesClientBeginMigrateGremlinDatabaseToAutoscaleOptions contains the optional parameters for the GremlinResourcesClient.BeginMigrateGremlinDatabaseToAutoscale
 // method.
 type GremlinResourcesClientBeginMigrateGremlinDatabaseToAutoscaleOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // GremlinResourcesClientBeginMigrateGremlinDatabaseToManualThroughputOptions contains the optional parameters for the GremlinResourcesClient.BeginMigrateGremlinDatabaseToManualThroughput
 // method.
 type GremlinResourcesClientBeginMigrateGremlinDatabaseToManualThroughputOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // GremlinResourcesClientBeginMigrateGremlinGraphToAutoscaleOptions contains the optional parameters for the GremlinResourcesClient.BeginMigrateGremlinGraphToAutoscale
 // method.
 type GremlinResourcesClientBeginMigrateGremlinGraphToAutoscaleOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // GremlinResourcesClientBeginMigrateGremlinGraphToManualThroughputOptions contains the optional parameters for the GremlinResourcesClient.BeginMigrateGremlinGraphToManualThroughput
 // method.
 type GremlinResourcesClientBeginMigrateGremlinGraphToManualThroughputOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// GremlinResourcesClientBeginRetrieveContinuousBackupInformationOptions contains the optional parameters for the GremlinResourcesClient.BeginRetrieveContinuousBackupInformation
+// method.
+type GremlinResourcesClientBeginRetrieveContinuousBackupInformationOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // GremlinResourcesClientBeginUpdateGremlinDatabaseThroughputOptions contains the optional parameters for the GremlinResourcesClient.BeginUpdateGremlinDatabaseThroughput
 // method.
 type GremlinResourcesClientBeginUpdateGremlinDatabaseThroughputOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // GremlinResourcesClientBeginUpdateGremlinGraphThroughputOptions contains the optional parameters for the GremlinResourcesClient.BeginUpdateGremlinGraphThroughput
 // method.
 type GremlinResourcesClientBeginUpdateGremlinGraphThroughputOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // GremlinResourcesClientGetGremlinDatabaseOptions contains the optional parameters for the GremlinResourcesClient.GetGremlinDatabase
@@ -2778,14 +2712,6 @@ type IncludedPath struct {
 	Path *string `json:"path,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type IncludedPath.
-func (i IncludedPath) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "indexes", i.Indexes)
-	populate(objectMap, "path", i.Path)
-	return json.Marshal(objectMap)
-}
-
 // Indexes - The indexes for the path.
 type Indexes struct {
 	// The datatype for which the indexing behavior is applied to.
@@ -2819,16 +2745,26 @@ type IndexingPolicy struct {
 	SpatialIndexes []*SpatialSpec `json:"spatialIndexes,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type IndexingPolicy.
-func (i IndexingPolicy) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "automatic", i.Automatic)
-	populate(objectMap, "compositeIndexes", i.CompositeIndexes)
-	populate(objectMap, "excludedPaths", i.ExcludedPaths)
-	populate(objectMap, "includedPaths", i.IncludedPaths)
-	populate(objectMap, "indexingMode", i.IndexingMode)
-	populate(objectMap, "spatialIndexes", i.SpatialIndexes)
-	return json.Marshal(objectMap)
+// KeyWrapMetadata - Represents key wrap metadata that a key wrapping provider can use to wrap/unwrap a client encryption
+// key.
+type KeyWrapMetadata struct {
+	// Algorithm used in wrapping and unwrapping of the data encryption key.
+	Algorithm *string `json:"algorithm,omitempty"`
+
+	// The name of associated KeyEncryptionKey (aka CustomerManagedKey).
+	Name *string `json:"name,omitempty"`
+
+	// ProviderName of KeyStoreProvider.
+	Type *string `json:"type,omitempty"`
+
+	// Reference / link to the KeyEncryptionKey.
+	Value *string `json:"value,omitempty"`
+}
+
+// ListBackups - List of restorable backups for a Cassandra cluster.
+type ListBackups struct {
+	// READ-ONLY; Container for array of backups.
+	Value []*BackupResource `json:"value,omitempty" azure:"ro"`
 }
 
 // ListClusters - List of managed Cassandra clusters.
@@ -2837,24 +2773,10 @@ type ListClusters struct {
 	Value []*ClusterResource `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ListClusters.
-func (l ListClusters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", l.Value)
-	return json.Marshal(objectMap)
-}
-
 // ListDataCenters - List of managed Cassandra data centers and their properties.
 type ListDataCenters struct {
 	// READ-ONLY; Container for array of data centers.
 	Value []*DataCenterResource `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ListDataCenters.
-func (l ListDataCenters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", l.Value)
-	return json.Marshal(objectMap)
 }
 
 // Location - A region in which the Azure Cosmos DB database account is deployed.
@@ -2906,13 +2828,6 @@ type LocationListResult struct {
 	Value []*LocationGetResult `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type LocationListResult.
-func (l LocationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", l.Value)
-	return json.Marshal(objectMap)
-}
-
 // LocationProperties - Cosmos DB location metadata
 type LocationProperties struct {
 	// READ-ONLY; The properties of available backup storage redundancies.
@@ -2921,17 +2836,11 @@ type LocationProperties struct {
 	// READ-ONLY; Flag indicating whether the location is residency sensitive.
 	IsResidencyRestricted *bool `json:"isResidencyRestricted,omitempty" azure:"ro"`
 
+	// READ-ONLY; The current status of location in Azure.
+	Status *string `json:"status,omitempty" azure:"ro"`
+
 	// READ-ONLY; Flag indicating whether the location supports availability zones or not.
 	SupportsAvailabilityZone *bool `json:"supportsAvailabilityZone,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type LocationProperties.
-func (l LocationProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "backupStorageRedundancies", l.BackupStorageRedundancies)
-	populate(objectMap, "isResidencyRestricted", l.IsResidencyRestricted)
-	populate(objectMap, "supportsAvailabilityZone", l.SupportsAvailabilityZone)
-	return json.Marshal(objectMap)
 }
 
 // LocationsClientGetOptions contains the optional parameters for the LocationsClient.Get method.
@@ -2969,18 +2878,6 @@ type ManagedCassandraARMResourceProperties struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ManagedCassandraARMResourceProperties.
-func (m ManagedCassandraARMResourceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", m.ID)
-	populate(objectMap, "identity", m.Identity)
-	populate(objectMap, "location", m.Location)
-	populate(objectMap, "name", m.Name)
-	populate(objectMap, "tags", m.Tags)
-	populate(objectMap, "type", m.Type)
-	return json.Marshal(objectMap)
-}
-
 // ManagedCassandraManagedServiceIdentity - Identity for the resource.
 type ManagedCassandraManagedServiceIdentity struct {
 	// The type of the resource.
@@ -3003,15 +2900,6 @@ type ManagedCassandraReaperStatus struct {
 	RepairSchedules map[string]*string `json:"repairSchedules,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ManagedCassandraReaperStatus.
-func (m ManagedCassandraReaperStatus) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "healthy", m.Healthy)
-	populate(objectMap, "repairRunIds", m.RepairRunIDs)
-	populate(objectMap, "repairSchedules", m.RepairSchedules)
-	return json.Marshal(objectMap)
-}
-
 // ManagedServiceIdentity - Identity for the resource.
 type ManagedServiceIdentity struct {
 	// The type of identity used for the resource. The type 'SystemAssigned,UserAssigned' includes both an implicitly created
@@ -3032,14 +2920,52 @@ type ManagedServiceIdentity struct {
 	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ManagedServiceIdentity.
-func (m ManagedServiceIdentity) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "principalId", m.PrincipalID)
-	populate(objectMap, "tenantId", m.TenantID)
-	populate(objectMap, "type", m.Type)
-	populate(objectMap, "userAssignedIdentities", m.UserAssignedIdentities)
-	return json.Marshal(objectMap)
+// MaterializedViewsBuilderRegionalServiceResource - Resource for a regional service location.
+type MaterializedViewsBuilderRegionalServiceResource struct {
+	// READ-ONLY; The location name.
+	Location *string `json:"location,omitempty" azure:"ro"`
+
+	// READ-ONLY; The regional service name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Describes the status of a service.
+	Status *ServiceStatus `json:"status,omitempty" azure:"ro"`
+}
+
+// MaterializedViewsBuilderServiceResource - Describes the service response property for MaterializedViewsBuilder.
+type MaterializedViewsBuilderServiceResource struct {
+	// Properties for MaterializedViewsBuilderServiceResource.
+	Properties *MaterializedViewsBuilderServiceResourceProperties `json:"properties,omitempty"`
+}
+
+// MaterializedViewsBuilderServiceResourceProperties - Properties for MaterializedViewsBuilderServiceResource.
+type MaterializedViewsBuilderServiceResourceProperties struct {
+	// REQUIRED; ServiceType for the service.
+	ServiceType *ServiceType `json:"serviceType,omitempty"`
+
+	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
+	AdditionalProperties map[string]interface{}
+
+	// Instance count for the service.
+	InstanceCount *int32 `json:"instanceCount,omitempty"`
+
+	// Instance type for the service.
+	InstanceSize *ServiceSize `json:"instanceSize,omitempty"`
+
+	// READ-ONLY; Time of the last state change (ISO-8601 format).
+	CreationTime *time.Time `json:"creationTime,omitempty" azure:"ro"`
+
+	// READ-ONLY; An array that contains all of the locations for the service.
+	Locations []*MaterializedViewsBuilderRegionalServiceResource `json:"locations,omitempty" azure:"ro"`
+
+	// READ-ONLY; Describes the status of a service.
+	Status *ServiceStatus `json:"status,omitempty" azure:"ro"`
+}
+
+// MergeParameters - The properties of an Azure Cosmos DB merge operations
+type MergeParameters struct {
+	// Specifies whether the operation is a real merge operation or a simulation.
+	IsDryRun *bool `json:"isDryRun,omitempty"`
 }
 
 // Metric data
@@ -3061,53 +2987,6 @@ type Metric struct {
 
 	// READ-ONLY; The unit of the metric.
 	Unit *UnitType `json:"unit,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Metric.
-func (m Metric) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "endTime", m.EndTime)
-	populate(objectMap, "metricValues", m.MetricValues)
-	populate(objectMap, "name", m.Name)
-	populateTimeRFC3339(objectMap, "startTime", m.StartTime)
-	populate(objectMap, "timeGrain", m.TimeGrain)
-	populate(objectMap, "unit", m.Unit)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type Metric.
-func (m *Metric) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "endTime":
-			err = unpopulateTimeRFC3339(val, &m.EndTime)
-			delete(rawMsg, key)
-		case "metricValues":
-			err = unpopulate(val, &m.MetricValues)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &m.Name)
-			delete(rawMsg, key)
-		case "startTime":
-			err = unpopulateTimeRFC3339(val, &m.StartTime)
-			delete(rawMsg, key)
-		case "timeGrain":
-			err = unpopulate(val, &m.TimeGrain)
-			delete(rawMsg, key)
-		case "unit":
-			err = unpopulate(val, &m.Unit)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // MetricAvailability - The availability of the metric.
@@ -3137,41 +3016,16 @@ type MetricDefinition struct {
 	Unit *UnitType `json:"unit,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type MetricDefinition.
-func (m MetricDefinition) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "metricAvailabilities", m.MetricAvailabilities)
-	populate(objectMap, "name", m.Name)
-	populate(objectMap, "primaryAggregationType", m.PrimaryAggregationType)
-	populate(objectMap, "resourceUri", m.ResourceURI)
-	populate(objectMap, "unit", m.Unit)
-	return json.Marshal(objectMap)
-}
-
 // MetricDefinitionsListResult - The response to a list metric definitions request.
 type MetricDefinitionsListResult struct {
 	// READ-ONLY; The list of metric definitions for the account.
 	Value []*MetricDefinition `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type MetricDefinitionsListResult.
-func (m MetricDefinitionsListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", m.Value)
-	return json.Marshal(objectMap)
-}
-
 // MetricListResult - The response to a list metrics request.
 type MetricListResult struct {
 	// READ-ONLY; The list of metrics for the account.
 	Value []*Metric `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type MetricListResult.
-func (m MetricListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", m.Value)
-	return json.Marshal(objectMap)
 }
 
 // MetricName - A metric name.
@@ -3204,57 +3058,13 @@ type MetricValue struct {
 	Total *float64 `json:"total,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type MetricValue.
-func (m MetricValue) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "average", m.Average)
-	populate(objectMap, "_count", m.Count)
-	populate(objectMap, "maximum", m.Maximum)
-	populate(objectMap, "minimum", m.Minimum)
-	populateTimeRFC3339(objectMap, "timestamp", m.Timestamp)
-	populate(objectMap, "total", m.Total)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type MetricValue.
-func (m *MetricValue) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "average":
-			err = unpopulate(val, &m.Average)
-			delete(rawMsg, key)
-		case "_count":
-			err = unpopulate(val, &m.Count)
-			delete(rawMsg, key)
-		case "maximum":
-			err = unpopulate(val, &m.Maximum)
-			delete(rawMsg, key)
-		case "minimum":
-			err = unpopulate(val, &m.Minimum)
-			delete(rawMsg, key)
-		case "timestamp":
-			err = unpopulateTimeRFC3339(val, &m.Timestamp)
-			delete(rawMsg, key)
-		case "total":
-			err = unpopulate(val, &m.Total)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // MongoDBCollectionCreateUpdateParameters - Parameters to create and update Cosmos DB MongoDB collection.
 type MongoDBCollectionCreateUpdateParameters struct {
 	// REQUIRED; Properties to create and update Azure Cosmos DB MongoDB collection.
 	Properties *MongoDBCollectionCreateUpdateProperties `json:"properties,omitempty"`
+
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
 
 	// The location of the resource group to which the resource belongs.
 	Location *string `json:"location,omitempty"`
@@ -3274,18 +3084,6 @@ type MongoDBCollectionCreateUpdateParameters struct {
 
 	// READ-ONLY; The type of Azure resource.
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type MongoDBCollectionCreateUpdateParameters.
-func (m MongoDBCollectionCreateUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", m.ID)
-	populate(objectMap, "location", m.Location)
-	populate(objectMap, "name", m.Name)
-	populate(objectMap, "properties", m.Properties)
-	populate(objectMap, "tags", m.Tags)
-	populate(objectMap, "type", m.Type)
-	return json.Marshal(objectMap)
 }
 
 // MongoDBCollectionCreateUpdateProperties - Properties to create and update Azure Cosmos DB MongoDB collection.
@@ -3335,21 +3133,11 @@ type MongoDBCollectionGetPropertiesResource struct {
 	Ts *float32 `json:"_ts,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type MongoDBCollectionGetPropertiesResource.
-func (m MongoDBCollectionGetPropertiesResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "analyticalStorageTtl", m.AnalyticalStorageTTL)
-	populate(objectMap, "_etag", m.Etag)
-	populate(objectMap, "id", m.ID)
-	populate(objectMap, "indexes", m.Indexes)
-	populate(objectMap, "_rid", m.Rid)
-	populate(objectMap, "shardKey", m.ShardKey)
-	populate(objectMap, "_ts", m.Ts)
-	return json.Marshal(objectMap)
-}
-
 // MongoDBCollectionGetResults - An Azure Cosmos DB MongoDB collection.
 type MongoDBCollectionGetResults struct {
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+
 	// The location of the resource group to which the resource belongs.
 	Location *string `json:"location,omitempty"`
 
@@ -3373,29 +3161,10 @@ type MongoDBCollectionGetResults struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type MongoDBCollectionGetResults.
-func (m MongoDBCollectionGetResults) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", m.ID)
-	populate(objectMap, "location", m.Location)
-	populate(objectMap, "name", m.Name)
-	populate(objectMap, "properties", m.Properties)
-	populate(objectMap, "tags", m.Tags)
-	populate(objectMap, "type", m.Type)
-	return json.Marshal(objectMap)
-}
-
 // MongoDBCollectionListResult - The List operation response, that contains the MongoDB collections and their properties.
 type MongoDBCollectionListResult struct {
 	// READ-ONLY; List of MongoDB collections and their properties.
 	Value []*MongoDBCollectionGetResults `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type MongoDBCollectionListResult.
-func (m MongoDBCollectionListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", m.Value)
-	return json.Marshal(objectMap)
 }
 
 // MongoDBCollectionResource - Cosmos DB MongoDB collection resource object
@@ -3413,20 +3182,13 @@ type MongoDBCollectionResource struct {
 	ShardKey map[string]*string `json:"shardKey,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type MongoDBCollectionResource.
-func (m MongoDBCollectionResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "analyticalStorageTtl", m.AnalyticalStorageTTL)
-	populate(objectMap, "id", m.ID)
-	populate(objectMap, "indexes", m.Indexes)
-	populate(objectMap, "shardKey", m.ShardKey)
-	return json.Marshal(objectMap)
-}
-
 // MongoDBDatabaseCreateUpdateParameters - Parameters to create and update Cosmos DB MongoDB database.
 type MongoDBDatabaseCreateUpdateParameters struct {
 	// REQUIRED; Properties to create and update Azure Cosmos DB MongoDB database.
 	Properties *MongoDBDatabaseCreateUpdateProperties `json:"properties,omitempty"`
+
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
 
 	// The location of the resource group to which the resource belongs.
 	Location *string `json:"location,omitempty"`
@@ -3446,18 +3208,6 @@ type MongoDBDatabaseCreateUpdateParameters struct {
 
 	// READ-ONLY; The type of Azure resource.
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type MongoDBDatabaseCreateUpdateParameters.
-func (m MongoDBDatabaseCreateUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", m.ID)
-	populate(objectMap, "location", m.Location)
-	populate(objectMap, "name", m.Name)
-	populate(objectMap, "properties", m.Properties)
-	populate(objectMap, "tags", m.Tags)
-	populate(objectMap, "type", m.Type)
-	return json.Marshal(objectMap)
 }
 
 // MongoDBDatabaseCreateUpdateProperties - Properties to create and update Azure Cosmos DB MongoDB database.
@@ -3500,6 +3250,9 @@ type MongoDBDatabaseGetPropertiesResource struct {
 
 // MongoDBDatabaseGetResults - An Azure Cosmos DB MongoDB database.
 type MongoDBDatabaseGetResults struct {
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+
 	// The location of the resource group to which the resource belongs.
 	Location *string `json:"location,omitempty"`
 
@@ -3523,29 +3276,10 @@ type MongoDBDatabaseGetResults struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type MongoDBDatabaseGetResults.
-func (m MongoDBDatabaseGetResults) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", m.ID)
-	populate(objectMap, "location", m.Location)
-	populate(objectMap, "name", m.Name)
-	populate(objectMap, "properties", m.Properties)
-	populate(objectMap, "tags", m.Tags)
-	populate(objectMap, "type", m.Type)
-	return json.Marshal(objectMap)
-}
-
 // MongoDBDatabaseListResult - The List operation response, that contains the MongoDB databases and their properties.
 type MongoDBDatabaseListResult struct {
 	// READ-ONLY; List of MongoDB databases and their properties.
 	Value []*MongoDBDatabaseGetResults `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type MongoDBDatabaseListResult.
-func (m MongoDBDatabaseListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", m.Value)
-	return json.Marshal(objectMap)
 }
 
 // MongoDBDatabaseResource - Cosmos DB MongoDB database resource object
@@ -3557,67 +3291,113 @@ type MongoDBDatabaseResource struct {
 // MongoDBResourcesClientBeginCreateUpdateMongoDBCollectionOptions contains the optional parameters for the MongoDBResourcesClient.BeginCreateUpdateMongoDBCollection
 // method.
 type MongoDBResourcesClientBeginCreateUpdateMongoDBCollectionOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // MongoDBResourcesClientBeginCreateUpdateMongoDBDatabaseOptions contains the optional parameters for the MongoDBResourcesClient.BeginCreateUpdateMongoDBDatabase
 // method.
 type MongoDBResourcesClientBeginCreateUpdateMongoDBDatabaseOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// MongoDBResourcesClientBeginCreateUpdateMongoRoleDefinitionOptions contains the optional parameters for the MongoDBResourcesClient.BeginCreateUpdateMongoRoleDefinition
+// method.
+type MongoDBResourcesClientBeginCreateUpdateMongoRoleDefinitionOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// MongoDBResourcesClientBeginCreateUpdateMongoUserDefinitionOptions contains the optional parameters for the MongoDBResourcesClient.BeginCreateUpdateMongoUserDefinition
+// method.
+type MongoDBResourcesClientBeginCreateUpdateMongoUserDefinitionOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // MongoDBResourcesClientBeginDeleteMongoDBCollectionOptions contains the optional parameters for the MongoDBResourcesClient.BeginDeleteMongoDBCollection
 // method.
 type MongoDBResourcesClientBeginDeleteMongoDBCollectionOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // MongoDBResourcesClientBeginDeleteMongoDBDatabaseOptions contains the optional parameters for the MongoDBResourcesClient.BeginDeleteMongoDBDatabase
 // method.
 type MongoDBResourcesClientBeginDeleteMongoDBDatabaseOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// MongoDBResourcesClientBeginDeleteMongoRoleDefinitionOptions contains the optional parameters for the MongoDBResourcesClient.BeginDeleteMongoRoleDefinition
+// method.
+type MongoDBResourcesClientBeginDeleteMongoRoleDefinitionOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// MongoDBResourcesClientBeginDeleteMongoUserDefinitionOptions contains the optional parameters for the MongoDBResourcesClient.BeginDeleteMongoUserDefinition
+// method.
+type MongoDBResourcesClientBeginDeleteMongoUserDefinitionOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// MongoDBResourcesClientBeginListMongoDBCollectionPartitionMergeOptions contains the optional parameters for the MongoDBResourcesClient.BeginListMongoDBCollectionPartitionMerge
+// method.
+type MongoDBResourcesClientBeginListMongoDBCollectionPartitionMergeOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // MongoDBResourcesClientBeginMigrateMongoDBCollectionToAutoscaleOptions contains the optional parameters for the MongoDBResourcesClient.BeginMigrateMongoDBCollectionToAutoscale
 // method.
 type MongoDBResourcesClientBeginMigrateMongoDBCollectionToAutoscaleOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // MongoDBResourcesClientBeginMigrateMongoDBCollectionToManualThroughputOptions contains the optional parameters for the MongoDBResourcesClient.BeginMigrateMongoDBCollectionToManualThroughput
 // method.
 type MongoDBResourcesClientBeginMigrateMongoDBCollectionToManualThroughputOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // MongoDBResourcesClientBeginMigrateMongoDBDatabaseToAutoscaleOptions contains the optional parameters for the MongoDBResourcesClient.BeginMigrateMongoDBDatabaseToAutoscale
 // method.
 type MongoDBResourcesClientBeginMigrateMongoDBDatabaseToAutoscaleOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // MongoDBResourcesClientBeginMigrateMongoDBDatabaseToManualThroughputOptions contains the optional parameters for the MongoDBResourcesClient.BeginMigrateMongoDBDatabaseToManualThroughput
 // method.
 type MongoDBResourcesClientBeginMigrateMongoDBDatabaseToManualThroughputOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // MongoDBResourcesClientBeginRetrieveContinuousBackupInformationOptions contains the optional parameters for the MongoDBResourcesClient.BeginRetrieveContinuousBackupInformation
 // method.
 type MongoDBResourcesClientBeginRetrieveContinuousBackupInformationOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // MongoDBResourcesClientBeginUpdateMongoDBCollectionThroughputOptions contains the optional parameters for the MongoDBResourcesClient.BeginUpdateMongoDBCollectionThroughput
 // method.
 type MongoDBResourcesClientBeginUpdateMongoDBCollectionThroughputOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // MongoDBResourcesClientBeginUpdateMongoDBDatabaseThroughputOptions contains the optional parameters for the MongoDBResourcesClient.BeginUpdateMongoDBDatabaseThroughput
 // method.
 type MongoDBResourcesClientBeginUpdateMongoDBDatabaseThroughputOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // MongoDBResourcesClientGetMongoDBCollectionOptions contains the optional parameters for the MongoDBResourcesClient.GetMongoDBCollection
@@ -3644,6 +3424,18 @@ type MongoDBResourcesClientGetMongoDBDatabaseThroughputOptions struct {
 	// placeholder for future optional parameters
 }
 
+// MongoDBResourcesClientGetMongoRoleDefinitionOptions contains the optional parameters for the MongoDBResourcesClient.GetMongoRoleDefinition
+// method.
+type MongoDBResourcesClientGetMongoRoleDefinitionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MongoDBResourcesClientGetMongoUserDefinitionOptions contains the optional parameters for the MongoDBResourcesClient.GetMongoUserDefinition
+// method.
+type MongoDBResourcesClientGetMongoUserDefinitionOptions struct {
+	// placeholder for future optional parameters
+}
+
 // MongoDBResourcesClientListMongoDBCollectionsOptions contains the optional parameters for the MongoDBResourcesClient.ListMongoDBCollections
 // method.
 type MongoDBResourcesClientListMongoDBCollectionsOptions struct {
@@ -3653,6 +3445,18 @@ type MongoDBResourcesClientListMongoDBCollectionsOptions struct {
 // MongoDBResourcesClientListMongoDBDatabasesOptions contains the optional parameters for the MongoDBResourcesClient.ListMongoDBDatabases
 // method.
 type MongoDBResourcesClientListMongoDBDatabasesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MongoDBResourcesClientListMongoRoleDefinitionsOptions contains the optional parameters for the MongoDBResourcesClient.ListMongoRoleDefinitions
+// method.
+type MongoDBResourcesClientListMongoRoleDefinitionsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MongoDBResourcesClientListMongoUserDefinitionsOptions contains the optional parameters for the MongoDBResourcesClient.ListMongoUserDefinitions
+// method.
+type MongoDBResourcesClientListMongoUserDefinitionsOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -3671,13 +3475,6 @@ type MongoIndexKeys struct {
 	Keys []*string `json:"keys,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type MongoIndexKeys.
-func (m MongoIndexKeys) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "keys", m.Keys)
-	return json.Marshal(objectMap)
-}
-
 // MongoIndexOptions - Cosmos DB MongoDB collection index options
 type MongoIndexOptions struct {
 	// Expire after seconds
@@ -3685,6 +3482,101 @@ type MongoIndexOptions struct {
 
 	// Is unique or not
 	Unique *bool `json:"unique,omitempty"`
+}
+
+// MongoRoleDefinitionCreateUpdateParameters - Parameters to create and update an Azure Cosmos DB Mongo Role Definition.
+type MongoRoleDefinitionCreateUpdateParameters struct {
+	// Properties to create and update an Azure Cosmos DB Mongo Role Definition.
+	Properties *MongoRoleDefinitionResource `json:"properties,omitempty"`
+}
+
+// MongoRoleDefinitionGetResults - An Azure Cosmos DB Mongo Role Definition.
+type MongoRoleDefinitionGetResults struct {
+	// Properties related to the Mongo Role Definition.
+	Properties *MongoRoleDefinitionResource `json:"properties,omitempty"`
+
+	// READ-ONLY; The unique resource identifier of the database account.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the database account.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of Azure resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// MongoRoleDefinitionListResult - The relevant Mongo Role Definitions.
+type MongoRoleDefinitionListResult struct {
+	// READ-ONLY; List of Mongo Role Definitions and their properties.
+	Value []*MongoRoleDefinitionGetResults `json:"value,omitempty" azure:"ro"`
+}
+
+// MongoRoleDefinitionResource - Azure Cosmos DB Mongo Role Definition resource object.
+type MongoRoleDefinitionResource struct {
+	// The database name for which access is being granted for this Role Definition.
+	DatabaseName *string `json:"databaseName,omitempty"`
+
+	// A set of privileges contained by the Role Definition. This will allow application of this Role Definition on the entire
+	// database account or any underlying Database / Collection. Scopes higher than
+	// Database are not enforceable as privilege.
+	Privileges []*Privilege `json:"privileges,omitempty"`
+
+	// A user-friendly name for the Role Definition. Must be unique for the database account.
+	RoleName *string `json:"roleName,omitempty"`
+
+	// The set of roles inherited by this Role Definition.
+	Roles []*Role `json:"roles,omitempty"`
+
+	// Indicates whether the Role Definition was built-in or user created.
+	Type *MongoRoleDefinitionType `json:"type,omitempty"`
+}
+
+// MongoUserDefinitionCreateUpdateParameters - Parameters to create and update an Azure Cosmos DB Mongo User Definition.
+type MongoUserDefinitionCreateUpdateParameters struct {
+	// Properties to create and update an Azure Cosmos DB Mongo User Definition.
+	Properties *MongoUserDefinitionResource `json:"properties,omitempty"`
+}
+
+// MongoUserDefinitionGetResults - An Azure Cosmos DB User Definition
+type MongoUserDefinitionGetResults struct {
+	// Properties related to the User Definition.
+	Properties *MongoUserDefinitionResource `json:"properties,omitempty"`
+
+	// READ-ONLY; The unique resource identifier of the database account.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the database account.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of Azure resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// MongoUserDefinitionListResult - The relevant User Definition.
+type MongoUserDefinitionListResult struct {
+	// READ-ONLY; List of User Definition and their properties
+	Value []*MongoUserDefinitionGetResults `json:"value,omitempty" azure:"ro"`
+}
+
+// MongoUserDefinitionResource - Azure Cosmos DB Mongo User Definition resource object.
+type MongoUserDefinitionResource struct {
+	// A custom definition for the USer Definition.
+	CustomData *string `json:"customData,omitempty"`
+
+	// The database name for which access is being granted for this User Definition.
+	DatabaseName *string `json:"databaseName,omitempty"`
+
+	// The Mongo Auth mechanism. For now, we only support auth mechanism SCRAM-SHA-256.
+	Mechanisms *string `json:"mechanisms,omitempty"`
+
+	// The password for User Definition. Response does not contain user password.
+	Password *string `json:"password,omitempty"`
+
+	// The set of roles inherited by the User Definition.
+	Roles []*Role `json:"roles,omitempty"`
+
+	// The user name for User Definition.
+	UserName *string `json:"userName,omitempty"`
 }
 
 // NotebookWorkspace - A notebook workspace resource
@@ -3729,13 +3621,6 @@ type NotebookWorkspaceListResult struct {
 	Value []*NotebookWorkspace `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type NotebookWorkspaceListResult.
-func (n NotebookWorkspaceListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", n.Value)
-	return json.Marshal(objectMap)
-}
-
 // NotebookWorkspaceProperties - Properties of a notebook workspace resource.
 type NotebookWorkspaceProperties struct {
 	// READ-ONLY; Specifies the endpoint of Notebook server.
@@ -3748,25 +3633,29 @@ type NotebookWorkspaceProperties struct {
 // NotebookWorkspacesClientBeginCreateOrUpdateOptions contains the optional parameters for the NotebookWorkspacesClient.BeginCreateOrUpdate
 // method.
 type NotebookWorkspacesClientBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // NotebookWorkspacesClientBeginDeleteOptions contains the optional parameters for the NotebookWorkspacesClient.BeginDelete
 // method.
 type NotebookWorkspacesClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // NotebookWorkspacesClientBeginRegenerateAuthTokenOptions contains the optional parameters for the NotebookWorkspacesClient.BeginRegenerateAuthToken
 // method.
 type NotebookWorkspacesClientBeginRegenerateAuthTokenOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // NotebookWorkspacesClientBeginStartOptions contains the optional parameters for the NotebookWorkspacesClient.BeginStart
 // method.
 type NotebookWorkspacesClientBeginStartOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // NotebookWorkspacesClientGetOptions contains the optional parameters for the NotebookWorkspacesClient.Get method.
@@ -3818,14 +3707,6 @@ type OperationListResult struct {
 
 	// List of operations supported by the Resource Provider.
 	Value []*Operation `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
-func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
@@ -3882,72 +3763,10 @@ type PartitionMetric struct {
 	Unit *UnitType `json:"unit,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PartitionMetric.
-func (p PartitionMetric) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "endTime", p.EndTime)
-	populate(objectMap, "metricValues", p.MetricValues)
-	populate(objectMap, "name", p.Name)
-	populate(objectMap, "partitionId", p.PartitionID)
-	populate(objectMap, "partitionKeyRangeId", p.PartitionKeyRangeID)
-	populateTimeRFC3339(objectMap, "startTime", p.StartTime)
-	populate(objectMap, "timeGrain", p.TimeGrain)
-	populate(objectMap, "unit", p.Unit)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type PartitionMetric.
-func (p *PartitionMetric) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "endTime":
-			err = unpopulateTimeRFC3339(val, &p.EndTime)
-			delete(rawMsg, key)
-		case "metricValues":
-			err = unpopulate(val, &p.MetricValues)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &p.Name)
-			delete(rawMsg, key)
-		case "partitionId":
-			err = unpopulate(val, &p.PartitionID)
-			delete(rawMsg, key)
-		case "partitionKeyRangeId":
-			err = unpopulate(val, &p.PartitionKeyRangeID)
-			delete(rawMsg, key)
-		case "startTime":
-			err = unpopulateTimeRFC3339(val, &p.StartTime)
-			delete(rawMsg, key)
-		case "timeGrain":
-			err = unpopulate(val, &p.TimeGrain)
-			delete(rawMsg, key)
-		case "unit":
-			err = unpopulate(val, &p.Unit)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // PartitionMetricListResult - The response to a list partition metrics request.
 type PartitionMetricListResult struct {
 	// READ-ONLY; The list of partition-level metrics for the account.
 	Value []*PartitionMetric `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PartitionMetricListResult.
-func (p PartitionMetricListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
 }
 
 // PartitionUsage - The partition level usage data for a usage request.
@@ -3980,13 +3799,6 @@ type PartitionUsagesResult struct {
 	Value []*PartitionUsage `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PartitionUsagesResult.
-func (p PartitionUsagesResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
 // PercentileClientListMetricsOptions contains the optional parameters for the PercentileClient.ListMetrics method.
 type PercentileClientListMetricsOptions struct {
 	// placeholder for future optional parameters
@@ -4013,64 +3825,10 @@ type PercentileMetric struct {
 	Unit *UnitType `json:"unit,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PercentileMetric.
-func (p PercentileMetric) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "endTime", p.EndTime)
-	populate(objectMap, "metricValues", p.MetricValues)
-	populate(objectMap, "name", p.Name)
-	populateTimeRFC3339(objectMap, "startTime", p.StartTime)
-	populate(objectMap, "timeGrain", p.TimeGrain)
-	populate(objectMap, "unit", p.Unit)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type PercentileMetric.
-func (p *PercentileMetric) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "endTime":
-			err = unpopulateTimeRFC3339(val, &p.EndTime)
-			delete(rawMsg, key)
-		case "metricValues":
-			err = unpopulate(val, &p.MetricValues)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &p.Name)
-			delete(rawMsg, key)
-		case "startTime":
-			err = unpopulateTimeRFC3339(val, &p.StartTime)
-			delete(rawMsg, key)
-		case "timeGrain":
-			err = unpopulate(val, &p.TimeGrain)
-			delete(rawMsg, key)
-		case "unit":
-			err = unpopulate(val, &p.Unit)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // PercentileMetricListResult - The response to a list percentile metrics request.
 type PercentileMetricListResult struct {
 	// READ-ONLY; The list of percentile metrics for the account.
 	Value []*PercentileMetric `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PercentileMetricListResult.
-func (p PercentileMetricListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
 }
 
 // PercentileMetricValue - Represents percentile metrics values.
@@ -4115,81 +3873,6 @@ type PercentileMetricValue struct {
 	Total *float64 `json:"total,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PercentileMetricValue.
-func (p PercentileMetricValue) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "average", p.Average)
-	populate(objectMap, "_count", p.Count)
-	populate(objectMap, "maximum", p.Maximum)
-	populate(objectMap, "minimum", p.Minimum)
-	populate(objectMap, "P10", p.P10)
-	populate(objectMap, "P25", p.P25)
-	populate(objectMap, "P50", p.P50)
-	populate(objectMap, "P75", p.P75)
-	populate(objectMap, "P90", p.P90)
-	populate(objectMap, "P95", p.P95)
-	populate(objectMap, "P99", p.P99)
-	populateTimeRFC3339(objectMap, "timestamp", p.Timestamp)
-	populate(objectMap, "total", p.Total)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type PercentileMetricValue.
-func (p *PercentileMetricValue) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "average":
-			err = unpopulate(val, &p.Average)
-			delete(rawMsg, key)
-		case "_count":
-			err = unpopulate(val, &p.Count)
-			delete(rawMsg, key)
-		case "maximum":
-			err = unpopulate(val, &p.Maximum)
-			delete(rawMsg, key)
-		case "minimum":
-			err = unpopulate(val, &p.Minimum)
-			delete(rawMsg, key)
-		case "P10":
-			err = unpopulate(val, &p.P10)
-			delete(rawMsg, key)
-		case "P25":
-			err = unpopulate(val, &p.P25)
-			delete(rawMsg, key)
-		case "P50":
-			err = unpopulate(val, &p.P50)
-			delete(rawMsg, key)
-		case "P75":
-			err = unpopulate(val, &p.P75)
-			delete(rawMsg, key)
-		case "P90":
-			err = unpopulate(val, &p.P90)
-			delete(rawMsg, key)
-		case "P95":
-			err = unpopulate(val, &p.P95)
-			delete(rawMsg, key)
-		case "P99":
-			err = unpopulate(val, &p.P99)
-			delete(rawMsg, key)
-		case "timestamp":
-			err = unpopulateTimeRFC3339(val, &p.Timestamp)
-			delete(rawMsg, key)
-		case "total":
-			err = unpopulate(val, &p.Total)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // PercentileSourceTargetClientListMetricsOptions contains the optional parameters for the PercentileSourceTargetClient.ListMetrics
 // method.
 type PercentileSourceTargetClientListMetricsOptions struct {
@@ -4213,49 +3896,6 @@ type PeriodicModeBackupPolicy struct {
 	PeriodicModeProperties *PeriodicModeProperties `json:"periodicModeProperties,omitempty"`
 }
 
-// GetBackupPolicy implements the BackupPolicyClassification interface for type PeriodicModeBackupPolicy.
-func (p *PeriodicModeBackupPolicy) GetBackupPolicy() *BackupPolicy {
-	return &BackupPolicy{
-		Type:           p.Type,
-		MigrationState: p.MigrationState,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PeriodicModeBackupPolicy.
-func (p PeriodicModeBackupPolicy) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "migrationState", p.MigrationState)
-	populate(objectMap, "periodicModeProperties", p.PeriodicModeProperties)
-	objectMap["type"] = BackupPolicyTypePeriodic
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type PeriodicModeBackupPolicy.
-func (p *PeriodicModeBackupPolicy) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "migrationState":
-			err = unpopulate(val, &p.MigrationState)
-			delete(rawMsg, key)
-		case "periodicModeProperties":
-			err = unpopulate(val, &p.PeriodicModeProperties)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &p.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // PeriodicModeProperties - Configuration values for periodic mode backup
 type PeriodicModeProperties struct {
 	// An integer representing the interval in minutes between two backups
@@ -4277,12 +3917,19 @@ type Permission struct {
 	NotDataActions []*string `json:"notDataActions,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Permission.
-func (p Permission) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "dataActions", p.DataActions)
-	populate(objectMap, "notDataActions", p.NotDataActions)
-	return json.Marshal(objectMap)
+// PhysicalPartitionStorageInfo - The storage of a physical partition
+type PhysicalPartitionStorageInfo struct {
+	// READ-ONLY; The unique identifier of the partition.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The storage in KB for the physical partition.
+	StorageInKB *float64 `json:"storageInKB,omitempty" azure:"ro"`
+}
+
+// PhysicalPartitionStorageInfoCollection - List of physical partitions and their properties returned by a merge operation.
+type PhysicalPartitionStorageInfoCollection struct {
+	// READ-ONLY; List of physical partitions and their properties.
+	PhysicalPartitionStorageInfoCollection []*PhysicalPartitionStorageInfo `json:"physicalPartitionStorageInfoCollection,omitempty" azure:"ro"`
 }
 
 // PrivateEndpointConnection - A private endpoint connection
@@ -4306,13 +3953,6 @@ type PrivateEndpointConnectionListResult struct {
 	Value []*PrivateEndpointConnection `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateEndpointConnectionListResult.
-func (p PrivateEndpointConnectionListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
 // PrivateEndpointConnectionProperties - Properties of a private endpoint connection.
 type PrivateEndpointConnectionProperties struct {
 	// Group id of the private endpoint.
@@ -4331,13 +3971,15 @@ type PrivateEndpointConnectionProperties struct {
 // PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginCreateOrUpdate
 // method.
 type PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // PrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginDelete
 // method.
 type PrivateEndpointConnectionsClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // PrivateEndpointConnectionsClientGetOptions contains the optional parameters for the PrivateEndpointConnectionsClient.Get
@@ -4379,13 +4021,6 @@ type PrivateLinkResourceListResult struct {
 	Value []*PrivateLinkResource `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkResourceListResult.
-func (p PrivateLinkResourceListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
 // PrivateLinkResourceProperties - Properties of a private link resource.
 type PrivateLinkResourceProperties struct {
 	// READ-ONLY; The private link resource group id.
@@ -4396,15 +4031,6 @@ type PrivateLinkResourceProperties struct {
 
 	// READ-ONLY; The private link resource required zone names.
 	RequiredZoneNames []*string `json:"requiredZoneNames,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkResourceProperties.
-func (p PrivateLinkResourceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "groupId", p.GroupID)
-	populate(objectMap, "requiredMembers", p.RequiredMembers)
-	populate(objectMap, "requiredZoneNames", p.RequiredZoneNames)
-	return json.Marshal(objectMap)
 }
 
 // PrivateLinkResourcesClientGetOptions contains the optional parameters for the PrivateLinkResourcesClient.Get method.
@@ -4430,6 +4056,24 @@ type PrivateLinkServiceConnectionStateProperty struct {
 	ActionsRequired *string `json:"actionsRequired,omitempty" azure:"ro"`
 }
 
+// Privilege - The set of data plane operations permitted through this Role Definition.
+type Privilege struct {
+	// An array of actions that are allowed.
+	Actions []*string `json:"actions,omitempty"`
+
+	// An Azure Cosmos DB Mongo DB Resource.
+	Resource *PrivilegeResource `json:"resource,omitempty"`
+}
+
+// PrivilegeResource - An Azure Cosmos DB Mongo DB Resource.
+type PrivilegeResource struct {
+	// The collection name the role is applied.
+	Collection *string `json:"collection,omitempty"`
+
+	// The database name the role is applied.
+	Db *string `json:"db,omitempty"`
+}
+
 // ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
 // location
 type ProxyResource struct {
@@ -4447,6 +4091,18 @@ type ProxyResource struct {
 type RegionForOnlineOffline struct {
 	// REQUIRED; Cosmos DB region, with spaces between words and each word capitalized.
 	Region *string `json:"region,omitempty"`
+}
+
+// RegionalServiceResource - Resource for a regional service location.
+type RegionalServiceResource struct {
+	// READ-ONLY; The location name.
+	Location *string `json:"location,omitempty" azure:"ro"`
+
+	// READ-ONLY; The regional service name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Describes the status of a service.
+	Status *ServiceStatus `json:"status,omitempty" azure:"ro"`
 }
 
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
@@ -4490,54 +4146,14 @@ type RestorableDatabaseAccountProperties struct {
 	// The time at which the restorable database account has been deleted (ISO-8601 format).
 	DeletionTime *time.Time `json:"deletionTime,omitempty"`
 
+	// The least recent time at which the database account can be restored to (ISO-8601 format).
+	OldestRestorableTime *time.Time `json:"oldestRestorableTime,omitempty"`
+
 	// READ-ONLY; The API type of the restorable database account.
 	APIType *APIType `json:"apiType,omitempty" azure:"ro"`
 
 	// READ-ONLY; List of regions where the of the database account can be restored from.
 	RestorableLocations []*RestorableLocationResource `json:"restorableLocations,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RestorableDatabaseAccountProperties.
-func (r RestorableDatabaseAccountProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "apiType", r.APIType)
-	populate(objectMap, "accountName", r.AccountName)
-	populateTimeRFC3339(objectMap, "creationTime", r.CreationTime)
-	populateTimeRFC3339(objectMap, "deletionTime", r.DeletionTime)
-	populate(objectMap, "restorableLocations", r.RestorableLocations)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type RestorableDatabaseAccountProperties.
-func (r *RestorableDatabaseAccountProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "apiType":
-			err = unpopulate(val, &r.APIType)
-			delete(rawMsg, key)
-		case "accountName":
-			err = unpopulate(val, &r.AccountName)
-			delete(rawMsg, key)
-		case "creationTime":
-			err = unpopulateTimeRFC3339(val, &r.CreationTime)
-			delete(rawMsg, key)
-		case "deletionTime":
-			err = unpopulateTimeRFC3339(val, &r.DeletionTime)
-			delete(rawMsg, key)
-		case "restorableLocations":
-			err = unpopulate(val, &r.RestorableLocations)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // RestorableDatabaseAccountsClientGetByLocationOptions contains the optional parameters for the RestorableDatabaseAccountsClient.GetByLocation
@@ -4565,11 +4181,126 @@ type RestorableDatabaseAccountsListResult struct {
 	Value []*RestorableDatabaseAccountGetResult `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type RestorableDatabaseAccountsListResult.
-func (r RestorableDatabaseAccountsListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
+// RestorableGremlinDatabaseGetResult - An Azure Cosmos DB Gremlin database event
+type RestorableGremlinDatabaseGetResult struct {
+	// The properties of a Gremlin database event.
+	Properties *RestorableGremlinDatabaseProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The unique resource Identifier of the ARM resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the ARM resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of Azure resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// RestorableGremlinDatabaseProperties - The properties of an Azure Cosmos DB Gremlin database event
+type RestorableGremlinDatabaseProperties struct {
+	// The resource of an Azure Cosmos DB Gremlin database event
+	Resource *RestorableGremlinDatabasePropertiesResource `json:"resource,omitempty"`
+}
+
+// RestorableGremlinDatabasePropertiesResource - The resource of an Azure Cosmos DB Gremlin database event
+type RestorableGremlinDatabasePropertiesResource struct {
+	// READ-ONLY; The time when this database event happened.
+	EventTimestamp *string `json:"eventTimestamp,omitempty" azure:"ro"`
+
+	// READ-ONLY; The operation type of this database event.
+	OperationType *OperationType `json:"operationType,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of this Gremlin database.
+	OwnerID *string `json:"ownerId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource ID of this Gremlin database.
+	OwnerResourceID *string `json:"ownerResourceId,omitempty" azure:"ro"`
+
+	// READ-ONLY; A system generated property. A unique identifier.
+	Rid *string `json:"_rid,omitempty" azure:"ro"`
+}
+
+// RestorableGremlinDatabasesClientListOptions contains the optional parameters for the RestorableGremlinDatabasesClient.List
+// method.
+type RestorableGremlinDatabasesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RestorableGremlinDatabasesListResult - The List operation response, that contains the Gremlin database events and their
+// properties.
+type RestorableGremlinDatabasesListResult struct {
+	// READ-ONLY; List of Gremlin database events and their properties.
+	Value []*RestorableGremlinDatabaseGetResult `json:"value,omitempty" azure:"ro"`
+}
+
+// RestorableGremlinGraphGetResult - An Azure Cosmos DB Gremlin graph event
+type RestorableGremlinGraphGetResult struct {
+	// The properties of a Gremlin graph event.
+	Properties *RestorableGremlinGraphProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The unique resource Identifier of the ARM resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the ARM resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of Azure resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// RestorableGremlinGraphProperties - The properties of an Azure Cosmos DB Gremlin graph event
+type RestorableGremlinGraphProperties struct {
+	// The resource of an Azure Cosmos DB Gremlin graph event
+	Resource *RestorableGremlinGraphPropertiesResource `json:"resource,omitempty"`
+}
+
+// RestorableGremlinGraphPropertiesResource - The resource of an Azure Cosmos DB Gremlin graph event
+type RestorableGremlinGraphPropertiesResource struct {
+	// READ-ONLY; The time when this graph event happened.
+	EventTimestamp *string `json:"eventTimestamp,omitempty" azure:"ro"`
+
+	// READ-ONLY; The operation type of this graph event.
+	OperationType *OperationType `json:"operationType,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of this Gremlin graph.
+	OwnerID *string `json:"ownerId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource ID of this Gremlin graph.
+	OwnerResourceID *string `json:"ownerResourceId,omitempty" azure:"ro"`
+
+	// READ-ONLY; A system generated property. A unique identifier.
+	Rid *string `json:"_rid,omitempty" azure:"ro"`
+}
+
+// RestorableGremlinGraphsClientListOptions contains the optional parameters for the RestorableGremlinGraphsClient.List method.
+type RestorableGremlinGraphsClientListOptions struct {
+	// Restorable Gremlin graphs event feed end time.
+	EndTime *string
+	// The resource ID of the Gremlin database.
+	RestorableGremlinDatabaseRid *string
+	// Restorable Gremlin graphs event feed start time.
+	StartTime *string
+}
+
+// RestorableGremlinGraphsListResult - The List operation response, that contains the Gremlin graph events and their properties.
+type RestorableGremlinGraphsListResult struct {
+	// READ-ONLY; List of Gremlin graph events and their properties.
+	Value []*RestorableGremlinGraphGetResult `json:"value,omitempty" azure:"ro"`
+}
+
+// RestorableGremlinResourcesClientListOptions contains the optional parameters for the RestorableGremlinResourcesClient.List
+// method.
+type RestorableGremlinResourcesClientListOptions struct {
+	// The location where the restorable resources are located.
+	RestoreLocation *string
+	// The timestamp when the restorable resources existed.
+	RestoreTimestampInUTC *string
+}
+
+// RestorableGremlinResourcesListResult - The List operation response, that contains the restorable Gremlin resources.
+type RestorableGremlinResourcesListResult struct {
+	// READ-ONLY; List of restorable Gremlin resources, including the gremlin database and graph names.
+	Value []*GremlinDatabaseRestoreResource `json:"value,omitempty" azure:"ro"`
 }
 
 // RestorableLocationResource - Properties of the regional restorable account.
@@ -4585,45 +4316,6 @@ type RestorableLocationResource struct {
 
 	// READ-ONLY; The instance id of the regional restorable account.
 	RegionalDatabaseAccountInstanceID *string `json:"regionalDatabaseAccountInstanceId,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RestorableLocationResource.
-func (r RestorableLocationResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "creationTime", r.CreationTime)
-	populateTimeRFC3339(objectMap, "deletionTime", r.DeletionTime)
-	populate(objectMap, "locationName", r.LocationName)
-	populate(objectMap, "regionalDatabaseAccountInstanceId", r.RegionalDatabaseAccountInstanceID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type RestorableLocationResource.
-func (r *RestorableLocationResource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "creationTime":
-			err = unpopulateTimeRFC3339(val, &r.CreationTime)
-			delete(rawMsg, key)
-		case "deletionTime":
-			err = unpopulateTimeRFC3339(val, &r.DeletionTime)
-			delete(rawMsg, key)
-		case "locationName":
-			err = unpopulate(val, &r.LocationName)
-			delete(rawMsg, key)
-		case "regionalDatabaseAccountInstanceId":
-			err = unpopulate(val, &r.RegionalDatabaseAccountInstanceID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // RestorableMongodbCollectionGetResult - An Azure Cosmos DB MongoDB collection event
@@ -4668,8 +4360,12 @@ type RestorableMongodbCollectionPropertiesResource struct {
 // RestorableMongodbCollectionsClientListOptions contains the optional parameters for the RestorableMongodbCollectionsClient.List
 // method.
 type RestorableMongodbCollectionsClientListOptions struct {
+	// Restorable MongoDB collections event feed end time.
+	EndTime *string
 	// The resource ID of the MongoDB database.
 	RestorableMongodbDatabaseRid *string
+	// Restorable MongoDB collections event feed start time.
+	StartTime *string
 }
 
 // RestorableMongodbCollectionsListResult - The List operation response, that contains the MongoDB collection events and their
@@ -4677,13 +4373,6 @@ type RestorableMongodbCollectionsClientListOptions struct {
 type RestorableMongodbCollectionsListResult struct {
 	// READ-ONLY; List of MongoDB collection events and their properties.
 	Value []*RestorableMongodbCollectionGetResult `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RestorableMongodbCollectionsListResult.
-func (r RestorableMongodbCollectionsListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
 }
 
 // RestorableMongodbDatabaseGetResult - An Azure Cosmos DB MongoDB database event
@@ -4738,13 +4427,6 @@ type RestorableMongodbDatabasesListResult struct {
 	Value []*RestorableMongodbDatabaseGetResult `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type RestorableMongodbDatabasesListResult.
-func (r RestorableMongodbDatabasesListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
-}
-
 // RestorableMongodbResourcesClientListOptions contains the optional parameters for the RestorableMongodbResourcesClient.List
 // method.
 type RestorableMongodbResourcesClientListOptions struct {
@@ -4758,13 +4440,6 @@ type RestorableMongodbResourcesClientListOptions struct {
 type RestorableMongodbResourcesListResult struct {
 	// READ-ONLY; List of restorable MongoDB resources, including the database and collection names.
 	Value []*DatabaseRestoreResource `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RestorableMongodbResourcesListResult.
-func (r RestorableMongodbResourcesListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
 }
 
 // RestorableSQLContainerGetResult - An Azure Cosmos DB SQL container event
@@ -4817,6 +4492,9 @@ type RestorableSQLContainerPropertiesResourceContainer struct {
 	// Analytical TTL.
 	AnalyticalStorageTTL *int64 `json:"analyticalStorageTtl,omitempty"`
 
+	// The client encryption policy for the container.
+	ClientEncryptionPolicy *ClientEncryptionPolicy `json:"clientEncryptionPolicy,omitempty"`
+
 	// The conflict resolution policy for the container.
 	ConflictResolutionPolicy *ConflictResolutionPolicy `json:"conflictResolutionPolicy,omitempty"`
 
@@ -4848,11 +4526,11 @@ type RestorableSQLContainerPropertiesResourceContainer struct {
 
 // RestorableSQLContainersClientListOptions contains the optional parameters for the RestorableSQLContainersClient.List method.
 type RestorableSQLContainersClientListOptions struct {
-	// The snapshot create timestamp before which snapshots need to be listed.
+	// Restorable Sql containers event feed end time.
 	EndTime *string
 	// The resource ID of the SQL database.
 	RestorableSQLDatabaseRid *string
-	// The snapshot create timestamp after which snapshots need to be listed.
+	// Restorable Sql containers event feed start time.
 	StartTime *string
 }
 
@@ -4860,13 +4538,6 @@ type RestorableSQLContainersClientListOptions struct {
 type RestorableSQLContainersListResult struct {
 	// READ-ONLY; List of SQL container events and their properties.
 	Value []*RestorableSQLContainerGetResult `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RestorableSQLContainersListResult.
-func (r RestorableSQLContainersListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
 }
 
 // RestorableSQLDatabaseGetResult - An Azure Cosmos DB SQL database event
@@ -4946,13 +4617,6 @@ type RestorableSQLDatabasesListResult struct {
 	Value []*RestorableSQLDatabaseGetResult `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type RestorableSQLDatabasesListResult.
-func (r RestorableSQLDatabasesListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
-}
-
 // RestorableSQLResourcesClientListOptions contains the optional parameters for the RestorableSQLResourcesClient.List method.
 type RestorableSQLResourcesClientListOptions struct {
 	// The location where the restorable resources are located.
@@ -4967,17 +4631,81 @@ type RestorableSQLResourcesListResult struct {
 	Value []*DatabaseRestoreResource `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type RestorableSQLResourcesListResult.
-func (r RestorableSQLResourcesListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
+// RestorableTableGetResult - An Azure Cosmos DB Table event
+type RestorableTableGetResult struct {
+	// The properties of a Table event.
+	Properties *RestorableTableProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The unique resource Identifier of the ARM resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the ARM resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of Azure resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// RestorableTableProperties - The properties of an Azure Cosmos DB Table event
+type RestorableTableProperties struct {
+	// The resource of an Azure Cosmos DB Table event
+	Resource *RestorableTablePropertiesResource `json:"resource,omitempty"`
+}
+
+// RestorableTablePropertiesResource - The resource of an Azure Cosmos DB Table event
+type RestorableTablePropertiesResource struct {
+	// READ-ONLY; The time when this table event happened.
+	EventTimestamp *string `json:"eventTimestamp,omitempty" azure:"ro"`
+
+	// READ-ONLY; The operation type of this table event.
+	OperationType *OperationType `json:"operationType,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of this Table.
+	OwnerID *string `json:"ownerId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource ID of this Table.
+	OwnerResourceID *string `json:"ownerResourceId,omitempty" azure:"ro"`
+
+	// READ-ONLY; A system generated property. A unique identifier.
+	Rid *string `json:"_rid,omitempty" azure:"ro"`
+}
+
+// RestorableTableResourcesClientListOptions contains the optional parameters for the RestorableTableResourcesClient.List
+// method.
+type RestorableTableResourcesClientListOptions struct {
+	// The location where the restorable resources are located.
+	RestoreLocation *string
+	// The timestamp when the restorable resources existed.
+	RestoreTimestampInUTC *string
+}
+
+// RestorableTableResourcesListResult - List of restorable table names.
+type RestorableTableResourcesListResult struct {
+	// READ-ONLY; List of restorable table names.
+	Value []*string `json:"value,omitempty" azure:"ro"`
+}
+
+// RestorableTablesClientListOptions contains the optional parameters for the RestorableTablesClient.List method.
+type RestorableTablesClientListOptions struct {
+	// Restorable Tables event feed end time.
+	EndTime *string
+	// Restorable Tables event feed start time.
+	StartTime *string
+}
+
+// RestorableTablesListResult - The List operation response, that contains the Table events and their properties.
+type RestorableTablesListResult struct {
+	// READ-ONLY; List of Table events and their properties.
+	Value []*RestorableTableGetResult `json:"value,omitempty" azure:"ro"`
 }
 
 // RestoreParameters - Parameters to indicate the information about the restore.
 type RestoreParameters struct {
 	// List of specific databases available for restore.
 	DatabasesToRestore []*DatabaseRestoreResource `json:"databasesToRestore,omitempty"`
+
+	// List of specific gremlin databases available for restore.
+	GremlinDatabasesToRestore []*GremlinDatabaseRestoreResource `json:"gremlinDatabasesToRestore,omitempty"`
 
 	// Describes the mode of the restore.
 	RestoreMode *RestoreMode `json:"restoreMode,omitempty"`
@@ -4988,51 +4716,27 @@ type RestoreParameters struct {
 
 	// Time to which the account has to be restored (ISO-8601 format).
 	RestoreTimestampInUTC *time.Time `json:"restoreTimestampInUtc,omitempty"`
+
+	// List of specific tables available for restore.
+	TablesToRestore []*string `json:"tablesToRestore,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type RestoreParameters.
-func (r RestoreParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "databasesToRestore", r.DatabasesToRestore)
-	populate(objectMap, "restoreMode", r.RestoreMode)
-	populate(objectMap, "restoreSource", r.RestoreSource)
-	populateTimeRFC3339(objectMap, "restoreTimestampInUtc", r.RestoreTimestampInUTC)
-	return json.Marshal(objectMap)
-}
+// Role - The set of roles permitted through this Role Definition.
+type Role struct {
+	// The database name the role is applied.
+	Db *string `json:"db,omitempty"`
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type RestoreParameters.
-func (r *RestoreParameters) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "databasesToRestore":
-			err = unpopulate(val, &r.DatabasesToRestore)
-			delete(rawMsg, key)
-		case "restoreMode":
-			err = unpopulate(val, &r.RestoreMode)
-			delete(rawMsg, key)
-		case "restoreSource":
-			err = unpopulate(val, &r.RestoreSource)
-			delete(rawMsg, key)
-		case "restoreTimestampInUtc":
-			err = unpopulateTimeRFC3339(val, &r.RestoreTimestampInUTC)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
+	// The role name.
+	Role *string `json:"role,omitempty"`
 }
 
 // SQLContainerCreateUpdateParameters - Parameters to create and update Cosmos DB container.
 type SQLContainerCreateUpdateParameters struct {
 	// REQUIRED; Properties to create and update Azure Cosmos DB container.
 	Properties *SQLContainerCreateUpdateProperties `json:"properties,omitempty"`
+
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
 
 	// The location of the resource group to which the resource belongs.
 	Location *string `json:"location,omitempty"`
@@ -5052,18 +4756,6 @@ type SQLContainerCreateUpdateParameters struct {
 
 	// READ-ONLY; The type of Azure resource.
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SQLContainerCreateUpdateParameters.
-func (s SQLContainerCreateUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", s.ID)
-	populate(objectMap, "location", s.Location)
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "properties", s.Properties)
-	populate(objectMap, "tags", s.Tags)
-	populate(objectMap, "type", s.Type)
-	return json.Marshal(objectMap)
 }
 
 // SQLContainerCreateUpdateProperties - Properties to create and update Azure Cosmos DB container.
@@ -5097,6 +4789,9 @@ type SQLContainerGetPropertiesResource struct {
 	// Analytical TTL.
 	AnalyticalStorageTTL *int64 `json:"analyticalStorageTtl,omitempty"`
 
+	// The client encryption policy for the container.
+	ClientEncryptionPolicy *ClientEncryptionPolicy `json:"clientEncryptionPolicy,omitempty"`
+
 	// The conflict resolution policy for the container.
 	ConflictResolutionPolicy *ConflictResolutionPolicy `json:"conflictResolutionPolicy,omitempty"`
 
@@ -5125,6 +4820,9 @@ type SQLContainerGetPropertiesResource struct {
 
 // SQLContainerGetResults - An Azure Cosmos DB container.
 type SQLContainerGetResults struct {
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+
 	// The location of the resource group to which the resource belongs.
 	Location *string `json:"location,omitempty"`
 
@@ -5148,29 +4846,10 @@ type SQLContainerGetResults struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SQLContainerGetResults.
-func (s SQLContainerGetResults) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", s.ID)
-	populate(objectMap, "location", s.Location)
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "properties", s.Properties)
-	populate(objectMap, "tags", s.Tags)
-	populate(objectMap, "type", s.Type)
-	return json.Marshal(objectMap)
-}
-
 // SQLContainerListResult - The List operation response, that contains the containers and their properties.
 type SQLContainerListResult struct {
 	// READ-ONLY; List of containers and their properties.
 	Value []*SQLContainerGetResults `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SQLContainerListResult.
-func (s SQLContainerListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
 }
 
 // SQLContainerResource - Cosmos DB SQL container resource object
@@ -5180,6 +4859,9 @@ type SQLContainerResource struct {
 
 	// Analytical TTL.
 	AnalyticalStorageTTL *int64 `json:"analyticalStorageTtl,omitempty"`
+
+	// The client encryption policy for the container.
+	ClientEncryptionPolicy *ClientEncryptionPolicy `json:"clientEncryptionPolicy,omitempty"`
 
 	// The conflict resolution policy for the container.
 	ConflictResolutionPolicy *ConflictResolutionPolicy `json:"conflictResolutionPolicy,omitempty"`
@@ -5198,10 +4880,25 @@ type SQLContainerResource struct {
 	UniqueKeyPolicy *UniqueKeyPolicy `json:"uniqueKeyPolicy,omitempty"`
 }
 
+// SQLDataTransferDataSourceSink - A CosmosDB Cassandra API data source/sink
+type SQLDataTransferDataSourceSink struct {
+	// REQUIRED
+	Component *DataTransferComponent `json:"component,omitempty"`
+
+	// REQUIRED
+	ContainerName *string `json:"containerName,omitempty"`
+
+	// REQUIRED
+	DatabaseName *string `json:"databaseName,omitempty"`
+}
+
 // SQLDatabaseCreateUpdateParameters - Parameters to create and update Cosmos DB SQL database.
 type SQLDatabaseCreateUpdateParameters struct {
 	// REQUIRED; Properties to create and update Azure Cosmos DB SQL database.
 	Properties *SQLDatabaseCreateUpdateProperties `json:"properties,omitempty"`
+
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
 
 	// The location of the resource group to which the resource belongs.
 	Location *string `json:"location,omitempty"`
@@ -5221,18 +4918,6 @@ type SQLDatabaseCreateUpdateParameters struct {
 
 	// READ-ONLY; The type of Azure resource.
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SQLDatabaseCreateUpdateParameters.
-func (s SQLDatabaseCreateUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", s.ID)
-	populate(objectMap, "location", s.Location)
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "properties", s.Properties)
-	populate(objectMap, "tags", s.Tags)
-	populate(objectMap, "type", s.Type)
-	return json.Marshal(objectMap)
 }
 
 // SQLDatabaseCreateUpdateProperties - Properties to create and update Azure Cosmos DB SQL database.
@@ -5281,6 +4966,9 @@ type SQLDatabaseGetPropertiesResource struct {
 
 // SQLDatabaseGetResults - An Azure Cosmos DB SQL database.
 type SQLDatabaseGetResults struct {
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+
 	// The location of the resource group to which the resource belongs.
 	Location *string `json:"location,omitempty"`
 
@@ -5304,29 +4992,10 @@ type SQLDatabaseGetResults struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SQLDatabaseGetResults.
-func (s SQLDatabaseGetResults) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", s.ID)
-	populate(objectMap, "location", s.Location)
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "properties", s.Properties)
-	populate(objectMap, "tags", s.Tags)
-	populate(objectMap, "type", s.Type)
-	return json.Marshal(objectMap)
-}
-
 // SQLDatabaseListResult - The List operation response, that contains the SQL databases and their properties.
 type SQLDatabaseListResult struct {
 	// READ-ONLY; List of SQL databases and their properties.
 	Value []*SQLDatabaseGetResults `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SQLDatabaseListResult.
-func (s SQLDatabaseListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
 }
 
 // SQLDatabaseResource - Cosmos DB SQL database resource object
@@ -5335,129 +5004,218 @@ type SQLDatabaseResource struct {
 	ID *string `json:"id,omitempty"`
 }
 
+// SQLDedicatedGatewayRegionalServiceResource - Resource for a regional service location.
+type SQLDedicatedGatewayRegionalServiceResource struct {
+	// READ-ONLY; The location name.
+	Location *string `json:"location,omitempty" azure:"ro"`
+
+	// READ-ONLY; The regional service name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The regional endpoint for SqlDedicatedGateway.
+	SQLDedicatedGatewayEndpoint *string `json:"sqlDedicatedGatewayEndpoint,omitempty" azure:"ro"`
+
+	// READ-ONLY; Describes the status of a service.
+	Status *ServiceStatus `json:"status,omitempty" azure:"ro"`
+}
+
+// SQLDedicatedGatewayServiceResource - Describes the service response property for SqlDedicatedGateway.
+type SQLDedicatedGatewayServiceResource struct {
+	// Properties for SqlDedicatedGatewayServiceResource.
+	Properties *SQLDedicatedGatewayServiceResourceProperties `json:"properties,omitempty"`
+}
+
+// SQLDedicatedGatewayServiceResourceProperties - Properties for SqlDedicatedGatewayServiceResource.
+type SQLDedicatedGatewayServiceResourceProperties struct {
+	// REQUIRED; ServiceType for the service.
+	ServiceType *ServiceType `json:"serviceType,omitempty"`
+
+	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
+	AdditionalProperties map[string]interface{}
+
+	// Instance count for the service.
+	InstanceCount *int32 `json:"instanceCount,omitempty"`
+
+	// Instance type for the service.
+	InstanceSize *ServiceSize `json:"instanceSize,omitempty"`
+
+	// SqlDedicatedGateway endpoint for the service.
+	SQLDedicatedGatewayEndpoint *string `json:"sqlDedicatedGatewayEndpoint,omitempty"`
+
+	// READ-ONLY; Time of the last state change (ISO-8601 format).
+	CreationTime *time.Time `json:"creationTime,omitempty" azure:"ro"`
+
+	// READ-ONLY; An array that contains all of the locations for the service.
+	Locations []*SQLDedicatedGatewayRegionalServiceResource `json:"locations,omitempty" azure:"ro"`
+
+	// READ-ONLY; Describes the status of a service.
+	Status *ServiceStatus `json:"status,omitempty" azure:"ro"`
+}
+
+// SQLResourcesClientBeginCreateUpdateClientEncryptionKeyOptions contains the optional parameters for the SQLResourcesClient.BeginCreateUpdateClientEncryptionKey
+// method.
+type SQLResourcesClientBeginCreateUpdateClientEncryptionKeyOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // SQLResourcesClientBeginCreateUpdateSQLContainerOptions contains the optional parameters for the SQLResourcesClient.BeginCreateUpdateSQLContainer
 // method.
 type SQLResourcesClientBeginCreateUpdateSQLContainerOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // SQLResourcesClientBeginCreateUpdateSQLDatabaseOptions contains the optional parameters for the SQLResourcesClient.BeginCreateUpdateSQLDatabase
 // method.
 type SQLResourcesClientBeginCreateUpdateSQLDatabaseOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // SQLResourcesClientBeginCreateUpdateSQLRoleAssignmentOptions contains the optional parameters for the SQLResourcesClient.BeginCreateUpdateSQLRoleAssignment
 // method.
 type SQLResourcesClientBeginCreateUpdateSQLRoleAssignmentOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // SQLResourcesClientBeginCreateUpdateSQLRoleDefinitionOptions contains the optional parameters for the SQLResourcesClient.BeginCreateUpdateSQLRoleDefinition
 // method.
 type SQLResourcesClientBeginCreateUpdateSQLRoleDefinitionOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // SQLResourcesClientBeginCreateUpdateSQLStoredProcedureOptions contains the optional parameters for the SQLResourcesClient.BeginCreateUpdateSQLStoredProcedure
 // method.
 type SQLResourcesClientBeginCreateUpdateSQLStoredProcedureOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // SQLResourcesClientBeginCreateUpdateSQLTriggerOptions contains the optional parameters for the SQLResourcesClient.BeginCreateUpdateSQLTrigger
 // method.
 type SQLResourcesClientBeginCreateUpdateSQLTriggerOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // SQLResourcesClientBeginCreateUpdateSQLUserDefinedFunctionOptions contains the optional parameters for the SQLResourcesClient.BeginCreateUpdateSQLUserDefinedFunction
 // method.
 type SQLResourcesClientBeginCreateUpdateSQLUserDefinedFunctionOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // SQLResourcesClientBeginDeleteSQLContainerOptions contains the optional parameters for the SQLResourcesClient.BeginDeleteSQLContainer
 // method.
 type SQLResourcesClientBeginDeleteSQLContainerOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // SQLResourcesClientBeginDeleteSQLDatabaseOptions contains the optional parameters for the SQLResourcesClient.BeginDeleteSQLDatabase
 // method.
 type SQLResourcesClientBeginDeleteSQLDatabaseOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // SQLResourcesClientBeginDeleteSQLRoleAssignmentOptions contains the optional parameters for the SQLResourcesClient.BeginDeleteSQLRoleAssignment
 // method.
 type SQLResourcesClientBeginDeleteSQLRoleAssignmentOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // SQLResourcesClientBeginDeleteSQLRoleDefinitionOptions contains the optional parameters for the SQLResourcesClient.BeginDeleteSQLRoleDefinition
 // method.
 type SQLResourcesClientBeginDeleteSQLRoleDefinitionOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // SQLResourcesClientBeginDeleteSQLStoredProcedureOptions contains the optional parameters for the SQLResourcesClient.BeginDeleteSQLStoredProcedure
 // method.
 type SQLResourcesClientBeginDeleteSQLStoredProcedureOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // SQLResourcesClientBeginDeleteSQLTriggerOptions contains the optional parameters for the SQLResourcesClient.BeginDeleteSQLTrigger
 // method.
 type SQLResourcesClientBeginDeleteSQLTriggerOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // SQLResourcesClientBeginDeleteSQLUserDefinedFunctionOptions contains the optional parameters for the SQLResourcesClient.BeginDeleteSQLUserDefinedFunction
 // method.
 type SQLResourcesClientBeginDeleteSQLUserDefinedFunctionOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// SQLResourcesClientBeginListSQLContainerPartitionMergeOptions contains the optional parameters for the SQLResourcesClient.BeginListSQLContainerPartitionMerge
+// method.
+type SQLResourcesClientBeginListSQLContainerPartitionMergeOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // SQLResourcesClientBeginMigrateSQLContainerToAutoscaleOptions contains the optional parameters for the SQLResourcesClient.BeginMigrateSQLContainerToAutoscale
 // method.
 type SQLResourcesClientBeginMigrateSQLContainerToAutoscaleOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // SQLResourcesClientBeginMigrateSQLContainerToManualThroughputOptions contains the optional parameters for the SQLResourcesClient.BeginMigrateSQLContainerToManualThroughput
 // method.
 type SQLResourcesClientBeginMigrateSQLContainerToManualThroughputOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // SQLResourcesClientBeginMigrateSQLDatabaseToAutoscaleOptions contains the optional parameters for the SQLResourcesClient.BeginMigrateSQLDatabaseToAutoscale
 // method.
 type SQLResourcesClientBeginMigrateSQLDatabaseToAutoscaleOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // SQLResourcesClientBeginMigrateSQLDatabaseToManualThroughputOptions contains the optional parameters for the SQLResourcesClient.BeginMigrateSQLDatabaseToManualThroughput
 // method.
 type SQLResourcesClientBeginMigrateSQLDatabaseToManualThroughputOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // SQLResourcesClientBeginRetrieveContinuousBackupInformationOptions contains the optional parameters for the SQLResourcesClient.BeginRetrieveContinuousBackupInformation
 // method.
 type SQLResourcesClientBeginRetrieveContinuousBackupInformationOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // SQLResourcesClientBeginUpdateSQLContainerThroughputOptions contains the optional parameters for the SQLResourcesClient.BeginUpdateSQLContainerThroughput
 // method.
 type SQLResourcesClientBeginUpdateSQLContainerThroughputOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // SQLResourcesClientBeginUpdateSQLDatabaseThroughputOptions contains the optional parameters for the SQLResourcesClient.BeginUpdateSQLDatabaseThroughput
 // method.
 type SQLResourcesClientBeginUpdateSQLDatabaseThroughputOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// SQLResourcesClientGetClientEncryptionKeyOptions contains the optional parameters for the SQLResourcesClient.GetClientEncryptionKey
+// method.
+type SQLResourcesClientGetClientEncryptionKeyOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -5509,6 +5267,12 @@ type SQLResourcesClientGetSQLTriggerOptions struct {
 // SQLResourcesClientGetSQLUserDefinedFunctionOptions contains the optional parameters for the SQLResourcesClient.GetSQLUserDefinedFunction
 // method.
 type SQLResourcesClientGetSQLUserDefinedFunctionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SQLResourcesClientListClientEncryptionKeysOptions contains the optional parameters for the SQLResourcesClient.ListClientEncryptionKeys
+// method.
+type SQLResourcesClientListClientEncryptionKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -5580,13 +5344,6 @@ type SQLRoleAssignmentListResult struct {
 	Value []*SQLRoleAssignmentGetResults `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SQLRoleAssignmentListResult.
-func (s SQLRoleAssignmentListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
-}
-
 // SQLRoleAssignmentResource - Azure Cosmos DB SQL Role Assignment resource object.
 type SQLRoleAssignmentResource struct {
 	// The unique identifier for the associated AAD principal in the AAD graph to which access is being granted through this Role
@@ -5628,13 +5385,6 @@ type SQLRoleDefinitionListResult struct {
 	Value []*SQLRoleDefinitionGetResults `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SQLRoleDefinitionListResult.
-func (s SQLRoleDefinitionListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
-}
-
 // SQLRoleDefinitionResource - Azure Cosmos DB SQL Role Definition resource object.
 type SQLRoleDefinitionResource struct {
 	// A set of fully qualified Scopes at or below which Role Assignments may be created using this Role Definition. This will
@@ -5654,20 +5404,13 @@ type SQLRoleDefinitionResource struct {
 	Type *RoleDefinitionType `json:"type,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SQLRoleDefinitionResource.
-func (s SQLRoleDefinitionResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "assignableScopes", s.AssignableScopes)
-	populate(objectMap, "permissions", s.Permissions)
-	populate(objectMap, "roleName", s.RoleName)
-	populate(objectMap, "type", s.Type)
-	return json.Marshal(objectMap)
-}
-
 // SQLStoredProcedureCreateUpdateParameters - Parameters to create and update Cosmos DB storedProcedure.
 type SQLStoredProcedureCreateUpdateParameters struct {
 	// REQUIRED; Properties to create and update Azure Cosmos DB storedProcedure.
 	Properties *SQLStoredProcedureCreateUpdateProperties `json:"properties,omitempty"`
+
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
 
 	// The location of the resource group to which the resource belongs.
 	Location *string `json:"location,omitempty"`
@@ -5687,18 +5430,6 @@ type SQLStoredProcedureCreateUpdateParameters struct {
 
 	// READ-ONLY; The type of Azure resource.
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SQLStoredProcedureCreateUpdateParameters.
-func (s SQLStoredProcedureCreateUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", s.ID)
-	populate(objectMap, "location", s.Location)
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "properties", s.Properties)
-	populate(objectMap, "tags", s.Tags)
-	populate(objectMap, "type", s.Type)
-	return json.Marshal(objectMap)
 }
 
 // SQLStoredProcedureCreateUpdateProperties - Properties to create and update Azure Cosmos DB storedProcedure.
@@ -5734,6 +5465,9 @@ type SQLStoredProcedureGetPropertiesResource struct {
 
 // SQLStoredProcedureGetResults - An Azure Cosmos DB storedProcedure.
 type SQLStoredProcedureGetResults struct {
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+
 	// The location of the resource group to which the resource belongs.
 	Location *string `json:"location,omitempty"`
 
@@ -5757,29 +5491,10 @@ type SQLStoredProcedureGetResults struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SQLStoredProcedureGetResults.
-func (s SQLStoredProcedureGetResults) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", s.ID)
-	populate(objectMap, "location", s.Location)
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "properties", s.Properties)
-	populate(objectMap, "tags", s.Tags)
-	populate(objectMap, "type", s.Type)
-	return json.Marshal(objectMap)
-}
-
 // SQLStoredProcedureListResult - The List operation response, that contains the storedProcedures and their properties.
 type SQLStoredProcedureListResult struct {
 	// READ-ONLY; List of storedProcedures and their properties.
 	Value []*SQLStoredProcedureGetResults `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SQLStoredProcedureListResult.
-func (s SQLStoredProcedureListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
 }
 
 // SQLStoredProcedureResource - Cosmos DB SQL storedProcedure resource object
@@ -5795,6 +5510,9 @@ type SQLStoredProcedureResource struct {
 type SQLTriggerCreateUpdateParameters struct {
 	// REQUIRED; Properties to create and update Azure Cosmos DB trigger.
 	Properties *SQLTriggerCreateUpdateProperties `json:"properties,omitempty"`
+
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
 
 	// The location of the resource group to which the resource belongs.
 	Location *string `json:"location,omitempty"`
@@ -5814,18 +5532,6 @@ type SQLTriggerCreateUpdateParameters struct {
 
 	// READ-ONLY; The type of Azure resource.
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SQLTriggerCreateUpdateParameters.
-func (s SQLTriggerCreateUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", s.ID)
-	populate(objectMap, "location", s.Location)
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "properties", s.Properties)
-	populate(objectMap, "tags", s.Tags)
-	populate(objectMap, "type", s.Type)
-	return json.Marshal(objectMap)
 }
 
 // SQLTriggerCreateUpdateProperties - Properties to create and update Azure Cosmos DB trigger.
@@ -5867,6 +5573,9 @@ type SQLTriggerGetPropertiesResource struct {
 
 // SQLTriggerGetResults - An Azure Cosmos DB trigger.
 type SQLTriggerGetResults struct {
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+
 	// The location of the resource group to which the resource belongs.
 	Location *string `json:"location,omitempty"`
 
@@ -5890,29 +5599,10 @@ type SQLTriggerGetResults struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SQLTriggerGetResults.
-func (s SQLTriggerGetResults) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", s.ID)
-	populate(objectMap, "location", s.Location)
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "properties", s.Properties)
-	populate(objectMap, "tags", s.Tags)
-	populate(objectMap, "type", s.Type)
-	return json.Marshal(objectMap)
-}
-
 // SQLTriggerListResult - The List operation response, that contains the triggers and their properties.
 type SQLTriggerListResult struct {
 	// READ-ONLY; List of triggers and their properties.
 	Value []*SQLTriggerGetResults `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SQLTriggerListResult.
-func (s SQLTriggerListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
 }
 
 // SQLTriggerResource - Cosmos DB SQL trigger resource object
@@ -5935,6 +5625,9 @@ type SQLUserDefinedFunctionCreateUpdateParameters struct {
 	// REQUIRED; Properties to create and update Azure Cosmos DB userDefinedFunction.
 	Properties *SQLUserDefinedFunctionCreateUpdateProperties `json:"properties,omitempty"`
 
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+
 	// The location of the resource group to which the resource belongs.
 	Location *string `json:"location,omitempty"`
 
@@ -5953,18 +5646,6 @@ type SQLUserDefinedFunctionCreateUpdateParameters struct {
 
 	// READ-ONLY; The type of Azure resource.
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SQLUserDefinedFunctionCreateUpdateParameters.
-func (s SQLUserDefinedFunctionCreateUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", s.ID)
-	populate(objectMap, "location", s.Location)
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "properties", s.Properties)
-	populate(objectMap, "tags", s.Tags)
-	populate(objectMap, "type", s.Type)
-	return json.Marshal(objectMap)
 }
 
 // SQLUserDefinedFunctionCreateUpdateProperties - Properties to create and update Azure Cosmos DB userDefinedFunction.
@@ -6000,6 +5681,9 @@ type SQLUserDefinedFunctionGetPropertiesResource struct {
 
 // SQLUserDefinedFunctionGetResults - An Azure Cosmos DB userDefinedFunction.
 type SQLUserDefinedFunctionGetResults struct {
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+
 	// The location of the resource group to which the resource belongs.
 	Location *string `json:"location,omitempty"`
 
@@ -6023,29 +5707,10 @@ type SQLUserDefinedFunctionGetResults struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SQLUserDefinedFunctionGetResults.
-func (s SQLUserDefinedFunctionGetResults) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", s.ID)
-	populate(objectMap, "location", s.Location)
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "properties", s.Properties)
-	populate(objectMap, "tags", s.Tags)
-	populate(objectMap, "type", s.Type)
-	return json.Marshal(objectMap)
-}
-
 // SQLUserDefinedFunctionListResult - The List operation response, that contains the userDefinedFunctions and their properties.
 type SQLUserDefinedFunctionListResult struct {
 	// READ-ONLY; List of userDefinedFunctions and their properties.
 	Value []*SQLUserDefinedFunctionGetResults `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SQLUserDefinedFunctionListResult.
-func (s SQLUserDefinedFunctionListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
 }
 
 // SQLUserDefinedFunctionResource - Cosmos DB SQL userDefinedFunction resource object
@@ -6062,20 +5727,104 @@ type SeedNode struct {
 	IPAddress *string `json:"ipAddress,omitempty"`
 }
 
+// ServiceClientBeginCreateOptions contains the optional parameters for the ServiceClient.BeginCreate method.
+type ServiceClientBeginCreateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ServiceClientBeginDeleteOptions contains the optional parameters for the ServiceClient.BeginDelete method.
+type ServiceClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ServiceClientGetOptions contains the optional parameters for the ServiceClient.Get method.
+type ServiceClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServiceClientListOptions contains the optional parameters for the ServiceClient.List method.
+type ServiceClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServiceResource - Properties for the database account.
+type ServiceResource struct {
+	// Services response resource.
+	Properties ServiceResourcePropertiesClassification `json:"properties,omitempty"`
+
+	// READ-ONLY; The unique resource identifier of the database account.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the database account.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of Azure resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// ServiceResourceCreateUpdateParameters - Parameters for Create or Update Request for ServiceResource
+type ServiceResourceCreateUpdateParameters struct {
+	// Properties in ServiceResourceCreateUpdateParameters.
+	Properties *ServiceResourceCreateUpdateProperties `json:"properties,omitempty"`
+}
+
+// ServiceResourceCreateUpdateProperties - Properties in ServiceResourceCreateUpdateParameters.
+type ServiceResourceCreateUpdateProperties struct {
+	// Instance count for the service.
+	InstanceCount *int32 `json:"instanceCount,omitempty"`
+
+	// Instance type for the service.
+	InstanceSize *ServiceSize `json:"instanceSize,omitempty"`
+
+	// ServiceType for the service.
+	ServiceType *ServiceType `json:"serviceType,omitempty"`
+}
+
+// ServiceResourceListResult - The List operation response, that contains the Service Resource and their properties.
+type ServiceResourceListResult struct {
+	// READ-ONLY; List of Service Resource and their properties.
+	Value []*ServiceResource `json:"value,omitempty" azure:"ro"`
+}
+
+// ServiceResourcePropertiesClassification provides polymorphic access to related types.
+// Call the interface's GetServiceResourceProperties() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *DataTransferServiceResourceProperties, *GraphAPIComputeServiceResourceProperties, *MaterializedViewsBuilderServiceResourceProperties,
+// - *SQLDedicatedGatewayServiceResourceProperties, *ServiceResourceProperties
+type ServiceResourcePropertiesClassification interface {
+	// GetServiceResourceProperties returns the ServiceResourceProperties content of the underlying type.
+	GetServiceResourceProperties() *ServiceResourceProperties
+}
+
+// ServiceResourceProperties - Services response resource.
+type ServiceResourceProperties struct {
+	// REQUIRED; ServiceType for the service.
+	ServiceType *ServiceType `json:"serviceType,omitempty"`
+
+	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
+	AdditionalProperties map[string]interface{}
+
+	// Instance count for the service.
+	InstanceCount *int32 `json:"instanceCount,omitempty"`
+
+	// Instance type for the service.
+	InstanceSize *ServiceSize `json:"instanceSize,omitempty"`
+
+	// READ-ONLY; Time of the last state change (ISO-8601 format).
+	CreationTime *time.Time `json:"creationTime,omitempty" azure:"ro"`
+
+	// READ-ONLY; Describes the status of a service.
+	Status *ServiceStatus `json:"status,omitempty" azure:"ro"`
+}
+
 type SpatialSpec struct {
 	// The path for which the indexing behavior applies to. Index paths typically start with root and end with wildcard (/path/*)
 	Path *string `json:"path,omitempty"`
 
 	// List of path's spatial type
 	Types []*SpatialType `json:"types,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SpatialSpec.
-func (s SpatialSpec) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "path", s.Path)
-	populate(objectMap, "types", s.Types)
-	return json.Marshal(objectMap)
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
@@ -6099,57 +5848,13 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SystemData.
-func (s SystemData) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
-	populate(objectMap, "createdBy", s.CreatedBy)
-	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
-	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
-	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SystemData.
-func (s *SystemData) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdAt":
-			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
-			delete(rawMsg, key)
-		case "createdBy":
-			err = unpopulate(val, &s.CreatedBy)
-			delete(rawMsg, key)
-		case "createdByType":
-			err = unpopulate(val, &s.CreatedByType)
-			delete(rawMsg, key)
-		case "lastModifiedAt":
-			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
-			delete(rawMsg, key)
-		case "lastModifiedBy":
-			err = unpopulate(val, &s.LastModifiedBy)
-			delete(rawMsg, key)
-		case "lastModifiedByType":
-			err = unpopulate(val, &s.LastModifiedByType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // TableCreateUpdateParameters - Parameters to create and update Cosmos DB Table.
 type TableCreateUpdateParameters struct {
 	// REQUIRED; Properties to create and update Azure Cosmos DB Table.
 	Properties *TableCreateUpdateProperties `json:"properties,omitempty"`
+
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
 
 	// The location of the resource group to which the resource belongs.
 	Location *string `json:"location,omitempty"`
@@ -6169,18 +5874,6 @@ type TableCreateUpdateParameters struct {
 
 	// READ-ONLY; The type of Azure resource.
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type TableCreateUpdateParameters.
-func (t TableCreateUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", t.ID)
-	populate(objectMap, "location", t.Location)
-	populate(objectMap, "name", t.Name)
-	populate(objectMap, "properties", t.Properties)
-	populate(objectMap, "tags", t.Tags)
-	populate(objectMap, "type", t.Type)
-	return json.Marshal(objectMap)
 }
 
 // TableCreateUpdateProperties - Properties to create and update Azure Cosmos DB Table.
@@ -6223,6 +5916,9 @@ type TableGetPropertiesResource struct {
 
 // TableGetResults - An Azure Cosmos DB Table.
 type TableGetResults struct {
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+
 	// The location of the resource group to which the resource belongs.
 	Location *string `json:"location,omitempty"`
 
@@ -6246,29 +5942,10 @@ type TableGetResults struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type TableGetResults.
-func (t TableGetResults) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", t.ID)
-	populate(objectMap, "location", t.Location)
-	populate(objectMap, "name", t.Name)
-	populate(objectMap, "properties", t.Properties)
-	populate(objectMap, "tags", t.Tags)
-	populate(objectMap, "type", t.Type)
-	return json.Marshal(objectMap)
-}
-
 // TableListResult - The List operation response, that contains the Table and their properties.
 type TableListResult struct {
 	// READ-ONLY; List of Table and their properties.
 	Value []*TableGetResults `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type TableListResult.
-func (t TableListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", t.Value)
-	return json.Marshal(objectMap)
 }
 
 // TableResource - Cosmos DB table resource object
@@ -6280,31 +5957,43 @@ type TableResource struct {
 // TableResourcesClientBeginCreateUpdateTableOptions contains the optional parameters for the TableResourcesClient.BeginCreateUpdateTable
 // method.
 type TableResourcesClientBeginCreateUpdateTableOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // TableResourcesClientBeginDeleteTableOptions contains the optional parameters for the TableResourcesClient.BeginDeleteTable
 // method.
 type TableResourcesClientBeginDeleteTableOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // TableResourcesClientBeginMigrateTableToAutoscaleOptions contains the optional parameters for the TableResourcesClient.BeginMigrateTableToAutoscale
 // method.
 type TableResourcesClientBeginMigrateTableToAutoscaleOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // TableResourcesClientBeginMigrateTableToManualThroughputOptions contains the optional parameters for the TableResourcesClient.BeginMigrateTableToManualThroughput
 // method.
 type TableResourcesClientBeginMigrateTableToManualThroughputOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// TableResourcesClientBeginRetrieveContinuousBackupInformationOptions contains the optional parameters for the TableResourcesClient.BeginRetrieveContinuousBackupInformation
+// method.
+type TableResourcesClientBeginRetrieveContinuousBackupInformationOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // TableResourcesClientBeginUpdateTableThroughputOptions contains the optional parameters for the TableResourcesClient.BeginUpdateTableThroughput
 // method.
 type TableResourcesClientBeginUpdateTableThroughputOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // TableResourcesClientGetTableOptions contains the optional parameters for the TableResourcesClient.GetTable method.
@@ -6362,6 +6051,9 @@ type ThroughputSettingsGetPropertiesResource struct {
 
 // ThroughputSettingsGetResults - An Azure Cosmos DB resource throughput.
 type ThroughputSettingsGetResults struct {
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+
 	// The location of the resource group to which the resource belongs.
 	Location *string `json:"location,omitempty"`
 
@@ -6385,18 +6077,6 @@ type ThroughputSettingsGetResults struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ThroughputSettingsGetResults.
-func (t ThroughputSettingsGetResults) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", t.ID)
-	populate(objectMap, "location", t.Location)
-	populate(objectMap, "name", t.Name)
-	populate(objectMap, "properties", t.Properties)
-	populate(objectMap, "tags", t.Tags)
-	populate(objectMap, "type", t.Type)
-	return json.Marshal(objectMap)
-}
-
 // ThroughputSettingsResource - Cosmos DB resource throughput object. Either throughput is required or autoscaleSettings is
 // required, but not both.
 type ThroughputSettingsResource struct {
@@ -6418,6 +6098,9 @@ type ThroughputSettingsUpdateParameters struct {
 	// REQUIRED; Properties to update Azure Cosmos DB resource throughput.
 	Properties *ThroughputSettingsUpdateProperties `json:"properties,omitempty"`
 
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+
 	// The location of the resource group to which the resource belongs.
 	Location *string `json:"location,omitempty"`
 
@@ -6438,18 +6121,6 @@ type ThroughputSettingsUpdateParameters struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ThroughputSettingsUpdateParameters.
-func (t ThroughputSettingsUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", t.ID)
-	populate(objectMap, "location", t.Location)
-	populate(objectMap, "name", t.Name)
-	populate(objectMap, "properties", t.Properties)
-	populate(objectMap, "tags", t.Tags)
-	populate(objectMap, "type", t.Type)
-	return json.Marshal(objectMap)
-}
-
 // ThroughputSettingsUpdateProperties - Properties to update Azure Cosmos DB resource throughput.
 type ThroughputSettingsUpdateProperties struct {
 	// REQUIRED; The standard JSON format of a resource throughput
@@ -6463,25 +6134,11 @@ type UniqueKey struct {
 	Paths []*string `json:"paths,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type UniqueKey.
-func (u UniqueKey) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "paths", u.Paths)
-	return json.Marshal(objectMap)
-}
-
 // UniqueKeyPolicy - The unique key policy configuration for specifying uniqueness constraints on documents in the collection
 // in the Azure Cosmos DB service.
 type UniqueKeyPolicy struct {
 	// List of unique keys on that enforces uniqueness constraint on documents in the collection in the Azure Cosmos DB service.
 	UniqueKeys []*UniqueKey `json:"uniqueKeys,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type UniqueKeyPolicy.
-func (u UniqueKeyPolicy) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "uniqueKeys", u.UniqueKeys)
-	return json.Marshal(objectMap)
 }
 
 // Usage - The usage data for a usage request.
@@ -6508,13 +6165,6 @@ type UsagesResult struct {
 	Value []*Usage `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type UsagesResult.
-func (u UsagesResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", u.Value)
-	return json.Marshal(objectMap)
-}
-
 // VirtualNetworkRule - Virtual Network ACL Rule object
 type VirtualNetworkRule struct {
 	// Resource ID of a subnet, for example: /subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}.
@@ -6522,21 +6172,4 @@ type VirtualNetworkRule struct {
 
 	// Create firewall rule before the virtual network has vnet service endpoint enabled.
 	IgnoreMissingVNetServiceEndpoint *bool `json:"ignoreMissingVNetServiceEndpoint,omitempty"`
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

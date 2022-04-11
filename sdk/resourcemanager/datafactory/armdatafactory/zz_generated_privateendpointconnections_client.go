@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type PrivateEndPointConnectionsClient struct {
 // subscriptionID - The subscription identifier.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewPrivateEndPointConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PrivateEndPointConnectionsClient {
+func NewPrivateEndPointConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateEndPointConnectionsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &PrivateEndPointConnectionsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // ListByFactory - Lists Private endpoint connections
@@ -55,16 +60,32 @@ func NewPrivateEndPointConnectionsClient(subscriptionID string, credential azcor
 // factoryName - The factory name.
 // options - PrivateEndPointConnectionsClientListByFactoryOptions contains the optional parameters for the PrivateEndPointConnectionsClient.ListByFactory
 // method.
-func (client *PrivateEndPointConnectionsClient) ListByFactory(resourceGroupName string, factoryName string, options *PrivateEndPointConnectionsClientListByFactoryOptions) *PrivateEndPointConnectionsClientListByFactoryPager {
-	return &PrivateEndPointConnectionsClientListByFactoryPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByFactoryCreateRequest(ctx, resourceGroupName, factoryName, options)
+func (client *PrivateEndPointConnectionsClient) ListByFactory(resourceGroupName string, factoryName string, options *PrivateEndPointConnectionsClientListByFactoryOptions) *runtime.Pager[PrivateEndPointConnectionsClientListByFactoryResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PrivateEndPointConnectionsClientListByFactoryResponse]{
+		More: func(page PrivateEndPointConnectionsClientListByFactoryResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PrivateEndPointConnectionsClientListByFactoryResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PrivateEndpointConnectionListResponse.NextLink)
+		Fetcher: func(ctx context.Context, page *PrivateEndPointConnectionsClientListByFactoryResponse) (PrivateEndPointConnectionsClientListByFactoryResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByFactoryCreateRequest(ctx, resourceGroupName, factoryName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return PrivateEndPointConnectionsClientListByFactoryResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PrivateEndPointConnectionsClientListByFactoryResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PrivateEndPointConnectionsClientListByFactoryResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByFactoryHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByFactoryCreateRequest creates the ListByFactory request.
@@ -95,7 +116,7 @@ func (client *PrivateEndPointConnectionsClient) listByFactoryCreateRequest(ctx c
 
 // listByFactoryHandleResponse handles the ListByFactory response.
 func (client *PrivateEndPointConnectionsClient) listByFactoryHandleResponse(resp *http.Response) (PrivateEndPointConnectionsClientListByFactoryResponse, error) {
-	result := PrivateEndPointConnectionsClientListByFactoryResponse{RawResponse: resp}
+	result := PrivateEndPointConnectionsClientListByFactoryResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnectionListResponse); err != nil {
 		return PrivateEndPointConnectionsClientListByFactoryResponse{}, err
 	}

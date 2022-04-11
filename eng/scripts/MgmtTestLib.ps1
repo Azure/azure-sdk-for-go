@@ -20,7 +20,7 @@ function Invoke-MgmtTestgen ()
         [string]$config = "autorest.md",
         [string]$autorestVersion = "3.8.2",
         [string]$goExtension = "@autorest/go@4.0.0-preview.38",
-        [string]$testExtension = "@autorest/gotest@3.0.0",
+        [string]$testExtension = "@autorest/gotest@3.0.1",
         [string]$outputFolder
     )
     if ($clean)
@@ -297,10 +297,10 @@ function TestAndGenerateReport($dir)
 {
     Set-Location $dir
     # dependencies for go coverage report generation
-    go get github.com/jstemmer/go-junit-report
-    go get github.com/jhendrixMSFT/gocov/gocov
-    go get github.com/AlekSi/gocov-xml
-    go get github.com/matm/gocov-html
+    go install github.com/jstemmer/go-junit-report@v0.9.1
+    go install github.com/jhendrixMSFT/gocov/gocov@v1.0.1-0.20220325195445-df8497555dba
+    go install github.com/AlekSi/gocov-xml@v1.0.0
+    go install github.com/matm/gocov-html@v0.0.0-20200509184451-71874e2e203b
 
     # set azidentity env for mock test
     $Env:AZURE_TENANT_ID = "mock-test"
@@ -310,9 +310,9 @@ function TestAndGenerateReport($dir)
 
     # do test with corage report and convert to cobertura format
     Write-Host "go cmd: go test -v -coverprofile coverage.txt | Tee-Object -FilePath output.txt"
-    go test -v -coverprofile coverage.txt | Tee-Object -FilePath output.txt
-    Write-Host "report.xml: cat output.txt | go-junit-report > report.xml"
-    cat output.txt | go-junit-report > report.xml
+    go test -v -coverprofile coverage.txt | Tee-Object -FilePath outfile.txt
+    Write-Host "report.xml: Get-Content output.txt | go-junit-report > report.xml"
+    Get-Content outfile.txt | go-junit-report > report.xml
     Write-Host "coverage.json: gocov convert ./coverage.txt > ./coverage.json"
     gocov convert ./coverage.txt > ./coverage.json
     Write-Host "coverage.xml: Get-Content ./coverage.json | gocov-xml > ./coverage.xml"

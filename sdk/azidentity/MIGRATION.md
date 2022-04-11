@@ -6,13 +6,13 @@ This guide shows common authentication code using `autorest/adal` and its equiva
 
 ## Table of contents
 
-- [Acquiring a token](#acquiring-a-token)
+- [Acquire a token](#acquire-a-token)
 - [Client certificate authentication](#client-certificate-authentication)
 - [Client secret authentication](#client-secret-authentication)
 - [Configuration](#configuration)
 - [Device code authentication](#device-code-authentication)
 - [Managed identity](#managed-identity)
-- [Using azidentity credentials with older packages](#using-azidentity-credentials-with-older-packages)
+- [Use azidentity credentials with older packages](#use-azidentity-credentials-with-older-packages)
 
 ## Configuration
 
@@ -33,7 +33,7 @@ spt, err := adal.NewServicePrincipalTokenWithSecret(
 
 ### `azidentity`
 
-A credential instance can acquire tokens for any audience, and the audience for each token is determined by the client requesting it. Credentials require endpoint configuration only for sovereign or private clouds. The `azcore/cloud` package has predefined configuration for sovereign clouds such as Azure China:
+A credential instance can acquire tokens for any audience. The audience for each token is determined by the client requesting it. Credentials require endpoint configuration only for sovereign or private clouds. The `azcore/cloud` package has predefined configuration for sovereign clouds such as Azure China:
 
 ```go
 import (
@@ -51,7 +51,7 @@ handle(err)
 
 ## Client secret authentication
 
-### `autorest/adal`:
+### `autorest/adal`
 
 ```go
 import (
@@ -71,7 +71,7 @@ client := subscriptions.NewClient()
 client.Authorizer = autorest.NewBearerAuthorizer(spt)
 ```
 
-### `azidentity`:
+### `azidentity`
 
 ```go
 import (
@@ -88,7 +88,7 @@ handle(err)
 
 ## Client certificate authentication
 
-### `autorest/adal`:
+### `autorest/adal`
 
 ```go
 import (
@@ -115,7 +115,7 @@ client := subscriptions.NewClient()
 client.Authorizer = autorest.NewBearerAuthorizer(spt)
 ```
 
-### `azidentity`:
+### `azidentity`
 
 ```go
 import (
@@ -140,7 +140,7 @@ handle(err)
 
 ### Managed identity
 
-### `autorest/adal`:
+#### `autorest/adal`
 
 ```go
 import (
@@ -156,7 +156,7 @@ client := subscriptions.NewClient()
 client.Authorizer = autorest.NewBearerAuthorizer(spt)
 ```
 
-### `azidentity`:
+#### `azidentity`
 
 ```go
 import (
@@ -171,7 +171,7 @@ client, err := armsubscriptions.NewClient(cred, nil)
 handle(err)
 ```
 
-#### User assigned identities
+#### User-assigned identities
 
 `autorest/adal`:
 
@@ -195,7 +195,7 @@ handle(err)
 
 ### Device code authentication
 
-### `autorest/adal`:
+#### `autorest/adal`
 
 ```go
 import (
@@ -226,7 +226,7 @@ client := subscriptions.NewClient()
 client.Authorizer = autorest.NewBearerAuthorizer(spt)
 ```
 
-### `azidentity`:
+#### `azidentity`
 
 ```go
 import (
@@ -241,12 +241,11 @@ client, err := armsubscriptions.NewSubscriptionsClient(cred, nil)
 handle(err)
 ```
 
-`azidentity.DeviceCodeCredential` will guide a user through authentication, printing instructions to the console by default. The user prompt is customizable; see
-the [package documentation](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#DeviceCodeCredential) for details.
+`azidentity.DeviceCodeCredential` will guide a user through authentication, printing instructions to the console by default. The user prompt is customizable. For more information, see the [package documentation](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#DeviceCodeCredential).
 
-## Acquiring a token
+## Acquire a token
 
-### `autorest/adal`:
+### `autorest/adal`
 
 ```go
 import "github.com/Azure/go-autorest/autorest/adal"
@@ -264,9 +263,9 @@ if err == nil {
 }
 ```
 
-### `azidentity`:
+### `azidentity`
 
-In ordinary usage application code doesn't need to request tokens from credentials directly because Azure SDK clients handle token acquisition and refreshing internally. However, applications may call `GetToken()` to do so (all credential types have this method):
+In ordinary usage, application code doesn't need to request tokens from credentials directly. Azure SDK clients handle token acquisition and refreshing internally. However, applications may call `GetToken()` to do so. All credential types have this method.
 
 ```go
 import (
@@ -285,11 +284,11 @@ if err == nil {
 }
 ```
 
-Note that `azidentity` credentials use the Azure AD v2.0 endpoint, which requires OAuth 2 scopes instead of the resource identifiers `autorest/adal` expects. See [Azure AD documentation](https://docs.microsoft.com/azure/active-directory/develop/v2-permissions-and-consent) for more information.
+Note that `azidentity` credentials use the Azure AD v2.0 endpoint, which requires OAuth 2 scopes instead of the resource identifiers `autorest/adal` expects. For more information, see [Azure AD documentation](https://docs.microsoft.com/azure/active-directory/develop/v2-permissions-and-consent).
 
-## Using azidentity credentials with older packages
+## Use azidentity credentials with older packages
 
-The [azidext module](https://pkg.go.dev/github.com/jongio/azidext/go/azidext) provides an adapter for `azidentity` credential types that enables using them with older Azure SDK clients. For example:
+The [azidext module](https://pkg.go.dev/github.com/jongio/azidext/go/azidext) provides an adapter for `azidentity` credential types. The adapter enables using the credential types with older Azure SDK clients. For example:
 
 ```go
 import (

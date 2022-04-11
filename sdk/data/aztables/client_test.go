@@ -6,7 +6,6 @@ package aztables
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 	"testing"
 	"time"
@@ -19,20 +18,6 @@ import (
 
 var services = []string{"storage", "cosmos"}
 
-type ODataError struct {
-	Error ODataMessage `json:"odata.error"`
-}
-
-type ODataMessage struct {
-	Code  TableErrorCode `json:"code"`
-	Value ODataValue     `json:"message"`
-}
-
-type ODataValue struct {
-	Language string `json:"lang"`
-	Value    string `json:"value"`
-}
-
 func TestServiceErrors(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
@@ -44,18 +29,7 @@ func TestServiceErrors(t *testing.T) {
 			require.Error(t, err)
 			var httpErr *azcore.ResponseError
 			require.ErrorAs(t, err, &httpErr)
-
-			body, err := ioutil.ReadAll(httpErr.RawResponse.Body)
-			require.NoError(t, err)
-			fmt.Println(string(body))
-
-			var m ODataError
-			err = json.Unmarshal(body, &m)
-			fmt.Println(m)
-			require.NoError(t, err)
-			require.Equal(t, TableAlreadyExists, m.Error.Code)
-			require.NotEqual(t, "", m.Error.Value.Language)
-			require.NotEqual(t, "", m.Error.Value.Value)
+			require.Equal(t, string(TableAlreadyExists), httpErr.ErrorCode)
 		})
 	}
 }
@@ -238,7 +212,7 @@ func TestInsertEntity(t *testing.T) {
 			marshalled, err := json.Marshal(entityToCreate)
 			require.NoError(t, err)
 
-			_, err = client.UpsertEntity(ctx, marshalled, &InsertEntityOptions{UpdateMode: UpdateModeReplace})
+			_, err = client.UpsertEntity(ctx, marshalled, &UpsertEntityOptions{UpdateMode: UpdateModeReplace})
 			require.NoError(t, err)
 
 			filter := "RowKey eq '1'"
@@ -260,7 +234,7 @@ func TestInsertEntity(t *testing.T) {
 			require.NoError(t, err)
 
 			// 4. Replace Entity with "bool"-less entity
-			_, err = client.UpsertEntity(ctx, reMarshalled, &InsertEntityOptions{UpdateMode: UpdateModeReplace})
+			_, err = client.UpsertEntity(ctx, reMarshalled, &UpsertEntityOptions{UpdateMode: UpdateModeReplace})
 			require.Nil(t, err)
 
 			// 5. Query for new entity
@@ -295,10 +269,10 @@ func TestInsertEntityTwice(t *testing.T) {
 			marshalled, err := json.Marshal(entityToCreate)
 			require.NoError(t, err)
 
-			_, err = client.UpsertEntity(ctx, marshalled, &InsertEntityOptions{UpdateMode: UpdateModeReplace})
+			_, err = client.UpsertEntity(ctx, marshalled, &UpsertEntityOptions{UpdateMode: UpdateModeReplace})
 			require.NoError(t, err)
 
-			_, err = client.UpsertEntity(ctx, marshalled, &InsertEntityOptions{UpdateMode: UpdateModeReplace})
+			_, err = client.UpsertEntity(ctx, marshalled, &UpsertEntityOptions{UpdateMode: UpdateModeReplace})
 			require.NoError(t, err)
 		})
 	}

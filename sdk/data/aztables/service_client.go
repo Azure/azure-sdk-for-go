@@ -105,7 +105,7 @@ func (t *ServiceClient) CreateTable(ctx context.Context, name string, options *C
 	}
 	resp, err := t.client.Create(ctx, generated.Enum1Three0, generated.TableProperties{TableName: &name}, options.toGenerated(), &generated.QueryOptions{})
 	if err != nil {
-		return CreateTableResponse{}, err
+		return CreateTableResponse{}, parseErrorCode(err)
 	}
 	return CreateTableResponse{
 		TableName: resp.TableName,
@@ -134,6 +134,9 @@ func deleteTableResponseFromGen(g generated.TableClientDeleteResponse) DeleteTab
 // Specify nil for options if you want to use the default options.
 func (t *ServiceClient) DeleteTable(ctx context.Context, name string, options *DeleteTableOptions) (DeleteTableResponse, error) {
 	resp, err := t.client.Delete(ctx, name, options.toGenerated())
+	if err != nil {
+		return DeleteTableResponse{}, parseErrorCode(err)
+	}
 	return deleteTableResponseFromGen(resp), err
 }
 
@@ -243,7 +246,7 @@ func (t *ServiceClient) ListTables(listOptions *ListTablesOptions) *runtime.Page
 				&generated.TableClientQueryOptions{NextTableName: tableName},
 				listOptions.toQueryOptions())
 			if err != nil {
-				return ListTablesResponse{}, err
+				return ListTablesResponse{}, parseErrorCode(err)
 			}
 			return fromGeneratedTableQueryResponseEnvelope(resp), nil
 		},
@@ -277,6 +280,9 @@ func (t *ServiceClient) GetStatistics(ctx context.Context, options *GetStatistic
 		options = &GetStatisticsOptions{}
 	}
 	resp, err := t.service.GetStatistics(ctx, generated.Enum5Service, generated.Enum7Stats, options.toGenerated())
+	if err != nil {
+		return GetStatisticsResponse{}, parseErrorCode(err)
+	}
 	return getStatisticsResponseFromGenerated(&resp), err
 }
 
@@ -317,6 +323,9 @@ func (t *ServiceClient) GetProperties(ctx context.Context, options *GetPropertie
 		options = &GetPropertiesOptions{}
 	}
 	resp, err := t.service.GetProperties(ctx, generated.Enum5Service, generated.Enum6Properties, options.toGenerated())
+	if err != nil {
+		return GetPropertiesResponse{}, parseErrorCode(err)
+	}
 	return getPropertiesResponseFromGenerated(&resp), err
 }
 
@@ -354,6 +363,9 @@ func (t *ServiceClient) SetProperties(ctx context.Context, properties ServicePro
 		options = &SetPropertiesOptions{}
 	}
 	resp, err := t.service.SetProperties(ctx, generated.Enum5Service, generated.Enum6Properties, *properties.toGenerated(), options.toGenerated())
+	if err != nil {
+		return SetPropertiesResponse{}, parseErrorCode(err)
+	}
 	return setPropertiesResponseFromGenerated(&resp), err
 }
 

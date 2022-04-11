@@ -123,6 +123,9 @@ func (t *Client) CreateTable(ctx context.Context, options *CreateTableOptions) (
 		options = &CreateTableOptions{}
 	}
 	resp, err := t.client.Create(ctx, generated.Enum1Three0, generated.TableProperties{TableName: &t.name}, options.toGenerated(), &generated.QueryOptions{})
+	if err != nil {
+		return CreateTableResponse{}, parseErrorCode(err)
+	}
 	return createTableResponseFromGen(&resp), err
 }
 
@@ -240,7 +243,7 @@ func (t *Client) ListEntities(listOptions *ListEntitiesOptions) *runtime.Pager[L
 				NextRowKey:       rowKey,
 			}, listOptions.toQueryOptions())
 			if err != nil {
-				return ListEntitiesResponse{}, err
+				return ListEntitiesResponse{}, parseErrorCode(err)
 			}
 			return newListEntitiesPage(resp)
 		},
@@ -293,7 +296,7 @@ func (t *Client) GetEntity(ctx context.Context, partitionKey string, rowKey stri
 	genOptions, queryOptions := options.toGenerated()
 	resp, err := t.client.QueryEntityWithPartitionAndRowKey(ctx, generated.Enum1Three0, t.name, partitionKey, rowKey, genOptions, queryOptions)
 	if err != nil {
-		return GetEntityResponse{}, err
+		return GetEntityResponse{}, parseErrorCode(err)
 	}
 	return newGetEntityResponse(resp)
 }
@@ -335,7 +338,7 @@ func (t *Client) AddEntity(ctx context.Context, entity []byte, options *AddEntit
 	resp, err := t.client.InsertEntity(ctx, generated.Enum1Three0, t.name, &generated.TableClientInsertEntityOptions{TableEntityProperties: mapEntity, ResponsePreference: to.Ptr(generated.ResponseFormatReturnNoContent)}, nil)
 	if err != nil {
 		err = checkEntityForPkRk(&mapEntity, err)
-		return AddEntityResponse{}, err
+		return AddEntityResponse{}, parseErrorCode(err)
 	}
 	return addEntityResponseFromGenerated(&resp), err
 }
@@ -369,6 +372,9 @@ func (t *Client) DeleteEntity(ctx context.Context, partitionKey string, rowKey s
 		options.IfMatch = &nilEtag
 	}
 	resp, err := t.client.DeleteEntity(ctx, generated.Enum1Three0, t.name, partitionKey, rowKey, string(*options.IfMatch), options.toGenerated(), &generated.QueryOptions{})
+	if err != nil {
+		return DeleteEntityResponse{}, parseErrorCode(err)
+	}
 	return deleteEntityResponseFromGenerated(&resp), err
 }
 
@@ -472,6 +478,9 @@ func (t *Client) UpdateEntity(ctx context.Context, entity []byte, options *Updat
 			options.toGeneratedMergeEntity(mapEntity),
 			&generated.QueryOptions{},
 		)
+		if err != nil {
+			return UpdateEntityResponse{}, parseErrorCode(err)
+		}
 		return updateEntityResponseFromMergeGenerated(&resp), err
 	case UpdateModeReplace:
 		resp, err := t.client.UpdateEntity(
@@ -483,6 +492,9 @@ func (t *Client) UpdateEntity(ctx context.Context, entity []byte, options *Updat
 			options.toGeneratedUpdateEntity(mapEntity),
 			&generated.QueryOptions{},
 		)
+		if err != nil {
+			return UpdateEntityResponse{}, parseErrorCode(err)
+		}
 		return updateEntityResponseFromUpdateGenerated(&resp), err
 	}
 	if pk == "" || rk == "" {
@@ -491,8 +503,8 @@ func (t *Client) UpdateEntity(ctx context.Context, entity []byte, options *Updat
 	return UpdateEntityResponse{}, errInvalidUpdateMode
 }
 
-// InsertEntityOptions contains optional parameters for Client.InsertEntity
-type InsertEntityOptions struct {
+// UpsertEntityOptions contains optional parameters for Client.InsertEntity
+type UpsertEntityOptions struct {
 	// ETag is the optional etag for the Table
 	ETag azcore.ETag
 
@@ -501,35 +513,35 @@ type InsertEntityOptions struct {
 	UpdateMode UpdateMode
 }
 
-// InsertEntityResponse contains response fields for Client.InsertEntity
-type InsertEntityResponse struct {
+// UpsertEntityResponse contains response fields for Client.InsertEntity
+type UpsertEntityResponse struct {
 	ETag azcore.ETag
 }
 
-func insertEntityFromGeneratedMerge(g *generated.TableClientMergeEntityResponse) InsertEntityResponse {
+func insertEntityFromGeneratedMerge(g *generated.TableClientMergeEntityResponse) UpsertEntityResponse {
 	if g == nil {
-		return InsertEntityResponse{}
+		return UpsertEntityResponse{}
 	}
 
 	var ETag azcore.ETag
 	if g.ETag != nil {
 		ETag = azcore.ETag(*g.ETag)
 	}
-	return InsertEntityResponse{
+	return UpsertEntityResponse{
 		ETag: ETag,
 	}
 }
 
-func insertEntityFromGeneratedUpdate(g *generated.TableClientUpdateEntityResponse) InsertEntityResponse {
+func insertEntityFromGeneratedUpdate(g *generated.TableClientUpdateEntityResponse) UpsertEntityResponse {
 	if g == nil {
-		return InsertEntityResponse{}
+		return UpsertEntityResponse{}
 	}
 
 	var ETag azcore.ETag
 	if g.ETag != nil {
 		ETag = azcore.ETag(*g.ETag)
 	}
-	return InsertEntityResponse{
+	return UpsertEntityResponse{
 		ETag: ETag,
 	}
 }
@@ -540,16 +552,16 @@ func insertEntityFromGeneratedUpdate(g *generated.TableClientUpdateEntityRespons
 // The response type will be TableEntityMergeResponse if updateMode is Merge and TableEntityUpdateResponse if updateMode is Replace.
 // If the service returns a non-successful HTTP status code, the function returns an *azcore.ResponseError type.
 // Specify nil for options if you want to use the default options.
-func (t *Client) UpsertEntity(ctx context.Context, entity []byte, options *InsertEntityOptions) (InsertEntityResponse, error) {
+func (t *Client) UpsertEntity(ctx context.Context, entity []byte, options *UpsertEntityOptions) (UpsertEntityResponse, error) {
 	if options == nil {
-		options = &InsertEntityOptions{
+		options = &UpsertEntityOptions{
 			UpdateMode: UpdateModeMerge,
 		}
 	}
 	var mapEntity map[string]interface{}
 	err := json.Unmarshal(entity, &mapEntity)
 	if err != nil {
-		return InsertEntityResponse{}, err
+		return UpsertEntityResponse{}, err
 	}
 
 	pk := mapEntity[partitionKey]
@@ -569,6 +581,9 @@ func (t *Client) UpsertEntity(ctx context.Context, entity []byte, options *Inser
 			&generated.TableClientMergeEntityOptions{TableEntityProperties: mapEntity},
 			&generated.QueryOptions{},
 		)
+			if err != nil {
+		return UpsertEntityResponse{}, parseErrorCode(err)
+	}
 		return insertEntityFromGeneratedMerge(&resp), err
 	case UpdateModeReplace:
 		resp, err := t.client.UpdateEntity(
@@ -580,12 +595,15 @@ func (t *Client) UpsertEntity(ctx context.Context, entity []byte, options *Inser
 			&generated.TableClientUpdateEntityOptions{TableEntityProperties: mapEntity},
 			&generated.QueryOptions{},
 		)
+			if err != nil {
+		return UpsertEntityResponse{}, parseErrorCode(err)
+	}
 		return insertEntityFromGeneratedUpdate(&resp), err
 	}
 	if pk == "" || rk == "" {
-		return InsertEntityResponse{}, errPartitionKeyRowKeyError
+		return UpsertEntityResponse{}, errPartitionKeyRowKeyError
 	}
-	return InsertEntityResponse{}, errInvalidUpdateMode
+	return UpsertEntityResponse{}, errInvalidUpdateMode
 }
 
 // GetAccessPolicyOptions contains optional parameters for Client.GetAccessPolicy
@@ -621,6 +639,9 @@ func getAccessPolicyResponseFromGenerated(g *generated.TableClientGetAccessPolic
 // Specify nil for options if you want to use the default options.
 func (t *Client) GetAccessPolicy(ctx context.Context, options *GetAccessPolicyOptions) (GetAccessPolicyResponse, error) {
 	resp, err := t.client.GetAccessPolicy(ctx, t.name, generated.Enum4ACL, options.toGenerated())
+	if err != nil {
+		return GetAccessPolicyResponse{}, parseErrorCode(err)
+	}
 	return getAccessPolicyResponseFromGenerated(&resp), err
 }
 
@@ -655,6 +676,9 @@ func (t *Client) SetAccessPolicy(ctx context.Context, options *SetAccessPolicyOp
 	response, err := t.client.SetAccessPolicy(ctx, t.name, generated.Enum4ACL, options.toGenerated())
 	if len(options.TableACL) > 5 {
 		err = errTooManyAccessPoliciesError
+	}
+	if err != nil {
+		return SetAccessPolicyResponse{}, parseErrorCode(err)
 	}
 	return setAccessPolicyResponseFromGenerated(&response), err
 }

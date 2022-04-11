@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,12 +8,7 @@
 
 package armdatalakestore
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
 
 // Account - Data Lake Store account information.
 type Account struct {
@@ -39,19 +34,6 @@ type Account struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Account.
-func (a Account) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", a.ID)
-	populate(objectMap, "identity", a.Identity)
-	populate(objectMap, "location", a.Location)
-	populate(objectMap, "name", a.Name)
-	populate(objectMap, "properties", a.Properties)
-	populate(objectMap, "tags", a.Tags)
-	populate(objectMap, "type", a.Type)
-	return json.Marshal(objectMap)
-}
-
 // AccountBasic - Basic Data Lake Store account information, returned on list calls.
 type AccountBasic struct {
 	// READ-ONLY; The resource identifier.
@@ -73,18 +55,6 @@ type AccountBasic struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AccountBasic.
-func (a AccountBasic) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", a.ID)
-	populate(objectMap, "location", a.Location)
-	populate(objectMap, "name", a.Name)
-	populate(objectMap, "properties", a.Properties)
-	populate(objectMap, "tags", a.Tags)
-	populate(objectMap, "type", a.Type)
-	return json.Marshal(objectMap)
-}
-
 // AccountListResult - Data Lake Store account list information response.
 type AccountListResult struct {
 	// READ-ONLY; The link (url) to the next page of results.
@@ -92,14 +62,6 @@ type AccountListResult struct {
 
 	// READ-ONLY; The results of the list operation.
 	Value []*AccountBasic `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AccountListResult.
-func (a AccountListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
 }
 
 // AccountProperties - Data Lake Store account properties information.
@@ -160,101 +122,6 @@ type AccountProperties struct {
 	VirtualNetworkRules []*VirtualNetworkRule `json:"virtualNetworkRules,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AccountProperties.
-func (a AccountProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "accountId", a.AccountID)
-	populateTimeRFC3339(objectMap, "creationTime", a.CreationTime)
-	populate(objectMap, "currentTier", a.CurrentTier)
-	populate(objectMap, "defaultGroup", a.DefaultGroup)
-	populate(objectMap, "encryptionConfig", a.EncryptionConfig)
-	populate(objectMap, "encryptionProvisioningState", a.EncryptionProvisioningState)
-	populate(objectMap, "encryptionState", a.EncryptionState)
-	populate(objectMap, "endpoint", a.Endpoint)
-	populate(objectMap, "firewallAllowAzureIps", a.FirewallAllowAzureIPs)
-	populate(objectMap, "firewallRules", a.FirewallRules)
-	populate(objectMap, "firewallState", a.FirewallState)
-	populateTimeRFC3339(objectMap, "lastModifiedTime", a.LastModifiedTime)
-	populate(objectMap, "newTier", a.NewTier)
-	populate(objectMap, "provisioningState", a.ProvisioningState)
-	populate(objectMap, "state", a.State)
-	populate(objectMap, "trustedIdProviderState", a.TrustedIDProviderState)
-	populate(objectMap, "trustedIdProviders", a.TrustedIDProviders)
-	populate(objectMap, "virtualNetworkRules", a.VirtualNetworkRules)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AccountProperties.
-func (a *AccountProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "accountId":
-			err = unpopulate(val, &a.AccountID)
-			delete(rawMsg, key)
-		case "creationTime":
-			err = unpopulateTimeRFC3339(val, &a.CreationTime)
-			delete(rawMsg, key)
-		case "currentTier":
-			err = unpopulate(val, &a.CurrentTier)
-			delete(rawMsg, key)
-		case "defaultGroup":
-			err = unpopulate(val, &a.DefaultGroup)
-			delete(rawMsg, key)
-		case "encryptionConfig":
-			err = unpopulate(val, &a.EncryptionConfig)
-			delete(rawMsg, key)
-		case "encryptionProvisioningState":
-			err = unpopulate(val, &a.EncryptionProvisioningState)
-			delete(rawMsg, key)
-		case "encryptionState":
-			err = unpopulate(val, &a.EncryptionState)
-			delete(rawMsg, key)
-		case "endpoint":
-			err = unpopulate(val, &a.Endpoint)
-			delete(rawMsg, key)
-		case "firewallAllowAzureIps":
-			err = unpopulate(val, &a.FirewallAllowAzureIPs)
-			delete(rawMsg, key)
-		case "firewallRules":
-			err = unpopulate(val, &a.FirewallRules)
-			delete(rawMsg, key)
-		case "firewallState":
-			err = unpopulate(val, &a.FirewallState)
-			delete(rawMsg, key)
-		case "lastModifiedTime":
-			err = unpopulateTimeRFC3339(val, &a.LastModifiedTime)
-			delete(rawMsg, key)
-		case "newTier":
-			err = unpopulate(val, &a.NewTier)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &a.ProvisioningState)
-			delete(rawMsg, key)
-		case "state":
-			err = unpopulate(val, &a.State)
-			delete(rawMsg, key)
-		case "trustedIdProviderState":
-			err = unpopulate(val, &a.TrustedIDProviderState)
-			delete(rawMsg, key)
-		case "trustedIdProviders":
-			err = unpopulate(val, &a.TrustedIDProviders)
-			delete(rawMsg, key)
-		case "virtualNetworkRules":
-			err = unpopulate(val, &a.VirtualNetworkRules)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // AccountPropertiesBasic - The basic account specific properties that are associated with an underlying Data Lake Store account.
 type AccountPropertiesBasic struct {
 	// READ-ONLY; The unique identifier associated with this Data Lake Store account.
@@ -276,66 +143,22 @@ type AccountPropertiesBasic struct {
 	State *DataLakeStoreAccountState `json:"state,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AccountPropertiesBasic.
-func (a AccountPropertiesBasic) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "accountId", a.AccountID)
-	populateTimeRFC3339(objectMap, "creationTime", a.CreationTime)
-	populate(objectMap, "endpoint", a.Endpoint)
-	populateTimeRFC3339(objectMap, "lastModifiedTime", a.LastModifiedTime)
-	populate(objectMap, "provisioningState", a.ProvisioningState)
-	populate(objectMap, "state", a.State)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AccountPropertiesBasic.
-func (a *AccountPropertiesBasic) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "accountId":
-			err = unpopulate(val, &a.AccountID)
-			delete(rawMsg, key)
-		case "creationTime":
-			err = unpopulateTimeRFC3339(val, &a.CreationTime)
-			delete(rawMsg, key)
-		case "endpoint":
-			err = unpopulate(val, &a.Endpoint)
-			delete(rawMsg, key)
-		case "lastModifiedTime":
-			err = unpopulateTimeRFC3339(val, &a.LastModifiedTime)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &a.ProvisioningState)
-			delete(rawMsg, key)
-		case "state":
-			err = unpopulate(val, &a.State)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // AccountsClientBeginCreateOptions contains the optional parameters for the AccountsClient.BeginCreate method.
 type AccountsClientBeginCreateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // AccountsClientBeginDeleteOptions contains the optional parameters for the AccountsClient.BeginDelete method.
 type AccountsClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // AccountsClientBeginUpdateOptions contains the optional parameters for the AccountsClient.BeginUpdate method.
 type AccountsClientBeginUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // AccountsClientCheckNameAvailabilityOptions contains the optional parameters for the AccountsClient.CheckNameAvailability
@@ -435,16 +258,6 @@ type CreateDataLakeStoreAccountParameters struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CreateDataLakeStoreAccountParameters.
-func (c CreateDataLakeStoreAccountParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "identity", c.Identity)
-	populate(objectMap, "location", c.Location)
-	populate(objectMap, "properties", c.Properties)
-	populate(objectMap, "tags", c.Tags)
-	return json.Marshal(objectMap)
-}
-
 type CreateDataLakeStoreAccountProperties struct {
 	// The default owner group for all new folders and files created in the Data Lake Store account.
 	DefaultGroup *string `json:"defaultGroup,omitempty"`
@@ -476,22 +289,6 @@ type CreateDataLakeStoreAccountProperties struct {
 
 	// The list of virtual network rules associated with this Data Lake Store account.
 	VirtualNetworkRules []*CreateVirtualNetworkRuleWithAccountParameters `json:"virtualNetworkRules,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CreateDataLakeStoreAccountProperties.
-func (c CreateDataLakeStoreAccountProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "defaultGroup", c.DefaultGroup)
-	populate(objectMap, "encryptionConfig", c.EncryptionConfig)
-	populate(objectMap, "encryptionState", c.EncryptionState)
-	populate(objectMap, "firewallAllowAzureIps", c.FirewallAllowAzureIPs)
-	populate(objectMap, "firewallRules", c.FirewallRules)
-	populate(objectMap, "firewallState", c.FirewallState)
-	populate(objectMap, "newTier", c.NewTier)
-	populate(objectMap, "trustedIdProviderState", c.TrustedIDProviderState)
-	populate(objectMap, "trustedIdProviders", c.TrustedIDProviders)
-	populate(objectMap, "virtualNetworkRules", c.VirtualNetworkRules)
-	return json.Marshal(objectMap)
 }
 
 // CreateFirewallRuleWithAccountParameters - The parameters used to create a new firewall rule while creating a new Data Lake
@@ -612,14 +409,6 @@ type FirewallRuleListResult struct {
 	Value []*FirewallRule `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type FirewallRuleListResult.
-func (f FirewallRuleListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", f.NextLink)
-	populate(objectMap, "value", f.Value)
-	return json.Marshal(objectMap)
-}
-
 // FirewallRuleProperties - The firewall rule properties.
 type FirewallRuleProperties struct {
 	// READ-ONLY; The end IP address for the firewall rule. This can be either ipv4 or ipv6. Start and End should be in the same
@@ -727,14 +516,6 @@ type OperationListResult struct {
 	Value []*Operation `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
-func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
-}
-
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -756,17 +537,6 @@ type Resource struct {
 
 	// READ-ONLY; The resource type.
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "location", r.Location)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "tags", r.Tags)
-	populate(objectMap, "type", r.Type)
-	return json.Marshal(objectMap)
 }
 
 // SubResource - The resource model definition for a nested resource.
@@ -803,14 +573,6 @@ type TrustedIDProviderListResult struct {
 
 	// READ-ONLY; The results of the list operation.
 	Value []*TrustedIDProvider `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type TrustedIDProviderListResult.
-func (t TrustedIDProviderListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", t.NextLink)
-	populate(objectMap, "value", t.Value)
-	return json.Marshal(objectMap)
 }
 
 // TrustedIDProviderProperties - The trusted identity provider properties.
@@ -856,14 +618,6 @@ type UpdateDataLakeStoreAccountParameters struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type UpdateDataLakeStoreAccountParameters.
-func (u UpdateDataLakeStoreAccountParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", u.Properties)
-	populate(objectMap, "tags", u.Tags)
-	return json.Marshal(objectMap)
-}
-
 // UpdateDataLakeStoreAccountProperties - Data Lake Store account properties information to be updated.
 type UpdateDataLakeStoreAccountProperties struct {
 	// The default owner group for all new folders and files created in the Data Lake Store account.
@@ -898,21 +652,6 @@ type UpdateDataLakeStoreAccountProperties struct {
 	VirtualNetworkRules []*UpdateVirtualNetworkRuleWithAccountParameters `json:"virtualNetworkRules,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type UpdateDataLakeStoreAccountProperties.
-func (u UpdateDataLakeStoreAccountProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "defaultGroup", u.DefaultGroup)
-	populate(objectMap, "encryptionConfig", u.EncryptionConfig)
-	populate(objectMap, "firewallAllowAzureIps", u.FirewallAllowAzureIPs)
-	populate(objectMap, "firewallRules", u.FirewallRules)
-	populate(objectMap, "firewallState", u.FirewallState)
-	populate(objectMap, "newTier", u.NewTier)
-	populate(objectMap, "trustedIdProviderState", u.TrustedIDProviderState)
-	populate(objectMap, "trustedIdProviders", u.TrustedIDProviders)
-	populate(objectMap, "virtualNetworkRules", u.VirtualNetworkRules)
-	return json.Marshal(objectMap)
-}
-
 // UpdateEncryptionConfig - The encryption configuration used to update a user managed Key Vault key.
 type UpdateEncryptionConfig struct {
 	// The updated Key Vault key to use in user managed key rotation.
@@ -923,13 +662,6 @@ type UpdateEncryptionConfig struct {
 type UpdateFirewallRuleParameters struct {
 	// The firewall rule properties to use when updating a firewall rule.
 	Properties *UpdateFirewallRuleProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type UpdateFirewallRuleParameters.
-func (u UpdateFirewallRuleParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", u.Properties)
-	return json.Marshal(objectMap)
 }
 
 // UpdateFirewallRuleProperties - The firewall rule properties to use when updating a firewall rule.
@@ -963,13 +695,6 @@ type UpdateTrustedIDProviderParameters struct {
 	Properties *UpdateTrustedIDProviderProperties `json:"properties,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type UpdateTrustedIDProviderParameters.
-func (u UpdateTrustedIDProviderParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", u.Properties)
-	return json.Marshal(objectMap)
-}
-
 // UpdateTrustedIDProviderProperties - The trusted identity provider properties to use when updating a trusted identity provider.
 type UpdateTrustedIDProviderProperties struct {
 	// The URL of this trusted identity provider.
@@ -990,13 +715,6 @@ type UpdateTrustedIDProviderWithAccountParameters struct {
 type UpdateVirtualNetworkRuleParameters struct {
 	// The virtual network rule properties to use when updating a virtual network rule.
 	Properties *UpdateVirtualNetworkRuleProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type UpdateVirtualNetworkRuleParameters.
-func (u UpdateVirtualNetworkRuleParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", u.Properties)
-	return json.Marshal(objectMap)
 }
 
 // UpdateVirtualNetworkRuleProperties - The virtual network rule properties to use when updating a virtual network rule.
@@ -1039,13 +757,6 @@ type UsageListResult struct {
 	Value []*Usage `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type UsageListResult.
-func (u UsageListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", u.Value)
-	return json.Marshal(objectMap)
-}
-
 // UsageName - The usage names that can be used.
 type UsageName struct {
 	// READ-ONLY; Gets a localized string describing the resource name.
@@ -1077,14 +788,6 @@ type VirtualNetworkRuleListResult struct {
 
 	// READ-ONLY; The results of the list operation.
 	Value []*VirtualNetworkRule `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VirtualNetworkRuleListResult.
-func (v VirtualNetworkRuleListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", v.NextLink)
-	populate(objectMap, "value", v.Value)
-	return json.Marshal(objectMap)
 }
 
 // VirtualNetworkRuleProperties - The virtual network rule properties.
@@ -1119,21 +822,4 @@ type VirtualNetworkRulesClientListByAccountOptions struct {
 type VirtualNetworkRulesClientUpdateOptions struct {
 	// Parameters supplied to update the virtual network rule.
 	Parameters *UpdateVirtualNetworkRuleParameters
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

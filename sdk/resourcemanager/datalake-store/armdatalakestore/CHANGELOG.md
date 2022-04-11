@@ -1,5 +1,178 @@
 # Release History
 
+## 0.4.0 (2022-04-11)
+### Breaking Changes
+
+- Function `*AccountsClient.BeginCreate` return value(s) have been changed from `(AccountsClientCreatePollerResponse, error)` to `(*armruntime.Poller[AccountsClientCreateResponse], error)`
+- Function `NewTrustedIDProvidersClient` return value(s) have been changed from `(*TrustedIDProvidersClient)` to `(*TrustedIDProvidersClient, error)`
+- Function `*FirewallRulesClient.ListByAccount` return value(s) have been changed from `(*FirewallRulesClientListByAccountPager)` to `(*runtime.Pager[FirewallRulesClientListByAccountResponse])`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `*AccountsClient.BeginUpdate` return value(s) have been changed from `(AccountsClientUpdatePollerResponse, error)` to `(*armruntime.Poller[AccountsClientUpdateResponse], error)`
+- Function `*AccountsClient.BeginDelete` return value(s) have been changed from `(AccountsClientDeletePollerResponse, error)` to `(*armruntime.Poller[AccountsClientDeleteResponse], error)`
+- Function `NewFirewallRulesClient` return value(s) have been changed from `(*FirewallRulesClient)` to `(*FirewallRulesClient, error)`
+- Function `*AccountsClient.ListByResourceGroup` return value(s) have been changed from `(*AccountsClientListByResourceGroupPager)` to `(*runtime.Pager[AccountsClientListByResourceGroupResponse])`
+- Function `*TrustedIDProvidersClient.ListByAccount` return value(s) have been changed from `(*TrustedIDProvidersClientListByAccountPager)` to `(*runtime.Pager[TrustedIDProvidersClientListByAccountResponse])`
+- Function `*AccountsClient.List` return value(s) have been changed from `(*AccountsClientListPager)` to `(*runtime.Pager[AccountsClientListResponse])`
+- Function `NewLocationsClient` return value(s) have been changed from `(*LocationsClient)` to `(*LocationsClient, error)`
+- Function `NewAccountsClient` return value(s) have been changed from `(*AccountsClient)` to `(*AccountsClient, error)`
+- Function `NewVirtualNetworkRulesClient` return value(s) have been changed from `(*VirtualNetworkRulesClient)` to `(*VirtualNetworkRulesClient, error)`
+- Function `*VirtualNetworkRulesClient.ListByAccount` return value(s) have been changed from `(*VirtualNetworkRulesClientListByAccountPager)` to `(*runtime.Pager[VirtualNetworkRulesClientListByAccountResponse])`
+- Function `*LocationsClient.GetUsage` parameter(s) have been changed from `(context.Context, string, *LocationsClientGetUsageOptions)` to `(string, *LocationsClientGetUsageOptions)`
+- Function `*LocationsClient.GetUsage` return value(s) have been changed from `(LocationsClientGetUsageResponse, error)` to `(*runtime.Pager[LocationsClientGetUsageResponse])`
+- Function `OperationOrigin.ToPtr` has been removed
+- Function `*AccountsClientListByResourceGroupPager.Err` has been removed
+- Function `EncryptionProvisioningState.ToPtr` has been removed
+- Function `*VirtualNetworkRulesClientListByAccountPager.Err` has been removed
+- Function `CheckNameAvailabilityParametersType.ToPtr` has been removed
+- Function `EncryptionConfigType.ToPtr` has been removed
+- Function `*AccountsClientListPager.Err` has been removed
+- Function `EncryptionState.ToPtr` has been removed
+- Function `*AccountsClientDeletePoller.Done` has been removed
+- Function `FirewallState.ToPtr` has been removed
+- Function `*TrustedIDProvidersClientListByAccountPager.NextPage` has been removed
+- Function `*AccountsClientCreatePoller.Poll` has been removed
+- Function `*AccountsClientDeletePoller.Poll` has been removed
+- Function `*VirtualNetworkRulesClientListByAccountPager.PageResponse` has been removed
+- Function `*AccountsClientListByResourceGroupPager.PageResponse` has been removed
+- Function `TierType.ToPtr` has been removed
+- Function `*AccountsClientListByResourceGroupPager.NextPage` has been removed
+- Function `*AccountsClientCreatePoller.FinalResponse` has been removed
+- Function `*FirewallRulesClientListByAccountPager.Err` has been removed
+- Function `*FirewallRulesClientListByAccountPager.PageResponse` has been removed
+- Function `DataLakeStoreAccountState.ToPtr` has been removed
+- Function `AccountsClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*AccountsClientDeletePollerResponse.Resume` has been removed
+- Function `*AccountsClientUpdatePollerResponse.Resume` has been removed
+- Function `*AccountsClientUpdatePoller.ResumeToken` has been removed
+- Function `AccountsClientCreatePollerResponse.PollUntilDone` has been removed
+- Function `*AccountsClientCreatePoller.ResumeToken` has been removed
+- Function `*AccountsClientUpdatePoller.Poll` has been removed
+- Function `*AccountsClientListPager.PageResponse` has been removed
+- Function `*FirewallRulesClientListByAccountPager.NextPage` has been removed
+- Function `*VirtualNetworkRulesClientListByAccountPager.NextPage` has been removed
+- Function `*TrustedIDProvidersClientListByAccountPager.PageResponse` has been removed
+- Function `*AccountsClientDeletePoller.ResumeToken` has been removed
+- Function `*AccountsClientUpdatePoller.FinalResponse` has been removed
+- Function `SubscriptionState.ToPtr` has been removed
+- Function `AccountsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*AccountsClientListPager.NextPage` has been removed
+- Function `TrustedIDProviderState.ToPtr` has been removed
+- Function `*TrustedIDProvidersClientListByAccountPager.Err` has been removed
+- Function `*AccountsClientCreatePollerResponse.Resume` has been removed
+- Function `FirewallAllowAzureIPsState.ToPtr` has been removed
+- Function `DataLakeStoreAccountStatus.ToPtr` has been removed
+- Function `*AccountsClientUpdatePoller.Done` has been removed
+- Function `*AccountsClientDeletePoller.FinalResponse` has been removed
+- Function `UsageUnit.ToPtr` has been removed
+- Function `*AccountsClientCreatePoller.Done` has been removed
+- Struct `AccountsClientCheckNameAvailabilityResult` has been removed
+- Struct `AccountsClientCreatePoller` has been removed
+- Struct `AccountsClientCreatePollerResponse` has been removed
+- Struct `AccountsClientCreateResult` has been removed
+- Struct `AccountsClientDeletePoller` has been removed
+- Struct `AccountsClientDeletePollerResponse` has been removed
+- Struct `AccountsClientGetResult` has been removed
+- Struct `AccountsClientListByResourceGroupPager` has been removed
+- Struct `AccountsClientListByResourceGroupResult` has been removed
+- Struct `AccountsClientListPager` has been removed
+- Struct `AccountsClientListResult` has been removed
+- Struct `AccountsClientUpdatePoller` has been removed
+- Struct `AccountsClientUpdatePollerResponse` has been removed
+- Struct `AccountsClientUpdateResult` has been removed
+- Struct `FirewallRulesClientCreateOrUpdateResult` has been removed
+- Struct `FirewallRulesClientGetResult` has been removed
+- Struct `FirewallRulesClientListByAccountPager` has been removed
+- Struct `FirewallRulesClientListByAccountResult` has been removed
+- Struct `FirewallRulesClientUpdateResult` has been removed
+- Struct `LocationsClientGetCapabilityResult` has been removed
+- Struct `LocationsClientGetUsageResult` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `TrustedIDProvidersClientCreateOrUpdateResult` has been removed
+- Struct `TrustedIDProvidersClientGetResult` has been removed
+- Struct `TrustedIDProvidersClientListByAccountPager` has been removed
+- Struct `TrustedIDProvidersClientListByAccountResult` has been removed
+- Struct `TrustedIDProvidersClientUpdateResult` has been removed
+- Struct `VirtualNetworkRulesClientCreateOrUpdateResult` has been removed
+- Struct `VirtualNetworkRulesClientGetResult` has been removed
+- Struct `VirtualNetworkRulesClientListByAccountPager` has been removed
+- Struct `VirtualNetworkRulesClientListByAccountResult` has been removed
+- Struct `VirtualNetworkRulesClientUpdateResult` has been removed
+- Field `AccountsClientListResult` of struct `AccountsClientListResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientListResponse` has been removed
+- Field `AccountsClientGetResult` of struct `AccountsClientGetResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientGetResponse` has been removed
+- Field `FirewallRulesClientGetResult` of struct `FirewallRulesClientGetResponse` has been removed
+- Field `RawResponse` of struct `FirewallRulesClientGetResponse` has been removed
+- Field `VirtualNetworkRulesClientCreateOrUpdateResult` of struct `VirtualNetworkRulesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkRulesClientCreateOrUpdateResponse` has been removed
+- Field `TrustedIDProvidersClientGetResult` of struct `TrustedIDProvidersClientGetResponse` has been removed
+- Field `RawResponse` of struct `TrustedIDProvidersClientGetResponse` has been removed
+- Field `AccountsClientCheckNameAvailabilityResult` of struct `AccountsClientCheckNameAvailabilityResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientCheckNameAvailabilityResponse` has been removed
+- Field `VirtualNetworkRulesClientListByAccountResult` of struct `VirtualNetworkRulesClientListByAccountResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkRulesClientListByAccountResponse` has been removed
+- Field `TrustedIDProvidersClientCreateOrUpdateResult` of struct `TrustedIDProvidersClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `TrustedIDProvidersClientCreateOrUpdateResponse` has been removed
+- Field `FirewallRulesClientCreateOrUpdateResult` of struct `FirewallRulesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `FirewallRulesClientCreateOrUpdateResponse` has been removed
+- Field `AccountsClientUpdateResult` of struct `AccountsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientEnableKeyVaultResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `TrustedIDProvidersClientListByAccountResult` of struct `TrustedIDProvidersClientListByAccountResponse` has been removed
+- Field `RawResponse` of struct `TrustedIDProvidersClientListByAccountResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkRulesClientDeleteResponse` has been removed
+- Field `LocationsClientGetCapabilityResult` of struct `LocationsClientGetCapabilityResponse` has been removed
+- Field `RawResponse` of struct `LocationsClientGetCapabilityResponse` has been removed
+- Field `AccountsClientCreateResult` of struct `AccountsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientCreateResponse` has been removed
+- Field `VirtualNetworkRulesClientUpdateResult` of struct `VirtualNetworkRulesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkRulesClientUpdateResponse` has been removed
+- Field `FirewallRulesClientListByAccountResult` of struct `FirewallRulesClientListByAccountResponse` has been removed
+- Field `RawResponse` of struct `FirewallRulesClientListByAccountResponse` has been removed
+- Field `TrustedIDProvidersClientUpdateResult` of struct `TrustedIDProvidersClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `TrustedIDProvidersClientUpdateResponse` has been removed
+- Field `LocationsClientGetUsageResult` of struct `LocationsClientGetUsageResponse` has been removed
+- Field `RawResponse` of struct `LocationsClientGetUsageResponse` has been removed
+- Field `FirewallRulesClientUpdateResult` of struct `FirewallRulesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `FirewallRulesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientDeleteResponse` has been removed
+- Field `VirtualNetworkRulesClientGetResult` of struct `VirtualNetworkRulesClientGetResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworkRulesClientGetResponse` has been removed
+- Field `RawResponse` of struct `TrustedIDProvidersClientDeleteResponse` has been removed
+- Field `AccountsClientListByResourceGroupResult` of struct `AccountsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `FirewallRulesClientDeleteResponse` has been removed
+
+### Features Added
+
+- New field `ResumeToken` in struct `AccountsClientBeginCreateOptions`
+- New anonymous field `Account` in struct `AccountsClientUpdateResponse`
+- New field `ResumeToken` in struct `AccountsClientBeginDeleteOptions`
+- New anonymous field `VirtualNetworkRuleListResult` in struct `VirtualNetworkRulesClientListByAccountResponse`
+- New field `ResumeToken` in struct `AccountsClientBeginUpdateOptions`
+- New anonymous field `CapabilityInformation` in struct `LocationsClientGetCapabilityResponse`
+- New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
+- New anonymous field `AccountListResult` in struct `AccountsClientListByResourceGroupResponse`
+- New anonymous field `VirtualNetworkRule` in struct `VirtualNetworkRulesClientUpdateResponse`
+- New anonymous field `UsageListResult` in struct `LocationsClientGetUsageResponse`
+- New anonymous field `TrustedIDProviderListResult` in struct `TrustedIDProvidersClientListByAccountResponse`
+- New anonymous field `TrustedIDProvider` in struct `TrustedIDProvidersClientGetResponse`
+- New anonymous field `FirewallRule` in struct `FirewallRulesClientGetResponse`
+- New anonymous field `FirewallRuleListResult` in struct `FirewallRulesClientListByAccountResponse`
+- New anonymous field `FirewallRule` in struct `FirewallRulesClientUpdateResponse`
+- New anonymous field `TrustedIDProvider` in struct `TrustedIDProvidersClientUpdateResponse`
+- New anonymous field `Account` in struct `AccountsClientCreateResponse`
+- New anonymous field `NameAvailabilityInformation` in struct `AccountsClientCheckNameAvailabilityResponse`
+- New anonymous field `VirtualNetworkRule` in struct `VirtualNetworkRulesClientGetResponse`
+- New anonymous field `TrustedIDProvider` in struct `TrustedIDProvidersClientCreateOrUpdateResponse`
+- New anonymous field `AccountListResult` in struct `AccountsClientListResponse`
+- New anonymous field `FirewallRule` in struct `FirewallRulesClientCreateOrUpdateResponse`
+- New anonymous field `VirtualNetworkRule` in struct `VirtualNetworkRulesClientCreateOrUpdateResponse`
+- New anonymous field `Account` in struct `AccountsClientGetResponse`
+
+
 ## 0.3.1 (2022-02-22)
 
 ### Other Changes

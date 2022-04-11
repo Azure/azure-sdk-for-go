@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type RestorableDatabaseAccountsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewRestorableDatabaseAccountsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RestorableDatabaseAccountsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewRestorableDatabaseAccountsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RestorableDatabaseAccountsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &RestorableDatabaseAccountsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // GetByLocation - Retrieves the properties of an existing Azure Cosmos DB restorable database account. This call requires
@@ -91,7 +96,7 @@ func (client *RestorableDatabaseAccountsClient) getByLocationCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -99,7 +104,7 @@ func (client *RestorableDatabaseAccountsClient) getByLocationCreateRequest(ctx c
 
 // getByLocationHandleResponse handles the GetByLocation response.
 func (client *RestorableDatabaseAccountsClient) getByLocationHandleResponse(resp *http.Response) (RestorableDatabaseAccountsClientGetByLocationResponse, error) {
-	result := RestorableDatabaseAccountsClientGetByLocationResponse{RawResponse: resp}
+	result := RestorableDatabaseAccountsClientGetByLocationResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RestorableDatabaseAccountGetResult); err != nil {
 		return RestorableDatabaseAccountsClientGetByLocationResponse{}, err
 	}
@@ -111,19 +116,26 @@ func (client *RestorableDatabaseAccountsClient) getByLocationHandleResponse(resp
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - RestorableDatabaseAccountsClientListOptions contains the optional parameters for the RestorableDatabaseAccountsClient.List
 // method.
-func (client *RestorableDatabaseAccountsClient) List(ctx context.Context, options *RestorableDatabaseAccountsClientListOptions) (RestorableDatabaseAccountsClientListResponse, error) {
-	req, err := client.listCreateRequest(ctx, options)
-	if err != nil {
-		return RestorableDatabaseAccountsClientListResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return RestorableDatabaseAccountsClientListResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return RestorableDatabaseAccountsClientListResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listHandleResponse(resp)
+func (client *RestorableDatabaseAccountsClient) List(options *RestorableDatabaseAccountsClientListOptions) *runtime.Pager[RestorableDatabaseAccountsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[RestorableDatabaseAccountsClientListResponse]{
+		More: func(page RestorableDatabaseAccountsClientListResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *RestorableDatabaseAccountsClientListResponse) (RestorableDatabaseAccountsClientListResponse, error) {
+			req, err := client.listCreateRequest(ctx, options)
+			if err != nil {
+				return RestorableDatabaseAccountsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return RestorableDatabaseAccountsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return RestorableDatabaseAccountsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
+		},
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -138,7 +150,7 @@ func (client *RestorableDatabaseAccountsClient) listCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -146,7 +158,7 @@ func (client *RestorableDatabaseAccountsClient) listCreateRequest(ctx context.Co
 
 // listHandleResponse handles the List response.
 func (client *RestorableDatabaseAccountsClient) listHandleResponse(resp *http.Response) (RestorableDatabaseAccountsClientListResponse, error) {
-	result := RestorableDatabaseAccountsClientListResponse{RawResponse: resp}
+	result := RestorableDatabaseAccountsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RestorableDatabaseAccountsListResult); err != nil {
 		return RestorableDatabaseAccountsClientListResponse{}, err
 	}
@@ -160,19 +172,26 @@ func (client *RestorableDatabaseAccountsClient) listHandleResponse(resp *http.Re
 // location - Cosmos DB region, with spaces between words and each word capitalized.
 // options - RestorableDatabaseAccountsClientListByLocationOptions contains the optional parameters for the RestorableDatabaseAccountsClient.ListByLocation
 // method.
-func (client *RestorableDatabaseAccountsClient) ListByLocation(ctx context.Context, location string, options *RestorableDatabaseAccountsClientListByLocationOptions) (RestorableDatabaseAccountsClientListByLocationResponse, error) {
-	req, err := client.listByLocationCreateRequest(ctx, location, options)
-	if err != nil {
-		return RestorableDatabaseAccountsClientListByLocationResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return RestorableDatabaseAccountsClientListByLocationResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return RestorableDatabaseAccountsClientListByLocationResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listByLocationHandleResponse(resp)
+func (client *RestorableDatabaseAccountsClient) ListByLocation(location string, options *RestorableDatabaseAccountsClientListByLocationOptions) *runtime.Pager[RestorableDatabaseAccountsClientListByLocationResponse] {
+	return runtime.NewPager(runtime.PageProcessor[RestorableDatabaseAccountsClientListByLocationResponse]{
+		More: func(page RestorableDatabaseAccountsClientListByLocationResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *RestorableDatabaseAccountsClientListByLocationResponse) (RestorableDatabaseAccountsClientListByLocationResponse, error) {
+			req, err := client.listByLocationCreateRequest(ctx, location, options)
+			if err != nil {
+				return RestorableDatabaseAccountsClientListByLocationResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return RestorableDatabaseAccountsClientListByLocationResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return RestorableDatabaseAccountsClientListByLocationResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByLocationHandleResponse(resp)
+		},
+	})
 }
 
 // listByLocationCreateRequest creates the ListByLocation request.
@@ -191,7 +210,7 @@ func (client *RestorableDatabaseAccountsClient) listByLocationCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -199,7 +218,7 @@ func (client *RestorableDatabaseAccountsClient) listByLocationCreateRequest(ctx 
 
 // listByLocationHandleResponse handles the ListByLocation response.
 func (client *RestorableDatabaseAccountsClient) listByLocationHandleResponse(resp *http.Response) (RestorableDatabaseAccountsClientListByLocationResponse, error) {
-	result := RestorableDatabaseAccountsClientListByLocationResponse{RawResponse: resp}
+	result := RestorableDatabaseAccountsClientListByLocationResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RestorableDatabaseAccountsListResult); err != nil {
 		return RestorableDatabaseAccountsClientListByLocationResponse{}, err
 	}

@@ -1,5 +1,1927 @@
 # Release History
 
+## 0.4.0 (2022-04-11)
+### Breaking Changes
+
+- Function `*SQLResourcesClient.BeginMigrateSQLContainerToManualThroughput` return value(s) have been changed from `(SQLResourcesClientMigrateSQLContainerToManualThroughputPollerResponse, error)` to `(*armruntime.Poller[SQLResourcesClientMigrateSQLContainerToManualThroughputResponse], error)`
+- Function `*SQLResourcesClient.BeginDeleteSQLContainer` return value(s) have been changed from `(SQLResourcesClientDeleteSQLContainerPollerResponse, error)` to `(*armruntime.Poller[SQLResourcesClientDeleteSQLContainerResponse], error)`
+- Function `*GremlinResourcesClient.BeginUpdateGremlinGraphThroughput` return value(s) have been changed from `(GremlinResourcesClientUpdateGremlinGraphThroughputPollerResponse, error)` to `(*armruntime.Poller[GremlinResourcesClientUpdateGremlinGraphThroughputResponse], error)`
+- Function `*SQLResourcesClient.BeginCreateUpdateSQLUserDefinedFunction` return value(s) have been changed from `(SQLResourcesClientCreateUpdateSQLUserDefinedFunctionPollerResponse, error)` to `(*armruntime.Poller[SQLResourcesClientCreateUpdateSQLUserDefinedFunctionResponse], error)`
+- Function `NewRestorableDatabaseAccountsClient` return value(s) have been changed from `(*RestorableDatabaseAccountsClient)` to `(*RestorableDatabaseAccountsClient, error)`
+- Function `*SQLResourcesClient.BeginCreateUpdateSQLTrigger` return value(s) have been changed from `(SQLResourcesClientCreateUpdateSQLTriggerPollerResponse, error)` to `(*armruntime.Poller[SQLResourcesClientCreateUpdateSQLTriggerResponse], error)`
+- Function `NewCollectionClient` return value(s) have been changed from `(*CollectionClient)` to `(*CollectionClient, error)`
+- Function `*LocationsClient.List` parameter(s) have been changed from `(context.Context, *LocationsClientListOptions)` to `(*LocationsClientListOptions)`
+- Function `*LocationsClient.List` return value(s) have been changed from `(LocationsClientListResponse, error)` to `(*runtime.Pager[LocationsClientListResponse])`
+- Function `NewPercentileSourceTargetClient` return value(s) have been changed from `(*PercentileSourceTargetClient)` to `(*PercentileSourceTargetClient, error)`
+- Function `*SQLResourcesClient.BeginMigrateSQLDatabaseToManualThroughput` return value(s) have been changed from `(SQLResourcesClientMigrateSQLDatabaseToManualThroughputPollerResponse, error)` to `(*armruntime.Poller[SQLResourcesClientMigrateSQLDatabaseToManualThroughputResponse], error)`
+- Function `*CassandraResourcesClient.BeginUpdateCassandraKeyspaceThroughput` return value(s) have been changed from `(CassandraResourcesClientUpdateCassandraKeyspaceThroughputPollerResponse, error)` to `(*armruntime.Poller[CassandraResourcesClientUpdateCassandraKeyspaceThroughputResponse], error)`
+- Function `*CassandraResourcesClient.BeginMigrateCassandraTableToAutoscale` return value(s) have been changed from `(CassandraResourcesClientMigrateCassandraTableToAutoscalePollerResponse, error)` to `(*armruntime.Poller[CassandraResourcesClientMigrateCassandraTableToAutoscaleResponse], error)`
+- Function `*CollectionClient.ListMetrics` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *CollectionClientListMetricsOptions)` to `(string, string, string, string, string, *CollectionClientListMetricsOptions)`
+- Function `*CollectionClient.ListMetrics` return value(s) have been changed from `(CollectionClientListMetricsResponse, error)` to `(*runtime.Pager[CollectionClientListMetricsResponse])`
+- Function `*CollectionPartitionRegionClient.ListMetrics` parameter(s) have been changed from `(context.Context, string, string, string, string, string, string, *CollectionPartitionRegionClientListMetricsOptions)` to `(string, string, string, string, string, string, *CollectionPartitionRegionClientListMetricsOptions)`
+- Function `*CollectionPartitionRegionClient.ListMetrics` return value(s) have been changed from `(CollectionPartitionRegionClientListMetricsResponse, error)` to `(*runtime.Pager[CollectionPartitionRegionClientListMetricsResponse])`
+- Function `*DatabaseClient.ListMetricDefinitions` parameter(s) have been changed from `(context.Context, string, string, string, *DatabaseClientListMetricDefinitionsOptions)` to `(string, string, string, *DatabaseClientListMetricDefinitionsOptions)`
+- Function `*DatabaseClient.ListMetricDefinitions` return value(s) have been changed from `(DatabaseClientListMetricDefinitionsResponse, error)` to `(*runtime.Pager[DatabaseClientListMetricDefinitionsResponse])`
+- Function `NewCollectionPartitionRegionClient` return value(s) have been changed from `(*CollectionPartitionRegionClient)` to `(*CollectionPartitionRegionClient, error)`
+- Function `*CassandraClustersClient.BeginInvokeCommand` return value(s) have been changed from `(CassandraClustersClientInvokeCommandPollerResponse, error)` to `(*armruntime.Poller[CassandraClustersClientInvokeCommandResponse], error)`
+- Function `NewCassandraResourcesClient` return value(s) have been changed from `(*CassandraResourcesClient)` to `(*CassandraResourcesClient, error)`
+- Function `*CollectionClient.ListUsages` parameter(s) have been changed from `(context.Context, string, string, string, string, *CollectionClientListUsagesOptions)` to `(string, string, string, string, *CollectionClientListUsagesOptions)`
+- Function `*CollectionClient.ListUsages` return value(s) have been changed from `(CollectionClientListUsagesResponse, error)` to `(*runtime.Pager[CollectionClientListUsagesResponse])`
+- Function `*SQLResourcesClient.BeginRetrieveContinuousBackupInformation` return value(s) have been changed from `(SQLResourcesClientRetrieveContinuousBackupInformationPollerResponse, error)` to `(*armruntime.Poller[SQLResourcesClientRetrieveContinuousBackupInformationResponse], error)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `NewGremlinResourcesClient` return value(s) have been changed from `(*GremlinResourcesClient)` to `(*GremlinResourcesClient, error)`
+- Function `*DatabaseAccountsClient.BeginCreateOrUpdate` return value(s) have been changed from `(DatabaseAccountsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[DatabaseAccountsClientCreateOrUpdateResponse], error)`
+- Function `*PercentileTargetClient.ListMetrics` parameter(s) have been changed from `(context.Context, string, string, string, string, *PercentileTargetClientListMetricsOptions)` to `(string, string, string, string, *PercentileTargetClientListMetricsOptions)`
+- Function `*PercentileTargetClient.ListMetrics` return value(s) have been changed from `(PercentileTargetClientListMetricsResponse, error)` to `(*runtime.Pager[PercentileTargetClientListMetricsResponse])`
+- Function `*PartitionKeyRangeIDRegionClient.ListMetrics` parameter(s) have been changed from `(context.Context, string, string, string, string, string, string, string, *PartitionKeyRangeIDRegionClientListMetricsOptions)` to `(string, string, string, string, string, string, string, *PartitionKeyRangeIDRegionClientListMetricsOptions)`
+- Function `*PartitionKeyRangeIDRegionClient.ListMetrics` return value(s) have been changed from `(PartitionKeyRangeIDRegionClientListMetricsResponse, error)` to `(*runtime.Pager[PartitionKeyRangeIDRegionClientListMetricsResponse])`
+- Function `NewRestorableSQLResourcesClient` return value(s) have been changed from `(*RestorableSQLResourcesClient)` to `(*RestorableSQLResourcesClient, error)`
+- Function `*GremlinResourcesClient.BeginMigrateGremlinDatabaseToManualThroughput` return value(s) have been changed from `(GremlinResourcesClientMigrateGremlinDatabaseToManualThroughputPollerResponse, error)` to `(*armruntime.Poller[GremlinResourcesClientMigrateGremlinDatabaseToManualThroughputResponse], error)`
+- Function `*TableResourcesClient.BeginUpdateTableThroughput` return value(s) have been changed from `(TableResourcesClientUpdateTableThroughputPollerResponse, error)` to `(*armruntime.Poller[TableResourcesClientUpdateTableThroughputResponse], error)`
+- Function `*PercentileSourceTargetClient.ListMetrics` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *PercentileSourceTargetClientListMetricsOptions)` to `(string, string, string, string, string, *PercentileSourceTargetClientListMetricsOptions)`
+- Function `*PercentileSourceTargetClient.ListMetrics` return value(s) have been changed from `(PercentileSourceTargetClientListMetricsResponse, error)` to `(*runtime.Pager[PercentileSourceTargetClientListMetricsResponse])`
+- Function `*CassandraResourcesClient.BeginMigrateCassandraKeyspaceToAutoscale` return value(s) have been changed from `(CassandraResourcesClientMigrateCassandraKeyspaceToAutoscalePollerResponse, error)` to `(*armruntime.Poller[CassandraResourcesClientMigrateCassandraKeyspaceToAutoscaleResponse], error)`
+- Function `*CassandraResourcesClient.BeginCreateUpdateCassandraKeyspace` return value(s) have been changed from `(CassandraResourcesClientCreateUpdateCassandraKeyspacePollerResponse, error)` to `(*armruntime.Poller[CassandraResourcesClientCreateUpdateCassandraKeyspaceResponse], error)`
+- Function `*GremlinResourcesClient.BeginCreateUpdateGremlinGraph` return value(s) have been changed from `(GremlinResourcesClientCreateUpdateGremlinGraphPollerResponse, error)` to `(*armruntime.Poller[GremlinResourcesClientCreateUpdateGremlinGraphResponse], error)`
+- Function `*SQLResourcesClient.ListSQLUserDefinedFunctions` parameter(s) have been changed from `(context.Context, string, string, string, string, *SQLResourcesClientListSQLUserDefinedFunctionsOptions)` to `(string, string, string, string, *SQLResourcesClientListSQLUserDefinedFunctionsOptions)`
+- Function `*SQLResourcesClient.ListSQLUserDefinedFunctions` return value(s) have been changed from `(SQLResourcesClientListSQLUserDefinedFunctionsResponse, error)` to `(*runtime.Pager[SQLResourcesClientListSQLUserDefinedFunctionsResponse])`
+- Function `*CassandraClustersClient.ListByResourceGroup` parameter(s) have been changed from `(context.Context, string, *CassandraClustersClientListByResourceGroupOptions)` to `(string, *CassandraClustersClientListByResourceGroupOptions)`
+- Function `*CassandraClustersClient.ListByResourceGroup` return value(s) have been changed from `(CassandraClustersClientListByResourceGroupResponse, error)` to `(*runtime.Pager[CassandraClustersClientListByResourceGroupResponse])`
+- Function `*RestorableDatabaseAccountsClient.List` parameter(s) have been changed from `(context.Context, *RestorableDatabaseAccountsClientListOptions)` to `(*RestorableDatabaseAccountsClientListOptions)`
+- Function `*RestorableDatabaseAccountsClient.List` return value(s) have been changed from `(RestorableDatabaseAccountsClientListResponse, error)` to `(*runtime.Pager[RestorableDatabaseAccountsClientListResponse])`
+- Function `*SQLResourcesClient.ListSQLRoleDefinitions` parameter(s) have been changed from `(context.Context, string, string, *SQLResourcesClientListSQLRoleDefinitionsOptions)` to `(string, string, *SQLResourcesClientListSQLRoleDefinitionsOptions)`
+- Function `*SQLResourcesClient.ListSQLRoleDefinitions` return value(s) have been changed from `(SQLResourcesClientListSQLRoleDefinitionsResponse, error)` to `(*runtime.Pager[SQLResourcesClientListSQLRoleDefinitionsResponse])`
+- Function `*PercentileClient.ListMetrics` parameter(s) have been changed from `(context.Context, string, string, string, *PercentileClientListMetricsOptions)` to `(string, string, string, *PercentileClientListMetricsOptions)`
+- Function `*PercentileClient.ListMetrics` return value(s) have been changed from `(PercentileClientListMetricsResponse, error)` to `(*runtime.Pager[PercentileClientListMetricsResponse])`
+- Function `NewPercentileClient` return value(s) have been changed from `(*PercentileClient)` to `(*PercentileClient, error)`
+- Function `*CassandraDataCentersClient.BeginCreateUpdate` return value(s) have been changed from `(CassandraDataCentersClientCreateUpdatePollerResponse, error)` to `(*armruntime.Poller[CassandraDataCentersClientCreateUpdateResponse], error)`
+- Function `*SQLResourcesClient.BeginMigrateSQLContainerToAutoscale` return value(s) have been changed from `(SQLResourcesClientMigrateSQLContainerToAutoscalePollerResponse, error)` to `(*armruntime.Poller[SQLResourcesClientMigrateSQLContainerToAutoscaleResponse], error)`
+- Function `*DatabaseAccountsClient.BeginUpdate` return value(s) have been changed from `(DatabaseAccountsClientUpdatePollerResponse, error)` to `(*armruntime.Poller[DatabaseAccountsClientUpdateResponse], error)`
+- Function `*DatabaseAccountsClient.BeginOnlineRegion` return value(s) have been changed from `(DatabaseAccountsClientOnlineRegionPollerResponse, error)` to `(*armruntime.Poller[DatabaseAccountsClientOnlineRegionResponse], error)`
+- Function `*MongoDBResourcesClient.BeginDeleteMongoDBDatabase` return value(s) have been changed from `(MongoDBResourcesClientDeleteMongoDBDatabasePollerResponse, error)` to `(*armruntime.Poller[MongoDBResourcesClientDeleteMongoDBDatabaseResponse], error)`
+- Function `*MongoDBResourcesClient.BeginCreateUpdateMongoDBCollection` return value(s) have been changed from `(MongoDBResourcesClientCreateUpdateMongoDBCollectionPollerResponse, error)` to `(*armruntime.Poller[MongoDBResourcesClientCreateUpdateMongoDBCollectionResponse], error)`
+- Function `*SQLResourcesClient.ListSQLTriggers` parameter(s) have been changed from `(context.Context, string, string, string, string, *SQLResourcesClientListSQLTriggersOptions)` to `(string, string, string, string, *SQLResourcesClientListSQLTriggersOptions)`
+- Function `*SQLResourcesClient.ListSQLTriggers` return value(s) have been changed from `(SQLResourcesClientListSQLTriggersResponse, error)` to `(*runtime.Pager[SQLResourcesClientListSQLTriggersResponse])`
+- Function `*GremlinResourcesClient.BeginDeleteGremlinGraph` return value(s) have been changed from `(GremlinResourcesClientDeleteGremlinGraphPollerResponse, error)` to `(*armruntime.Poller[GremlinResourcesClientDeleteGremlinGraphResponse], error)`
+- Function `*SQLResourcesClient.BeginMigrateSQLDatabaseToAutoscale` return value(s) have been changed from `(SQLResourcesClientMigrateSQLDatabaseToAutoscalePollerResponse, error)` to `(*armruntime.Poller[SQLResourcesClientMigrateSQLDatabaseToAutoscaleResponse], error)`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `*SQLResourcesClient.BeginCreateUpdateSQLDatabase` return value(s) have been changed from `(SQLResourcesClientCreateUpdateSQLDatabasePollerResponse, error)` to `(*armruntime.Poller[SQLResourcesClientCreateUpdateSQLDatabaseResponse], error)`
+- Function `*SQLResourcesClient.ListSQLContainers` parameter(s) have been changed from `(context.Context, string, string, string, *SQLResourcesClientListSQLContainersOptions)` to `(string, string, string, *SQLResourcesClientListSQLContainersOptions)`
+- Function `*SQLResourcesClient.ListSQLContainers` return value(s) have been changed from `(SQLResourcesClientListSQLContainersResponse, error)` to `(*runtime.Pager[SQLResourcesClientListSQLContainersResponse])`
+- Function `NewTableResourcesClient` return value(s) have been changed from `(*TableResourcesClient)` to `(*TableResourcesClient, error)`
+- Function `*CassandraResourcesClient.BeginUpdateCassandraTableThroughput` return value(s) have been changed from `(CassandraResourcesClientUpdateCassandraTableThroughputPollerResponse, error)` to `(*armruntime.Poller[CassandraResourcesClientUpdateCassandraTableThroughputResponse], error)`
+- Function `NewPartitionKeyRangeIDRegionClient` return value(s) have been changed from `(*PartitionKeyRangeIDRegionClient)` to `(*PartitionKeyRangeIDRegionClient, error)`
+- Function `*TableResourcesClient.ListTables` parameter(s) have been changed from `(context.Context, string, string, *TableResourcesClientListTablesOptions)` to `(string, string, *TableResourcesClientListTablesOptions)`
+- Function `*TableResourcesClient.ListTables` return value(s) have been changed from `(TableResourcesClientListTablesResponse, error)` to `(*runtime.Pager[TableResourcesClientListTablesResponse])`
+- Function `*SQLResourcesClient.BeginCreateUpdateSQLRoleAssignment` return value(s) have been changed from `(SQLResourcesClientCreateUpdateSQLRoleAssignmentPollerResponse, error)` to `(*armruntime.Poller[SQLResourcesClientCreateUpdateSQLRoleAssignmentResponse], error)`
+- Function `NewMongoDBResourcesClient` return value(s) have been changed from `(*MongoDBResourcesClient)` to `(*MongoDBResourcesClient, error)`
+- Function `*SQLResourcesClient.ListSQLRoleAssignments` parameter(s) have been changed from `(context.Context, string, string, *SQLResourcesClientListSQLRoleAssignmentsOptions)` to `(string, string, *SQLResourcesClientListSQLRoleAssignmentsOptions)`
+- Function `*SQLResourcesClient.ListSQLRoleAssignments` return value(s) have been changed from `(SQLResourcesClientListSQLRoleAssignmentsResponse, error)` to `(*runtime.Pager[SQLResourcesClientListSQLRoleAssignmentsResponse])`
+- Function `NewRestorableSQLContainersClient` return value(s) have been changed from `(*RestorableSQLContainersClient)` to `(*RestorableSQLContainersClient, error)`
+- Function `*RestorableSQLResourcesClient.List` parameter(s) have been changed from `(context.Context, string, string, *RestorableSQLResourcesClientListOptions)` to `(string, string, *RestorableSQLResourcesClientListOptions)`
+- Function `*RestorableSQLResourcesClient.List` return value(s) have been changed from `(RestorableSQLResourcesClientListResponse, error)` to `(*runtime.Pager[RestorableSQLResourcesClientListResponse])`
+- Function `*TableResourcesClient.BeginMigrateTableToManualThroughput` return value(s) have been changed from `(TableResourcesClientMigrateTableToManualThroughputPollerResponse, error)` to `(*armruntime.Poller[TableResourcesClientMigrateTableToManualThroughputResponse], error)`
+- Function `*GremlinResourcesClient.ListGremlinDatabases` parameter(s) have been changed from `(context.Context, string, string, *GremlinResourcesClientListGremlinDatabasesOptions)` to `(string, string, *GremlinResourcesClientListGremlinDatabasesOptions)`
+- Function `*GremlinResourcesClient.ListGremlinDatabases` return value(s) have been changed from `(GremlinResourcesClientListGremlinDatabasesResponse, error)` to `(*runtime.Pager[GremlinResourcesClientListGremlinDatabasesResponse])`
+- Function `NewCassandraDataCentersClient` return value(s) have been changed from `(*CassandraDataCentersClient)` to `(*CassandraDataCentersClient, error)`
+- Function `*CollectionRegionClient.ListMetrics` parameter(s) have been changed from `(context.Context, string, string, string, string, string, string, *CollectionRegionClientListMetricsOptions)` to `(string, string, string, string, string, string, *CollectionRegionClientListMetricsOptions)`
+- Function `*CollectionRegionClient.ListMetrics` return value(s) have been changed from `(CollectionRegionClientListMetricsResponse, error)` to `(*runtime.Pager[CollectionRegionClientListMetricsResponse])`
+- Function `*GremlinResourcesClient.BeginDeleteGremlinDatabase` return value(s) have been changed from `(GremlinResourcesClientDeleteGremlinDatabasePollerResponse, error)` to `(*armruntime.Poller[GremlinResourcesClientDeleteGremlinDatabaseResponse], error)`
+- Function `*MongoDBResourcesClient.BeginDeleteMongoDBCollection` return value(s) have been changed from `(MongoDBResourcesClientDeleteMongoDBCollectionPollerResponse, error)` to `(*armruntime.Poller[MongoDBResourcesClientDeleteMongoDBCollectionResponse], error)`
+- Function `*RestorableMongodbCollectionsClient.List` parameter(s) have been changed from `(context.Context, string, string, *RestorableMongodbCollectionsClientListOptions)` to `(string, string, *RestorableMongodbCollectionsClientListOptions)`
+- Function `*RestorableMongodbCollectionsClient.List` return value(s) have been changed from `(RestorableMongodbCollectionsClientListResponse, error)` to `(*runtime.Pager[RestorableMongodbCollectionsClientListResponse])`
+- Function `NewSQLResourcesClient` return value(s) have been changed from `(*SQLResourcesClient)` to `(*SQLResourcesClient, error)`
+- Function `*SQLResourcesClient.BeginCreateUpdateSQLContainer` return value(s) have been changed from `(SQLResourcesClientCreateUpdateSQLContainerPollerResponse, error)` to `(*armruntime.Poller[SQLResourcesClientCreateUpdateSQLContainerResponse], error)`
+- Function `*CassandraResourcesClient.BeginCreateUpdateCassandraTable` return value(s) have been changed from `(CassandraResourcesClientCreateUpdateCassandraTablePollerResponse, error)` to `(*armruntime.Poller[CassandraResourcesClientCreateUpdateCassandraTableResponse], error)`
+- Function `*GremlinResourcesClient.BeginCreateUpdateGremlinDatabase` return value(s) have been changed from `(GremlinResourcesClientCreateUpdateGremlinDatabasePollerResponse, error)` to `(*armruntime.Poller[GremlinResourcesClientCreateUpdateGremlinDatabaseResponse], error)`
+- Function `*MongoDBResourcesClient.BeginMigrateMongoDBDatabaseToAutoscale` return value(s) have been changed from `(MongoDBResourcesClientMigrateMongoDBDatabaseToAutoscalePollerResponse, error)` to `(*armruntime.Poller[MongoDBResourcesClientMigrateMongoDBDatabaseToAutoscaleResponse], error)`
+- Function `*SQLResourcesClient.BeginDeleteSQLUserDefinedFunction` return value(s) have been changed from `(SQLResourcesClientDeleteSQLUserDefinedFunctionPollerResponse, error)` to `(*armruntime.Poller[SQLResourcesClientDeleteSQLUserDefinedFunctionResponse], error)`
+- Function `*MongoDBResourcesClient.BeginMigrateMongoDBCollectionToManualThroughput` return value(s) have been changed from `(MongoDBResourcesClientMigrateMongoDBCollectionToManualThroughputPollerResponse, error)` to `(*armruntime.Poller[MongoDBResourcesClientMigrateMongoDBCollectionToManualThroughputResponse], error)`
+- Function `*DatabaseAccountsClient.ListMetrics` parameter(s) have been changed from `(context.Context, string, string, string, *DatabaseAccountsClientListMetricsOptions)` to `(string, string, string, *DatabaseAccountsClientListMetricsOptions)`
+- Function `*DatabaseAccountsClient.ListMetrics` return value(s) have been changed from `(DatabaseAccountsClientListMetricsResponse, error)` to `(*runtime.Pager[DatabaseAccountsClientListMetricsResponse])`
+- Function `*RestorableMongodbDatabasesClient.List` parameter(s) have been changed from `(context.Context, string, string, *RestorableMongodbDatabasesClientListOptions)` to `(string, string, *RestorableMongodbDatabasesClientListOptions)`
+- Function `*RestorableMongodbDatabasesClient.List` return value(s) have been changed from `(RestorableMongodbDatabasesClientListResponse, error)` to `(*runtime.Pager[RestorableMongodbDatabasesClientListResponse])`
+- Function `*SQLResourcesClient.BeginDeleteSQLRoleAssignment` return value(s) have been changed from `(SQLResourcesClientDeleteSQLRoleAssignmentPollerResponse, error)` to `(*armruntime.Poller[SQLResourcesClientDeleteSQLRoleAssignmentResponse], error)`
+- Function `*MongoDBResourcesClient.BeginMigrateMongoDBDatabaseToManualThroughput` return value(s) have been changed from `(MongoDBResourcesClientMigrateMongoDBDatabaseToManualThroughputPollerResponse, error)` to `(*armruntime.Poller[MongoDBResourcesClientMigrateMongoDBDatabaseToManualThroughputResponse], error)`
+- Function `*SQLResourcesClient.BeginDeleteSQLDatabase` return value(s) have been changed from `(SQLResourcesClientDeleteSQLDatabasePollerResponse, error)` to `(*armruntime.Poller[SQLResourcesClientDeleteSQLDatabaseResponse], error)`
+- Function `*CassandraClustersClient.ListBySubscription` parameter(s) have been changed from `(context.Context, *CassandraClustersClientListBySubscriptionOptions)` to `(*CassandraClustersClientListBySubscriptionOptions)`
+- Function `*CassandraClustersClient.ListBySubscription` return value(s) have been changed from `(CassandraClustersClientListBySubscriptionResponse, error)` to `(*runtime.Pager[CassandraClustersClientListBySubscriptionResponse])`
+- Function `*GremlinResourcesClient.ListGremlinGraphs` parameter(s) have been changed from `(context.Context, string, string, string, *GremlinResourcesClientListGremlinGraphsOptions)` to `(string, string, string, *GremlinResourcesClientListGremlinGraphsOptions)`
+- Function `*GremlinResourcesClient.ListGremlinGraphs` return value(s) have been changed from `(GremlinResourcesClientListGremlinGraphsResponse, error)` to `(*runtime.Pager[GremlinResourcesClientListGremlinGraphsResponse])`
+- Function `*DatabaseClient.ListUsages` parameter(s) have been changed from `(context.Context, string, string, string, *DatabaseClientListUsagesOptions)` to `(string, string, string, *DatabaseClientListUsagesOptions)`
+- Function `*DatabaseClient.ListUsages` return value(s) have been changed from `(DatabaseClientListUsagesResponse, error)` to `(*runtime.Pager[DatabaseClientListUsagesResponse])`
+- Function `*MongoDBResourcesClient.ListMongoDBDatabases` parameter(s) have been changed from `(context.Context, string, string, *MongoDBResourcesClientListMongoDBDatabasesOptions)` to `(string, string, *MongoDBResourcesClientListMongoDBDatabasesOptions)`
+- Function `*MongoDBResourcesClient.ListMongoDBDatabases` return value(s) have been changed from `(MongoDBResourcesClientListMongoDBDatabasesResponse, error)` to `(*runtime.Pager[MongoDBResourcesClientListMongoDBDatabasesResponse])`
+- Function `*NotebookWorkspacesClient.BeginStart` return value(s) have been changed from `(NotebookWorkspacesClientStartPollerResponse, error)` to `(*armruntime.Poller[NotebookWorkspacesClientStartResponse], error)`
+- Function `*RestorableMongodbResourcesClient.List` parameter(s) have been changed from `(context.Context, string, string, *RestorableMongodbResourcesClientListOptions)` to `(string, string, *RestorableMongodbResourcesClientListOptions)`
+- Function `*RestorableMongodbResourcesClient.List` return value(s) have been changed from `(RestorableMongodbResourcesClientListResponse, error)` to `(*runtime.Pager[RestorableMongodbResourcesClientListResponse])`
+- Function `NewNotebookWorkspacesClient` return value(s) have been changed from `(*NotebookWorkspacesClient)` to `(*NotebookWorkspacesClient, error)`
+- Function `*CassandraClustersClient.BeginCreateUpdate` return value(s) have been changed from `(CassandraClustersClientCreateUpdatePollerResponse, error)` to `(*armruntime.Poller[CassandraClustersClientCreateUpdateResponse], error)`
+- Function `*PrivateEndpointConnectionsClient.ListByDatabaseAccount` parameter(s) have been changed from `(context.Context, string, string, *PrivateEndpointConnectionsClientListByDatabaseAccountOptions)` to `(string, string, *PrivateEndpointConnectionsClientListByDatabaseAccountOptions)`
+- Function `*PrivateEndpointConnectionsClient.ListByDatabaseAccount` return value(s) have been changed from `(PrivateEndpointConnectionsClientListByDatabaseAccountResponse, error)` to `(*runtime.Pager[PrivateEndpointConnectionsClientListByDatabaseAccountResponse])`
+- Function `*TableResourcesClient.BeginDeleteTable` return value(s) have been changed from `(TableResourcesClientDeleteTablePollerResponse, error)` to `(*armruntime.Poller[TableResourcesClientDeleteTableResponse], error)`
+- Function `*CassandraResourcesClient.BeginDeleteCassandraKeyspace` return value(s) have been changed from `(CassandraResourcesClientDeleteCassandraKeyspacePollerResponse, error)` to `(*armruntime.Poller[CassandraResourcesClientDeleteCassandraKeyspaceResponse], error)`
+- Function `*SQLResourcesClient.BeginDeleteSQLStoredProcedure` return value(s) have been changed from `(SQLResourcesClientDeleteSQLStoredProcedurePollerResponse, error)` to `(*armruntime.Poller[SQLResourcesClientDeleteSQLStoredProcedureResponse], error)`
+- Function `NewPercentileTargetClient` return value(s) have been changed from `(*PercentileTargetClient)` to `(*PercentileTargetClient, error)`
+- Function `*DatabaseAccountsClient.BeginDelete` return value(s) have been changed from `(DatabaseAccountsClientDeletePollerResponse, error)` to `(*armruntime.Poller[DatabaseAccountsClientDeleteResponse], error)`
+- Function `*CassandraResourcesClient.ListCassandraKeyspaces` parameter(s) have been changed from `(context.Context, string, string, *CassandraResourcesClientListCassandraKeyspacesOptions)` to `(string, string, *CassandraResourcesClientListCassandraKeyspacesOptions)`
+- Function `*CassandraResourcesClient.ListCassandraKeyspaces` return value(s) have been changed from `(CassandraResourcesClientListCassandraKeyspacesResponse, error)` to `(*runtime.Pager[CassandraResourcesClientListCassandraKeyspacesResponse])`
+- Function `*DatabaseAccountsClient.List` parameter(s) have been changed from `(context.Context, *DatabaseAccountsClientListOptions)` to `(*DatabaseAccountsClientListOptions)`
+- Function `*DatabaseAccountsClient.List` return value(s) have been changed from `(DatabaseAccountsClientListResponse, error)` to `(*runtime.Pager[DatabaseAccountsClientListResponse])`
+- Function `*PrivateEndpointConnectionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[PrivateEndpointConnectionsClientCreateOrUpdateResponse], error)`
+- Function `NewRestorableSQLDatabasesClient` return value(s) have been changed from `(*RestorableSQLDatabasesClient)` to `(*RestorableSQLDatabasesClient, error)`
+- Function `*CollectionPartitionClient.ListMetrics` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *CollectionPartitionClientListMetricsOptions)` to `(string, string, string, string, string, *CollectionPartitionClientListMetricsOptions)`
+- Function `*CollectionPartitionClient.ListMetrics` return value(s) have been changed from `(CollectionPartitionClientListMetricsResponse, error)` to `(*runtime.Pager[CollectionPartitionClientListMetricsResponse])`
+- Function `*CassandraClustersClient.BeginDelete` return value(s) have been changed from `(CassandraClustersClientDeletePollerResponse, error)` to `(*armruntime.Poller[CassandraClustersClientDeleteResponse], error)`
+- Function `*RestorableSQLContainersClient.List` parameter(s) have been changed from `(context.Context, string, string, *RestorableSQLContainersClientListOptions)` to `(string, string, *RestorableSQLContainersClientListOptions)`
+- Function `*RestorableSQLContainersClient.List` return value(s) have been changed from `(RestorableSQLContainersClientListResponse, error)` to `(*runtime.Pager[RestorableSQLContainersClientListResponse])`
+- Function `NewDatabaseAccountsClient` return value(s) have been changed from `(*DatabaseAccountsClient)` to `(*DatabaseAccountsClient, error)`
+- Function `*SQLResourcesClient.BeginUpdateSQLContainerThroughput` return value(s) have been changed from `(SQLResourcesClientUpdateSQLContainerThroughputPollerResponse, error)` to `(*armruntime.Poller[SQLResourcesClientUpdateSQLContainerThroughputResponse], error)`
+- Function `*CassandraResourcesClient.BeginMigrateCassandraTableToManualThroughput` return value(s) have been changed from `(CassandraResourcesClientMigrateCassandraTableToManualThroughputPollerResponse, error)` to `(*armruntime.Poller[CassandraResourcesClientMigrateCassandraTableToManualThroughputResponse], error)`
+- Function `*CassandraDataCentersClient.List` parameter(s) have been changed from `(context.Context, string, string, *CassandraDataCentersClientListOptions)` to `(string, string, *CassandraDataCentersClientListOptions)`
+- Function `*CassandraDataCentersClient.List` return value(s) have been changed from `(CassandraDataCentersClientListResponse, error)` to `(*runtime.Pager[CassandraDataCentersClientListResponse])`
+- Function `*GremlinResourcesClient.BeginMigrateGremlinGraphToManualThroughput` return value(s) have been changed from `(GremlinResourcesClientMigrateGremlinGraphToManualThroughputPollerResponse, error)` to `(*armruntime.Poller[GremlinResourcesClientMigrateGremlinGraphToManualThroughputResponse], error)`
+- Function `*MongoDBResourcesClient.BeginUpdateMongoDBDatabaseThroughput` return value(s) have been changed from `(MongoDBResourcesClientUpdateMongoDBDatabaseThroughputPollerResponse, error)` to `(*armruntime.Poller[MongoDBResourcesClientUpdateMongoDBDatabaseThroughputResponse], error)`
+- Function `NewRestorableMongodbCollectionsClient` return value(s) have been changed from `(*RestorableMongodbCollectionsClient)` to `(*RestorableMongodbCollectionsClient, error)`
+- Function `NewPrivateEndpointConnectionsClient` return value(s) have been changed from `(*PrivateEndpointConnectionsClient)` to `(*PrivateEndpointConnectionsClient, error)`
+- Function `*CassandraDataCentersClient.BeginUpdate` return value(s) have been changed from `(CassandraDataCentersClientUpdatePollerResponse, error)` to `(*armruntime.Poller[CassandraDataCentersClientUpdateResponse], error)`
+- Function `*NotebookWorkspacesClient.BeginDelete` return value(s) have been changed from `(NotebookWorkspacesClientDeletePollerResponse, error)` to `(*armruntime.Poller[NotebookWorkspacesClientDeleteResponse], error)`
+- Function `*PrivateLinkResourcesClient.ListByDatabaseAccount` parameter(s) have been changed from `(context.Context, string, string, *PrivateLinkResourcesClientListByDatabaseAccountOptions)` to `(string, string, *PrivateLinkResourcesClientListByDatabaseAccountOptions)`
+- Function `*PrivateLinkResourcesClient.ListByDatabaseAccount` return value(s) have been changed from `(PrivateLinkResourcesClientListByDatabaseAccountResponse, error)` to `(*runtime.Pager[PrivateLinkResourcesClientListByDatabaseAccountResponse])`
+- Function `*TableResourcesClient.BeginCreateUpdateTable` return value(s) have been changed from `(TableResourcesClientCreateUpdateTablePollerResponse, error)` to `(*armruntime.Poller[TableResourcesClientCreateUpdateTableResponse], error)`
+- Function `*SQLResourcesClient.BeginDeleteSQLRoleDefinition` return value(s) have been changed from `(SQLResourcesClientDeleteSQLRoleDefinitionPollerResponse, error)` to `(*armruntime.Poller[SQLResourcesClientDeleteSQLRoleDefinitionResponse], error)`
+- Function `*SQLResourcesClient.BeginCreateUpdateSQLRoleDefinition` return value(s) have been changed from `(SQLResourcesClientCreateUpdateSQLRoleDefinitionPollerResponse, error)` to `(*armruntime.Poller[SQLResourcesClientCreateUpdateSQLRoleDefinitionResponse], error)`
+- Function `*SQLResourcesClient.ListSQLDatabases` parameter(s) have been changed from `(context.Context, string, string, *SQLResourcesClientListSQLDatabasesOptions)` to `(string, string, *SQLResourcesClientListSQLDatabasesOptions)`
+- Function `*SQLResourcesClient.ListSQLDatabases` return value(s) have been changed from `(SQLResourcesClientListSQLDatabasesResponse, error)` to `(*runtime.Pager[SQLResourcesClientListSQLDatabasesResponse])`
+- Function `*RestorableDatabaseAccountsClient.ListByLocation` parameter(s) have been changed from `(context.Context, string, *RestorableDatabaseAccountsClientListByLocationOptions)` to `(string, *RestorableDatabaseAccountsClientListByLocationOptions)`
+- Function `*RestorableDatabaseAccountsClient.ListByLocation` return value(s) have been changed from `(RestorableDatabaseAccountsClientListByLocationResponse, error)` to `(*runtime.Pager[RestorableDatabaseAccountsClientListByLocationResponse])`
+- Function `NewLocationsClient` return value(s) have been changed from `(*LocationsClient)` to `(*LocationsClient, error)`
+- Function `*MongoDBResourcesClient.ListMongoDBCollections` parameter(s) have been changed from `(context.Context, string, string, string, *MongoDBResourcesClientListMongoDBCollectionsOptions)` to `(string, string, string, *MongoDBResourcesClientListMongoDBCollectionsOptions)`
+- Function `*MongoDBResourcesClient.ListMongoDBCollections` return value(s) have been changed from `(MongoDBResourcesClientListMongoDBCollectionsResponse, error)` to `(*runtime.Pager[MongoDBResourcesClientListMongoDBCollectionsResponse])`
+- Function `*GremlinResourcesClient.BeginUpdateGremlinDatabaseThroughput` return value(s) have been changed from `(GremlinResourcesClientUpdateGremlinDatabaseThroughputPollerResponse, error)` to `(*armruntime.Poller[GremlinResourcesClientUpdateGremlinDatabaseThroughputResponse], error)`
+- Function `*MongoDBResourcesClient.BeginRetrieveContinuousBackupInformation` return value(s) have been changed from `(MongoDBResourcesClientRetrieveContinuousBackupInformationPollerResponse, error)` to `(*armruntime.Poller[MongoDBResourcesClientRetrieveContinuousBackupInformationResponse], error)`
+- Function `NewRestorableMongodbResourcesClient` return value(s) have been changed from `(*RestorableMongodbResourcesClient)` to `(*RestorableMongodbResourcesClient, error)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(PrivateEndpointConnectionsClientDeletePollerResponse, error)` to `(*armruntime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)`
+- Function `*CollectionClient.ListMetricDefinitions` parameter(s) have been changed from `(context.Context, string, string, string, string, *CollectionClientListMetricDefinitionsOptions)` to `(string, string, string, string, *CollectionClientListMetricDefinitionsOptions)`
+- Function `*CollectionClient.ListMetricDefinitions` return value(s) have been changed from `(CollectionClientListMetricDefinitionsResponse, error)` to `(*runtime.Pager[CollectionClientListMetricDefinitionsResponse])`
+- Function `*CassandraDataCentersClient.BeginDelete` return value(s) have been changed from `(CassandraDataCentersClientDeletePollerResponse, error)` to `(*armruntime.Poller[CassandraDataCentersClientDeleteResponse], error)`
+- Function `*DatabaseAccountRegionClient.ListMetrics` parameter(s) have been changed from `(context.Context, string, string, string, string, *DatabaseAccountRegionClientListMetricsOptions)` to `(string, string, string, string, *DatabaseAccountRegionClientListMetricsOptions)`
+- Function `*DatabaseAccountRegionClient.ListMetrics` return value(s) have been changed from `(DatabaseAccountRegionClientListMetricsResponse, error)` to `(*runtime.Pager[DatabaseAccountRegionClientListMetricsResponse])`
+- Function `*NotebookWorkspacesClient.BeginRegenerateAuthToken` return value(s) have been changed from `(NotebookWorkspacesClientRegenerateAuthTokenPollerResponse, error)` to `(*armruntime.Poller[NotebookWorkspacesClientRegenerateAuthTokenResponse], error)`
+- Function `*SQLResourcesClient.BeginDeleteSQLTrigger` return value(s) have been changed from `(SQLResourcesClientDeleteSQLTriggerPollerResponse, error)` to `(*armruntime.Poller[SQLResourcesClientDeleteSQLTriggerResponse], error)`
+- Function `*SQLResourcesClient.BeginUpdateSQLDatabaseThroughput` return value(s) have been changed from `(SQLResourcesClientUpdateSQLDatabaseThroughputPollerResponse, error)` to `(*armruntime.Poller[SQLResourcesClientUpdateSQLDatabaseThroughputResponse], error)`
+- Function `*DatabaseAccountsClient.ListMetricDefinitions` parameter(s) have been changed from `(context.Context, string, string, *DatabaseAccountsClientListMetricDefinitionsOptions)` to `(string, string, *DatabaseAccountsClientListMetricDefinitionsOptions)`
+- Function `*DatabaseAccountsClient.ListMetricDefinitions` return value(s) have been changed from `(DatabaseAccountsClientListMetricDefinitionsResponse, error)` to `(*runtime.Pager[DatabaseAccountsClientListMetricDefinitionsResponse])`
+- Function `*DatabaseAccountsClient.BeginFailoverPriorityChange` return value(s) have been changed from `(DatabaseAccountsClientFailoverPriorityChangePollerResponse, error)` to `(*armruntime.Poller[DatabaseAccountsClientFailoverPriorityChangeResponse], error)`
+- Function `*NotebookWorkspacesClient.BeginCreateOrUpdate` return value(s) have been changed from `(NotebookWorkspacesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[NotebookWorkspacesClientCreateOrUpdateResponse], error)`
+- Function `*PartitionKeyRangeIDClient.ListMetrics` parameter(s) have been changed from `(context.Context, string, string, string, string, string, string, *PartitionKeyRangeIDClientListMetricsOptions)` to `(string, string, string, string, string, string, *PartitionKeyRangeIDClientListMetricsOptions)`
+- Function `*PartitionKeyRangeIDClient.ListMetrics` return value(s) have been changed from `(PartitionKeyRangeIDClientListMetricsResponse, error)` to `(*runtime.Pager[PartitionKeyRangeIDClientListMetricsResponse])`
+- Function `*CassandraResourcesClient.BeginDeleteCassandraTable` return value(s) have been changed from `(CassandraResourcesClientDeleteCassandraTablePollerResponse, error)` to `(*armruntime.Poller[CassandraResourcesClientDeleteCassandraTableResponse], error)`
+- Function `*CassandraClustersClient.BeginStart` return value(s) have been changed from `(CassandraClustersClientStartPollerResponse, error)` to `(*armruntime.Poller[CassandraClustersClientStartResponse], error)`
+- Function `*CassandraResourcesClient.ListCassandraTables` parameter(s) have been changed from `(context.Context, string, string, string, *CassandraResourcesClientListCassandraTablesOptions)` to `(string, string, string, *CassandraResourcesClientListCassandraTablesOptions)`
+- Function `*CassandraResourcesClient.ListCassandraTables` return value(s) have been changed from `(CassandraResourcesClientListCassandraTablesResponse, error)` to `(*runtime.Pager[CassandraResourcesClientListCassandraTablesResponse])`
+- Function `*SQLResourcesClient.ListSQLStoredProcedures` parameter(s) have been changed from `(context.Context, string, string, string, string, *SQLResourcesClientListSQLStoredProceduresOptions)` to `(string, string, string, string, *SQLResourcesClientListSQLStoredProceduresOptions)`
+- Function `*SQLResourcesClient.ListSQLStoredProcedures` return value(s) have been changed from `(SQLResourcesClientListSQLStoredProceduresResponse, error)` to `(*runtime.Pager[SQLResourcesClientListSQLStoredProceduresResponse])`
+- Function `*NotebookWorkspacesClient.ListByDatabaseAccount` parameter(s) have been changed from `(context.Context, string, string, *NotebookWorkspacesClientListByDatabaseAccountOptions)` to `(string, string, *NotebookWorkspacesClientListByDatabaseAccountOptions)`
+- Function `*NotebookWorkspacesClient.ListByDatabaseAccount` return value(s) have been changed from `(NotebookWorkspacesClientListByDatabaseAccountResponse, error)` to `(*runtime.Pager[NotebookWorkspacesClientListByDatabaseAccountResponse])`
+- Function `*RestorableSQLDatabasesClient.List` parameter(s) have been changed from `(context.Context, string, string, *RestorableSQLDatabasesClientListOptions)` to `(string, string, *RestorableSQLDatabasesClientListOptions)`
+- Function `*RestorableSQLDatabasesClient.List` return value(s) have been changed from `(RestorableSQLDatabasesClientListResponse, error)` to `(*runtime.Pager[RestorableSQLDatabasesClientListResponse])`
+- Function `*CassandraClustersClient.BeginDeallocate` return value(s) have been changed from `(CassandraClustersClientDeallocatePollerResponse, error)` to `(*armruntime.Poller[CassandraClustersClientDeallocateResponse], error)`
+- Function `*MongoDBResourcesClient.BeginMigrateMongoDBCollectionToAutoscale` return value(s) have been changed from `(MongoDBResourcesClientMigrateMongoDBCollectionToAutoscalePollerResponse, error)` to `(*armruntime.Poller[MongoDBResourcesClientMigrateMongoDBCollectionToAutoscaleResponse], error)`
+- Function `*DatabaseClient.ListMetrics` parameter(s) have been changed from `(context.Context, string, string, string, string, *DatabaseClientListMetricsOptions)` to `(string, string, string, string, *DatabaseClientListMetricsOptions)`
+- Function `*DatabaseClient.ListMetrics` return value(s) have been changed from `(DatabaseClientListMetricsResponse, error)` to `(*runtime.Pager[DatabaseClientListMetricsResponse])`
+- Function `*CassandraResourcesClient.BeginMigrateCassandraKeyspaceToManualThroughput` return value(s) have been changed from `(CassandraResourcesClientMigrateCassandraKeyspaceToManualThroughputPollerResponse, error)` to `(*armruntime.Poller[CassandraResourcesClientMigrateCassandraKeyspaceToManualThroughputResponse], error)`
+- Function `*DatabaseAccountsClient.ListByResourceGroup` parameter(s) have been changed from `(context.Context, string, *DatabaseAccountsClientListByResourceGroupOptions)` to `(string, *DatabaseAccountsClientListByResourceGroupOptions)`
+- Function `*DatabaseAccountsClient.ListByResourceGroup` return value(s) have been changed from `(DatabaseAccountsClientListByResourceGroupResponse, error)` to `(*runtime.Pager[DatabaseAccountsClientListByResourceGroupResponse])`
+- Function `*GremlinResourcesClient.BeginMigrateGremlinGraphToAutoscale` return value(s) have been changed from `(GremlinResourcesClientMigrateGremlinGraphToAutoscalePollerResponse, error)` to `(*armruntime.Poller[GremlinResourcesClientMigrateGremlinGraphToAutoscaleResponse], error)`
+- Function `*GremlinResourcesClient.BeginMigrateGremlinDatabaseToAutoscale` return value(s) have been changed from `(GremlinResourcesClientMigrateGremlinDatabaseToAutoscalePollerResponse, error)` to `(*armruntime.Poller[GremlinResourcesClientMigrateGremlinDatabaseToAutoscaleResponse], error)`
+- Function `*MongoDBResourcesClient.BeginCreateUpdateMongoDBDatabase` return value(s) have been changed from `(MongoDBResourcesClientCreateUpdateMongoDBDatabasePollerResponse, error)` to `(*armruntime.Poller[MongoDBResourcesClientCreateUpdateMongoDBDatabaseResponse], error)`
+- Function `NewDatabaseAccountRegionClient` return value(s) have been changed from `(*DatabaseAccountRegionClient)` to `(*DatabaseAccountRegionClient, error)`
+- Function `NewRestorableMongodbDatabasesClient` return value(s) have been changed from `(*RestorableMongodbDatabasesClient)` to `(*RestorableMongodbDatabasesClient, error)`
+- Function `NewCollectionPartitionClient` return value(s) have been changed from `(*CollectionPartitionClient)` to `(*CollectionPartitionClient, error)`
+- Function `NewCollectionRegionClient` return value(s) have been changed from `(*CollectionRegionClient)` to `(*CollectionRegionClient, error)`
+- Function `*DatabaseAccountsClient.ListUsages` parameter(s) have been changed from `(context.Context, string, string, *DatabaseAccountsClientListUsagesOptions)` to `(string, string, *DatabaseAccountsClientListUsagesOptions)`
+- Function `*DatabaseAccountsClient.ListUsages` return value(s) have been changed from `(DatabaseAccountsClientListUsagesResponse, error)` to `(*runtime.Pager[DatabaseAccountsClientListUsagesResponse])`
+- Function `NewCassandraClustersClient` return value(s) have been changed from `(*CassandraClustersClient)` to `(*CassandraClustersClient, error)`
+- Function `*MongoDBResourcesClient.BeginUpdateMongoDBCollectionThroughput` return value(s) have been changed from `(MongoDBResourcesClientUpdateMongoDBCollectionThroughputPollerResponse, error)` to `(*armruntime.Poller[MongoDBResourcesClientUpdateMongoDBCollectionThroughputResponse], error)`
+- Function `*CassandraClustersClient.BeginUpdate` return value(s) have been changed from `(CassandraClustersClientUpdatePollerResponse, error)` to `(*armruntime.Poller[CassandraClustersClientUpdateResponse], error)`
+- Function `NewPartitionKeyRangeIDClient` return value(s) have been changed from `(*PartitionKeyRangeIDClient)` to `(*PartitionKeyRangeIDClient, error)`
+- Function `*TableResourcesClient.BeginMigrateTableToAutoscale` return value(s) have been changed from `(TableResourcesClientMigrateTableToAutoscalePollerResponse, error)` to `(*armruntime.Poller[TableResourcesClientMigrateTableToAutoscaleResponse], error)`
+- Function `*SQLResourcesClient.BeginCreateUpdateSQLStoredProcedure` return value(s) have been changed from `(SQLResourcesClientCreateUpdateSQLStoredProcedurePollerResponse, error)` to `(*armruntime.Poller[SQLResourcesClientCreateUpdateSQLStoredProcedureResponse], error)`
+- Function `*DatabaseAccountsClient.BeginOfflineRegion` return value(s) have been changed from `(DatabaseAccountsClientOfflineRegionPollerResponse, error)` to `(*armruntime.Poller[DatabaseAccountsClientOfflineRegionResponse], error)`
+- Function `NewPrivateLinkResourcesClient` return value(s) have been changed from `(*PrivateLinkResourcesClient)` to `(*PrivateLinkResourcesClient, error)`
+- Function `*DatabaseAccountsClient.BeginRegenerateKey` return value(s) have been changed from `(DatabaseAccountsClientRegenerateKeyPollerResponse, error)` to `(*armruntime.Poller[DatabaseAccountsClientRegenerateKeyResponse], error)`
+- Function `*CollectionPartitionClient.ListUsages` parameter(s) have been changed from `(context.Context, string, string, string, string, *CollectionPartitionClientListUsagesOptions)` to `(string, string, string, string, *CollectionPartitionClientListUsagesOptions)`
+- Function `*CollectionPartitionClient.ListUsages` return value(s) have been changed from `(CollectionPartitionClientListUsagesResponse, error)` to `(*runtime.Pager[CollectionPartitionClientListUsagesResponse])`
+- Function `NewDatabaseClient` return value(s) have been changed from `(*DatabaseClient)` to `(*DatabaseClient, error)`
+- Function `*CassandraResourcesClientUpdateCassandraTableThroughputPollerResponse.Resume` has been removed
+- Function `*TableResourcesClientCreateUpdateTablePoller.FinalResponse` has been removed
+- Function `*CassandraClustersClientStartPoller.FinalResponse` has been removed
+- Function `*CassandraResourcesClientMigrateCassandraKeyspaceToAutoscalePollerResponse.Resume` has been removed
+- Function `*MongoDBResourcesClientMigrateMongoDBCollectionToManualThroughputPollerResponse.Resume` has been removed
+- Function `*MongoDBResourcesClientDeleteMongoDBDatabasePoller.Poll` has been removed
+- Function `*CassandraDataCentersClientUpdatePoller.FinalResponse` has been removed
+- Function `DatabaseAccountsClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*SQLResourcesClientMigrateSQLContainerToAutoscalePoller.FinalResponse` has been removed
+- Function `CassandraResourcesClientCreateUpdateCassandraKeyspacePollerResponse.PollUntilDone` has been removed
+- Function `*MongoDBResourcesClientRetrieveContinuousBackupInformationPoller.ResumeToken` has been removed
+- Function `*PrivateEndpointConnectionsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*GremlinResourcesClientDeleteGremlinDatabasePoller.FinalResponse` has been removed
+- Function `ManagedCassandraResourceIdentityType.ToPtr` has been removed
+- Function `*CassandraClustersClientDeletePoller.ResumeToken` has been removed
+- Function `OperationType.ToPtr` has been removed
+- Function `*GremlinResourcesClientDeleteGremlinGraphPoller.FinalResponse` has been removed
+- Function `GremlinResourcesClientMigrateGremlinGraphToManualThroughputPollerResponse.PollUntilDone` has been removed
+- Function `*GremlinResourcesClientMigrateGremlinDatabaseToManualThroughputPollerResponse.Resume` has been removed
+- Function `*GremlinResourcesClientMigrateGremlinDatabaseToManualThroughputPoller.Poll` has been removed
+- Function `*DatabaseAccountsClientOnlineRegionPoller.FinalResponse` has been removed
+- Function `*MongoDBResourcesClientMigrateMongoDBCollectionToManualThroughputPoller.Done` has been removed
+- Function `*MongoDBResourcesClientMigrateMongoDBDatabaseToManualThroughputPollerResponse.Resume` has been removed
+- Function `SQLResourcesClientUpdateSQLDatabaseThroughputPollerResponse.PollUntilDone` has been removed
+- Function `*GremlinResourcesClientMigrateGremlinGraphToAutoscalePoller.Poll` has been removed
+- Function `*TableResourcesClientMigrateTableToAutoscalePoller.ResumeToken` has been removed
+- Function `*SQLResourcesClientCreateUpdateSQLContainerPoller.Done` has been removed
+- Function `*TableResourcesClientUpdateTableThroughputPoller.Done` has been removed
+- Function `*CassandraClustersClientDeallocatePoller.Done` has been removed
+- Function `*SQLResourcesClientDeleteSQLRoleDefinitionPollerResponse.Resume` has been removed
+- Function `*CassandraClustersClientInvokeCommandPoller.ResumeToken` has been removed
+- Function `*SQLResourcesClientUpdateSQLDatabaseThroughputPoller.ResumeToken` has been removed
+- Function `*MongoDBResourcesClientCreateUpdateMongoDBDatabasePoller.Poll` has been removed
+- Function `*GremlinResourcesClientUpdateGremlinGraphThroughputPollerResponse.Resume` has been removed
+- Function `*CassandraResourcesClientUpdateCassandraTableThroughputPoller.FinalResponse` has been removed
+- Function `CassandraDataCentersClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*CassandraResourcesClientMigrateCassandraKeyspaceToAutoscalePoller.Done` has been removed
+- Function `*MongoDBResourcesClientDeleteMongoDBDatabasePoller.FinalResponse` has been removed
+- Function `*SQLResourcesClientDeleteSQLStoredProcedurePoller.Done` has been removed
+- Function `*GremlinResourcesClientUpdateGremlinGraphThroughputPoller.ResumeToken` has been removed
+- Function `*SQLResourcesClientDeleteSQLUserDefinedFunctionPoller.Poll` has been removed
+- Function `SQLResourcesClientCreateUpdateSQLStoredProcedurePollerResponse.PollUntilDone` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Function `*DatabaseAccountsClientRegenerateKeyPoller.Done` has been removed
+- Function `SQLResourcesClientCreateUpdateSQLUserDefinedFunctionPollerResponse.PollUntilDone` has been removed
+- Function `UnitType.ToPtr` has been removed
+- Function `*SQLResourcesClientDeleteSQLRoleAssignmentPoller.Poll` has been removed
+- Function `*SQLResourcesClientMigrateSQLContainerToManualThroughputPoller.Done` has been removed
+- Function `*SQLResourcesClientDeleteSQLRoleAssignmentPoller.FinalResponse` has been removed
+- Function `*MongoDBResourcesClientMigrateMongoDBDatabaseToManualThroughputPoller.Done` has been removed
+- Function `*GremlinResourcesClientCreateUpdateGremlinGraphPoller.FinalResponse` has been removed
+- Function `*SQLResourcesClientCreateUpdateSQLRoleDefinitionPoller.FinalResponse` has been removed
+- Function `CassandraResourcesClientUpdateCassandraTableThroughputPollerResponse.PollUntilDone` has been removed
+- Function `GremlinResourcesClientMigrateGremlinDatabaseToManualThroughputPollerResponse.PollUntilDone` has been removed
+- Function `*NotebookWorkspacesClientDeletePoller.ResumeToken` has been removed
+- Function `*CassandraClustersClientUpdatePoller.FinalResponse` has been removed
+- Function `*CassandraResourcesClientMigrateCassandraTableToManualThroughputPoller.FinalResponse` has been removed
+- Function `*DatabaseAccountsClientOfflineRegionPoller.ResumeToken` has been removed
+- Function `*SQLResourcesClientUpdateSQLDatabaseThroughputPoller.FinalResponse` has been removed
+- Function `*DatabaseAccountsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*TableResourcesClientMigrateTableToAutoscalePoller.Done` has been removed
+- Function `*MongoDBResourcesClientRetrieveContinuousBackupInformationPoller.Done` has been removed
+- Function `*GremlinResourcesClientUpdateGremlinGraphThroughputPoller.Done` has been removed
+- Function `*CassandraResourcesClientMigrateCassandraTableToManualThroughputPollerResponse.Resume` has been removed
+- Function `NotebookWorkspacesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `RestoreMode.ToPtr` has been removed
+- Function `*CassandraDataCentersClientDeletePollerResponse.Resume` has been removed
+- Function `*GremlinResourcesClientMigrateGremlinGraphToManualThroughputPoller.FinalResponse` has been removed
+- Function `*CassandraResourcesClientUpdateCassandraKeyspaceThroughputPoller.Poll` has been removed
+- Function `IndexKind.ToPtr` has been removed
+- Function `TableResourcesClientCreateUpdateTablePollerResponse.PollUntilDone` has been removed
+- Function `DatabaseAccountsClientRegenerateKeyPollerResponse.PollUntilDone` has been removed
+- Function `*CassandraResourcesClientUpdateCassandraKeyspaceThroughputPollerResponse.Resume` has been removed
+- Function `*SQLResourcesClientDeleteSQLDatabasePoller.ResumeToken` has been removed
+- Function `*MongoDBResourcesClientCreateUpdateMongoDBDatabasePoller.FinalResponse` has been removed
+- Function `*DatabaseAccountsClientDeletePoller.FinalResponse` has been removed
+- Function `*SQLResourcesClientMigrateSQLContainerToAutoscalePoller.Done` has been removed
+- Function `*GremlinResourcesClientCreateUpdateGremlinGraphPoller.ResumeToken` has been removed
+- Function `NotebookWorkspacesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*GremlinResourcesClientMigrateGremlinDatabaseToManualThroughputPoller.Done` has been removed
+- Function `*MongoDBResourcesClientUpdateMongoDBDatabaseThroughputPoller.Poll` has been removed
+- Function `MongoDBResourcesClientMigrateMongoDBCollectionToManualThroughputPollerResponse.PollUntilDone` has been removed
+- Function `*CassandraClustersClientDeallocatePoller.ResumeToken` has been removed
+- Function `*DatabaseAccountsClientOnlineRegionPoller.Poll` has been removed
+- Function `*CassandraDataCentersClientUpdatePollerResponse.Resume` has been removed
+- Function `TriggerType.ToPtr` has been removed
+- Function `*CassandraResourcesClientDeleteCassandraKeyspacePoller.ResumeToken` has been removed
+- Function `*CassandraResourcesClientUpdateCassandraKeyspaceThroughputPoller.Done` has been removed
+- Function `CassandraResourcesClientMigrateCassandraKeyspaceToManualThroughputPollerResponse.PollUntilDone` has been removed
+- Function `MongoDBResourcesClientMigrateMongoDBDatabaseToManualThroughputPollerResponse.PollUntilDone` has been removed
+- Function `*MongoDBResourcesClientDeleteMongoDBDatabasePoller.Done` has been removed
+- Function `*MongoDBResourcesClientCreateUpdateMongoDBCollectionPoller.FinalResponse` has been removed
+- Function `PartitionKind.ToPtr` has been removed
+- Function `*DatabaseAccountsClientUpdatePoller.FinalResponse` has been removed
+- Function `*MongoDBResourcesClientCreateUpdateMongoDBCollectionPoller.Poll` has been removed
+- Function `*NotebookWorkspacesClientStartPoller.ResumeToken` has been removed
+- Function `ConflictResolutionMode.ToPtr` has been removed
+- Function `*NotebookWorkspacesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*PrivateEndpointConnectionsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*CassandraDataCentersClientCreateUpdatePoller.Done` has been removed
+- Function `PrivateEndpointConnectionsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*SQLResourcesClientCreateUpdateSQLDatabasePoller.FinalResponse` has been removed
+- Function `*SQLResourcesClientUpdateSQLDatabaseThroughputPollerResponse.Resume` has been removed
+- Function `*GremlinResourcesClientDeleteGremlinGraphPoller.ResumeToken` has been removed
+- Function `CassandraDataCentersClientCreateUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*SQLResourcesClientDeleteSQLContainerPoller.ResumeToken` has been removed
+- Function `GremlinResourcesClientMigrateGremlinGraphToAutoscalePollerResponse.PollUntilDone` has been removed
+- Function `*SQLResourcesClientMigrateSQLContainerToManualThroughputPoller.Poll` has been removed
+- Function `*GremlinResourcesClientDeleteGremlinDatabasePoller.Poll` has been removed
+- Function `*MongoDBResourcesClientMigrateMongoDBCollectionToAutoscalePoller.ResumeToken` has been removed
+- Function `TableResourcesClientMigrateTableToManualThroughputPollerResponse.PollUntilDone` has been removed
+- Function `DatabaseAccountsClientFailoverPriorityChangePollerResponse.PollUntilDone` has been removed
+- Function `SQLResourcesClientDeleteSQLStoredProcedurePollerResponse.PollUntilDone` has been removed
+- Function `SQLResourcesClientMigrateSQLDatabaseToManualThroughputPollerResponse.PollUntilDone` has been removed
+- Function `*SQLResourcesClientMigrateSQLDatabaseToManualThroughputPoller.Done` has been removed
+- Function `*DatabaseAccountsClientUpdatePollerResponse.Resume` has been removed
+- Function `*MongoDBResourcesClientMigrateMongoDBDatabaseToManualThroughputPoller.Poll` has been removed
+- Function `*GremlinResourcesClientMigrateGremlinGraphToAutoscalePoller.Done` has been removed
+- Function `DefaultConsistencyLevel.ToPtr` has been removed
+- Function `SQLResourcesClientUpdateSQLContainerThroughputPollerResponse.PollUntilDone` has been removed
+- Function `*MongoDBResourcesClientMigrateMongoDBDatabaseToManualThroughputPoller.FinalResponse` has been removed
+- Function `GremlinResourcesClientCreateUpdateGremlinGraphPollerResponse.PollUntilDone` has been removed
+- Function `CassandraDataCentersClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*SQLResourcesClientCreateUpdateSQLRoleDefinitionPollerResponse.Resume` has been removed
+- Function `*DatabaseAccountsClientRegenerateKeyPoller.ResumeToken` has been removed
+- Function `*MongoDBResourcesClientMigrateMongoDBCollectionToAutoscalePollerResponse.Resume` has been removed
+- Function `*CassandraResourcesClientCreateUpdateCassandraTablePoller.FinalResponse` has been removed
+- Function `SQLResourcesClientCreateUpdateSQLRoleDefinitionPollerResponse.PollUntilDone` has been removed
+- Function `BackupPolicyType.ToPtr` has been removed
+- Function `BackupPolicyMigrationStatus.ToPtr` has been removed
+- Function `*MongoDBResourcesClientDeleteMongoDBCollectionPoller.Done` has been removed
+- Function `*SQLResourcesClientDeleteSQLTriggerPoller.Done` has been removed
+- Function `*DatabaseAccountsClientUpdatePoller.Done` has been removed
+- Function `SQLResourcesClientCreateUpdateSQLContainerPollerResponse.PollUntilDone` has been removed
+- Function `*TableResourcesClientMigrateTableToAutoscalePollerResponse.Resume` has been removed
+- Function `*SQLResourcesClientUpdateSQLContainerThroughputPollerResponse.Resume` has been removed
+- Function `*SQLResourcesClientRetrieveContinuousBackupInformationPoller.Poll` has been removed
+- Function `*SQLResourcesClientCreateUpdateSQLDatabasePoller.Done` has been removed
+- Function `*SQLResourcesClientCreateUpdateSQLUserDefinedFunctionPoller.FinalResponse` has been removed
+- Function `*DatabaseAccountsClientUpdatePoller.Poll` has been removed
+- Function `*MongoDBResourcesClientDeleteMongoDBCollectionPoller.ResumeToken` has been removed
+- Function `*SQLResourcesClientMigrateSQLContainerToManualThroughputPoller.FinalResponse` has been removed
+- Function `*SQLResourcesClientRetrieveContinuousBackupInformationPollerResponse.Resume` has been removed
+- Function `*CassandraResourcesClientMigrateCassandraKeyspaceToAutoscalePoller.FinalResponse` has been removed
+- Function `*GremlinResourcesClientCreateUpdateGremlinDatabasePoller.Done` has been removed
+- Function `*CassandraClustersClientDeletePoller.FinalResponse` has been removed
+- Function `*CassandraDataCentersClientDeletePoller.FinalResponse` has been removed
+- Function `*CassandraClustersClientStartPollerResponse.Resume` has been removed
+- Function `*TableResourcesClientDeleteTablePoller.FinalResponse` has been removed
+- Function `*MongoDBResourcesClientMigrateMongoDBDatabaseToAutoscalePollerResponse.Resume` has been removed
+- Function `*CassandraDataCentersClientUpdatePoller.Poll` has been removed
+- Function `*SQLResourcesClientCreateUpdateSQLUserDefinedFunctionPollerResponse.Resume` has been removed
+- Function `*MongoDBResourcesClientMigrateMongoDBCollectionToManualThroughputPoller.FinalResponse` has been removed
+- Function `*TableResourcesClientMigrateTableToManualThroughputPollerResponse.Resume` has been removed
+- Function `MongoDBResourcesClientMigrateMongoDBDatabaseToAutoscalePollerResponse.PollUntilDone` has been removed
+- Function `*GremlinResourcesClientMigrateGremlinDatabaseToManualThroughputPoller.FinalResponse` has been removed
+- Function `SQLResourcesClientCreateUpdateSQLRoleAssignmentPollerResponse.PollUntilDone` has been removed
+- Function `*CassandraResourcesClientDeleteCassandraKeyspacePoller.Poll` has been removed
+- Function `*CassandraClustersClientUpdatePoller.Done` has been removed
+- Function `*MongoDBResourcesClientUpdateMongoDBDatabaseThroughputPoller.Done` has been removed
+- Function `*SQLResourcesClientCreateUpdateSQLUserDefinedFunctionPoller.Done` has been removed
+- Function `SQLResourcesClientMigrateSQLDatabaseToAutoscalePollerResponse.PollUntilDone` has been removed
+- Function `*SQLResourcesClientMigrateSQLDatabaseToManualThroughputPollerResponse.Resume` has been removed
+- Function `DataType.ToPtr` has been removed
+- Function `DatabaseAccountsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `NotebookWorkspacesClientRegenerateAuthTokenPollerResponse.PollUntilDone` has been removed
+- Function `*SQLResourcesClientMigrateSQLDatabaseToAutoscalePoller.Done` has been removed
+- Function `*TableResourcesClientDeleteTablePoller.Done` has been removed
+- Function `*SQLResourcesClientDeleteSQLUserDefinedFunctionPoller.ResumeToken` has been removed
+- Function `*TableResourcesClientCreateUpdateTablePoller.Poll` has been removed
+- Function `*NotebookWorkspacesClientDeletePoller.Done` has been removed
+- Function `SQLResourcesClientCreateUpdateSQLTriggerPollerResponse.PollUntilDone` has been removed
+- Function `*DatabaseAccountsClientFailoverPriorityChangePoller.Poll` has been removed
+- Function `*NotebookWorkspacesClientDeletePoller.FinalResponse` has been removed
+- Function `*SQLResourcesClientDeleteSQLRoleDefinitionPoller.FinalResponse` has been removed
+- Function `ConnectorOffer.ToPtr` has been removed
+- Function `*SQLResourcesClientCreateUpdateSQLUserDefinedFunctionPoller.Poll` has been removed
+- Function `*MongoDBResourcesClientMigrateMongoDBDatabaseToAutoscalePoller.FinalResponse` has been removed
+- Function `*CassandraResourcesClientMigrateCassandraTableToManualThroughputPoller.Poll` has been removed
+- Function `*SQLResourcesClientDeleteSQLDatabasePoller.Poll` has been removed
+- Function `*CassandraResourcesClientDeleteCassandraKeyspacePoller.Done` has been removed
+- Function `ManagedCassandraProvisioningState.ToPtr` has been removed
+- Function `PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*SQLResourcesClientCreateUpdateSQLRoleAssignmentPoller.ResumeToken` has been removed
+- Function `*DatabaseAccountsClientDeletePoller.ResumeToken` has been removed
+- Function `*SQLResourcesClientDeleteSQLRoleDefinitionPoller.ResumeToken` has been removed
+- Function `*CassandraResourcesClientCreateUpdateCassandraKeyspacePollerResponse.Resume` has been removed
+- Function `*GremlinResourcesClientDeleteGremlinDatabasePoller.ResumeToken` has been removed
+- Function `*PrivateEndpointConnectionsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `SQLResourcesClientCreateUpdateSQLDatabasePollerResponse.PollUntilDone` has been removed
+- Function `*MongoDBResourcesClientCreateUpdateMongoDBCollectionPoller.ResumeToken` has been removed
+- Function `*CassandraResourcesClientMigrateCassandraKeyspaceToAutoscalePoller.ResumeToken` has been removed
+- Function `PrimaryAggregationType.ToPtr` has been removed
+- Function `*SQLResourcesClientDeleteSQLStoredProcedurePoller.FinalResponse` has been removed
+- Function `*SQLResourcesClientDeleteSQLRoleAssignmentPoller.Done` has been removed
+- Function `NodeStatus.ToPtr` has been removed
+- Function `*SQLResourcesClientDeleteSQLDatabasePoller.FinalResponse` has been removed
+- Function `*MongoDBResourcesClientRetrieveContinuousBackupInformationPoller.FinalResponse` has been removed
+- Function `*DatabaseAccountsClientRegenerateKeyPoller.FinalResponse` has been removed
+- Function `*SQLResourcesClientMigrateSQLDatabaseToManualThroughputPoller.Poll` has been removed
+- Function `*DatabaseAccountsClientFailoverPriorityChangePoller.Done` has been removed
+- Function `*SQLResourcesClientMigrateSQLContainerToAutoscalePoller.ResumeToken` has been removed
+- Function `SpatialType.ToPtr` has been removed
+- Function `*CassandraClustersClientDeallocatePollerResponse.Resume` has been removed
+- Function `*SQLResourcesClientDeleteSQLContainerPollerResponse.Resume` has been removed
+- Function `*GremlinResourcesClientCreateUpdateGremlinGraphPoller.Done` has been removed
+- Function `*NotebookWorkspacesClientStartPoller.Poll` has been removed
+- Function `*NotebookWorkspacesClientRegenerateAuthTokenPoller.Done` has been removed
+- Function `CassandraClustersClientInvokeCommandPollerResponse.PollUntilDone` has been removed
+- Function `*SQLResourcesClientCreateUpdateSQLContainerPoller.FinalResponse` has been removed
+- Function `*SQLResourcesClientUpdateSQLContainerThroughputPoller.FinalResponse` has been removed
+- Function `*SQLResourcesClientCreateUpdateSQLRoleAssignmentPoller.Done` has been removed
+- Function `GremlinResourcesClientCreateUpdateGremlinDatabasePollerResponse.PollUntilDone` has been removed
+- Function `*TableResourcesClientUpdateTableThroughputPollerResponse.Resume` has been removed
+- Function `*DatabaseAccountsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*GremlinResourcesClientMigrateGremlinDatabaseToAutoscalePoller.ResumeToken` has been removed
+- Function `NetworkACLBypass.ToPtr` has been removed
+- Function `*SQLResourcesClientDeleteSQLRoleDefinitionPoller.Poll` has been removed
+- Function `AuthenticationMethod.ToPtr` has been removed
+- Function `*TableResourcesClientMigrateTableToManualThroughputPoller.Poll` has been removed
+- Function `*SQLResourcesClientMigrateSQLDatabaseToAutoscalePoller.FinalResponse` has been removed
+- Function `TriggerOperation.ToPtr` has been removed
+- Function `*DatabaseAccountsClientOfflineRegionPoller.Done` has been removed
+- Function `*TableResourcesClientCreateUpdateTablePollerResponse.Resume` has been removed
+- Function `ResourceIdentityType.ToPtr` has been removed
+- Function `*SQLResourcesClientCreateUpdateSQLRoleDefinitionPoller.Done` has been removed
+- Function `NodeState.ToPtr` has been removed
+- Function `*PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*SQLResourcesClientDeleteSQLTriggerPoller.ResumeToken` has been removed
+- Function `*SQLResourcesClientCreateUpdateSQLDatabasePollerResponse.Resume` has been removed
+- Function `*CassandraClustersClientInvokeCommandPoller.FinalResponse` has been removed
+- Function `APIType.ToPtr` has been removed
+- Function `*TableResourcesClientUpdateTableThroughputPoller.ResumeToken` has been removed
+- Function `*PrivateEndpointConnectionsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `PublicNetworkAccess.ToPtr` has been removed
+- Function `*CassandraResourcesClientUpdateCassandraKeyspaceThroughputPoller.ResumeToken` has been removed
+- Function `*GremlinResourcesClientCreateUpdateGremlinDatabasePoller.ResumeToken` has been removed
+- Function `*SQLResourcesClientCreateUpdateSQLStoredProcedurePoller.Poll` has been removed
+- Function `*NotebookWorkspacesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*CassandraResourcesClientUpdateCassandraKeyspaceThroughputPoller.FinalResponse` has been removed
+- Function `*DatabaseAccountsClientDeletePoller.Poll` has been removed
+- Function `*SQLResourcesClientMigrateSQLDatabaseToAutoscalePoller.ResumeToken` has been removed
+- Function `*MongoDBResourcesClientDeleteMongoDBDatabasePollerResponse.Resume` has been removed
+- Function `*MongoDBResourcesClientMigrateMongoDBDatabaseToAutoscalePoller.ResumeToken` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePoller.Poll` has been removed
+- Function `*MongoDBResourcesClientRetrieveContinuousBackupInformationPoller.Poll` has been removed
+- Function `*CassandraResourcesClientDeleteCassandraTablePoller.ResumeToken` has been removed
+- Function `MongoDBResourcesClientUpdateMongoDBDatabaseThroughputPollerResponse.PollUntilDone` has been removed
+- Function `*CassandraClustersClientCreateUpdatePoller.Poll` has been removed
+- Function `*SQLResourcesClientCreateUpdateSQLRoleDefinitionPoller.ResumeToken` has been removed
+- Function `*SQLResourcesClientRetrieveContinuousBackupInformationPoller.FinalResponse` has been removed
+- Function `*MongoDBResourcesClientCreateUpdateMongoDBDatabasePoller.Done` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePoller.FinalResponse` has been removed
+- Function `MongoDBResourcesClientCreateUpdateMongoDBCollectionPollerResponse.PollUntilDone` has been removed
+- Function `KeyKind.ToPtr` has been removed
+- Function `*SQLResourcesClientMigrateSQLDatabaseToAutoscalePollerResponse.Resume` has been removed
+- Function `*DatabaseAccountsClientOfflineRegionPollerResponse.Resume` has been removed
+- Function `*SQLResourcesClientRetrieveContinuousBackupInformationPoller.ResumeToken` has been removed
+- Function `*SQLResourcesClientDeleteSQLStoredProcedurePoller.ResumeToken` has been removed
+- Function `*CassandraResourcesClientMigrateCassandraTableToAutoscalePoller.ResumeToken` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePoller.ResumeToken` has been removed
+- Function `*SQLResourcesClientCreateUpdateSQLRoleDefinitionPoller.Poll` has been removed
+- Function `*SQLResourcesClientCreateUpdateSQLTriggerPoller.FinalResponse` has been removed
+- Function `*GremlinResourcesClientUpdateGremlinDatabaseThroughputPoller.ResumeToken` has been removed
+- Function `*SQLResourcesClientDeleteSQLDatabasePoller.Done` has been removed
+- Function `CassandraClustersClientDeallocatePollerResponse.PollUntilDone` has been removed
+- Function `*CassandraResourcesClientDeleteCassandraTablePoller.Done` has been removed
+- Function `CassandraResourcesClientMigrateCassandraTableToAutoscalePollerResponse.PollUntilDone` has been removed
+- Function `*CassandraResourcesClientMigrateCassandraTableToAutoscalePollerResponse.Resume` has been removed
+- Function `*NotebookWorkspacesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `CassandraResourcesClientDeleteCassandraKeyspacePollerResponse.PollUntilDone` has been removed
+- Function `*CassandraResourcesClientDeleteCassandraTablePoller.FinalResponse` has been removed
+- Function `*TableResourcesClientDeleteTablePoller.Poll` has been removed
+- Function `MongoDBResourcesClientCreateUpdateMongoDBDatabasePollerResponse.PollUntilDone` has been removed
+- Function `*MongoDBResourcesClientDeleteMongoDBCollectionPoller.FinalResponse` has been removed
+- Function `*CassandraResourcesClientMigrateCassandraKeyspaceToAutoscalePoller.Poll` has been removed
+- Function `*DatabaseAccountsClientRegenerateKeyPollerResponse.Resume` has been removed
+- Function `SQLResourcesClientDeleteSQLRoleAssignmentPollerResponse.PollUntilDone` has been removed
+- Function `*CassandraClustersClientInvokeCommandPollerResponse.Resume` has been removed
+- Function `*GremlinResourcesClientDeleteGremlinDatabasePollerResponse.Resume` has been removed
+- Function `*SQLResourcesClientCreateUpdateSQLContainerPollerResponse.Resume` has been removed
+- Function `BackupStorageRedundancy.ToPtr` has been removed
+- Function `*DatabaseAccountsClientOnlineRegionPollerResponse.Resume` has been removed
+- Function `*TableResourcesClientDeleteTablePollerResponse.Resume` has been removed
+- Function `*NotebookWorkspacesClientStartPoller.FinalResponse` has been removed
+- Function `RoleDefinitionType.ToPtr` has been removed
+- Function `*DatabaseAccountsClientOnlineRegionPoller.Done` has been removed
+- Function `TableResourcesClientMigrateTableToAutoscalePollerResponse.PollUntilDone` has been removed
+- Function `*MongoDBResourcesClientMigrateMongoDBCollectionToManualThroughputPoller.Poll` has been removed
+- Function `*CassandraClustersClientDeallocatePoller.FinalResponse` has been removed
+- Function `*SQLResourcesClientDeleteSQLRoleAssignmentPoller.ResumeToken` has been removed
+- Function `*SQLResourcesClientMigrateSQLContainerToAutoscalePollerResponse.Resume` has been removed
+- Function `*MongoDBResourcesClientUpdateMongoDBCollectionThroughputPoller.ResumeToken` has been removed
+- Function `*SQLResourcesClientCreateUpdateSQLRoleAssignmentPollerResponse.Resume` has been removed
+- Function `*SQLResourcesClientDeleteSQLRoleDefinitionPoller.Done` has been removed
+- Function `*CassandraResourcesClientDeleteCassandraKeyspacePollerResponse.Resume` has been removed
+- Function `SQLResourcesClientMigrateSQLContainerToManualThroughputPollerResponse.PollUntilDone` has been removed
+- Function `*CassandraDataCentersClientCreateUpdatePollerResponse.Resume` has been removed
+- Function `*GremlinResourcesClientMigrateGremlinDatabaseToAutoscalePoller.Poll` has been removed
+- Function `*MongoDBResourcesClientCreateUpdateMongoDBDatabasePoller.ResumeToken` has been removed
+- Function `*SQLResourcesClientCreateUpdateSQLContainerPoller.ResumeToken` has been removed
+- Function `*NotebookWorkspacesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*SQLResourcesClientDeleteSQLUserDefinedFunctionPoller.FinalResponse` has been removed
+- Function `CassandraResourcesClientMigrateCassandraTableToManualThroughputPollerResponse.PollUntilDone` has been removed
+- Function `*NotebookWorkspacesClientRegenerateAuthTokenPoller.FinalResponse` has been removed
+- Function `*CassandraDataCentersClientCreateUpdatePoller.Poll` has been removed
+- Function `*DatabaseAccountsClientFailoverPriorityChangePoller.ResumeToken` has been removed
+- Function `*CassandraResourcesClientMigrateCassandraTableToManualThroughputPoller.Done` has been removed
+- Function `*GremlinResourcesClientMigrateGremlinGraphToManualThroughputPoller.Done` has been removed
+- Function `*TableResourcesClientCreateUpdateTablePoller.Done` has been removed
+- Function `*DatabaseAccountsClientUpdatePoller.ResumeToken` has been removed
+- Function `DatabaseAccountKind.ToPtr` has been removed
+- Function `*CassandraResourcesClientDeleteCassandraTablePoller.Poll` has been removed
+- Function `*CassandraClustersClientCreateUpdatePollerResponse.Resume` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePoller.Done` has been removed
+- Function `*SQLResourcesClientDeleteSQLContainerPoller.Done` has been removed
+- Function `*SQLResourcesClientDeleteSQLTriggerPoller.Poll` has been removed
+- Function `*TableResourcesClientMigrateTableToManualThroughputPoller.ResumeToken` has been removed
+- Function `*DatabaseAccountsClientOnlineRegionPoller.ResumeToken` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `*SQLResourcesClientDeleteSQLTriggerPoller.FinalResponse` has been removed
+- Function `*SQLResourcesClientCreateUpdateSQLStoredProcedurePoller.Done` has been removed
+- Function `SQLResourcesClientDeleteSQLDatabasePollerResponse.PollUntilDone` has been removed
+- Function `CreatedByType.ToPtr` has been removed
+- Function `*CassandraResourcesClientCreateUpdateCassandraKeyspacePoller.FinalResponse` has been removed
+- Function `*SQLResourcesClientCreateUpdateSQLContainerPoller.Poll` has been removed
+- Function `*MongoDBResourcesClientMigrateMongoDBCollectionToAutoscalePoller.FinalResponse` has been removed
+- Function `*GremlinResourcesClientDeleteGremlinGraphPoller.Done` has been removed
+- Function `*NotebookWorkspacesClientRegenerateAuthTokenPollerResponse.Resume` has been removed
+- Function `*MongoDBResourcesClientDeleteMongoDBCollectionPollerResponse.Resume` has been removed
+- Function `*CassandraDataCentersClientUpdatePoller.Done` has been removed
+- Function `*SQLResourcesClientUpdateSQLContainerThroughputPoller.ResumeToken` has been removed
+- Function `*CassandraClustersClientUpdatePoller.ResumeToken` has been removed
+- Function `SQLResourcesClientDeleteSQLRoleDefinitionPollerResponse.PollUntilDone` has been removed
+- Function `*TableResourcesClientCreateUpdateTablePoller.ResumeToken` has been removed
+- Function `*TableResourcesClientDeleteTablePoller.ResumeToken` has been removed
+- Function `*SQLResourcesClientDeleteSQLTriggerPollerResponse.Resume` has been removed
+- Function `*CassandraResourcesClientMigrateCassandraKeyspaceToManualThroughputPoller.Done` has been removed
+- Function `*MongoDBResourcesClientCreateUpdateMongoDBCollectionPoller.Done` has been removed
+- Function `CassandraClustersClientCreateUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*DatabaseAccountsClientRegenerateKeyPoller.Poll` has been removed
+- Function `*CassandraResourcesClientCreateUpdateCassandraTablePoller.Poll` has been removed
+- Function `*DatabaseAccountsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*MongoDBResourcesClientUpdateMongoDBDatabaseThroughputPoller.FinalResponse` has been removed
+- Function `*CassandraDataCentersClientDeletePoller.Poll` has been removed
+- Function `*MongoDBResourcesClientUpdateMongoDBCollectionThroughputPollerResponse.Resume` has been removed
+- Function `*GremlinResourcesClientUpdateGremlinDatabaseThroughputPollerResponse.Resume` has been removed
+- Function `*NotebookWorkspacesClientDeletePoller.Poll` has been removed
+- Function `*CassandraResourcesClientDeleteCassandraKeyspacePoller.FinalResponse` has been removed
+- Function `MongoDBResourcesClientUpdateMongoDBCollectionThroughputPollerResponse.PollUntilDone` has been removed
+- Function `*NotebookWorkspacesClientRegenerateAuthTokenPoller.Poll` has been removed
+- Function `*SQLResourcesClientMigrateSQLDatabaseToManualThroughputPoller.ResumeToken` has been removed
+- Function `*TableResourcesClientUpdateTableThroughputPoller.FinalResponse` has been removed
+- Function `*NotebookWorkspacesClientRegenerateAuthTokenPoller.ResumeToken` has been removed
+- Function `*CassandraClustersClientUpdatePoller.Poll` has been removed
+- Function `*SQLResourcesClientCreateUpdateSQLDatabasePoller.Poll` has been removed
+- Function `ConnectionState.ToPtr` has been removed
+- Function `*TableResourcesClientMigrateTableToAutoscalePoller.FinalResponse` has been removed
+- Function `*SQLResourcesClientDeleteSQLStoredProcedurePoller.Poll` has been removed
+- Function `*MongoDBResourcesClientMigrateMongoDBDatabaseToAutoscalePoller.Poll` has been removed
+- Function `*SQLResourcesClientCreateUpdateSQLTriggerPoller.Done` has been removed
+- Function `*SQLResourcesClientDeleteSQLContainerPoller.FinalResponse` has been removed
+- Function `GremlinResourcesClientDeleteGremlinDatabasePollerResponse.PollUntilDone` has been removed
+- Function `NotebookWorkspacesClientStartPollerResponse.PollUntilDone` has been removed
+- Function `*NotebookWorkspacesClientStartPoller.Done` has been removed
+- Function `*GremlinResourcesClientDeleteGremlinGraphPollerResponse.Resume` has been removed
+- Function `*GremlinResourcesClientUpdateGremlinDatabaseThroughputPoller.Done` has been removed
+- Function `*CassandraResourcesClientUpdateCassandraTableThroughputPoller.Done` has been removed
+- Function `*SQLResourcesClientCreateUpdateSQLRoleAssignmentPoller.FinalResponse` has been removed
+- Function `*TableResourcesClientMigrateTableToManualThroughputPoller.FinalResponse` has been removed
+- Function `*TableResourcesClientMigrateTableToManualThroughputPoller.Done` has been removed
+- Function `*GremlinResourcesClientMigrateGremlinGraphToAutoscalePoller.FinalResponse` has been removed
+- Function `*GremlinResourcesClientMigrateGremlinGraphToAutoscalePoller.ResumeToken` has been removed
+- Function `NotebookWorkspaceName.ToPtr` has been removed
+- Function `*GremlinResourcesClientMigrateGremlinDatabaseToAutoscalePoller.FinalResponse` has been removed
+- Function `*GremlinResourcesClientMigrateGremlinGraphToManualThroughputPollerResponse.Resume` has been removed
+- Function `*CassandraClustersClientCreateUpdatePoller.Done` has been removed
+- Function `*CassandraDataCentersClientCreateUpdatePoller.FinalResponse` has been removed
+- Function `SQLResourcesClientDeleteSQLTriggerPollerResponse.PollUntilDone` has been removed
+- Function `*CassandraResourcesClientMigrateCassandraTableToAutoscalePoller.Poll` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `DatabaseAccountsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*CassandraClustersClientUpdatePollerResponse.Resume` has been removed
+- Function `SQLResourcesClientRetrieveContinuousBackupInformationPollerResponse.PollUntilDone` has been removed
+- Function `*GremlinResourcesClientMigrateGremlinDatabaseToManualThroughputPoller.ResumeToken` has been removed
+- Function `*CassandraResourcesClientCreateUpdateCassandraTablePoller.ResumeToken` has been removed
+- Function `*GremlinResourcesClientUpdateGremlinDatabaseThroughputPoller.Poll` has been removed
+- Function `CassandraClustersClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*SQLResourcesClientUpdateSQLContainerThroughputPoller.Done` has been removed
+- Function `*CassandraResourcesClientDeleteCassandraTablePollerResponse.Resume` has been removed
+- Function `*SQLResourcesClientCreateUpdateSQLStoredProcedurePoller.ResumeToken` has been removed
+- Function `*GremlinResourcesClientCreateUpdateGremlinDatabasePoller.Poll` has been removed
+- Function `*NotebookWorkspacesClientDeletePollerResponse.Resume` has been removed
+- Function `CassandraResourcesClientDeleteCassandraTablePollerResponse.PollUntilDone` has been removed
+- Function `*GremlinResourcesClientUpdateGremlinGraphThroughputPoller.FinalResponse` has been removed
+- Function `*SQLResourcesClientCreateUpdateSQLRoleAssignmentPoller.Poll` has been removed
+- Function `*MongoDBResourcesClientDeleteMongoDBCollectionPoller.Poll` has been removed
+- Function `*CassandraDataCentersClientCreateUpdatePoller.ResumeToken` has been removed
+- Function `*CassandraResourcesClientMigrateCassandraTableToManualThroughputPoller.ResumeToken` has been removed
+- Function `*SQLResourcesClientCreateUpdateSQLUserDefinedFunctionPoller.ResumeToken` has been removed
+- Function `*GremlinResourcesClientMigrateGremlinGraphToAutoscalePollerResponse.Resume` has been removed
+- Function `*CassandraResourcesClientCreateUpdateCassandraKeyspacePoller.Poll` has been removed
+- Function `*MongoDBResourcesClientUpdateMongoDBCollectionThroughputPoller.FinalResponse` has been removed
+- Function `CompositePathSortOrder.ToPtr` has been removed
+- Function `*CassandraDataCentersClientUpdatePoller.ResumeToken` has been removed
+- Function `CassandraResourcesClientUpdateCassandraKeyspaceThroughputPollerResponse.PollUntilDone` has been removed
+- Function `MongoDBResourcesClientDeleteMongoDBCollectionPollerResponse.PollUntilDone` has been removed
+- Function `*CassandraResourcesClientMigrateCassandraKeyspaceToManualThroughputPoller.FinalResponse` has been removed
+- Function `*GremlinResourcesClientUpdateGremlinGraphThroughputPoller.Poll` has been removed
+- Function `*TableResourcesClientUpdateTableThroughputPoller.Poll` has been removed
+- Function `*NotebookWorkspacesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*SQLResourcesClientDeleteSQLRoleAssignmentPollerResponse.Resume` has been removed
+- Function `*CassandraResourcesClientCreateUpdateCassandraTablePoller.Done` has been removed
+- Function `*MongoDBResourcesClientMigrateMongoDBCollectionToAutoscalePoller.Poll` has been removed
+- Function `*MongoDBResourcesClientCreateUpdateMongoDBCollectionPollerResponse.Resume` has been removed
+- Function `*MongoDBResourcesClientUpdateMongoDBCollectionThroughputPoller.Poll` has been removed
+- Function `*GremlinResourcesClientMigrateGremlinDatabaseToAutoscalePoller.Done` has been removed
+- Function `CassandraResourcesClientCreateUpdateCassandraTablePollerResponse.PollUntilDone` has been removed
+- Function `CassandraClustersClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*GremlinResourcesClientMigrateGremlinDatabaseToAutoscalePollerResponse.Resume` has been removed
+- Function `SQLResourcesClientDeleteSQLContainerPollerResponse.PollUntilDone` has been removed
+- Function `*CassandraClustersClientDeallocatePoller.Poll` has been removed
+- Function `*CassandraResourcesClientMigrateCassandraTableToAutoscalePoller.FinalResponse` has been removed
+- Function `*GremlinResourcesClientMigrateGremlinGraphToManualThroughputPoller.ResumeToken` has been removed
+- Function `*CassandraClustersClientDeletePoller.Poll` has been removed
+- Function `*CassandraClustersClientStartPoller.Done` has been removed
+- Function `*DatabaseAccountsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*MongoDBResourcesClientMigrateMongoDBDatabaseToManualThroughputPoller.ResumeToken` has been removed
+- Function `GremlinResourcesClientUpdateGremlinDatabaseThroughputPollerResponse.PollUntilDone` has been removed
+- Function `MongoDBResourcesClientMigrateMongoDBCollectionToAutoscalePollerResponse.PollUntilDone` has been removed
+- Function `*CassandraResourcesClientMigrateCassandraTableToAutoscalePoller.Done` has been removed
+- Function `*SQLResourcesClientDeleteSQLStoredProcedurePollerResponse.Resume` has been removed
+- Function `*SQLResourcesClientCreateUpdateSQLStoredProcedurePollerResponse.Resume` has been removed
+- Function `*CassandraClustersClientInvokeCommandPoller.Poll` has been removed
+- Function `*CassandraResourcesClientMigrateCassandraKeyspaceToManualThroughputPoller.Poll` has been removed
+- Function `*CassandraClustersClientCreateUpdatePoller.FinalResponse` has been removed
+- Function `*SQLResourcesClientMigrateSQLDatabaseToAutoscalePoller.Poll` has been removed
+- Function `*SQLResourcesClientDeleteSQLUserDefinedFunctionPoller.Done` has been removed
+- Function `*SQLResourcesClientUpdateSQLDatabaseThroughputPoller.Poll` has been removed
+- Function `*SQLResourcesClientMigrateSQLContainerToManualThroughputPollerResponse.Resume` has been removed
+- Function `*CassandraResourcesClientCreateUpdateCassandraKeyspacePoller.Done` has been removed
+- Function `*SQLResourcesClientDeleteSQLDatabasePollerResponse.Resume` has been removed
+- Function `*GremlinResourcesClientCreateUpdateGremlinDatabasePollerResponse.Resume` has been removed
+- Function `*CassandraClustersClientInvokeCommandPoller.Done` has been removed
+- Function `*SQLResourcesClientCreateUpdateSQLTriggerPoller.Poll` has been removed
+- Function `*CassandraResourcesClientUpdateCassandraTableThroughputPoller.ResumeToken` has been removed
+- Function `*TableResourcesClientMigrateTableToAutoscalePoller.Poll` has been removed
+- Function `SQLResourcesClientDeleteSQLUserDefinedFunctionPollerResponse.PollUntilDone` has been removed
+- Function `*GremlinResourcesClientMigrateGremlinGraphToManualThroughputPoller.Poll` has been removed
+- Function `GremlinResourcesClientUpdateGremlinGraphThroughputPollerResponse.PollUntilDone` has been removed
+- Function `*SQLResourcesClientCreateUpdateSQLTriggerPollerResponse.Resume` has been removed
+- Function `GremlinResourcesClientDeleteGremlinGraphPollerResponse.PollUntilDone` has been removed
+- Function `*GremlinResourcesClientCreateUpdateGremlinGraphPollerResponse.Resume` has been removed
+- Function `MongoDBResourcesClientDeleteMongoDBDatabasePollerResponse.PollUntilDone` has been removed
+- Function `AnalyticalStorageSchemaType.ToPtr` has been removed
+- Function `*CassandraClustersClientStartPoller.ResumeToken` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePollerResponse.Resume` has been removed
+- Function `*SQLResourcesClientMigrateSQLDatabaseToManualThroughputPoller.FinalResponse` has been removed
+- Function `*CassandraClustersClientStartPoller.Poll` has been removed
+- Function `*CassandraClustersClientCreateUpdatePoller.ResumeToken` has been removed
+- Function `*GremlinResourcesClientCreateUpdateGremlinDatabasePoller.FinalResponse` has been removed
+- Function `*MongoDBResourcesClientMigrateMongoDBDatabaseToAutoscalePoller.Done` has been removed
+- Function `*CassandraClustersClientDeletePollerResponse.Resume` has been removed
+- Function `*CassandraResourcesClientCreateUpdateCassandraTablePollerResponse.Resume` has been removed
+- Function `CreateMode.ToPtr` has been removed
+- Function `MongoDBResourcesClientRetrieveContinuousBackupInformationPollerResponse.PollUntilDone` has been removed
+- Function `*SQLResourcesClientMigrateSQLContainerToAutoscalePoller.Poll` has been removed
+- Function `*CassandraResourcesClientUpdateCassandraTableThroughputPoller.Poll` has been removed
+- Function `*SQLResourcesClientMigrateSQLContainerToManualThroughputPoller.ResumeToken` has been removed
+- Function `ServerVersion.ToPtr` has been removed
+- Function `*GremlinResourcesClientDeleteGremlinDatabasePoller.Done` has been removed
+- Function `*DatabaseAccountsClientFailoverPriorityChangePollerResponse.Resume` has been removed
+- Function `*MongoDBResourcesClientCreateUpdateMongoDBDatabasePollerResponse.Resume` has been removed
+- Function `*CassandraClustersClientDeletePoller.Done` has been removed
+- Function `*NotebookWorkspacesClientStartPollerResponse.Resume` has been removed
+- Function `DatabaseAccountsClientOnlineRegionPollerResponse.PollUntilDone` has been removed
+- Function `*SQLResourcesClientDeleteSQLUserDefinedFunctionPollerResponse.Resume` has been removed
+- Function `*DatabaseAccountsClientDeletePoller.Done` has been removed
+- Function `*MongoDBResourcesClientMigrateMongoDBCollectionToAutoscalePoller.Done` has been removed
+- Function `*DatabaseAccountsClientFailoverPriorityChangePoller.FinalResponse` has been removed
+- Function `*SQLResourcesClientUpdateSQLContainerThroughputPoller.Poll` has been removed
+- Function `*MongoDBResourcesClientUpdateMongoDBCollectionThroughputPoller.Done` has been removed
+- Function `*SQLResourcesClientCreateUpdateSQLDatabasePoller.ResumeToken` has been removed
+- Function `SQLResourcesClientMigrateSQLContainerToAutoscalePollerResponse.PollUntilDone` has been removed
+- Function `*MongoDBResourcesClientUpdateMongoDBDatabaseThroughputPoller.ResumeToken` has been removed
+- Function `*SQLResourcesClientDeleteSQLContainerPoller.Poll` has been removed
+- Function `TableResourcesClientUpdateTableThroughputPollerResponse.PollUntilDone` has been removed
+- Function `*GremlinResourcesClientCreateUpdateGremlinGraphPoller.Poll` has been removed
+- Function `*CassandraResourcesClientCreateUpdateCassandraKeyspacePoller.ResumeToken` has been removed
+- Function `*SQLResourcesClientRetrieveContinuousBackupInformationPoller.Done` has been removed
+- Function `*DatabaseAccountsClientOfflineRegionPoller.Poll` has been removed
+- Function `*MongoDBResourcesClientMigrateMongoDBCollectionToManualThroughputPoller.ResumeToken` has been removed
+- Function `*CassandraDataCentersClientDeletePoller.ResumeToken` has been removed
+- Function `*DatabaseAccountsClientDeletePollerResponse.Resume` has been removed
+- Function `CassandraClustersClientStartPollerResponse.PollUntilDone` has been removed
+- Function `*CassandraResourcesClientMigrateCassandraKeyspaceToManualThroughputPoller.ResumeToken` has been removed
+- Function `*SQLResourcesClientCreateUpdateSQLStoredProcedurePoller.FinalResponse` has been removed
+- Function `*CassandraResourcesClientMigrateCassandraKeyspaceToManualThroughputPollerResponse.Resume` has been removed
+- Function `*MongoDBResourcesClientUpdateMongoDBDatabaseThroughputPollerResponse.Resume` has been removed
+- Function `*MongoDBResourcesClientDeleteMongoDBDatabasePoller.ResumeToken` has been removed
+- Function `*CassandraDataCentersClientDeletePoller.Done` has been removed
+- Function `*GremlinResourcesClientDeleteGremlinGraphPoller.Poll` has been removed
+- Function `*SQLResourcesClientCreateUpdateSQLTriggerPoller.ResumeToken` has been removed
+- Function `*SQLResourcesClientUpdateSQLDatabaseThroughputPoller.Done` has been removed
+- Function `*MongoDBResourcesClientRetrieveContinuousBackupInformationPollerResponse.Resume` has been removed
+- Function `CassandraResourcesClientMigrateCassandraKeyspaceToAutoscalePollerResponse.PollUntilDone` has been removed
+- Function `*GremlinResourcesClientUpdateGremlinDatabaseThroughputPoller.FinalResponse` has been removed
+- Function `*DatabaseAccountsClientOfflineRegionPoller.FinalResponse` has been removed
+- Function `GremlinResourcesClientMigrateGremlinDatabaseToAutoscalePollerResponse.PollUntilDone` has been removed
+- Function `TableResourcesClientDeleteTablePollerResponse.PollUntilDone` has been removed
+- Function `DatabaseAccountsClientOfflineRegionPollerResponse.PollUntilDone` has been removed
+- Function `IndexingMode.ToPtr` has been removed
+- Function `*DatabaseAccountsClientCreateOrUpdatePoller.Poll` has been removed
+- Struct `CassandraClustersClientCreateUpdatePoller` has been removed
+- Struct `CassandraClustersClientCreateUpdatePollerResponse` has been removed
+- Struct `CassandraClustersClientCreateUpdateResult` has been removed
+- Struct `CassandraClustersClientDeallocatePoller` has been removed
+- Struct `CassandraClustersClientDeallocatePollerResponse` has been removed
+- Struct `CassandraClustersClientDeletePoller` has been removed
+- Struct `CassandraClustersClientDeletePollerResponse` has been removed
+- Struct `CassandraClustersClientGetResult` has been removed
+- Struct `CassandraClustersClientInvokeCommandPoller` has been removed
+- Struct `CassandraClustersClientInvokeCommandPollerResponse` has been removed
+- Struct `CassandraClustersClientInvokeCommandResult` has been removed
+- Struct `CassandraClustersClientListByResourceGroupResult` has been removed
+- Struct `CassandraClustersClientListBySubscriptionResult` has been removed
+- Struct `CassandraClustersClientStartPoller` has been removed
+- Struct `CassandraClustersClientStartPollerResponse` has been removed
+- Struct `CassandraClustersClientStatusResult` has been removed
+- Struct `CassandraClustersClientUpdatePoller` has been removed
+- Struct `CassandraClustersClientUpdatePollerResponse` has been removed
+- Struct `CassandraClustersClientUpdateResult` has been removed
+- Struct `CassandraDataCentersClientCreateUpdatePoller` has been removed
+- Struct `CassandraDataCentersClientCreateUpdatePollerResponse` has been removed
+- Struct `CassandraDataCentersClientCreateUpdateResult` has been removed
+- Struct `CassandraDataCentersClientDeletePoller` has been removed
+- Struct `CassandraDataCentersClientDeletePollerResponse` has been removed
+- Struct `CassandraDataCentersClientGetResult` has been removed
+- Struct `CassandraDataCentersClientListResult` has been removed
+- Struct `CassandraDataCentersClientUpdatePoller` has been removed
+- Struct `CassandraDataCentersClientUpdatePollerResponse` has been removed
+- Struct `CassandraDataCentersClientUpdateResult` has been removed
+- Struct `CassandraResourcesClientCreateUpdateCassandraKeyspacePoller` has been removed
+- Struct `CassandraResourcesClientCreateUpdateCassandraKeyspacePollerResponse` has been removed
+- Struct `CassandraResourcesClientCreateUpdateCassandraKeyspaceResult` has been removed
+- Struct `CassandraResourcesClientCreateUpdateCassandraTablePoller` has been removed
+- Struct `CassandraResourcesClientCreateUpdateCassandraTablePollerResponse` has been removed
+- Struct `CassandraResourcesClientCreateUpdateCassandraTableResult` has been removed
+- Struct `CassandraResourcesClientDeleteCassandraKeyspacePoller` has been removed
+- Struct `CassandraResourcesClientDeleteCassandraKeyspacePollerResponse` has been removed
+- Struct `CassandraResourcesClientDeleteCassandraTablePoller` has been removed
+- Struct `CassandraResourcesClientDeleteCassandraTablePollerResponse` has been removed
+- Struct `CassandraResourcesClientGetCassandraKeyspaceResult` has been removed
+- Struct `CassandraResourcesClientGetCassandraKeyspaceThroughputResult` has been removed
+- Struct `CassandraResourcesClientGetCassandraTableResult` has been removed
+- Struct `CassandraResourcesClientGetCassandraTableThroughputResult` has been removed
+- Struct `CassandraResourcesClientListCassandraKeyspacesResult` has been removed
+- Struct `CassandraResourcesClientListCassandraTablesResult` has been removed
+- Struct `CassandraResourcesClientMigrateCassandraKeyspaceToAutoscalePoller` has been removed
+- Struct `CassandraResourcesClientMigrateCassandraKeyspaceToAutoscalePollerResponse` has been removed
+- Struct `CassandraResourcesClientMigrateCassandraKeyspaceToAutoscaleResult` has been removed
+- Struct `CassandraResourcesClientMigrateCassandraKeyspaceToManualThroughputPoller` has been removed
+- Struct `CassandraResourcesClientMigrateCassandraKeyspaceToManualThroughputPollerResponse` has been removed
+- Struct `CassandraResourcesClientMigrateCassandraKeyspaceToManualThroughputResult` has been removed
+- Struct `CassandraResourcesClientMigrateCassandraTableToAutoscalePoller` has been removed
+- Struct `CassandraResourcesClientMigrateCassandraTableToAutoscalePollerResponse` has been removed
+- Struct `CassandraResourcesClientMigrateCassandraTableToAutoscaleResult` has been removed
+- Struct `CassandraResourcesClientMigrateCassandraTableToManualThroughputPoller` has been removed
+- Struct `CassandraResourcesClientMigrateCassandraTableToManualThroughputPollerResponse` has been removed
+- Struct `CassandraResourcesClientMigrateCassandraTableToManualThroughputResult` has been removed
+- Struct `CassandraResourcesClientUpdateCassandraKeyspaceThroughputPoller` has been removed
+- Struct `CassandraResourcesClientUpdateCassandraKeyspaceThroughputPollerResponse` has been removed
+- Struct `CassandraResourcesClientUpdateCassandraKeyspaceThroughputResult` has been removed
+- Struct `CassandraResourcesClientUpdateCassandraTableThroughputPoller` has been removed
+- Struct `CassandraResourcesClientUpdateCassandraTableThroughputPollerResponse` has been removed
+- Struct `CassandraResourcesClientUpdateCassandraTableThroughputResult` has been removed
+- Struct `CollectionClientListMetricDefinitionsResult` has been removed
+- Struct `CollectionClientListMetricsResult` has been removed
+- Struct `CollectionClientListUsagesResult` has been removed
+- Struct `CollectionPartitionClientListMetricsResult` has been removed
+- Struct `CollectionPartitionClientListUsagesResult` has been removed
+- Struct `CollectionPartitionRegionClientListMetricsResult` has been removed
+- Struct `CollectionRegionClientListMetricsResult` has been removed
+- Struct `DatabaseAccountRegionClientListMetricsResult` has been removed
+- Struct `DatabaseAccountsClientCheckNameExistsResult` has been removed
+- Struct `DatabaseAccountsClientCreateOrUpdatePoller` has been removed
+- Struct `DatabaseAccountsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `DatabaseAccountsClientCreateOrUpdateResult` has been removed
+- Struct `DatabaseAccountsClientDeletePoller` has been removed
+- Struct `DatabaseAccountsClientDeletePollerResponse` has been removed
+- Struct `DatabaseAccountsClientFailoverPriorityChangePoller` has been removed
+- Struct `DatabaseAccountsClientFailoverPriorityChangePollerResponse` has been removed
+- Struct `DatabaseAccountsClientGetReadOnlyKeysResult` has been removed
+- Struct `DatabaseAccountsClientGetResult` has been removed
+- Struct `DatabaseAccountsClientListByResourceGroupResult` has been removed
+- Struct `DatabaseAccountsClientListConnectionStringsResult` has been removed
+- Struct `DatabaseAccountsClientListKeysResult` has been removed
+- Struct `DatabaseAccountsClientListMetricDefinitionsResult` has been removed
+- Struct `DatabaseAccountsClientListMetricsResult` has been removed
+- Struct `DatabaseAccountsClientListReadOnlyKeysResult` has been removed
+- Struct `DatabaseAccountsClientListResult` has been removed
+- Struct `DatabaseAccountsClientListUsagesResult` has been removed
+- Struct `DatabaseAccountsClientOfflineRegionPoller` has been removed
+- Struct `DatabaseAccountsClientOfflineRegionPollerResponse` has been removed
+- Struct `DatabaseAccountsClientOnlineRegionPoller` has been removed
+- Struct `DatabaseAccountsClientOnlineRegionPollerResponse` has been removed
+- Struct `DatabaseAccountsClientRegenerateKeyPoller` has been removed
+- Struct `DatabaseAccountsClientRegenerateKeyPollerResponse` has been removed
+- Struct `DatabaseAccountsClientUpdatePoller` has been removed
+- Struct `DatabaseAccountsClientUpdatePollerResponse` has been removed
+- Struct `DatabaseAccountsClientUpdateResult` has been removed
+- Struct `DatabaseClientListMetricDefinitionsResult` has been removed
+- Struct `DatabaseClientListMetricsResult` has been removed
+- Struct `DatabaseClientListUsagesResult` has been removed
+- Struct `GremlinResourcesClientCreateUpdateGremlinDatabasePoller` has been removed
+- Struct `GremlinResourcesClientCreateUpdateGremlinDatabasePollerResponse` has been removed
+- Struct `GremlinResourcesClientCreateUpdateGremlinDatabaseResult` has been removed
+- Struct `GremlinResourcesClientCreateUpdateGremlinGraphPoller` has been removed
+- Struct `GremlinResourcesClientCreateUpdateGremlinGraphPollerResponse` has been removed
+- Struct `GremlinResourcesClientCreateUpdateGremlinGraphResult` has been removed
+- Struct `GremlinResourcesClientDeleteGremlinDatabasePoller` has been removed
+- Struct `GremlinResourcesClientDeleteGremlinDatabasePollerResponse` has been removed
+- Struct `GremlinResourcesClientDeleteGremlinGraphPoller` has been removed
+- Struct `GremlinResourcesClientDeleteGremlinGraphPollerResponse` has been removed
+- Struct `GremlinResourcesClientGetGremlinDatabaseResult` has been removed
+- Struct `GremlinResourcesClientGetGremlinDatabaseThroughputResult` has been removed
+- Struct `GremlinResourcesClientGetGremlinGraphResult` has been removed
+- Struct `GremlinResourcesClientGetGremlinGraphThroughputResult` has been removed
+- Struct `GremlinResourcesClientListGremlinDatabasesResult` has been removed
+- Struct `GremlinResourcesClientListGremlinGraphsResult` has been removed
+- Struct `GremlinResourcesClientMigrateGremlinDatabaseToAutoscalePoller` has been removed
+- Struct `GremlinResourcesClientMigrateGremlinDatabaseToAutoscalePollerResponse` has been removed
+- Struct `GremlinResourcesClientMigrateGremlinDatabaseToAutoscaleResult` has been removed
+- Struct `GremlinResourcesClientMigrateGremlinDatabaseToManualThroughputPoller` has been removed
+- Struct `GremlinResourcesClientMigrateGremlinDatabaseToManualThroughputPollerResponse` has been removed
+- Struct `GremlinResourcesClientMigrateGremlinDatabaseToManualThroughputResult` has been removed
+- Struct `GremlinResourcesClientMigrateGremlinGraphToAutoscalePoller` has been removed
+- Struct `GremlinResourcesClientMigrateGremlinGraphToAutoscalePollerResponse` has been removed
+- Struct `GremlinResourcesClientMigrateGremlinGraphToAutoscaleResult` has been removed
+- Struct `GremlinResourcesClientMigrateGremlinGraphToManualThroughputPoller` has been removed
+- Struct `GremlinResourcesClientMigrateGremlinGraphToManualThroughputPollerResponse` has been removed
+- Struct `GremlinResourcesClientMigrateGremlinGraphToManualThroughputResult` has been removed
+- Struct `GremlinResourcesClientUpdateGremlinDatabaseThroughputPoller` has been removed
+- Struct `GremlinResourcesClientUpdateGremlinDatabaseThroughputPollerResponse` has been removed
+- Struct `GremlinResourcesClientUpdateGremlinDatabaseThroughputResult` has been removed
+- Struct `GremlinResourcesClientUpdateGremlinGraphThroughputPoller` has been removed
+- Struct `GremlinResourcesClientUpdateGremlinGraphThroughputPollerResponse` has been removed
+- Struct `GremlinResourcesClientUpdateGremlinGraphThroughputResult` has been removed
+- Struct `LocationsClientGetResult` has been removed
+- Struct `LocationsClientListResult` has been removed
+- Struct `MongoDBResourcesClientCreateUpdateMongoDBCollectionPoller` has been removed
+- Struct `MongoDBResourcesClientCreateUpdateMongoDBCollectionPollerResponse` has been removed
+- Struct `MongoDBResourcesClientCreateUpdateMongoDBCollectionResult` has been removed
+- Struct `MongoDBResourcesClientCreateUpdateMongoDBDatabasePoller` has been removed
+- Struct `MongoDBResourcesClientCreateUpdateMongoDBDatabasePollerResponse` has been removed
+- Struct `MongoDBResourcesClientCreateUpdateMongoDBDatabaseResult` has been removed
+- Struct `MongoDBResourcesClientDeleteMongoDBCollectionPoller` has been removed
+- Struct `MongoDBResourcesClientDeleteMongoDBCollectionPollerResponse` has been removed
+- Struct `MongoDBResourcesClientDeleteMongoDBDatabasePoller` has been removed
+- Struct `MongoDBResourcesClientDeleteMongoDBDatabasePollerResponse` has been removed
+- Struct `MongoDBResourcesClientGetMongoDBCollectionResult` has been removed
+- Struct `MongoDBResourcesClientGetMongoDBCollectionThroughputResult` has been removed
+- Struct `MongoDBResourcesClientGetMongoDBDatabaseResult` has been removed
+- Struct `MongoDBResourcesClientGetMongoDBDatabaseThroughputResult` has been removed
+- Struct `MongoDBResourcesClientListMongoDBCollectionsResult` has been removed
+- Struct `MongoDBResourcesClientListMongoDBDatabasesResult` has been removed
+- Struct `MongoDBResourcesClientMigrateMongoDBCollectionToAutoscalePoller` has been removed
+- Struct `MongoDBResourcesClientMigrateMongoDBCollectionToAutoscalePollerResponse` has been removed
+- Struct `MongoDBResourcesClientMigrateMongoDBCollectionToAutoscaleResult` has been removed
+- Struct `MongoDBResourcesClientMigrateMongoDBCollectionToManualThroughputPoller` has been removed
+- Struct `MongoDBResourcesClientMigrateMongoDBCollectionToManualThroughputPollerResponse` has been removed
+- Struct `MongoDBResourcesClientMigrateMongoDBCollectionToManualThroughputResult` has been removed
+- Struct `MongoDBResourcesClientMigrateMongoDBDatabaseToAutoscalePoller` has been removed
+- Struct `MongoDBResourcesClientMigrateMongoDBDatabaseToAutoscalePollerResponse` has been removed
+- Struct `MongoDBResourcesClientMigrateMongoDBDatabaseToAutoscaleResult` has been removed
+- Struct `MongoDBResourcesClientMigrateMongoDBDatabaseToManualThroughputPoller` has been removed
+- Struct `MongoDBResourcesClientMigrateMongoDBDatabaseToManualThroughputPollerResponse` has been removed
+- Struct `MongoDBResourcesClientMigrateMongoDBDatabaseToManualThroughputResult` has been removed
+- Struct `MongoDBResourcesClientRetrieveContinuousBackupInformationPoller` has been removed
+- Struct `MongoDBResourcesClientRetrieveContinuousBackupInformationPollerResponse` has been removed
+- Struct `MongoDBResourcesClientRetrieveContinuousBackupInformationResult` has been removed
+- Struct `MongoDBResourcesClientUpdateMongoDBCollectionThroughputPoller` has been removed
+- Struct `MongoDBResourcesClientUpdateMongoDBCollectionThroughputPollerResponse` has been removed
+- Struct `MongoDBResourcesClientUpdateMongoDBCollectionThroughputResult` has been removed
+- Struct `MongoDBResourcesClientUpdateMongoDBDatabaseThroughputPoller` has been removed
+- Struct `MongoDBResourcesClientUpdateMongoDBDatabaseThroughputPollerResponse` has been removed
+- Struct `MongoDBResourcesClientUpdateMongoDBDatabaseThroughputResult` has been removed
+- Struct `NotebookWorkspacesClientCreateOrUpdatePoller` has been removed
+- Struct `NotebookWorkspacesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `NotebookWorkspacesClientCreateOrUpdateResult` has been removed
+- Struct `NotebookWorkspacesClientDeletePoller` has been removed
+- Struct `NotebookWorkspacesClientDeletePollerResponse` has been removed
+- Struct `NotebookWorkspacesClientGetResult` has been removed
+- Struct `NotebookWorkspacesClientListByDatabaseAccountResult` has been removed
+- Struct `NotebookWorkspacesClientListConnectionInfoResult` has been removed
+- Struct `NotebookWorkspacesClientRegenerateAuthTokenPoller` has been removed
+- Struct `NotebookWorkspacesClientRegenerateAuthTokenPollerResponse` has been removed
+- Struct `NotebookWorkspacesClientStartPoller` has been removed
+- Struct `NotebookWorkspacesClientStartPollerResponse` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `PartitionKeyRangeIDClientListMetricsResult` has been removed
+- Struct `PartitionKeyRangeIDRegionClientListMetricsResult` has been removed
+- Struct `PercentileClientListMetricsResult` has been removed
+- Struct `PercentileSourceTargetClientListMetricsResult` has been removed
+- Struct `PercentileTargetClientListMetricsResult` has been removed
+- Struct `PrivateEndpointConnectionsClientCreateOrUpdatePoller` has been removed
+- Struct `PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsClientCreateOrUpdateResult` has been removed
+- Struct `PrivateEndpointConnectionsClientDeletePoller` has been removed
+- Struct `PrivateEndpointConnectionsClientDeletePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsClientGetResult` has been removed
+- Struct `PrivateEndpointConnectionsClientListByDatabaseAccountResult` has been removed
+- Struct `PrivateLinkResourcesClientGetResult` has been removed
+- Struct `PrivateLinkResourcesClientListByDatabaseAccountResult` has been removed
+- Struct `RestorableDatabaseAccountsClientGetByLocationResult` has been removed
+- Struct `RestorableDatabaseAccountsClientListByLocationResult` has been removed
+- Struct `RestorableDatabaseAccountsClientListResult` has been removed
+- Struct `RestorableMongodbCollectionsClientListResult` has been removed
+- Struct `RestorableMongodbDatabasesClientListResult` has been removed
+- Struct `RestorableMongodbResourcesClientListResult` has been removed
+- Struct `RestorableSQLContainersClientListResult` has been removed
+- Struct `RestorableSQLDatabasesClientListResult` has been removed
+- Struct `RestorableSQLResourcesClientListResult` has been removed
+- Struct `SQLResourcesClientCreateUpdateSQLContainerPoller` has been removed
+- Struct `SQLResourcesClientCreateUpdateSQLContainerPollerResponse` has been removed
+- Struct `SQLResourcesClientCreateUpdateSQLContainerResult` has been removed
+- Struct `SQLResourcesClientCreateUpdateSQLDatabasePoller` has been removed
+- Struct `SQLResourcesClientCreateUpdateSQLDatabasePollerResponse` has been removed
+- Struct `SQLResourcesClientCreateUpdateSQLDatabaseResult` has been removed
+- Struct `SQLResourcesClientCreateUpdateSQLRoleAssignmentPoller` has been removed
+- Struct `SQLResourcesClientCreateUpdateSQLRoleAssignmentPollerResponse` has been removed
+- Struct `SQLResourcesClientCreateUpdateSQLRoleAssignmentResult` has been removed
+- Struct `SQLResourcesClientCreateUpdateSQLRoleDefinitionPoller` has been removed
+- Struct `SQLResourcesClientCreateUpdateSQLRoleDefinitionPollerResponse` has been removed
+- Struct `SQLResourcesClientCreateUpdateSQLRoleDefinitionResult` has been removed
+- Struct `SQLResourcesClientCreateUpdateSQLStoredProcedurePoller` has been removed
+- Struct `SQLResourcesClientCreateUpdateSQLStoredProcedurePollerResponse` has been removed
+- Struct `SQLResourcesClientCreateUpdateSQLStoredProcedureResult` has been removed
+- Struct `SQLResourcesClientCreateUpdateSQLTriggerPoller` has been removed
+- Struct `SQLResourcesClientCreateUpdateSQLTriggerPollerResponse` has been removed
+- Struct `SQLResourcesClientCreateUpdateSQLTriggerResult` has been removed
+- Struct `SQLResourcesClientCreateUpdateSQLUserDefinedFunctionPoller` has been removed
+- Struct `SQLResourcesClientCreateUpdateSQLUserDefinedFunctionPollerResponse` has been removed
+- Struct `SQLResourcesClientCreateUpdateSQLUserDefinedFunctionResult` has been removed
+- Struct `SQLResourcesClientDeleteSQLContainerPoller` has been removed
+- Struct `SQLResourcesClientDeleteSQLContainerPollerResponse` has been removed
+- Struct `SQLResourcesClientDeleteSQLDatabasePoller` has been removed
+- Struct `SQLResourcesClientDeleteSQLDatabasePollerResponse` has been removed
+- Struct `SQLResourcesClientDeleteSQLRoleAssignmentPoller` has been removed
+- Struct `SQLResourcesClientDeleteSQLRoleAssignmentPollerResponse` has been removed
+- Struct `SQLResourcesClientDeleteSQLRoleDefinitionPoller` has been removed
+- Struct `SQLResourcesClientDeleteSQLRoleDefinitionPollerResponse` has been removed
+- Struct `SQLResourcesClientDeleteSQLStoredProcedurePoller` has been removed
+- Struct `SQLResourcesClientDeleteSQLStoredProcedurePollerResponse` has been removed
+- Struct `SQLResourcesClientDeleteSQLTriggerPoller` has been removed
+- Struct `SQLResourcesClientDeleteSQLTriggerPollerResponse` has been removed
+- Struct `SQLResourcesClientDeleteSQLUserDefinedFunctionPoller` has been removed
+- Struct `SQLResourcesClientDeleteSQLUserDefinedFunctionPollerResponse` has been removed
+- Struct `SQLResourcesClientGetSQLContainerResult` has been removed
+- Struct `SQLResourcesClientGetSQLContainerThroughputResult` has been removed
+- Struct `SQLResourcesClientGetSQLDatabaseResult` has been removed
+- Struct `SQLResourcesClientGetSQLDatabaseThroughputResult` has been removed
+- Struct `SQLResourcesClientGetSQLRoleAssignmentResult` has been removed
+- Struct `SQLResourcesClientGetSQLRoleDefinitionResult` has been removed
+- Struct `SQLResourcesClientGetSQLStoredProcedureResult` has been removed
+- Struct `SQLResourcesClientGetSQLTriggerResult` has been removed
+- Struct `SQLResourcesClientGetSQLUserDefinedFunctionResult` has been removed
+- Struct `SQLResourcesClientListSQLContainersResult` has been removed
+- Struct `SQLResourcesClientListSQLDatabasesResult` has been removed
+- Struct `SQLResourcesClientListSQLRoleAssignmentsResult` has been removed
+- Struct `SQLResourcesClientListSQLRoleDefinitionsResult` has been removed
+- Struct `SQLResourcesClientListSQLStoredProceduresResult` has been removed
+- Struct `SQLResourcesClientListSQLTriggersResult` has been removed
+- Struct `SQLResourcesClientListSQLUserDefinedFunctionsResult` has been removed
+- Struct `SQLResourcesClientMigrateSQLContainerToAutoscalePoller` has been removed
+- Struct `SQLResourcesClientMigrateSQLContainerToAutoscalePollerResponse` has been removed
+- Struct `SQLResourcesClientMigrateSQLContainerToAutoscaleResult` has been removed
+- Struct `SQLResourcesClientMigrateSQLContainerToManualThroughputPoller` has been removed
+- Struct `SQLResourcesClientMigrateSQLContainerToManualThroughputPollerResponse` has been removed
+- Struct `SQLResourcesClientMigrateSQLContainerToManualThroughputResult` has been removed
+- Struct `SQLResourcesClientMigrateSQLDatabaseToAutoscalePoller` has been removed
+- Struct `SQLResourcesClientMigrateSQLDatabaseToAutoscalePollerResponse` has been removed
+- Struct `SQLResourcesClientMigrateSQLDatabaseToAutoscaleResult` has been removed
+- Struct `SQLResourcesClientMigrateSQLDatabaseToManualThroughputPoller` has been removed
+- Struct `SQLResourcesClientMigrateSQLDatabaseToManualThroughputPollerResponse` has been removed
+- Struct `SQLResourcesClientMigrateSQLDatabaseToManualThroughputResult` has been removed
+- Struct `SQLResourcesClientRetrieveContinuousBackupInformationPoller` has been removed
+- Struct `SQLResourcesClientRetrieveContinuousBackupInformationPollerResponse` has been removed
+- Struct `SQLResourcesClientRetrieveContinuousBackupInformationResult` has been removed
+- Struct `SQLResourcesClientUpdateSQLContainerThroughputPoller` has been removed
+- Struct `SQLResourcesClientUpdateSQLContainerThroughputPollerResponse` has been removed
+- Struct `SQLResourcesClientUpdateSQLContainerThroughputResult` has been removed
+- Struct `SQLResourcesClientUpdateSQLDatabaseThroughputPoller` has been removed
+- Struct `SQLResourcesClientUpdateSQLDatabaseThroughputPollerResponse` has been removed
+- Struct `SQLResourcesClientUpdateSQLDatabaseThroughputResult` has been removed
+- Struct `TableResourcesClientCreateUpdateTablePoller` has been removed
+- Struct `TableResourcesClientCreateUpdateTablePollerResponse` has been removed
+- Struct `TableResourcesClientCreateUpdateTableResult` has been removed
+- Struct `TableResourcesClientDeleteTablePoller` has been removed
+- Struct `TableResourcesClientDeleteTablePollerResponse` has been removed
+- Struct `TableResourcesClientGetTableResult` has been removed
+- Struct `TableResourcesClientGetTableThroughputResult` has been removed
+- Struct `TableResourcesClientListTablesResult` has been removed
+- Struct `TableResourcesClientMigrateTableToAutoscalePoller` has been removed
+- Struct `TableResourcesClientMigrateTableToAutoscalePollerResponse` has been removed
+- Struct `TableResourcesClientMigrateTableToAutoscaleResult` has been removed
+- Struct `TableResourcesClientMigrateTableToManualThroughputPoller` has been removed
+- Struct `TableResourcesClientMigrateTableToManualThroughputPollerResponse` has been removed
+- Struct `TableResourcesClientMigrateTableToManualThroughputResult` has been removed
+- Struct `TableResourcesClientUpdateTableThroughputPoller` has been removed
+- Struct `TableResourcesClientUpdateTableThroughputPollerResponse` has been removed
+- Struct `TableResourcesClientUpdateTableThroughputResult` has been removed
+- Field `RawResponse` of struct `SQLResourcesClientDeleteSQLContainerResponse` has been removed
+- Field `MongoDBResourcesClientGetMongoDBDatabaseResult` of struct `MongoDBResourcesClientGetMongoDBDatabaseResponse` has been removed
+- Field `RawResponse` of struct `MongoDBResourcesClientGetMongoDBDatabaseResponse` has been removed
+- Field `GremlinResourcesClientListGremlinGraphsResult` of struct `GremlinResourcesClientListGremlinGraphsResponse` has been removed
+- Field `RawResponse` of struct `GremlinResourcesClientListGremlinGraphsResponse` has been removed
+- Field `MongoDBResourcesClientMigrateMongoDBDatabaseToManualThroughputResult` of struct `MongoDBResourcesClientMigrateMongoDBDatabaseToManualThroughputResponse` has been removed
+- Field `RawResponse` of struct `MongoDBResourcesClientMigrateMongoDBDatabaseToManualThroughputResponse` has been removed
+- Field `RawResponse` of struct `CassandraDataCentersClientDeleteResponse` has been removed
+- Field `SQLResourcesClientMigrateSQLDatabaseToAutoscaleResult` of struct `SQLResourcesClientMigrateSQLDatabaseToAutoscaleResponse` has been removed
+- Field `RawResponse` of struct `SQLResourcesClientMigrateSQLDatabaseToAutoscaleResponse` has been removed
+- Field `MongoDBResourcesClientMigrateMongoDBCollectionToManualThroughputResult` of struct `MongoDBResourcesClientMigrateMongoDBCollectionToManualThroughputResponse` has been removed
+- Field `RawResponse` of struct `MongoDBResourcesClientMigrateMongoDBCollectionToManualThroughputResponse` has been removed
+- Field `CollectionRegionClientListMetricsResult` of struct `CollectionRegionClientListMetricsResponse` has been removed
+- Field `RawResponse` of struct `CollectionRegionClientListMetricsResponse` has been removed
+- Field `SQLResourcesClientListSQLUserDefinedFunctionsResult` of struct `SQLResourcesClientListSQLUserDefinedFunctionsResponse` has been removed
+- Field `RawResponse` of struct `SQLResourcesClientListSQLUserDefinedFunctionsResponse` has been removed
+- Field `RawResponse` of struct `MongoDBResourcesClientDeleteMongoDBDatabaseResponse` has been removed
+- Field `CassandraResourcesClientGetCassandraTableResult` of struct `CassandraResourcesClientGetCassandraTableResponse` has been removed
+- Field `RawResponse` of struct `CassandraResourcesClientGetCassandraTableResponse` has been removed
+- Field `MongoDBResourcesClientMigrateMongoDBCollectionToAutoscaleResult` of struct `MongoDBResourcesClientMigrateMongoDBCollectionToAutoscaleResponse` has been removed
+- Field `RawResponse` of struct `MongoDBResourcesClientMigrateMongoDBCollectionToAutoscaleResponse` has been removed
+- Field `SQLResourcesClientListSQLStoredProceduresResult` of struct `SQLResourcesClientListSQLStoredProceduresResponse` has been removed
+- Field `RawResponse` of struct `SQLResourcesClientListSQLStoredProceduresResponse` has been removed
+- Field `RawResponse` of struct `SQLResourcesClientDeleteSQLRoleDefinitionResponse` has been removed
+- Field `GremlinResourcesClientGetGremlinDatabaseThroughputResult` of struct `GremlinResourcesClientGetGremlinDatabaseThroughputResponse` has been removed
+- Field `RawResponse` of struct `GremlinResourcesClientGetGremlinDatabaseThroughputResponse` has been removed
+- Field `DatabaseAccountsClientListMetricsResult` of struct `DatabaseAccountsClientListMetricsResponse` has been removed
+- Field `RawResponse` of struct `DatabaseAccountsClientListMetricsResponse` has been removed
+- Field `CassandraResourcesClientUpdateCassandraKeyspaceThroughputResult` of struct `CassandraResourcesClientUpdateCassandraKeyspaceThroughputResponse` has been removed
+- Field `RawResponse` of struct `CassandraResourcesClientUpdateCassandraKeyspaceThroughputResponse` has been removed
+- Field `CollectionClientListMetricDefinitionsResult` of struct `CollectionClientListMetricDefinitionsResponse` has been removed
+- Field `RawResponse` of struct `CollectionClientListMetricDefinitionsResponse` has been removed
+- Field `RestorableMongodbDatabasesClientListResult` of struct `RestorableMongodbDatabasesClientListResponse` has been removed
+- Field `RawResponse` of struct `RestorableMongodbDatabasesClientListResponse` has been removed
+- Field `DatabaseAccountsClientCheckNameExistsResult` of struct `DatabaseAccountsClientCheckNameExistsResponse` has been removed
+- Field `RawResponse` of struct `DatabaseAccountsClientCheckNameExistsResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `NotebookWorkspacesClientListConnectionInfoResult` of struct `NotebookWorkspacesClientListConnectionInfoResponse` has been removed
+- Field `RawResponse` of struct `NotebookWorkspacesClientListConnectionInfoResponse` has been removed
+- Field `GremlinResourcesClientMigrateGremlinDatabaseToAutoscaleResult` of struct `GremlinResourcesClientMigrateGremlinDatabaseToAutoscaleResponse` has been removed
+- Field `RawResponse` of struct `GremlinResourcesClientMigrateGremlinDatabaseToAutoscaleResponse` has been removed
+- Field `DatabaseClientListMetricsResult` of struct `DatabaseClientListMetricsResponse` has been removed
+- Field `RawResponse` of struct `DatabaseClientListMetricsResponse` has been removed
+- Field `RawResponse` of struct `GremlinResourcesClientDeleteGremlinGraphResponse` has been removed
+- Field `RawResponse` of struct `DatabaseAccountsClientOfflineRegionResponse` has been removed
+- Field `DatabaseAccountsClientUpdateResult` of struct `DatabaseAccountsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `DatabaseAccountsClientUpdateResponse` has been removed
+- Field `RestorableSQLResourcesClientListResult` of struct `RestorableSQLResourcesClientListResponse` has been removed
+- Field `RawResponse` of struct `RestorableSQLResourcesClientListResponse` has been removed
+- Field `RestorableDatabaseAccountsClientListByLocationResult` of struct `RestorableDatabaseAccountsClientListByLocationResponse` has been removed
+- Field `RawResponse` of struct `RestorableDatabaseAccountsClientListByLocationResponse` has been removed
+- Field `NotebookWorkspacesClientListByDatabaseAccountResult` of struct `NotebookWorkspacesClientListByDatabaseAccountResponse` has been removed
+- Field `RawResponse` of struct `NotebookWorkspacesClientListByDatabaseAccountResponse` has been removed
+- Field `SQLResourcesClientCreateUpdateSQLTriggerResult` of struct `SQLResourcesClientCreateUpdateSQLTriggerResponse` has been removed
+- Field `RawResponse` of struct `SQLResourcesClientCreateUpdateSQLTriggerResponse` has been removed
+- Field `RawResponse` of struct `CassandraClustersClientDeallocateResponse` has been removed
+- Field `DatabaseAccountsClientCreateOrUpdateResult` of struct `DatabaseAccountsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `DatabaseAccountsClientCreateOrUpdateResponse` has been removed
+- Field `TableResourcesClientMigrateTableToAutoscaleResult` of struct `TableResourcesClientMigrateTableToAutoscaleResponse` has been removed
+- Field `RawResponse` of struct `TableResourcesClientMigrateTableToAutoscaleResponse` has been removed
+- Field `SQLResourcesClientGetSQLDatabaseThroughputResult` of struct `SQLResourcesClientGetSQLDatabaseThroughputResponse` has been removed
+- Field `RawResponse` of struct `SQLResourcesClientGetSQLDatabaseThroughputResponse` has been removed
+- Field `LocationsClientListResult` of struct `LocationsClientListResponse` has been removed
+- Field `RawResponse` of struct `LocationsClientListResponse` has been removed
+- Field `MongoDBResourcesClientUpdateMongoDBDatabaseThroughputResult` of struct `MongoDBResourcesClientUpdateMongoDBDatabaseThroughputResponse` has been removed
+- Field `RawResponse` of struct `MongoDBResourcesClientUpdateMongoDBDatabaseThroughputResponse` has been removed
+- Field `NotebookWorkspacesClientGetResult` of struct `NotebookWorkspacesClientGetResponse` has been removed
+- Field `RawResponse` of struct `NotebookWorkspacesClientGetResponse` has been removed
+- Field `GremlinResourcesClientListGremlinDatabasesResult` of struct `GremlinResourcesClientListGremlinDatabasesResponse` has been removed
+- Field `RawResponse` of struct `GremlinResourcesClientListGremlinDatabasesResponse` has been removed
+- Field `RestorableDatabaseAccountsClientGetByLocationResult` of struct `RestorableDatabaseAccountsClientGetByLocationResponse` has been removed
+- Field `RawResponse` of struct `RestorableDatabaseAccountsClientGetByLocationResponse` has been removed
+- Field `GremlinResourcesClientUpdateGremlinGraphThroughputResult` of struct `GremlinResourcesClientUpdateGremlinGraphThroughputResponse` has been removed
+- Field `RawResponse` of struct `GremlinResourcesClientUpdateGremlinGraphThroughputResponse` has been removed
+- Field `SQLResourcesClientGetSQLContainerResult` of struct `SQLResourcesClientGetSQLContainerResponse` has been removed
+- Field `RawResponse` of struct `SQLResourcesClientGetSQLContainerResponse` has been removed
+- Field `DatabaseAccountsClientListByResourceGroupResult` of struct `DatabaseAccountsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `DatabaseAccountsClientListByResourceGroupResponse` has been removed
+- Field `RestorableSQLContainersClientListResult` of struct `RestorableSQLContainersClientListResponse` has been removed
+- Field `RawResponse` of struct `RestorableSQLContainersClientListResponse` has been removed
+- Field `DatabaseAccountRegionClientListMetricsResult` of struct `DatabaseAccountRegionClientListMetricsResponse` has been removed
+- Field `RawResponse` of struct `DatabaseAccountRegionClientListMetricsResponse` has been removed
+- Field `CassandraDataCentersClientCreateUpdateResult` of struct `CassandraDataCentersClientCreateUpdateResponse` has been removed
+- Field `RawResponse` of struct `CassandraDataCentersClientCreateUpdateResponse` has been removed
+- Field `GremlinResourcesClientUpdateGremlinDatabaseThroughputResult` of struct `GremlinResourcesClientUpdateGremlinDatabaseThroughputResponse` has been removed
+- Field `RawResponse` of struct `GremlinResourcesClientUpdateGremlinDatabaseThroughputResponse` has been removed
+- Field `DatabaseAccountsClientGetReadOnlyKeysResult` of struct `DatabaseAccountsClientGetReadOnlyKeysResponse` has been removed
+- Field `RawResponse` of struct `DatabaseAccountsClientGetReadOnlyKeysResponse` has been removed
+- Field `DatabaseAccountsClientGetResult` of struct `DatabaseAccountsClientGetResponse` has been removed
+- Field `RawResponse` of struct `DatabaseAccountsClientGetResponse` has been removed
+- Field `SQLResourcesClientMigrateSQLContainerToAutoscaleResult` of struct `SQLResourcesClientMigrateSQLContainerToAutoscaleResponse` has been removed
+- Field `RawResponse` of struct `SQLResourcesClientMigrateSQLContainerToAutoscaleResponse` has been removed
+- Field `PartitionKeyRangeIDClientListMetricsResult` of struct `PartitionKeyRangeIDClientListMetricsResponse` has been removed
+- Field `RawResponse` of struct `PartitionKeyRangeIDClientListMetricsResponse` has been removed
+- Field `GremlinResourcesClientGetGremlinDatabaseResult` of struct `GremlinResourcesClientGetGremlinDatabaseResponse` has been removed
+- Field `RawResponse` of struct `GremlinResourcesClientGetGremlinDatabaseResponse` has been removed
+- Field `RawResponse` of struct `SQLResourcesClientDeleteSQLUserDefinedFunctionResponse` has been removed
+- Field `CassandraResourcesClientGetCassandraTableThroughputResult` of struct `CassandraResourcesClientGetCassandraTableThroughputResponse` has been removed
+- Field `RawResponse` of struct `CassandraResourcesClientGetCassandraTableThroughputResponse` has been removed
+- Field `PrivateLinkResourcesClientGetResult` of struct `PrivateLinkResourcesClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkResourcesClientGetResponse` has been removed
+- Field `SQLResourcesClientGetSQLTriggerResult` of struct `SQLResourcesClientGetSQLTriggerResponse` has been removed
+- Field `RawResponse` of struct `SQLResourcesClientGetSQLTriggerResponse` has been removed
+- Field `DatabaseAccountsClientListUsagesResult` of struct `DatabaseAccountsClientListUsagesResponse` has been removed
+- Field `RawResponse` of struct `DatabaseAccountsClientListUsagesResponse` has been removed
+- Field `RawResponse` of struct `DatabaseAccountsClientOnlineRegionResponse` has been removed
+- Field `SQLResourcesClientUpdateSQLDatabaseThroughputResult` of struct `SQLResourcesClientUpdateSQLDatabaseThroughputResponse` has been removed
+- Field `RawResponse` of struct `SQLResourcesClientUpdateSQLDatabaseThroughputResponse` has been removed
+- Field `RawResponse` of struct `SQLResourcesClientDeleteSQLTriggerResponse` has been removed
+- Field `PrivateEndpointConnectionsClientListByDatabaseAccountResult` of struct `PrivateEndpointConnectionsClientListByDatabaseAccountResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientListByDatabaseAccountResponse` has been removed
+- Field `SQLResourcesClientGetSQLRoleAssignmentResult` of struct `SQLResourcesClientGetSQLRoleAssignmentResponse` has been removed
+- Field `RawResponse` of struct `SQLResourcesClientGetSQLRoleAssignmentResponse` has been removed
+- Field `MongoDBResourcesClientListMongoDBCollectionsResult` of struct `MongoDBResourcesClientListMongoDBCollectionsResponse` has been removed
+- Field `RawResponse` of struct `MongoDBResourcesClientListMongoDBCollectionsResponse` has been removed
+- Field `CassandraResourcesClientMigrateCassandraKeyspaceToManualThroughputResult` of struct `CassandraResourcesClientMigrateCassandraKeyspaceToManualThroughputResponse` has been removed
+- Field `RawResponse` of struct `CassandraResourcesClientMigrateCassandraKeyspaceToManualThroughputResponse` has been removed
+- Field `RawResponse` of struct `CassandraClustersClientStartResponse` has been removed
+- Field `RawResponse` of struct `GremlinResourcesClientDeleteGremlinDatabaseResponse` has been removed
+- Field `PercentileSourceTargetClientListMetricsResult` of struct `PercentileSourceTargetClientListMetricsResponse` has been removed
+- Field `RawResponse` of struct `PercentileSourceTargetClientListMetricsResponse` has been removed
+- Field `SQLResourcesClientCreateUpdateSQLRoleDefinitionResult` of struct `SQLResourcesClientCreateUpdateSQLRoleDefinitionResponse` has been removed
+- Field `RawResponse` of struct `SQLResourcesClientCreateUpdateSQLRoleDefinitionResponse` has been removed
+- Field `DatabaseAccountsClientListMetricDefinitionsResult` of struct `DatabaseAccountsClientListMetricDefinitionsResponse` has been removed
+- Field `RawResponse` of struct `DatabaseAccountsClientListMetricDefinitionsResponse` has been removed
+- Field `CassandraClustersClientCreateUpdateResult` of struct `CassandraClustersClientCreateUpdateResponse` has been removed
+- Field `RawResponse` of struct `CassandraClustersClientCreateUpdateResponse` has been removed
+- Field `RawResponse` of struct `CassandraResourcesClientDeleteCassandraTableResponse` has been removed
+- Field `RawResponse` of struct `MongoDBResourcesClientDeleteMongoDBCollectionResponse` has been removed
+- Field `CassandraResourcesClientMigrateCassandraTableToManualThroughputResult` of struct `CassandraResourcesClientMigrateCassandraTableToManualThroughputResponse` has been removed
+- Field `RawResponse` of struct `CassandraResourcesClientMigrateCassandraTableToManualThroughputResponse` has been removed
+- Field `DatabaseAccountsClientListReadOnlyKeysResult` of struct `DatabaseAccountsClientListReadOnlyKeysResponse` has been removed
+- Field `RawResponse` of struct `DatabaseAccountsClientListReadOnlyKeysResponse` has been removed
+- Field `PercentileTargetClientListMetricsResult` of struct `PercentileTargetClientListMetricsResponse` has been removed
+- Field `RawResponse` of struct `PercentileTargetClientListMetricsResponse` has been removed
+- Field `RestorableMongodbCollectionsClientListResult` of struct `RestorableMongodbCollectionsClientListResponse` has been removed
+- Field `RawResponse` of struct `RestorableMongodbCollectionsClientListResponse` has been removed
+- Field `CassandraDataCentersClientUpdateResult` of struct `CassandraDataCentersClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `CassandraDataCentersClientUpdateResponse` has been removed
+- Field `SQLResourcesClientCreateUpdateSQLStoredProcedureResult` of struct `SQLResourcesClientCreateUpdateSQLStoredProcedureResponse` has been removed
+- Field `RawResponse` of struct `SQLResourcesClientCreateUpdateSQLStoredProcedureResponse` has been removed
+- Field `CollectionPartitionRegionClientListMetricsResult` of struct `CollectionPartitionRegionClientListMetricsResponse` has been removed
+- Field `RawResponse` of struct `CollectionPartitionRegionClientListMetricsResponse` has been removed
+- Field `CollectionClientListUsagesResult` of struct `CollectionClientListUsagesResponse` has been removed
+- Field `RawResponse` of struct `CollectionClientListUsagesResponse` has been removed
+- Field `RestorableDatabaseAccountsClientListResult` of struct `RestorableDatabaseAccountsClientListResponse` has been removed
+- Field `RawResponse` of struct `RestorableDatabaseAccountsClientListResponse` has been removed
+- Field `RawResponse` of struct `CassandraResourcesClientDeleteCassandraKeyspaceResponse` has been removed
+- Field `CassandraResourcesClientMigrateCassandraTableToAutoscaleResult` of struct `CassandraResourcesClientMigrateCassandraTableToAutoscaleResponse` has been removed
+- Field `RawResponse` of struct `CassandraResourcesClientMigrateCassandraTableToAutoscaleResponse` has been removed
+- Field `RawResponse` of struct `DatabaseAccountsClientFailoverPriorityChangeResponse` has been removed
+- Field `PartitionKeyRangeIDRegionClientListMetricsResult` of struct `PartitionKeyRangeIDRegionClientListMetricsResponse` has been removed
+- Field `RawResponse` of struct `PartitionKeyRangeIDRegionClientListMetricsResponse` has been removed
+- Field `CassandraResourcesClientGetCassandraKeyspaceThroughputResult` of struct `CassandraResourcesClientGetCassandraKeyspaceThroughputResponse` has been removed
+- Field `RawResponse` of struct `CassandraResourcesClientGetCassandraKeyspaceThroughputResponse` has been removed
+- Field `SQLResourcesClientGetSQLUserDefinedFunctionResult` of struct `SQLResourcesClientGetSQLUserDefinedFunctionResponse` has been removed
+- Field `RawResponse` of struct `SQLResourcesClientGetSQLUserDefinedFunctionResponse` has been removed
+- Field `CassandraClustersClientStatusResult` of struct `CassandraClustersClientStatusResponse` has been removed
+- Field `RawResponse` of struct `CassandraClustersClientStatusResponse` has been removed
+- Field `SQLResourcesClientCreateUpdateSQLUserDefinedFunctionResult` of struct `SQLResourcesClientCreateUpdateSQLUserDefinedFunctionResponse` has been removed
+- Field `RawResponse` of struct `SQLResourcesClientCreateUpdateSQLUserDefinedFunctionResponse` has been removed
+- Field `CassandraClustersClientUpdateResult` of struct `CassandraClustersClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `CassandraClustersClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `CassandraClustersClientDeleteResponse` has been removed
+- Field `CassandraResourcesClientCreateUpdateCassandraTableResult` of struct `CassandraResourcesClientCreateUpdateCassandraTableResponse` has been removed
+- Field `RawResponse` of struct `CassandraResourcesClientCreateUpdateCassandraTableResponse` has been removed
+- Field `GremlinResourcesClientMigrateGremlinGraphToAutoscaleResult` of struct `GremlinResourcesClientMigrateGremlinGraphToAutoscaleResponse` has been removed
+- Field `RawResponse` of struct `GremlinResourcesClientMigrateGremlinGraphToAutoscaleResponse` has been removed
+- Field `RawResponse` of struct `DatabaseAccountsClientDeleteResponse` has been removed
+- Field `TableResourcesClientCreateUpdateTableResult` of struct `TableResourcesClientCreateUpdateTableResponse` has been removed
+- Field `RawResponse` of struct `TableResourcesClientCreateUpdateTableResponse` has been removed
+- Field `SQLResourcesClientGetSQLStoredProcedureResult` of struct `SQLResourcesClientGetSQLStoredProcedureResponse` has been removed
+- Field `RawResponse` of struct `SQLResourcesClientGetSQLStoredProcedureResponse` has been removed
+- Field `SQLResourcesClientListSQLTriggersResult` of struct `SQLResourcesClientListSQLTriggersResponse` has been removed
+- Field `RawResponse` of struct `SQLResourcesClientListSQLTriggersResponse` has been removed
+- Field `RawResponse` of struct `TableResourcesClientDeleteTableResponse` has been removed
+- Field `RawResponse` of struct `SQLResourcesClientDeleteSQLDatabaseResponse` has been removed
+- Field `GremlinResourcesClientCreateUpdateGremlinDatabaseResult` of struct `GremlinResourcesClientCreateUpdateGremlinDatabaseResponse` has been removed
+- Field `RawResponse` of struct `GremlinResourcesClientCreateUpdateGremlinDatabaseResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientDeleteResponse` has been removed
+- Field `CassandraResourcesClientGetCassandraKeyspaceResult` of struct `CassandraResourcesClientGetCassandraKeyspaceResponse` has been removed
+- Field `RawResponse` of struct `CassandraResourcesClientGetCassandraKeyspaceResponse` has been removed
+- Field `PrivateEndpointConnectionsClientGetResult` of struct `PrivateEndpointConnectionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientGetResponse` has been removed
+- Field `CassandraDataCentersClientGetResult` of struct `CassandraDataCentersClientGetResponse` has been removed
+- Field `RawResponse` of struct `CassandraDataCentersClientGetResponse` has been removed
+- Field `CollectionPartitionClientListMetricsResult` of struct `CollectionPartitionClientListMetricsResponse` has been removed
+- Field `RawResponse` of struct `CollectionPartitionClientListMetricsResponse` has been removed
+- Field `DatabaseAccountsClientListKeysResult` of struct `DatabaseAccountsClientListKeysResponse` has been removed
+- Field `RawResponse` of struct `DatabaseAccountsClientListKeysResponse` has been removed
+- Field `TableResourcesClientGetTableResult` of struct `TableResourcesClientGetTableResponse` has been removed
+- Field `RawResponse` of struct `TableResourcesClientGetTableResponse` has been removed
+- Field `CassandraResourcesClientMigrateCassandraKeyspaceToAutoscaleResult` of struct `CassandraResourcesClientMigrateCassandraKeyspaceToAutoscaleResponse` has been removed
+- Field `RawResponse` of struct `CassandraResourcesClientMigrateCassandraKeyspaceToAutoscaleResponse` has been removed
+- Field `LocationsClientGetResult` of struct `LocationsClientGetResponse` has been removed
+- Field `RawResponse` of struct `LocationsClientGetResponse` has been removed
+- Field `RawResponse` of struct `SQLResourcesClientDeleteSQLStoredProcedureResponse` has been removed
+- Field `PrivateLinkResourcesClientListByDatabaseAccountResult` of struct `PrivateLinkResourcesClientListByDatabaseAccountResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkResourcesClientListByDatabaseAccountResponse` has been removed
+- Field `SQLResourcesClientListSQLRoleAssignmentsResult` of struct `SQLResourcesClientListSQLRoleAssignmentsResponse` has been removed
+- Field `RawResponse` of struct `SQLResourcesClientListSQLRoleAssignmentsResponse` has been removed
+- Field `CassandraResourcesClientUpdateCassandraTableThroughputResult` of struct `CassandraResourcesClientUpdateCassandraTableThroughputResponse` has been removed
+- Field `RawResponse` of struct `CassandraResourcesClientUpdateCassandraTableThroughputResponse` has been removed
+- Field `SQLResourcesClientListSQLContainersResult` of struct `SQLResourcesClientListSQLContainersResponse` has been removed
+- Field `RawResponse` of struct `SQLResourcesClientListSQLContainersResponse` has been removed
+- Field `SQLResourcesClientCreateUpdateSQLRoleAssignmentResult` of struct `SQLResourcesClientCreateUpdateSQLRoleAssignmentResponse` has been removed
+- Field `RawResponse` of struct `SQLResourcesClientCreateUpdateSQLRoleAssignmentResponse` has been removed
+- Field `TableResourcesClientUpdateTableThroughputResult` of struct `TableResourcesClientUpdateTableThroughputResponse` has been removed
+- Field `RawResponse` of struct `TableResourcesClientUpdateTableThroughputResponse` has been removed
+- Field `SQLResourcesClientGetSQLRoleDefinitionResult` of struct `SQLResourcesClientGetSQLRoleDefinitionResponse` has been removed
+- Field `RawResponse` of struct `SQLResourcesClientGetSQLRoleDefinitionResponse` has been removed
+- Field `RawResponse` of struct `NotebookWorkspacesClientRegenerateAuthTokenResponse` has been removed
+- Field `TableResourcesClientMigrateTableToManualThroughputResult` of struct `TableResourcesClientMigrateTableToManualThroughputResponse` has been removed
+- Field `RawResponse` of struct `TableResourcesClientMigrateTableToManualThroughputResponse` has been removed
+- Field `CassandraClustersClientListBySubscriptionResult` of struct `CassandraClustersClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `CassandraClustersClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `NotebookWorkspacesClientDeleteResponse` has been removed
+- Field `PercentileClientListMetricsResult` of struct `PercentileClientListMetricsResponse` has been removed
+- Field `RawResponse` of struct `PercentileClientListMetricsResponse` has been removed
+- Field `RawResponse` of struct `NotebookWorkspacesClientStartResponse` has been removed
+- Field `MongoDBResourcesClientCreateUpdateMongoDBDatabaseResult` of struct `MongoDBResourcesClientCreateUpdateMongoDBDatabaseResponse` has been removed
+- Field `RawResponse` of struct `MongoDBResourcesClientCreateUpdateMongoDBDatabaseResponse` has been removed
+- Field `PrivateEndpointConnectionsClientCreateOrUpdateResult` of struct `PrivateEndpointConnectionsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientCreateOrUpdateResponse` has been removed
+- Field `MongoDBResourcesClientUpdateMongoDBCollectionThroughputResult` of struct `MongoDBResourcesClientUpdateMongoDBCollectionThroughputResponse` has been removed
+- Field `RawResponse` of struct `MongoDBResourcesClientUpdateMongoDBCollectionThroughputResponse` has been removed
+- Field `SQLResourcesClientGetSQLContainerThroughputResult` of struct `SQLResourcesClientGetSQLContainerThroughputResponse` has been removed
+- Field `RawResponse` of struct `SQLResourcesClientGetSQLContainerThroughputResponse` has been removed
+- Field `CassandraClustersClientInvokeCommandResult` of struct `CassandraClustersClientInvokeCommandResponse` has been removed
+- Field `RawResponse` of struct `CassandraClustersClientInvokeCommandResponse` has been removed
+- Field `SQLResourcesClientUpdateSQLContainerThroughputResult` of struct `SQLResourcesClientUpdateSQLContainerThroughputResponse` has been removed
+- Field `RawResponse` of struct `SQLResourcesClientUpdateSQLContainerThroughputResponse` has been removed
+- Field `RawResponse` of struct `SQLResourcesClientDeleteSQLRoleAssignmentResponse` has been removed
+- Field `MongoDBResourcesClientRetrieveContinuousBackupInformationResult` of struct `MongoDBResourcesClientRetrieveContinuousBackupInformationResponse` has been removed
+- Field `RawResponse` of struct `MongoDBResourcesClientRetrieveContinuousBackupInformationResponse` has been removed
+- Field `SQLResourcesClientListSQLRoleDefinitionsResult` of struct `SQLResourcesClientListSQLRoleDefinitionsResponse` has been removed
+- Field `RawResponse` of struct `SQLResourcesClientListSQLRoleDefinitionsResponse` has been removed
+- Field `SQLResourcesClientCreateUpdateSQLContainerResult` of struct `SQLResourcesClientCreateUpdateSQLContainerResponse` has been removed
+- Field `RawResponse` of struct `SQLResourcesClientCreateUpdateSQLContainerResponse` has been removed
+- Field `CassandraClustersClientListByResourceGroupResult` of struct `CassandraClustersClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `CassandraClustersClientListByResourceGroupResponse` has been removed
+- Field `CollectionPartitionClientListUsagesResult` of struct `CollectionPartitionClientListUsagesResponse` has been removed
+- Field `RawResponse` of struct `CollectionPartitionClientListUsagesResponse` has been removed
+- Field `CassandraClustersClientGetResult` of struct `CassandraClustersClientGetResponse` has been removed
+- Field `RawResponse` of struct `CassandraClustersClientGetResponse` has been removed
+- Field `MongoDBResourcesClientGetMongoDBCollectionResult` of struct `MongoDBResourcesClientGetMongoDBCollectionResponse` has been removed
+- Field `RawResponse` of struct `MongoDBResourcesClientGetMongoDBCollectionResponse` has been removed
+- Field `DatabaseAccountsClientListConnectionStringsResult` of struct `DatabaseAccountsClientListConnectionStringsResponse` has been removed
+- Field `RawResponse` of struct `DatabaseAccountsClientListConnectionStringsResponse` has been removed
+- Field `CollectionClientListMetricsResult` of struct `CollectionClientListMetricsResponse` has been removed
+- Field `RawResponse` of struct `CollectionClientListMetricsResponse` has been removed
+- Field `DatabaseClientListMetricDefinitionsResult` of struct `DatabaseClientListMetricDefinitionsResponse` has been removed
+- Field `RawResponse` of struct `DatabaseClientListMetricDefinitionsResponse` has been removed
+- Field `MongoDBResourcesClientGetMongoDBDatabaseThroughputResult` of struct `MongoDBResourcesClientGetMongoDBDatabaseThroughputResponse` has been removed
+- Field `RawResponse` of struct `MongoDBResourcesClientGetMongoDBDatabaseThroughputResponse` has been removed
+- Field `SQLResourcesClientGetSQLDatabaseResult` of struct `SQLResourcesClientGetSQLDatabaseResponse` has been removed
+- Field `RawResponse` of struct `SQLResourcesClientGetSQLDatabaseResponse` has been removed
+- Field `GremlinResourcesClientGetGremlinGraphThroughputResult` of struct `GremlinResourcesClientGetGremlinGraphThroughputResponse` has been removed
+- Field `RawResponse` of struct `GremlinResourcesClientGetGremlinGraphThroughputResponse` has been removed
+- Field `CassandraResourcesClientListCassandraKeyspacesResult` of struct `CassandraResourcesClientListCassandraKeyspacesResponse` has been removed
+- Field `RawResponse` of struct `CassandraResourcesClientListCassandraKeyspacesResponse` has been removed
+- Field `SQLResourcesClientCreateUpdateSQLDatabaseResult` of struct `SQLResourcesClientCreateUpdateSQLDatabaseResponse` has been removed
+- Field `RawResponse` of struct `SQLResourcesClientCreateUpdateSQLDatabaseResponse` has been removed
+- Field `RawResponse` of struct `DatabaseAccountsClientRegenerateKeyResponse` has been removed
+- Field `RestorableSQLDatabasesClientListResult` of struct `RestorableSQLDatabasesClientListResponse` has been removed
+- Field `RawResponse` of struct `RestorableSQLDatabasesClientListResponse` has been removed
+- Field `DatabaseClientListUsagesResult` of struct `DatabaseClientListUsagesResponse` has been removed
+- Field `RawResponse` of struct `DatabaseClientListUsagesResponse` has been removed
+- Field `MongoDBResourcesClientMigrateMongoDBDatabaseToAutoscaleResult` of struct `MongoDBResourcesClientMigrateMongoDBDatabaseToAutoscaleResponse` has been removed
+- Field `RawResponse` of struct `MongoDBResourcesClientMigrateMongoDBDatabaseToAutoscaleResponse` has been removed
+- Field `TableResourcesClientListTablesResult` of struct `TableResourcesClientListTablesResponse` has been removed
+- Field `RawResponse` of struct `TableResourcesClientListTablesResponse` has been removed
+- Field `DatabaseAccountsClientListResult` of struct `DatabaseAccountsClientListResponse` has been removed
+- Field `RawResponse` of struct `DatabaseAccountsClientListResponse` has been removed
+- Field `MongoDBResourcesClientGetMongoDBCollectionThroughputResult` of struct `MongoDBResourcesClientGetMongoDBCollectionThroughputResponse` has been removed
+- Field `RawResponse` of struct `MongoDBResourcesClientGetMongoDBCollectionThroughputResponse` has been removed
+- Field `SQLResourcesClientRetrieveContinuousBackupInformationResult` of struct `SQLResourcesClientRetrieveContinuousBackupInformationResponse` has been removed
+- Field `RawResponse` of struct `SQLResourcesClientRetrieveContinuousBackupInformationResponse` has been removed
+- Field `GremlinResourcesClientMigrateGremlinDatabaseToManualThroughputResult` of struct `GremlinResourcesClientMigrateGremlinDatabaseToManualThroughputResponse` has been removed
+- Field `RawResponse` of struct `GremlinResourcesClientMigrateGremlinDatabaseToManualThroughputResponse` has been removed
+- Field `SQLResourcesClientMigrateSQLContainerToManualThroughputResult` of struct `SQLResourcesClientMigrateSQLContainerToManualThroughputResponse` has been removed
+- Field `RawResponse` of struct `SQLResourcesClientMigrateSQLContainerToManualThroughputResponse` has been removed
+- Field `CassandraResourcesClientCreateUpdateCassandraKeyspaceResult` of struct `CassandraResourcesClientCreateUpdateCassandraKeyspaceResponse` has been removed
+- Field `RawResponse` of struct `CassandraResourcesClientCreateUpdateCassandraKeyspaceResponse` has been removed
+- Field `SQLResourcesClientMigrateSQLDatabaseToManualThroughputResult` of struct `SQLResourcesClientMigrateSQLDatabaseToManualThroughputResponse` has been removed
+- Field `RawResponse` of struct `SQLResourcesClientMigrateSQLDatabaseToManualThroughputResponse` has been removed
+- Field `GremlinResourcesClientGetGremlinGraphResult` of struct `GremlinResourcesClientGetGremlinGraphResponse` has been removed
+- Field `RawResponse` of struct `GremlinResourcesClientGetGremlinGraphResponse` has been removed
+- Field `CassandraDataCentersClientListResult` of struct `CassandraDataCentersClientListResponse` has been removed
+- Field `RawResponse` of struct `CassandraDataCentersClientListResponse` has been removed
+- Field `SQLResourcesClientListSQLDatabasesResult` of struct `SQLResourcesClientListSQLDatabasesResponse` has been removed
+- Field `RawResponse` of struct `SQLResourcesClientListSQLDatabasesResponse` has been removed
+- Field `GremlinResourcesClientCreateUpdateGremlinGraphResult` of struct `GremlinResourcesClientCreateUpdateGremlinGraphResponse` has been removed
+- Field `RawResponse` of struct `GremlinResourcesClientCreateUpdateGremlinGraphResponse` has been removed
+- Field `MongoDBResourcesClientListMongoDBDatabasesResult` of struct `MongoDBResourcesClientListMongoDBDatabasesResponse` has been removed
+- Field `RawResponse` of struct `MongoDBResourcesClientListMongoDBDatabasesResponse` has been removed
+- Field `GremlinResourcesClientMigrateGremlinGraphToManualThroughputResult` of struct `GremlinResourcesClientMigrateGremlinGraphToManualThroughputResponse` has been removed
+- Field `RawResponse` of struct `GremlinResourcesClientMigrateGremlinGraphToManualThroughputResponse` has been removed
+- Field `MongoDBResourcesClientCreateUpdateMongoDBCollectionResult` of struct `MongoDBResourcesClientCreateUpdateMongoDBCollectionResponse` has been removed
+- Field `RawResponse` of struct `MongoDBResourcesClientCreateUpdateMongoDBCollectionResponse` has been removed
+- Field `NotebookWorkspacesClientCreateOrUpdateResult` of struct `NotebookWorkspacesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `NotebookWorkspacesClientCreateOrUpdateResponse` has been removed
+- Field `CassandraResourcesClientListCassandraTablesResult` of struct `CassandraResourcesClientListCassandraTablesResponse` has been removed
+- Field `RawResponse` of struct `CassandraResourcesClientListCassandraTablesResponse` has been removed
+- Field `RestorableMongodbResourcesClientListResult` of struct `RestorableMongodbResourcesClientListResponse` has been removed
+- Field `RawResponse` of struct `RestorableMongodbResourcesClientListResponse` has been removed
+- Field `TableResourcesClientGetTableThroughputResult` of struct `TableResourcesClientGetTableThroughputResponse` has been removed
+- Field `RawResponse` of struct `TableResourcesClientGetTableThroughputResponse` has been removed
+
+### Features Added
+
+- New const `DataTransferComponentAzureBlobStorage`
+- New const `EnableFullTextQueryFalse`
+- New const `ServiceStatusUpdating`
+- New const `ServerVersionFour2`
+- New const `EnableFullTextQueryTrue`
+- New const `ServiceStatusRunning`
+- New const `ServiceStatusStopped`
+- New const `ServiceTypeDataTransfer`
+- New const `MongoRoleDefinitionTypeBuiltInRole`
+- New const `ServiceSizeCosmosD8S`
+- New const `ServiceTypeSQLDedicatedGateway`
+- New const `ServiceStatusCreating`
+- New const `DataTransferComponentCosmosDBCassandra`
+- New const `ServiceStatusError`
+- New const `ServiceTypeMaterializedViewsBuilder`
+- New const `ServiceStatusDeleting`
+- New const `EnableFullTextQueryNone`
+- New const `DataTransferComponentCosmosDBSQL`
+- New const `AuthenticationMethodLdap`
+- New const `ContinuousTierContinuous30Days`
+- New const `MongoRoleDefinitionTypeCustomRole`
+- New const `ContinuousTierContinuous7Days`
+- New const `ServiceSizeCosmosD16S`
+- New const `ServiceSizeCosmosD4S`
+- New const `ServiceTypeGraphAPICompute`
+- New function `*MongoDBResourcesClient.BeginCreateUpdateMongoRoleDefinition(context.Context, string, string, string, MongoRoleDefinitionCreateUpdateParameters, *MongoDBResourcesClientBeginCreateUpdateMongoRoleDefinitionOptions) (*armruntime.Poller[MongoDBResourcesClientCreateUpdateMongoRoleDefinitionResponse], error)`
+- New function `CassandraViewGetResults.MarshalJSON() ([]byte, error)`
+- New function `PossibleEnableFullTextQueryValues() []EnableFullTextQuery`
+- New function `*MaterializedViewsBuilderServiceResourceProperties.GetServiceResourceProperties() *ServiceResourceProperties`
+- New function `*AzureBlobDataTransferDataSourceSink.UnmarshalJSON([]byte) error`
+- New function `*DataTransferJobsClient.Get(context.Context, string, string, string, *DataTransferJobsClientGetOptions) (DataTransferJobsClientGetResponse, error)`
+- New function `GraphAPIComputeServiceResourceProperties.MarshalJSON() ([]byte, error)`
+- New function `PhysicalPartitionStorageInfoCollection.MarshalJSON() ([]byte, error)`
+- New function `RestorableGremlinGraphsListResult.MarshalJSON() ([]byte, error)`
+- New function `AzureBlobDataTransferDataSourceSink.MarshalJSON() ([]byte, error)`
+- New function `*MongoDBResourcesClient.BeginDeleteMongoRoleDefinition(context.Context, string, string, string, *MongoDBResourcesClientBeginDeleteMongoRoleDefinitionOptions) (*armruntime.Poller[MongoDBResourcesClientDeleteMongoRoleDefinitionResponse], error)`
+- New function `*SQLResourcesClient.GetClientEncryptionKey(context.Context, string, string, string, string, *SQLResourcesClientGetClientEncryptionKeyOptions) (SQLResourcesClientGetClientEncryptionKeyResponse, error)`
+- New function `*ServiceResource.UnmarshalJSON([]byte) error`
+- New function `*DataTransferJobsClient.ListByDatabaseAccount(string, string, *DataTransferJobsClientListByDatabaseAccountOptions) *runtime.Pager[DataTransferJobsClientListByDatabaseAccountResponse]`
+- New function `MongoUserDefinitionListResult.MarshalJSON() ([]byte, error)`
+- New function `*GraphResourcesClient.GetGraph(context.Context, string, string, string, *GraphResourcesClientGetGraphOptions) (GraphResourcesClientGetGraphResponse, error)`
+- New function `CassandraViewListResult.MarshalJSON() ([]byte, error)`
+- New function `*SQLDedicatedGatewayServiceResourceProperties.GetServiceResourceProperties() *ServiceResourceProperties`
+- New function `NewRestorableGremlinDatabasesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*RestorableGremlinDatabasesClient, error)`
+- New function `GraphResourceGetResults.MarshalJSON() ([]byte, error)`
+- New function `ServiceResourceListResult.MarshalJSON() ([]byte, error)`
+- New function `*ServiceClient.Get(context.Context, string, string, string, *ServiceClientGetOptions) (ServiceClientGetResponse, error)`
+- New function `*DataTransferJobsClient.Create(context.Context, string, string, string, CreateJobRequest, *DataTransferJobsClientCreateOptions) (DataTransferJobsClientCreateResponse, error)`
+- New function `MaterializedViewsBuilderServiceResourceProperties.MarshalJSON() ([]byte, error)`
+- New function `*MongoDBResourcesClient.GetMongoUserDefinition(context.Context, string, string, string, *MongoDBResourcesClientGetMongoUserDefinitionOptions) (MongoDBResourcesClientGetMongoUserDefinitionResponse, error)`
+- New function `ClientEncryptionKeyResource.MarshalJSON() ([]byte, error)`
+- New function `*GraphAPIComputeServiceResourceProperties.GetServiceResourceProperties() *ServiceResourceProperties`
+- New function `*DataTransferDataSourceSink.GetDataTransferDataSourceSink() *DataTransferDataSourceSink`
+- New function `*RestorableGremlinResourcesClient.List(string, string, *RestorableGremlinResourcesClientListOptions) *runtime.Pager[RestorableGremlinResourcesClientListResponse]`
+- New function `ServiceResource.MarshalJSON() ([]byte, error)`
+- New function `NewRestorableGremlinResourcesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*RestorableGremlinResourcesClient, error)`
+- New function `BackupResourceProperties.MarshalJSON() ([]byte, error)`
+- New function `*AzureBlobDataTransferDataSourceSink.GetDataTransferDataSourceSink() *DataTransferDataSourceSink`
+- New function `*CassandraResourcesClient.GetCassandraViewThroughput(context.Context, string, string, string, string, *CassandraResourcesClientGetCassandraViewThroughputOptions) (CassandraResourcesClientGetCassandraViewThroughputResponse, error)`
+- New function `SQLDataTransferDataSourceSink.MarshalJSON() ([]byte, error)`
+- New function `*BackupResourceProperties.UnmarshalJSON([]byte) error`
+- New function `CassandraDataTransferDataSourceSink.MarshalJSON() ([]byte, error)`
+- New function `*CassandraResourcesClient.BeginDeleteCassandraView(context.Context, string, string, string, string, *CassandraResourcesClientBeginDeleteCassandraViewOptions) (*armruntime.Poller[CassandraResourcesClientDeleteCassandraViewResponse], error)`
+- New function `*ClientEncryptionKeyResource.UnmarshalJSON([]byte) error`
+- New function `*ServiceResourceProperties.GetServiceResourceProperties() *ServiceResourceProperties`
+- New function `*SQLResourcesClient.ListClientEncryptionKeys(string, string, string, *SQLResourcesClientListClientEncryptionKeysOptions) *runtime.Pager[SQLResourcesClientListClientEncryptionKeysResponse]`
+- New function `PossibleServiceTypeValues() []ServiceType`
+- New function `*GraphResourcesClient.BeginCreateUpdateGraph(context.Context, string, string, string, GraphResourceCreateUpdateParameters, *GraphResourcesClientBeginCreateUpdateGraphOptions) (*armruntime.Poller[GraphResourcesClientCreateUpdateGraphResponse], error)`
+- New function `*SQLDedicatedGatewayServiceResourceProperties.UnmarshalJSON([]byte) error`
+- New function `MongoRoleDefinitionResource.MarshalJSON() ([]byte, error)`
+- New function `ListBackups.MarshalJSON() ([]byte, error)`
+- New function `PossibleServiceStatusValues() []ServiceStatus`
+- New function `PossibleServiceSizeValues() []ServiceSize`
+- New function `*MongoDBResourcesClient.ListMongoUserDefinitions(string, string, *MongoDBResourcesClientListMongoUserDefinitionsOptions) *runtime.Pager[MongoDBResourcesClientListMongoUserDefinitionsResponse]`
+- New function `DataTransferJobFeedResults.MarshalJSON() ([]byte, error)`
+- New function `NewRestorableTableResourcesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*RestorableTableResourcesClient, error)`
+- New function `NewDataTransferJobsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*DataTransferJobsClient, error)`
+- New function `*SQLDataTransferDataSourceSink.GetDataTransferDataSourceSink() *DataTransferDataSourceSink`
+- New function `*GremlinResourcesClient.BeginRetrieveContinuousBackupInformation(context.Context, string, string, string, string, ContinuousBackupRestoreLocation, *GremlinResourcesClientBeginRetrieveContinuousBackupInformationOptions) (*armruntime.Poller[GremlinResourcesClientRetrieveContinuousBackupInformationResponse], error)`
+- New function `*DataTransferJobProperties.UnmarshalJSON([]byte) error`
+- New function `*RestorableTableResourcesClient.List(string, string, *RestorableTableResourcesClientListOptions) *runtime.Pager[RestorableTableResourcesClientListResponse]`
+- New function `*RestorableGremlinGraphsClient.List(string, string, *RestorableGremlinGraphsClientListOptions) *runtime.Pager[RestorableGremlinGraphsClientListResponse]`
+- New function `DataTransferServiceResourceProperties.MarshalJSON() ([]byte, error)`
+- New function `RestorableTablesListResult.MarshalJSON() ([]byte, error)`
+- New function `*RestorableTablesClient.List(string, string, *RestorableTablesClientListOptions) *runtime.Pager[RestorableTablesClientListResponse]`
+- New function `*SQLResourcesClient.BeginListSQLContainerPartitionMerge(context.Context, string, string, string, string, MergeParameters, *SQLResourcesClientBeginListSQLContainerPartitionMergeOptions) (*armruntime.Poller[SQLResourcesClientListSQLContainerPartitionMergeResponse], error)`
+- New function `*MongoDBResourcesClient.BeginCreateUpdateMongoUserDefinition(context.Context, string, string, string, MongoUserDefinitionCreateUpdateParameters, *MongoDBResourcesClientBeginCreateUpdateMongoUserDefinitionOptions) (*armruntime.Poller[MongoDBResourcesClientCreateUpdateMongoUserDefinitionResponse], error)`
+- New function `*MongoDBResourcesClient.ListMongoRoleDefinitions(string, string, *MongoDBResourcesClientListMongoRoleDefinitionsOptions) *runtime.Pager[MongoDBResourcesClientListMongoRoleDefinitionsResponse]`
+- New function `*ServiceResourceProperties.UnmarshalJSON([]byte) error`
+- New function `AuthenticationMethodLdapProperties.MarshalJSON() ([]byte, error)`
+- New function `*TableResourcesClient.BeginRetrieveContinuousBackupInformation(context.Context, string, string, string, ContinuousBackupRestoreLocation, *TableResourcesClientBeginRetrieveContinuousBackupInformationOptions) (*armruntime.Poller[TableResourcesClientRetrieveContinuousBackupInformationResponse], error)`
+- New function `ServiceResourceProperties.MarshalJSON() ([]byte, error)`
+- New function `ClientEncryptionKeyGetPropertiesResource.MarshalJSON() ([]byte, error)`
+- New function `NewRestorableTablesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*RestorableTablesClient, error)`
+- New function `*CassandraResourcesClient.ListCassandraViews(string, string, string, *CassandraResourcesClientListCassandraViewsOptions) *runtime.Pager[CassandraResourcesClientListCassandraViewsResponse]`
+- New function `*SQLDataTransferDataSourceSink.UnmarshalJSON([]byte) error`
+- New function `RestorableGremlinDatabasesListResult.MarshalJSON() ([]byte, error)`
+- New function `*MongoDBResourcesClient.BeginDeleteMongoUserDefinition(context.Context, string, string, string, *MongoDBResourcesClientBeginDeleteMongoUserDefinitionOptions) (*armruntime.Poller[MongoDBResourcesClientDeleteMongoUserDefinitionResponse], error)`
+- New function `RestorableTableResourcesListResult.MarshalJSON() ([]byte, error)`
+- New function `PossibleContinuousTierValues() []ContinuousTier`
+- New function `SQLDedicatedGatewayServiceResourceProperties.MarshalJSON() ([]byte, error)`
+- New function `MongoUserDefinitionResource.MarshalJSON() ([]byte, error)`
+- New function `*CassandraResourcesClient.GetCassandraView(context.Context, string, string, string, string, *CassandraResourcesClientGetCassandraViewOptions) (CassandraResourcesClientGetCassandraViewResponse, error)`
+- New function `*ServiceClient.BeginDelete(context.Context, string, string, string, *ServiceClientBeginDeleteOptions) (*armruntime.Poller[ServiceClientDeleteResponse], error)`
+- New function `MongoRoleDefinitionListResult.MarshalJSON() ([]byte, error)`
+- New function `*ClientEncryptionKeyGetPropertiesResource.UnmarshalJSON([]byte) error`
+- New function `*CassandraClustersClient.GetBackup(context.Context, string, string, string, *CassandraClustersClientGetBackupOptions) (CassandraClustersClientGetBackupResponse, error)`
+- New function `NewServiceClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ServiceClient, error)`
+- New function `GraphResourceCreateUpdateParameters.MarshalJSON() ([]byte, error)`
+- New function `*SQLResourcesClient.BeginCreateUpdateClientEncryptionKey(context.Context, string, string, string, string, ClientEncryptionKeyCreateUpdateParameters, *SQLResourcesClientBeginCreateUpdateClientEncryptionKeyOptions) (*armruntime.Poller[SQLResourcesClientCreateUpdateClientEncryptionKeyResponse], error)`
+- New function `*CassandraDataTransferDataSourceSink.GetDataTransferDataSourceSink() *DataTransferDataSourceSink`
+- New function `PossibleMongoRoleDefinitionTypeValues() []MongoRoleDefinitionType`
+- New function `*DataTransferServiceResourceProperties.GetServiceResourceProperties() *ServiceResourceProperties`
+- New function `*MongoDBResourcesClient.GetMongoRoleDefinition(context.Context, string, string, string, *MongoDBResourcesClientGetMongoRoleDefinitionOptions) (MongoDBResourcesClientGetMongoRoleDefinitionResponse, error)`
+- New function `*CassandraResourcesClient.BeginMigrateCassandraViewToAutoscale(context.Context, string, string, string, string, *CassandraResourcesClientBeginMigrateCassandraViewToAutoscaleOptions) (*armruntime.Poller[CassandraResourcesClientMigrateCassandraViewToAutoscaleResponse], error)`
+- New function `*ServiceClient.BeginCreate(context.Context, string, string, string, ServiceResourceCreateUpdateParameters, *ServiceClientBeginCreateOptions) (*armruntime.Poller[ServiceClientCreateResponse], error)`
+- New function `*GraphResourcesClient.ListGraphs(string, string, *GraphResourcesClientListGraphsOptions) *runtime.Pager[GraphResourcesClientListGraphsResponse]`
+- New function `NewRestorableGremlinGraphsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*RestorableGremlinGraphsClient, error)`
+- New function `*ServiceClient.List(string, string, *ServiceClientListOptions) *runtime.Pager[ServiceClientListResponse]`
+- New function `CassandraViewCreateUpdateParameters.MarshalJSON() ([]byte, error)`
+- New function `*CassandraResourcesClient.BeginCreateUpdateCassandraView(context.Context, string, string, string, string, CassandraViewCreateUpdateParameters, *CassandraResourcesClientBeginCreateUpdateCassandraViewOptions) (*armruntime.Poller[CassandraResourcesClientCreateUpdateCassandraViewResponse], error)`
+- New function `*CassandraClustersClient.ListBackups(string, string, *CassandraClustersClientListBackupsOptions) *runtime.Pager[CassandraClustersClientListBackupsResponse]`
+- New function `*DataTransferServiceResourceProperties.UnmarshalJSON([]byte) error`
+- New function `ClientEncryptionKeysListResult.MarshalJSON() ([]byte, error)`
+- New function `*CassandraResourcesClient.BeginUpdateCassandraViewThroughput(context.Context, string, string, string, string, ThroughputSettingsUpdateParameters, *CassandraResourcesClientBeginUpdateCassandraViewThroughputOptions) (*armruntime.Poller[CassandraResourcesClientUpdateCassandraViewThroughputResponse], error)`
+- New function `GraphResourcesListResult.MarshalJSON() ([]byte, error)`
+- New function `*GraphResourcesClient.BeginDeleteGraphResource(context.Context, string, string, string, *GraphResourcesClientBeginDeleteGraphResourceOptions) (*armruntime.Poller[GraphResourcesClientDeleteGraphResourceResponse], error)`
+- New function `*CassandraDataTransferDataSourceSink.UnmarshalJSON([]byte) error`
+- New function `PossibleDataTransferComponentValues() []DataTransferComponent`
+- New function `ClientEncryptionPolicy.MarshalJSON() ([]byte, error)`
+- New function `*CassandraResourcesClient.BeginMigrateCassandraViewToManualThroughput(context.Context, string, string, string, string, *CassandraResourcesClientBeginMigrateCassandraViewToManualThroughputOptions) (*armruntime.Poller[CassandraResourcesClientMigrateCassandraViewToManualThroughputResponse], error)`
+- New function `DataTransferJobProperties.MarshalJSON() ([]byte, error)`
+- New function `Privilege.MarshalJSON() ([]byte, error)`
+- New function `*MaterializedViewsBuilderServiceResourceProperties.UnmarshalJSON([]byte) error`
+- New function `*MongoDBResourcesClient.BeginListMongoDBCollectionPartitionMerge(context.Context, string, string, string, string, MergeParameters, *MongoDBResourcesClientBeginListMongoDBCollectionPartitionMergeOptions) (*armruntime.Poller[MongoDBResourcesClientListMongoDBCollectionPartitionMergeResponse], error)`
+- New function `GremlinDatabaseRestoreResource.MarshalJSON() ([]byte, error)`
+- New function `*RestorableGremlinDatabasesClient.List(string, string, *RestorableGremlinDatabasesClientListOptions) *runtime.Pager[RestorableGremlinDatabasesClientListResponse]`
+- New function `*GraphAPIComputeServiceResourceProperties.UnmarshalJSON([]byte) error`
+- New function `NewGraphResourcesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*GraphResourcesClient, error)`
+- New function `RestorableGremlinResourcesListResult.MarshalJSON() ([]byte, error)`
+- New struct `AuthenticationMethodLdapProperties`
+- New struct `AzureBlobDataTransferDataSourceSink`
+- New struct `BackupResource`
+- New struct `BackupResourceProperties`
+- New struct `CassandraClustersClientGetBackupOptions`
+- New struct `CassandraClustersClientGetBackupResponse`
+- New struct `CassandraClustersClientListBackupsOptions`
+- New struct `CassandraClustersClientListBackupsResponse`
+- New struct `CassandraDataTransferDataSourceSink`
+- New struct `CassandraResourcesClientBeginCreateUpdateCassandraViewOptions`
+- New struct `CassandraResourcesClientBeginDeleteCassandraViewOptions`
+- New struct `CassandraResourcesClientBeginMigrateCassandraViewToAutoscaleOptions`
+- New struct `CassandraResourcesClientBeginMigrateCassandraViewToManualThroughputOptions`
+- New struct `CassandraResourcesClientBeginUpdateCassandraViewThroughputOptions`
+- New struct `CassandraResourcesClientCreateUpdateCassandraViewResponse`
+- New struct `CassandraResourcesClientDeleteCassandraViewResponse`
+- New struct `CassandraResourcesClientGetCassandraViewOptions`
+- New struct `CassandraResourcesClientGetCassandraViewResponse`
+- New struct `CassandraResourcesClientGetCassandraViewThroughputOptions`
+- New struct `CassandraResourcesClientGetCassandraViewThroughputResponse`
+- New struct `CassandraResourcesClientListCassandraViewsOptions`
+- New struct `CassandraResourcesClientListCassandraViewsResponse`
+- New struct `CassandraResourcesClientMigrateCassandraViewToAutoscaleResponse`
+- New struct `CassandraResourcesClientMigrateCassandraViewToManualThroughputResponse`
+- New struct `CassandraResourcesClientUpdateCassandraViewThroughputResponse`
+- New struct `CassandraViewCreateUpdateParameters`
+- New struct `CassandraViewCreateUpdateProperties`
+- New struct `CassandraViewGetProperties`
+- New struct `CassandraViewGetPropertiesOptions`
+- New struct `CassandraViewGetPropertiesResource`
+- New struct `CassandraViewGetResults`
+- New struct `CassandraViewListResult`
+- New struct `CassandraViewResource`
+- New struct `ClientEncryptionIncludedPath`
+- New struct `ClientEncryptionKeyCreateUpdateParameters`
+- New struct `ClientEncryptionKeyCreateUpdateProperties`
+- New struct `ClientEncryptionKeyGetProperties`
+- New struct `ClientEncryptionKeyGetPropertiesResource`
+- New struct `ClientEncryptionKeyGetResults`
+- New struct `ClientEncryptionKeyResource`
+- New struct `ClientEncryptionKeysListResult`
+- New struct `ClientEncryptionPolicy`
+- New struct `ContinuousModeProperties`
+- New struct `CreateJobRequest`
+- New struct `DataTransferDataSourceSink`
+- New struct `DataTransferJobFeedResults`
+- New struct `DataTransferJobGetResults`
+- New struct `DataTransferJobProperties`
+- New struct `DataTransferJobsClient`
+- New struct `DataTransferJobsClientCreateOptions`
+- New struct `DataTransferJobsClientCreateResponse`
+- New struct `DataTransferJobsClientGetOptions`
+- New struct `DataTransferJobsClientGetResponse`
+- New struct `DataTransferJobsClientListByDatabaseAccountOptions`
+- New struct `DataTransferJobsClientListByDatabaseAccountResponse`
+- New struct `DataTransferRegionalServiceResource`
+- New struct `DataTransferServiceResource`
+- New struct `DataTransferServiceResourceProperties`
+- New struct `DiagnosticLogSettings`
+- New struct `GraphAPIComputeRegionalServiceResource`
+- New struct `GraphAPIComputeServiceResource`
+- New struct `GraphAPIComputeServiceResourceProperties`
+- New struct `GraphResource`
+- New struct `GraphResourceCreateUpdateParameters`
+- New struct `GraphResourceCreateUpdateProperties`
+- New struct `GraphResourceGetProperties`
+- New struct `GraphResourceGetPropertiesOptions`
+- New struct `GraphResourceGetPropertiesResource`
+- New struct `GraphResourceGetResults`
+- New struct `GraphResourcesClient`
+- New struct `GraphResourcesClientBeginCreateUpdateGraphOptions`
+- New struct `GraphResourcesClientBeginDeleteGraphResourceOptions`
+- New struct `GraphResourcesClientCreateUpdateGraphResponse`
+- New struct `GraphResourcesClientDeleteGraphResourceResponse`
+- New struct `GraphResourcesClientGetGraphOptions`
+- New struct `GraphResourcesClientGetGraphResponse`
+- New struct `GraphResourcesClientListGraphsOptions`
+- New struct `GraphResourcesClientListGraphsResponse`
+- New struct `GraphResourcesListResult`
+- New struct `GremlinDatabaseRestoreResource`
+- New struct `GremlinResourcesClientBeginRetrieveContinuousBackupInformationOptions`
+- New struct `GremlinResourcesClientRetrieveContinuousBackupInformationResponse`
+- New struct `KeyWrapMetadata`
+- New struct `ListBackups`
+- New struct `MaterializedViewsBuilderRegionalServiceResource`
+- New struct `MaterializedViewsBuilderServiceResource`
+- New struct `MaterializedViewsBuilderServiceResourceProperties`
+- New struct `MergeParameters`
+- New struct `MongoDBResourcesClientBeginCreateUpdateMongoRoleDefinitionOptions`
+- New struct `MongoDBResourcesClientBeginCreateUpdateMongoUserDefinitionOptions`
+- New struct `MongoDBResourcesClientBeginDeleteMongoRoleDefinitionOptions`
+- New struct `MongoDBResourcesClientBeginDeleteMongoUserDefinitionOptions`
+- New struct `MongoDBResourcesClientBeginListMongoDBCollectionPartitionMergeOptions`
+- New struct `MongoDBResourcesClientCreateUpdateMongoRoleDefinitionResponse`
+- New struct `MongoDBResourcesClientCreateUpdateMongoUserDefinitionResponse`
+- New struct `MongoDBResourcesClientDeleteMongoRoleDefinitionResponse`
+- New struct `MongoDBResourcesClientDeleteMongoUserDefinitionResponse`
+- New struct `MongoDBResourcesClientGetMongoRoleDefinitionOptions`
+- New struct `MongoDBResourcesClientGetMongoRoleDefinitionResponse`
+- New struct `MongoDBResourcesClientGetMongoUserDefinitionOptions`
+- New struct `MongoDBResourcesClientGetMongoUserDefinitionResponse`
+- New struct `MongoDBResourcesClientListMongoDBCollectionPartitionMergeResponse`
+- New struct `MongoDBResourcesClientListMongoRoleDefinitionsOptions`
+- New struct `MongoDBResourcesClientListMongoRoleDefinitionsResponse`
+- New struct `MongoDBResourcesClientListMongoUserDefinitionsOptions`
+- New struct `MongoDBResourcesClientListMongoUserDefinitionsResponse`
+- New struct `MongoRoleDefinitionCreateUpdateParameters`
+- New struct `MongoRoleDefinitionGetResults`
+- New struct `MongoRoleDefinitionListResult`
+- New struct `MongoRoleDefinitionResource`
+- New struct `MongoUserDefinitionCreateUpdateParameters`
+- New struct `MongoUserDefinitionGetResults`
+- New struct `MongoUserDefinitionListResult`
+- New struct `MongoUserDefinitionResource`
+- New struct `PhysicalPartitionStorageInfo`
+- New struct `PhysicalPartitionStorageInfoCollection`
+- New struct `Privilege`
+- New struct `PrivilegeResource`
+- New struct `RegionalServiceResource`
+- New struct `RestorableGremlinDatabaseGetResult`
+- New struct `RestorableGremlinDatabaseProperties`
+- New struct `RestorableGremlinDatabasePropertiesResource`
+- New struct `RestorableGremlinDatabasesClient`
+- New struct `RestorableGremlinDatabasesClientListOptions`
+- New struct `RestorableGremlinDatabasesClientListResponse`
+- New struct `RestorableGremlinDatabasesListResult`
+- New struct `RestorableGremlinGraphGetResult`
+- New struct `RestorableGremlinGraphProperties`
+- New struct `RestorableGremlinGraphPropertiesResource`
+- New struct `RestorableGremlinGraphsClient`
+- New struct `RestorableGremlinGraphsClientListOptions`
+- New struct `RestorableGremlinGraphsClientListResponse`
+- New struct `RestorableGremlinGraphsListResult`
+- New struct `RestorableGremlinResourcesClient`
+- New struct `RestorableGremlinResourcesClientListOptions`
+- New struct `RestorableGremlinResourcesClientListResponse`
+- New struct `RestorableGremlinResourcesListResult`
+- New struct `RestorableTableGetResult`
+- New struct `RestorableTableProperties`
+- New struct `RestorableTablePropertiesResource`
+- New struct `RestorableTableResourcesClient`
+- New struct `RestorableTableResourcesClientListOptions`
+- New struct `RestorableTableResourcesClientListResponse`
+- New struct `RestorableTableResourcesListResult`
+- New struct `RestorableTablesClient`
+- New struct `RestorableTablesClientListOptions`
+- New struct `RestorableTablesClientListResponse`
+- New struct `RestorableTablesListResult`
+- New struct `Role`
+- New struct `SQLDataTransferDataSourceSink`
+- New struct `SQLDedicatedGatewayRegionalServiceResource`
+- New struct `SQLDedicatedGatewayServiceResource`
+- New struct `SQLDedicatedGatewayServiceResourceProperties`
+- New struct `SQLResourcesClientBeginCreateUpdateClientEncryptionKeyOptions`
+- New struct `SQLResourcesClientBeginListSQLContainerPartitionMergeOptions`
+- New struct `SQLResourcesClientCreateUpdateClientEncryptionKeyResponse`
+- New struct `SQLResourcesClientGetClientEncryptionKeyOptions`
+- New struct `SQLResourcesClientGetClientEncryptionKeyResponse`
+- New struct `SQLResourcesClientListClientEncryptionKeysOptions`
+- New struct `SQLResourcesClientListClientEncryptionKeysResponse`
+- New struct `SQLResourcesClientListSQLContainerPartitionMergeResponse`
+- New struct `ServiceClient`
+- New struct `ServiceClientBeginCreateOptions`
+- New struct `ServiceClientBeginDeleteOptions`
+- New struct `ServiceClientCreateResponse`
+- New struct `ServiceClientDeleteResponse`
+- New struct `ServiceClientGetOptions`
+- New struct `ServiceClientGetResponse`
+- New struct `ServiceClientListOptions`
+- New struct `ServiceClientListResponse`
+- New struct `ServiceResource`
+- New struct `ServiceResourceCreateUpdateParameters`
+- New struct `ServiceResourceCreateUpdateProperties`
+- New struct `ServiceResourceListResult`
+- New struct `ServiceResourceProperties`
+- New struct `TableResourcesClientBeginRetrieveContinuousBackupInformationOptions`
+- New struct `TableResourcesClientRetrieveContinuousBackupInformationResponse`
+- New field `ResumeToken` in struct `DatabaseAccountsClientBeginOfflineRegionOptions`
+- New field `ResumeToken` in struct `SQLResourcesClientBeginDeleteSQLDatabaseOptions`
+- New anonymous field `ThroughputSettingsGetResults` in struct `CassandraResourcesClientMigrateCassandraKeyspaceToManualThroughputResponse`
+- New field `Identity` in struct `CassandraKeyspaceCreateUpdateParameters`
+- New anonymous field `CassandraTableListResult` in struct `CassandraResourcesClientListCassandraTablesResponse`
+- New anonymous field `ThroughputSettingsGetResults` in struct `GremlinResourcesClientMigrateGremlinDatabaseToManualThroughputResponse`
+- New anonymous field `ThroughputSettingsGetResults` in struct `TableResourcesClientMigrateTableToManualThroughputResponse`
+- New anonymous field `SQLStoredProcedureGetResults` in struct `SQLResourcesClientGetSQLStoredProcedureResponse`
+- New anonymous field `TableListResult` in struct `TableResourcesClientListTablesResponse`
+- New field `ResumeToken` in struct `DatabaseAccountsClientBeginRegenerateKeyOptions`
+- New field `ResumeToken` in struct `GremlinResourcesClientBeginMigrateGremlinGraphToManualThroughputOptions`
+- New field `ResumeToken` in struct `GremlinResourcesClientBeginCreateUpdateGremlinDatabaseOptions`
+- New anonymous field `UsagesResult` in struct `DatabaseAccountsClientListUsagesResponse`
+- New field `Success` in struct `DatabaseAccountsClientCheckNameExistsResponse`
+- New anonymous field `RestorableDatabaseAccountGetResult` in struct `RestorableDatabaseAccountsClientGetByLocationResponse`
+- New field `ResumeToken` in struct `SQLResourcesClientBeginUpdateSQLDatabaseThroughputOptions`
+- New field `ResumeToken` in struct `MongoDBResourcesClientBeginMigrateMongoDBDatabaseToManualThroughputOptions`
+- New anonymous field `RestorableMongodbResourcesListResult` in struct `RestorableMongodbResourcesClientListResponse`
+- New field `ResumeToken` in struct `SQLResourcesClientBeginDeleteSQLRoleDefinitionOptions`
+- New anonymous field `ThroughputSettingsGetResults` in struct `SQLResourcesClientMigrateSQLContainerToAutoscaleResponse`
+- New anonymous field `TableGetResults` in struct `TableResourcesClientGetTableResponse`
+- New anonymous field `ThroughputSettingsGetResults` in struct `SQLResourcesClientMigrateSQLDatabaseToManualThroughputResponse`
+- New field `ResumeToken` in struct `CassandraDataCentersClientBeginDeleteOptions`
+- New field `Identity` in struct `MongoDBCollectionGetResults`
+- New anonymous field `PartitionUsagesResult` in struct `CollectionPartitionClientListUsagesResponse`
+- New field `ResumeToken` in struct `SQLResourcesClientBeginDeleteSQLRoleAssignmentOptions`
+- New field `ResumeToken` in struct `CassandraResourcesClientBeginMigrateCassandraKeyspaceToAutoscaleOptions`
+- New anonymous field `CommandOutput` in struct `CassandraClustersClientInvokeCommandResponse`
+- New anonymous field `ThroughputSettingsGetResults` in struct `SQLResourcesClientMigrateSQLDatabaseToAutoscaleResponse`
+- New field `Identity` in struct `GremlinGraphCreateUpdateParameters`
+- New anonymous field `RestorableSQLResourcesListResult` in struct `RestorableSQLResourcesClientListResponse`
+- New field `ResumeToken` in struct `TableResourcesClientBeginCreateUpdateTableOptions`
+- New field `ResumeToken` in struct `PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions`
+- New anonymous field `RestorableMongodbCollectionsListResult` in struct `RestorableMongodbCollectionsClientListResponse`
+- New anonymous field `ThroughputSettingsGetResults` in struct `SQLResourcesClientUpdateSQLContainerThroughputResponse`
+- New field `Identity` in struct `SQLTriggerGetResults`
+- New anonymous field `ThroughputSettingsGetResults` in struct `MongoDBResourcesClientMigrateMongoDBCollectionToManualThroughputResponse`
+- New anonymous field `SQLStoredProcedureGetResults` in struct `SQLResourcesClientCreateUpdateSQLStoredProcedureResponse`
+- New anonymous field `DatabaseAccountGetResults` in struct `DatabaseAccountsClientCreateOrUpdateResponse`
+- New anonymous field `PercentileMetricListResult` in struct `PercentileSourceTargetClientListMetricsResponse`
+- New anonymous field `SQLRoleAssignmentGetResults` in struct `SQLResourcesClientCreateUpdateSQLRoleAssignmentResponse`
+- New anonymous field `MongoDBDatabaseGetResults` in struct `MongoDBResourcesClientCreateUpdateMongoDBDatabaseResponse`
+- New anonymous field `SQLDatabaseGetResults` in struct `SQLResourcesClientGetSQLDatabaseResponse`
+- New anonymous field `PartitionMetricListResult` in struct `CollectionPartitionRegionClientListMetricsResponse`
+- New anonymous field `SQLTriggerListResult` in struct `SQLResourcesClientListSQLTriggersResponse`
+- New anonymous field `GremlinDatabaseGetResults` in struct `GremlinResourcesClientCreateUpdateGremlinDatabaseResponse`
+- New field `ResumeToken` in struct `CassandraClustersClientBeginUpdateOptions`
+- New anonymous field `ThroughputSettingsGetResults` in struct `GremlinResourcesClientGetGremlinDatabaseThroughputResponse`
+- New anonymous field `DataCenterResource` in struct `CassandraDataCentersClientCreateUpdateResponse`
+- New field `ResumeToken` in struct `SQLResourcesClientBeginDeleteSQLStoredProcedureOptions`
+- New anonymous field `CassandraTableGetResults` in struct `CassandraResourcesClientGetCassandraTableResponse`
+- New field `EnableMaterializedViews` in struct `DatabaseAccountCreateUpdateProperties`
+- New field `DiagnosticLogSettings` in struct `DatabaseAccountCreateUpdateProperties`
+- New field `ResumeToken` in struct `GremlinResourcesClientBeginMigrateGremlinDatabaseToManualThroughputOptions`
+- New anonymous field `DataCenterResource` in struct `CassandraDataCentersClientGetResponse`
+- New field `ResumeToken` in struct `SQLResourcesClientBeginCreateUpdateSQLDatabaseOptions`
+- New anonymous field `ThroughputSettingsGetResults` in struct `MongoDBResourcesClientMigrateMongoDBDatabaseToManualThroughputResponse`
+- New field `ResumeToken` in struct `GremlinResourcesClientBeginUpdateGremlinGraphThroughputOptions`
+- New field `ResumeToken` in struct `SQLResourcesClientBeginUpdateSQLContainerThroughputOptions`
+- New field `ClientEncryptionPolicy` in struct `SQLContainerGetPropertiesResource`
+- New anonymous field `ThroughputSettingsGetResults` in struct `TableResourcesClientGetTableThroughputResponse`
+- New field `ResumeToken` in struct `CassandraClustersClientBeginDeleteOptions`
+- New anonymous field `DatabaseAccountsListResult` in struct `DatabaseAccountsClientListResponse`
+- New anonymous field `ThroughputSettingsGetResults` in struct `CassandraResourcesClientUpdateCassandraTableThroughputResponse`
+- New anonymous field `ThroughputSettingsGetResults` in struct `CassandraResourcesClientMigrateCassandraTableToAutoscaleResponse`
+- New field `ClientEncryptionPolicy` in struct `SQLContainerResource`
+- New field `ResumeToken` in struct `TableResourcesClientBeginDeleteTableOptions`
+- New anonymous field `CassandraClusterPublicStatus` in struct `CassandraClustersClientStatusResponse`
+- New anonymous field `DatabaseAccountsListResult` in struct `DatabaseAccountsClientListByResourceGroupResponse`
+- New anonymous field `PrivateEndpointConnection` in struct `PrivateEndpointConnectionsClientGetResponse`
+- New field `Identity` in struct `GremlinGraphGetResults`
+- New field `ResumeToken` in struct `NotebookWorkspacesClientBeginCreateOrUpdateOptions`
+- New anonymous field `ThroughputSettingsGetResults` in struct `GremlinResourcesClientGetGremlinGraphThroughputResponse`
+- New anonymous field `ThroughputSettingsGetResults` in struct `MongoDBResourcesClientMigrateMongoDBCollectionToAutoscaleResponse`
+- New field `Identity` in struct `ThroughputSettingsGetResults`
+- New anonymous field `DatabaseAccountListReadOnlyKeysResult` in struct `DatabaseAccountsClientListReadOnlyKeysResponse`
+- New anonymous field `GremlinGraphGetResults` in struct `GremlinResourcesClientCreateUpdateGremlinGraphResponse`
+- New field `ResumeToken` in struct `SQLResourcesClientBeginMigrateSQLContainerToAutoscaleOptions`
+- New anonymous field `ThroughputSettingsGetResults` in struct `CassandraResourcesClientMigrateCassandraTableToManualThroughputResponse`
+- New field `Identity` in struct `SQLDatabaseCreateUpdateParameters`
+- New anonymous field `BackupInformation` in struct `MongoDBResourcesClientRetrieveContinuousBackupInformationResponse`
+- New anonymous field `CassandraKeyspaceListResult` in struct `CassandraResourcesClientListCassandraKeyspacesResponse`
+- New anonymous field `PrivateLinkResource` in struct `PrivateLinkResourcesClientGetResponse`
+- New field `Identity` in struct `CassandraTableGetResults`
+- New anonymous field `RestorableDatabaseAccountsListResult` in struct `RestorableDatabaseAccountsClientListResponse`
+- New anonymous field `UsagesResult` in struct `CollectionClientListUsagesResponse`
+- New anonymous field `SQLUserDefinedFunctionGetResults` in struct `SQLResourcesClientCreateUpdateSQLUserDefinedFunctionResponse`
+- New anonymous field `LocationGetResult` in struct `LocationsClientGetResponse`
+- New anonymous field `SQLDatabaseGetResults` in struct `SQLResourcesClientCreateUpdateSQLDatabaseResponse`
+- New anonymous field `NotebookWorkspaceListResult` in struct `NotebookWorkspacesClientListByDatabaseAccountResponse`
+- New field `Identity` in struct `ARMResourceProperties`
+- New field `ResumeToken` in struct `SQLResourcesClientBeginDeleteSQLContainerOptions`
+- New field `ResumeToken` in struct `SQLResourcesClientBeginRetrieveContinuousBackupInformationOptions`
+- New field `ResumeToken` in struct `SQLResourcesClientBeginCreateUpdateSQLRoleDefinitionOptions`
+- New anonymous field `ThroughputSettingsGetResults` in struct `SQLResourcesClientUpdateSQLDatabaseThroughputResponse`
+- New anonymous field `ThroughputSettingsGetResults` in struct `GremlinResourcesClientMigrateGremlinGraphToAutoscaleResponse`
+- New anonymous field `ThroughputSettingsGetResults` in struct `CassandraResourcesClientUpdateCassandraKeyspaceThroughputResponse`
+- New field `ResumeToken` in struct `CassandraClustersClientBeginInvokeCommandOptions`
+- New field `ResumeToken` in struct `CassandraClustersClientBeginStartOptions`
+- New field `AuthenticationMethodLdapProperties` in struct `DataCenterResourceProperties`
+- New anonymous field `ThroughputSettingsGetResults` in struct `GremlinResourcesClientMigrateGremlinDatabaseToAutoscaleResponse`
+- New anonymous field `RestorableSQLDatabasesListResult` in struct `RestorableSQLDatabasesClientListResponse`
+- New anonymous field `ListClusters` in struct `CassandraClustersClientListByResourceGroupResponse`
+- New field `ResumeToken` in struct `NotebookWorkspacesClientBeginDeleteOptions`
+- New field `EnableMaterializedViews` in struct `DatabaseAccountGetProperties`
+- New field `DiagnosticLogSettings` in struct `DatabaseAccountGetProperties`
+- New anonymous field `ThroughputSettingsGetResults` in struct `TableResourcesClientUpdateTableThroughputResponse`
+- New field `ResumeToken` in struct `NotebookWorkspacesClientBeginRegenerateAuthTokenOptions`
+- New anonymous field `BackupInformation` in struct `SQLResourcesClientRetrieveContinuousBackupInformationResponse`
+- New anonymous field `ClusterResource` in struct `CassandraClustersClientGetResponse`
+- New field `ResumeToken` in struct `SQLResourcesClientBeginCreateUpdateSQLContainerOptions`
+- New field `ResumeToken` in struct `GremlinResourcesClientBeginCreateUpdateGremlinGraphOptions`
+- New field `ResumeToken` in struct `DatabaseAccountsClientBeginOnlineRegionOptions`
+- New anonymous field `PercentileMetricListResult` in struct `PercentileTargetClientListMetricsResponse`
+- New field `ResumeToken` in struct `SQLResourcesClientBeginCreateUpdateSQLStoredProcedureOptions`
+- New anonymous field `PrivateEndpointConnectionListResult` in struct `PrivateEndpointConnectionsClientListByDatabaseAccountResponse`
+- New anonymous field `NotebookWorkspaceConnectionInfoResult` in struct `NotebookWorkspacesClientListConnectionInfoResponse`
+- New anonymous field `PartitionMetricListResult` in struct `CollectionPartitionClientListMetricsResponse`
+- New anonymous field `GremlinGraphGetResults` in struct `GremlinResourcesClientGetGremlinGraphResponse`
+- New anonymous field `MetricListResult` in struct `DatabaseClientListMetricsResponse`
+- New field `StartTime` in struct `RestorableMongodbCollectionsClientListOptions`
+- New field `EndTime` in struct `RestorableMongodbCollectionsClientListOptions`
+- New anonymous field `ThroughputSettingsGetResults` in struct `TableResourcesClientMigrateTableToAutoscaleResponse`
+- New anonymous field `SQLRoleDefinitionGetResults` in struct `SQLResourcesClientCreateUpdateSQLRoleDefinitionResponse`
+- New field `ResumeToken` in struct `SQLResourcesClientBeginCreateUpdateSQLRoleAssignmentOptions`
+- New field `ResumeToken` in struct `CassandraResourcesClientBeginDeleteCassandraKeyspaceOptions`
+- New field `ResumeToken` in struct `SQLResourcesClientBeginDeleteSQLUserDefinedFunctionOptions`
+- New field `ResumeToken` in struct `CassandraResourcesClientBeginCreateUpdateCassandraKeyspaceOptions`
+- New field `ResumeToken` in struct `CassandraResourcesClientBeginUpdateCassandraTableThroughputOptions`
+- New anonymous field `MongoDBDatabaseGetResults` in struct `MongoDBResourcesClientGetMongoDBDatabaseResponse`
+- New field `ResumeToken` in struct `MongoDBResourcesClientBeginMigrateMongoDBCollectionToManualThroughputOptions`
+- New anonymous field `NotebookWorkspace` in struct `NotebookWorkspacesClientGetResponse`
+- New anonymous field `SQLRoleAssignmentGetResults` in struct `SQLResourcesClientGetSQLRoleAssignmentResponse`
+- New anonymous field `DatabaseAccountGetResults` in struct `DatabaseAccountsClientUpdateResponse`
+- New field `ResumeToken` in struct `GremlinResourcesClientBeginUpdateGremlinDatabaseThroughputOptions`
+- New anonymous field `RestorableMongodbDatabasesListResult` in struct `RestorableMongodbDatabasesClientListResponse`
+- New field `Identity` in struct `CassandraTableCreateUpdateParameters`
+- New field `ResumeToken` in struct `GremlinResourcesClientBeginMigrateGremlinGraphToAutoscaleOptions`
+- New anonymous field `SQLContainerGetResults` in struct `SQLResourcesClientCreateUpdateSQLContainerResponse`
+- New field `Identity` in struct `GremlinDatabaseGetResults`
+- New field `EnableMaterializedViews` in struct `DatabaseAccountUpdateProperties`
+- New field `DiagnosticLogSettings` in struct `DatabaseAccountUpdateProperties`
+- New field `ResumeToken` in struct `CassandraResourcesClientBeginMigrateCassandraKeyspaceToManualThroughputOptions`
+- New field `ResumeToken` in struct `TableResourcesClientBeginMigrateTableToManualThroughputOptions`
+- New field `ResumeToken` in struct `MongoDBResourcesClientBeginMigrateMongoDBDatabaseToAutoscaleOptions`
+- New anonymous field `TableGetResults` in struct `TableResourcesClientCreateUpdateTableResponse`
+- New anonymous field `NotebookWorkspace` in struct `NotebookWorkspacesClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `MongoDBResourcesClientBeginUpdateMongoDBDatabaseThroughputOptions`
+- New anonymous field `GremlinGraphListResult` in struct `GremlinResourcesClientListGremlinGraphsResponse`
+- New anonymous field `MetricListResult` in struct `DatabaseAccountsClientListMetricsResponse`
+- New anonymous field `ThroughputSettingsGetResults` in struct `MongoDBResourcesClientGetMongoDBDatabaseThroughputResponse`
+- New field `ResumeToken` in struct `SQLResourcesClientBeginMigrateSQLDatabaseToAutoscaleOptions`
+- New anonymous field `ClusterResource` in struct `CassandraClustersClientCreateUpdateResponse`
+- New field `ResumeToken` in struct `CassandraClustersClientBeginCreateUpdateOptions`
+- New anonymous field `SQLContainerGetResults` in struct `SQLResourcesClientGetSQLContainerResponse`
+- New field `ResumeToken` in struct `MongoDBResourcesClientBeginDeleteMongoDBCollectionOptions`
+- New anonymous field `GremlinDatabaseListResult` in struct `GremlinResourcesClientListGremlinDatabasesResponse`
+- New field `ResumeToken` in struct `DatabaseAccountsClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `CassandraClustersClientBeginDeallocateOptions`
+- New field `OldestRestorableTime` in struct `RestorableDatabaseAccountProperties`
+- New anonymous field `ThroughputSettingsGetResults` in struct `GremlinResourcesClientUpdateGremlinGraphThroughputResponse`
+- New field `ResumeToken` in struct `SQLResourcesClientBeginDeleteSQLTriggerOptions`
+- New anonymous field `ThroughputSettingsGetResults` in struct `GremlinResourcesClientMigrateGremlinGraphToManualThroughputResponse`
+- New field `Identity` in struct `SQLUserDefinedFunctionGetResults`
+- New field `ResumeToken` in struct `MongoDBResourcesClientBeginCreateUpdateMongoDBDatabaseOptions`
+- New anonymous field `CassandraTableGetResults` in struct `CassandraResourcesClientCreateUpdateCassandraTableResponse`
+- New anonymous field `MetricDefinitionsListResult` in struct `DatabaseClientListMetricDefinitionsResponse`
+- New field `ResumeToken` in struct `CassandraDataCentersClientBeginCreateUpdateOptions`
+- New anonymous field `ThroughputSettingsGetResults` in struct `SQLResourcesClientMigrateSQLContainerToManualThroughputResponse`
+- New anonymous field `PrivateEndpointConnection` in struct `PrivateEndpointConnectionsClientCreateOrUpdateResponse`
+- New field `Identity` in struct `MongoDBCollectionCreateUpdateParameters`
+- New field `ResumeToken` in struct `DatabaseAccountsClientBeginFailoverPriorityChangeOptions`
+- New field `Identity` in struct `GremlinDatabaseCreateUpdateParameters`
+- New field `Identity` in struct `SQLDatabaseGetResults`
+- New anonymous field `SQLRoleDefinitionListResult` in struct `SQLResourcesClientListSQLRoleDefinitionsResponse`
+- New anonymous field `SQLRoleAssignmentListResult` in struct `SQLResourcesClientListSQLRoleAssignmentsResponse`
+- New anonymous field `ThroughputSettingsGetResults` in struct `MongoDBResourcesClientMigrateMongoDBDatabaseToAutoscaleResponse`
+- New anonymous field `MetricDefinitionsListResult` in struct `DatabaseAccountsClientListMetricDefinitionsResponse`
+- New anonymous field `DatabaseAccountListReadOnlyKeysResult` in struct `DatabaseAccountsClientGetReadOnlyKeysResponse`
+- New anonymous field `ThroughputSettingsGetResults` in struct `MongoDBResourcesClientGetMongoDBCollectionThroughputResponse`
+- New anonymous field `SQLStoredProcedureListResult` in struct `SQLResourcesClientListSQLStoredProceduresResponse`
+- New anonymous field `ThroughputSettingsGetResults` in struct `SQLResourcesClientGetSQLContainerThroughputResponse`
+- New anonymous field `ThroughputSettingsGetResults` in struct `CassandraResourcesClientGetCassandraTableThroughputResponse`
+- New anonymous field `SQLTriggerGetResults` in struct `SQLResourcesClientCreateUpdateSQLTriggerResponse`
+- New anonymous field `ThroughputSettingsGetResults` in struct `MongoDBResourcesClientUpdateMongoDBDatabaseThroughputResponse`
+- New field `ResumeToken` in struct `PrivateEndpointConnectionsClientBeginDeleteOptions`
+- New anonymous field `MongoDBCollectionGetResults` in struct `MongoDBResourcesClientGetMongoDBCollectionResponse`
+- New anonymous field `PartitionMetricListResult` in struct `PartitionKeyRangeIDRegionClientListMetricsResponse`
+- New field `Identity` in struct `TableCreateUpdateParameters`
+- New anonymous field `SQLDatabaseListResult` in struct `SQLResourcesClientListSQLDatabasesResponse`
+- New field `ResumeToken` in struct `DatabaseAccountsClientBeginCreateOrUpdateOptions`
+- New anonymous field `MetricListResult` in struct `DatabaseAccountRegionClientListMetricsResponse`
+- New anonymous field `ThroughputSettingsGetResults` in struct `CassandraResourcesClientMigrateCassandraKeyspaceToAutoscaleResponse`
+- New anonymous field `ListDataCenters` in struct `CassandraDataCentersClientListResponse`
+- New anonymous field `CassandraKeyspaceGetResults` in struct `CassandraResourcesClientGetCassandraKeyspaceResponse`
+- New anonymous field `SQLUserDefinedFunctionListResult` in struct `SQLResourcesClientListSQLUserDefinedFunctionsResponse`
+- New field `ResumeToken` in struct `TableResourcesClientBeginMigrateTableToAutoscaleOptions`
+- New field `ClientEncryptionPolicy` in struct `RestorableSQLContainerPropertiesResourceContainer`
+- New field `ResumeToken` in struct `SQLResourcesClientBeginCreateUpdateSQLUserDefinedFunctionOptions`
+- New field `ResumeToken` in struct `GremlinResourcesClientBeginDeleteGremlinGraphOptions`
+- New anonymous field `MongoDBCollectionListResult` in struct `MongoDBResourcesClientListMongoDBCollectionsResponse`
+- New field `ResumeToken` in struct `SQLResourcesClientBeginMigrateSQLDatabaseToManualThroughputOptions`
+- New anonymous field `MetricDefinitionsListResult` in struct `CollectionClientListMetricDefinitionsResponse`
+- New field `Identity` in struct `SQLTriggerCreateUpdateParameters`
+- New field `Identity` in struct `ThroughputSettingsUpdateParameters`
+- New anonymous field `DatabaseAccountListConnectionStringsResult` in struct `DatabaseAccountsClientListConnectionStringsResponse`
+- New field `ResumeToken` in struct `MongoDBResourcesClientBeginCreateUpdateMongoDBCollectionOptions`
+- New field `Identity` in struct `SQLStoredProcedureGetResults`
+- New field `ResumeToken` in struct `MongoDBResourcesClientBeginUpdateMongoDBCollectionThroughputOptions`
+- New anonymous field `MetricListResult` in struct `CollectionRegionClientListMetricsResponse`
+- New field `ResumeToken` in struct `GremlinResourcesClientBeginDeleteGremlinDatabaseOptions`
+- New field `ResumeToken` in struct `CassandraResourcesClientBeginDeleteCassandraTableOptions`
+- New anonymous field `MongoDBCollectionGetResults` in struct `MongoDBResourcesClientCreateUpdateMongoDBCollectionResponse`
+- New anonymous field `DatabaseAccountGetResults` in struct `DatabaseAccountsClientGetResponse`
+- New field `Identity` in struct `MongoDBDatabaseCreateUpdateParameters`
+- New field `ResumeToken` in struct `CassandraResourcesClientBeginMigrateCassandraTableToAutoscaleOptions`
+- New anonymous field `SQLUserDefinedFunctionGetResults` in struct `SQLResourcesClientGetSQLUserDefinedFunctionResponse`
+- New field `Identity` in struct `SQLUserDefinedFunctionCreateUpdateParameters`
+- New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
+- New field `ResumeToken` in struct `CassandraResourcesClientBeginMigrateCassandraTableToManualThroughputOptions`
+- New anonymous field `RestorableDatabaseAccountsListResult` in struct `RestorableDatabaseAccountsClientListByLocationResponse`
+- New anonymous field `ThroughputSettingsGetResults` in struct `MongoDBResourcesClientUpdateMongoDBCollectionThroughputResponse`
+- New field `ResumeToken` in struct `MongoDBResourcesClientBeginDeleteMongoDBDatabaseOptions`
+- New anonymous field `LocationListResult` in struct `LocationsClientListResponse`
+- New field `Identity` in struct `SQLStoredProcedureCreateUpdateParameters`
+- New field `ResumeToken` in struct `MongoDBResourcesClientBeginRetrieveContinuousBackupInformationOptions`
+- New field `ResumeToken` in struct `SQLResourcesClientBeginMigrateSQLContainerToManualThroughputOptions`
+- New anonymous field `SQLTriggerGetResults` in struct `SQLResourcesClientGetSQLTriggerResponse`
+- New field `ResumeToken` in struct `CassandraResourcesClientBeginUpdateCassandraKeyspaceThroughputOptions`
+- New field `Identity` in struct `SQLContainerCreateUpdateParameters`
+- New field `ResumeToken` in struct `CassandraResourcesClientBeginCreateUpdateCassandraTableOptions`
+- New anonymous field `CassandraKeyspaceGetResults` in struct `CassandraResourcesClientCreateUpdateCassandraKeyspaceResponse`
+- New field `ResumeToken` in struct `NotebookWorkspacesClientBeginStartOptions`
+- New field `ResumeToken` in struct `CassandraDataCentersClientBeginUpdateOptions`
+- New anonymous field `PercentileMetricListResult` in struct `PercentileClientListMetricsResponse`
+- New anonymous field `ThroughputSettingsGetResults` in struct `SQLResourcesClientGetSQLDatabaseThroughputResponse`
+- New anonymous field `GremlinDatabaseGetResults` in struct `GremlinResourcesClientGetGremlinDatabaseResponse`
+- New field `GremlinDatabasesToRestore` in struct `RestoreParameters`
+- New field `TablesToRestore` in struct `RestoreParameters`
+- New field `ContinuousModeProperties` in struct `ContinuousModeBackupPolicy`
+- New field `Status` in struct `LocationProperties`
+- New field `Identity` in struct `TableGetResults`
+- New field `Identity` in struct `MongoDBDatabaseGetResults`
+- New field `ResumeToken` in struct `GremlinResourcesClientBeginMigrateGremlinDatabaseToAutoscaleOptions`
+- New field `ResumeToken` in struct `TableResourcesClientBeginUpdateTableThroughputOptions`
+- New field `Identity` in struct `SQLContainerGetResults`
+- New anonymous field `RestorableSQLContainersListResult` in struct `RestorableSQLContainersClientListResponse`
+- New field `Identity` in struct `CassandraKeyspaceGetResults`
+- New anonymous field `MetricListResult` in struct `CollectionClientListMetricsResponse`
+- New anonymous field `MongoDBDatabaseListResult` in struct `MongoDBResourcesClientListMongoDBDatabasesResponse`
+- New anonymous field `DataCenterResource` in struct `CassandraDataCentersClientUpdateResponse`
+- New anonymous field `ThroughputSettingsGetResults` in struct `GremlinResourcesClientUpdateGremlinDatabaseThroughputResponse`
+- New field `ResumeToken` in struct `MongoDBResourcesClientBeginMigrateMongoDBCollectionToAutoscaleOptions`
+- New anonymous field `ListClusters` in struct `CassandraClustersClientListBySubscriptionResponse`
+- New field `ResumeToken` in struct `SQLResourcesClientBeginCreateUpdateSQLTriggerOptions`
+- New anonymous field `DatabaseAccountListKeysResult` in struct `DatabaseAccountsClientListKeysResponse`
+- New anonymous field `ClusterResource` in struct `CassandraClustersClientUpdateResponse`
+- New anonymous field `PartitionMetricListResult` in struct `PartitionKeyRangeIDClientListMetricsResponse`
+- New anonymous field `UsagesResult` in struct `DatabaseClientListUsagesResponse`
+- New field `ResumeToken` in struct `DatabaseAccountsClientBeginUpdateOptions`
+- New anonymous field `SQLRoleDefinitionGetResults` in struct `SQLResourcesClientGetSQLRoleDefinitionResponse`
+- New anonymous field `PrivateLinkResourceListResult` in struct `PrivateLinkResourcesClientListByDatabaseAccountResponse`
+- New anonymous field `SQLContainerListResult` in struct `SQLResourcesClientListSQLContainersResponse`
+- New anonymous field `ThroughputSettingsGetResults` in struct `CassandraResourcesClientGetCassandraKeyspaceThroughputResponse`
+
+
 ## 0.3.1 (2022-02-22)
 
 ### Other Changes

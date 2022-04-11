@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type DatabaseClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewDatabaseClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DatabaseClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewDatabaseClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DatabaseClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &DatabaseClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // ListMetricDefinitions - Retrieves metric definitions for the given database.
@@ -56,19 +61,26 @@ func NewDatabaseClient(subscriptionID string, credential azcore.TokenCredential,
 // databaseRid - Cosmos DB database rid.
 // options - DatabaseClientListMetricDefinitionsOptions contains the optional parameters for the DatabaseClient.ListMetricDefinitions
 // method.
-func (client *DatabaseClient) ListMetricDefinitions(ctx context.Context, resourceGroupName string, accountName string, databaseRid string, options *DatabaseClientListMetricDefinitionsOptions) (DatabaseClientListMetricDefinitionsResponse, error) {
-	req, err := client.listMetricDefinitionsCreateRequest(ctx, resourceGroupName, accountName, databaseRid, options)
-	if err != nil {
-		return DatabaseClientListMetricDefinitionsResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return DatabaseClientListMetricDefinitionsResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DatabaseClientListMetricDefinitionsResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listMetricDefinitionsHandleResponse(resp)
+func (client *DatabaseClient) ListMetricDefinitions(resourceGroupName string, accountName string, databaseRid string, options *DatabaseClientListMetricDefinitionsOptions) *runtime.Pager[DatabaseClientListMetricDefinitionsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DatabaseClientListMetricDefinitionsResponse]{
+		More: func(page DatabaseClientListMetricDefinitionsResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *DatabaseClientListMetricDefinitionsResponse) (DatabaseClientListMetricDefinitionsResponse, error) {
+			req, err := client.listMetricDefinitionsCreateRequest(ctx, resourceGroupName, accountName, databaseRid, options)
+			if err != nil {
+				return DatabaseClientListMetricDefinitionsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DatabaseClientListMetricDefinitionsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DatabaseClientListMetricDefinitionsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listMetricDefinitionsHandleResponse(resp)
+		},
+	})
 }
 
 // listMetricDefinitionsCreateRequest creates the ListMetricDefinitions request.
@@ -95,7 +107,7 @@ func (client *DatabaseClient) listMetricDefinitionsCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -103,7 +115,7 @@ func (client *DatabaseClient) listMetricDefinitionsCreateRequest(ctx context.Con
 
 // listMetricDefinitionsHandleResponse handles the ListMetricDefinitions response.
 func (client *DatabaseClient) listMetricDefinitionsHandleResponse(resp *http.Response) (DatabaseClientListMetricDefinitionsResponse, error) {
-	result := DatabaseClientListMetricDefinitionsResponse{RawResponse: resp}
+	result := DatabaseClientListMetricDefinitionsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetricDefinitionsListResult); err != nil {
 		return DatabaseClientListMetricDefinitionsResponse{}, err
 	}
@@ -119,19 +131,26 @@ func (client *DatabaseClient) listMetricDefinitionsHandleResponse(resp *http.Res
 // name.value (name of the metric, can have an or of multiple names), startTime, endTime,
 // and timeGrain. The supported operator is eq.
 // options - DatabaseClientListMetricsOptions contains the optional parameters for the DatabaseClient.ListMetrics method.
-func (client *DatabaseClient) ListMetrics(ctx context.Context, resourceGroupName string, accountName string, databaseRid string, filter string, options *DatabaseClientListMetricsOptions) (DatabaseClientListMetricsResponse, error) {
-	req, err := client.listMetricsCreateRequest(ctx, resourceGroupName, accountName, databaseRid, filter, options)
-	if err != nil {
-		return DatabaseClientListMetricsResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return DatabaseClientListMetricsResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DatabaseClientListMetricsResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listMetricsHandleResponse(resp)
+func (client *DatabaseClient) ListMetrics(resourceGroupName string, accountName string, databaseRid string, filter string, options *DatabaseClientListMetricsOptions) *runtime.Pager[DatabaseClientListMetricsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DatabaseClientListMetricsResponse]{
+		More: func(page DatabaseClientListMetricsResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *DatabaseClientListMetricsResponse) (DatabaseClientListMetricsResponse, error) {
+			req, err := client.listMetricsCreateRequest(ctx, resourceGroupName, accountName, databaseRid, filter, options)
+			if err != nil {
+				return DatabaseClientListMetricsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DatabaseClientListMetricsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DatabaseClientListMetricsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listMetricsHandleResponse(resp)
+		},
+	})
 }
 
 // listMetricsCreateRequest creates the ListMetrics request.
@@ -158,7 +177,7 @@ func (client *DatabaseClient) listMetricsCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-15-preview")
 	reqQP.Set("$filter", filter)
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
@@ -167,7 +186,7 @@ func (client *DatabaseClient) listMetricsCreateRequest(ctx context.Context, reso
 
 // listMetricsHandleResponse handles the ListMetrics response.
 func (client *DatabaseClient) listMetricsHandleResponse(resp *http.Response) (DatabaseClientListMetricsResponse, error) {
-	result := DatabaseClientListMetricsResponse{RawResponse: resp}
+	result := DatabaseClientListMetricsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetricListResult); err != nil {
 		return DatabaseClientListMetricsResponse{}, err
 	}
@@ -180,19 +199,26 @@ func (client *DatabaseClient) listMetricsHandleResponse(resp *http.Response) (Da
 // accountName - Cosmos DB database account name.
 // databaseRid - Cosmos DB database rid.
 // options - DatabaseClientListUsagesOptions contains the optional parameters for the DatabaseClient.ListUsages method.
-func (client *DatabaseClient) ListUsages(ctx context.Context, resourceGroupName string, accountName string, databaseRid string, options *DatabaseClientListUsagesOptions) (DatabaseClientListUsagesResponse, error) {
-	req, err := client.listUsagesCreateRequest(ctx, resourceGroupName, accountName, databaseRid, options)
-	if err != nil {
-		return DatabaseClientListUsagesResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return DatabaseClientListUsagesResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DatabaseClientListUsagesResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listUsagesHandleResponse(resp)
+func (client *DatabaseClient) ListUsages(resourceGroupName string, accountName string, databaseRid string, options *DatabaseClientListUsagesOptions) *runtime.Pager[DatabaseClientListUsagesResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DatabaseClientListUsagesResponse]{
+		More: func(page DatabaseClientListUsagesResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *DatabaseClientListUsagesResponse) (DatabaseClientListUsagesResponse, error) {
+			req, err := client.listUsagesCreateRequest(ctx, resourceGroupName, accountName, databaseRid, options)
+			if err != nil {
+				return DatabaseClientListUsagesResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DatabaseClientListUsagesResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DatabaseClientListUsagesResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listUsagesHandleResponse(resp)
+		},
+	})
 }
 
 // listUsagesCreateRequest creates the ListUsages request.
@@ -219,7 +245,7 @@ func (client *DatabaseClient) listUsagesCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-15-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -230,7 +256,7 @@ func (client *DatabaseClient) listUsagesCreateRequest(ctx context.Context, resou
 
 // listUsagesHandleResponse handles the ListUsages response.
 func (client *DatabaseClient) listUsagesHandleResponse(resp *http.Response) (DatabaseClientListUsagesResponse, error) {
-	result := DatabaseClientListUsagesResponse{RawResponse: resp}
+	result := DatabaseClientListUsagesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UsagesResult); err != nil {
 		return DatabaseClientListUsagesResponse{}, err
 	}

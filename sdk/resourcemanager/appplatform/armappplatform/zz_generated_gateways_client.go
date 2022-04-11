@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type GatewaysClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewGatewaysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *GatewaysClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewGatewaysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GatewaysClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &GatewaysClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Create the default Spring Cloud Gateway or update the existing Spring Cloud Gateway.
@@ -59,22 +64,18 @@ func NewGatewaysClient(subscriptionID string, credential azcore.TokenCredential,
 // gatewayResource - The gateway for the create or update operation
 // options - GatewaysClientBeginCreateOrUpdateOptions contains the optional parameters for the GatewaysClient.BeginCreateOrUpdate
 // method.
-func (client *GatewaysClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, gatewayName string, gatewayResource GatewayResource, options *GatewaysClientBeginCreateOrUpdateOptions) (GatewaysClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, serviceName, gatewayName, gatewayResource, options)
-	if err != nil {
-		return GatewaysClientCreateOrUpdatePollerResponse{}, err
+func (client *GatewaysClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, gatewayName string, gatewayResource GatewayResource, options *GatewaysClientBeginCreateOrUpdateOptions) (*armruntime.Poller[GatewaysClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, serviceName, gatewayName, gatewayResource, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[GatewaysClientCreateOrUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[GatewaysClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := GatewaysClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("GatewaysClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return GatewaysClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &GatewaysClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Create the default Spring Cloud Gateway or update the existing Spring Cloud Gateway.
@@ -118,7 +119,7 @@ func (client *GatewaysClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, gatewayResource)
@@ -131,22 +132,18 @@ func (client *GatewaysClient) createOrUpdateCreateRequest(ctx context.Context, r
 // serviceName - The name of the Service resource.
 // gatewayName - The name of Spring Cloud Gateway.
 // options - GatewaysClientBeginDeleteOptions contains the optional parameters for the GatewaysClient.BeginDelete method.
-func (client *GatewaysClient) BeginDelete(ctx context.Context, resourceGroupName string, serviceName string, gatewayName string, options *GatewaysClientBeginDeleteOptions) (GatewaysClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, serviceName, gatewayName, options)
-	if err != nil {
-		return GatewaysClientDeletePollerResponse{}, err
+func (client *GatewaysClient) BeginDelete(ctx context.Context, resourceGroupName string, serviceName string, gatewayName string, options *GatewaysClientBeginDeleteOptions) (*armruntime.Poller[GatewaysClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, serviceName, gatewayName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[GatewaysClientDeleteResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[GatewaysClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := GatewaysClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("GatewaysClient.Delete", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return GatewaysClientDeletePollerResponse{}, err
-	}
-	result.Poller = &GatewaysClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Disable the default Spring Cloud Gateway.
@@ -190,7 +187,7 @@ func (client *GatewaysClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -242,7 +239,7 @@ func (client *GatewaysClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -250,7 +247,7 @@ func (client *GatewaysClient) getCreateRequest(ctx context.Context, resourceGrou
 
 // getHandleResponse handles the Get response.
 func (client *GatewaysClient) getHandleResponse(resp *http.Response) (GatewaysClientGetResponse, error) {
-	result := GatewaysClientGetResponse{RawResponse: resp}
+	result := GatewaysClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GatewayResource); err != nil {
 		return GatewaysClientGetResponse{}, err
 	}
@@ -263,16 +260,32 @@ func (client *GatewaysClient) getHandleResponse(resp *http.Response) (GatewaysCl
 // Resource Manager API or the portal.
 // serviceName - The name of the Service resource.
 // options - GatewaysClientListOptions contains the optional parameters for the GatewaysClient.List method.
-func (client *GatewaysClient) List(resourceGroupName string, serviceName string, options *GatewaysClientListOptions) *GatewaysClientListPager {
-	return &GatewaysClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, serviceName, options)
+func (client *GatewaysClient) List(resourceGroupName string, serviceName string, options *GatewaysClientListOptions) *runtime.Pager[GatewaysClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[GatewaysClientListResponse]{
+		More: func(page GatewaysClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp GatewaysClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.GatewayResourceCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *GatewaysClientListResponse) (GatewaysClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, serviceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return GatewaysClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return GatewaysClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return GatewaysClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -295,7 +308,7 @@ func (client *GatewaysClient) listCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -303,7 +316,7 @@ func (client *GatewaysClient) listCreateRequest(ctx context.Context, resourceGro
 
 // listHandleResponse handles the List response.
 func (client *GatewaysClient) listHandleResponse(resp *http.Response) (GatewaysClientListResponse, error) {
-	result := GatewaysClientListResponse{RawResponse: resp}
+	result := GatewaysClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GatewayResourceCollection); err != nil {
 		return GatewaysClientListResponse{}, err
 	}
@@ -357,7 +370,7 @@ func (client *GatewaysClient) validateDomainCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, validatePayload)
@@ -365,7 +378,7 @@ func (client *GatewaysClient) validateDomainCreateRequest(ctx context.Context, r
 
 // validateDomainHandleResponse handles the ValidateDomain response.
 func (client *GatewaysClient) validateDomainHandleResponse(resp *http.Response) (GatewaysClientValidateDomainResponse, error) {
-	result := GatewaysClientValidateDomainResponse{RawResponse: resp}
+	result := GatewaysClientValidateDomainResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomDomainValidateResult); err != nil {
 		return GatewaysClientValidateDomainResponse{}, err
 	}

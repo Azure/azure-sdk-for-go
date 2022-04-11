@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type APIPortalsClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewAPIPortalsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *APIPortalsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewAPIPortalsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*APIPortalsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &APIPortalsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Create the default API portal or update the existing API portal.
@@ -59,22 +64,18 @@ func NewAPIPortalsClient(subscriptionID string, credential azcore.TokenCredentia
 // apiPortalResource - The API portal for the create or update operation
 // options - APIPortalsClientBeginCreateOrUpdateOptions contains the optional parameters for the APIPortalsClient.BeginCreateOrUpdate
 // method.
-func (client *APIPortalsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apiPortalName string, apiPortalResource APIPortalResource, options *APIPortalsClientBeginCreateOrUpdateOptions) (APIPortalsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, serviceName, apiPortalName, apiPortalResource, options)
-	if err != nil {
-		return APIPortalsClientCreateOrUpdatePollerResponse{}, err
+func (client *APIPortalsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apiPortalName string, apiPortalResource APIPortalResource, options *APIPortalsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[APIPortalsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, serviceName, apiPortalName, apiPortalResource, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[APIPortalsClientCreateOrUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[APIPortalsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := APIPortalsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("APIPortalsClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return APIPortalsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &APIPortalsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Create the default API portal or update the existing API portal.
@@ -118,7 +119,7 @@ func (client *APIPortalsClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, apiPortalResource)
@@ -131,22 +132,18 @@ func (client *APIPortalsClient) createOrUpdateCreateRequest(ctx context.Context,
 // serviceName - The name of the Service resource.
 // apiPortalName - The name of API portal.
 // options - APIPortalsClientBeginDeleteOptions contains the optional parameters for the APIPortalsClient.BeginDelete method.
-func (client *APIPortalsClient) BeginDelete(ctx context.Context, resourceGroupName string, serviceName string, apiPortalName string, options *APIPortalsClientBeginDeleteOptions) (APIPortalsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, serviceName, apiPortalName, options)
-	if err != nil {
-		return APIPortalsClientDeletePollerResponse{}, err
+func (client *APIPortalsClient) BeginDelete(ctx context.Context, resourceGroupName string, serviceName string, apiPortalName string, options *APIPortalsClientBeginDeleteOptions) (*armruntime.Poller[APIPortalsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, serviceName, apiPortalName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[APIPortalsClientDeleteResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[APIPortalsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := APIPortalsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("APIPortalsClient.Delete", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return APIPortalsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &APIPortalsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Delete the default API portal.
@@ -190,7 +187,7 @@ func (client *APIPortalsClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -242,7 +239,7 @@ func (client *APIPortalsClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -250,7 +247,7 @@ func (client *APIPortalsClient) getCreateRequest(ctx context.Context, resourceGr
 
 // getHandleResponse handles the Get response.
 func (client *APIPortalsClient) getHandleResponse(resp *http.Response) (APIPortalsClientGetResponse, error) {
-	result := APIPortalsClientGetResponse{RawResponse: resp}
+	result := APIPortalsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.APIPortalResource); err != nil {
 		return APIPortalsClientGetResponse{}, err
 	}
@@ -263,16 +260,32 @@ func (client *APIPortalsClient) getHandleResponse(resp *http.Response) (APIPorta
 // Resource Manager API or the portal.
 // serviceName - The name of the Service resource.
 // options - APIPortalsClientListOptions contains the optional parameters for the APIPortalsClient.List method.
-func (client *APIPortalsClient) List(resourceGroupName string, serviceName string, options *APIPortalsClientListOptions) *APIPortalsClientListPager {
-	return &APIPortalsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, serviceName, options)
+func (client *APIPortalsClient) List(resourceGroupName string, serviceName string, options *APIPortalsClientListOptions) *runtime.Pager[APIPortalsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[APIPortalsClientListResponse]{
+		More: func(page APIPortalsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp APIPortalsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.APIPortalResourceCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *APIPortalsClientListResponse) (APIPortalsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, serviceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return APIPortalsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return APIPortalsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return APIPortalsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -295,7 +308,7 @@ func (client *APIPortalsClient) listCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -303,7 +316,7 @@ func (client *APIPortalsClient) listCreateRequest(ctx context.Context, resourceG
 
 // listHandleResponse handles the List response.
 func (client *APIPortalsClient) listHandleResponse(resp *http.Response) (APIPortalsClientListResponse, error) {
-	result := APIPortalsClientListResponse{RawResponse: resp}
+	result := APIPortalsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.APIPortalResourceCollection); err != nil {
 		return APIPortalsClientListResponse{}, err
 	}
@@ -358,7 +371,7 @@ func (client *APIPortalsClient) validateDomainCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, validatePayload)
@@ -366,7 +379,7 @@ func (client *APIPortalsClient) validateDomainCreateRequest(ctx context.Context,
 
 // validateDomainHandleResponse handles the ValidateDomain response.
 func (client *APIPortalsClient) validateDomainHandleResponse(resp *http.Response) (APIPortalsClientValidateDomainResponse, error) {
-	result := APIPortalsClientValidateDomainResponse{RawResponse: resp}
+	result := APIPortalsClientValidateDomainResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomDomainValidateResult); err != nil {
 		return APIPortalsClientValidateDomainResponse{}, err
 	}

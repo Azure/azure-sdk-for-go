@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type GatewayCustomDomainsClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewGatewayCustomDomainsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *GatewayCustomDomainsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewGatewayCustomDomainsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GatewayCustomDomainsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &GatewayCustomDomainsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Create or update the Spring Cloud Gateway custom domain.
@@ -60,22 +65,18 @@ func NewGatewayCustomDomainsClient(subscriptionID string, credential azcore.Toke
 // gatewayCustomDomainResource - The gateway custom domain resource for the create or update operation
 // options - GatewayCustomDomainsClientBeginCreateOrUpdateOptions contains the optional parameters for the GatewayCustomDomainsClient.BeginCreateOrUpdate
 // method.
-func (client *GatewayCustomDomainsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, gatewayName string, domainName string, gatewayCustomDomainResource GatewayCustomDomainResource, options *GatewayCustomDomainsClientBeginCreateOrUpdateOptions) (GatewayCustomDomainsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, serviceName, gatewayName, domainName, gatewayCustomDomainResource, options)
-	if err != nil {
-		return GatewayCustomDomainsClientCreateOrUpdatePollerResponse{}, err
+func (client *GatewayCustomDomainsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, gatewayName string, domainName string, gatewayCustomDomainResource GatewayCustomDomainResource, options *GatewayCustomDomainsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[GatewayCustomDomainsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, serviceName, gatewayName, domainName, gatewayCustomDomainResource, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[GatewayCustomDomainsClientCreateOrUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[GatewayCustomDomainsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := GatewayCustomDomainsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("GatewayCustomDomainsClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return GatewayCustomDomainsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &GatewayCustomDomainsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Create or update the Spring Cloud Gateway custom domain.
@@ -123,7 +124,7 @@ func (client *GatewayCustomDomainsClient) createOrUpdateCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, gatewayCustomDomainResource)
@@ -138,22 +139,18 @@ func (client *GatewayCustomDomainsClient) createOrUpdateCreateRequest(ctx contex
 // domainName - The name of the Spring Cloud Gateway custom domain.
 // options - GatewayCustomDomainsClientBeginDeleteOptions contains the optional parameters for the GatewayCustomDomainsClient.BeginDelete
 // method.
-func (client *GatewayCustomDomainsClient) BeginDelete(ctx context.Context, resourceGroupName string, serviceName string, gatewayName string, domainName string, options *GatewayCustomDomainsClientBeginDeleteOptions) (GatewayCustomDomainsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, serviceName, gatewayName, domainName, options)
-	if err != nil {
-		return GatewayCustomDomainsClientDeletePollerResponse{}, err
+func (client *GatewayCustomDomainsClient) BeginDelete(ctx context.Context, resourceGroupName string, serviceName string, gatewayName string, domainName string, options *GatewayCustomDomainsClientBeginDeleteOptions) (*armruntime.Poller[GatewayCustomDomainsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, serviceName, gatewayName, domainName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[GatewayCustomDomainsClientDeleteResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[GatewayCustomDomainsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := GatewayCustomDomainsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("GatewayCustomDomainsClient.Delete", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return GatewayCustomDomainsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &GatewayCustomDomainsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Delete the Spring Cloud Gateway custom domain.
@@ -201,7 +198,7 @@ func (client *GatewayCustomDomainsClient) deleteCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -259,7 +256,7 @@ func (client *GatewayCustomDomainsClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -267,7 +264,7 @@ func (client *GatewayCustomDomainsClient) getCreateRequest(ctx context.Context, 
 
 // getHandleResponse handles the Get response.
 func (client *GatewayCustomDomainsClient) getHandleResponse(resp *http.Response) (GatewayCustomDomainsClientGetResponse, error) {
-	result := GatewayCustomDomainsClientGetResponse{RawResponse: resp}
+	result := GatewayCustomDomainsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GatewayCustomDomainResource); err != nil {
 		return GatewayCustomDomainsClientGetResponse{}, err
 	}
@@ -282,16 +279,32 @@ func (client *GatewayCustomDomainsClient) getHandleResponse(resp *http.Response)
 // gatewayName - The name of Spring Cloud Gateway.
 // options - GatewayCustomDomainsClientListOptions contains the optional parameters for the GatewayCustomDomainsClient.List
 // method.
-func (client *GatewayCustomDomainsClient) List(resourceGroupName string, serviceName string, gatewayName string, options *GatewayCustomDomainsClientListOptions) *GatewayCustomDomainsClientListPager {
-	return &GatewayCustomDomainsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, serviceName, gatewayName, options)
+func (client *GatewayCustomDomainsClient) List(resourceGroupName string, serviceName string, gatewayName string, options *GatewayCustomDomainsClientListOptions) *runtime.Pager[GatewayCustomDomainsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[GatewayCustomDomainsClientListResponse]{
+		More: func(page GatewayCustomDomainsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp GatewayCustomDomainsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.GatewayCustomDomainResourceCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *GatewayCustomDomainsClientListResponse) (GatewayCustomDomainsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, serviceName, gatewayName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return GatewayCustomDomainsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return GatewayCustomDomainsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return GatewayCustomDomainsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -318,7 +331,7 @@ func (client *GatewayCustomDomainsClient) listCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -326,7 +339,7 @@ func (client *GatewayCustomDomainsClient) listCreateRequest(ctx context.Context,
 
 // listHandleResponse handles the List response.
 func (client *GatewayCustomDomainsClient) listHandleResponse(resp *http.Response) (GatewayCustomDomainsClientListResponse, error) {
-	result := GatewayCustomDomainsClientListResponse{RawResponse: resp}
+	result := GatewayCustomDomainsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GatewayCustomDomainResourceCollection); err != nil {
 		return GatewayCustomDomainsClientListResponse{}, err
 	}

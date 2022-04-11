@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type ServicesClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewServicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServicesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewServicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ServicesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ServicesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CheckNameAvailability - Checks that the resource name is valid and is not already in use.
@@ -87,7 +92,7 @@ func (client *ServicesClient) checkNameAvailabilityCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, availabilityParameters)
@@ -95,7 +100,7 @@ func (client *ServicesClient) checkNameAvailabilityCreateRequest(ctx context.Con
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
 func (client *ServicesClient) checkNameAvailabilityHandleResponse(resp *http.Response) (ServicesClientCheckNameAvailabilityResponse, error) {
-	result := ServicesClientCheckNameAvailabilityResponse{RawResponse: resp}
+	result := ServicesClientCheckNameAvailabilityResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NameAvailability); err != nil {
 		return ServicesClientCheckNameAvailabilityResponse{}, err
 	}
@@ -110,22 +115,18 @@ func (client *ServicesClient) checkNameAvailabilityHandleResponse(resp *http.Res
 // resource - Parameters for the create or update operation
 // options - ServicesClientBeginCreateOrUpdateOptions contains the optional parameters for the ServicesClient.BeginCreateOrUpdate
 // method.
-func (client *ServicesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, resource ServiceResource, options *ServicesClientBeginCreateOrUpdateOptions) (ServicesClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, serviceName, resource, options)
-	if err != nil {
-		return ServicesClientCreateOrUpdatePollerResponse{}, err
+func (client *ServicesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, resource ServiceResource, options *ServicesClientBeginCreateOrUpdateOptions) (*armruntime.Poller[ServicesClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, serviceName, resource, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ServicesClientCreateOrUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[ServicesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ServicesClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ServicesClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return ServicesClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &ServicesClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Create a new Service or update an exiting Service.
@@ -165,7 +166,7 @@ func (client *ServicesClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, resource)
@@ -177,22 +178,18 @@ func (client *ServicesClient) createOrUpdateCreateRequest(ctx context.Context, r
 // Resource Manager API or the portal.
 // serviceName - The name of the Service resource.
 // options - ServicesClientBeginDeleteOptions contains the optional parameters for the ServicesClient.BeginDelete method.
-func (client *ServicesClient) BeginDelete(ctx context.Context, resourceGroupName string, serviceName string, options *ServicesClientBeginDeleteOptions) (ServicesClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, serviceName, options)
-	if err != nil {
-		return ServicesClientDeletePollerResponse{}, err
+func (client *ServicesClient) BeginDelete(ctx context.Context, resourceGroupName string, serviceName string, options *ServicesClientBeginDeleteOptions) (*armruntime.Poller[ServicesClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, serviceName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ServicesClientDeleteResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[ServicesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ServicesClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ServicesClient.Delete", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return ServicesClientDeletePollerResponse{}, err
-	}
-	result.Poller = &ServicesClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Operation to delete a Service.
@@ -232,7 +229,7 @@ func (client *ServicesClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -257,7 +254,7 @@ func (client *ServicesClient) DisableTestEndpoint(ctx context.Context, resourceG
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return ServicesClientDisableTestEndpointResponse{}, runtime.NewResponseError(resp)
 	}
-	return ServicesClientDisableTestEndpointResponse{RawResponse: resp}, nil
+	return ServicesClientDisableTestEndpointResponse{}, nil
 }
 
 // disableTestEndpointCreateRequest creates the DisableTestEndpoint request.
@@ -280,7 +277,7 @@ func (client *ServicesClient) disableTestEndpointCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -328,7 +325,7 @@ func (client *ServicesClient) enableTestEndpointCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -336,7 +333,7 @@ func (client *ServicesClient) enableTestEndpointCreateRequest(ctx context.Contex
 
 // enableTestEndpointHandleResponse handles the EnableTestEndpoint response.
 func (client *ServicesClient) enableTestEndpointHandleResponse(resp *http.Response) (ServicesClientEnableTestEndpointResponse, error) {
-	result := ServicesClientEnableTestEndpointResponse{RawResponse: resp}
+	result := ServicesClientEnableTestEndpointResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TestKeys); err != nil {
 		return ServicesClientEnableTestEndpointResponse{}, err
 	}
@@ -384,7 +381,7 @@ func (client *ServicesClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -392,7 +389,7 @@ func (client *ServicesClient) getCreateRequest(ctx context.Context, resourceGrou
 
 // getHandleResponse handles the Get response.
 func (client *ServicesClient) getHandleResponse(resp *http.Response) (ServicesClientGetResponse, error) {
-	result := ServicesClientGetResponse{RawResponse: resp}
+	result := ServicesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceResource); err != nil {
 		return ServicesClientGetResponse{}, err
 	}
@@ -404,16 +401,32 @@ func (client *ServicesClient) getHandleResponse(resp *http.Response) (ServicesCl
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // options - ServicesClientListOptions contains the optional parameters for the ServicesClient.List method.
-func (client *ServicesClient) List(resourceGroupName string, options *ServicesClientListOptions) *ServicesClientListPager {
-	return &ServicesClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, options)
+func (client *ServicesClient) List(resourceGroupName string, options *ServicesClientListOptions) *runtime.Pager[ServicesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ServicesClientListResponse]{
+		More: func(page ServicesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ServicesClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ServiceResourceList.NextLink)
+		Fetcher: func(ctx context.Context, page *ServicesClientListResponse) (ServicesClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ServicesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ServicesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ServicesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -432,7 +445,7 @@ func (client *ServicesClient) listCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -440,7 +453,7 @@ func (client *ServicesClient) listCreateRequest(ctx context.Context, resourceGro
 
 // listHandleResponse handles the List response.
 func (client *ServicesClient) listHandleResponse(resp *http.Response) (ServicesClientListResponse, error) {
-	result := ServicesClientListResponse{RawResponse: resp}
+	result := ServicesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceResourceList); err != nil {
 		return ServicesClientListResponse{}, err
 	}
@@ -451,16 +464,32 @@ func (client *ServicesClient) listHandleResponse(resp *http.Response) (ServicesC
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ServicesClientListBySubscriptionOptions contains the optional parameters for the ServicesClient.ListBySubscription
 // method.
-func (client *ServicesClient) ListBySubscription(options *ServicesClientListBySubscriptionOptions) *ServicesClientListBySubscriptionPager {
-	return &ServicesClientListBySubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySubscriptionCreateRequest(ctx, options)
+func (client *ServicesClient) ListBySubscription(options *ServicesClientListBySubscriptionOptions) *runtime.Pager[ServicesClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ServicesClientListBySubscriptionResponse]{
+		More: func(page ServicesClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ServicesClientListBySubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ServiceResourceList.NextLink)
+		Fetcher: func(ctx context.Context, page *ServicesClientListBySubscriptionResponse) (ServicesClientListBySubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySubscriptionCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ServicesClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ServicesClientListBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ServicesClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
@@ -475,7 +504,7 @@ func (client *ServicesClient) listBySubscriptionCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -483,7 +512,7 @@ func (client *ServicesClient) listBySubscriptionCreateRequest(ctx context.Contex
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
 func (client *ServicesClient) listBySubscriptionHandleResponse(resp *http.Response) (ServicesClientListBySubscriptionResponse, error) {
-	result := ServicesClientListBySubscriptionResponse{RawResponse: resp}
+	result := ServicesClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceResourceList); err != nil {
 		return ServicesClientListBySubscriptionResponse{}, err
 	}
@@ -531,7 +560,7 @@ func (client *ServicesClient) listTestKeysCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -539,7 +568,7 @@ func (client *ServicesClient) listTestKeysCreateRequest(ctx context.Context, res
 
 // listTestKeysHandleResponse handles the ListTestKeys response.
 func (client *ServicesClient) listTestKeysHandleResponse(resp *http.Response) (ServicesClientListTestKeysResponse, error) {
-	result := ServicesClientListTestKeysResponse{RawResponse: resp}
+	result := ServicesClientListTestKeysResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TestKeys); err != nil {
 		return ServicesClientListTestKeysResponse{}, err
 	}
@@ -589,7 +618,7 @@ func (client *ServicesClient) regenerateTestKeyCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, regenerateTestKeyRequest)
@@ -597,7 +626,7 @@ func (client *ServicesClient) regenerateTestKeyCreateRequest(ctx context.Context
 
 // regenerateTestKeyHandleResponse handles the RegenerateTestKey response.
 func (client *ServicesClient) regenerateTestKeyHandleResponse(resp *http.Response) (ServicesClientRegenerateTestKeyResponse, error) {
-	result := ServicesClientRegenerateTestKeyResponse{RawResponse: resp}
+	result := ServicesClientRegenerateTestKeyResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TestKeys); err != nil {
 		return ServicesClientRegenerateTestKeyResponse{}, err
 	}
@@ -610,22 +639,18 @@ func (client *ServicesClient) regenerateTestKeyHandleResponse(resp *http.Respons
 // Resource Manager API or the portal.
 // serviceName - The name of the Service resource.
 // options - ServicesClientBeginStartOptions contains the optional parameters for the ServicesClient.BeginStart method.
-func (client *ServicesClient) BeginStart(ctx context.Context, resourceGroupName string, serviceName string, options *ServicesClientBeginStartOptions) (ServicesClientStartPollerResponse, error) {
-	resp, err := client.start(ctx, resourceGroupName, serviceName, options)
-	if err != nil {
-		return ServicesClientStartPollerResponse{}, err
+func (client *ServicesClient) BeginStart(ctx context.Context, resourceGroupName string, serviceName string, options *ServicesClientBeginStartOptions) (*armruntime.Poller[ServicesClientStartResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.start(ctx, resourceGroupName, serviceName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ServicesClientStartResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[ServicesClientStartResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ServicesClientStartPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ServicesClient.Start", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return ServicesClientStartPollerResponse{}, err
-	}
-	result.Poller = &ServicesClientStartPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Start - Start a Service.
@@ -665,7 +690,7 @@ func (client *ServicesClient) startCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -677,22 +702,18 @@ func (client *ServicesClient) startCreateRequest(ctx context.Context, resourceGr
 // Resource Manager API or the portal.
 // serviceName - The name of the Service resource.
 // options - ServicesClientBeginStopOptions contains the optional parameters for the ServicesClient.BeginStop method.
-func (client *ServicesClient) BeginStop(ctx context.Context, resourceGroupName string, serviceName string, options *ServicesClientBeginStopOptions) (ServicesClientStopPollerResponse, error) {
-	resp, err := client.stop(ctx, resourceGroupName, serviceName, options)
-	if err != nil {
-		return ServicesClientStopPollerResponse{}, err
+func (client *ServicesClient) BeginStop(ctx context.Context, resourceGroupName string, serviceName string, options *ServicesClientBeginStopOptions) (*armruntime.Poller[ServicesClientStopResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.stop(ctx, resourceGroupName, serviceName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ServicesClientStopResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[ServicesClientStopResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ServicesClientStopPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ServicesClient.Stop", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return ServicesClientStopPollerResponse{}, err
-	}
-	result.Poller = &ServicesClientStopPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Stop - Stop a Service.
@@ -732,7 +753,7 @@ func (client *ServicesClient) stopCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -745,22 +766,18 @@ func (client *ServicesClient) stopCreateRequest(ctx context.Context, resourceGro
 // serviceName - The name of the Service resource.
 // resource - Parameters for the update operation
 // options - ServicesClientBeginUpdateOptions contains the optional parameters for the ServicesClient.BeginUpdate method.
-func (client *ServicesClient) BeginUpdate(ctx context.Context, resourceGroupName string, serviceName string, resource ServiceResource, options *ServicesClientBeginUpdateOptions) (ServicesClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, serviceName, resource, options)
-	if err != nil {
-		return ServicesClientUpdatePollerResponse{}, err
+func (client *ServicesClient) BeginUpdate(ctx context.Context, resourceGroupName string, serviceName string, resource ServiceResource, options *ServicesClientBeginUpdateOptions) (*armruntime.Poller[ServicesClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, serviceName, resource, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ServicesClientUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[ServicesClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ServicesClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ServicesClient.Update", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return ServicesClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &ServicesClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Operation to update an exiting Service.
@@ -800,7 +817,7 @@ func (client *ServicesClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, resource)

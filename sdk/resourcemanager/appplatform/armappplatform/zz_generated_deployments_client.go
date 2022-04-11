@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type DeploymentsClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewDeploymentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DeploymentsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewDeploymentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DeploymentsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &DeploymentsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Create a new Deployment or update an exiting Deployment.
@@ -60,22 +65,18 @@ func NewDeploymentsClient(subscriptionID string, credential azcore.TokenCredenti
 // deploymentResource - Parameters for the create or update operation
 // options - DeploymentsClientBeginCreateOrUpdateOptions contains the optional parameters for the DeploymentsClient.BeginCreateOrUpdate
 // method.
-func (client *DeploymentsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, deploymentResource DeploymentResource, options *DeploymentsClientBeginCreateOrUpdateOptions) (DeploymentsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, serviceName, appName, deploymentName, deploymentResource, options)
-	if err != nil {
-		return DeploymentsClientCreateOrUpdatePollerResponse{}, err
+func (client *DeploymentsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, deploymentResource DeploymentResource, options *DeploymentsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[DeploymentsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, serviceName, appName, deploymentName, deploymentResource, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[DeploymentsClientCreateOrUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[DeploymentsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DeploymentsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DeploymentsClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return DeploymentsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &DeploymentsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Create a new Deployment or update an exiting Deployment.
@@ -123,7 +124,7 @@ func (client *DeploymentsClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, deploymentResource)
@@ -137,22 +138,18 @@ func (client *DeploymentsClient) createOrUpdateCreateRequest(ctx context.Context
 // appName - The name of the App resource.
 // deploymentName - The name of the Deployment resource.
 // options - DeploymentsClientBeginDeleteOptions contains the optional parameters for the DeploymentsClient.BeginDelete method.
-func (client *DeploymentsClient) BeginDelete(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, options *DeploymentsClientBeginDeleteOptions) (DeploymentsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, serviceName, appName, deploymentName, options)
-	if err != nil {
-		return DeploymentsClientDeletePollerResponse{}, err
+func (client *DeploymentsClient) BeginDelete(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, options *DeploymentsClientBeginDeleteOptions) (*armruntime.Poller[DeploymentsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, serviceName, appName, deploymentName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[DeploymentsClientDeleteResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[DeploymentsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DeploymentsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DeploymentsClient.Delete", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return DeploymentsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &DeploymentsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Operation to delete a Deployment.
@@ -200,7 +197,7 @@ func (client *DeploymentsClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -216,22 +213,18 @@ func (client *DeploymentsClient) deleteCreateRequest(ctx context.Context, resour
 // diagnosticParameters - Parameters for the diagnostic operation
 // options - DeploymentsClientBeginGenerateHeapDumpOptions contains the optional parameters for the DeploymentsClient.BeginGenerateHeapDump
 // method.
-func (client *DeploymentsClient) BeginGenerateHeapDump(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, diagnosticParameters DiagnosticParameters, options *DeploymentsClientBeginGenerateHeapDumpOptions) (DeploymentsClientGenerateHeapDumpPollerResponse, error) {
-	resp, err := client.generateHeapDump(ctx, resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters, options)
-	if err != nil {
-		return DeploymentsClientGenerateHeapDumpPollerResponse{}, err
+func (client *DeploymentsClient) BeginGenerateHeapDump(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, diagnosticParameters DiagnosticParameters, options *DeploymentsClientBeginGenerateHeapDumpOptions) (*armruntime.Poller[DeploymentsClientGenerateHeapDumpResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.generateHeapDump(ctx, resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[DeploymentsClientGenerateHeapDumpResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[DeploymentsClientGenerateHeapDumpResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DeploymentsClientGenerateHeapDumpPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DeploymentsClient.GenerateHeapDump", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return DeploymentsClientGenerateHeapDumpPollerResponse{}, err
-	}
-	result.Poller = &DeploymentsClientGenerateHeapDumpPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // GenerateHeapDump - Generate Heap Dump
@@ -279,7 +272,7 @@ func (client *DeploymentsClient) generateHeapDumpCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, diagnosticParameters)
@@ -295,22 +288,18 @@ func (client *DeploymentsClient) generateHeapDumpCreateRequest(ctx context.Conte
 // diagnosticParameters - Parameters for the diagnostic operation
 // options - DeploymentsClientBeginGenerateThreadDumpOptions contains the optional parameters for the DeploymentsClient.BeginGenerateThreadDump
 // method.
-func (client *DeploymentsClient) BeginGenerateThreadDump(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, diagnosticParameters DiagnosticParameters, options *DeploymentsClientBeginGenerateThreadDumpOptions) (DeploymentsClientGenerateThreadDumpPollerResponse, error) {
-	resp, err := client.generateThreadDump(ctx, resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters, options)
-	if err != nil {
-		return DeploymentsClientGenerateThreadDumpPollerResponse{}, err
+func (client *DeploymentsClient) BeginGenerateThreadDump(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, diagnosticParameters DiagnosticParameters, options *DeploymentsClientBeginGenerateThreadDumpOptions) (*armruntime.Poller[DeploymentsClientGenerateThreadDumpResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.generateThreadDump(ctx, resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[DeploymentsClientGenerateThreadDumpResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[DeploymentsClientGenerateThreadDumpResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DeploymentsClientGenerateThreadDumpPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DeploymentsClient.GenerateThreadDump", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return DeploymentsClientGenerateThreadDumpPollerResponse{}, err
-	}
-	result.Poller = &DeploymentsClientGenerateThreadDumpPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // GenerateThreadDump - Generate Thread Dump
@@ -358,7 +347,7 @@ func (client *DeploymentsClient) generateThreadDumpCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, diagnosticParameters)
@@ -415,7 +404,7 @@ func (client *DeploymentsClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -423,7 +412,7 @@ func (client *DeploymentsClient) getCreateRequest(ctx context.Context, resourceG
 
 // getHandleResponse handles the Get response.
 func (client *DeploymentsClient) getHandleResponse(resp *http.Response) (DeploymentsClientGetResponse, error) {
-	result := DeploymentsClientGetResponse{RawResponse: resp}
+	result := DeploymentsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentResource); err != nil {
 		return DeploymentsClientGetResponse{}, err
 	}
@@ -482,7 +471,7 @@ func (client *DeploymentsClient) getLogFileURLCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -490,7 +479,7 @@ func (client *DeploymentsClient) getLogFileURLCreateRequest(ctx context.Context,
 
 // getLogFileURLHandleResponse handles the GetLogFileURL response.
 func (client *DeploymentsClient) getLogFileURLHandleResponse(resp *http.Response) (DeploymentsClientGetLogFileURLResponse, error) {
-	result := DeploymentsClientGetLogFileURLResponse{RawResponse: resp}
+	result := DeploymentsClientGetLogFileURLResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LogFileURLResponse); err != nil {
 		return DeploymentsClientGetLogFileURLResponse{}, err
 	}
@@ -504,16 +493,32 @@ func (client *DeploymentsClient) getLogFileURLHandleResponse(resp *http.Response
 // serviceName - The name of the Service resource.
 // appName - The name of the App resource.
 // options - DeploymentsClientListOptions contains the optional parameters for the DeploymentsClient.List method.
-func (client *DeploymentsClient) List(resourceGroupName string, serviceName string, appName string, options *DeploymentsClientListOptions) *DeploymentsClientListPager {
-	return &DeploymentsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, serviceName, appName, options)
+func (client *DeploymentsClient) List(resourceGroupName string, serviceName string, appName string, options *DeploymentsClientListOptions) *runtime.Pager[DeploymentsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DeploymentsClientListResponse]{
+		More: func(page DeploymentsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DeploymentsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DeploymentResourceCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *DeploymentsClientListResponse) (DeploymentsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, serviceName, appName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DeploymentsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DeploymentsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DeploymentsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -540,7 +545,7 @@ func (client *DeploymentsClient) listCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	if options != nil && options.Version != nil {
 		for _, qv := range options.Version {
 			reqQP.Add("version", qv)
@@ -553,7 +558,7 @@ func (client *DeploymentsClient) listCreateRequest(ctx context.Context, resource
 
 // listHandleResponse handles the List response.
 func (client *DeploymentsClient) listHandleResponse(resp *http.Response) (DeploymentsClientListResponse, error) {
-	result := DeploymentsClientListResponse{RawResponse: resp}
+	result := DeploymentsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentResourceCollection); err != nil {
 		return DeploymentsClientListResponse{}, err
 	}
@@ -567,16 +572,32 @@ func (client *DeploymentsClient) listHandleResponse(resp *http.Response) (Deploy
 // serviceName - The name of the Service resource.
 // options - DeploymentsClientListForClusterOptions contains the optional parameters for the DeploymentsClient.ListForCluster
 // method.
-func (client *DeploymentsClient) ListForCluster(resourceGroupName string, serviceName string, options *DeploymentsClientListForClusterOptions) *DeploymentsClientListForClusterPager {
-	return &DeploymentsClientListForClusterPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listForClusterCreateRequest(ctx, resourceGroupName, serviceName, options)
+func (client *DeploymentsClient) ListForCluster(resourceGroupName string, serviceName string, options *DeploymentsClientListForClusterOptions) *runtime.Pager[DeploymentsClientListForClusterResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DeploymentsClientListForClusterResponse]{
+		More: func(page DeploymentsClientListForClusterResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DeploymentsClientListForClusterResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DeploymentResourceCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *DeploymentsClientListForClusterResponse) (DeploymentsClientListForClusterResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listForClusterCreateRequest(ctx, resourceGroupName, serviceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DeploymentsClientListForClusterResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DeploymentsClientListForClusterResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DeploymentsClientListForClusterResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listForClusterHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listForClusterCreateRequest creates the ListForCluster request.
@@ -599,7 +620,7 @@ func (client *DeploymentsClient) listForClusterCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	if options != nil && options.Version != nil {
 		for _, qv := range options.Version {
 			reqQP.Add("version", qv)
@@ -612,7 +633,7 @@ func (client *DeploymentsClient) listForClusterCreateRequest(ctx context.Context
 
 // listForClusterHandleResponse handles the ListForCluster response.
 func (client *DeploymentsClient) listForClusterHandleResponse(resp *http.Response) (DeploymentsClientListForClusterResponse, error) {
-	result := DeploymentsClientListForClusterResponse{RawResponse: resp}
+	result := DeploymentsClientListForClusterResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentResourceCollection); err != nil {
 		return DeploymentsClientListForClusterResponse{}, err
 	}
@@ -628,22 +649,18 @@ func (client *DeploymentsClient) listForClusterHandleResponse(resp *http.Respons
 // deploymentName - The name of the Deployment resource.
 // options - DeploymentsClientBeginRestartOptions contains the optional parameters for the DeploymentsClient.BeginRestart
 // method.
-func (client *DeploymentsClient) BeginRestart(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, options *DeploymentsClientBeginRestartOptions) (DeploymentsClientRestartPollerResponse, error) {
-	resp, err := client.restart(ctx, resourceGroupName, serviceName, appName, deploymentName, options)
-	if err != nil {
-		return DeploymentsClientRestartPollerResponse{}, err
+func (client *DeploymentsClient) BeginRestart(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, options *DeploymentsClientBeginRestartOptions) (*armruntime.Poller[DeploymentsClientRestartResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.restart(ctx, resourceGroupName, serviceName, appName, deploymentName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[DeploymentsClientRestartResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[DeploymentsClientRestartResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DeploymentsClientRestartPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DeploymentsClient.Restart", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return DeploymentsClientRestartPollerResponse{}, err
-	}
-	result.Poller = &DeploymentsClientRestartPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Restart - Restart the deployment.
@@ -691,7 +708,7 @@ func (client *DeploymentsClient) restartCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -705,22 +722,18 @@ func (client *DeploymentsClient) restartCreateRequest(ctx context.Context, resou
 // appName - The name of the App resource.
 // deploymentName - The name of the Deployment resource.
 // options - DeploymentsClientBeginStartOptions contains the optional parameters for the DeploymentsClient.BeginStart method.
-func (client *DeploymentsClient) BeginStart(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, options *DeploymentsClientBeginStartOptions) (DeploymentsClientStartPollerResponse, error) {
-	resp, err := client.start(ctx, resourceGroupName, serviceName, appName, deploymentName, options)
-	if err != nil {
-		return DeploymentsClientStartPollerResponse{}, err
+func (client *DeploymentsClient) BeginStart(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, options *DeploymentsClientBeginStartOptions) (*armruntime.Poller[DeploymentsClientStartResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.start(ctx, resourceGroupName, serviceName, appName, deploymentName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[DeploymentsClientStartResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[DeploymentsClientStartResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DeploymentsClientStartPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DeploymentsClient.Start", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return DeploymentsClientStartPollerResponse{}, err
-	}
-	result.Poller = &DeploymentsClientStartPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Start - Start the deployment.
@@ -768,7 +781,7 @@ func (client *DeploymentsClient) startCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -784,22 +797,18 @@ func (client *DeploymentsClient) startCreateRequest(ctx context.Context, resourc
 // diagnosticParameters - Parameters for the diagnostic operation
 // options - DeploymentsClientBeginStartJFROptions contains the optional parameters for the DeploymentsClient.BeginStartJFR
 // method.
-func (client *DeploymentsClient) BeginStartJFR(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, diagnosticParameters DiagnosticParameters, options *DeploymentsClientBeginStartJFROptions) (DeploymentsClientStartJFRPollerResponse, error) {
-	resp, err := client.startJFR(ctx, resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters, options)
-	if err != nil {
-		return DeploymentsClientStartJFRPollerResponse{}, err
+func (client *DeploymentsClient) BeginStartJFR(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, diagnosticParameters DiagnosticParameters, options *DeploymentsClientBeginStartJFROptions) (*armruntime.Poller[DeploymentsClientStartJFRResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.startJFR(ctx, resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[DeploymentsClientStartJFRResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[DeploymentsClientStartJFRResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DeploymentsClientStartJFRPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DeploymentsClient.StartJFR", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return DeploymentsClientStartJFRPollerResponse{}, err
-	}
-	result.Poller = &DeploymentsClientStartJFRPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // StartJFR - Start JFR
@@ -847,7 +856,7 @@ func (client *DeploymentsClient) startJFRCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, diagnosticParameters)
@@ -861,22 +870,18 @@ func (client *DeploymentsClient) startJFRCreateRequest(ctx context.Context, reso
 // appName - The name of the App resource.
 // deploymentName - The name of the Deployment resource.
 // options - DeploymentsClientBeginStopOptions contains the optional parameters for the DeploymentsClient.BeginStop method.
-func (client *DeploymentsClient) BeginStop(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, options *DeploymentsClientBeginStopOptions) (DeploymentsClientStopPollerResponse, error) {
-	resp, err := client.stop(ctx, resourceGroupName, serviceName, appName, deploymentName, options)
-	if err != nil {
-		return DeploymentsClientStopPollerResponse{}, err
+func (client *DeploymentsClient) BeginStop(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, options *DeploymentsClientBeginStopOptions) (*armruntime.Poller[DeploymentsClientStopResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.stop(ctx, resourceGroupName, serviceName, appName, deploymentName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[DeploymentsClientStopResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[DeploymentsClientStopResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DeploymentsClientStopPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DeploymentsClient.Stop", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return DeploymentsClientStopPollerResponse{}, err
-	}
-	result.Poller = &DeploymentsClientStopPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Stop - Stop the deployment.
@@ -924,7 +929,7 @@ func (client *DeploymentsClient) stopCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -939,22 +944,18 @@ func (client *DeploymentsClient) stopCreateRequest(ctx context.Context, resource
 // deploymentName - The name of the Deployment resource.
 // deploymentResource - Parameters for the update operation
 // options - DeploymentsClientBeginUpdateOptions contains the optional parameters for the DeploymentsClient.BeginUpdate method.
-func (client *DeploymentsClient) BeginUpdate(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, deploymentResource DeploymentResource, options *DeploymentsClientBeginUpdateOptions) (DeploymentsClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, serviceName, appName, deploymentName, deploymentResource, options)
-	if err != nil {
-		return DeploymentsClientUpdatePollerResponse{}, err
+func (client *DeploymentsClient) BeginUpdate(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, deploymentResource DeploymentResource, options *DeploymentsClientBeginUpdateOptions) (*armruntime.Poller[DeploymentsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, serviceName, appName, deploymentName, deploymentResource, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[DeploymentsClientUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[DeploymentsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DeploymentsClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DeploymentsClient.Update", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return DeploymentsClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &DeploymentsClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Operation to update an exiting Deployment.
@@ -1002,7 +1003,7 @@ func (client *DeploymentsClient) updateCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, deploymentResource)

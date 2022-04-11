@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type MonitoringSettingsClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewMonitoringSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *MonitoringSettingsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewMonitoringSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MonitoringSettingsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &MonitoringSettingsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Get the Monitoring Setting and its properties.
@@ -91,7 +96,7 @@ func (client *MonitoringSettingsClient) getCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -99,7 +104,7 @@ func (client *MonitoringSettingsClient) getCreateRequest(ctx context.Context, re
 
 // getHandleResponse handles the Get response.
 func (client *MonitoringSettingsClient) getHandleResponse(resp *http.Response) (MonitoringSettingsClientGetResponse, error) {
-	result := MonitoringSettingsClientGetResponse{RawResponse: resp}
+	result := MonitoringSettingsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MonitoringSettingResource); err != nil {
 		return MonitoringSettingsClientGetResponse{}, err
 	}
@@ -114,22 +119,18 @@ func (client *MonitoringSettingsClient) getHandleResponse(resp *http.Response) (
 // monitoringSettingResource - Parameters for the update operation
 // options - MonitoringSettingsClientBeginUpdatePatchOptions contains the optional parameters for the MonitoringSettingsClient.BeginUpdatePatch
 // method.
-func (client *MonitoringSettingsClient) BeginUpdatePatch(ctx context.Context, resourceGroupName string, serviceName string, monitoringSettingResource MonitoringSettingResource, options *MonitoringSettingsClientBeginUpdatePatchOptions) (MonitoringSettingsClientUpdatePatchPollerResponse, error) {
-	resp, err := client.updatePatch(ctx, resourceGroupName, serviceName, monitoringSettingResource, options)
-	if err != nil {
-		return MonitoringSettingsClientUpdatePatchPollerResponse{}, err
+func (client *MonitoringSettingsClient) BeginUpdatePatch(ctx context.Context, resourceGroupName string, serviceName string, monitoringSettingResource MonitoringSettingResource, options *MonitoringSettingsClientBeginUpdatePatchOptions) (*armruntime.Poller[MonitoringSettingsClientUpdatePatchResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.updatePatch(ctx, resourceGroupName, serviceName, monitoringSettingResource, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[MonitoringSettingsClientUpdatePatchResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[MonitoringSettingsClientUpdatePatchResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := MonitoringSettingsClientUpdatePatchPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("MonitoringSettingsClient.UpdatePatch", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return MonitoringSettingsClientUpdatePatchPollerResponse{}, err
-	}
-	result.Poller = &MonitoringSettingsClientUpdatePatchPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // UpdatePatch - Update the Monitoring Setting.
@@ -169,7 +170,7 @@ func (client *MonitoringSettingsClient) updatePatchCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, monitoringSettingResource)
@@ -183,22 +184,18 @@ func (client *MonitoringSettingsClient) updatePatchCreateRequest(ctx context.Con
 // monitoringSettingResource - Parameters for the update operation
 // options - MonitoringSettingsClientBeginUpdatePutOptions contains the optional parameters for the MonitoringSettingsClient.BeginUpdatePut
 // method.
-func (client *MonitoringSettingsClient) BeginUpdatePut(ctx context.Context, resourceGroupName string, serviceName string, monitoringSettingResource MonitoringSettingResource, options *MonitoringSettingsClientBeginUpdatePutOptions) (MonitoringSettingsClientUpdatePutPollerResponse, error) {
-	resp, err := client.updatePut(ctx, resourceGroupName, serviceName, monitoringSettingResource, options)
-	if err != nil {
-		return MonitoringSettingsClientUpdatePutPollerResponse{}, err
+func (client *MonitoringSettingsClient) BeginUpdatePut(ctx context.Context, resourceGroupName string, serviceName string, monitoringSettingResource MonitoringSettingResource, options *MonitoringSettingsClientBeginUpdatePutOptions) (*armruntime.Poller[MonitoringSettingsClientUpdatePutResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.updatePut(ctx, resourceGroupName, serviceName, monitoringSettingResource, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[MonitoringSettingsClientUpdatePutResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[MonitoringSettingsClientUpdatePutResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := MonitoringSettingsClientUpdatePutPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("MonitoringSettingsClient.UpdatePut", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return MonitoringSettingsClientUpdatePutPollerResponse{}, err
-	}
-	result.Poller = &MonitoringSettingsClientUpdatePutPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // UpdatePut - Update the Monitoring Setting.
@@ -238,7 +235,7 @@ func (client *MonitoringSettingsClient) updatePutCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, monitoringSettingResource)

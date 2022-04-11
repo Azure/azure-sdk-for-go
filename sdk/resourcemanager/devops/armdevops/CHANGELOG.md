@@ -1,5 +1,78 @@
 # Release History
 
+## 0.3.0 (2022-04-11)
+### Breaking Changes
+
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `NewPipelinesClient` return value(s) have been changed from `(*PipelinesClient)` to `(*PipelinesClient, error)`
+- Function `*PipelinesClient.ListByResourceGroup` return value(s) have been changed from `(*PipelinesClientListByResourceGroupPager)` to `(*runtime.Pager[PipelinesClientListByResourceGroupResponse])`
+- Function `*PipelinesClient.ListBySubscription` return value(s) have been changed from `(*PipelinesClientListBySubscriptionPager)` to `(*runtime.Pager[PipelinesClientListBySubscriptionResponse])`
+- Function `*PipelineTemplateDefinitionsClient.List` return value(s) have been changed from `(*PipelineTemplateDefinitionsClientListPager)` to `(*runtime.Pager[PipelineTemplateDefinitionsClientListResponse])`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `*PipelinesClient.BeginCreateOrUpdate` return value(s) have been changed from `(PipelinesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[PipelinesClientCreateOrUpdateResponse], error)`
+- Function `NewPipelineTemplateDefinitionsClient` return value(s) have been changed from `(*PipelineTemplateDefinitionsClient)` to `(*PipelineTemplateDefinitionsClient, error)`
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Function `*PipelineTemplateDefinitionsClientListPager.NextPage` has been removed
+- Function `*PipelinesClientListBySubscriptionPager.NextPage` has been removed
+- Function `*PipelinesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*PipelinesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*PipelinesClientListBySubscriptionPager.Err` has been removed
+- Function `*PipelinesClientListByResourceGroupPager.NextPage` has been removed
+- Function `InputDataType.ToPtr` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `CodeRepositoryType.ToPtr` has been removed
+- Function `*PipelinesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `PipelinesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*PipelinesClientListByResourceGroupPager.PageResponse` has been removed
+- Function `AuthorizationType.ToPtr` has been removed
+- Function `*PipelineTemplateDefinitionsClientListPager.Err` has been removed
+- Function `*PipelinesClientListByResourceGroupPager.Err` has been removed
+- Function `*PipelinesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*PipelinesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*PipelinesClientListBySubscriptionPager.PageResponse` has been removed
+- Function `*PipelineTemplateDefinitionsClientListPager.PageResponse` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `PipelineTemplateDefinitionsClientListPager` has been removed
+- Struct `PipelineTemplateDefinitionsClientListResult` has been removed
+- Struct `PipelinesClientCreateOrUpdatePoller` has been removed
+- Struct `PipelinesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `PipelinesClientCreateOrUpdateResult` has been removed
+- Struct `PipelinesClientGetResult` has been removed
+- Struct `PipelinesClientListByResourceGroupPager` has been removed
+- Struct `PipelinesClientListByResourceGroupResult` has been removed
+- Struct `PipelinesClientListBySubscriptionPager` has been removed
+- Struct `PipelinesClientListBySubscriptionResult` has been removed
+- Struct `PipelinesClientUpdateResult` has been removed
+- Field `PipelinesClientGetResult` of struct `PipelinesClientGetResponse` has been removed
+- Field `RawResponse` of struct `PipelinesClientGetResponse` has been removed
+- Field `PipelinesClientListBySubscriptionResult` of struct `PipelinesClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `PipelinesClientListBySubscriptionResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `PipelinesClientListByResourceGroupResult` of struct `PipelinesClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `PipelinesClientListByResourceGroupResponse` has been removed
+- Field `PipelinesClientCreateOrUpdateResult` of struct `PipelinesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `PipelinesClientCreateOrUpdateResponse` has been removed
+- Field `PipelinesClientUpdateResult` of struct `PipelinesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `PipelinesClientUpdateResponse` has been removed
+- Field `PipelineTemplateDefinitionsClientListResult` of struct `PipelineTemplateDefinitionsClientListResponse` has been removed
+- Field `RawResponse` of struct `PipelineTemplateDefinitionsClientListResponse` has been removed
+- Field `RawResponse` of struct `PipelinesClientDeleteResponse` has been removed
+
+### Features Added
+
+- New anonymous field `Pipeline` in struct `PipelinesClientUpdateResponse`
+- New anonymous field `PipelineTemplateDefinitionListResult` in struct `PipelineTemplateDefinitionsClientListResponse`
+- New anonymous field `Pipeline` in struct `PipelinesClientCreateOrUpdateResponse`
+- New anonymous field `PipelineListResult` in struct `PipelinesClientListBySubscriptionResponse`
+- New anonymous field `Pipeline` in struct `PipelinesClientGetResponse`
+- New field `ResumeToken` in struct `PipelinesClientBeginCreateOrUpdateOptions`
+- New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
+- New anonymous field `PipelineListResult` in struct `PipelinesClientListByResourceGroupResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

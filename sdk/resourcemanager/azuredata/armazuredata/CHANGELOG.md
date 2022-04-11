@@ -1,5 +1,78 @@
 # Release History
 
+## 0.3.0 (2022-04-11)
+### Breaking Changes
+
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `*SQLServerRegistrationsClient.List` return value(s) have been changed from `(*SQLServerRegistrationsClientListPager)` to `(*runtime.Pager[SQLServerRegistrationsClientListResponse])`
+- Function `NewSQLServersClient` return value(s) have been changed from `(*SQLServersClient)` to `(*SQLServersClient, error)`
+- Function `*SQLServerRegistrationsClient.ListByResourceGroup` return value(s) have been changed from `(*SQLServerRegistrationsClientListByResourceGroupPager)` to `(*runtime.Pager[SQLServerRegistrationsClientListByResourceGroupResponse])`
+- Function `*SQLServersClient.ListByResourceGroup` return value(s) have been changed from `(*SQLServersClientListByResourceGroupPager)` to `(*runtime.Pager[SQLServersClientListByResourceGroupResponse])`
+- Function `NewSQLServerRegistrationsClient` return value(s) have been changed from `(*SQLServerRegistrationsClient)` to `(*SQLServerRegistrationsClient, error)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Type of `Operation.Properties` has been changed from `map[string]map[string]interface{}` to `map[string]interface{}`
+- Function `*SQLServersClientListByResourceGroupPager.Err` has been removed
+- Function `IdentityType.ToPtr` has been removed
+- Function `*SQLServerRegistrationsClientListByResourceGroupPager.Err` has been removed
+- Function `*SQLServersClientListByResourceGroupPager.NextPage` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Function `SKUTier.ToPtr` has been removed
+- Function `OperationOrigin.ToPtr` has been removed
+- Function `*SQLServerRegistrationsClientListPager.PageResponse` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `*SQLServerRegistrationsClientListPager.NextPage` has been removed
+- Function `*SQLServerRegistrationsClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*SQLServerRegistrationsClientListPager.Err` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `*SQLServersClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*SQLServerRegistrationsClientListByResourceGroupPager.NextPage` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `SQLServerRegistrationsClientCreateOrUpdateResult` has been removed
+- Struct `SQLServerRegistrationsClientGetResult` has been removed
+- Struct `SQLServerRegistrationsClientListByResourceGroupPager` has been removed
+- Struct `SQLServerRegistrationsClientListByResourceGroupResult` has been removed
+- Struct `SQLServerRegistrationsClientListPager` has been removed
+- Struct `SQLServerRegistrationsClientListResult` has been removed
+- Struct `SQLServerRegistrationsClientUpdateResult` has been removed
+- Struct `SQLServersClientCreateOrUpdateResult` has been removed
+- Struct `SQLServersClientGetResult` has been removed
+- Struct `SQLServersClientListByResourceGroupPager` has been removed
+- Struct `SQLServersClientListByResourceGroupResult` has been removed
+- Field `SQLServerRegistrationsClientListResult` of struct `SQLServerRegistrationsClientListResponse` has been removed
+- Field `RawResponse` of struct `SQLServerRegistrationsClientListResponse` has been removed
+- Field `SQLServerRegistrationsClientCreateOrUpdateResult` of struct `SQLServerRegistrationsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `SQLServerRegistrationsClientCreateOrUpdateResponse` has been removed
+- Field `SQLServersClientGetResult` of struct `SQLServersClientGetResponse` has been removed
+- Field `RawResponse` of struct `SQLServersClientGetResponse` has been removed
+- Field `SQLServerRegistrationsClientUpdateResult` of struct `SQLServerRegistrationsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `SQLServerRegistrationsClientUpdateResponse` has been removed
+- Field `SQLServerRegistrationsClientGetResult` of struct `SQLServerRegistrationsClientGetResponse` has been removed
+- Field `RawResponse` of struct `SQLServerRegistrationsClientGetResponse` has been removed
+- Field `SQLServersClientListByResourceGroupResult` of struct `SQLServersClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `SQLServersClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `SQLServerRegistrationsClientDeleteResponse` has been removed
+- Field `SQLServerRegistrationsClientListByResourceGroupResult` of struct `SQLServerRegistrationsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `SQLServerRegistrationsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `SQLServersClientDeleteResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `SQLServersClientCreateOrUpdateResult` of struct `SQLServersClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `SQLServersClientCreateOrUpdateResponse` has been removed
+
+### Features Added
+
+- New anonymous field `SQLServerRegistrationListResult` in struct `SQLServerRegistrationsClientListResponse`
+- New anonymous field `SQLServerListResult` in struct `SQLServersClientListByResourceGroupResponse`
+- New anonymous field `SQLServerRegistration` in struct `SQLServerRegistrationsClientUpdateResponse`
+- New anonymous field `SQLServer` in struct `SQLServersClientCreateOrUpdateResponse`
+- New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
+- New anonymous field `SQLServer` in struct `SQLServersClientGetResponse`
+- New anonymous field `SQLServerRegistrationListResult` in struct `SQLServerRegistrationsClientListByResourceGroupResponse`
+- New anonymous field `SQLServerRegistration` in struct `SQLServerRegistrationsClientGetResponse`
+- New anonymous field `SQLServerRegistration` in struct `SQLServerRegistrationsClientCreateOrUpdateResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

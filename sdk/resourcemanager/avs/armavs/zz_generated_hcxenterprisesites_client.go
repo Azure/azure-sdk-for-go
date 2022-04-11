@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type HcxEnterpriseSitesClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewHcxEnterpriseSitesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *HcxEnterpriseSitesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewHcxEnterpriseSitesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*HcxEnterpriseSitesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &HcxEnterpriseSitesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Create or update an HCX Enterprise Site in a private cloud
@@ -104,7 +109,7 @@ func (client *HcxEnterpriseSitesClient) createOrUpdateCreateRequest(ctx context.
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *HcxEnterpriseSitesClient) createOrUpdateHandleResponse(resp *http.Response) (HcxEnterpriseSitesClientCreateOrUpdateResponse, error) {
-	result := HcxEnterpriseSitesClientCreateOrUpdateResponse{RawResponse: resp}
+	result := HcxEnterpriseSitesClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HcxEnterpriseSite); err != nil {
 		return HcxEnterpriseSitesClientCreateOrUpdateResponse{}, err
 	}
@@ -130,7 +135,7 @@ func (client *HcxEnterpriseSitesClient) Delete(ctx context.Context, resourceGrou
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return HcxEnterpriseSitesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return HcxEnterpriseSitesClientDeleteResponse{RawResponse: resp}, nil
+	return HcxEnterpriseSitesClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -216,7 +221,7 @@ func (client *HcxEnterpriseSitesClient) getCreateRequest(ctx context.Context, re
 
 // getHandleResponse handles the Get response.
 func (client *HcxEnterpriseSitesClient) getHandleResponse(resp *http.Response) (HcxEnterpriseSitesClientGetResponse, error) {
-	result := HcxEnterpriseSitesClientGetResponse{RawResponse: resp}
+	result := HcxEnterpriseSitesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HcxEnterpriseSite); err != nil {
 		return HcxEnterpriseSitesClientGetResponse{}, err
 	}
@@ -228,16 +233,32 @@ func (client *HcxEnterpriseSitesClient) getHandleResponse(resp *http.Response) (
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // privateCloudName - Name of the private cloud
 // options - HcxEnterpriseSitesClientListOptions contains the optional parameters for the HcxEnterpriseSitesClient.List method.
-func (client *HcxEnterpriseSitesClient) List(resourceGroupName string, privateCloudName string, options *HcxEnterpriseSitesClientListOptions) *HcxEnterpriseSitesClientListPager {
-	return &HcxEnterpriseSitesClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, privateCloudName, options)
+func (client *HcxEnterpriseSitesClient) List(resourceGroupName string, privateCloudName string, options *HcxEnterpriseSitesClientListOptions) *runtime.Pager[HcxEnterpriseSitesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[HcxEnterpriseSitesClientListResponse]{
+		More: func(page HcxEnterpriseSitesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp HcxEnterpriseSitesClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.HcxEnterpriseSiteList.NextLink)
+		Fetcher: func(ctx context.Context, page *HcxEnterpriseSitesClientListResponse) (HcxEnterpriseSitesClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, privateCloudName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return HcxEnterpriseSitesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return HcxEnterpriseSitesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return HcxEnterpriseSitesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -268,7 +289,7 @@ func (client *HcxEnterpriseSitesClient) listCreateRequest(ctx context.Context, r
 
 // listHandleResponse handles the List response.
 func (client *HcxEnterpriseSitesClient) listHandleResponse(resp *http.Response) (HcxEnterpriseSitesClientListResponse, error) {
-	result := HcxEnterpriseSitesClientListResponse{RawResponse: resp}
+	result := HcxEnterpriseSitesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HcxEnterpriseSiteList); err != nil {
 		return HcxEnterpriseSitesClientListResponse{}, err
 	}

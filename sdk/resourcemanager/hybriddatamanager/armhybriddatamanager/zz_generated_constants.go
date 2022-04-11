@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armhybriddatamanager
 
 const (
 	moduleName    = "armhybriddatamanager"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // IsJobCancellable - Describes whether the job is cancellable.
@@ -27,11 +27,6 @@ func PossibleIsJobCancellableValues() []IsJobCancellable {
 		IsJobCancellableNotCancellable,
 		IsJobCancellableCancellable,
 	}
-}
-
-// ToPtr returns a *IsJobCancellable pointing to the current value.
-func (c IsJobCancellable) ToPtr() *IsJobCancellable {
-	return &c
 }
 
 // JobStatus - Status of the job.
@@ -60,11 +55,6 @@ func PossibleJobStatusValues() []JobStatus {
 		JobStatusCancelling,
 		JobStatusPartiallySucceeded,
 	}
-}
-
-// ToPtr returns a *JobStatus pointing to the current value.
-func (c JobStatus) ToPtr() *JobStatus {
-	return &c
 }
 
 // RunLocation - This is the preferred geo location for the job to run.
@@ -133,11 +123,6 @@ func PossibleRunLocationValues() []RunLocation {
 	}
 }
 
-// ToPtr returns a *RunLocation pointing to the current value.
-func (c RunLocation) ToPtr() *RunLocation {
-	return &c
-}
-
 // State - State of the data service.
 type State string
 
@@ -154,11 +139,6 @@ func PossibleStateValues() []State {
 		StateEnabled,
 		StateSupported,
 	}
-}
-
-// ToPtr returns a *State pointing to the current value.
-func (c State) ToPtr() *State {
-	return &c
 }
 
 // SupportedAlgorithm - The encryption algorithm used to encrypt data.
@@ -181,11 +161,6 @@ func PossibleSupportedAlgorithmValues() []SupportedAlgorithm {
 	}
 }
 
-// ToPtr returns a *SupportedAlgorithm pointing to the current value.
-func (c SupportedAlgorithm) ToPtr() *SupportedAlgorithm {
-	return &c
-}
-
 // UserConfirmation - Enum to detect if user confirmation is required. If not passed will default to NotRequired.
 type UserConfirmation string
 
@@ -200,9 +175,4 @@ func PossibleUserConfirmationValues() []UserConfirmation {
 		UserConfirmationNotRequired,
 		UserConfirmationRequired,
 	}
-}
-
-// ToPtr returns a *UserConfirmation pointing to the current value.
-func (c UserConfirmation) ToPtr() *UserConfirmation {
-	return &c
 }

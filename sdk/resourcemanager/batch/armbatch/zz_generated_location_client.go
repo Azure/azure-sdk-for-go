@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type LocationClient struct {
 // subscriptionID - The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000)
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewLocationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *LocationClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewLocationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LocationClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &LocationClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CheckNameAvailability - Checks whether the Batch account name is available in the specified region.
@@ -87,7 +92,7 @@ func (client *LocationClient) checkNameAvailabilityCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -95,7 +100,7 @@ func (client *LocationClient) checkNameAvailabilityCreateRequest(ctx context.Con
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
 func (client *LocationClient) checkNameAvailabilityHandleResponse(resp *http.Response) (LocationClientCheckNameAvailabilityResponse, error) {
-	result := LocationClientCheckNameAvailabilityResponse{RawResponse: resp}
+	result := LocationClientCheckNameAvailabilityResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameAvailabilityResult); err != nil {
 		return LocationClientCheckNameAvailabilityResponse{}, err
 	}
@@ -137,7 +142,7 @@ func (client *LocationClient) getQuotasCreateRequest(ctx context.Context, locati
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -145,7 +150,7 @@ func (client *LocationClient) getQuotasCreateRequest(ctx context.Context, locati
 
 // getQuotasHandleResponse handles the GetQuotas response.
 func (client *LocationClient) getQuotasHandleResponse(resp *http.Response) (LocationClientGetQuotasResponse, error) {
-	result := LocationClientGetQuotasResponse{RawResponse: resp}
+	result := LocationClientGetQuotasResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LocationQuota); err != nil {
 		return LocationClientGetQuotasResponse{}, err
 	}
@@ -157,16 +162,32 @@ func (client *LocationClient) getQuotasHandleResponse(resp *http.Response) (Loca
 // locationName - The region for which to retrieve Batch service supported SKUs.
 // options - LocationClientListSupportedCloudServiceSKUsOptions contains the optional parameters for the LocationClient.ListSupportedCloudServiceSKUs
 // method.
-func (client *LocationClient) ListSupportedCloudServiceSKUs(locationName string, options *LocationClientListSupportedCloudServiceSKUsOptions) *LocationClientListSupportedCloudServiceSKUsPager {
-	return &LocationClientListSupportedCloudServiceSKUsPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listSupportedCloudServiceSKUsCreateRequest(ctx, locationName, options)
+func (client *LocationClient) ListSupportedCloudServiceSKUs(locationName string, options *LocationClientListSupportedCloudServiceSKUsOptions) *runtime.Pager[LocationClientListSupportedCloudServiceSKUsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[LocationClientListSupportedCloudServiceSKUsResponse]{
+		More: func(page LocationClientListSupportedCloudServiceSKUsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp LocationClientListSupportedCloudServiceSKUsResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SupportedSKUsResult.NextLink)
+		Fetcher: func(ctx context.Context, page *LocationClientListSupportedCloudServiceSKUsResponse) (LocationClientListSupportedCloudServiceSKUsResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listSupportedCloudServiceSKUsCreateRequest(ctx, locationName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return LocationClientListSupportedCloudServiceSKUsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return LocationClientListSupportedCloudServiceSKUsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return LocationClientListSupportedCloudServiceSKUsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listSupportedCloudServiceSKUsHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listSupportedCloudServiceSKUsCreateRequest creates the ListSupportedCloudServiceSKUs request.
@@ -191,7 +212,7 @@ func (client *LocationClient) listSupportedCloudServiceSKUsCreateRequest(ctx con
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -199,7 +220,7 @@ func (client *LocationClient) listSupportedCloudServiceSKUsCreateRequest(ctx con
 
 // listSupportedCloudServiceSKUsHandleResponse handles the ListSupportedCloudServiceSKUs response.
 func (client *LocationClient) listSupportedCloudServiceSKUsHandleResponse(resp *http.Response) (LocationClientListSupportedCloudServiceSKUsResponse, error) {
-	result := LocationClientListSupportedCloudServiceSKUsResponse{RawResponse: resp}
+	result := LocationClientListSupportedCloudServiceSKUsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SupportedSKUsResult); err != nil {
 		return LocationClientListSupportedCloudServiceSKUsResponse{}, err
 	}
@@ -211,16 +232,32 @@ func (client *LocationClient) listSupportedCloudServiceSKUsHandleResponse(resp *
 // locationName - The region for which to retrieve Batch service supported SKUs.
 // options - LocationClientListSupportedVirtualMachineSKUsOptions contains the optional parameters for the LocationClient.ListSupportedVirtualMachineSKUs
 // method.
-func (client *LocationClient) ListSupportedVirtualMachineSKUs(locationName string, options *LocationClientListSupportedVirtualMachineSKUsOptions) *LocationClientListSupportedVirtualMachineSKUsPager {
-	return &LocationClientListSupportedVirtualMachineSKUsPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listSupportedVirtualMachineSKUsCreateRequest(ctx, locationName, options)
+func (client *LocationClient) ListSupportedVirtualMachineSKUs(locationName string, options *LocationClientListSupportedVirtualMachineSKUsOptions) *runtime.Pager[LocationClientListSupportedVirtualMachineSKUsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[LocationClientListSupportedVirtualMachineSKUsResponse]{
+		More: func(page LocationClientListSupportedVirtualMachineSKUsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp LocationClientListSupportedVirtualMachineSKUsResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SupportedSKUsResult.NextLink)
+		Fetcher: func(ctx context.Context, page *LocationClientListSupportedVirtualMachineSKUsResponse) (LocationClientListSupportedVirtualMachineSKUsResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listSupportedVirtualMachineSKUsCreateRequest(ctx, locationName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return LocationClientListSupportedVirtualMachineSKUsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return LocationClientListSupportedVirtualMachineSKUsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return LocationClientListSupportedVirtualMachineSKUsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listSupportedVirtualMachineSKUsHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listSupportedVirtualMachineSKUsCreateRequest creates the ListSupportedVirtualMachineSKUs request.
@@ -245,7 +282,7 @@ func (client *LocationClient) listSupportedVirtualMachineSKUsCreateRequest(ctx c
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -253,7 +290,7 @@ func (client *LocationClient) listSupportedVirtualMachineSKUsCreateRequest(ctx c
 
 // listSupportedVirtualMachineSKUsHandleResponse handles the ListSupportedVirtualMachineSKUs response.
 func (client *LocationClient) listSupportedVirtualMachineSKUsHandleResponse(resp *http.Response) (LocationClientListSupportedVirtualMachineSKUsResponse, error) {
-	result := LocationClientListSupportedVirtualMachineSKUsResponse{RawResponse: resp}
+	result := LocationClientListSupportedVirtualMachineSKUsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SupportedSKUsResult); err != nil {
 		return LocationClientListSupportedVirtualMachineSKUsResponse{}, err
 	}

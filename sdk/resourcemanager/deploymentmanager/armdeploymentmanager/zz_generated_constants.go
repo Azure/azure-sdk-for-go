@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armdeploymentmanager
 
 const (
 	moduleName    = "armdeploymentmanager"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // DeploymentMode - Describes the type of ARM deployment to be performed on the resource.
@@ -29,11 +29,6 @@ func PossibleDeploymentModeValues() []DeploymentMode {
 	}
 }
 
-// ToPtr returns a *DeploymentMode pointing to the current value.
-func (c DeploymentMode) ToPtr() *DeploymentMode {
-	return &c
-}
-
 // RestAuthLocation - The location of the authentication key/value pair in the request.
 type RestAuthLocation string
 
@@ -48,11 +43,6 @@ func PossibleRestAuthLocationValues() []RestAuthLocation {
 		RestAuthLocationQuery,
 		RestAuthLocationHeader,
 	}
-}
-
-// ToPtr returns a *RestAuthLocation pointing to the current value.
-func (c RestAuthLocation) ToPtr() *RestAuthLocation {
-	return &c
 }
 
 // RestAuthType - The authentication type.
@@ -71,11 +61,6 @@ func PossibleRestAuthTypeValues() []RestAuthType {
 	}
 }
 
-// ToPtr returns a *RestAuthType pointing to the current value.
-func (c RestAuthType) ToPtr() *RestAuthType {
-	return &c
-}
-
 // RestMatchQuantifier - Indicates whether any or all of the expressions should match with the response content.
 type RestMatchQuantifier string
 
@@ -90,11 +75,6 @@ func PossibleRestMatchQuantifierValues() []RestMatchQuantifier {
 		RestMatchQuantifierAll,
 		RestMatchQuantifierAny,
 	}
-}
-
-// ToPtr returns a *RestMatchQuantifier pointing to the current value.
-func (c RestMatchQuantifier) ToPtr() *RestMatchQuantifier {
-	return &c
 }
 
 // RestRequestMethod - The HTTP method to use for the request.
@@ -113,11 +93,6 @@ func PossibleRestRequestMethodValues() []RestRequestMethod {
 	}
 }
 
-// ToPtr returns a *RestRequestMethod pointing to the current value.
-func (c RestRequestMethod) ToPtr() *RestRequestMethod {
-	return &c
-}
-
 // StepType - The type of step.
 type StepType string
 
@@ -132,9 +107,4 @@ func PossibleStepTypeValues() []StepType {
 		StepTypeWait,
 		StepTypeHealthCheck,
 	}
-}
-
-// ToPtr returns a *StepType pointing to the current value.
-func (c StepType) ToPtr() *StepType {
-	return &c
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,12 +8,7 @@
 
 package armblueprint
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
 
 // ArtifactClassification provides polymorphic access to related types.
 // Call the interface's GetArtifact() method to access the common type.
@@ -39,9 +34,6 @@ type Artifact struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetArtifact implements the ArtifactClassification interface for type Artifact.
-func (a *Artifact) GetArtifact() *Artifact { return a }
-
 // ArtifactList - List of blueprint artifacts.
 type ArtifactList struct {
 	// List of blueprint artifacts.
@@ -51,48 +43,10 @@ type ArtifactList struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ArtifactList.
-func (a ArtifactList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ArtifactList.
-func (a *ArtifactList) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "nextLink":
-			err = unpopulate(val, &a.NextLink)
-			delete(rawMsg, key)
-		case "value":
-			a.Value, err = unmarshalArtifactClassificationArray(val)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ArtifactPropertiesBase - Common properties shared by different artifacts.
 type ArtifactPropertiesBase struct {
 	// Artifacts which need to be deployed before the specified artifact.
 	DependsOn []*string `json:"dependsOn,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ArtifactPropertiesBase.
-func (a ArtifactPropertiesBase) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "dependsOn", a.DependsOn)
-	return json.Marshal(objectMap)
 }
 
 // ArtifactsClientCreateOrUpdateOptions contains the optional parameters for the ArtifactsClient.CreateOrUpdate method.
@@ -160,19 +114,6 @@ type AssignmentDeploymentJob struct {
 	Result *AssignmentDeploymentJobResult `json:"result,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AssignmentDeploymentJob.
-func (a AssignmentDeploymentJob) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "action", a.Action)
-	populate(objectMap, "history", a.History)
-	populate(objectMap, "jobId", a.JobID)
-	populate(objectMap, "jobState", a.JobState)
-	populate(objectMap, "kind", a.Kind)
-	populate(objectMap, "requestUri", a.RequestURI)
-	populate(objectMap, "result", a.Result)
-	return json.Marshal(objectMap)
-}
-
 // AssignmentDeploymentJobResult - Result of each individual deployment in a blueprint assignment.
 type AssignmentDeploymentJobResult struct {
 	// Contains error details if deployment job failed.
@@ -180,14 +121,6 @@ type AssignmentDeploymentJobResult struct {
 
 	// Resources created as result of the deployment job.
 	Resources []*AssignmentJobCreatedResource `json:"resources,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AssignmentDeploymentJobResult.
-func (a AssignmentDeploymentJobResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "error", a.Error)
-	populate(objectMap, "resources", a.Resources)
-	return json.Marshal(objectMap)
 }
 
 // AssignmentJobCreatedResource - Azure resource created from deployment job.
@@ -205,16 +138,6 @@ type AssignmentJobCreatedResource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AssignmentJobCreatedResource.
-func (a AssignmentJobCreatedResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", a.ID)
-	populate(objectMap, "name", a.Name)
-	populate(objectMap, "properties", a.Properties)
-	populate(objectMap, "type", a.Type)
-	return json.Marshal(objectMap)
-}
-
 // AssignmentList - List of blueprint assignments
 type AssignmentList struct {
 	// List of blueprint assignments.
@@ -222,14 +145,6 @@ type AssignmentList struct {
 
 	// READ-ONLY; Link to the next page of results.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AssignmentList.
-func (a AssignmentList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
 }
 
 // AssignmentLockSettings - Defines how resources deployed by a blueprint assignment are locked.
@@ -247,15 +162,6 @@ type AssignmentLockSettings struct {
 
 	// Lock mode.
 	Mode *AssignmentLockMode `json:"mode,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AssignmentLockSettings.
-func (a AssignmentLockSettings) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "excludedActions", a.ExcludedActions)
-	populate(objectMap, "excludedPrincipals", a.ExcludedPrincipals)
-	populate(objectMap, "mode", a.Mode)
-	return json.Marshal(objectMap)
 }
 
 // AssignmentOperation - Represents underlying deployment detail for each update to the blueprint assignment.
@@ -282,14 +188,6 @@ type AssignmentOperationList struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AssignmentOperationList.
-func (a AssignmentOperationList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
-}
-
 // AssignmentOperationProperties - Properties of AssignmentOperation.
 type AssignmentOperationProperties struct {
 	// State of this blueprint assignment operation.
@@ -309,18 +207,6 @@ type AssignmentOperationProperties struct {
 
 	// Start time of the underlying deployment.
 	TimeStarted *string `json:"timeStarted,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AssignmentOperationProperties.
-func (a AssignmentOperationProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "assignmentState", a.AssignmentState)
-	populate(objectMap, "blueprintVersion", a.BlueprintVersion)
-	populate(objectMap, "deployments", a.Deployments)
-	populate(objectMap, "timeCreated", a.TimeCreated)
-	populate(objectMap, "timeFinished", a.TimeFinished)
-	populate(objectMap, "timeStarted", a.TimeStarted)
-	return json.Marshal(objectMap)
 }
 
 // AssignmentOperationsClientGetOptions contains the optional parameters for the AssignmentOperationsClient.Get method.
@@ -364,21 +250,6 @@ type AssignmentProperties struct {
 	Status *AssignmentStatus `json:"status,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AssignmentProperties.
-func (a AssignmentProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "blueprintId", a.BlueprintID)
-	populate(objectMap, "description", a.Description)
-	populate(objectMap, "displayName", a.DisplayName)
-	populate(objectMap, "locks", a.Locks)
-	populate(objectMap, "parameters", a.Parameters)
-	populate(objectMap, "provisioningState", a.ProvisioningState)
-	populate(objectMap, "resourceGroups", a.ResourceGroups)
-	populate(objectMap, "scope", a.Scope)
-	populate(objectMap, "status", a.Status)
-	return json.Marshal(objectMap)
-}
-
 // AssignmentStatus - The status of a blueprint assignment. This field is readonly.
 type AssignmentStatus struct {
 	// READ-ONLY; Last modified time of this blueprint definition.
@@ -389,41 +260,6 @@ type AssignmentStatus struct {
 
 	// READ-ONLY; Creation time of this blueprint definition.
 	TimeCreated *time.Time `json:"timeCreated,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AssignmentStatus.
-func (a AssignmentStatus) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "lastModified", a.LastModified)
-	populate(objectMap, "managedResources", a.ManagedResources)
-	populateTimeRFC3339(objectMap, "timeCreated", a.TimeCreated)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AssignmentStatus.
-func (a *AssignmentStatus) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "lastModified":
-			err = unpopulateTimeRFC3339(val, &a.LastModified)
-			delete(rawMsg, key)
-		case "managedResources":
-			err = unpopulate(val, &a.ManagedResources)
-			delete(rawMsg, key)
-		case "timeCreated":
-			err = unpopulateTimeRFC3339(val, &a.TimeCreated)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // AssignmentsClientCreateOrUpdateOptions contains the optional parameters for the AssignmentsClient.CreateOrUpdate method.
@@ -517,7 +353,7 @@ type CloudError struct {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info map[string]interface{} `json:"info,omitempty" azure:"ro"`
+	Info interface{} `json:"info,omitempty" azure:"ro"`
 
 	// READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -542,17 +378,6 @@ type ErrorResponse struct {
 	Target *string `json:"target,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ErrorResponse.
-func (e ErrorResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalInfo", e.AdditionalInfo)
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "message", e.Message)
-	populate(objectMap, "target", e.Target)
-	return json.Marshal(objectMap)
-}
-
 // KeyVaultReference - Specifies the link to a Key Vault.
 type KeyVaultReference struct {
 	// REQUIRED; Azure resource ID of the Key Vault.
@@ -566,14 +391,6 @@ type List struct {
 
 	// READ-ONLY; Link to the next page of results.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type List.
-func (l List) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", l.NextLink)
-	populate(objectMap, "value", l.Value)
-	return json.Marshal(objectMap)
 }
 
 // ManagedServiceIdentity - Managed identity generic object.
@@ -592,16 +409,6 @@ type ManagedServiceIdentity struct {
 	UserAssignedIdentities map[string]*UserAssignedIdentity `json:"userAssignedIdentities,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ManagedServiceIdentity.
-func (m ManagedServiceIdentity) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "principalId", m.PrincipalID)
-	populate(objectMap, "tenantId", m.TenantID)
-	populate(objectMap, "type", m.Type)
-	populate(objectMap, "userAssignedIdentities", m.UserAssignedIdentities)
-	return json.Marshal(objectMap)
-}
-
 // ParameterDefinition - Represent a parameter with constrains and metadata.
 type ParameterDefinition struct {
 	// REQUIRED; Allowed data types for Resource Manager template parameters.
@@ -615,16 +422,6 @@ type ParameterDefinition struct {
 
 	// User-friendly properties for this parameter.
 	Metadata *ParameterDefinitionMetadata `json:"metadata,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ParameterDefinition.
-func (p ParameterDefinition) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "allowedValues", p.AllowedValues)
-	populate(objectMap, "defaultValue", &p.DefaultValue)
-	populate(objectMap, "metadata", p.Metadata)
-	populate(objectMap, "type", p.Type)
-	return json.Marshal(objectMap)
 }
 
 // ParameterDefinitionMetadata - User-friendly properties for this parameter.
@@ -646,7 +443,7 @@ type ParameterValue struct {
 	Reference *SecretValueReference `json:"reference,omitempty"`
 
 	// Parameter value. Any valid JSON value is allowed including objects, arrays, strings, numbers and booleans.
-	Value map[string]interface{} `json:"value,omitempty"`
+	Value interface{} `json:"value,omitempty"`
 }
 
 // PolicyAssignmentArtifact - Blueprint artifact that applies a Policy assignment.
@@ -665,59 +462,6 @@ type PolicyAssignmentArtifact struct {
 
 	// READ-ONLY; Type of this resource.
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// GetArtifact implements the ArtifactClassification interface for type PolicyAssignmentArtifact.
-func (p *PolicyAssignmentArtifact) GetArtifact() *Artifact {
-	return &Artifact{
-		Kind: p.Kind,
-		ID:   p.ID,
-		Type: p.Type,
-		Name: p.Name,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PolicyAssignmentArtifact.
-func (p PolicyAssignmentArtifact) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", p.ID)
-	objectMap["kind"] = ArtifactKindPolicyAssignment
-	populate(objectMap, "name", p.Name)
-	populate(objectMap, "properties", p.Properties)
-	populate(objectMap, "type", p.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type PolicyAssignmentArtifact.
-func (p *PolicyAssignmentArtifact) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &p.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &p.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &p.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &p.Properties)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &p.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // PolicyAssignmentArtifactProperties - Properties of a Policy assignment blueprint artifact.
@@ -741,18 +485,6 @@ type PolicyAssignmentArtifactProperties struct {
 	ResourceGroup *string `json:"resourceGroup,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PolicyAssignmentArtifactProperties.
-func (p PolicyAssignmentArtifactProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "dependsOn", p.DependsOn)
-	populate(objectMap, "description", p.Description)
-	populate(objectMap, "displayName", p.DisplayName)
-	populate(objectMap, "parameters", p.Parameters)
-	populate(objectMap, "policyDefinitionId", p.PolicyDefinitionID)
-	populate(objectMap, "resourceGroup", p.ResourceGroup)
-	return json.Marshal(objectMap)
-}
-
 // Properties - Schema for blueprint definition properties.
 type Properties struct {
 	// Multi-line explain this resource.
@@ -771,27 +503,13 @@ type Properties struct {
 	TargetScope *BlueprintTargetScope `json:"targetScope,omitempty"`
 
 	// Published versions of this blueprint definition.
-	Versions map[string]interface{} `json:"versions,omitempty"`
+	Versions interface{} `json:"versions,omitempty"`
 
 	// READ-ONLY; Layout view of the blueprint definition for UI reference.
-	Layout map[string]interface{} `json:"layout,omitempty" azure:"ro"`
+	Layout interface{} `json:"layout,omitempty" azure:"ro"`
 
 	// READ-ONLY; Status of the blueprint. This field is readonly.
 	Status *Status `json:"status,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Properties.
-func (p Properties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "description", p.Description)
-	populate(objectMap, "displayName", p.DisplayName)
-	populate(objectMap, "layout", p.Layout)
-	populate(objectMap, "parameters", p.Parameters)
-	populate(objectMap, "resourceGroups", p.ResourceGroups)
-	populate(objectMap, "status", p.Status)
-	populate(objectMap, "targetScope", p.TargetScope)
-	populate(objectMap, "versions", p.Versions)
-	return json.Marshal(objectMap)
 }
 
 // PublishedArtifactsClientGetOptions contains the optional parameters for the PublishedArtifactsClient.Get method.
@@ -828,14 +546,6 @@ type PublishedBlueprintList struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PublishedBlueprintList.
-func (p PublishedBlueprintList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
 // PublishedBlueprintProperties - Schema for published blueprint definition properties.
 type PublishedBlueprintProperties struct {
 	// Name of the published blueprint definition.
@@ -861,20 +571,6 @@ type PublishedBlueprintProperties struct {
 
 	// READ-ONLY; Status of the blueprint. This field is readonly.
 	Status *Status `json:"status,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PublishedBlueprintProperties.
-func (p PublishedBlueprintProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "blueprintName", p.BlueprintName)
-	populate(objectMap, "changeNotes", p.ChangeNotes)
-	populate(objectMap, "description", p.Description)
-	populate(objectMap, "displayName", p.DisplayName)
-	populate(objectMap, "parameters", p.Parameters)
-	populate(objectMap, "resourceGroups", p.ResourceGroups)
-	populate(objectMap, "status", p.Status)
-	populate(objectMap, "targetScope", p.TargetScope)
-	return json.Marshal(objectMap)
 }
 
 // PublishedBlueprintsClientCreateOptions contains the optional parameters for the PublishedBlueprintsClient.Create method.
@@ -914,17 +610,6 @@ type ResourceGroupDefinition struct {
 
 	// Tags to be assigned to this resource group.
 	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ResourceGroupDefinition.
-func (r ResourceGroupDefinition) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "dependsOn", r.DependsOn)
-	populate(objectMap, "location", r.Location)
-	populate(objectMap, "metadata", r.Metadata)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "tags", r.Tags)
-	return json.Marshal(objectMap)
 }
 
 // ResourceGroupValue - Represents an Azure resource group.
@@ -975,13 +660,6 @@ type ResourceProviderOperationList struct {
 	Value []*ResourceProviderOperation `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ResourceProviderOperationList.
-func (r ResourceProviderOperationList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
-}
-
 // ResourceStatusBase - Shared status properties between all blueprint resources.
 type ResourceStatusBase struct {
 	// READ-ONLY; Last modified time of this blueprint definition.
@@ -989,37 +667,6 @@ type ResourceStatusBase struct {
 
 	// READ-ONLY; Creation time of this blueprint definition.
 	TimeCreated *time.Time `json:"timeCreated,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ResourceStatusBase.
-func (r ResourceStatusBase) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "lastModified", r.LastModified)
-	populateTimeRFC3339(objectMap, "timeCreated", r.TimeCreated)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ResourceStatusBase.
-func (r *ResourceStatusBase) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "lastModified":
-			err = unpopulateTimeRFC3339(val, &r.LastModified)
-			delete(rawMsg, key)
-		case "timeCreated":
-			err = unpopulateTimeRFC3339(val, &r.TimeCreated)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // RoleAssignmentArtifact - Blueprint artifact that applies a Role assignment.
@@ -1038,59 +685,6 @@ type RoleAssignmentArtifact struct {
 
 	// READ-ONLY; Type of this resource.
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// GetArtifact implements the ArtifactClassification interface for type RoleAssignmentArtifact.
-func (r *RoleAssignmentArtifact) GetArtifact() *Artifact {
-	return &Artifact{
-		Kind: r.Kind,
-		ID:   r.ID,
-		Type: r.Type,
-		Name: r.Name,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RoleAssignmentArtifact.
-func (r RoleAssignmentArtifact) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", r.ID)
-	objectMap["kind"] = ArtifactKindRoleAssignment
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "properties", r.Properties)
-	populate(objectMap, "type", r.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type RoleAssignmentArtifact.
-func (r *RoleAssignmentArtifact) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &r.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &r.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &r.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &r.Properties)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &r.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // RoleAssignmentArtifactProperties - Properties of a Role assignment blueprint artifact.
@@ -1112,18 +706,6 @@ type RoleAssignmentArtifactProperties struct {
 
 	// RoleAssignment will be scope to this resourceGroup. If empty, it scopes to the subscription.
 	ResourceGroup *string `json:"resourceGroup,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RoleAssignmentArtifactProperties.
-func (r RoleAssignmentArtifactProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "dependsOn", r.DependsOn)
-	populate(objectMap, "description", r.Description)
-	populate(objectMap, "displayName", r.DisplayName)
-	populate(objectMap, "principalIds", &r.PrincipalIDs)
-	populate(objectMap, "resourceGroup", r.ResourceGroup)
-	populate(objectMap, "roleDefinitionId", r.RoleDefinitionID)
-	return json.Marshal(objectMap)
 }
 
 // SecretValueReference - Reference to a Key Vault secret.
@@ -1159,18 +741,6 @@ type SharedBlueprintProperties struct {
 	Status *Status `json:"status,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SharedBlueprintProperties.
-func (s SharedBlueprintProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "description", s.Description)
-	populate(objectMap, "displayName", s.DisplayName)
-	populate(objectMap, "parameters", s.Parameters)
-	populate(objectMap, "resourceGroups", s.ResourceGroups)
-	populate(objectMap, "status", s.Status)
-	populate(objectMap, "targetScope", s.TargetScope)
-	return json.Marshal(objectMap)
-}
-
 // Status - The status of the blueprint. This field is readonly.
 type Status struct {
 	// READ-ONLY; Last modified time of this blueprint definition.
@@ -1178,37 +748,6 @@ type Status struct {
 
 	// READ-ONLY; Creation time of this blueprint definition.
 	TimeCreated *time.Time `json:"timeCreated,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Status.
-func (s Status) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "lastModified", s.LastModified)
-	populateTimeRFC3339(objectMap, "timeCreated", s.TimeCreated)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type Status.
-func (s *Status) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "lastModified":
-			err = unpopulateTimeRFC3339(val, &s.LastModified)
-			delete(rawMsg, key)
-		case "timeCreated":
-			err = unpopulateTimeRFC3339(val, &s.TimeCreated)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // TemplateArtifact - Blueprint artifact that deploys a Resource Manager template.
@@ -1229,66 +768,13 @@ type TemplateArtifact struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetArtifact implements the ArtifactClassification interface for type TemplateArtifact.
-func (t *TemplateArtifact) GetArtifact() *Artifact {
-	return &Artifact{
-		Kind: t.Kind,
-		ID:   t.ID,
-		Type: t.Type,
-		Name: t.Name,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type TemplateArtifact.
-func (t TemplateArtifact) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", t.ID)
-	objectMap["kind"] = ArtifactKindTemplate
-	populate(objectMap, "name", t.Name)
-	populate(objectMap, "properties", t.Properties)
-	populate(objectMap, "type", t.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type TemplateArtifact.
-func (t *TemplateArtifact) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &t.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &t.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &t.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &t.Properties)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &t.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // TemplateArtifactProperties - Properties of a Resource Manager template blueprint artifact.
 type TemplateArtifactProperties struct {
 	// REQUIRED; Resource Manager template blueprint artifact parameter values.
 	Parameters map[string]*ParameterValue `json:"parameters,omitempty"`
 
 	// REQUIRED; The Resource Manager template blueprint artifact body.
-	Template map[string]interface{} `json:"template,omitempty"`
+	Template interface{} `json:"template,omitempty"`
 
 	// Artifacts which need to be deployed before the specified artifact.
 	DependsOn []*string `json:"dependsOn,omitempty"`
@@ -1302,18 +788,6 @@ type TemplateArtifactProperties struct {
 	// If applicable, the name of the resource group placeholder to which the Resource Manager template blueprint artifact will
 	// be deployed.
 	ResourceGroup *string `json:"resourceGroup,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type TemplateArtifactProperties.
-func (t TemplateArtifactProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "dependsOn", t.DependsOn)
-	populate(objectMap, "description", t.Description)
-	populate(objectMap, "displayName", t.DisplayName)
-	populate(objectMap, "parameters", t.Parameters)
-	populate(objectMap, "resourceGroup", t.ResourceGroup)
-	populate(objectMap, "template", t.Template)
-	return json.Marshal(objectMap)
 }
 
 // TrackedResource - Common properties for all Azure tracked resources.
@@ -1344,21 +818,4 @@ type UserAssignedIdentity struct {
 type WhoIsBlueprintContract struct {
 	// AAD object Id of the Azure Blueprints service principal in the tenant.
 	ObjectID *string `json:"objectId,omitempty"`
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

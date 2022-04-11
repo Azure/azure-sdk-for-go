@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armedgeorderpartner
 
 const (
 	moduleName    = "armedgeorderpartner"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -25,11 +25,6 @@ func PossibleActionTypeValues() []ActionType {
 	return []ActionType{
 		ActionTypeInternal,
 	}
-}
-
-// ToPtr returns a *ActionType pointing to the current value.
-func (c ActionType) ToPtr() *ActionType {
-	return &c
 }
 
 // ManageLinkOperation - Operation to be performed - Link, Unlink, Relink
@@ -53,11 +48,6 @@ func PossibleManageLinkOperationValues() []ManageLinkOperation {
 	}
 }
 
-// ToPtr returns a *ManageLinkOperation pointing to the current value.
-func (c ManageLinkOperation) ToPtr() *ManageLinkOperation {
-	return &c
-}
-
 // OrderItemType - Order item type - purchase or rental
 type OrderItemType string
 
@@ -74,11 +64,6 @@ func PossibleOrderItemTypeValues() []OrderItemType {
 		OrderItemTypePurchase,
 		OrderItemTypeRental,
 	}
-}
-
-// ToPtr returns a *OrderItemType pointing to the current value.
-func (c OrderItemType) ToPtr() *OrderItemType {
-	return &c
 }
 
 // Origin - The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
@@ -98,11 +83,6 @@ func PossibleOriginValues() []Origin {
 		OriginUser,
 		OriginUserSystem,
 	}
-}
-
-// ToPtr returns a *Origin pointing to the current value.
-func (c Origin) ToPtr() *Origin {
-	return &c
 }
 
 // StageName - Stage name
@@ -176,11 +156,6 @@ func PossibleStageNameValues() []StageName {
 	}
 }
 
-// ToPtr returns a *StageName pointing to the current value.
-func (c StageName) ToPtr() *StageName {
-	return &c
-}
-
 // StageStatus - Stage status.
 type StageStatus string
 
@@ -209,9 +184,4 @@ func PossibleStageStatusValues() []StageStatus {
 		StageStatusCancelled,
 		StageStatusCancelling,
 	}
-}
-
-// ToPtr returns a *StageStatus pointing to the current value.
-func (c StageStatus) ToPtr() *StageStatus {
-	return &c
 }

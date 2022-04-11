@@ -1,5 +1,87 @@
 # Release History
 
+## 0.3.0 (2022-04-11)
+### Breaking Changes
+
+- Function `*CustomLocationsClient.ListEnabledResourceTypes` return value(s) have been changed from `(*CustomLocationsClientListEnabledResourceTypesPager)` to `(*runtime.Pager[CustomLocationsClientListEnabledResourceTypesResponse])`
+- Function `*CustomLocationsClient.BeginCreateOrUpdate` return value(s) have been changed from `(CustomLocationsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[CustomLocationsClientCreateOrUpdateResponse], error)`
+- Function `*CustomLocationsClient.ListBySubscription` return value(s) have been changed from `(*CustomLocationsClientListBySubscriptionPager)` to `(*runtime.Pager[CustomLocationsClientListBySubscriptionResponse])`
+- Function `*CustomLocationsClient.ListOperations` return value(s) have been changed from `(*CustomLocationsClientListOperationsPager)` to `(*runtime.Pager[CustomLocationsClientListOperationsResponse])`
+- Function `NewCustomLocationsClient` return value(s) have been changed from `(*CustomLocationsClient)` to `(*CustomLocationsClient, error)`
+- Function `*CustomLocationsClient.BeginDelete` return value(s) have been changed from `(CustomLocationsClientDeletePollerResponse, error)` to `(*armruntime.Poller[CustomLocationsClientDeleteResponse], error)`
+- Function `*CustomLocationsClient.ListByResourceGroup` return value(s) have been changed from `(*CustomLocationsClientListByResourceGroupPager)` to `(*runtime.Pager[CustomLocationsClientListByResourceGroupResponse])`
+- Type of `ErrorAdditionalInfo.Info` has been changed from `map[string]interface{}` to `interface{}`
+- Function `*CustomLocationsClientDeletePoller.Done` has been removed
+- Function `*CustomLocationsClientListBySubscriptionPager.PageResponse` has been removed
+- Function `*CustomLocationsClientListEnabledResourceTypesPager.PageResponse` has been removed
+- Function `*CustomLocationsClientListBySubscriptionPager.Err` has been removed
+- Function `*CustomLocationsClientListOperationsPager.Err` has been removed
+- Function `*CustomLocationsClientListByResourceGroupPager.NextPage` has been removed
+- Function `*CustomLocationsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*CustomLocationsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*CustomLocationsClientDeletePollerResponse.Resume` has been removed
+- Function `*CustomLocationsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `CustomLocationsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*CustomLocationsClientListEnabledResourceTypesPager.NextPage` has been removed
+- Function `*CustomLocationsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*CustomLocationsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `CustomLocationsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*CustomLocationsClientDeletePoller.FinalResponse` has been removed
+- Function `*CustomLocationsClientDeletePoller.ResumeToken` has been removed
+- Function `*CustomLocationsClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*CustomLocationsClientListOperationsPager.NextPage` has been removed
+- Function `*CustomLocationsClientListEnabledResourceTypesPager.Err` has been removed
+- Function `*CustomLocationsClientListByResourceGroupPager.Err` has been removed
+- Function `*CustomLocationsClientListOperationsPager.PageResponse` has been removed
+- Function `*CustomLocationsClientDeletePoller.Poll` has been removed
+- Function `HostType.ToPtr` has been removed
+- Function `CreatedByType.ToPtr` has been removed
+- Function `ResourceIdentityType.ToPtr` has been removed
+- Function `*CustomLocationsClientListBySubscriptionPager.NextPage` has been removed
+- Struct `CustomLocationsClientCreateOrUpdatePoller` has been removed
+- Struct `CustomLocationsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `CustomLocationsClientCreateOrUpdateResult` has been removed
+- Struct `CustomLocationsClientDeletePoller` has been removed
+- Struct `CustomLocationsClientDeletePollerResponse` has been removed
+- Struct `CustomLocationsClientGetResult` has been removed
+- Struct `CustomLocationsClientListByResourceGroupPager` has been removed
+- Struct `CustomLocationsClientListByResourceGroupResult` has been removed
+- Struct `CustomLocationsClientListBySubscriptionPager` has been removed
+- Struct `CustomLocationsClientListBySubscriptionResult` has been removed
+- Struct `CustomLocationsClientListEnabledResourceTypesPager` has been removed
+- Struct `CustomLocationsClientListEnabledResourceTypesResult` has been removed
+- Struct `CustomLocationsClientListOperationsPager` has been removed
+- Struct `CustomLocationsClientListOperationsResult` has been removed
+- Struct `CustomLocationsClientUpdateResult` has been removed
+- Field `CustomLocationsClientListBySubscriptionResult` of struct `CustomLocationsClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `CustomLocationsClientListBySubscriptionResponse` has been removed
+- Field `CustomLocationsClientCreateOrUpdateResult` of struct `CustomLocationsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `CustomLocationsClientCreateOrUpdateResponse` has been removed
+- Field `CustomLocationsClientListEnabledResourceTypesResult` of struct `CustomLocationsClientListEnabledResourceTypesResponse` has been removed
+- Field `RawResponse` of struct `CustomLocationsClientListEnabledResourceTypesResponse` has been removed
+- Field `CustomLocationsClientListByResourceGroupResult` of struct `CustomLocationsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `CustomLocationsClientListByResourceGroupResponse` has been removed
+- Field `CustomLocationsClientGetResult` of struct `CustomLocationsClientGetResponse` has been removed
+- Field `RawResponse` of struct `CustomLocationsClientGetResponse` has been removed
+- Field `RawResponse` of struct `CustomLocationsClientDeleteResponse` has been removed
+- Field `CustomLocationsClientListOperationsResult` of struct `CustomLocationsClientListOperationsResponse` has been removed
+- Field `RawResponse` of struct `CustomLocationsClientListOperationsResponse` has been removed
+- Field `CustomLocationsClientUpdateResult` of struct `CustomLocationsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `CustomLocationsClientUpdateResponse` has been removed
+
+### Features Added
+
+- New anonymous field `CustomLocation` in struct `CustomLocationsClientUpdateResponse`
+- New anonymous field `CustomLocationListResult` in struct `CustomLocationsClientListBySubscriptionResponse`
+- New anonymous field `CustomLocation` in struct `CustomLocationsClientCreateOrUpdateResponse`
+- New anonymous field `CustomLocation` in struct `CustomLocationsClientGetResponse`
+- New anonymous field `EnabledResourceTypesListResult` in struct `CustomLocationsClientListEnabledResourceTypesResponse`
+- New anonymous field `CustomLocationOperationsList` in struct `CustomLocationsClientListOperationsResponse`
+- New anonymous field `CustomLocationListResult` in struct `CustomLocationsClientListByResourceGroupResponse`
+- New field `ResumeToken` in struct `CustomLocationsClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `CustomLocationsClientBeginCreateOrUpdateOptions`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

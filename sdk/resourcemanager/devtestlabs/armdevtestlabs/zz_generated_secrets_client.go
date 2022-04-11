@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type SecretsClient struct {
 // subscriptionID - The subscription ID.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewSecretsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SecretsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewSecretsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SecretsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &SecretsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Create or replace an existing secret. This operation can take a while to complete.
@@ -59,22 +64,16 @@ func NewSecretsClient(subscriptionID string, credential azcore.TokenCredential, 
 // secret - A secret.
 // options - SecretsClientBeginCreateOrUpdateOptions contains the optional parameters for the SecretsClient.BeginCreateOrUpdate
 // method.
-func (client *SecretsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, labName string, userName string, name string, secret Secret, options *SecretsClientBeginCreateOrUpdateOptions) (SecretsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, labName, userName, name, secret, options)
-	if err != nil {
-		return SecretsClientCreateOrUpdatePollerResponse{}, err
+func (client *SecretsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, labName string, userName string, name string, secret Secret, options *SecretsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[SecretsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, labName, userName, name, secret, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[SecretsClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[SecretsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SecretsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SecretsClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return SecretsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &SecretsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Create or replace an existing secret. This operation can take a while to complete.
@@ -147,7 +146,7 @@ func (client *SecretsClient) Delete(ctx context.Context, resourceGroupName strin
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return SecretsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return SecretsClientDeleteResponse{RawResponse: resp}, nil
+	return SecretsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -245,7 +244,7 @@ func (client *SecretsClient) getCreateRequest(ctx context.Context, resourceGroup
 
 // getHandleResponse handles the Get response.
 func (client *SecretsClient) getHandleResponse(resp *http.Response) (SecretsClientGetResponse, error) {
-	result := SecretsClientGetResponse{RawResponse: resp}
+	result := SecretsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Secret); err != nil {
 		return SecretsClientGetResponse{}, err
 	}
@@ -258,16 +257,32 @@ func (client *SecretsClient) getHandleResponse(resp *http.Response) (SecretsClie
 // labName - The name of the lab.
 // userName - The name of the user profile.
 // options - SecretsClientListOptions contains the optional parameters for the SecretsClient.List method.
-func (client *SecretsClient) List(resourceGroupName string, labName string, userName string, options *SecretsClientListOptions) *SecretsClientListPager {
-	return &SecretsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, labName, userName, options)
+func (client *SecretsClient) List(resourceGroupName string, labName string, userName string, options *SecretsClientListOptions) *runtime.Pager[SecretsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SecretsClientListResponse]{
+		More: func(page SecretsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SecretsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SecretList.NextLink)
+		Fetcher: func(ctx context.Context, page *SecretsClientListResponse) (SecretsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, labName, userName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SecretsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SecretsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SecretsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -314,7 +329,7 @@ func (client *SecretsClient) listCreateRequest(ctx context.Context, resourceGrou
 
 // listHandleResponse handles the List response.
 func (client *SecretsClient) listHandleResponse(resp *http.Response) (SecretsClientListResponse, error) {
-	result := SecretsClientListResponse{RawResponse: resp}
+	result := SecretsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecretList); err != nil {
 		return SecretsClientListResponse{}, err
 	}
@@ -380,7 +395,7 @@ func (client *SecretsClient) updateCreateRequest(ctx context.Context, resourceGr
 
 // updateHandleResponse handles the Update response.
 func (client *SecretsClient) updateHandleResponse(resp *http.Response) (SecretsClientUpdateResponse, error) {
-	result := SecretsClientUpdateResponse{RawResponse: resp}
+	result := SecretsClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Secret); err != nil {
 		return SecretsClientUpdateResponse{}, err
 	}

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type SessionHostsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewSessionHostsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SessionHostsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewSessionHostsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SessionHostsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &SessionHostsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Delete - Remove a SessionHost.
@@ -68,7 +73,7 @@ func (client *SessionHostsClient) Delete(ctx context.Context, resourceGroupName 
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return SessionHostsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return SessionHostsClientDeleteResponse{RawResponse: resp}, nil
+	return SessionHostsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -95,7 +100,7 @@ func (client *SessionHostsClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-03-preview")
+	reqQP.Set("api-version", "2022-02-10-preview")
 	if options != nil && options.Force != nil {
 		reqQP.Set("force", strconv.FormatBool(*options.Force))
 	}
@@ -149,7 +154,7 @@ func (client *SessionHostsClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-03-preview")
+	reqQP.Set("api-version", "2022-02-10-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -157,7 +162,7 @@ func (client *SessionHostsClient) getCreateRequest(ctx context.Context, resource
 
 // getHandleResponse handles the Get response.
 func (client *SessionHostsClient) getHandleResponse(resp *http.Response) (SessionHostsClientGetResponse, error) {
-	result := SessionHostsClientGetResponse{RawResponse: resp}
+	result := SessionHostsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SessionHost); err != nil {
 		return SessionHostsClientGetResponse{}, err
 	}
@@ -169,16 +174,32 @@ func (client *SessionHostsClient) getHandleResponse(resp *http.Response) (Sessio
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // hostPoolName - The name of the host pool within the specified resource group
 // options - SessionHostsClientListOptions contains the optional parameters for the SessionHostsClient.List method.
-func (client *SessionHostsClient) List(resourceGroupName string, hostPoolName string, options *SessionHostsClientListOptions) *SessionHostsClientListPager {
-	return &SessionHostsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, hostPoolName, options)
+func (client *SessionHostsClient) List(resourceGroupName string, hostPoolName string, options *SessionHostsClientListOptions) *runtime.Pager[SessionHostsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SessionHostsClientListResponse]{
+		More: func(page SessionHostsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SessionHostsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SessionHostList.NextLink)
+		Fetcher: func(ctx context.Context, page *SessionHostsClientListResponse) (SessionHostsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, hostPoolName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SessionHostsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SessionHostsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SessionHostsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -201,7 +222,7 @@ func (client *SessionHostsClient) listCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-03-preview")
+	reqQP.Set("api-version", "2022-02-10-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -209,7 +230,7 @@ func (client *SessionHostsClient) listCreateRequest(ctx context.Context, resourc
 
 // listHandleResponse handles the List response.
 func (client *SessionHostsClient) listHandleResponse(resp *http.Response) (SessionHostsClientListResponse, error) {
-	result := SessionHostsClientListResponse{RawResponse: resp}
+	result := SessionHostsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SessionHostList); err != nil {
 		return SessionHostsClientListResponse{}, err
 	}
@@ -261,7 +282,7 @@ func (client *SessionHostsClient) updateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-03-preview")
+	reqQP.Set("api-version", "2022-02-10-preview")
 	if options != nil && options.Force != nil {
 		reqQP.Set("force", strconv.FormatBool(*options.Force))
 	}
@@ -275,7 +296,7 @@ func (client *SessionHostsClient) updateCreateRequest(ctx context.Context, resou
 
 // updateHandleResponse handles the Update response.
 func (client *SessionHostsClient) updateHandleResponse(resp *http.Response) (SessionHostsClientUpdateResponse, error) {
-	result := SessionHostsClientUpdateResponse{RawResponse: resp}
+	result := SessionHostsClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SessionHost); err != nil {
 		return SessionHostsClientUpdateResponse{}, err
 	}

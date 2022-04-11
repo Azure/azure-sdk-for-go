@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type DesktopsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewDesktopsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DesktopsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewDesktopsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DesktopsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &DesktopsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Get a desktop.
@@ -94,7 +99,7 @@ func (client *DesktopsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-03-preview")
+	reqQP.Set("api-version", "2022-02-10-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -102,7 +107,7 @@ func (client *DesktopsClient) getCreateRequest(ctx context.Context, resourceGrou
 
 // getHandleResponse handles the Get response.
 func (client *DesktopsClient) getHandleResponse(resp *http.Response) (DesktopsClientGetResponse, error) {
-	result := DesktopsClientGetResponse{RawResponse: resp}
+	result := DesktopsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Desktop); err != nil {
 		return DesktopsClientGetResponse{}, err
 	}
@@ -114,16 +119,32 @@ func (client *DesktopsClient) getHandleResponse(resp *http.Response) (DesktopsCl
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // applicationGroupName - The name of the application group
 // options - DesktopsClientListOptions contains the optional parameters for the DesktopsClient.List method.
-func (client *DesktopsClient) List(resourceGroupName string, applicationGroupName string, options *DesktopsClientListOptions) *DesktopsClientListPager {
-	return &DesktopsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, applicationGroupName, options)
+func (client *DesktopsClient) List(resourceGroupName string, applicationGroupName string, options *DesktopsClientListOptions) *runtime.Pager[DesktopsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DesktopsClientListResponse]{
+		More: func(page DesktopsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DesktopsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DesktopList.NextLink)
+		Fetcher: func(ctx context.Context, page *DesktopsClientListResponse) (DesktopsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, applicationGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DesktopsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DesktopsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DesktopsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -146,7 +167,7 @@ func (client *DesktopsClient) listCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-03-preview")
+	reqQP.Set("api-version", "2022-02-10-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -154,7 +175,7 @@ func (client *DesktopsClient) listCreateRequest(ctx context.Context, resourceGro
 
 // listHandleResponse handles the List response.
 func (client *DesktopsClient) listHandleResponse(resp *http.Response) (DesktopsClientListResponse, error) {
-	result := DesktopsClientListResponse{RawResponse: resp}
+	result := DesktopsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DesktopList); err != nil {
 		return DesktopsClientListResponse{}, err
 	}
@@ -206,7 +227,7 @@ func (client *DesktopsClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-03-preview")
+	reqQP.Set("api-version", "2022-02-10-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	if options != nil && options.Desktop != nil {
@@ -217,7 +238,7 @@ func (client *DesktopsClient) updateCreateRequest(ctx context.Context, resourceG
 
 // updateHandleResponse handles the Update response.
 func (client *DesktopsClient) updateHandleResponse(resp *http.Response) (DesktopsClientUpdateResponse, error) {
-	result := DesktopsClientUpdateResponse{RawResponse: resp}
+	result := DesktopsClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Desktop); err != nil {
 		return DesktopsClientUpdateResponse{}, err
 	}

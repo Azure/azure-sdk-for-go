@@ -16,18 +16,27 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization"
 )
 
-// x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/preview/2019-08-01-preview/examples/RoleAssignmentMetrics_GetForSubscription.json
-func ExampleRoleAssignmentMetricsClient_GetMetricsForSubscription() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/authorization/resource-manager/Microsoft.Authorization/preview/2021-11-16-preview/examples/PutAccessReviewHistoryDefinition.json
+func ExampleAccessReviewHistoryDefinitionClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armauthorization.NewRoleAssignmentMetricsClient("<subscription-id>", cred, nil)
-	res, err := client.GetMetricsForSubscription(ctx,
+	client, err := armauthorization.NewAccessReviewHistoryDefinitionClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
+	res, err := client.Create(ctx,
+		"<history-definition-id>",
+		armauthorization.AccessReviewHistoryDefinitionProperties{},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.RoleAssignmentMetricsClientGetMetricsForSubscriptionResult)
+	// TODO: use response item
+	_ = res
 }

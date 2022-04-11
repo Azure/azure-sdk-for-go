@@ -12,25 +12,26 @@ import (
 	"context"
 	"log"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/authorization/resource-manager/Microsoft.Authorization/preview/2021-11-16-preview/examples/GetAccessReviewScheduleDefinitionsAssignedForMyApproval.json
-func ExampleAccessReviewScheduleDefinitionsAssignedForMyApprovalClient_List() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/authorization/resource-manager/Microsoft.Authorization/preview/2021-11-16-preview/examples/TenantLevelGetAccessReviewInstanceContactedReviewers.json
+func ExampleTenantLevelAccessReviewInstanceContactedReviewersClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 		return
 	}
 	ctx := context.Background()
-	client, err := armauthorization.NewAccessReviewScheduleDefinitionsAssignedForMyApprovalClient(cred, nil)
+	client, err := armauthorization.NewTenantLevelAccessReviewInstanceContactedReviewersClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List(&armauthorization.AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListOptions{Filter: to.Ptr("<filter>")})
+	pager := client.List("<schedule-definition-id>",
+		"<id>",
+		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {

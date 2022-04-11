@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type AccessReviewScheduleDefinitionsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewAccessReviewScheduleDefinitionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AccessReviewScheduleDefinitionsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewAccessReviewScheduleDefinitionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AccessReviewScheduleDefinitionsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &AccessReviewScheduleDefinitionsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdateByID - Create or Update access review schedule definition.
@@ -86,7 +91,7 @@ func (client *AccessReviewScheduleDefinitionsClient) createOrUpdateByIDCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2018-05-01-preview")
+	reqQP.Set("api-version", "2021-11-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, properties)
@@ -94,7 +99,7 @@ func (client *AccessReviewScheduleDefinitionsClient) createOrUpdateByIDCreateReq
 
 // createOrUpdateByIDHandleResponse handles the CreateOrUpdateByID response.
 func (client *AccessReviewScheduleDefinitionsClient) createOrUpdateByIDHandleResponse(resp *http.Response) (AccessReviewScheduleDefinitionsClientCreateOrUpdateByIDResponse, error) {
-	result := AccessReviewScheduleDefinitionsClientCreateOrUpdateByIDResponse{RawResponse: resp}
+	result := AccessReviewScheduleDefinitionsClientCreateOrUpdateByIDResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessReviewScheduleDefinition); err != nil {
 		return AccessReviewScheduleDefinitionsClientCreateOrUpdateByIDResponse{}, err
 	}
@@ -118,7 +123,7 @@ func (client *AccessReviewScheduleDefinitionsClient) DeleteByID(ctx context.Cont
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return AccessReviewScheduleDefinitionsClientDeleteByIDResponse{}, runtime.NewResponseError(resp)
 	}
-	return AccessReviewScheduleDefinitionsClientDeleteByIDResponse{RawResponse: resp}, nil
+	return AccessReviewScheduleDefinitionsClientDeleteByIDResponse{}, nil
 }
 
 // deleteByIDCreateRequest creates the DeleteByID request.
@@ -137,7 +142,7 @@ func (client *AccessReviewScheduleDefinitionsClient) deleteByIDCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2018-05-01-preview")
+	reqQP.Set("api-version", "2021-11-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -179,7 +184,7 @@ func (client *AccessReviewScheduleDefinitionsClient) getByIDCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2018-05-01-preview")
+	reqQP.Set("api-version", "2021-11-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -187,7 +192,7 @@ func (client *AccessReviewScheduleDefinitionsClient) getByIDCreateRequest(ctx co
 
 // getByIDHandleResponse handles the GetByID response.
 func (client *AccessReviewScheduleDefinitionsClient) getByIDHandleResponse(resp *http.Response) (AccessReviewScheduleDefinitionsClientGetByIDResponse, error) {
-	result := AccessReviewScheduleDefinitionsClientGetByIDResponse{RawResponse: resp}
+	result := AccessReviewScheduleDefinitionsClientGetByIDResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessReviewScheduleDefinition); err != nil {
 		return AccessReviewScheduleDefinitionsClientGetByIDResponse{}, err
 	}
@@ -198,16 +203,32 @@ func (client *AccessReviewScheduleDefinitionsClient) getByIDHandleResponse(resp 
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AccessReviewScheduleDefinitionsClientListOptions contains the optional parameters for the AccessReviewScheduleDefinitionsClient.List
 // method.
-func (client *AccessReviewScheduleDefinitionsClient) List(options *AccessReviewScheduleDefinitionsClientListOptions) *AccessReviewScheduleDefinitionsClientListPager {
-	return &AccessReviewScheduleDefinitionsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *AccessReviewScheduleDefinitionsClient) List(options *AccessReviewScheduleDefinitionsClientListOptions) *runtime.Pager[AccessReviewScheduleDefinitionsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AccessReviewScheduleDefinitionsClientListResponse]{
+		More: func(page AccessReviewScheduleDefinitionsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AccessReviewScheduleDefinitionsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AccessReviewScheduleDefinitionListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *AccessReviewScheduleDefinitionsClientListResponse) (AccessReviewScheduleDefinitionsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AccessReviewScheduleDefinitionsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AccessReviewScheduleDefinitionsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AccessReviewScheduleDefinitionsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -222,15 +243,20 @@ func (client *AccessReviewScheduleDefinitionsClient) listCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2018-05-01-preview")
+	reqQP.Set("api-version", "2021-11-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
+	unencodedParams := []string{req.Raw().URL.RawQuery}
+	if options != nil && options.Filter != nil {
+		unencodedParams = append(unencodedParams, "$filter="+*options.Filter)
+	}
+	req.Raw().URL.RawQuery = strings.Join(unencodedParams, "&")
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
 func (client *AccessReviewScheduleDefinitionsClient) listHandleResponse(resp *http.Response) (AccessReviewScheduleDefinitionsClientListResponse, error) {
-	result := AccessReviewScheduleDefinitionsClientListResponse{RawResponse: resp}
+	result := AccessReviewScheduleDefinitionsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessReviewScheduleDefinitionListResult); err != nil {
 		return AccessReviewScheduleDefinitionsClientListResponse{}, err
 	}
@@ -254,7 +280,7 @@ func (client *AccessReviewScheduleDefinitionsClient) Stop(ctx context.Context, s
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return AccessReviewScheduleDefinitionsClientStopResponse{}, runtime.NewResponseError(resp)
 	}
-	return AccessReviewScheduleDefinitionsClientStopResponse{RawResponse: resp}, nil
+	return AccessReviewScheduleDefinitionsClientStopResponse{}, nil
 }
 
 // stopCreateRequest creates the Stop request.
@@ -273,7 +299,7 @@ func (client *AccessReviewScheduleDefinitionsClient) stopCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2018-05-01-preview")
+	reqQP.Set("api-version", "2021-11-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil

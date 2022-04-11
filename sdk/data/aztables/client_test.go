@@ -4,14 +4,17 @@
 package aztables
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
 	"testing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
 )
 
@@ -546,4 +549,38 @@ func TestAzurite(t *testing.T) {
 		count += len(resp.Entities)
 	}
 	require.Equal(t, 1, count)
+}
+
+func TestMultiTenantAuth(t *testing.T) {
+	recording.LiveOnly(t)
+
+	cred, err := azidentity.NewClientSecretCredential(
+		os.Getenv("AZTABLES_TENANT_ID"),
+		os.Getenv("AZTABLES_CLIENT_ID"),
+		os.Getenv("AZTABLES_CLIENT_SECRET"),
+		nil)
+	require.NoError(t, err)
+
+	accountName := recording.GetEnvVariable("TABLES_STORAGE_ACCOUNT_NAME", "fakeaccount")
+
+	client, err := NewClient(fmt.Sprintf("https://%s.table.core.windows.net/MyTable", accountName), cred, nil)
+	require.NoError(t, err)
+
+	_, err = client.CreateTable(context.Background(), nil)
+	require.NoError(t, err)
+	defer func() {
+		_, err = client.Delete(context.Background(), nil)
+		require.NoError(t, err)
+	}()
+
+	entity := map[string]any{
+		"PartitionKey": "pk001",
+		"RowKey":       "rk001",
+		"Value":        10,
+	}
+	marshalled, err := json.Marshal(entity)
+	require.NoError(t, err)
+
+	_, err = client.AddEntity(context.Background(), marshalled, nil)
+	require.NoError(t, err)
 }

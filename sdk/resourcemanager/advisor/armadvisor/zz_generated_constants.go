@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armadvisor
 
 const (
 	moduleName    = "armadvisor"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // CPUThreshold - Minimum percentage threshold for Advisor low CPU utilization evaluation. Valid only for subscriptions. Valid
@@ -34,11 +34,6 @@ func PossibleCPUThresholdValues() []CPUThreshold {
 	}
 }
 
-// ToPtr returns a *CPUThreshold pointing to the current value.
-func (c CPUThreshold) ToPtr() *CPUThreshold {
-	return &c
-}
-
 type Category string
 
 const (
@@ -60,11 +55,6 @@ func PossibleCategoryValues() []Category {
 	}
 }
 
-// ToPtr returns a *Category pointing to the current value.
-func (c Category) ToPtr() *Category {
-	return &c
-}
-
 type ConfigurationName string
 
 const (
@@ -76,11 +66,6 @@ func PossibleConfigurationNameValues() []ConfigurationName {
 	return []ConfigurationName{
 		ConfigurationNameDefault,
 	}
-}
-
-// ToPtr returns a *ConfigurationName pointing to the current value.
-func (c ConfigurationName) ToPtr() *ConfigurationName {
-	return &c
 }
 
 // DigestConfigState - State of digest configuration.
@@ -97,11 +82,6 @@ func PossibleDigestConfigStateValues() []DigestConfigState {
 		DigestConfigStateActive,
 		DigestConfigStateDisabled,
 	}
-}
-
-// ToPtr returns a *DigestConfigState pointing to the current value.
-func (c DigestConfigState) ToPtr() *DigestConfigState {
-	return &c
 }
 
 // Impact - The business impact of the recommendation.
@@ -122,11 +102,6 @@ func PossibleImpactValues() []Impact {
 	}
 }
 
-// ToPtr returns a *Impact pointing to the current value.
-func (c Impact) ToPtr() *Impact {
-	return &c
-}
-
 // Risk - The potential risk of not implementing the recommendation.
 type Risk string
 
@@ -145,11 +120,6 @@ func PossibleRiskValues() []Risk {
 	}
 }
 
-// ToPtr returns a *Risk pointing to the current value.
-func (c Risk) ToPtr() *Risk {
-	return &c
-}
-
 type Scenario string
 
 const (
@@ -161,9 +131,4 @@ func PossibleScenarioValues() []Scenario {
 	return []Scenario{
 		ScenarioAlerts,
 	}
-}
-
-// ToPtr returns a *Scenario pointing to the current value.
-func (c Scenario) ToPtr() *Scenario {
-	return &c
 }

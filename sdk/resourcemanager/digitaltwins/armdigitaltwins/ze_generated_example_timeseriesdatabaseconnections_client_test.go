@@ -19,15 +19,15 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/digitaltwins/armdigitaltwins"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/preview/2021-06-30-preview/examples/DigitalTwinsEndpointsGet_example.json
-func ExampleEndpointClient_List() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/preview/2021-06-30-preview/examples/TimeSeriesDatabaseConnectionsList_example.json
+func ExampleTimeSeriesDatabaseConnectionsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 		return
 	}
 	ctx := context.Background()
-	client, err := armdigitaltwins.NewEndpointClient("<subscription-id>", cred, nil)
+	client, err := armdigitaltwins.NewTimeSeriesDatabaseConnectionsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 		return
@@ -48,15 +48,15 @@ func ExampleEndpointClient_List() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/preview/2021-06-30-preview/examples/DigitalTwinsEndpointGet_example.json
-func ExampleEndpointClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/preview/2021-06-30-preview/examples/TimeSeriesDatabaseConnectionsGet_example.json
+func ExampleTimeSeriesDatabaseConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 		return
 	}
 	ctx := context.Background()
-	client, err := armdigitaltwins.NewEndpointClient("<subscription-id>", cred, nil)
+	client, err := armdigitaltwins.NewTimeSeriesDatabaseConnectionsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 		return
@@ -64,7 +64,7 @@ func ExampleEndpointClient_Get() {
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
-		"<endpoint-name>",
+		"<time-series-database-connection-name>",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -74,15 +74,15 @@ func ExampleEndpointClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/preview/2021-06-30-preview/examples/DigitalTwinsEndpointPut_example.json
-func ExampleEndpointClient_BeginCreateOrUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/preview/2021-06-30-preview/examples/TimeSeriesDatabaseConnectionsPut_example.json
+func ExampleTimeSeriesDatabaseConnectionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 		return
 	}
 	ctx := context.Background()
-	client, err := armdigitaltwins.NewEndpointClient("<subscription-id>", cred, nil)
+	client, err := armdigitaltwins.NewTimeSeriesDatabaseConnectionsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 		return
@@ -90,16 +90,20 @@ func ExampleEndpointClient_BeginCreateOrUpdate() {
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
-		"<endpoint-name>",
-		armdigitaltwins.EndpointResource{
-			Properties: &armdigitaltwins.ServiceBus{
-				AuthenticationType:        to.Ptr(armdigitaltwins.AuthenticationTypeKeyBased),
-				EndpointType:              to.Ptr(armdigitaltwins.EndpointTypeServiceBus),
-				PrimaryConnectionString:   to.Ptr("<primary-connection-string>"),
-				SecondaryConnectionString: to.Ptr("<secondary-connection-string>"),
+		"<time-series-database-connection-name>",
+		armdigitaltwins.TimeSeriesDatabaseConnection{
+			Properties: &armdigitaltwins.AzureDataExplorerConnectionProperties{
+				ConnectionType:              to.Ptr(armdigitaltwins.ConnectionTypeAzureDataExplorer),
+				AdxDatabaseName:             to.Ptr("<adx-database-name>"),
+				AdxEndpointURI:              to.Ptr("<adx-endpoint-uri>"),
+				AdxResourceID:               to.Ptr("<adx-resource-id>"),
+				AdxTableName:                to.Ptr("<adx-table-name>"),
+				EventHubEndpointURI:         to.Ptr("<event-hub-endpoint-uri>"),
+				EventHubEntityPath:          to.Ptr("<event-hub-entity-path>"),
+				EventHubNamespaceResourceID: to.Ptr("<event-hub-namespace-resource-id>"),
 			},
 		},
-		&armdigitaltwins.EndpointClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		&armdigitaltwins.TimeSeriesDatabaseConnectionsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 		return
@@ -113,15 +117,15 @@ func ExampleEndpointClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/preview/2021-06-30-preview/examples/DigitalTwinsEndpointDelete_example.json
-func ExampleEndpointClient_BeginDelete() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/preview/2021-06-30-preview/examples/TimeSeriesDatabaseConnectionsDelete_example.json
+func ExampleTimeSeriesDatabaseConnectionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 		return
 	}
 	ctx := context.Background()
-	client, err := armdigitaltwins.NewEndpointClient("<subscription-id>", cred, nil)
+	client, err := armdigitaltwins.NewTimeSeriesDatabaseConnectionsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 		return
@@ -129,8 +133,8 @@ func ExampleEndpointClient_BeginDelete() {
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
-		"<endpoint-name>",
-		&armdigitaltwins.EndpointClientBeginDeleteOptions{ResumeToken: ""})
+		"<time-series-database-connection-name>",
+		&armdigitaltwins.TimeSeriesDatabaseConnectionsClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 		return

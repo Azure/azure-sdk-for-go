@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ChannelsClient struct {
 // subscriptionID - Azure Subscription ID.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewChannelsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ChannelsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewChannelsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ChannelsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ChannelsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Create - Creates a Channel registration for a Bot Service
@@ -103,7 +108,7 @@ func (client *ChannelsClient) createCreateRequest(ctx context.Context, resourceG
 
 // createHandleResponse handles the Create response.
 func (client *ChannelsClient) createHandleResponse(resp *http.Response) (ChannelsClientCreateResponse, error) {
-	result := ChannelsClientCreateResponse{RawResponse: resp}
+	result := ChannelsClientCreateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BotChannel); err != nil {
 		return ChannelsClientCreateResponse{}, err
 	}
@@ -128,7 +133,7 @@ func (client *ChannelsClient) Delete(ctx context.Context, resourceGroupName stri
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return ChannelsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ChannelsClientDeleteResponse{RawResponse: resp}, nil
+	return ChannelsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -214,7 +219,7 @@ func (client *ChannelsClient) getCreateRequest(ctx context.Context, resourceGrou
 
 // getHandleResponse handles the Get response.
 func (client *ChannelsClient) getHandleResponse(resp *http.Response) (ChannelsClientGetResponse, error) {
-	result := ChannelsClientGetResponse{RawResponse: resp}
+	result := ChannelsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BotChannel); err != nil {
 		return ChannelsClientGetResponse{}, err
 	}
@@ -227,16 +232,32 @@ func (client *ChannelsClient) getHandleResponse(resp *http.Response) (ChannelsCl
 // resourceName - The name of the Bot resource.
 // options - ChannelsClientListByResourceGroupOptions contains the optional parameters for the ChannelsClient.ListByResourceGroup
 // method.
-func (client *ChannelsClient) ListByResourceGroup(resourceGroupName string, resourceName string, options *ChannelsClientListByResourceGroupOptions) *ChannelsClientListByResourceGroupPager {
-	return &ChannelsClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, resourceName, options)
+func (client *ChannelsClient) ListByResourceGroup(resourceGroupName string, resourceName string, options *ChannelsClientListByResourceGroupOptions) *runtime.Pager[ChannelsClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ChannelsClientListByResourceGroupResponse]{
+		More: func(page ChannelsClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ChannelsClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ChannelResponseList.NextLink)
+		Fetcher: func(ctx context.Context, page *ChannelsClientListByResourceGroupResponse) (ChannelsClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, resourceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ChannelsClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ChannelsClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ChannelsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -267,7 +288,7 @@ func (client *ChannelsClient) listByResourceGroupCreateRequest(ctx context.Conte
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *ChannelsClient) listByResourceGroupHandleResponse(resp *http.Response) (ChannelsClientListByResourceGroupResponse, error) {
-	result := ChannelsClientListByResourceGroupResponse{RawResponse: resp}
+	result := ChannelsClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ChannelResponseList); err != nil {
 		return ChannelsClientListByResourceGroupResponse{}, err
 	}
@@ -327,7 +348,7 @@ func (client *ChannelsClient) listWithKeysCreateRequest(ctx context.Context, res
 
 // listWithKeysHandleResponse handles the ListWithKeys response.
 func (client *ChannelsClient) listWithKeysHandleResponse(resp *http.Response) (ChannelsClientListWithKeysResponse, error) {
-	result := ChannelsClientListWithKeysResponse{RawResponse: resp}
+	result := ChannelsClientListWithKeysResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListChannelWithKeysResponse); err != nil {
 		return ChannelsClientListWithKeysResponse{}, err
 	}
@@ -388,7 +409,7 @@ func (client *ChannelsClient) updateCreateRequest(ctx context.Context, resourceG
 
 // updateHandleResponse handles the Update response.
 func (client *ChannelsClient) updateHandleResponse(resp *http.Response) (ChannelsClientUpdateResponse, error) {
-	result := ChannelsClientUpdateResponse{RawResponse: resp}
+	result := ChannelsClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BotChannel); err != nil {
 		return ChannelsClientUpdateResponse{}, err
 	}

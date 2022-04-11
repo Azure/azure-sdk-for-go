@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type OperationResultsClient struct {
 // subscriptionID - Azure Subscription ID.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewOperationResultsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *OperationResultsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewOperationResultsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OperationResultsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &OperationResultsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginGet - Get the operation result for a long running operation.
@@ -54,22 +59,16 @@ func NewOperationResultsClient(subscriptionID string, credential azcore.TokenCre
 // operationResultID - The ID of the operation result to get.
 // options - OperationResultsClientBeginGetOptions contains the optional parameters for the OperationResultsClient.BeginGet
 // method.
-func (client *OperationResultsClient) BeginGet(ctx context.Context, operationResultID string, options *OperationResultsClientBeginGetOptions) (OperationResultsClientGetPollerResponse, error) {
-	resp, err := client.get(ctx, operationResultID, options)
-	if err != nil {
-		return OperationResultsClientGetPollerResponse{}, err
+func (client *OperationResultsClient) BeginGet(ctx context.Context, operationResultID string, options *OperationResultsClientBeginGetOptions) (*armruntime.Poller[OperationResultsClientGetResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.get(ctx, operationResultID, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[OperationResultsClientGetResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[OperationResultsClientGetResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := OperationResultsClientGetPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("OperationResultsClient.Get", "", resp, client.pl)
-	if err != nil {
-		return OperationResultsClientGetPollerResponse{}, err
-	}
-	result.Poller = &OperationResultsClientGetPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Get - Get the operation result for a long running operation.

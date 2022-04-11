@@ -1,5 +1,68 @@
 # Release History
 
+## 0.3.0 (2022-04-11)
+### Breaking Changes
+
+- Function `NewPrivateEndpointConnectionsClient` return value(s) have been changed from `(*PrivateEndpointConnectionsClient)` to `(*PrivateEndpointConnectionsClient, error)`
+- Function `*PrivateEndpointConnectionsClient.List` parameter(s) have been changed from `(context.Context, string, string, *PrivateEndpointConnectionsClientListOptions)` to `(string, string, *PrivateEndpointConnectionsClientListOptions)`
+- Function `*PrivateEndpointConnectionsClient.List` return value(s) have been changed from `(PrivateEndpointConnectionsClientListResponse, error)` to `(*runtime.Pager[PrivateEndpointConnectionsClientListResponse])`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `NewProvidersClient` return value(s) have been changed from `(*ProvidersClient)` to `(*ProvidersClient, error)`
+- Function `CreatedByType.ToPtr` has been removed
+- Function `PrivateEndpointConnectionProvisioningState.ToPtr` has been removed
+- Function `AttestationServiceStatus.ToPtr` has been removed
+- Function `PrivateEndpointServiceConnectionStatus.ToPtr` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `PrivateEndpointConnectionsClientCreateResult` has been removed
+- Struct `PrivateEndpointConnectionsClientGetResult` has been removed
+- Struct `PrivateEndpointConnectionsClientListResult` has been removed
+- Struct `ProvidersClientCreateResult` has been removed
+- Struct `ProvidersClientGetDefaultByLocationResult` has been removed
+- Struct `ProvidersClientGetResult` has been removed
+- Struct `ProvidersClientListByResourceGroupResult` has been removed
+- Struct `ProvidersClientListDefaultResult` has been removed
+- Struct `ProvidersClientListResult` has been removed
+- Struct `ProvidersClientUpdateResult` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientDeleteResponse` has been removed
+- Field `ProvidersClientGetDefaultByLocationResult` of struct `ProvidersClientGetDefaultByLocationResponse` has been removed
+- Field `RawResponse` of struct `ProvidersClientGetDefaultByLocationResponse` has been removed
+- Field `ProvidersClientListDefaultResult` of struct `ProvidersClientListDefaultResponse` has been removed
+- Field `RawResponse` of struct `ProvidersClientListDefaultResponse` has been removed
+- Field `PrivateEndpointConnectionsClientCreateResult` of struct `PrivateEndpointConnectionsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientCreateResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `PrivateEndpointConnectionsClientListResult` of struct `PrivateEndpointConnectionsClientListResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientListResponse` has been removed
+- Field `ProvidersClientUpdateResult` of struct `ProvidersClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ProvidersClientUpdateResponse` has been removed
+- Field `ProvidersClientCreateResult` of struct `ProvidersClientCreateResponse` has been removed
+- Field `RawResponse` of struct `ProvidersClientCreateResponse` has been removed
+- Field `RawResponse` of struct `ProvidersClientDeleteResponse` has been removed
+- Field `ProvidersClientListByResourceGroupResult` of struct `ProvidersClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `ProvidersClientListByResourceGroupResponse` has been removed
+- Field `ProvidersClientGetResult` of struct `ProvidersClientGetResponse` has been removed
+- Field `RawResponse` of struct `ProvidersClientGetResponse` has been removed
+- Field `ProvidersClientListResult` of struct `ProvidersClientListResponse` has been removed
+- Field `RawResponse` of struct `ProvidersClientListResponse` has been removed
+- Field `PrivateEndpointConnectionsClientGetResult` of struct `PrivateEndpointConnectionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientGetResponse` has been removed
+
+### Features Added
+
+- New anonymous field `OperationList` in struct `OperationsClientListResponse`
+- New anonymous field `PrivateEndpointConnection` in struct `PrivateEndpointConnectionsClientGetResponse`
+- New anonymous field `PrivateEndpointConnection` in struct `PrivateEndpointConnectionsClientCreateResponse`
+- New anonymous field `Provider` in struct `ProvidersClientGetDefaultByLocationResponse`
+- New anonymous field `Provider` in struct `ProvidersClientCreateResponse`
+- New anonymous field `ProviderListResult` in struct `ProvidersClientListByResourceGroupResponse`
+- New anonymous field `ProviderListResult` in struct `ProvidersClientListResponse`
+- New anonymous field `ProviderListResult` in struct `ProvidersClientListDefaultResponse`
+- New anonymous field `PrivateEndpointConnectionListResult` in struct `PrivateEndpointConnectionsClientListResponse`
+- New anonymous field `Provider` in struct `ProvidersClientGetResponse`
+- New anonymous field `Provider` in struct `ProvidersClientUpdateResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

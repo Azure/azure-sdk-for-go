@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armappconfiguration
 
 const (
 	moduleName    = "armappconfiguration"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // ActionsRequired - Any action that is required beyond basic workflow (approve/ reject/ disconnect)
@@ -29,11 +29,6 @@ func PossibleActionsRequiredValues() []ActionsRequired {
 	}
 }
 
-// ToPtr returns a *ActionsRequired pointing to the current value.
-func (c ActionsRequired) ToPtr() *ActionsRequired {
-	return &c
-}
-
 // ConfigurationResourceType - The resource type to check for name availability.
 type ConfigurationResourceType string
 
@@ -46,11 +41,6 @@ func PossibleConfigurationResourceTypeValues() []ConfigurationResourceType {
 	return []ConfigurationResourceType{
 		ConfigurationResourceTypeMicrosoftAppConfigurationConfigurationStores,
 	}
-}
-
-// ToPtr returns a *ConfigurationResourceType pointing to the current value.
-func (c ConfigurationResourceType) ToPtr() *ConfigurationResourceType {
-	return &c
 }
 
 // ConnectionStatus - The private link service connection status.
@@ -73,9 +63,20 @@ func PossibleConnectionStatusValues() []ConnectionStatus {
 	}
 }
 
-// ToPtr returns a *ConnectionStatus pointing to the current value.
-func (c ConnectionStatus) ToPtr() *ConnectionStatus {
-	return &c
+// CreateMode - Indicates whether the configuration store need to be recovered.
+type CreateMode string
+
+const (
+	CreateModeRecover CreateMode = "Recover"
+	CreateModeDefault CreateMode = "Default"
+)
+
+// PossibleCreateModeValues returns the possible values for the CreateMode const type.
+func PossibleCreateModeValues() []CreateMode {
+	return []CreateMode{
+		CreateModeRecover,
+		CreateModeDefault,
+	}
 }
 
 // CreatedByType - The type of identity that created the resource.
@@ -98,11 +99,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
-}
-
 // IdentityType - The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both an implicitly created
 // identity and a set of user-assigned identities. The type 'None' will remove any
 // identities.
@@ -123,11 +119,6 @@ func PossibleIdentityTypeValues() []IdentityType {
 		IdentityTypeSystemAssignedUserAssigned,
 		IdentityTypeUserAssigned,
 	}
-}
-
-// ToPtr returns a *IdentityType pointing to the current value.
-func (c IdentityType) ToPtr() *IdentityType {
-	return &c
 }
 
 // ProvisioningState - The provisioning state of the configuration store.
@@ -154,11 +145,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	}
 }
 
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
-}
-
 // PublicNetworkAccess - Control permission for data plane traffic coming from public networks while private endpoint is enabled.
 type PublicNetworkAccess string
 
@@ -173,9 +159,4 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 		PublicNetworkAccessDisabled,
 		PublicNetworkAccessEnabled,
 	}
-}
-
-// ToPtr returns a *PublicNetworkAccess pointing to the current value.
-func (c PublicNetworkAccess) ToPtr() *PublicNetworkAccess {
-	return &c
 }

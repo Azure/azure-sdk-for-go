@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armguestconfiguration
 
 const (
 	moduleName    = "armguestconfiguration"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // ActionAfterReboot - Specifies what happens after a reboot during the application of a configuration. The possible values
@@ -28,11 +28,6 @@ func PossibleActionAfterRebootValues() []ActionAfterReboot {
 		ActionAfterRebootContinueConfiguration,
 		ActionAfterRebootStopConfiguration,
 	}
-}
-
-// ToPtr returns a *ActionAfterReboot pointing to the current value.
-func (c ActionAfterReboot) ToPtr() *ActionAfterReboot {
-	return &c
 }
 
 // AssignmentType - Specifies the assignment type and execution of the configuration. Possible values are Audit, DeployAndAutoCorrect,
@@ -56,11 +51,6 @@ func PossibleAssignmentTypeValues() []AssignmentType {
 	}
 }
 
-// ToPtr returns a *AssignmentType pointing to the current value.
-func (c AssignmentType) ToPtr() *AssignmentType {
-	return &c
-}
-
 // ComplianceStatus - A value indicating compliance status of the machine for the assigned guest configuration.
 type ComplianceStatus string
 
@@ -77,11 +67,6 @@ func PossibleComplianceStatusValues() []ComplianceStatus {
 		ComplianceStatusNonCompliant,
 		ComplianceStatusPending,
 	}
-}
-
-// ToPtr returns a *ComplianceStatus pointing to the current value.
-func (c ComplianceStatus) ToPtr() *ComplianceStatus {
-	return &c
 }
 
 // ConfigurationMode - Specifies how the LCM(Local Configuration Manager) actually applies the configuration to the target
@@ -103,11 +88,6 @@ func PossibleConfigurationModeValues() []ConfigurationMode {
 	}
 }
 
-// ToPtr returns a *ConfigurationMode pointing to the current value.
-func (c ConfigurationMode) ToPtr() *ConfigurationMode {
-	return &c
-}
-
 // Kind - Kind of the guest configuration. For example:DSC
 type Kind string
 
@@ -120,11 +100,6 @@ func PossibleKindValues() []Kind {
 	return []Kind{
 		KindDSC,
 	}
-}
-
-// ToPtr returns a *Kind pointing to the current value.
-func (c Kind) ToPtr() *Kind {
-	return &c
 }
 
 // ProvisioningState - The provisioning state, which only appears in the response.
@@ -147,11 +122,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	}
 }
 
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
-}
-
 // Type - Type of report, Consistency or Initial
 type Type string
 
@@ -166,9 +136,4 @@ func PossibleTypeValues() []Type {
 		TypeConsistency,
 		TypeInitial,
 	}
-}
-
-// ToPtr returns a *Type pointing to the current value.
-func (c Type) ToPtr() *Type {
-	return &c
 }

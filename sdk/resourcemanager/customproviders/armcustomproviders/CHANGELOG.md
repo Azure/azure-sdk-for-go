@@ -1,5 +1,118 @@
 # Release History
 
+## 0.3.0 (2022-04-11)
+### Breaking Changes
+
+- Function `*CustomResourceProviderClient.ListByResourceGroup` return value(s) have been changed from `(*CustomResourceProviderClientListByResourceGroupPager)` to `(*runtime.Pager[CustomResourceProviderClientListByResourceGroupResponse])`
+- Function `*AssociationsClient.BeginDelete` return value(s) have been changed from `(AssociationsClientDeletePollerResponse, error)` to `(*armruntime.Poller[AssociationsClientDeleteResponse], error)`
+- Function `*AssociationsClient.ListAll` return value(s) have been changed from `(*AssociationsClientListAllPager)` to `(*runtime.Pager[AssociationsClientListAllResponse])`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `NewAssociationsClient` return value(s) have been changed from `(*AssociationsClient)` to `(*AssociationsClient, error)`
+- Function `*CustomResourceProviderClient.BeginDelete` return value(s) have been changed from `(CustomResourceProviderClientDeletePollerResponse, error)` to `(*armruntime.Poller[CustomResourceProviderClientDeleteResponse], error)`
+- Function `*CustomResourceProviderClient.ListBySubscription` return value(s) have been changed from `(*CustomResourceProviderClientListBySubscriptionPager)` to `(*runtime.Pager[CustomResourceProviderClientListBySubscriptionResponse])`
+- Function `*AssociationsClient.BeginCreateOrUpdate` return value(s) have been changed from `(AssociationsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[AssociationsClientCreateOrUpdateResponse], error)`
+- Function `*CustomResourceProviderClient.BeginCreateOrUpdate` return value(s) have been changed from `(CustomResourceProviderClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[CustomResourceProviderClientCreateOrUpdateResponse], error)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `NewCustomResourceProviderClient` return value(s) have been changed from `(*CustomResourceProviderClient)` to `(*CustomResourceProviderClient, error)`
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `*CustomResourceProviderClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `AssociationsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*AssociationsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `ActionRouting.ToPtr` has been removed
+- Function `*CustomResourceProviderClientDeletePoller.Poll` has been removed
+- Function `*CustomResourceProviderClientListBySubscriptionPager.NextPage` has been removed
+- Function `*CustomResourceProviderClientDeletePollerResponse.Resume` has been removed
+- Function `*CustomResourceProviderClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Function `*CustomResourceProviderClientListBySubscriptionPager.Err` has been removed
+- Function `*CustomResourceProviderClientListByResourceGroupPager.Err` has been removed
+- Function `ResourceTypeRouting.ToPtr` has been removed
+- Function `*CustomResourceProviderClientCreateOrUpdatePoller.Done` has been removed
+- Function `*AssociationsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `ProvisioningState.ToPtr` has been removed
+- Function `*AssociationsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `*AssociationsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `CustomResourceProviderClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*AssociationsClientListAllPager.NextPage` has been removed
+- Function `*CustomResourceProviderClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `CustomResourceProviderClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*AssociationsClientListAllPager.PageResponse` has been removed
+- Function `*AssociationsClientDeletePoller.FinalResponse` has been removed
+- Function `*AssociationsClientListAllPager.Err` has been removed
+- Function `*AssociationsClientDeletePoller.Poll` has been removed
+- Function `*AssociationsClientDeletePollerResponse.Resume` has been removed
+- Function `*CustomResourceProviderClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*CustomResourceProviderClientDeletePoller.Done` has been removed
+- Function `*CustomResourceProviderClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*AssociationsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*CustomResourceProviderClientListByResourceGroupPager.NextPage` has been removed
+- Function `*CustomResourceProviderClientDeletePoller.FinalResponse` has been removed
+- Function `*AssociationsClientDeletePoller.ResumeToken` has been removed
+- Function `*CustomResourceProviderClientListBySubscriptionPager.PageResponse` has been removed
+- Function `*CustomResourceProviderClientDeletePoller.ResumeToken` has been removed
+- Function `*AssociationsClientDeletePoller.Done` has been removed
+- Function `AssociationsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `ValidationType.ToPtr` has been removed
+- Struct `AssociationsClientCreateOrUpdatePoller` has been removed
+- Struct `AssociationsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `AssociationsClientCreateOrUpdateResult` has been removed
+- Struct `AssociationsClientDeletePoller` has been removed
+- Struct `AssociationsClientDeletePollerResponse` has been removed
+- Struct `AssociationsClientGetResult` has been removed
+- Struct `AssociationsClientListAllPager` has been removed
+- Struct `AssociationsClientListAllResult` has been removed
+- Struct `CustomResourceProviderClientCreateOrUpdatePoller` has been removed
+- Struct `CustomResourceProviderClientCreateOrUpdatePollerResponse` has been removed
+- Struct `CustomResourceProviderClientCreateOrUpdateResult` has been removed
+- Struct `CustomResourceProviderClientDeletePoller` has been removed
+- Struct `CustomResourceProviderClientDeletePollerResponse` has been removed
+- Struct `CustomResourceProviderClientGetResult` has been removed
+- Struct `CustomResourceProviderClientListByResourceGroupPager` has been removed
+- Struct `CustomResourceProviderClientListByResourceGroupResult` has been removed
+- Struct `CustomResourceProviderClientListBySubscriptionPager` has been removed
+- Struct `CustomResourceProviderClientListBySubscriptionResult` has been removed
+- Struct `CustomResourceProviderClientUpdateResult` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Field `AssociationsClientCreateOrUpdateResult` of struct `AssociationsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `AssociationsClientCreateOrUpdateResponse` has been removed
+- Field `CustomResourceProviderClientUpdateResult` of struct `CustomResourceProviderClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `CustomResourceProviderClientUpdateResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `CustomResourceProviderClientCreateOrUpdateResult` of struct `CustomResourceProviderClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `CustomResourceProviderClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `AssociationsClientDeleteResponse` has been removed
+- Field `AssociationsClientListAllResult` of struct `AssociationsClientListAllResponse` has been removed
+- Field `RawResponse` of struct `AssociationsClientListAllResponse` has been removed
+- Field `CustomResourceProviderClientListBySubscriptionResult` of struct `CustomResourceProviderClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `CustomResourceProviderClientListBySubscriptionResponse` has been removed
+- Field `CustomResourceProviderClientListByResourceGroupResult` of struct `CustomResourceProviderClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `CustomResourceProviderClientListByResourceGroupResponse` has been removed
+- Field `CustomResourceProviderClientGetResult` of struct `CustomResourceProviderClientGetResponse` has been removed
+- Field `RawResponse` of struct `CustomResourceProviderClientGetResponse` has been removed
+- Field `AssociationsClientGetResult` of struct `AssociationsClientGetResponse` has been removed
+- Field `RawResponse` of struct `AssociationsClientGetResponse` has been removed
+- Field `RawResponse` of struct `CustomResourceProviderClientDeleteResponse` has been removed
+
+### Features Added
+
+- New field `ResumeToken` in struct `AssociationsClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `CustomResourceProviderClientBeginDeleteOptions`
+- New anonymous field `CustomRPManifest` in struct `CustomResourceProviderClientUpdateResponse`
+- New anonymous field `Association` in struct `AssociationsClientCreateOrUpdateResponse`
+- New anonymous field `ResourceProviderOperationList` in struct `OperationsClientListResponse`
+- New anonymous field `CustomRPManifest` in struct `CustomResourceProviderClientGetResponse`
+- New anonymous field `Association` in struct `AssociationsClientGetResponse`
+- New field `ResumeToken` in struct `AssociationsClientBeginDeleteOptions`
+- New anonymous field `AssociationsList` in struct `AssociationsClientListAllResponse`
+- New anonymous field `ListByCustomRPManifest` in struct `CustomResourceProviderClientListByResourceGroupResponse`
+- New anonymous field `ListByCustomRPManifest` in struct `CustomResourceProviderClientListBySubscriptionResponse`
+- New field `ResumeToken` in struct `CustomResourceProviderClientBeginCreateOrUpdateOptions`
+- New anonymous field `CustomRPManifest` in struct `CustomResourceProviderClientCreateOrUpdateResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

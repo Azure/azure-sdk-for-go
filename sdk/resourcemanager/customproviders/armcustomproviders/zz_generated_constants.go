@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armcustomproviders
 
 const (
 	moduleName    = "armcustomproviders"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // ActionRouting - The routing types that are supported for action requests.
@@ -25,11 +25,6 @@ func PossibleActionRoutingValues() []ActionRouting {
 	return []ActionRouting{
 		ActionRoutingProxy,
 	}
-}
-
-// ToPtr returns a *ActionRouting pointing to the current value.
-func (c ActionRouting) ToPtr() *ActionRouting {
-	return &c
 }
 
 // ProvisioningState - The provisioning state of the resource provider.
@@ -54,11 +49,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	}
 }
 
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
-}
-
 // ResourceTypeRouting - The routing types that are supported for resource requests.
 type ResourceTypeRouting string
 
@@ -75,11 +65,6 @@ func PossibleResourceTypeRoutingValues() []ResourceTypeRouting {
 	}
 }
 
-// ToPtr returns a *ResourceTypeRouting pointing to the current value.
-func (c ResourceTypeRouting) ToPtr() *ResourceTypeRouting {
-	return &c
-}
-
 // ValidationType - The type of validation to run against a matching request.
 type ValidationType string
 
@@ -92,9 +77,4 @@ func PossibleValidationTypeValues() []ValidationType {
 	return []ValidationType{
 		ValidationTypeSwagger,
 	}
-}
-
-// ToPtr returns a *ValidationType pointing to the current value.
-func (c ValidationType) ToPtr() *ValidationType {
-	return &c
 }

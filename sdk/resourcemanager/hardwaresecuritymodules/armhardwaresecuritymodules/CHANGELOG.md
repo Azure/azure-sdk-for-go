@@ -1,5 +1,94 @@
 # Release History
 
+## 0.3.0 (2022-04-11)
+### Breaking Changes
+
+- Function `*DedicatedHsmClient.ListByResourceGroup` return value(s) have been changed from `(*DedicatedHsmClientListByResourceGroupPager)` to `(*runtime.Pager[DedicatedHsmClientListByResourceGroupResponse])`
+- Function `NewDedicatedHsmClient` return value(s) have been changed from `(*DedicatedHsmClient)` to `(*DedicatedHsmClient, error)`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(context.Context, *OperationsClientListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(OperationsClientListResponse, error)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `*DedicatedHsmClient.BeginDelete` return value(s) have been changed from `(DedicatedHsmClientDeletePollerResponse, error)` to `(*armruntime.Poller[DedicatedHsmClientDeleteResponse], error)`
+- Function `*DedicatedHsmClient.ListOutboundNetworkDependenciesEndpoints` return value(s) have been changed from `(*DedicatedHsmClientListOutboundNetworkDependenciesEndpointsPager)` to `(*runtime.Pager[DedicatedHsmClientListOutboundNetworkDependenciesEndpointsResponse])`
+- Function `*DedicatedHsmClient.BeginCreateOrUpdate` return value(s) have been changed from `(DedicatedHsmClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[DedicatedHsmClientCreateOrUpdateResponse], error)`
+- Function `*DedicatedHsmClient.ListBySubscription` return value(s) have been changed from `(*DedicatedHsmClientListBySubscriptionPager)` to `(*runtime.Pager[DedicatedHsmClientListBySubscriptionResponse])`
+- Function `*DedicatedHsmClient.BeginUpdate` return value(s) have been changed from `(DedicatedHsmClientUpdatePollerResponse, error)` to `(*armruntime.Poller[DedicatedHsmClientUpdateResponse], error)`
+- Function `*DedicatedHsmClientDeletePollerResponse.Resume` has been removed
+- Function `IdentityType.ToPtr` has been removed
+- Function `*DedicatedHsmClientListOutboundNetworkDependenciesEndpointsPager.PageResponse` has been removed
+- Function `*DedicatedHsmClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*DedicatedHsmClientListByResourceGroupPager.Err` has been removed
+- Function `*DedicatedHsmClientUpdatePoller.ResumeToken` has been removed
+- Function `*DedicatedHsmClientUpdatePoller.Done` has been removed
+- Function `*DedicatedHsmClientUpdatePoller.Poll` has been removed
+- Function `*DedicatedHsmClientListByResourceGroupPager.NextPage` has been removed
+- Function `*DedicatedHsmClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*DedicatedHsmClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*DedicatedHsmClientListOutboundNetworkDependenciesEndpointsPager.Err` has been removed
+- Function `*DedicatedHsmClientListBySubscriptionPager.NextPage` has been removed
+- Function `*DedicatedHsmClientDeletePoller.FinalResponse` has been removed
+- Function `DedicatedHsmClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*DedicatedHsmClientDeletePoller.Done` has been removed
+- Function `*DedicatedHsmClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `DedicatedHsmClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `JSONWebKeyType.ToPtr` has been removed
+- Function `*DedicatedHsmClientUpdatePoller.FinalResponse` has been removed
+- Function `*DedicatedHsmClientCreateOrUpdatePoller.Done` has been removed
+- Function `*DedicatedHsmClientDeletePoller.Poll` has been removed
+- Function `DedicatedHsmClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*DedicatedHsmClientUpdatePollerResponse.Resume` has been removed
+- Function `*DedicatedHsmClientListOutboundNetworkDependenciesEndpointsPager.NextPage` has been removed
+- Function `*DedicatedHsmClientListBySubscriptionPager.Err` has been removed
+- Function `*DedicatedHsmClientDeletePoller.ResumeToken` has been removed
+- Function `*DedicatedHsmClientListBySubscriptionPager.PageResponse` has been removed
+- Function `*DedicatedHsmClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `SKUName.ToPtr` has been removed
+- Struct `DedicatedHsmClientCreateOrUpdatePoller` has been removed
+- Struct `DedicatedHsmClientCreateOrUpdatePollerResponse` has been removed
+- Struct `DedicatedHsmClientCreateOrUpdateResult` has been removed
+- Struct `DedicatedHsmClientDeletePoller` has been removed
+- Struct `DedicatedHsmClientDeletePollerResponse` has been removed
+- Struct `DedicatedHsmClientGetResult` has been removed
+- Struct `DedicatedHsmClientListByResourceGroupPager` has been removed
+- Struct `DedicatedHsmClientListByResourceGroupResult` has been removed
+- Struct `DedicatedHsmClientListBySubscriptionPager` has been removed
+- Struct `DedicatedHsmClientListBySubscriptionResult` has been removed
+- Struct `DedicatedHsmClientListOutboundNetworkDependenciesEndpointsPager` has been removed
+- Struct `DedicatedHsmClientListOutboundNetworkDependenciesEndpointsResult` has been removed
+- Struct `DedicatedHsmClientUpdatePoller` has been removed
+- Struct `DedicatedHsmClientUpdatePollerResponse` has been removed
+- Struct `DedicatedHsmClientUpdateResult` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Field `DedicatedHsmClientCreateOrUpdateResult` of struct `DedicatedHsmClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `DedicatedHsmClientCreateOrUpdateResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `DedicatedHsmClientListBySubscriptionResult` of struct `DedicatedHsmClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `DedicatedHsmClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `DedicatedHsmClientDeleteResponse` has been removed
+- Field `DedicatedHsmClientListOutboundNetworkDependenciesEndpointsResult` of struct `DedicatedHsmClientListOutboundNetworkDependenciesEndpointsResponse` has been removed
+- Field `RawResponse` of struct `DedicatedHsmClientListOutboundNetworkDependenciesEndpointsResponse` has been removed
+- Field `DedicatedHsmClientGetResult` of struct `DedicatedHsmClientGetResponse` has been removed
+- Field `RawResponse` of struct `DedicatedHsmClientGetResponse` has been removed
+- Field `DedicatedHsmClientUpdateResult` of struct `DedicatedHsmClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `DedicatedHsmClientUpdateResponse` has been removed
+- Field `DedicatedHsmClientListByResourceGroupResult` of struct `DedicatedHsmClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `DedicatedHsmClientListByResourceGroupResponse` has been removed
+
+### Features Added
+
+- New field `ResumeToken` in struct `DedicatedHsmClientBeginDeleteOptions`
+- New anonymous field `DedicatedHsmListResult` in struct `DedicatedHsmClientListBySubscriptionResponse`
+- New anonymous field `DedicatedHsmOperationListResult` in struct `OperationsClientListResponse`
+- New anonymous field `DedicatedHsm` in struct `DedicatedHsmClientGetResponse`
+- New anonymous field `OutboundEnvironmentEndpointCollection` in struct `DedicatedHsmClientListOutboundNetworkDependenciesEndpointsResponse`
+- New field `ResumeToken` in struct `DedicatedHsmClientBeginCreateOrUpdateOptions`
+- New anonymous field `DedicatedHsm` in struct `DedicatedHsmClientCreateOrUpdateResponse`
+- New anonymous field `DedicatedHsmListResult` in struct `DedicatedHsmClientListByResourceGroupResponse`
+- New anonymous field `DedicatedHsm` in struct `DedicatedHsmClientUpdateResponse`
+- New field `ResumeToken` in struct `DedicatedHsmClientBeginUpdateOptions`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

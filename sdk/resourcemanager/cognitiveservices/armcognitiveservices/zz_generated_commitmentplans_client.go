@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type CommitmentPlansClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewCommitmentPlansClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CommitmentPlansClient {
+func NewCommitmentPlansClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CommitmentPlansClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &CommitmentPlansClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Update the state of specified commitmentPlans associated with the Cognitive Services account.
@@ -104,7 +109,7 @@ func (client *CommitmentPlansClient) createOrUpdateCreateRequest(ctx context.Con
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *CommitmentPlansClient) createOrUpdateHandleResponse(resp *http.Response) (CommitmentPlansClientCreateOrUpdateResponse, error) {
-	result := CommitmentPlansClientCreateOrUpdateResponse{RawResponse: resp}
+	result := CommitmentPlansClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CommitmentPlan); err != nil {
 		return CommitmentPlansClientCreateOrUpdateResponse{}, err
 	}
@@ -118,22 +123,16 @@ func (client *CommitmentPlansClient) createOrUpdateHandleResponse(resp *http.Res
 // commitmentPlanName - The name of the commitmentPlan associated with the Cognitive Services Account
 // options - CommitmentPlansClientBeginDeleteOptions contains the optional parameters for the CommitmentPlansClient.BeginDelete
 // method.
-func (client *CommitmentPlansClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, commitmentPlanName string, options *CommitmentPlansClientBeginDeleteOptions) (CommitmentPlansClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, commitmentPlanName, options)
-	if err != nil {
-		return CommitmentPlansClientDeletePollerResponse{}, err
+func (client *CommitmentPlansClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, commitmentPlanName string, options *CommitmentPlansClientBeginDeleteOptions) (*armruntime.Poller[CommitmentPlansClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, commitmentPlanName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[CommitmentPlansClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[CommitmentPlansClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := CommitmentPlansClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("CommitmentPlansClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return CommitmentPlansClientDeletePollerResponse{}, err
-	}
-	result.Poller = &CommitmentPlansClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes the specified commitmentPlan associated with the Cognitive Services account.
@@ -236,7 +235,7 @@ func (client *CommitmentPlansClient) getCreateRequest(ctx context.Context, resou
 
 // getHandleResponse handles the Get response.
 func (client *CommitmentPlansClient) getHandleResponse(resp *http.Response) (CommitmentPlansClientGetResponse, error) {
-	result := CommitmentPlansClientGetResponse{RawResponse: resp}
+	result := CommitmentPlansClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CommitmentPlan); err != nil {
 		return CommitmentPlansClientGetResponse{}, err
 	}
@@ -248,16 +247,32 @@ func (client *CommitmentPlansClient) getHandleResponse(resp *http.Response) (Com
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The name of Cognitive Services account.
 // options - CommitmentPlansClientListOptions contains the optional parameters for the CommitmentPlansClient.List method.
-func (client *CommitmentPlansClient) List(resourceGroupName string, accountName string, options *CommitmentPlansClientListOptions) *CommitmentPlansClientListPager {
-	return &CommitmentPlansClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, accountName, options)
+func (client *CommitmentPlansClient) List(resourceGroupName string, accountName string, options *CommitmentPlansClientListOptions) *runtime.Pager[CommitmentPlansClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[CommitmentPlansClientListResponse]{
+		More: func(page CommitmentPlansClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp CommitmentPlansClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.CommitmentPlanListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *CommitmentPlansClientListResponse) (CommitmentPlansClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, accountName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return CommitmentPlansClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return CommitmentPlansClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return CommitmentPlansClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -288,7 +303,7 @@ func (client *CommitmentPlansClient) listCreateRequest(ctx context.Context, reso
 
 // listHandleResponse handles the List response.
 func (client *CommitmentPlansClient) listHandleResponse(resp *http.Response) (CommitmentPlansClientListResponse, error) {
-	result := CommitmentPlansClientListResponse{RawResponse: resp}
+	result := CommitmentPlansClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CommitmentPlanListResult); err != nil {
 		return CommitmentPlansClientListResponse{}, err
 	}

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ManagementClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewManagementClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ManagementClient {
+func NewManagementClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagementClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ManagementClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CheckDomainAvailability - Check whether a domain is available.
@@ -89,7 +94,7 @@ func (client *ManagementClient) checkDomainAvailabilityCreateRequest(ctx context
 
 // checkDomainAvailabilityHandleResponse handles the CheckDomainAvailability response.
 func (client *ManagementClient) checkDomainAvailabilityHandleResponse(resp *http.Response) (ManagementClientCheckDomainAvailabilityResponse, error) {
-	result := ManagementClientCheckDomainAvailabilityResponse{RawResponse: resp}
+	result := ManagementClientCheckDomainAvailabilityResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DomainAvailability); err != nil {
 		return ManagementClientCheckDomainAvailabilityResponse{}, err
 	}
@@ -141,7 +146,7 @@ func (client *ManagementClient) checkSKUAvailabilityCreateRequest(ctx context.Co
 
 // checkSKUAvailabilityHandleResponse handles the CheckSKUAvailability response.
 func (client *ManagementClient) checkSKUAvailabilityHandleResponse(resp *http.Response) (ManagementClientCheckSKUAvailabilityResponse, error) {
-	result := ManagementClientCheckSKUAvailabilityResponse{RawResponse: resp}
+	result := ManagementClientCheckSKUAvailabilityResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SKUAvailabilityListResult); err != nil {
 		return ManagementClientCheckSKUAvailabilityResponse{}, err
 	}

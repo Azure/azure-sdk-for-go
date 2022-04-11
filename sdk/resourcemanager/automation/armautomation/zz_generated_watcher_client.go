@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type WatcherClient struct {
 // forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewWatcherClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *WatcherClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewWatcherClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WatcherClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &WatcherClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Create the watcher identified by watcher name.
@@ -104,7 +109,7 @@ func (client *WatcherClient) createOrUpdateCreateRequest(ctx context.Context, re
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *WatcherClient) createOrUpdateHandleResponse(resp *http.Response) (WatcherClientCreateOrUpdateResponse, error) {
-	result := WatcherClientCreateOrUpdateResponse{RawResponse: resp}
+	result := WatcherClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Watcher); err != nil {
 		return WatcherClientCreateOrUpdateResponse{}, err
 	}
@@ -129,7 +134,7 @@ func (client *WatcherClient) Delete(ctx context.Context, resourceGroupName strin
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return WatcherClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return WatcherClientDeleteResponse{RawResponse: resp}, nil
+	return WatcherClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -215,7 +220,7 @@ func (client *WatcherClient) getCreateRequest(ctx context.Context, resourceGroup
 
 // getHandleResponse handles the Get response.
 func (client *WatcherClient) getHandleResponse(resp *http.Response) (WatcherClientGetResponse, error) {
-	result := WatcherClientGetResponse{RawResponse: resp}
+	result := WatcherClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Watcher); err != nil {
 		return WatcherClientGetResponse{}, err
 	}
@@ -228,16 +233,32 @@ func (client *WatcherClient) getHandleResponse(resp *http.Response) (WatcherClie
 // automationAccountName - The name of the automation account.
 // options - WatcherClientListByAutomationAccountOptions contains the optional parameters for the WatcherClient.ListByAutomationAccount
 // method.
-func (client *WatcherClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *WatcherClientListByAutomationAccountOptions) *WatcherClientListByAutomationAccountPager {
-	return &WatcherClientListByAutomationAccountPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, options)
+func (client *WatcherClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *WatcherClientListByAutomationAccountOptions) *runtime.Pager[WatcherClientListByAutomationAccountResponse] {
+	return runtime.NewPager(runtime.PageProcessor[WatcherClientListByAutomationAccountResponse]{
+		More: func(page WatcherClientListByAutomationAccountResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp WatcherClientListByAutomationAccountResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.WatcherListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *WatcherClientListByAutomationAccountResponse) (WatcherClientListByAutomationAccountResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return WatcherClientListByAutomationAccountResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return WatcherClientListByAutomationAccountResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return WatcherClientListByAutomationAccountResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByAutomationAccountHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByAutomationAccountCreateRequest creates the ListByAutomationAccount request.
@@ -271,7 +292,7 @@ func (client *WatcherClient) listByAutomationAccountCreateRequest(ctx context.Co
 
 // listByAutomationAccountHandleResponse handles the ListByAutomationAccount response.
 func (client *WatcherClient) listByAutomationAccountHandleResponse(resp *http.Response) (WatcherClientListByAutomationAccountResponse, error) {
-	result := WatcherClientListByAutomationAccountResponse{RawResponse: resp}
+	result := WatcherClientListByAutomationAccountResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WatcherListResult); err != nil {
 		return WatcherClientListByAutomationAccountResponse{}, err
 	}
@@ -296,7 +317,7 @@ func (client *WatcherClient) Start(ctx context.Context, resourceGroupName string
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return WatcherClientStartResponse{}, runtime.NewResponseError(resp)
 	}
-	return WatcherClientStartResponse{RawResponse: resp}, nil
+	return WatcherClientStartResponse{}, nil
 }
 
 // startCreateRequest creates the Start request.
@@ -347,7 +368,7 @@ func (client *WatcherClient) Stop(ctx context.Context, resourceGroupName string,
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return WatcherClientStopResponse{}, runtime.NewResponseError(resp)
 	}
-	return WatcherClientStopResponse{RawResponse: resp}, nil
+	return WatcherClientStopResponse{}, nil
 }
 
 // stopCreateRequest creates the Stop request.
@@ -434,7 +455,7 @@ func (client *WatcherClient) updateCreateRequest(ctx context.Context, resourceGr
 
 // updateHandleResponse handles the Update response.
 func (client *WatcherClient) updateHandleResponse(resp *http.Response) (WatcherClientUpdateResponse, error) {
-	result := WatcherClientUpdateResponse{RawResponse: resp}
+	result := WatcherClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Watcher); err != nil {
 		return WatcherClientUpdateResponse{}, err
 	}

@@ -1,5 +1,854 @@
 # Release History
 
+## 0.4.0 (2022-04-11)
+### Breaking Changes
+
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `NewSourceControlSyncJobStreamsClient` return value(s) have been changed from `(*SourceControlSyncJobStreamsClient)` to `(*SourceControlSyncJobStreamsClient, error)`
+- Function `*DscCompilationJobClient.BeginCreate` return value(s) have been changed from `(DscCompilationJobClientCreatePollerResponse, error)` to `(*armruntime.Poller[DscCompilationJobClientCreateResponse], error)`
+- Function `NewActivityClient` return value(s) have been changed from `(*ActivityClient)` to `(*ActivityClient, error)`
+- Function `NewCertificateClient` return value(s) have been changed from `(*CertificateClient)` to `(*CertificateClient, error)`
+- Function `*RunbookClient.BeginPublish` return value(s) have been changed from `(RunbookClientPublishPollerResponse, error)` to `(*armruntime.Poller[RunbookClientPublishResponse], error)`
+- Function `*JobClient.ListByAutomationAccount` return value(s) have been changed from `(*JobClientListByAutomationAccountPager)` to `(*runtime.Pager[JobClientListByAutomationAccountResponse])`
+- Function `NewClient` return value(s) have been changed from `(*Client)` to `(*Client, error)`
+- Function `NewAccountClient` return value(s) have been changed from `(*AccountClient)` to `(*AccountClient, error)`
+- Function `NewWebhookClient` return value(s) have been changed from `(*WebhookClient)` to `(*WebhookClient, error)`
+- Function `NewRunbookClient` return value(s) have been changed from `(*RunbookClient)` to `(*RunbookClient, error)`
+- Function `NewNodeReportsClient` return value(s) have been changed from `(*NodeReportsClient)` to `(*NodeReportsClient, error)`
+- Function `*DscConfigurationClient.ListByAutomationAccount` return value(s) have been changed from `(*DscConfigurationClientListByAutomationAccountPager)` to `(*runtime.Pager[DscConfigurationClientListByAutomationAccountResponse])`
+- Function `*RunbookDraftClient.BeginReplaceContent` parameter(s) have been changed from `(context.Context, string, string, string, string, *RunbookDraftClientBeginReplaceContentOptions)` to `(context.Context, string, string, string, io.ReadSeekCloser, *RunbookDraftClientBeginReplaceContentOptions)`
+- Function `*RunbookDraftClient.BeginReplaceContent` return value(s) have been changed from `(RunbookDraftClientReplaceContentPollerResponse, error)` to `(*armruntime.Poller[RunbookDraftClientReplaceContentResponse], error)`
+- Function `NewObjectDataTypesClient` return value(s) have been changed from `(*ObjectDataTypesClient)` to `(*ObjectDataTypesClient, error)`
+- Function `*AccountClient.ListByResourceGroup` return value(s) have been changed from `(*AccountClientListByResourceGroupPager)` to `(*runtime.Pager[AccountClientListByResourceGroupResponse])`
+- Function `NewConnectionTypeClient` return value(s) have been changed from `(*ConnectionTypeClient)` to `(*ConnectionTypeClient, error)`
+- Function `NewUsagesClient` return value(s) have been changed from `(*UsagesClient)` to `(*UsagesClient, error)`
+- Function `NewScheduleClient` return value(s) have been changed from `(*ScheduleClient)` to `(*ScheduleClient, error)`
+- Function `NewTestJobStreamsClient` return value(s) have been changed from `(*TestJobStreamsClient)` to `(*TestJobStreamsClient, error)`
+- Function `*CertificateClient.ListByAutomationAccount` return value(s) have been changed from `(*CertificateClientListByAutomationAccountPager)` to `(*runtime.Pager[CertificateClientListByAutomationAccountResponse])`
+- Function `NewDscConfigurationClient` return value(s) have been changed from `(*DscConfigurationClient)` to `(*DscConfigurationClient, error)`
+- Function `NewDscNodeClient` return value(s) have been changed from `(*DscNodeClient)` to `(*DscNodeClient, error)`
+- Function `NewVariableClient` return value(s) have been changed from `(*VariableClient)` to `(*VariableClient, error)`
+- Function `NewSourceControlSyncJobClient` return value(s) have been changed from `(*SourceControlSyncJobClient)` to `(*SourceControlSyncJobClient, error)`
+- Function `NewKeysClient` return value(s) have been changed from `(*KeysClient)` to `(*KeysClient, error)`
+- Function `*ConnectionClient.ListByAutomationAccount` return value(s) have been changed from `(*ConnectionClientListByAutomationAccountPager)` to `(*runtime.Pager[ConnectionClientListByAutomationAccountResponse])`
+- Function `*PrivateEndpointConnectionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[PrivateEndpointConnectionsClientCreateOrUpdateResponse], error)`
+- Function `*PrivateLinkResourcesClient.Automation` parameter(s) have been changed from `(context.Context, string, string, *PrivateLinkResourcesClientAutomationOptions)` to `(string, string, *PrivateLinkResourcesClientAutomationOptions)`
+- Function `*PrivateLinkResourcesClient.Automation` return value(s) have been changed from `(PrivateLinkResourcesClientAutomationResponse, error)` to `(*runtime.Pager[PrivateLinkResourcesClientAutomationResponse])`
+- Function `NewSoftwareUpdateConfigurationsClient` return value(s) have been changed from `(*SoftwareUpdateConfigurationsClient)` to `(*SoftwareUpdateConfigurationsClient, error)`
+- Function `*DscNodeClient.ListByAutomationAccount` return value(s) have been changed from `(*DscNodeClientListByAutomationAccountPager)` to `(*runtime.Pager[DscNodeClientListByAutomationAccountResponse])`
+- Function `*RunbookClient.ListByAutomationAccount` return value(s) have been changed from `(*RunbookClientListByAutomationAccountPager)` to `(*runtime.Pager[RunbookClientListByAutomationAccountResponse])`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(PrivateEndpointConnectionsClientDeletePollerResponse, error)` to `(*armruntime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)`
+- Function `*HybridRunbookWorkersClient.ListByHybridRunbookWorkerGroup` return value(s) have been changed from `(*HybridRunbookWorkersClientListByHybridRunbookWorkerGroupPager)` to `(*runtime.Pager[HybridRunbookWorkersClientListByHybridRunbookWorkerGroupResponse])`
+- Function `NewLinkedWorkspaceClient` return value(s) have been changed from `(*LinkedWorkspaceClient)` to `(*LinkedWorkspaceClient, error)`
+- Function `*NodeReportsClient.ListByNode` return value(s) have been changed from `(*NodeReportsClientListByNodePager)` to `(*runtime.Pager[NodeReportsClientListByNodeResponse])`
+- Function `NewJobClient` return value(s) have been changed from `(*JobClient)` to `(*JobClient, error)`
+- Function `NewSoftwareUpdateConfigurationMachineRunsClient` return value(s) have been changed from `(*SoftwareUpdateConfigurationMachineRunsClient)` to `(*SoftwareUpdateConfigurationMachineRunsClient, error)`
+- Function `*ScheduleClient.ListByAutomationAccount` return value(s) have been changed from `(*ScheduleClientListByAutomationAccountPager)` to `(*runtime.Pager[ScheduleClientListByAutomationAccountResponse])`
+- Function `*JobScheduleClient.ListByAutomationAccount` return value(s) have been changed from `(*JobScheduleClientListByAutomationAccountPager)` to `(*runtime.Pager[JobScheduleClientListByAutomationAccountResponse])`
+- Function `NewJobScheduleClient` return value(s) have been changed from `(*JobScheduleClient)` to `(*JobScheduleClient, error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(context.Context, *OperationsClientListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(OperationsClientListResponse, error)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `NewJobStreamClient` return value(s) have been changed from `(*JobStreamClient)` to `(*JobStreamClient, error)`
+- Function `*ObjectDataTypesClient.ListFieldsByModuleAndType` parameter(s) have been changed from `(context.Context, string, string, string, string, *ObjectDataTypesClientListFieldsByModuleAndTypeOptions)` to `(string, string, string, string, *ObjectDataTypesClientListFieldsByModuleAndTypeOptions)`
+- Function `*ObjectDataTypesClient.ListFieldsByModuleAndType` return value(s) have been changed from `(ObjectDataTypesClientListFieldsByModuleAndTypeResponse, error)` to `(*runtime.Pager[ObjectDataTypesClientListFieldsByModuleAndTypeResponse])`
+- Function `*UsagesClient.ListByAutomationAccount` parameter(s) have been changed from `(context.Context, string, string, *UsagesClientListByAutomationAccountOptions)` to `(string, string, *UsagesClientListByAutomationAccountOptions)`
+- Function `*UsagesClient.ListByAutomationAccount` return value(s) have been changed from `(UsagesClientListByAutomationAccountResponse, error)` to `(*runtime.Pager[UsagesClientListByAutomationAccountResponse])`
+- Function `NewRunbookDraftClient` return value(s) have been changed from `(*RunbookDraftClient)` to `(*RunbookDraftClient, error)`
+- Function `*AccountClient.List` return value(s) have been changed from `(*AccountClientListPager)` to `(*runtime.Pager[AccountClientListResponse])`
+- Function `NewStatisticsClient` return value(s) have been changed from `(*StatisticsClient)` to `(*StatisticsClient, error)`
+- Function `*DscNodeConfigurationClient.BeginCreateOrUpdate` return value(s) have been changed from `(DscNodeConfigurationClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[DscNodeConfigurationClientCreateOrUpdateResponse], error)`
+- Function `*WebhookClient.ListByAutomationAccount` return value(s) have been changed from `(*WebhookClientListByAutomationAccountPager)` to `(*runtime.Pager[WebhookClientListByAutomationAccountResponse])`
+- Function `*WatcherClient.ListByAutomationAccount` return value(s) have been changed from `(*WatcherClientListByAutomationAccountPager)` to `(*runtime.Pager[WatcherClientListByAutomationAccountResponse])`
+- Function `*SourceControlClient.ListByAutomationAccount` return value(s) have been changed from `(*SourceControlClientListByAutomationAccountPager)` to `(*runtime.Pager[SourceControlClientListByAutomationAccountResponse])`
+- Function `*ConnectionTypeClient.ListByAutomationAccount` return value(s) have been changed from `(*ConnectionTypeClientListByAutomationAccountPager)` to `(*runtime.Pager[ConnectionTypeClientListByAutomationAccountResponse])`
+- Function `*HybridRunbookWorkerGroupClient.ListByAutomationAccount` return value(s) have been changed from `(*HybridRunbookWorkerGroupClientListByAutomationAccountPager)` to `(*runtime.Pager[HybridRunbookWorkerGroupClientListByAutomationAccountResponse])`
+- Function `NewPrivateEndpointConnectionsClient` return value(s) have been changed from `(*PrivateEndpointConnectionsClient)` to `(*PrivateEndpointConnectionsClient, error)`
+- Function `NewPrivateLinkResourcesClient` return value(s) have been changed from `(*PrivateLinkResourcesClient)` to `(*PrivateLinkResourcesClient, error)`
+- Function `*ActivityClient.ListByModule` return value(s) have been changed from `(*ActivityClientListByModulePager)` to `(*runtime.Pager[ActivityClientListByModuleResponse])`
+- Function `NewWatcherClient` return value(s) have been changed from `(*WatcherClient)` to `(*WatcherClient, error)`
+- Function `*ObjectDataTypesClient.ListFieldsByType` parameter(s) have been changed from `(context.Context, string, string, string, *ObjectDataTypesClientListFieldsByTypeOptions)` to `(string, string, string, *ObjectDataTypesClientListFieldsByTypeOptions)`
+- Function `*ObjectDataTypesClient.ListFieldsByType` return value(s) have been changed from `(ObjectDataTypesClientListFieldsByTypeResponse, error)` to `(*runtime.Pager[ObjectDataTypesClientListFieldsByTypeResponse])`
+- Function `*DscNodeConfigurationClient.ListByAutomationAccount` return value(s) have been changed from `(*DscNodeConfigurationClientListByAutomationAccountPager)` to `(*runtime.Pager[DscNodeConfigurationClientListByAutomationAccountResponse])`
+- Function `*TestJobStreamsClient.ListByTestJob` return value(s) have been changed from `(*TestJobStreamsClientListByTestJobPager)` to `(*runtime.Pager[TestJobStreamsClientListByTestJobResponse])`
+- Function `*ModuleClient.ListByAutomationAccount` return value(s) have been changed from `(*ModuleClientListByAutomationAccountPager)` to `(*runtime.Pager[ModuleClientListByAutomationAccountResponse])`
+- Function `*StatisticsClient.ListByAutomationAccount` parameter(s) have been changed from `(context.Context, string, string, *StatisticsClientListByAutomationAccountOptions)` to `(string, string, *StatisticsClientListByAutomationAccountOptions)`
+- Function `*StatisticsClient.ListByAutomationAccount` return value(s) have been changed from `(StatisticsClientListByAutomationAccountResponse, error)` to `(*runtime.Pager[StatisticsClientListByAutomationAccountResponse])`
+- Function `NewSourceControlClient` return value(s) have been changed from `(*SourceControlClient)` to `(*SourceControlClient, error)`
+- Function `*SourceControlSyncJobClient.ListByAutomationAccount` return value(s) have been changed from `(*SourceControlSyncJobClientListByAutomationAccountPager)` to `(*runtime.Pager[SourceControlSyncJobClientListByAutomationAccountResponse])`
+- Function `NewNodeCountInformationClient` return value(s) have been changed from `(*NodeCountInformationClient)` to `(*NodeCountInformationClient, error)`
+- Function `NewPython2PackageClient` return value(s) have been changed from `(*Python2PackageClient)` to `(*Python2PackageClient, error)`
+- Function `*VariableClient.ListByAutomationAccount` return value(s) have been changed from `(*VariableClientListByAutomationAccountPager)` to `(*runtime.Pager[VariableClientListByAutomationAccountResponse])`
+- Function `NewDscCompilationJobStreamClient` return value(s) have been changed from `(*DscCompilationJobStreamClient)` to `(*DscCompilationJobStreamClient, error)`
+- Function `NewSoftwareUpdateConfigurationRunsClient` return value(s) have been changed from `(*SoftwareUpdateConfigurationRunsClient)` to `(*SoftwareUpdateConfigurationRunsClient, error)`
+- Function `*CredentialClient.ListByAutomationAccount` return value(s) have been changed from `(*CredentialClientListByAutomationAccountPager)` to `(*runtime.Pager[CredentialClientListByAutomationAccountResponse])`
+- Function `NewDscCompilationJobClient` return value(s) have been changed from `(*DscCompilationJobClient)` to `(*DscCompilationJobClient, error)`
+- Function `*JobStreamClient.ListByJob` return value(s) have been changed from `(*JobStreamClientListByJobPager)` to `(*runtime.Pager[JobStreamClientListByJobResponse])`
+- Function `NewHybridRunbookWorkerGroupClient` return value(s) have been changed from `(*HybridRunbookWorkerGroupClient)` to `(*HybridRunbookWorkerGroupClient, error)`
+- Function `*DscCompilationJobClient.ListByAutomationAccount` return value(s) have been changed from `(*DscCompilationJobClientListByAutomationAccountPager)` to `(*runtime.Pager[DscCompilationJobClientListByAutomationAccountResponse])`
+- Function `NewFieldsClient` return value(s) have been changed from `(*FieldsClient)` to `(*FieldsClient, error)`
+- Function `*PrivateEndpointConnectionsClient.ListByAutomationAccount` parameter(s) have been changed from `(context.Context, string, string, *PrivateEndpointConnectionsClientListByAutomationAccountOptions)` to `(string, string, *PrivateEndpointConnectionsClientListByAutomationAccountOptions)`
+- Function `*PrivateEndpointConnectionsClient.ListByAutomationAccount` return value(s) have been changed from `(PrivateEndpointConnectionsClientListByAutomationAccountResponse, error)` to `(*runtime.Pager[PrivateEndpointConnectionsClientListByAutomationAccountResponse])`
+- Function `NewHybridRunbookWorkersClient` return value(s) have been changed from `(*HybridRunbookWorkersClient)` to `(*HybridRunbookWorkersClient, error)`
+- Function `NewDscNodeConfigurationClient` return value(s) have been changed from `(*DscNodeConfigurationClient)` to `(*DscNodeConfigurationClient, error)`
+- Function `NewAgentRegistrationInformationClient` return value(s) have been changed from `(*AgentRegistrationInformationClient)` to `(*AgentRegistrationInformationClient, error)`
+- Function `*SourceControlSyncJobStreamsClient.ListBySyncJob` return value(s) have been changed from `(*SourceControlSyncJobStreamsClientListBySyncJobPager)` to `(*runtime.Pager[SourceControlSyncJobStreamsClientListBySyncJobResponse])`
+- Function `*FieldsClient.ListByType` parameter(s) have been changed from `(context.Context, string, string, string, string, *FieldsClientListByTypeOptions)` to `(string, string, string, string, *FieldsClientListByTypeOptions)`
+- Function `*FieldsClient.ListByType` return value(s) have been changed from `(FieldsClientListByTypeResponse, error)` to `(*runtime.Pager[FieldsClientListByTypeResponse])`
+- Function `NewModuleClient` return value(s) have been changed from `(*ModuleClient)` to `(*ModuleClient, error)`
+- Function `NewTestJobClient` return value(s) have been changed from `(*TestJobClient)` to `(*TestJobClient, error)`
+- Function `NewCredentialClient` return value(s) have been changed from `(*CredentialClient)` to `(*CredentialClient, error)`
+- Function `NewConnectionClient` return value(s) have been changed from `(*ConnectionClient)` to `(*ConnectionClient, error)`
+- Function `*Python2PackageClient.ListByAutomationAccount` return value(s) have been changed from `(*Python2PackageClientListByAutomationAccountPager)` to `(*runtime.Pager[Python2PackageClientListByAutomationAccountResponse])`
+- Type of `SourceControlSyncJobStreamByIDProperties.Value` has been changed from `map[string]map[string]interface{}` to `map[string]interface{}`
+- Type of `JobStreamProperties.Value` has been changed from `map[string]map[string]interface{}` to `map[string]interface{}`
+- Type of `EncryptionPropertiesIdentity.UserAssignedIdentity` has been changed from `map[string]interface{}` to `interface{}`
+- Function `*AccountClientListByResourceGroupPager.Err` has been removed
+- Function `*TestJobStreamsClientListByTestJobPager.PageResponse` has been removed
+- Function `WorkerType.ToPtr` has been removed
+- Function `JobStatus.ToPtr` has been removed
+- Function `*SourceControlSyncJobClientListByAutomationAccountPager.PageResponse` has been removed
+- Function `*DscConfigurationClientListByAutomationAccountPager.NextPage` has been removed
+- Function `*HybridRunbookWorkerGroupClientListByAutomationAccountPager.Err` has been removed
+- Function `*CertificateClientListByAutomationAccountPager.NextPage` has been removed
+- Function `*WebhookClientListByAutomationAccountPager.Err` has been removed
+- Function `*CredentialClientListByAutomationAccountPager.Err` has been removed
+- Function `*DscNodeConfigurationClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*HybridRunbookWorkerGroupClientListByAutomationAccountPager.NextPage` has been removed
+- Function `*DscCompilationJobClientListByAutomationAccountPager.NextPage` has been removed
+- Function `DscNodeConfigurationClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*WebhookClientListByAutomationAccountPager.NextPage` has been removed
+- Function `DscConfigurationState.ToPtr` has been removed
+- Function `*SourceControlSyncJobClientListByAutomationAccountPager.Err` has been removed
+- Function `AutomationKeyPermissions.ToPtr` has been removed
+- Function `*DscNodeConfigurationClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*RunbookDraftClientReplaceContentPoller.ResumeToken` has been removed
+- Function `*VariableClientListByAutomationAccountPager.PageResponse` has been removed
+- Function `ProvisioningState.ToPtr` has been removed
+- Function `*DscNodeClientListByAutomationAccountPager.Err` has been removed
+- Function `*ConnectionTypeClientListByAutomationAccountPager.Err` has been removed
+- Function `*JobClientListByAutomationAccountPager.NextPage` has been removed
+- Function `CountType.ToPtr` has been removed
+- Function `ResourceIdentityType.ToPtr` has been removed
+- Function `JobProvisioningState.ToPtr` has been removed
+- Function `*JobScheduleClientListByAutomationAccountPager.NextPage` has been removed
+- Function `*ModuleClientListByAutomationAccountPager.NextPage` has been removed
+- Function `*DscNodeClientListByAutomationAccountPager.NextPage` has been removed
+- Function `*WatcherClientListByAutomationAccountPager.NextPage` has been removed
+- Function `*JobStreamClientListByJobPager.Err` has been removed
+- Function `RunbookClientPublishPollerResponse.PollUntilDone` has been removed
+- Function `*AccountClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*ActivityClientListByModulePager.PageResponse` has been removed
+- Function `*SourceControlSyncJobClientListByAutomationAccountPager.NextPage` has been removed
+- Function `*SourceControlClientListByAutomationAccountPager.Err` has been removed
+- Function `*DscCompilationJobClientListByAutomationAccountPager.Err` has been removed
+- Function `*Python2PackageClientListByAutomationAccountPager.PageResponse` has been removed
+- Function `HTTPStatusCode.ToPtr` has been removed
+- Function `ScheduleFrequency.ToPtr` has been removed
+- Function `LinuxUpdateClasses.ToPtr` has been removed
+- Function `*SourceControlSyncJobStreamsClientListBySyncJobPager.Err` has been removed
+- Function `*WatcherClientListByAutomationAccountPager.PageResponse` has been removed
+- Function `*SourceControlSyncJobStreamsClientListBySyncJobPager.PageResponse` has been removed
+- Function `*AccountClientListPager.PageResponse` has been removed
+- Function `*CertificateClientListByAutomationAccountPager.Err` has been removed
+- Function `*AccountClientListPager.NextPage` has been removed
+- Function `*JobScheduleClientListByAutomationAccountPager.PageResponse` has been removed
+- Function `*RunbookClientPublishPollerResponse.Resume` has been removed
+- Function `*PrivateEndpointConnectionsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*RunbookDraftClientReplaceContentPoller.Poll` has been removed
+- Function `*ModuleClientListByAutomationAccountPager.Err` has been removed
+- Function `*DscNodeClientListByAutomationAccountPager.PageResponse` has been removed
+- Function `*ConnectionTypeClientListByAutomationAccountPager.PageResponse` has been removed
+- Function `GraphRunbookType.ToPtr` has been removed
+- Function `ContentSourceType.ToPtr` has been removed
+- Function `*VariableClientListByAutomationAccountPager.Err` has been removed
+- Function `*ActivityClientListByModulePager.Err` has been removed
+- Function `OperatingSystemType.ToPtr` has been removed
+- Function `RunbookTypeEnum.ToPtr` has been removed
+- Function `*JobClientListByAutomationAccountPager.PageResponse` has been removed
+- Function `*TestJobStreamsClientListByTestJobPager.Err` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePoller.FinalResponse` has been removed
+- Function `*HybridRunbookWorkersClientListByHybridRunbookWorkerGroupPager.NextPage` has been removed
+- Function `*CertificateClientListByAutomationAccountPager.PageResponse` has been removed
+- Function `*SourceControlClientListByAutomationAccountPager.PageResponse` has been removed
+- Function `*RunbookClientPublishPoller.Poll` has been removed
+- Function `*DscNodeConfigurationClientListByAutomationAccountPager.Err` has been removed
+- Function `*ScheduleClientListByAutomationAccountPager.Err` has been removed
+- Function `SKUNameEnum.ToPtr` has been removed
+- Function `AutomationAccountState.ToPtr` has been removed
+- Function `*RunbookClientListByAutomationAccountPager.Err` has been removed
+- Function `DscCompilationJobClientCreatePollerResponse.PollUntilDone` has been removed
+- Function `*Python2PackageClientListByAutomationAccountPager.Err` has been removed
+- Function `*ScheduleClientListByAutomationAccountPager.PageResponse` has been removed
+- Function `*RunbookDraftClientReplaceContentPoller.Done` has been removed
+- Function `ScheduleDay.ToPtr` has been removed
+- Function `*SourceControlClientListByAutomationAccountPager.NextPage` has been removed
+- Function `TokenType.ToPtr` has been removed
+- Function `*RunbookClientPublishPoller.ResumeToken` has been removed
+- Function `AgentRegistrationKeyName.ToPtr` has been removed
+- Function `*HybridRunbookWorkersClientListByHybridRunbookWorkerGroupPager.PageResponse` has been removed
+- Function `*DscCompilationJobClientCreatePoller.ResumeToken` has been removed
+- Function `*CredentialClientListByAutomationAccountPager.PageResponse` has been removed
+- Function `*HybridRunbookWorkersClientListByHybridRunbookWorkerGroupPager.Err` has been removed
+- Function `*DscConfigurationClientListByAutomationAccountPager.PageResponse` has been removed
+- Function `CreatedByType.ToPtr` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePollerResponse.Resume` has been removed
+- Function `RunbookDraftClientReplaceContentPollerResponse.PollUntilDone` has been removed
+- Function `*JobStreamClientListByJobPager.PageResponse` has been removed
+- Function `*DscCompilationJobClientListByAutomationAccountPager.PageResponse` has been removed
+- Function `*HybridRunbookWorkerGroupClientListByAutomationAccountPager.PageResponse` has been removed
+- Function `*DscNodeConfigurationClientCreateOrUpdatePoller.Done` has been removed
+- Function `*RunbookClientPublishPoller.FinalResponse` has been removed
+- Function `*Python2PackageClientListByAutomationAccountPager.NextPage` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePoller.Poll` has been removed
+- Function `*VariableClientListByAutomationAccountPager.NextPage` has been removed
+- Function `*DscCompilationJobClientCreatePollerResponse.Resume` has been removed
+- Function `*ScheduleClientListByAutomationAccountPager.NextPage` has been removed
+- Function `*ConnectionClientListByAutomationAccountPager.NextPage` has been removed
+- Function `PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `AutomationKeyName.ToPtr` has been removed
+- Function `*AccountClientListByResourceGroupPager.NextPage` has been removed
+- Function `*DscNodeConfigurationClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*ConnectionTypeClientListByAutomationAccountPager.NextPage` has been removed
+- Function `JobStreamType.ToPtr` has been removed
+- Function `*RunbookClientListByAutomationAccountPager.NextPage` has been removed
+- Function `*RunbookDraftClientReplaceContentPollerResponse.Resume` has been removed
+- Function `*WebhookClientListByAutomationAccountPager.PageResponse` has been removed
+- Function `*DscCompilationJobClientCreatePoller.FinalResponse` has been removed
+- Function `*ConnectionClientListByAutomationAccountPager.Err` has been removed
+- Function `*RunbookClientListByAutomationAccountPager.PageResponse` has been removed
+- Function `GroupTypeEnum.ToPtr` has been removed
+- Function `PrivateEndpointConnectionsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*WatcherClientListByAutomationAccountPager.Err` has been removed
+- Function `RunbookState.ToPtr` has been removed
+- Function `*JobScheduleClientListByAutomationAccountPager.Err` has been removed
+- Function `EncryptionKeySourceType.ToPtr` has been removed
+- Function `*DscCompilationJobClientCreatePoller.Poll` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePoller.ResumeToken` has been removed
+- Function `*SourceControlSyncJobStreamsClientListBySyncJobPager.NextPage` has been removed
+- Function `*AccountClientListPager.Err` has been removed
+- Function `*ModuleClientListByAutomationAccountPager.PageResponse` has been removed
+- Function `*RunbookClientPublishPoller.Done` has been removed
+- Function `WindowsUpdateClasses.ToPtr` has been removed
+- Function `*DscNodeConfigurationClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*PrivateEndpointConnectionsClientCreateOrUpdatePoller.Done` has been removed
+- Function `SourceType.ToPtr` has been removed
+- Function `ModuleProvisioningState.ToPtr` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePoller.Done` has been removed
+- Function `*PrivateEndpointConnectionsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*CredentialClientListByAutomationAccountPager.NextPage` has been removed
+- Function `*DscNodeConfigurationClientListByAutomationAccountPager.PageResponse` has been removed
+- Function `*NodeReportsClientListByNodePager.Err` has been removed
+- Function `*ConnectionClientListByAutomationAccountPager.PageResponse` has been removed
+- Function `TagOperators.ToPtr` has been removed
+- Function `*TestJobStreamsClientListByTestJobPager.NextPage` has been removed
+- Function `*DscCompilationJobClientCreatePoller.Done` has been removed
+- Function `*JobStreamClientListByJobPager.NextPage` has been removed
+- Function `*DscNodeConfigurationClientListByAutomationAccountPager.NextPage` has been removed
+- Function `*PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*NodeReportsClientListByNodePager.NextPage` has been removed
+- Function `StreamType.ToPtr` has been removed
+- Function `SyncType.ToPtr` has been removed
+- Function `*DscConfigurationClientListByAutomationAccountPager.Err` has been removed
+- Function `*JobClientListByAutomationAccountPager.Err` has been removed
+- Function `*PrivateEndpointConnectionsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*ActivityClientListByModulePager.NextPage` has been removed
+- Function `*RunbookDraftClientReplaceContentPoller.FinalResponse` has been removed
+- Function `*NodeReportsClientListByNodePager.PageResponse` has been removed
+- Struct `AccountClientCreateOrUpdateResult` has been removed
+- Struct `AccountClientGetResult` has been removed
+- Struct `AccountClientListByResourceGroupPager` has been removed
+- Struct `AccountClientListByResourceGroupResult` has been removed
+- Struct `AccountClientListPager` has been removed
+- Struct `AccountClientListResult` has been removed
+- Struct `AccountClientUpdateResult` has been removed
+- Struct `ActivityClientGetResult` has been removed
+- Struct `ActivityClientListByModulePager` has been removed
+- Struct `ActivityClientListByModuleResult` has been removed
+- Struct `AgentRegistrationInformationClientGetResult` has been removed
+- Struct `AgentRegistrationInformationClientRegenerateKeyResult` has been removed
+- Struct `CertificateClientCreateOrUpdateResult` has been removed
+- Struct `CertificateClientGetResult` has been removed
+- Struct `CertificateClientListByAutomationAccountPager` has been removed
+- Struct `CertificateClientListByAutomationAccountResult` has been removed
+- Struct `CertificateClientUpdateResult` has been removed
+- Struct `ClientConvertGraphRunbookContentResult` has been removed
+- Struct `ConnectionClientCreateOrUpdateResult` has been removed
+- Struct `ConnectionClientGetResult` has been removed
+- Struct `ConnectionClientListByAutomationAccountPager` has been removed
+- Struct `ConnectionClientListByAutomationAccountResult` has been removed
+- Struct `ConnectionClientUpdateResult` has been removed
+- Struct `ConnectionTypeClientCreateOrUpdateResult` has been removed
+- Struct `ConnectionTypeClientGetResult` has been removed
+- Struct `ConnectionTypeClientListByAutomationAccountPager` has been removed
+- Struct `ConnectionTypeClientListByAutomationAccountResult` has been removed
+- Struct `CredentialClientCreateOrUpdateResult` has been removed
+- Struct `CredentialClientGetResult` has been removed
+- Struct `CredentialClientListByAutomationAccountPager` has been removed
+- Struct `CredentialClientListByAutomationAccountResult` has been removed
+- Struct `CredentialClientUpdateResult` has been removed
+- Struct `DscCompilationJobClientCreatePoller` has been removed
+- Struct `DscCompilationJobClientCreatePollerResponse` has been removed
+- Struct `DscCompilationJobClientCreateResult` has been removed
+- Struct `DscCompilationJobClientGetResult` has been removed
+- Struct `DscCompilationJobClientGetStreamResult` has been removed
+- Struct `DscCompilationJobClientListByAutomationAccountPager` has been removed
+- Struct `DscCompilationJobClientListByAutomationAccountResult` has been removed
+- Struct `DscCompilationJobStreamClientListByJobResult` has been removed
+- Struct `DscConfigurationClientCreateOrUpdateWithJSONResult` has been removed
+- Struct `DscConfigurationClientCreateOrUpdateWithTextResult` has been removed
+- Struct `DscConfigurationClientGetContentResult` has been removed
+- Struct `DscConfigurationClientGetResult` has been removed
+- Struct `DscConfigurationClientListByAutomationAccountPager` has been removed
+- Struct `DscConfigurationClientListByAutomationAccountResult` has been removed
+- Struct `DscConfigurationClientUpdateWithJSONResult` has been removed
+- Struct `DscConfigurationClientUpdateWithTextResult` has been removed
+- Struct `DscNodeClientGetResult` has been removed
+- Struct `DscNodeClientListByAutomationAccountPager` has been removed
+- Struct `DscNodeClientListByAutomationAccountResult` has been removed
+- Struct `DscNodeClientUpdateResult` has been removed
+- Struct `DscNodeConfigurationClientCreateOrUpdatePoller` has been removed
+- Struct `DscNodeConfigurationClientCreateOrUpdatePollerResponse` has been removed
+- Struct `DscNodeConfigurationClientCreateOrUpdateResult` has been removed
+- Struct `DscNodeConfigurationClientGetResult` has been removed
+- Struct `DscNodeConfigurationClientListByAutomationAccountPager` has been removed
+- Struct `DscNodeConfigurationClientListByAutomationAccountResult` has been removed
+- Struct `FieldsClientListByTypeResult` has been removed
+- Struct `HybridRunbookWorkerGroupClientCreateResult` has been removed
+- Struct `HybridRunbookWorkerGroupClientGetResult` has been removed
+- Struct `HybridRunbookWorkerGroupClientListByAutomationAccountPager` has been removed
+- Struct `HybridRunbookWorkerGroupClientListByAutomationAccountResult` has been removed
+- Struct `HybridRunbookWorkerGroupClientUpdateResult` has been removed
+- Struct `HybridRunbookWorkersClientCreateResult` has been removed
+- Struct `HybridRunbookWorkersClientGetResult` has been removed
+- Struct `HybridRunbookWorkersClientListByHybridRunbookWorkerGroupPager` has been removed
+- Struct `HybridRunbookWorkersClientListByHybridRunbookWorkerGroupResult` has been removed
+- Struct `JobClientCreateResult` has been removed
+- Struct `JobClientGetOutputResult` has been removed
+- Struct `JobClientGetResult` has been removed
+- Struct `JobClientGetRunbookContentResult` has been removed
+- Struct `JobClientListByAutomationAccountPager` has been removed
+- Struct `JobClientListByAutomationAccountResult` has been removed
+- Struct `JobScheduleClientCreateResult` has been removed
+- Struct `JobScheduleClientGetResult` has been removed
+- Struct `JobScheduleClientListByAutomationAccountPager` has been removed
+- Struct `JobScheduleClientListByAutomationAccountResult` has been removed
+- Struct `JobStreamClientGetResult` has been removed
+- Struct `JobStreamClientListByJobPager` has been removed
+- Struct `JobStreamClientListByJobResult` has been removed
+- Struct `KeysClientListByAutomationAccountResult` has been removed
+- Struct `LinkedWorkspaceClientGetResult` has been removed
+- Struct `ModuleClientCreateOrUpdateResult` has been removed
+- Struct `ModuleClientGetResult` has been removed
+- Struct `ModuleClientListByAutomationAccountPager` has been removed
+- Struct `ModuleClientListByAutomationAccountResult` has been removed
+- Struct `ModuleClientUpdateResult` has been removed
+- Struct `NodeCountInformationClientGetResult` has been removed
+- Struct `NodeReportsClientGetContentResult` has been removed
+- Struct `NodeReportsClientGetResult` has been removed
+- Struct `NodeReportsClientListByNodePager` has been removed
+- Struct `NodeReportsClientListByNodeResult` has been removed
+- Struct `ObjectDataTypesClientListFieldsByModuleAndTypeResult` has been removed
+- Struct `ObjectDataTypesClientListFieldsByTypeResult` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `PrivateEndpointConnectionsClientCreateOrUpdatePoller` has been removed
+- Struct `PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsClientCreateOrUpdateResult` has been removed
+- Struct `PrivateEndpointConnectionsClientDeletePoller` has been removed
+- Struct `PrivateEndpointConnectionsClientDeletePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsClientGetResult` has been removed
+- Struct `PrivateEndpointConnectionsClientListByAutomationAccountResult` has been removed
+- Struct `PrivateLinkResourcesClientAutomationResult` has been removed
+- Struct `Python2PackageClientCreateOrUpdateResult` has been removed
+- Struct `Python2PackageClientGetResult` has been removed
+- Struct `Python2PackageClientListByAutomationAccountPager` has been removed
+- Struct `Python2PackageClientListByAutomationAccountResult` has been removed
+- Struct `Python2PackageClientUpdateResult` has been removed
+- Struct `RunbookClientCreateOrUpdateResult` has been removed
+- Struct `RunbookClientGetResult` has been removed
+- Struct `RunbookClientListByAutomationAccountPager` has been removed
+- Struct `RunbookClientListByAutomationAccountResult` has been removed
+- Struct `RunbookClientPublishPoller` has been removed
+- Struct `RunbookClientPublishPollerResponse` has been removed
+- Struct `RunbookClientUpdateResult` has been removed
+- Struct `RunbookDraftClientGetResult` has been removed
+- Struct `RunbookDraftClientReplaceContentPoller` has been removed
+- Struct `RunbookDraftClientReplaceContentPollerResponse` has been removed
+- Struct `RunbookDraftClientUndoEditResult` has been removed
+- Struct `ScheduleClientCreateOrUpdateResult` has been removed
+- Struct `ScheduleClientGetResult` has been removed
+- Struct `ScheduleClientListByAutomationAccountPager` has been removed
+- Struct `ScheduleClientListByAutomationAccountResult` has been removed
+- Struct `ScheduleClientUpdateResult` has been removed
+- Struct `SoftwareUpdateConfigurationMachineRunsClientGetByIDResult` has been removed
+- Struct `SoftwareUpdateConfigurationMachineRunsClientListResult` has been removed
+- Struct `SoftwareUpdateConfigurationRunsClientGetByIDResult` has been removed
+- Struct `SoftwareUpdateConfigurationRunsClientListResult` has been removed
+- Struct `SoftwareUpdateConfigurationsClientCreateResult` has been removed
+- Struct `SoftwareUpdateConfigurationsClientGetByNameResult` has been removed
+- Struct `SoftwareUpdateConfigurationsClientListResult` has been removed
+- Struct `SourceControlClientCreateOrUpdateResult` has been removed
+- Struct `SourceControlClientGetResult` has been removed
+- Struct `SourceControlClientListByAutomationAccountPager` has been removed
+- Struct `SourceControlClientListByAutomationAccountResult` has been removed
+- Struct `SourceControlClientUpdateResult` has been removed
+- Struct `SourceControlSyncJobClientCreateResult` has been removed
+- Struct `SourceControlSyncJobClientGetResult` has been removed
+- Struct `SourceControlSyncJobClientListByAutomationAccountPager` has been removed
+- Struct `SourceControlSyncJobClientListByAutomationAccountResult` has been removed
+- Struct `SourceControlSyncJobStreamsClientGetResult` has been removed
+- Struct `SourceControlSyncJobStreamsClientListBySyncJobPager` has been removed
+- Struct `SourceControlSyncJobStreamsClientListBySyncJobResult` has been removed
+- Struct `StatisticsClientListByAutomationAccountResult` has been removed
+- Struct `TestJobClientCreateResult` has been removed
+- Struct `TestJobClientGetResult` has been removed
+- Struct `TestJobStreamsClientGetResult` has been removed
+- Struct `TestJobStreamsClientListByTestJobPager` has been removed
+- Struct `TestJobStreamsClientListByTestJobResult` has been removed
+- Struct `UsagesClientListByAutomationAccountResult` has been removed
+- Struct `VariableClientCreateOrUpdateResult` has been removed
+- Struct `VariableClientGetResult` has been removed
+- Struct `VariableClientListByAutomationAccountPager` has been removed
+- Struct `VariableClientListByAutomationAccountResult` has been removed
+- Struct `VariableClientUpdateResult` has been removed
+- Struct `WatcherClientCreateOrUpdateResult` has been removed
+- Struct `WatcherClientGetResult` has been removed
+- Struct `WatcherClientListByAutomationAccountPager` has been removed
+- Struct `WatcherClientListByAutomationAccountResult` has been removed
+- Struct `WatcherClientUpdateResult` has been removed
+- Struct `WebhookClientCreateOrUpdateResult` has been removed
+- Struct `WebhookClientGenerateURIResult` has been removed
+- Struct `WebhookClientGetResult` has been removed
+- Struct `WebhookClientListByAutomationAccountPager` has been removed
+- Struct `WebhookClientListByAutomationAccountResult` has been removed
+- Struct `WebhookClientUpdateResult` has been removed
+- Field `ActivityClientGetResult` of struct `ActivityClientGetResponse` has been removed
+- Field `RawResponse` of struct `ActivityClientGetResponse` has been removed
+- Field `NodeCountInformationClientGetResult` of struct `NodeCountInformationClientGetResponse` has been removed
+- Field `RawResponse` of struct `NodeCountInformationClientGetResponse` has been removed
+- Field `RunbookDraftClientUndoEditResult` of struct `RunbookDraftClientUndoEditResponse` has been removed
+- Field `RawResponse` of struct `RunbookDraftClientUndoEditResponse` has been removed
+- Field `WebhookClientListByAutomationAccountResult` of struct `WebhookClientListByAutomationAccountResponse` has been removed
+- Field `RawResponse` of struct `WebhookClientListByAutomationAccountResponse` has been removed
+- Field `RunbookClientUpdateResult` of struct `RunbookClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `RunbookClientUpdateResponse` has been removed
+- Field `HybridRunbookWorkerGroupClientGetResult` of struct `HybridRunbookWorkerGroupClientGetResponse` has been removed
+- Field `RawResponse` of struct `HybridRunbookWorkerGroupClientGetResponse` has been removed
+- Field `DscConfigurationClientUpdateWithJSONResult` of struct `DscConfigurationClientUpdateWithJSONResponse` has been removed
+- Field `RawResponse` of struct `DscConfigurationClientUpdateWithJSONResponse` has been removed
+- Field `DscCompilationJobStreamClientListByJobResult` of struct `DscCompilationJobStreamClientListByJobResponse` has been removed
+- Field `RawResponse` of struct `DscCompilationJobStreamClientListByJobResponse` has been removed
+- Field `ConnectionClientGetResult` of struct `ConnectionClientGetResponse` has been removed
+- Field `RawResponse` of struct `ConnectionClientGetResponse` has been removed
+- Field `DscConfigurationClientListByAutomationAccountResult` of struct `DscConfigurationClientListByAutomationAccountResponse` has been removed
+- Field `RawResponse` of struct `DscConfigurationClientListByAutomationAccountResponse` has been removed
+- Field `VariableClientCreateOrUpdateResult` of struct `VariableClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `VariableClientCreateOrUpdateResponse` has been removed
+- Field `JobClientCreateResult` of struct `JobClientCreateResponse` has been removed
+- Field `RawResponse` of struct `JobClientCreateResponse` has been removed
+- Field `RawResponse` of struct `CertificateClientDeleteResponse` has been removed
+- Field `CredentialClientCreateOrUpdateResult` of struct `CredentialClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `CredentialClientCreateOrUpdateResponse` has been removed
+- Field `JobStreamClientListByJobResult` of struct `JobStreamClientListByJobResponse` has been removed
+- Field `RawResponse` of struct `JobStreamClientListByJobResponse` has been removed
+- Field `RawResponse` of struct `TestJobClientSuspendResponse` has been removed
+- Field `HybridRunbookWorkersClientCreateResult` of struct `HybridRunbookWorkersClientCreateResponse` has been removed
+- Field `RawResponse` of struct `HybridRunbookWorkersClientCreateResponse` has been removed
+- Field `SourceControlSyncJobClientCreateResult` of struct `SourceControlSyncJobClientCreateResponse` has been removed
+- Field `RawResponse` of struct `SourceControlSyncJobClientCreateResponse` has been removed
+- Field `SourceControlSyncJobStreamsClientListBySyncJobResult` of struct `SourceControlSyncJobStreamsClientListBySyncJobResponse` has been removed
+- Field `RawResponse` of struct `SourceControlSyncJobStreamsClientListBySyncJobResponse` has been removed
+- Field `CertificateClientCreateOrUpdateResult` of struct `CertificateClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `CertificateClientCreateOrUpdateResponse` has been removed
+- Field `ConnectionTypeClientListByAutomationAccountResult` of struct `ConnectionTypeClientListByAutomationAccountResponse` has been removed
+- Field `RawResponse` of struct `ConnectionTypeClientListByAutomationAccountResponse` has been removed
+- Field `ConnectionClientUpdateResult` of struct `ConnectionClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ConnectionClientUpdateResponse` has been removed
+- Field `WebhookClientCreateOrUpdateResult` of struct `WebhookClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `WebhookClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `SoftwareUpdateConfigurationsClientDeleteResponse` has been removed
+- Field `ObjectDataTypesClientListFieldsByTypeResult` of struct `ObjectDataTypesClientListFieldsByTypeResponse` has been removed
+- Field `RawResponse` of struct `ObjectDataTypesClientListFieldsByTypeResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientDeleteResponse` has been removed
+- Field `CertificateClientListByAutomationAccountResult` of struct `CertificateClientListByAutomationAccountResponse` has been removed
+- Field `RawResponse` of struct `CertificateClientListByAutomationAccountResponse` has been removed
+- Field `ConnectionClientListByAutomationAccountResult` of struct `ConnectionClientListByAutomationAccountResponse` has been removed
+- Field `RawResponse` of struct `ConnectionClientListByAutomationAccountResponse` has been removed
+- Field `DscConfigurationClientGetResult` of struct `DscConfigurationClientGetResponse` has been removed
+- Field `RawResponse` of struct `DscConfigurationClientGetResponse` has been removed
+- Field `DscConfigurationClientGetContentResult` of struct `DscConfigurationClientGetContentResponse` has been removed
+- Field `RawResponse` of struct `DscConfigurationClientGetContentResponse` has been removed
+- Field `RawResponse` of struct `WatcherClientStartResponse` has been removed
+- Field `DscConfigurationClientUpdateWithTextResult` of struct `DscConfigurationClientUpdateWithTextResponse` has been removed
+- Field `RawResponse` of struct `DscConfigurationClientUpdateWithTextResponse` has been removed
+- Field `LinkedWorkspaceClientGetResult` of struct `LinkedWorkspaceClientGetResponse` has been removed
+- Field `RawResponse` of struct `LinkedWorkspaceClientGetResponse` has been removed
+- Field `ModuleClientListByAutomationAccountResult` of struct `ModuleClientListByAutomationAccountResponse` has been removed
+- Field `RawResponse` of struct `ModuleClientListByAutomationAccountResponse` has been removed
+- Field `DscCompilationJobClientGetStreamResult` of struct `DscCompilationJobClientGetStreamResponse` has been removed
+- Field `RawResponse` of struct `DscCompilationJobClientGetStreamResponse` has been removed
+- Field `AccountClientUpdateResult` of struct `AccountClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `AccountClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `TestJobClientResumeResponse` has been removed
+- Field `WatcherClientCreateOrUpdateResult` of struct `WatcherClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `WatcherClientCreateOrUpdateResponse` has been removed
+- Field `DscCompilationJobClientListByAutomationAccountResult` of struct `DscCompilationJobClientListByAutomationAccountResponse` has been removed
+- Field `RawResponse` of struct `DscCompilationJobClientListByAutomationAccountResponse` has been removed
+- Field `CertificateClientGetResult` of struct `CertificateClientGetResponse` has been removed
+- Field `RawResponse` of struct `CertificateClientGetResponse` has been removed
+- Field `RawResponse` of struct `HybridRunbookWorkerGroupClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `ModuleClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `DscNodeConfigurationClientDeleteResponse` has been removed
+- Field `ModuleClientUpdateResult` of struct `ModuleClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ModuleClientUpdateResponse` has been removed
+- Field `PrivateEndpointConnectionsClientCreateOrUpdateResult` of struct `PrivateEndpointConnectionsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `RunbookClientPublishResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `WebhookClientGenerateURIResult` of struct `WebhookClientGenerateURIResponse` has been removed
+- Field `RawResponse` of struct `WebhookClientGenerateURIResponse` has been removed
+- Field `PrivateLinkResourcesClientAutomationResult` of struct `PrivateLinkResourcesClientAutomationResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkResourcesClientAutomationResponse` has been removed
+- Field `RawResponse` of struct `DscNodeClientDeleteResponse` has been removed
+- Field `AccountClientCreateOrUpdateResult` of struct `AccountClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `AccountClientCreateOrUpdateResponse` has been removed
+- Field `CredentialClientListByAutomationAccountResult` of struct `CredentialClientListByAutomationAccountResponse` has been removed
+- Field `RawResponse` of struct `CredentialClientListByAutomationAccountResponse` has been removed
+- Field `JobClientGetResult` of struct `JobClientGetResponse` has been removed
+- Field `RawResponse` of struct `JobClientGetResponse` has been removed
+- Field `SoftwareUpdateConfigurationMachineRunsClientListResult` of struct `SoftwareUpdateConfigurationMachineRunsClientListResponse` has been removed
+- Field `RawResponse` of struct `SoftwareUpdateConfigurationMachineRunsClientListResponse` has been removed
+- Field `DscConfigurationClientCreateOrUpdateWithJSONResult` of struct `DscConfigurationClientCreateOrUpdateWithJSONResponse` has been removed
+- Field `RawResponse` of struct `DscConfigurationClientCreateOrUpdateWithJSONResponse` has been removed
+- Field `RunbookClientGetResult` of struct `RunbookClientGetResponse` has been removed
+- Field `RawResponse` of struct `RunbookClientGetResponse` has been removed
+- Field `HybridRunbookWorkersClientGetResult` of struct `HybridRunbookWorkersClientGetResponse` has been removed
+- Field `RawResponse` of struct `HybridRunbookWorkersClientGetResponse` has been removed
+- Field `CredentialClientUpdateResult` of struct `CredentialClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `CredentialClientUpdateResponse` has been removed
+- Field `HybridRunbookWorkerGroupClientCreateResult` of struct `HybridRunbookWorkerGroupClientCreateResponse` has been removed
+- Field `RawResponse` of struct `HybridRunbookWorkerGroupClientCreateResponse` has been removed
+- Field `JobScheduleClientListByAutomationAccountResult` of struct `JobScheduleClientListByAutomationAccountResponse` has been removed
+- Field `RawResponse` of struct `JobScheduleClientListByAutomationAccountResponse` has been removed
+- Field `JobClientListByAutomationAccountResult` of struct `JobClientListByAutomationAccountResponse` has been removed
+- Field `RawResponse` of struct `JobClientListByAutomationAccountResponse` has been removed
+- Field `HybridRunbookWorkerGroupClientUpdateResult` of struct `HybridRunbookWorkerGroupClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `HybridRunbookWorkerGroupClientUpdateResponse` has been removed
+- Field `StatisticsClientListByAutomationAccountResult` of struct `StatisticsClientListByAutomationAccountResponse` has been removed
+- Field `RawResponse` of struct `StatisticsClientListByAutomationAccountResponse` has been removed
+- Field `SourceControlClientListByAutomationAccountResult` of struct `SourceControlClientListByAutomationAccountResponse` has been removed
+- Field `RawResponse` of struct `SourceControlClientListByAutomationAccountResponse` has been removed
+- Field `AgentRegistrationInformationClientGetResult` of struct `AgentRegistrationInformationClientGetResponse` has been removed
+- Field `RawResponse` of struct `AgentRegistrationInformationClientGetResponse` has been removed
+- Field `ScheduleClientGetResult` of struct `ScheduleClientGetResponse` has been removed
+- Field `RawResponse` of struct `ScheduleClientGetResponse` has been removed
+- Field `RawResponse` of struct `DscConfigurationClientDeleteResponse` has been removed
+- Field `VariableClientListByAutomationAccountResult` of struct `VariableClientListByAutomationAccountResponse` has been removed
+- Field `RawResponse` of struct `VariableClientListByAutomationAccountResponse` has been removed
+- Field `NodeReportsClientGetResult` of struct `NodeReportsClientGetResponse` has been removed
+- Field `RawResponse` of struct `NodeReportsClientGetResponse` has been removed
+- Field `ScheduleClientUpdateResult` of struct `ScheduleClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ScheduleClientUpdateResponse` has been removed
+- Field `ModuleClientCreateOrUpdateResult` of struct `ModuleClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ModuleClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `WebhookClientDeleteResponse` has been removed
+- Field `DscCompilationJobClientCreateResult` of struct `DscCompilationJobClientCreateResponse` has been removed
+- Field `RawResponse` of struct `DscCompilationJobClientCreateResponse` has been removed
+- Field `DscNodeClientUpdateResult` of struct `DscNodeClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `DscNodeClientUpdateResponse` has been removed
+- Field `SourceControlSyncJobStreamsClientGetResult` of struct `SourceControlSyncJobStreamsClientGetResponse` has been removed
+- Field `RawResponse` of struct `SourceControlSyncJobStreamsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ConnectionTypeClientDeleteResponse` has been removed
+- Field `JobStreamClientGetResult` of struct `JobStreamClientGetResponse` has been removed
+- Field `RawResponse` of struct `JobStreamClientGetResponse` has been removed
+- Field `RawResponse` of struct `ScheduleClientDeleteResponse` has been removed
+- Field `DscNodeClientGetResult` of struct `DscNodeClientGetResponse` has been removed
+- Field `RawResponse` of struct `DscNodeClientGetResponse` has been removed
+- Field `RawResponse` of struct `CredentialClientDeleteResponse` has been removed
+- Field `UsagesClientListByAutomationAccountResult` of struct `UsagesClientListByAutomationAccountResponse` has been removed
+- Field `RawResponse` of struct `UsagesClientListByAutomationAccountResponse` has been removed
+- Field `HybridRunbookWorkerGroupClientListByAutomationAccountResult` of struct `HybridRunbookWorkerGroupClientListByAutomationAccountResponse` has been removed
+- Field `RawResponse` of struct `HybridRunbookWorkerGroupClientListByAutomationAccountResponse` has been removed
+- Field `DscConfigurationClientCreateOrUpdateWithTextResult` of struct `DscConfigurationClientCreateOrUpdateWithTextResponse` has been removed
+- Field `RawResponse` of struct `DscConfigurationClientCreateOrUpdateWithTextResponse` has been removed
+- Field `VariableClientGetResult` of struct `VariableClientGetResponse` has been removed
+- Field `RawResponse` of struct `VariableClientGetResponse` has been removed
+- Field `NodeReportsClientListByNodeResult` of struct `NodeReportsClientListByNodeResponse` has been removed
+- Field `RawResponse` of struct `NodeReportsClientListByNodeResponse` has been removed
+- Field `SoftwareUpdateConfigurationRunsClientGetByIDResult` of struct `SoftwareUpdateConfigurationRunsClientGetByIDResponse` has been removed
+- Field `RawResponse` of struct `SoftwareUpdateConfigurationRunsClientGetByIDResponse` has been removed
+- Field `WatcherClientGetResult` of struct `WatcherClientGetResponse` has been removed
+- Field `RawResponse` of struct `WatcherClientGetResponse` has been removed
+- Field `RawResponse` of struct `AccountClientDeleteResponse` has been removed
+- Field `ConnectionTypeClientCreateOrUpdateResult` of struct `ConnectionTypeClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ConnectionTypeClientCreateOrUpdateResponse` has been removed
+- Field `SourceControlSyncJobClientGetResult` of struct `SourceControlSyncJobClientGetResponse` has been removed
+- Field `RawResponse` of struct `SourceControlSyncJobClientGetResponse` has been removed
+- Field `KeysClientListByAutomationAccountResult` of struct `KeysClientListByAutomationAccountResponse` has been removed
+- Field `RawResponse` of struct `KeysClientListByAutomationAccountResponse` has been removed
+- Field `AccountClientListResult` of struct `AccountClientListResponse` has been removed
+- Field `RawResponse` of struct `AccountClientListResponse` has been removed
+- Field `RawResponse` of struct `VariableClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `HybridRunbookWorkersClientMoveResponse` has been removed
+- Field `ScheduleClientListByAutomationAccountResult` of struct `ScheduleClientListByAutomationAccountResponse` has been removed
+- Field `RawResponse` of struct `ScheduleClientListByAutomationAccountResponse` has been removed
+- Field `RawResponse` of struct `RunbookDraftClientReplaceContentResponse` has been removed
+- Field `Python2PackageClientCreateOrUpdateResult` of struct `Python2PackageClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `Python2PackageClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `WatcherClientStopResponse` has been removed
+- Field `SoftwareUpdateConfigurationRunsClientListResult` of struct `SoftwareUpdateConfigurationRunsClientListResponse` has been removed
+- Field `RawResponse` of struct `SoftwareUpdateConfigurationRunsClientListResponse` has been removed
+- Field `PrivateEndpointConnectionsClientListByAutomationAccountResult` of struct `PrivateEndpointConnectionsClientListByAutomationAccountResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientListByAutomationAccountResponse` has been removed
+- Field `JobClientGetRunbookContentResult` of struct `JobClientGetRunbookContentResponse` has been removed
+- Field `RawResponse` of struct `JobClientGetRunbookContentResponse` has been removed
+- Field `DscNodeConfigurationClientCreateOrUpdateResult` of struct `DscNodeConfigurationClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `DscNodeConfigurationClientCreateOrUpdateResponse` has been removed
+- Field `WebhookClientUpdateResult` of struct `WebhookClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `WebhookClientUpdateResponse` has been removed
+- Field `JobScheduleClientGetResult` of struct `JobScheduleClientGetResponse` has been removed
+- Field `RawResponse` of struct `JobScheduleClientGetResponse` has been removed
+- Field `RawResponse` of struct `JobClientStopResponse` has been removed
+- Field `TestJobClientCreateResult` of struct `TestJobClientCreateResponse` has been removed
+- Field `RawResponse` of struct `TestJobClientCreateResponse` has been removed
+- Field `RawResponse` of struct `RunbookClientGetContentResponse` has been removed
+- Field `WebhookClientGetResult` of struct `WebhookClientGetResponse` has been removed
+- Field `RawResponse` of struct `WebhookClientGetResponse` has been removed
+- Field `HybridRunbookWorkersClientListByHybridRunbookWorkerGroupResult` of struct `HybridRunbookWorkersClientListByHybridRunbookWorkerGroupResponse` has been removed
+- Field `RawResponse` of struct `HybridRunbookWorkersClientListByHybridRunbookWorkerGroupResponse` has been removed
+- Field `WatcherClientListByAutomationAccountResult` of struct `WatcherClientListByAutomationAccountResponse` has been removed
+- Field `RawResponse` of struct `WatcherClientListByAutomationAccountResponse` has been removed
+- Field `Python2PackageClientUpdateResult` of struct `Python2PackageClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `Python2PackageClientUpdateResponse` has been removed
+- Field `SoftwareUpdateConfigurationsClientGetByNameResult` of struct `SoftwareUpdateConfigurationsClientGetByNameResponse` has been removed
+- Field `RawResponse` of struct `SoftwareUpdateConfigurationsClientGetByNameResponse` has been removed
+- Field `RunbookDraftClientGetResult` of struct `RunbookDraftClientGetResponse` has been removed
+- Field `RawResponse` of struct `RunbookDraftClientGetResponse` has been removed
+- Field `RawResponse` of struct `JobScheduleClientDeleteResponse` has been removed
+- Field `RunbookClientListByAutomationAccountResult` of struct `RunbookClientListByAutomationAccountResponse` has been removed
+- Field `RawResponse` of struct `RunbookClientListByAutomationAccountResponse` has been removed
+- Field `RunbookClientCreateOrUpdateResult` of struct `RunbookClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `RunbookClientCreateOrUpdateResponse` has been removed
+- Field `Python2PackageClientGetResult` of struct `Python2PackageClientGetResponse` has been removed
+- Field `RawResponse` of struct `Python2PackageClientGetResponse` has been removed
+- Field `ObjectDataTypesClientListFieldsByModuleAndTypeResult` of struct `ObjectDataTypesClientListFieldsByModuleAndTypeResponse` has been removed
+- Field `RawResponse` of struct `ObjectDataTypesClientListFieldsByModuleAndTypeResponse` has been removed
+- Field `SourceControlClientUpdateResult` of struct `SourceControlClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `SourceControlClientUpdateResponse` has been removed
+- Field `TestJobStreamsClientListByTestJobResult` of struct `TestJobStreamsClientListByTestJobResponse` has been removed
+- Field `RawResponse` of struct `TestJobStreamsClientListByTestJobResponse` has been removed
+- Field `RawResponse` of struct `ConnectionClientDeleteResponse` has been removed
+- Field `TestJobClientGetResult` of struct `TestJobClientGetResponse` has been removed
+- Field `RawResponse` of struct `TestJobClientGetResponse` has been removed
+- Field `ConnectionClientCreateOrUpdateResult` of struct `ConnectionClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ConnectionClientCreateOrUpdateResponse` has been removed
+- Field `JobScheduleClientCreateResult` of struct `JobScheduleClientCreateResponse` has been removed
+- Field `RawResponse` of struct `JobScheduleClientCreateResponse` has been removed
+- Field `SourceControlSyncJobClientListByAutomationAccountResult` of struct `SourceControlSyncJobClientListByAutomationAccountResponse` has been removed
+- Field `RawResponse` of struct `SourceControlSyncJobClientListByAutomationAccountResponse` has been removed
+- Field `NodeReportsClientGetContentResult` of struct `NodeReportsClientGetContentResponse` has been removed
+- Field `RawResponse` of struct `NodeReportsClientGetContentResponse` has been removed
+- Field `SoftwareUpdateConfigurationsClientListResult` of struct `SoftwareUpdateConfigurationsClientListResponse` has been removed
+- Field `RawResponse` of struct `SoftwareUpdateConfigurationsClientListResponse` has been removed
+- Field `RawResponse` of struct `TestJobClientStopResponse` has been removed
+- Field `ActivityClientListByModuleResult` of struct `ActivityClientListByModuleResponse` has been removed
+- Field `RawResponse` of struct `ActivityClientListByModuleResponse` has been removed
+- Field `AgentRegistrationInformationClientRegenerateKeyResult` of struct `AgentRegistrationInformationClientRegenerateKeyResponse` has been removed
+- Field `RawResponse` of struct `AgentRegistrationInformationClientRegenerateKeyResponse` has been removed
+- Field `WatcherClientUpdateResult` of struct `WatcherClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `WatcherClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `RunbookDraftClientGetContentResponse` has been removed
+- Field `TestJobStreamsClientGetResult` of struct `TestJobStreamsClientGetResponse` has been removed
+- Field `RawResponse` of struct `TestJobStreamsClientGetResponse` has been removed
+- Field `ScheduleClientCreateOrUpdateResult` of struct `ScheduleClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ScheduleClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `JobClientResumeResponse` has been removed
+- Field `AccountClientListByResourceGroupResult` of struct `AccountClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `AccountClientListByResourceGroupResponse` has been removed
+- Field `SourceControlClientCreateOrUpdateResult` of struct `SourceControlClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `SourceControlClientCreateOrUpdateResponse` has been removed
+- Field `JobClientGetOutputResult` of struct `JobClientGetOutputResponse` has been removed
+- Field `RawResponse` of struct `JobClientGetOutputResponse` has been removed
+- Field `FieldsClientListByTypeResult` of struct `FieldsClientListByTypeResponse` has been removed
+- Field `RawResponse` of struct `FieldsClientListByTypeResponse` has been removed
+- Field `RawResponse` of struct `SourceControlClientDeleteResponse` has been removed
+- Field `SoftwareUpdateConfigurationsClientCreateResult` of struct `SoftwareUpdateConfigurationsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `SoftwareUpdateConfigurationsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `HybridRunbookWorkersClientDeleteResponse` has been removed
+- Field `SourceControlClientGetResult` of struct `SourceControlClientGetResponse` has been removed
+- Field `RawResponse` of struct `SourceControlClientGetResponse` has been removed
+- Field `RawResponse` of struct `JobClientSuspendResponse` has been removed
+- Field `CertificateClientUpdateResult` of struct `CertificateClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `CertificateClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `Python2PackageClientDeleteResponse` has been removed
+- Field `Python2PackageClientListByAutomationAccountResult` of struct `Python2PackageClientListByAutomationAccountResponse` has been removed
+- Field `RawResponse` of struct `Python2PackageClientListByAutomationAccountResponse` has been removed
+- Field `PrivateEndpointConnectionsClientGetResult` of struct `PrivateEndpointConnectionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientGetResponse` has been removed
+- Field `DscNodeConfigurationClientGetResult` of struct `DscNodeConfigurationClientGetResponse` has been removed
+- Field `RawResponse` of struct `DscNodeConfigurationClientGetResponse` has been removed
+- Field `DscNodeConfigurationClientListByAutomationAccountResult` of struct `DscNodeConfigurationClientListByAutomationAccountResponse` has been removed
+- Field `RawResponse` of struct `DscNodeConfigurationClientListByAutomationAccountResponse` has been removed
+- Field `RawResponse` of struct `RunbookClientDeleteResponse` has been removed
+- Field `ModuleClientGetResult` of struct `ModuleClientGetResponse` has been removed
+- Field `RawResponse` of struct `ModuleClientGetResponse` has been removed
+- Field `AccountClientGetResult` of struct `AccountClientGetResponse` has been removed
+- Field `RawResponse` of struct `AccountClientGetResponse` has been removed
+- Field `ConnectionTypeClientGetResult` of struct `ConnectionTypeClientGetResponse` has been removed
+- Field `RawResponse` of struct `ConnectionTypeClientGetResponse` has been removed
+- Field `RawResponse` of struct `WatcherClientDeleteResponse` has been removed
+- Field `ClientConvertGraphRunbookContentResult` of struct `ClientConvertGraphRunbookContentResponse` has been removed
+- Field `RawResponse` of struct `ClientConvertGraphRunbookContentResponse` has been removed
+- Field `VariableClientUpdateResult` of struct `VariableClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `VariableClientUpdateResponse` has been removed
+- Field `DscNodeClientListByAutomationAccountResult` of struct `DscNodeClientListByAutomationAccountResponse` has been removed
+- Field `RawResponse` of struct `DscNodeClientListByAutomationAccountResponse` has been removed
+- Field `CredentialClientGetResult` of struct `CredentialClientGetResponse` has been removed
+- Field `RawResponse` of struct `CredentialClientGetResponse` has been removed
+- Field `SoftwareUpdateConfigurationMachineRunsClientGetByIDResult` of struct `SoftwareUpdateConfigurationMachineRunsClientGetByIDResponse` has been removed
+- Field `RawResponse` of struct `SoftwareUpdateConfigurationMachineRunsClientGetByIDResponse` has been removed
+- Field `DscCompilationJobClientGetResult` of struct `DscCompilationJobClientGetResponse` has been removed
+- Field `RawResponse` of struct `DscCompilationJobClientGetResponse` has been removed
+
+### Features Added
+
+- New function `*RunbookDraftClientReplaceContentResponse.UnmarshalJSON([]byte) error`
+- New field `Value` in struct `JobClientGetRunbookContentResponse`
+- New anonymous field `TypeFieldListResult` in struct `FieldsClientListByTypeResponse`
+- New anonymous field `Schedule` in struct `ScheduleClientUpdateResponse`
+- New anonymous field `PrivateEndpointConnectionListResult` in struct `PrivateEndpointConnectionsClientListByAutomationAccountResponse`
+- New anonymous field `Module` in struct `Python2PackageClientUpdateResponse`
+- New anonymous field `HybridRunbookWorkersListResult` in struct `HybridRunbookWorkersClientListByHybridRunbookWorkerGroupResponse`
+- New anonymous field `DscConfiguration` in struct `DscConfigurationClientUpdateWithJSONResponse`
+- New anonymous field `RunbookDraft` in struct `RunbookDraftClientGetResponse`
+- New anonymous field `GraphicalRunbookContent` in struct `ClientConvertGraphRunbookContentResponse`
+- New field `Body` in struct `RunbookDraftClientReplaceContentResponse`
+- New anonymous field `DscNodeConfiguration` in struct `DscNodeConfigurationClientCreateOrUpdateResponse`
+- New field `Value` in struct `WebhookClientGenerateURIResponse`
+- New anonymous field `Credential` in struct `CredentialClientCreateOrUpdateResponse`
+- New anonymous field `Watcher` in struct `WatcherClientCreateOrUpdateResponse`
+- New anonymous field `JobSchedule` in struct `JobScheduleClientGetResponse`
+- New anonymous field `DscConfiguration` in struct `DscConfigurationClientCreateOrUpdateWithJSONResponse`
+- New field `Value` in struct `JobClientGetOutputResponse`
+- New anonymous field `Webhook` in struct `WebhookClientCreateOrUpdateResponse`
+- New anonymous field `AccountListResult` in struct `AccountClientListResponse`
+- New anonymous field `DscCompilationJobListResult` in struct `DscCompilationJobClientListByAutomationAccountResponse`
+- New anonymous field `ConnectionListResult` in struct `ConnectionClientListByAutomationAccountResponse`
+- New anonymous field `PrivateLinkResourceListResult` in struct `PrivateLinkResourcesClientAutomationResponse`
+- New anonymous field `Module` in struct `ModuleClientGetResponse`
+- New anonymous field `ModuleListResult` in struct `ModuleClientListByAutomationAccountResponse`
+- New anonymous field `Job` in struct `JobClientGetResponse`
+- New field `ResumeToken` in struct `RunbookClientBeginPublishOptions`
+- New anonymous field `SourceControlSyncJobByID` in struct `SourceControlSyncJobClientGetResponse`
+- New anonymous field `WatcherListResult` in struct `WatcherClientListByAutomationAccountResponse`
+- New anonymous field `Schedule` in struct `ScheduleClientGetResponse`
+- New anonymous field `Variable` in struct `VariableClientGetResponse`
+- New anonymous field `Account` in struct `AccountClientUpdateResponse`
+- New anonymous field `RunbookListResult` in struct `RunbookClientListByAutomationAccountResponse`
+- New anonymous field `DscNodeListResult` in struct `DscNodeClientListByAutomationAccountResponse`
+- New anonymous field `CredentialListResult` in struct `CredentialClientListByAutomationAccountResponse`
+- New anonymous field `JobStream` in struct `JobStreamClientGetResponse`
+- New anonymous field `PrivateEndpointConnection` in struct `PrivateEndpointConnectionsClientCreateOrUpdateResponse`
+- New anonymous field `DscConfiguration` in struct `DscConfigurationClientUpdateWithTextResponse`
+- New anonymous field `JobScheduleListResult` in struct `JobScheduleClientListByAutomationAccountResponse`
+- New anonymous field `DscConfiguration` in struct `DscConfigurationClientGetResponse`
+- New anonymous field `JobStreamListResult` in struct `TestJobStreamsClientListByTestJobResponse`
+- New anonymous field `SoftwareUpdateConfigurationMachineRunListResult` in struct `SoftwareUpdateConfigurationMachineRunsClientListResponse`
+- New field `ResumeToken` in struct `DscCompilationJobClientBeginCreateOptions`
+- New anonymous field `VariableListResult` in struct `VariableClientListByAutomationAccountResponse`
+- New anonymous field `JobStream` in struct `TestJobStreamsClientGetResponse`
+- New anonymous field `SourceControl` in struct `SourceControlClientUpdateResponse`
+- New anonymous field `Job` in struct `JobClientCreateResponse`
+- New anonymous field `SoftwareUpdateConfiguration` in struct `SoftwareUpdateConfigurationsClientCreateResponse`
+- New anonymous field `DscNodeConfiguration` in struct `DscNodeConfigurationClientGetResponse`
+- New anonymous field `TypeFieldListResult` in struct `ObjectDataTypesClientListFieldsByModuleAndTypeResponse`
+- New field `ResumeToken` in struct `RunbookDraftClientBeginReplaceContentOptions`
+- New anonymous field `TestJob` in struct `TestJobClientGetResponse`
+- New anonymous field `DscNodeReport` in struct `NodeReportsClientGetResponse`
+- New anonymous field `SoftwareUpdateConfiguration` in struct `SoftwareUpdateConfigurationsClientGetByNameResponse`
+- New anonymous field `AgentRegistration` in struct `AgentRegistrationInformationClientGetResponse`
+- New anonymous field `Runbook` in struct `RunbookClientCreateOrUpdateResponse`
+- New anonymous field `Account` in struct `AccountClientCreateOrUpdateResponse`
+- New anonymous field `CertificateListResult` in struct `CertificateClientListByAutomationAccountResponse`
+- New anonymous field `WebhookListResult` in struct `WebhookClientListByAutomationAccountResponse`
+- New field `Interface` in struct `NodeReportsClientGetContentResponse`
+- New anonymous field `SourceControlSyncJob` in struct `SourceControlSyncJobClientCreateResponse`
+- New anonymous field `DscConfigurationListResult` in struct `DscConfigurationClientListByAutomationAccountResponse`
+- New anonymous field `Connection` in struct `ConnectionClientCreateOrUpdateResponse`
+- New anonymous field `ModuleListResult` in struct `Python2PackageClientListByAutomationAccountResponse`
+- New anonymous field `DscNode` in struct `DscNodeClientGetResponse`
+- New anonymous field `AgentRegistration` in struct `AgentRegistrationInformationClientRegenerateKeyResponse`
+- New anonymous field `DscNodeReportListResult` in struct `NodeReportsClientListByNodeResponse`
+- New anonymous field `JobStreamListResult` in struct `JobStreamClientListByJobResponse`
+- New anonymous field `Certificate` in struct `CertificateClientCreateOrUpdateResponse`
+- New anonymous field `AccountListResult` in struct `AccountClientListByResourceGroupResponse`
+- New anonymous field `DscCompilationJob` in struct `DscCompilationJobClientCreateResponse`
+- New anonymous field `TestJob` in struct `TestJobClientCreateResponse`
+- New anonymous field `ScheduleListResult` in struct `ScheduleClientListByAutomationAccountResponse`
+- New anonymous field `HybridRunbookWorkerGroupsListResult` in struct `HybridRunbookWorkerGroupClientListByAutomationAccountResponse`
+- New anonymous field `JobStream` in struct `DscCompilationJobClientGetStreamResponse`
+- New anonymous field `StatisticsListResult` in struct `StatisticsClientListByAutomationAccountResponse`
+- New anonymous field `Schedule` in struct `ScheduleClientCreateOrUpdateResponse`
+- New anonymous field `RunbookDraftUndoEditResult` in struct `RunbookDraftClientUndoEditResponse`
+- New anonymous field `Module` in struct `ModuleClientUpdateResponse`
+- New anonymous field `Activity` in struct `ActivityClientGetResponse`
+- New anonymous field `ConnectionType` in struct `ConnectionTypeClientGetResponse`
+- New anonymous field `DscConfiguration` in struct `DscConfigurationClientCreateOrUpdateWithTextResponse`
+- New anonymous field `Watcher` in struct `WatcherClientGetResponse`
+- New anonymous field `DscNode` in struct `DscNodeClientUpdateResponse`
+- New anonymous field `Certificate` in struct `CertificateClientGetResponse`
+- New anonymous field `HybridRunbookWorkerGroup` in struct `HybridRunbookWorkerGroupClientUpdateResponse`
+- New anonymous field `TypeFieldListResult` in struct `ObjectDataTypesClientListFieldsByTypeResponse`
+- New anonymous field `JobListResultV2` in struct `JobClientListByAutomationAccountResponse`
+- New anonymous field `ConnectionType` in struct `ConnectionTypeClientCreateOrUpdateResponse`
+- New anonymous field `SourceControlSyncJobStreamsListBySyncJob` in struct `SourceControlSyncJobStreamsClientListBySyncJobResponse`
+- New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
+- New anonymous field `Credential` in struct `CredentialClientGetResponse`
+- New anonymous field `Module` in struct `ModuleClientCreateOrUpdateResponse`
+- New anonymous field `LinkedWorkspace` in struct `LinkedWorkspaceClientGetResponse`
+- New anonymous field `SoftwareUpdateConfigurationListResult` in struct `SoftwareUpdateConfigurationsClientListResponse`
+- New anonymous field `Module` in struct `Python2PackageClientGetResponse`
+- New field `ResumeToken` in struct `DscNodeConfigurationClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions`
+- New anonymous field `JobSchedule` in struct `JobScheduleClientCreateResponse`
+- New anonymous field `ConnectionTypeListResult` in struct `ConnectionTypeClientListByAutomationAccountResponse`
+- New anonymous field `SoftwareUpdateConfigurationRunListResult` in struct `SoftwareUpdateConfigurationRunsClientListResponse`
+- New anonymous field `HybridRunbookWorker` in struct `HybridRunbookWorkersClientCreateResponse`
+- New anonymous field `Watcher` in struct `WatcherClientUpdateResponse`
+- New field `ResumeToken` in struct `PrivateEndpointConnectionsClientBeginDeleteOptions`
+- New anonymous field `SoftwareUpdateConfigurationMachineRun` in struct `SoftwareUpdateConfigurationMachineRunsClientGetByIDResponse`
+- New anonymous field `SourceControlListResult` in struct `SourceControlClientListByAutomationAccountResponse`
+- New anonymous field `SourceControl` in struct `SourceControlClientCreateOrUpdateResponse`
+- New anonymous field `SourceControlSyncJobStreamByID` in struct `SourceControlSyncJobStreamsClientGetResponse`
+- New anonymous field `UsageListResult` in struct `UsagesClientListByAutomationAccountResponse`
+- New anonymous field `Variable` in struct `VariableClientUpdateResponse`
+- New anonymous field `Module` in struct `Python2PackageClientCreateOrUpdateResponse`
+- New anonymous field `HybridRunbookWorkerGroup` in struct `HybridRunbookWorkerGroupClientCreateResponse`
+- New anonymous field `Credential` in struct `CredentialClientUpdateResponse`
+- New anonymous field `DscNodeConfigurationListResult` in struct `DscNodeConfigurationClientListByAutomationAccountResponse`
+- New anonymous field `KeyListResult` in struct `KeysClientListByAutomationAccountResponse`
+- New anonymous field `Webhook` in struct `WebhookClientUpdateResponse`
+- New anonymous field `ActivityListResult` in struct `ActivityClientListByModuleResponse`
+- New anonymous field `Runbook` in struct `RunbookClientGetResponse`
+- New anonymous field `NodeCounts` in struct `NodeCountInformationClientGetResponse`
+- New anonymous field `HybridRunbookWorkerGroup` in struct `HybridRunbookWorkerGroupClientGetResponse`
+- New field `Value` in struct `DscConfigurationClientGetContentResponse`
+- New anonymous field `HybridRunbookWorker` in struct `HybridRunbookWorkersClientGetResponse`
+- New anonymous field `SourceControl` in struct `SourceControlClientGetResponse`
+- New anonymous field `Connection` in struct `ConnectionClientUpdateResponse`
+- New anonymous field `Variable` in struct `VariableClientCreateOrUpdateResponse`
+- New anonymous field `Webhook` in struct `WebhookClientGetResponse`
+- New anonymous field `PrivateEndpointConnection` in struct `PrivateEndpointConnectionsClientGetResponse`
+- New anonymous field `JobStreamListResult` in struct `DscCompilationJobStreamClientListByJobResponse`
+- New anonymous field `Certificate` in struct `CertificateClientUpdateResponse`
+- New anonymous field `Runbook` in struct `RunbookClientUpdateResponse`
+- New anonymous field `SoftwareUpdateConfigurationRun` in struct `SoftwareUpdateConfigurationRunsClientGetByIDResponse`
+- New anonymous field `Account` in struct `AccountClientGetResponse`
+- New anonymous field `SourceControlSyncJobListResult` in struct `SourceControlSyncJobClientListByAutomationAccountResponse`
+- New anonymous field `Connection` in struct `ConnectionClientGetResponse`
+- New anonymous field `DscCompilationJob` in struct `DscCompilationJobClientGetResponse`
+
+
 ## 0.3.1 (2022-02-22)
 
 ### Other Changes

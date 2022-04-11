@@ -1,5 +1,238 @@
 # Release History
 
+## 0.3.0 (2022-04-11)
+### Breaking Changes
+
+- Function `*MachineExtensionsClient.List` return value(s) have been changed from `(*MachineExtensionsClientListPager)` to `(*runtime.Pager[MachineExtensionsClientListResponse])`
+- Function `NewMachinesClient` return value(s) have been changed from `(*MachinesClient)` to `(*MachinesClient, error)`
+- Function `*PrivateEndpointConnectionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[PrivateEndpointConnectionsClientCreateOrUpdateResponse], error)`
+- Function `NewMachineExtensionsClient` return value(s) have been changed from `(*MachineExtensionsClient)` to `(*MachineExtensionsClient, error)`
+- Function `*MachineExtensionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(MachineExtensionsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[MachineExtensionsClientCreateOrUpdateResponse], error)`
+- Function `*PrivateLinkScopesClient.ListByResourceGroup` return value(s) have been changed from `(*PrivateLinkScopesClientListByResourceGroupPager)` to `(*runtime.Pager[PrivateLinkScopesClientListByResourceGroupResponse])`
+- Function `*MachinesClient.ListBySubscription` return value(s) have been changed from `(*MachinesClientListBySubscriptionPager)` to `(*runtime.Pager[MachinesClientListBySubscriptionResponse])`
+- Function `*PrivateEndpointConnectionsClient.ListByPrivateLinkScope` return value(s) have been changed from `(*PrivateEndpointConnectionsClientListByPrivateLinkScopePager)` to `(*runtime.Pager[PrivateEndpointConnectionsClientListByPrivateLinkScopeResponse])`
+- Function `*PrivateLinkScopesClient.List` return value(s) have been changed from `(*PrivateLinkScopesClientListPager)` to `(*runtime.Pager[PrivateLinkScopesClientListResponse])`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(context.Context, *OperationsClientListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(OperationsClientListResponse, error)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `*PrivateLinkResourcesClient.ListByPrivateLinkScope` return value(s) have been changed from `(*PrivateLinkResourcesClientListByPrivateLinkScopePager)` to `(*runtime.Pager[PrivateLinkResourcesClientListByPrivateLinkScopeResponse])`
+- Function `NewManagementClient` return value(s) have been changed from `(*ManagementClient)` to `(*ManagementClient, error)`
+- Function `*MachineExtensionsClient.BeginDelete` return value(s) have been changed from `(MachineExtensionsClientDeletePollerResponse, error)` to `(*armruntime.Poller[MachineExtensionsClientDeleteResponse], error)`
+- Function `NewPrivateEndpointConnectionsClient` return value(s) have been changed from `(*PrivateEndpointConnectionsClient)` to `(*PrivateEndpointConnectionsClient, error)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(PrivateEndpointConnectionsClientDeletePollerResponse, error)` to `(*armruntime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)`
+- Function `*MachinesClient.ListByResourceGroup` return value(s) have been changed from `(*MachinesClientListByResourceGroupPager)` to `(*runtime.Pager[MachinesClientListByResourceGroupResponse])`
+- Function `*ManagementClient.BeginUpgradeExtensions` return value(s) have been changed from `(ManagementClientUpgradeExtensionsPollerResponse, error)` to `(*armruntime.Poller[ManagementClientUpgradeExtensionsResponse], error)`
+- Function `NewPrivateLinkResourcesClient` return value(s) have been changed from `(*PrivateLinkResourcesClient)` to `(*PrivateLinkResourcesClient, error)`
+- Function `*PrivateLinkScopesClient.BeginDelete` return value(s) have been changed from `(PrivateLinkScopesClientDeletePollerResponse, error)` to `(*armruntime.Poller[PrivateLinkScopesClientDeleteResponse], error)`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `*MachineExtensionsClient.BeginUpdate` return value(s) have been changed from `(MachineExtensionsClientUpdatePollerResponse, error)` to `(*armruntime.Poller[MachineExtensionsClientUpdateResponse], error)`
+- Function `NewPrivateLinkScopesClient` return value(s) have been changed from `(*PrivateLinkScopesClient)` to `(*PrivateLinkScopesClient, error)`
+- Type of `ErrorAdditionalInfo.Info` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `MachineExtensionUpdateProperties.ProtectedSettings` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `MachineExtensionUpdateProperties.Settings` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `MachineExtensionProperties.ProtectedSettings` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `MachineExtensionProperties.Settings` has been changed from `map[string]interface{}` to `interface{}`
+- Function `*PrivateLinkScopesClientDeletePoller.FinalResponse` has been removed
+- Function `*MachineExtensionsClientUpdatePollerResponse.Resume` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePollerResponse.Resume` has been removed
+- Function `PrivateLinkScopesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*MachineExtensionsClientDeletePoller.Done` has been removed
+- Function `*MachineExtensionsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*ManagementClientUpgradeExtensionsPoller.ResumeToken` has been removed
+- Function `*PrivateLinkScopesClientDeletePollerResponse.Resume` has been removed
+- Function `*ManagementClientUpgradeExtensionsPoller.Done` has been removed
+- Function `PrivateEndpointConnectionsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateEndpointConnectionsClientListByPrivateLinkScopePager.PageResponse` has been removed
+- Function `*MachineExtensionsClientDeletePoller.ResumeToken` has been removed
+- Function `*PrivateLinkScopesClientDeletePoller.Poll` has been removed
+- Function `*MachinesClientListByResourceGroupPager.NextPage` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePoller.ResumeToken` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePoller.Poll` has been removed
+- Function `*ManagementClientUpgradeExtensionsPoller.Poll` has been removed
+- Function `*ManagementClientUpgradeExtensionsPollerResponse.Resume` has been removed
+- Function `*MachinesClientListBySubscriptionPager.NextPage` has been removed
+- Function `*PrivateEndpointConnectionsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `InstanceViewTypes.ToPtr` has been removed
+- Function `*MachineExtensionsClientUpdatePoller.ResumeToken` has been removed
+- Function `CreatedByType.ToPtr` has been removed
+- Function `*MachinesClientListByResourceGroupPager.Err` has been removed
+- Function `*PrivateLinkResourcesClientListByPrivateLinkScopePager.NextPage` has been removed
+- Function `*MachineExtensionsClientDeletePollerResponse.Resume` has been removed
+- Function `*MachinesClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*MachineExtensionsClientUpdatePoller.FinalResponse` has been removed
+- Function `*MachinesClientListBySubscriptionPager.Err` has been removed
+- Function `StatusTypes.ToPtr` has been removed
+- Function `*PrivateEndpointConnectionsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePoller.FinalResponse` has been removed
+- Function `*PrivateLinkScopesClientListPager.PageResponse` has been removed
+- Function `*MachinesClientListBySubscriptionPager.PageResponse` has been removed
+- Function `*MachineExtensionsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*MachineExtensionsClientUpdatePoller.Poll` has been removed
+- Function `*MachineExtensionsClientDeletePoller.Poll` has been removed
+- Function `*PrivateLinkScopesClientListPager.Err` has been removed
+- Function `*PrivateLinkScopesClientListPager.NextPage` has been removed
+- Function `MachineExtensionsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*MachineExtensionsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*MachineExtensionsClientListPager.NextPage` has been removed
+- Function `*MachineExtensionsClientDeletePoller.FinalResponse` has been removed
+- Function `*PrivateEndpointConnectionsClientListByPrivateLinkScopePager.Err` has been removed
+- Function `*PrivateLinkResourcesClientListByPrivateLinkScopePager.PageResponse` has been removed
+- Function `*MachineExtensionsClientListPager.PageResponse` has been removed
+- Function `*PrivateLinkScopesClientListByResourceGroupPager.Err` has been removed
+- Function `*PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `PublicNetworkAccessType.ToPtr` has been removed
+- Function `MachineExtensionsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*MachineExtensionsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*PrivateLinkResourcesClientListByPrivateLinkScopePager.Err` has been removed
+- Function `*PrivateLinkScopesClientDeletePoller.Done` has been removed
+- Function `PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `StatusLevelTypes.ToPtr` has been removed
+- Function `*MachineExtensionsClientListPager.Err` has been removed
+- Function `*PrivateLinkScopesClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*PrivateEndpointConnectionsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*PrivateEndpointConnectionsClientListByPrivateLinkScopePager.NextPage` has been removed
+- Function `*ManagementClientUpgradeExtensionsPoller.FinalResponse` has been removed
+- Function `*MachineExtensionsClientUpdatePoller.Done` has been removed
+- Function `*PrivateLinkScopesClientListByResourceGroupPager.NextPage` has been removed
+- Function `*MachineExtensionsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*PrivateEndpointConnectionsClientCreateOrUpdatePoller.Done` has been removed
+- Function `MachineExtensionsClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `ManagementClientUpgradeExtensionsPollerResponse.PollUntilDone` has been removed
+- Function `*PrivateLinkScopesClientDeletePoller.ResumeToken` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePoller.Done` has been removed
+- Struct `MachineExtensionsClientCreateOrUpdatePoller` has been removed
+- Struct `MachineExtensionsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `MachineExtensionsClientCreateOrUpdateResult` has been removed
+- Struct `MachineExtensionsClientDeletePoller` has been removed
+- Struct `MachineExtensionsClientDeletePollerResponse` has been removed
+- Struct `MachineExtensionsClientGetResult` has been removed
+- Struct `MachineExtensionsClientListPager` has been removed
+- Struct `MachineExtensionsClientListResult` has been removed
+- Struct `MachineExtensionsClientUpdatePoller` has been removed
+- Struct `MachineExtensionsClientUpdatePollerResponse` has been removed
+- Struct `MachineExtensionsClientUpdateResult` has been removed
+- Struct `MachinesClientCreateOrUpdateResult` has been removed
+- Struct `MachinesClientGetResult` has been removed
+- Struct `MachinesClientListByResourceGroupPager` has been removed
+- Struct `MachinesClientListByResourceGroupResult` has been removed
+- Struct `MachinesClientListBySubscriptionPager` has been removed
+- Struct `MachinesClientListBySubscriptionResult` has been removed
+- Struct `MachinesClientUpdateResult` has been removed
+- Struct `ManagementClientUpgradeExtensionsPoller` has been removed
+- Struct `ManagementClientUpgradeExtensionsPollerResponse` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `PrivateEndpointConnectionsClientCreateOrUpdatePoller` has been removed
+- Struct `PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsClientCreateOrUpdateResult` has been removed
+- Struct `PrivateEndpointConnectionsClientDeletePoller` has been removed
+- Struct `PrivateEndpointConnectionsClientDeletePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsClientGetResult` has been removed
+- Struct `PrivateEndpointConnectionsClientListByPrivateLinkScopePager` has been removed
+- Struct `PrivateEndpointConnectionsClientListByPrivateLinkScopeResult` has been removed
+- Struct `PrivateLinkResourcesClientGetResult` has been removed
+- Struct `PrivateLinkResourcesClientListByPrivateLinkScopePager` has been removed
+- Struct `PrivateLinkResourcesClientListByPrivateLinkScopeResult` has been removed
+- Struct `PrivateLinkScopesClientCreateOrUpdateResult` has been removed
+- Struct `PrivateLinkScopesClientDeletePoller` has been removed
+- Struct `PrivateLinkScopesClientDeletePollerResponse` has been removed
+- Struct `PrivateLinkScopesClientGetResult` has been removed
+- Struct `PrivateLinkScopesClientGetValidationDetailsForMachineResult` has been removed
+- Struct `PrivateLinkScopesClientGetValidationDetailsResult` has been removed
+- Struct `PrivateLinkScopesClientListByResourceGroupPager` has been removed
+- Struct `PrivateLinkScopesClientListByResourceGroupResult` has been removed
+- Struct `PrivateLinkScopesClientListPager` has been removed
+- Struct `PrivateLinkScopesClientListResult` has been removed
+- Struct `PrivateLinkScopesClientUpdateTagsResult` has been removed
+- Field `MachineExtensionsClientCreateOrUpdateResult` of struct `MachineExtensionsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `MachineExtensionsClientCreateOrUpdateResponse` has been removed
+- Field `MachinesClientUpdateResult` of struct `MachinesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `MachinesClientUpdateResponse` has been removed
+- Field `PrivateLinkScopesClientCreateOrUpdateResult` of struct `PrivateLinkScopesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkScopesClientCreateOrUpdateResponse` has been removed
+- Field `MachineExtensionsClientListResult` of struct `MachineExtensionsClientListResponse` has been removed
+- Field `RawResponse` of struct `MachineExtensionsClientListResponse` has been removed
+- Field `PrivateEndpointConnectionsClientGetResult` of struct `PrivateEndpointConnectionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ManagementClientUpgradeExtensionsResponse` has been removed
+- Field `MachinesClientCreateOrUpdateResult` of struct `MachinesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `MachinesClientCreateOrUpdateResponse` has been removed
+- Field `PrivateLinkScopesClientGetResult` of struct `PrivateLinkScopesClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkScopesClientGetResponse` has been removed
+- Field `MachineExtensionsClientGetResult` of struct `MachineExtensionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `MachineExtensionsClientGetResponse` has been removed
+- Field `PrivateEndpointConnectionsClientListByPrivateLinkScopeResult` of struct `PrivateEndpointConnectionsClientListByPrivateLinkScopeResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientListByPrivateLinkScopeResponse` has been removed
+- Field `MachinesClientGetResult` of struct `MachinesClientGetResponse` has been removed
+- Field `RawResponse` of struct `MachinesClientGetResponse` has been removed
+- Field `PrivateLinkScopesClientGetValidationDetailsForMachineResult` of struct `PrivateLinkScopesClientGetValidationDetailsForMachineResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkScopesClientGetValidationDetailsForMachineResponse` has been removed
+- Field `PrivateLinkScopesClientListByResourceGroupResult` of struct `PrivateLinkScopesClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkScopesClientListByResourceGroupResponse` has been removed
+- Field `MachinesClientListByResourceGroupResult` of struct `MachinesClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `MachinesClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `MachinesClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `MachineExtensionsClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkScopesClientDeleteResponse` has been removed
+- Field `PrivateLinkResourcesClientListByPrivateLinkScopeResult` of struct `PrivateLinkResourcesClientListByPrivateLinkScopeResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkResourcesClientListByPrivateLinkScopeResponse` has been removed
+- Field `PrivateLinkScopesClientListResult` of struct `PrivateLinkScopesClientListResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkScopesClientListResponse` has been removed
+- Field `PrivateLinkResourcesClientGetResult` of struct `PrivateLinkResourcesClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkResourcesClientGetResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `PrivateLinkScopesClientGetValidationDetailsResult` of struct `PrivateLinkScopesClientGetValidationDetailsResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkScopesClientGetValidationDetailsResponse` has been removed
+- Field `PrivateEndpointConnectionsClientCreateOrUpdateResult` of struct `PrivateEndpointConnectionsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientCreateOrUpdateResponse` has been removed
+- Field `MachinesClientListBySubscriptionResult` of struct `MachinesClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `MachinesClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientDeleteResponse` has been removed
+- Field `MachineExtensionsClientUpdateResult` of struct `MachineExtensionsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `MachineExtensionsClientUpdateResponse` has been removed
+- Field `PrivateLinkScopesClientUpdateTagsResult` of struct `PrivateLinkScopesClientUpdateTagsResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkScopesClientUpdateTagsResponse` has been removed
+
+### Features Added
+
+- New function `AgentConfiguration.MarshalJSON() ([]byte, error)`
+- New struct `AgentConfiguration`
+- New struct `CloudMetadata`
+- New field `PatchMode` in struct `PatchSettings`
+- New anonymous field `PrivateLinkResource` in struct `PrivateLinkResourcesClientGetResponse`
+- New anonymous field `PrivateLinkScopeListResult` in struct `PrivateLinkScopesClientListResponse`
+- New anonymous field `Machine` in struct `MachinesClientCreateOrUpdateResponse`
+- New anonymous field `MachineListResult` in struct `MachinesClientListByResourceGroupResponse`
+- New anonymous field `MachineExtension` in struct `MachineExtensionsClientGetResponse`
+- New anonymous field `Machine` in struct `MachinesClientUpdateResponse`
+- New field `EnableAutomaticUpgrade` in struct `MachineExtensionProperties`
+- New anonymous field `PrivateEndpointConnection` in struct `PrivateEndpointConnectionsClientGetResponse`
+- New anonymous field `Machine` in struct `MachinesClientGetResponse`
+- New field `ResumeToken` in struct `MachineExtensionsClientBeginDeleteOptions`
+- New anonymous field `PrivateLinkScope` in struct `PrivateLinkScopesClientGetResponse`
+- New anonymous field `PrivateLinkScopeValidationDetails` in struct `PrivateLinkScopesClientGetValidationDetailsResponse`
+- New field `ResumeToken` in struct `MachineExtensionsClientBeginUpdateOptions`
+- New anonymous field `MachineListResult` in struct `MachinesClientListBySubscriptionResponse`
+- New anonymous field `PrivateLinkResourceListResult` in struct `PrivateLinkResourcesClientListByPrivateLinkScopeResponse`
+- New anonymous field `PrivateLinkScope` in struct `PrivateLinkScopesClientCreateOrUpdateResponse`
+- New anonymous field `MachineExtension` in struct `MachineExtensionsClientUpdateResponse`
+- New anonymous field `MachineExtensionsListResult` in struct `MachineExtensionsClientListResponse`
+- New field `ResumeToken` in struct `PrivateEndpointConnectionsClientBeginDeleteOptions`
+- New anonymous field `PrivateEndpointConnectionListResult` in struct `PrivateEndpointConnectionsClientListByPrivateLinkScopeResponse`
+- New field `CloudMetadata` in struct `MachineUpdateProperties`
+- New anonymous field `PrivateEndpointConnection` in struct `PrivateEndpointConnectionsClientCreateOrUpdateResponse`
+- New field `AgentConfiguration` in struct `MachineProperties`
+- New field `CloudMetadata` in struct `MachineProperties`
+- New field `ResumeToken` in struct `PrivateLinkScopesClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `ManagementClientBeginUpgradeExtensionsOptions`
+- New anonymous field `PrivateLinkScope` in struct `PrivateLinkScopesClientUpdateTagsResponse`
+- New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
+- New field `ResumeToken` in struct `MachineExtensionsClientBeginCreateOrUpdateOptions`
+- New anonymous field `PrivateLinkScopeValidationDetails` in struct `PrivateLinkScopesClientGetValidationDetailsForMachineResponse`
+- New field `ResumeToken` in struct `PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions`
+- New anonymous field `PrivateLinkScopeListResult` in struct `PrivateLinkScopesClientListByResourceGroupResponse`
+- New anonymous field `MachineExtension` in struct `MachineExtensionsClientCreateOrUpdateResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

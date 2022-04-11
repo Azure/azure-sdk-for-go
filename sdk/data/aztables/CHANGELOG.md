@@ -5,6 +5,7 @@
 ### Features Added
 
 ### Breaking Changes
+* Renamed `PossibleGeoReplicationStatusTypeValues` to `PossibleGeoReplicationStatusValues`
 
 ### Bugs Fixed
 

@@ -1,5 +1,196 @@
 # Release History
 
+## 0.3.0 (2022-04-11)
+### Breaking Changes
+
+- Function `NewAppsClient` return value(s) have been changed from `(*AppsClient)` to `(*AppsClient, error)`
+- Function `*AppsClient.ListByResourceGroup` return value(s) have been changed from `(*AppsClientListByResourceGroupPager)` to `(*runtime.Pager[AppsClientListByResourceGroupResponse])`
+- Function `*AppsClient.BeginDelete` return value(s) have been changed from `(AppsClientDeletePollerResponse, error)` to `(*armruntime.Poller[AppsClientDeleteResponse], error)`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `*AppsClient.ListBySubscription` return value(s) have been changed from `(*AppsClientListBySubscriptionPager)` to `(*runtime.Pager[AppsClientListBySubscriptionResponse])`
+- Function `*AppsClient.ListTemplates` return value(s) have been changed from `(*AppsClientListTemplatesPager)` to `(*runtime.Pager[AppsClientListTemplatesResponse])`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `*AppsClient.BeginCreateOrUpdate` return value(s) have been changed from `(AppsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[AppsClientCreateOrUpdateResponse], error)`
+- Function `*AppsClient.BeginUpdate` return value(s) have been changed from `(AppsClientUpdatePollerResponse, error)` to `(*armruntime.Poller[AppsClientUpdateResponse], error)`
+- Type of `Operation.Properties` has been changed from `map[string]interface{}` to `interface{}`
+- Function `*AppsClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*AppsClientDeletePoller.ResumeToken` has been removed
+- Function `*AppsClientListByResourceGroupPager.Err` has been removed
+- Function `*AppsClientListTemplatesPager.PageResponse` has been removed
+- Function `AppsClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*AppsClientListBySubscriptionPager.PageResponse` has been removed
+- Function `*AppsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `AppsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*AppsClientListByResourceGroupPager.NextPage` has been removed
+- Function `*AppsClientListBySubscriptionPager.Err` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `*AppsClientUpdatePollerResponse.Resume` has been removed
+- Function `*AppsClientDeletePoller.FinalResponse` has been removed
+- Function `*AppsClientListTemplatesPager.NextPage` has been removed
+- Function `*AppsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*AppsClientUpdatePoller.Done` has been removed
+- Function `*AppsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*AppsClientListTemplatesPager.Err` has been removed
+- Function `*AppsClientDeletePollerResponse.Resume` has been removed
+- Function `*AppsClientUpdatePoller.FinalResponse` has been removed
+- Function `SystemAssignedServiceIdentityType.ToPtr` has been removed
+- Function `*AppsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `CloudErrorBody.MarshalJSON` has been removed
+- Function `*AppsClientDeletePoller.Done` has been removed
+- Function `*AppsClientCreateOrUpdatePoller.Done` has been removed
+- Function `AppsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Function `*AppsClientUpdatePoller.Poll` has been removed
+- Function `*AppsClientUpdatePoller.ResumeToken` has been removed
+- Function `AppSKU.ToPtr` has been removed
+- Function `*AppsClientDeletePoller.Poll` has been removed
+- Function `Resource.MarshalJSON` has been removed
+- Function `AppState.ToPtr` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `*AppsClientListBySubscriptionPager.NextPage` has been removed
+- Struct `AppsClientCheckNameAvailabilityResult` has been removed
+- Struct `AppsClientCheckSubdomainAvailabilityResult` has been removed
+- Struct `AppsClientCreateOrUpdatePoller` has been removed
+- Struct `AppsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `AppsClientCreateOrUpdateResult` has been removed
+- Struct `AppsClientDeletePoller` has been removed
+- Struct `AppsClientDeletePollerResponse` has been removed
+- Struct `AppsClientGetResult` has been removed
+- Struct `AppsClientListByResourceGroupPager` has been removed
+- Struct `AppsClientListByResourceGroupResult` has been removed
+- Struct `AppsClientListBySubscriptionPager` has been removed
+- Struct `AppsClientListBySubscriptionResult` has been removed
+- Struct `AppsClientListTemplatesPager` has been removed
+- Struct `AppsClientListTemplatesResult` has been removed
+- Struct `AppsClientUpdatePoller` has been removed
+- Struct `AppsClientUpdatePollerResponse` has been removed
+- Struct `AppsClientUpdateResult` has been removed
+- Struct `CloudError` has been removed
+- Struct `CloudErrorBody` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Field `Location` of struct `Resource` has been removed
+- Field `Tags` of struct `Resource` has been removed
+- Field `AppsClientListBySubscriptionResult` of struct `AppsClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `AppsClientListBySubscriptionResponse` has been removed
+- Field `AppsClientGetResult` of struct `AppsClientGetResponse` has been removed
+- Field `RawResponse` of struct `AppsClientGetResponse` has been removed
+- Field `RawResponse` of struct `AppsClientDeleteResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `AppsClientUpdateResult` of struct `AppsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `AppsClientUpdateResponse` has been removed
+- Field `AppsClientCreateOrUpdateResult` of struct `AppsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `AppsClientCreateOrUpdateResponse` has been removed
+- Field `AppsClientListTemplatesResult` of struct `AppsClientListTemplatesResponse` has been removed
+- Field `RawResponse` of struct `AppsClientListTemplatesResponse` has been removed
+- Field `AppsClientCheckNameAvailabilityResult` of struct `AppsClientCheckNameAvailabilityResponse` has been removed
+- Field `RawResponse` of struct `AppsClientCheckNameAvailabilityResponse` has been removed
+- Field `AppsClientCheckSubdomainAvailabilityResult` of struct `AppsClientCheckSubdomainAvailabilityResponse` has been removed
+- Field `RawResponse` of struct `AppsClientCheckSubdomainAvailabilityResponse` has been removed
+- Field `AppsClientListByResourceGroupResult` of struct `AppsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `AppsClientListByResourceGroupResponse` has been removed
+
+### Features Added
+
+- New const `PrivateEndpointServiceConnectionStatusRejected`
+- New const `NetworkActionDeny`
+- New const `PrivateEndpointConnectionProvisioningStateFailed`
+- New const `PublicNetworkAccessEnabled`
+- New const `ProvisioningStateDeleting`
+- New const `NetworkActionAllow`
+- New const `ProvisioningStateCreating`
+- New const `CreatedByTypeApplication`
+- New const `CreatedByTypeManagedIdentity`
+- New const `ProvisioningStateUpdating`
+- New const `CreatedByTypeKey`
+- New const `PrivateEndpointServiceConnectionStatusPending`
+- New const `ProvisioningStateFailed`
+- New const `PrivateEndpointConnectionProvisioningStateCreating`
+- New const `PrivateEndpointConnectionProvisioningStateSucceeded`
+- New const `PrivateEndpointServiceConnectionStatusApproved`
+- New const `CreatedByTypeUser`
+- New const `ProvisioningStateCanceled`
+- New const `ProvisioningStateSucceeded`
+- New const `PublicNetworkAccessDisabled`
+- New const `PrivateEndpointConnectionProvisioningStateDeleting`
+- New function `TrackedResource.MarshalJSON() ([]byte, error)`
+- New function `NewPrivateLinksClient(string, azcore.TokenCredential, *arm.ClientOptions) (*PrivateLinksClient, error)`
+- New function `*timeRFC3339.UnmarshalText([]byte) error`
+- New function `PrivateEndpointConnectionProperties.MarshalJSON() ([]byte, error)`
+- New function `PrivateLinkResourceProperties.MarshalJSON() ([]byte, error)`
+- New function `AppProperties.MarshalJSON() ([]byte, error)`
+- New function `PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpointConnectionProvisioningState`
+- New function `*PrivateLinksClient.Get(context.Context, string, string, string, *PrivateLinksClientGetOptions) (PrivateLinksClientGetResponse, error)`
+- New function `*timeRFC3339.Parse(string) error`
+- New function `*PrivateLinksClient.List(string, string, *PrivateLinksClientListOptions) *runtime.Pager[PrivateLinksClientListResponse]`
+- New function `PrivateLinkResourceListResult.MarshalJSON() ([]byte, error)`
+- New function `*PrivateEndpointConnectionsClient.Get(context.Context, string, string, string, *PrivateEndpointConnectionsClientGetOptions) (PrivateEndpointConnectionsClientGetResponse, error)`
+- New function `PrivateEndpointConnectionListResult.MarshalJSON() ([]byte, error)`
+- New function `*PrivateEndpointConnectionsClient.BeginCreate(context.Context, string, string, string, PrivateEndpointConnection, *PrivateEndpointConnectionsClientBeginCreateOptions) (*armruntime.Poller[PrivateEndpointConnectionsClientCreateResponse], error)`
+- New function `timeRFC3339.MarshalJSON() ([]byte, error)`
+- New function `*timeRFC3339.UnmarshalJSON([]byte) error`
+- New function `PossibleProvisioningStateValues() []ProvisioningState`
+- New function `timeRFC3339.MarshalText() ([]byte, error)`
+- New function `SystemData.MarshalJSON() ([]byte, error)`
+- New function `PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointServiceConnectionStatus`
+- New function `NetworkRuleSets.MarshalJSON() ([]byte, error)`
+- New function `*PrivateEndpointConnectionsClient.BeginDelete(context.Context, string, string, string, *PrivateEndpointConnectionsClientBeginDeleteOptions) (*armruntime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)`
+- New function `PossiblePublicNetworkAccessValues() []PublicNetworkAccess`
+- New function `*SystemData.UnmarshalJSON([]byte) error`
+- New function `PossibleCreatedByTypeValues() []CreatedByType`
+- New function `PossibleNetworkActionValues() []NetworkAction`
+- New function `*PrivateEndpointConnectionsClient.List(string, string, *PrivateEndpointConnectionsClientListOptions) *runtime.Pager[PrivateEndpointConnectionsClientListResponse]`
+- New function `ErrorDetail.MarshalJSON() ([]byte, error)`
+- New function `NewPrivateEndpointConnectionsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*PrivateEndpointConnectionsClient, error)`
+- New struct `ErrorAdditionalInfo`
+- New struct `ErrorDetail`
+- New struct `ErrorResponse`
+- New struct `NetworkRuleSetIPRule`
+- New struct `NetworkRuleSets`
+- New struct `PrivateEndpoint`
+- New struct `PrivateEndpointConnection`
+- New struct `PrivateEndpointConnectionListResult`
+- New struct `PrivateEndpointConnectionProperties`
+- New struct `PrivateEndpointConnectionsClient`
+- New struct `PrivateEndpointConnectionsClientBeginCreateOptions`
+- New struct `PrivateEndpointConnectionsClientBeginDeleteOptions`
+- New struct `PrivateEndpointConnectionsClientCreateResponse`
+- New struct `PrivateEndpointConnectionsClientDeleteResponse`
+- New struct `PrivateEndpointConnectionsClientGetOptions`
+- New struct `PrivateEndpointConnectionsClientGetResponse`
+- New struct `PrivateEndpointConnectionsClientListOptions`
+- New struct `PrivateEndpointConnectionsClientListResponse`
+- New struct `PrivateLinkResource`
+- New struct `PrivateLinkResourceListResult`
+- New struct `PrivateLinkResourceProperties`
+- New struct `PrivateLinkServiceConnectionState`
+- New struct `PrivateLinksClient`
+- New struct `PrivateLinksClientGetOptions`
+- New struct `PrivateLinksClientGetResponse`
+- New struct `PrivateLinksClientListOptions`
+- New struct `PrivateLinksClientListResponse`
+- New struct `SystemData`
+- New struct `TrackedResource`
+- New field `ResumeToken` in struct `AppsClientBeginDeleteOptions`
+- New anonymous field `AppAvailabilityInfo` in struct `AppsClientCheckNameAvailabilityResponse`
+- New field `ResumeToken` in struct `AppsClientBeginCreateOrUpdateOptions`
+- New field `SystemData` in struct `Resource`
+- New anonymous field `AppListResult` in struct `AppsClientListBySubscriptionResponse`
+- New field `SystemData` in struct `App`
+- New anonymous field `AppAvailabilityInfo` in struct `AppsClientCheckSubdomainAvailabilityResponse`
+- New anonymous field `AppListResult` in struct `AppsClientListByResourceGroupResponse`
+- New field `ResumeToken` in struct `AppsClientBeginUpdateOptions`
+- New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
+- New field `PublicNetworkAccess` in struct `AppProperties`
+- New field `PrivateEndpointConnections` in struct `AppProperties`
+- New field `ProvisioningState` in struct `AppProperties`
+- New field `NetworkRuleSets` in struct `AppProperties`
+- New anonymous field `AppTemplatesResult` in struct `AppsClientListTemplatesResponse`
+- New anonymous field `App` in struct `AppsClientGetResponse`
+- New anonymous field `App` in struct `AppsClientCreateOrUpdateResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

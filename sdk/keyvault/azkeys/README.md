@@ -3,6 +3,7 @@
 * Cryptographic key management (this library) - create, store, and control access to the keys used to encrypt your data
 * Secrets management ([azsecrets](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets)) - securely store and control access to tokens, passwords, certificates, API keys, and other secrets
 * Certificate management ([azcertificates](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azcertificates)) - create, manage, and deploy public and private SSL/TLS certificates
+
 [Source code][key_client_src] | [Package (pkg.go.dev)][goget_azkeys] | [Product documentation][keyvault_docs] | [Samples][keys_samples]
 
 ## Getting started
@@ -472,8 +473,8 @@ contact opencode@microsoft.com with any additional questions or comments.
 [reference_docs]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys
 [key_client_docs]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys#Client
 [crypto_client_docs]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/crypto#Client
-[key_client_src]: https://github.com/Azure/azure-sdk-for-go/tree/fd86ba6a0ece5a0658dd16f8d3d564493369a8a2/sdk/keyvault/azkeys/client.go
-[key_samples]: https://github.com/Azure/azure-sdk-for-go/tree/fd86ba6a0ece5a0658dd16f8d3d564493369a8a2/sdk/keyvault/azkeys/example_test.go
+[key_client_src]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/keyvault/azkeys/client.go
+[key_samples]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/keyvault/azkeys/example_test.go
 [soft_delete]: https://docs.microsoft.com/azure/key-vault/general/soft-delete-overview
 [keys_samples]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/keyvault/azkeys/example_test.go
 

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -13,6 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -28,19 +29,23 @@ type DomainRegistrationProviderClient struct {
 // NewDomainRegistrationProviderClient creates a new instance of DomainRegistrationProviderClient with the specified values.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewDomainRegistrationProviderClient(credential azcore.TokenCredential, options *arm.ClientOptions) *DomainRegistrationProviderClient {
+func NewDomainRegistrationProviderClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*DomainRegistrationProviderClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &DomainRegistrationProviderClient{
-		host: string(ep),
-		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host: ep,
+		pl:   pl,
 	}
-	return client
+	return client, nil
 }
 
 // ListOperations - Description for Implements Csm operations Api to exposes the list of available Csm Apis under the resource
@@ -48,16 +53,32 @@ func NewDomainRegistrationProviderClient(credential azcore.TokenCredential, opti
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - DomainRegistrationProviderClientListOperationsOptions contains the optional parameters for the DomainRegistrationProviderClient.ListOperations
 // method.
-func (client *DomainRegistrationProviderClient) ListOperations(options *DomainRegistrationProviderClientListOperationsOptions) *DomainRegistrationProviderClientListOperationsPager {
-	return &DomainRegistrationProviderClientListOperationsPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listOperationsCreateRequest(ctx, options)
+func (client *DomainRegistrationProviderClient) ListOperations(options *DomainRegistrationProviderClientListOperationsOptions) *runtime.Pager[DomainRegistrationProviderClientListOperationsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DomainRegistrationProviderClientListOperationsResponse]{
+		More: func(page DomainRegistrationProviderClientListOperationsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DomainRegistrationProviderClientListOperationsResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.CsmOperationCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *DomainRegistrationProviderClientListOperationsResponse) (DomainRegistrationProviderClientListOperationsResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listOperationsCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DomainRegistrationProviderClientListOperationsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DomainRegistrationProviderClientListOperationsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DomainRegistrationProviderClientListOperationsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listOperationsHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listOperationsCreateRequest creates the ListOperations request.
@@ -76,7 +97,7 @@ func (client *DomainRegistrationProviderClient) listOperationsCreateRequest(ctx 
 
 // listOperationsHandleResponse handles the ListOperations response.
 func (client *DomainRegistrationProviderClient) listOperationsHandleResponse(resp *http.Response) (DomainRegistrationProviderClientListOperationsResponse, error) {
-	result := DomainRegistrationProviderClientListOperationsResponse{RawResponse: resp}
+	result := DomainRegistrationProviderClientListOperationsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CsmOperationCollection); err != nil {
 		return DomainRegistrationProviderClientListOperationsResponse{}, err
 	}

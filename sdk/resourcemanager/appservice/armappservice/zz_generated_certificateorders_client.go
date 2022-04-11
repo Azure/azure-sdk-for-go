@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type CertificateOrdersClient struct {
 // subscriptionID - Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewCertificateOrdersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CertificateOrdersClient {
+func NewCertificateOrdersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CertificateOrdersClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &CertificateOrdersClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Description for Create or update a certificate purchase order.
@@ -56,22 +61,16 @@ func NewCertificateOrdersClient(subscriptionID string, credential azcore.TokenCr
 // certificateDistinguishedName - Distinguished name to use for the certificate order.
 // options - CertificateOrdersClientBeginCreateOrUpdateOptions contains the optional parameters for the CertificateOrdersClient.BeginCreateOrUpdate
 // method.
-func (client *CertificateOrdersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, certificateOrderName string, certificateDistinguishedName CertificateOrder, options *CertificateOrdersClientBeginCreateOrUpdateOptions) (CertificateOrdersClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, certificateOrderName, certificateDistinguishedName, options)
-	if err != nil {
-		return CertificateOrdersClientCreateOrUpdatePollerResponse{}, err
+func (client *CertificateOrdersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, certificateOrderName string, certificateDistinguishedName CertificateOrder, options *CertificateOrdersClientBeginCreateOrUpdateOptions) (*armruntime.Poller[CertificateOrdersClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, certificateOrderName, certificateDistinguishedName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[CertificateOrdersClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[CertificateOrdersClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := CertificateOrdersClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("CertificateOrdersClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return CertificateOrdersClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &CertificateOrdersClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Description for Create or update a certificate purchase order.
@@ -125,22 +124,16 @@ func (client *CertificateOrdersClient) createOrUpdateCreateRequest(ctx context.C
 // keyVaultCertificate - Key vault certificate resource Id.
 // options - CertificateOrdersClientBeginCreateOrUpdateCertificateOptions contains the optional parameters for the CertificateOrdersClient.BeginCreateOrUpdateCertificate
 // method.
-func (client *CertificateOrdersClient) BeginCreateOrUpdateCertificate(ctx context.Context, resourceGroupName string, certificateOrderName string, name string, keyVaultCertificate CertificateResource, options *CertificateOrdersClientBeginCreateOrUpdateCertificateOptions) (CertificateOrdersClientCreateOrUpdateCertificatePollerResponse, error) {
-	resp, err := client.createOrUpdateCertificate(ctx, resourceGroupName, certificateOrderName, name, keyVaultCertificate, options)
-	if err != nil {
-		return CertificateOrdersClientCreateOrUpdateCertificatePollerResponse{}, err
+func (client *CertificateOrdersClient) BeginCreateOrUpdateCertificate(ctx context.Context, resourceGroupName string, certificateOrderName string, name string, keyVaultCertificate CertificateResource, options *CertificateOrdersClientBeginCreateOrUpdateCertificateOptions) (*armruntime.Poller[CertificateOrdersClientCreateOrUpdateCertificateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdateCertificate(ctx, resourceGroupName, certificateOrderName, name, keyVaultCertificate, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[CertificateOrdersClientCreateOrUpdateCertificateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[CertificateOrdersClientCreateOrUpdateCertificateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := CertificateOrdersClientCreateOrUpdateCertificatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("CertificateOrdersClient.CreateOrUpdateCertificate", "", resp, client.pl)
-	if err != nil {
-		return CertificateOrdersClientCreateOrUpdateCertificatePollerResponse{}, err
-	}
-	result.Poller = &CertificateOrdersClientCreateOrUpdateCertificatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdateCertificate - Description for Creates or updates a certificate and associates with key vault secret.
@@ -208,7 +201,7 @@ func (client *CertificateOrdersClient) Delete(ctx context.Context, resourceGroup
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return CertificateOrdersClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return CertificateOrdersClientDeleteResponse{RawResponse: resp}, nil
+	return CertificateOrdersClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -256,7 +249,7 @@ func (client *CertificateOrdersClient) DeleteCertificate(ctx context.Context, re
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return CertificateOrdersClientDeleteCertificateResponse{}, runtime.NewResponseError(resp)
 	}
-	return CertificateOrdersClientDeleteCertificateResponse{RawResponse: resp}, nil
+	return CertificateOrdersClientDeleteCertificateResponse{}, nil
 }
 
 // deleteCertificateCreateRequest creates the DeleteCertificate request.
@@ -337,7 +330,7 @@ func (client *CertificateOrdersClient) getCreateRequest(ctx context.Context, res
 
 // getHandleResponse handles the Get response.
 func (client *CertificateOrdersClient) getHandleResponse(resp *http.Response) (CertificateOrdersClientGetResponse, error) {
-	result := CertificateOrdersClientGetResponse{RawResponse: resp}
+	result := CertificateOrdersClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateOrder); err != nil {
 		return CertificateOrdersClientGetResponse{}, err
 	}
@@ -398,7 +391,7 @@ func (client *CertificateOrdersClient) getCertificateCreateRequest(ctx context.C
 
 // getCertificateHandleResponse handles the GetCertificate response.
 func (client *CertificateOrdersClient) getCertificateHandleResponse(resp *http.Response) (CertificateOrdersClientGetCertificateResponse, error) {
-	result := CertificateOrdersClientGetCertificateResponse{RawResponse: resp}
+	result := CertificateOrdersClientGetCertificateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateResource); err != nil {
 		return CertificateOrdersClientGetCertificateResponse{}, err
 	}
@@ -408,16 +401,32 @@ func (client *CertificateOrdersClient) getCertificateHandleResponse(resp *http.R
 // List - Description for List all certificate orders in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - CertificateOrdersClientListOptions contains the optional parameters for the CertificateOrdersClient.List method.
-func (client *CertificateOrdersClient) List(options *CertificateOrdersClientListOptions) *CertificateOrdersClientListPager {
-	return &CertificateOrdersClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *CertificateOrdersClient) List(options *CertificateOrdersClientListOptions) *runtime.Pager[CertificateOrdersClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[CertificateOrdersClientListResponse]{
+		More: func(page CertificateOrdersClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp CertificateOrdersClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.CertificateOrderCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *CertificateOrdersClientListResponse) (CertificateOrdersClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return CertificateOrdersClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return CertificateOrdersClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return CertificateOrdersClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -440,7 +449,7 @@ func (client *CertificateOrdersClient) listCreateRequest(ctx context.Context, op
 
 // listHandleResponse handles the List response.
 func (client *CertificateOrdersClient) listHandleResponse(resp *http.Response) (CertificateOrdersClientListResponse, error) {
-	result := CertificateOrdersClientListResponse{RawResponse: resp}
+	result := CertificateOrdersClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateOrderCollection); err != nil {
 		return CertificateOrdersClientListResponse{}, err
 	}
@@ -452,16 +461,32 @@ func (client *CertificateOrdersClient) listHandleResponse(resp *http.Response) (
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // options - CertificateOrdersClientListByResourceGroupOptions contains the optional parameters for the CertificateOrdersClient.ListByResourceGroup
 // method.
-func (client *CertificateOrdersClient) ListByResourceGroup(resourceGroupName string, options *CertificateOrdersClientListByResourceGroupOptions) *CertificateOrdersClientListByResourceGroupPager {
-	return &CertificateOrdersClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *CertificateOrdersClient) ListByResourceGroup(resourceGroupName string, options *CertificateOrdersClientListByResourceGroupOptions) *runtime.Pager[CertificateOrdersClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[CertificateOrdersClientListByResourceGroupResponse]{
+		More: func(page CertificateOrdersClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp CertificateOrdersClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.CertificateOrderCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *CertificateOrdersClientListByResourceGroupResponse) (CertificateOrdersClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return CertificateOrdersClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return CertificateOrdersClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return CertificateOrdersClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -488,7 +513,7 @@ func (client *CertificateOrdersClient) listByResourceGroupCreateRequest(ctx cont
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *CertificateOrdersClient) listByResourceGroupHandleResponse(resp *http.Response) (CertificateOrdersClientListByResourceGroupResponse, error) {
-	result := CertificateOrdersClientListByResourceGroupResponse{RawResponse: resp}
+	result := CertificateOrdersClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateOrderCollection); err != nil {
 		return CertificateOrdersClientListByResourceGroupResponse{}, err
 	}
@@ -501,16 +526,32 @@ func (client *CertificateOrdersClient) listByResourceGroupHandleResponse(resp *h
 // certificateOrderName - Name of the certificate order.
 // options - CertificateOrdersClientListCertificatesOptions contains the optional parameters for the CertificateOrdersClient.ListCertificates
 // method.
-func (client *CertificateOrdersClient) ListCertificates(resourceGroupName string, certificateOrderName string, options *CertificateOrdersClientListCertificatesOptions) *CertificateOrdersClientListCertificatesPager {
-	return &CertificateOrdersClientListCertificatesPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCertificatesCreateRequest(ctx, resourceGroupName, certificateOrderName, options)
+func (client *CertificateOrdersClient) ListCertificates(resourceGroupName string, certificateOrderName string, options *CertificateOrdersClientListCertificatesOptions) *runtime.Pager[CertificateOrdersClientListCertificatesResponse] {
+	return runtime.NewPager(runtime.PageProcessor[CertificateOrdersClientListCertificatesResponse]{
+		More: func(page CertificateOrdersClientListCertificatesResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp CertificateOrdersClientListCertificatesResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.CertificateCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *CertificateOrdersClientListCertificatesResponse) (CertificateOrdersClientListCertificatesResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCertificatesCreateRequest(ctx, resourceGroupName, certificateOrderName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return CertificateOrdersClientListCertificatesResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return CertificateOrdersClientListCertificatesResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return CertificateOrdersClientListCertificatesResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listCertificatesHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCertificatesCreateRequest creates the ListCertificates request.
@@ -541,7 +582,7 @@ func (client *CertificateOrdersClient) listCertificatesCreateRequest(ctx context
 
 // listCertificatesHandleResponse handles the ListCertificates response.
 func (client *CertificateOrdersClient) listCertificatesHandleResponse(resp *http.Response) (CertificateOrdersClientListCertificatesResponse, error) {
-	result := CertificateOrdersClientListCertificatesResponse{RawResponse: resp}
+	result := CertificateOrdersClientListCertificatesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateCollection); err != nil {
 		return CertificateOrdersClientListCertificatesResponse{}, err
 	}
@@ -567,7 +608,7 @@ func (client *CertificateOrdersClient) Reissue(ctx context.Context, resourceGrou
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return CertificateOrdersClientReissueResponse{}, runtime.NewResponseError(resp)
 	}
-	return CertificateOrdersClientReissueResponse{RawResponse: resp}, nil
+	return CertificateOrdersClientReissueResponse{}, nil
 }
 
 // reissueCreateRequest creates the Reissue request.
@@ -614,7 +655,7 @@ func (client *CertificateOrdersClient) Renew(ctx context.Context, resourceGroupN
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return CertificateOrdersClientRenewResponse{}, runtime.NewResponseError(resp)
 	}
-	return CertificateOrdersClientRenewResponse{RawResponse: resp}, nil
+	return CertificateOrdersClientRenewResponse{}, nil
 }
 
 // renewCreateRequest creates the Renew request.
@@ -661,7 +702,7 @@ func (client *CertificateOrdersClient) ResendEmail(ctx context.Context, resource
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return CertificateOrdersClientResendEmailResponse{}, runtime.NewResponseError(resp)
 	}
-	return CertificateOrdersClientResendEmailResponse{RawResponse: resp}, nil
+	return CertificateOrdersClientResendEmailResponse{}, nil
 }
 
 // resendEmailCreateRequest creates the ResendEmail request.
@@ -710,7 +751,7 @@ func (client *CertificateOrdersClient) ResendRequestEmails(ctx context.Context, 
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return CertificateOrdersClientResendRequestEmailsResponse{}, runtime.NewResponseError(resp)
 	}
-	return CertificateOrdersClientResendRequestEmailsResponse{RawResponse: resp}, nil
+	return CertificateOrdersClientResendRequestEmailsResponse{}, nil
 }
 
 // resendRequestEmailsCreateRequest creates the ResendRequestEmails request.
@@ -788,7 +829,7 @@ func (client *CertificateOrdersClient) retrieveCertificateActionsCreateRequest(c
 
 // retrieveCertificateActionsHandleResponse handles the RetrieveCertificateActions response.
 func (client *CertificateOrdersClient) retrieveCertificateActionsHandleResponse(resp *http.Response) (CertificateOrdersClientRetrieveCertificateActionsResponse, error) {
-	result := CertificateOrdersClientRetrieveCertificateActionsResponse{RawResponse: resp}
+	result := CertificateOrdersClientRetrieveCertificateActionsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateOrderActionArray); err != nil {
 		return CertificateOrdersClientRetrieveCertificateActionsResponse{}, err
 	}
@@ -844,7 +885,7 @@ func (client *CertificateOrdersClient) retrieveCertificateEmailHistoryCreateRequ
 
 // retrieveCertificateEmailHistoryHandleResponse handles the RetrieveCertificateEmailHistory response.
 func (client *CertificateOrdersClient) retrieveCertificateEmailHistoryHandleResponse(resp *http.Response) (CertificateOrdersClientRetrieveCertificateEmailHistoryResponse, error) {
-	result := CertificateOrdersClientRetrieveCertificateEmailHistoryResponse{RawResponse: resp}
+	result := CertificateOrdersClientRetrieveCertificateEmailHistoryResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateEmailArray); err != nil {
 		return CertificateOrdersClientRetrieveCertificateEmailHistoryResponse{}, err
 	}
@@ -907,7 +948,7 @@ func (client *CertificateOrdersClient) retrieveSiteSealCreateRequest(ctx context
 
 // retrieveSiteSealHandleResponse handles the RetrieveSiteSeal response.
 func (client *CertificateOrdersClient) retrieveSiteSealHandleResponse(resp *http.Response) (CertificateOrdersClientRetrieveSiteSealResponse, error) {
-	result := CertificateOrdersClientRetrieveSiteSealResponse{RawResponse: resp}
+	result := CertificateOrdersClientRetrieveSiteSealResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SiteSeal); err != nil {
 		return CertificateOrdersClientRetrieveSiteSealResponse{}, err
 	}
@@ -964,7 +1005,7 @@ func (client *CertificateOrdersClient) updateCreateRequest(ctx context.Context, 
 
 // updateHandleResponse handles the Update response.
 func (client *CertificateOrdersClient) updateHandleResponse(resp *http.Response) (CertificateOrdersClientUpdateResponse, error) {
-	result := CertificateOrdersClientUpdateResponse{RawResponse: resp}
+	result := CertificateOrdersClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateOrder); err != nil {
 		return CertificateOrdersClientUpdateResponse{}, err
 	}
@@ -1026,7 +1067,7 @@ func (client *CertificateOrdersClient) updateCertificateCreateRequest(ctx contex
 
 // updateCertificateHandleResponse handles the UpdateCertificate response.
 func (client *CertificateOrdersClient) updateCertificateHandleResponse(resp *http.Response) (CertificateOrdersClientUpdateCertificateResponse, error) {
-	result := CertificateOrdersClientUpdateCertificateResponse{RawResponse: resp}
+	result := CertificateOrdersClientUpdateCertificateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateResource); err != nil {
 		return CertificateOrdersClientUpdateCertificateResponse{}, err
 	}
@@ -1050,7 +1091,7 @@ func (client *CertificateOrdersClient) ValidatePurchaseInformation(ctx context.C
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return CertificateOrdersClientValidatePurchaseInformationResponse{}, runtime.NewResponseError(resp)
 	}
-	return CertificateOrdersClientValidatePurchaseInformationResponse{RawResponse: resp}, nil
+	return CertificateOrdersClientValidatePurchaseInformationResponse{}, nil
 }
 
 // validatePurchaseInformationCreateRequest creates the ValidatePurchaseInformation request.
@@ -1089,7 +1130,7 @@ func (client *CertificateOrdersClient) VerifyDomainOwnership(ctx context.Context
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return CertificateOrdersClientVerifyDomainOwnershipResponse{}, runtime.NewResponseError(resp)
 	}
-	return CertificateOrdersClientVerifyDomainOwnershipResponse{RawResponse: resp}, nil
+	return CertificateOrdersClientVerifyDomainOwnershipResponse{}, nil
 }
 
 // verifyDomainOwnershipCreateRequest creates the VerifyDomainOwnership request.

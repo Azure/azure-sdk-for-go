@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type TopLevelDomainsClient struct {
 // subscriptionID - Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewTopLevelDomainsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *TopLevelDomainsClient {
+func NewTopLevelDomainsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TopLevelDomainsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &TopLevelDomainsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Description for Get details of a top-level domain.
@@ -92,7 +97,7 @@ func (client *TopLevelDomainsClient) getCreateRequest(ctx context.Context, name 
 
 // getHandleResponse handles the Get response.
 func (client *TopLevelDomainsClient) getHandleResponse(resp *http.Response) (TopLevelDomainsClientGetResponse, error) {
-	result := TopLevelDomainsClientGetResponse{RawResponse: resp}
+	result := TopLevelDomainsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TopLevelDomain); err != nil {
 		return TopLevelDomainsClientGetResponse{}, err
 	}
@@ -102,16 +107,32 @@ func (client *TopLevelDomainsClient) getHandleResponse(resp *http.Response) (Top
 // List - Description for Get all top-level domains supported for registration.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - TopLevelDomainsClientListOptions contains the optional parameters for the TopLevelDomainsClient.List method.
-func (client *TopLevelDomainsClient) List(options *TopLevelDomainsClientListOptions) *TopLevelDomainsClientListPager {
-	return &TopLevelDomainsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *TopLevelDomainsClient) List(options *TopLevelDomainsClientListOptions) *runtime.Pager[TopLevelDomainsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[TopLevelDomainsClientListResponse]{
+		More: func(page TopLevelDomainsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp TopLevelDomainsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.TopLevelDomainCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *TopLevelDomainsClientListResponse) (TopLevelDomainsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return TopLevelDomainsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return TopLevelDomainsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return TopLevelDomainsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -134,7 +155,7 @@ func (client *TopLevelDomainsClient) listCreateRequest(ctx context.Context, opti
 
 // listHandleResponse handles the List response.
 func (client *TopLevelDomainsClient) listHandleResponse(resp *http.Response) (TopLevelDomainsClientListResponse, error) {
-	result := TopLevelDomainsClientListResponse{RawResponse: resp}
+	result := TopLevelDomainsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TopLevelDomainCollection); err != nil {
 		return TopLevelDomainsClientListResponse{}, err
 	}
@@ -147,16 +168,32 @@ func (client *TopLevelDomainsClient) listHandleResponse(resp *http.Response) (To
 // agreementOption - Domain agreement options.
 // options - TopLevelDomainsClientListAgreementsOptions contains the optional parameters for the TopLevelDomainsClient.ListAgreements
 // method.
-func (client *TopLevelDomainsClient) ListAgreements(name string, agreementOption TopLevelDomainAgreementOption, options *TopLevelDomainsClientListAgreementsOptions) *TopLevelDomainsClientListAgreementsPager {
-	return &TopLevelDomainsClientListAgreementsPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listAgreementsCreateRequest(ctx, name, agreementOption, options)
+func (client *TopLevelDomainsClient) ListAgreements(name string, agreementOption TopLevelDomainAgreementOption, options *TopLevelDomainsClientListAgreementsOptions) *runtime.Pager[TopLevelDomainsClientListAgreementsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[TopLevelDomainsClientListAgreementsResponse]{
+		More: func(page TopLevelDomainsClientListAgreementsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp TopLevelDomainsClientListAgreementsResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.TldLegalAgreementCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *TopLevelDomainsClientListAgreementsResponse) (TopLevelDomainsClientListAgreementsResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listAgreementsCreateRequest(ctx, name, agreementOption, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return TopLevelDomainsClientListAgreementsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return TopLevelDomainsClientListAgreementsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return TopLevelDomainsClientListAgreementsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listAgreementsHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listAgreementsCreateRequest creates the ListAgreements request.
@@ -183,7 +220,7 @@ func (client *TopLevelDomainsClient) listAgreementsCreateRequest(ctx context.Con
 
 // listAgreementsHandleResponse handles the ListAgreements response.
 func (client *TopLevelDomainsClient) listAgreementsHandleResponse(resp *http.Response) (TopLevelDomainsClientListAgreementsResponse, error) {
-	result := TopLevelDomainsClientListAgreementsResponse{RawResponse: resp}
+	result := TopLevelDomainsClientListAgreementsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TldLegalAgreementCollection); err != nil {
 		return TopLevelDomainsClientListAgreementsResponse{}, err
 	}

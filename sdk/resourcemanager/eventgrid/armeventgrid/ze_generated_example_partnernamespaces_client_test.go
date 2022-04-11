@@ -19,22 +19,22 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/Domains_Get.json
-func ExampleDomainsClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerNamespaces_Get.json
+func ExamplePartnerNamespacesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 		return
 	}
 	ctx := context.Background()
-	client, err := armeventgrid.NewDomainsClient("<subscription-id>", cred, nil)
+	client, err := armeventgrid.NewPartnerNamespacesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
-		"<domain-name>",
+		"<partner-namespace-name>",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -44,42 +44,33 @@ func ExampleDomainsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/Domains_CreateOrUpdate.json
-func ExampleDomainsClient_BeginCreateOrUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerNamespaces_CreateOrUpdate.json
+func ExamplePartnerNamespacesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 		return
 	}
 	ctx := context.Background()
-	client, err := armeventgrid.NewDomainsClient("<subscription-id>", cred, nil)
+	client, err := armeventgrid.NewPartnerNamespacesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
-		"<domain-name>",
-		armeventgrid.Domain{
+		"<partner-namespace-name>",
+		armeventgrid.PartnerNamespace{
 			Location: to.Ptr("<location>"),
 			Tags: map[string]*string{
 				"tag1": to.Ptr("value1"),
 				"tag2": to.Ptr("value2"),
 			},
-			Properties: &armeventgrid.DomainProperties{
-				InboundIPRules: []*armeventgrid.InboundIPRule{
-					{
-						Action: to.Ptr(armeventgrid.IPActionTypeAllow),
-						IPMask: to.Ptr("<ipmask>"),
-					},
-					{
-						Action: to.Ptr(armeventgrid.IPActionTypeAllow),
-						IPMask: to.Ptr("<ipmask>"),
-					}},
-				PublicNetworkAccess: to.Ptr(armeventgrid.PublicNetworkAccessEnabled),
+			Properties: &armeventgrid.PartnerNamespaceProperties{
+				PartnerRegistrationFullyQualifiedID: to.Ptr("<partner-registration-fully-qualified-id>"),
 			},
 		},
-		&armeventgrid.DomainsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		&armeventgrid.PartnerNamespacesClientBeginCreateOrUpdateOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 		return
@@ -91,23 +82,23 @@ func ExampleDomainsClient_BeginCreateOrUpdate() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/Domains_Delete.json
-func ExampleDomainsClient_BeginDelete() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerNamespaces_Delete.json
+func ExamplePartnerNamespacesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 		return
 	}
 	ctx := context.Background()
-	client, err := armeventgrid.NewDomainsClient("<subscription-id>", cred, nil)
+	client, err := armeventgrid.NewPartnerNamespacesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
-		"<domain-name>",
-		&armeventgrid.DomainsClientBeginDeleteOptions{ResumeToken: ""})
+		"<partner-namespace-name>",
+		&armeventgrid.PartnerNamespacesClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 		return
@@ -119,41 +110,28 @@ func ExampleDomainsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/Domains_Update.json
-func ExampleDomainsClient_BeginUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerNamespaces_Update.json
+func ExamplePartnerNamespacesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 		return
 	}
 	ctx := context.Background()
-	client, err := armeventgrid.NewDomainsClient("<subscription-id>", cred, nil)
+	client, err := armeventgrid.NewPartnerNamespacesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
 	poller, err := client.BeginUpdate(ctx,
 		"<resource-group-name>",
-		"<domain-name>",
-		armeventgrid.DomainUpdateParameters{
-			Properties: &armeventgrid.DomainUpdateParameterProperties{
-				InboundIPRules: []*armeventgrid.InboundIPRule{
-					{
-						Action: to.Ptr(armeventgrid.IPActionTypeAllow),
-						IPMask: to.Ptr("<ipmask>"),
-					},
-					{
-						Action: to.Ptr(armeventgrid.IPActionTypeAllow),
-						IPMask: to.Ptr("<ipmask>"),
-					}},
-				PublicNetworkAccess: to.Ptr(armeventgrid.PublicNetworkAccessEnabled),
-			},
+		"<partner-namespace-name>",
+		armeventgrid.PartnerNamespaceUpdateParameters{
 			Tags: map[string]*string{
 				"tag1": to.Ptr("value1"),
-				"tag2": to.Ptr("value2"),
 			},
 		},
-		&armeventgrid.DomainsClientBeginUpdateOptions{ResumeToken: ""})
+		&armeventgrid.PartnerNamespacesClientBeginUpdateOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 		return
@@ -165,20 +143,20 @@ func ExampleDomainsClient_BeginUpdate() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/Domains_ListBySubscription.json
-func ExampleDomainsClient_ListBySubscription() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerNamespaces_ListBySubscription.json
+func ExamplePartnerNamespacesClient_ListBySubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 		return
 	}
 	ctx := context.Background()
-	client, err := armeventgrid.NewDomainsClient("<subscription-id>", cred, nil)
+	client, err := armeventgrid.NewPartnerNamespacesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListBySubscription(&armeventgrid.DomainsClientListBySubscriptionOptions{Filter: nil,
+	pager := client.ListBySubscription(&armeventgrid.PartnerNamespacesClientListBySubscriptionOptions{Filter: nil,
 		Top: nil,
 	})
 	for pager.More() {
@@ -194,21 +172,21 @@ func ExampleDomainsClient_ListBySubscription() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/Domains_ListByResourceGroup.json
-func ExampleDomainsClient_ListByResourceGroup() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerNamespaces_ListByResourceGroup.json
+func ExamplePartnerNamespacesClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 		return
 	}
 	ctx := context.Background()
-	client, err := armeventgrid.NewDomainsClient("<subscription-id>", cred, nil)
+	client, err := armeventgrid.NewPartnerNamespacesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
 	pager := client.ListByResourceGroup("<resource-group-name>",
-		&armeventgrid.DomainsClientListByResourceGroupOptions{Filter: nil,
+		&armeventgrid.PartnerNamespacesClientListByResourceGroupOptions{Filter: nil,
 			Top: nil,
 		})
 	for pager.More() {
@@ -224,22 +202,22 @@ func ExampleDomainsClient_ListByResourceGroup() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/Domains_ListSharedAccessKeys.json
-func ExampleDomainsClient_ListSharedAccessKeys() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerNamespaces_ListSharedAccessKeys.json
+func ExamplePartnerNamespacesClient_ListSharedAccessKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 		return
 	}
 	ctx := context.Background()
-	client, err := armeventgrid.NewDomainsClient("<subscription-id>", cred, nil)
+	client, err := armeventgrid.NewPartnerNamespacesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
 	res, err := client.ListSharedAccessKeys(ctx,
 		"<resource-group-name>",
-		"<domain-name>",
+		"<partner-namespace-name>",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -249,23 +227,23 @@ func ExampleDomainsClient_ListSharedAccessKeys() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/Domains_RegenerateKey.json
-func ExampleDomainsClient_RegenerateKey() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerNamespaces_RegenerateKey.json
+func ExamplePartnerNamespacesClient_RegenerateKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 		return
 	}
 	ctx := context.Background()
-	client, err := armeventgrid.NewDomainsClient("<subscription-id>", cred, nil)
+	client, err := armeventgrid.NewPartnerNamespacesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
 	res, err := client.RegenerateKey(ctx,
 		"<resource-group-name>",
-		"<domain-name>",
-		armeventgrid.DomainRegenerateKeyRequest{
+		"<partner-namespace-name>",
+		armeventgrid.PartnerNamespaceRegenerateKeyRequest{
 			KeyName: to.Ptr("<key-name>"),
 		},
 		nil)

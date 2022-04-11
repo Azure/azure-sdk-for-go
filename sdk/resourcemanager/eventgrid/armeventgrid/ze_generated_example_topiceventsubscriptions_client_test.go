@@ -19,22 +19,22 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/SystemTopicEventSubscriptions_Get.json
-func ExampleSystemTopicEventSubscriptionsClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/TopicEventSubscriptions_Get.json
+func ExampleTopicEventSubscriptionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 		return
 	}
 	ctx := context.Background()
-	client, err := armeventgrid.NewSystemTopicEventSubscriptionsClient("<subscription-id>", cred, nil)
+	client, err := armeventgrid.NewTopicEventSubscriptionsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
-		"<system-topic-name>",
+		"<topic-name>",
 		"<event-subscription-name>",
 		nil)
 	if err != nil {
@@ -45,22 +45,22 @@ func ExampleSystemTopicEventSubscriptionsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/SystemTopicEventSubscriptions_CreateOrUpdate.json
-func ExampleSystemTopicEventSubscriptionsClient_BeginCreateOrUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/TopicEventSubscriptions_CreateOrUpdate.json
+func ExampleTopicEventSubscriptionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 		return
 	}
 	ctx := context.Background()
-	client, err := armeventgrid.NewSystemTopicEventSubscriptionsClient("<subscription-id>", cred, nil)
+	client, err := armeventgrid.NewTopicEventSubscriptionsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
-		"<system-topic-name>",
+		"<topic-name>",
 		"<event-subscription-name>",
 		armeventgrid.EventSubscription{
 			Properties: &armeventgrid.EventSubscriptionProperties{
@@ -77,36 +77,38 @@ func ExampleSystemTopicEventSubscriptionsClient_BeginCreateOrUpdate() {
 				},
 			},
 		},
-		&armeventgrid.SystemTopicEventSubscriptionsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		&armeventgrid.TopicEventSubscriptionsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 		return
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 		return
 	}
+	// TODO: use response item
+	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/SystemTopicEventSubscriptions_Delete.json
-func ExampleSystemTopicEventSubscriptionsClient_BeginDelete() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/TopicEventSubscriptions_Delete.json
+func ExampleTopicEventSubscriptionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 		return
 	}
 	ctx := context.Background()
-	client, err := armeventgrid.NewSystemTopicEventSubscriptionsClient("<subscription-id>", cred, nil)
+	client, err := armeventgrid.NewTopicEventSubscriptionsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
-		"<system-topic-name>",
+		"<topic-name>",
 		"<event-subscription-name>",
-		&armeventgrid.SystemTopicEventSubscriptionsClientBeginDeleteOptions{ResumeToken: ""})
+		&armeventgrid.TopicEventSubscriptionsClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 		return
@@ -118,22 +120,22 @@ func ExampleSystemTopicEventSubscriptionsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/SystemTopicEventSubscriptions_Update.json
-func ExampleSystemTopicEventSubscriptionsClient_BeginUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/TopicEventSubscriptions_Update.json
+func ExampleTopicEventSubscriptionsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 		return
 	}
 	ctx := context.Background()
-	client, err := armeventgrid.NewSystemTopicEventSubscriptionsClient("<subscription-id>", cred, nil)
+	client, err := armeventgrid.NewTopicEventSubscriptionsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
 	poller, err := client.BeginUpdate(ctx,
 		"<resource-group-name>",
-		"<system-topic-name>",
+		"<topic-name>",
 		"<event-subscription-name>",
 		armeventgrid.EventSubscriptionUpdateParameters{
 			Destination: &armeventgrid.WebHookEventSubscriptionDestination{
@@ -151,7 +153,7 @@ func ExampleSystemTopicEventSubscriptionsClient_BeginUpdate() {
 				to.Ptr("label1"),
 				to.Ptr("label2")},
 		},
-		&armeventgrid.SystemTopicEventSubscriptionsClientBeginUpdateOptions{ResumeToken: ""})
+		&armeventgrid.TopicEventSubscriptionsClientBeginUpdateOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 		return
@@ -163,24 +165,22 @@ func ExampleSystemTopicEventSubscriptionsClient_BeginUpdate() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/SystemTopicEventSubscriptions_ListBySystemTopic.json
-func ExampleSystemTopicEventSubscriptionsClient_ListBySystemTopic() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/TopicEventSubscriptions_List.json
+func ExampleTopicEventSubscriptionsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 		return
 	}
 	ctx := context.Background()
-	client, err := armeventgrid.NewSystemTopicEventSubscriptionsClient("<subscription-id>", cred, nil)
+	client, err := armeventgrid.NewTopicEventSubscriptionsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListBySystemTopic("<resource-group-name>",
-		"<system-topic-name>",
-		&armeventgrid.SystemTopicEventSubscriptionsClientListBySystemTopicOptions{Filter: nil,
-			Top: nil,
-		})
+	pager := client.List("<resource-group-name>",
+		"<topic-name>",
+		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -194,22 +194,22 @@ func ExampleSystemTopicEventSubscriptionsClient_ListBySystemTopic() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/SystemTopicEventSubscriptions_GetDeliveryAttributes.json
-func ExampleSystemTopicEventSubscriptionsClient_GetDeliveryAttributes() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/TopicEventSubscriptions_GetDeliveryAttributes.json
+func ExampleTopicEventSubscriptionsClient_GetDeliveryAttributes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 		return
 	}
 	ctx := context.Background()
-	client, err := armeventgrid.NewSystemTopicEventSubscriptionsClient("<subscription-id>", cred, nil)
+	client, err := armeventgrid.NewTopicEventSubscriptionsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
 	res, err := client.GetDeliveryAttributes(ctx,
 		"<resource-group-name>",
-		"<system-topic-name>",
+		"<topic-name>",
 		"<event-subscription-name>",
 		nil)
 	if err != nil {

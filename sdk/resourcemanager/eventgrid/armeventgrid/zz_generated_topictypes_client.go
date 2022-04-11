@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -31,19 +32,23 @@ type TopicTypesClient struct {
 // NewTopicTypesClient creates a new instance of TopicTypesClient with the specified values.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewTopicTypesClient(credential azcore.TokenCredential, options *arm.ClientOptions) *TopicTypesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewTopicTypesClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*TopicTypesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &TopicTypesClient{
-		host: string(cp.Endpoint),
-		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host: ep,
+		pl:   pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Get information about a topic type.
@@ -77,7 +82,7 @@ func (client *TopicTypesClient) getCreateRequest(ctx context.Context, topicTypeN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2021-10-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -85,7 +90,7 @@ func (client *TopicTypesClient) getCreateRequest(ctx context.Context, topicTypeN
 
 // getHandleResponse handles the Get response.
 func (client *TopicTypesClient) getHandleResponse(resp *http.Response) (TopicTypesClientGetResponse, error) {
-	result := TopicTypesClientGetResponse{RawResponse: resp}
+	result := TopicTypesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TopicTypeInfo); err != nil {
 		return TopicTypesClientGetResponse{}, err
 	}
@@ -95,19 +100,26 @@ func (client *TopicTypesClient) getHandleResponse(resp *http.Response) (TopicTyp
 // List - List all registered topic types.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - TopicTypesClientListOptions contains the optional parameters for the TopicTypesClient.List method.
-func (client *TopicTypesClient) List(ctx context.Context, options *TopicTypesClientListOptions) (TopicTypesClientListResponse, error) {
-	req, err := client.listCreateRequest(ctx, options)
-	if err != nil {
-		return TopicTypesClientListResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return TopicTypesClientListResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return TopicTypesClientListResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listHandleResponse(resp)
+func (client *TopicTypesClient) List(options *TopicTypesClientListOptions) *runtime.Pager[TopicTypesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[TopicTypesClientListResponse]{
+		More: func(page TopicTypesClientListResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *TopicTypesClientListResponse) (TopicTypesClientListResponse, error) {
+			req, err := client.listCreateRequest(ctx, options)
+			if err != nil {
+				return TopicTypesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return TopicTypesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return TopicTypesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
+		},
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -118,7 +130,7 @@ func (client *TopicTypesClient) listCreateRequest(ctx context.Context, options *
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2021-10-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -126,7 +138,7 @@ func (client *TopicTypesClient) listCreateRequest(ctx context.Context, options *
 
 // listHandleResponse handles the List response.
 func (client *TopicTypesClient) listHandleResponse(resp *http.Response) (TopicTypesClientListResponse, error) {
-	result := TopicTypesClientListResponse{RawResponse: resp}
+	result := TopicTypesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TopicTypesListResult); err != nil {
 		return TopicTypesClientListResponse{}, err
 	}
@@ -138,19 +150,26 @@ func (client *TopicTypesClient) listHandleResponse(resp *http.Response) (TopicTy
 // topicTypeName - Name of the topic type.
 // options - TopicTypesClientListEventTypesOptions contains the optional parameters for the TopicTypesClient.ListEventTypes
 // method.
-func (client *TopicTypesClient) ListEventTypes(ctx context.Context, topicTypeName string, options *TopicTypesClientListEventTypesOptions) (TopicTypesClientListEventTypesResponse, error) {
-	req, err := client.listEventTypesCreateRequest(ctx, topicTypeName, options)
-	if err != nil {
-		return TopicTypesClientListEventTypesResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return TopicTypesClientListEventTypesResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return TopicTypesClientListEventTypesResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listEventTypesHandleResponse(resp)
+func (client *TopicTypesClient) ListEventTypes(topicTypeName string, options *TopicTypesClientListEventTypesOptions) *runtime.Pager[TopicTypesClientListEventTypesResponse] {
+	return runtime.NewPager(runtime.PageProcessor[TopicTypesClientListEventTypesResponse]{
+		More: func(page TopicTypesClientListEventTypesResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *TopicTypesClientListEventTypesResponse) (TopicTypesClientListEventTypesResponse, error) {
+			req, err := client.listEventTypesCreateRequest(ctx, topicTypeName, options)
+			if err != nil {
+				return TopicTypesClientListEventTypesResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return TopicTypesClientListEventTypesResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return TopicTypesClientListEventTypesResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listEventTypesHandleResponse(resp)
+		},
+	})
 }
 
 // listEventTypesCreateRequest creates the ListEventTypes request.
@@ -165,7 +184,7 @@ func (client *TopicTypesClient) listEventTypesCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2021-10-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -173,7 +192,7 @@ func (client *TopicTypesClient) listEventTypesCreateRequest(ctx context.Context,
 
 // listEventTypesHandleResponse handles the ListEventTypes response.
 func (client *TopicTypesClient) listEventTypesHandleResponse(resp *http.Response) (TopicTypesClientListEventTypesResponse, error) {
-	result := TopicTypesClientListEventTypesResponse{RawResponse: resp}
+	result := TopicTypesClientListEventTypesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventTypesListResult); err != nil {
 		return TopicTypesClientListEventTypesResponse{}, err
 	}

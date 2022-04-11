@@ -16,24 +16,21 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PrivateLinkResources_Get.json
-func ExamplePrivateLinkResourcesClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/VerifiedPartners_Get.json
+func ExampleVerifiedPartnersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 		return
 	}
 	ctx := context.Background()
-	client, err := armeventgrid.NewPrivateLinkResourcesClient("<subscription-id>", cred, nil)
+	client, err := armeventgrid.NewVerifiedPartnersClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<parent-type>",
-		"<parent-name>",
-		"<private-link-resource-name>",
+		"<verified-partner-name>",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -43,25 +40,22 @@ func ExamplePrivateLinkResourcesClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PrivateLinkResources_ListByResource.json
-func ExamplePrivateLinkResourcesClient_ListByResource() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/VerifiedPartners_List.json
+func ExampleVerifiedPartnersClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 		return
 	}
 	ctx := context.Background()
-	client, err := armeventgrid.NewPrivateLinkResourcesClient("<subscription-id>", cred, nil)
+	client, err := armeventgrid.NewVerifiedPartnersClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResource("<resource-group-name>",
-		"<parent-type>",
-		"<parent-name>",
-		&armeventgrid.PrivateLinkResourcesClientListByResourceOptions{Filter: nil,
-			Top: nil,
-		})
+	pager := client.List(&armeventgrid.VerifiedPartnersClientListOptions{Filter: nil,
+		Top: nil,
+	})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {

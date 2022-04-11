@@ -19,21 +19,21 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/healthcareapis/armhealthcareapis"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2021-11-01/examples/legacy/ServiceListPrivateEndpointConnections.json
-func ExamplePrivateEndpointConnectionsClient_ListByService() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2021-11-01/examples/privatelink/WorkspaceListPrivateEndpointConnections.json
+func ExampleWorkspacePrivateEndpointConnectionsClient_ListByWorkspace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 		return
 	}
 	ctx := context.Background()
-	client, err := armhealthcareapis.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armhealthcareapis.NewWorkspacePrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByService("<resource-group-name>",
-		"<resource-name>",
+	pager := client.ListByWorkspace("<resource-group-name>",
+		"<workspace-name>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -48,22 +48,22 @@ func ExamplePrivateEndpointConnectionsClient_ListByService() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2021-11-01/examples/legacy/ServiceGetPrivateEndpointConnection.json
-func ExamplePrivateEndpointConnectionsClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2021-11-01/examples/privatelink/WorkspaceGetPrivateEndpointConnection.json
+func ExampleWorkspacePrivateEndpointConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 		return
 	}
 	ctx := context.Background()
-	client, err := armhealthcareapis.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armhealthcareapis.NewWorkspacePrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
-		"<resource-name>",
+		"<workspace-name>",
 		"<private-endpoint-connection-name>",
 		nil)
 	if err != nil {
@@ -74,24 +74,24 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2021-11-01/examples/legacy/ServiceCreatePrivateEndpointConnection.json
-func ExamplePrivateEndpointConnectionsClient_BeginCreateOrUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2021-11-01/examples/privatelink/WorkspaceCreatePrivateEndpointConnection.json
+func ExampleWorkspacePrivateEndpointConnectionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 		return
 	}
 	ctx := context.Background()
-	client, err := armhealthcareapis.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armhealthcareapis.NewWorkspacePrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
-		"<resource-name>",
+		"<workspace-name>",
 		"<private-endpoint-connection-name>",
-		armhealthcareapis.PrivateEndpointConnection{
+		armhealthcareapis.PrivateEndpointConnectionDescription{
 			Properties: &armhealthcareapis.PrivateEndpointConnectionProperties{
 				PrivateLinkServiceConnectionState: &armhealthcareapis.PrivateLinkServiceConnectionState{
 					Description: to.Ptr("<description>"),
@@ -99,7 +99,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginCreateOrUpdate() {
 				},
 			},
 		},
-		&armhealthcareapis.PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		&armhealthcareapis.WorkspacePrivateEndpointConnectionsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 		return
@@ -113,24 +113,24 @@ func ExamplePrivateEndpointConnectionsClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2021-11-01/examples/legacy/ServiceDeletePrivateEndpointConnection.json
-func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2021-11-01/examples/privatelink/WorkspaceDeletePrivateEndpointConnection.json
+func ExampleWorkspacePrivateEndpointConnectionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 		return
 	}
 	ctx := context.Background()
-	client, err := armhealthcareapis.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armhealthcareapis.NewWorkspacePrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
-		"<resource-name>",
+		"<workspace-name>",
 		"<private-endpoint-connection-name>",
-		&armhealthcareapis.PrivateEndpointConnectionsClientBeginDeleteOptions{ResumeToken: ""})
+		&armhealthcareapis.WorkspacePrivateEndpointConnectionsClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 		return

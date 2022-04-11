@@ -19,30 +19,32 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databoxedge/armdataboxedge"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2022-03-01/examples/TriggerSupportPackage.json
-func ExampleSupportPackagesClient_BeginTriggerSupportPackage() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2022-03-01/examples/DeviceCapacityRequestPost.json
+func ExampleDeviceCapacityCheckClient_BeginCheckResourceCreationFeasibility() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 		return
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewSupportPackagesClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewDeviceCapacityCheckClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	poller, err := client.BeginTriggerSupportPackage(ctx,
-		"<device-name>",
+	poller, err := client.BeginCheckResourceCreationFeasibility(ctx,
 		"<resource-group-name>",
-		armdataboxedge.TriggerSupportPackageRequest{
-			Properties: &armdataboxedge.SupportPackageRequestProperties{
-				Include:          to.Ptr("<include>"),
-				MaximumTimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-12-18T02:19:51.4270267Z"); return t }()),
-				MinimumTimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-12-18T02:18:51.4270267Z"); return t }()),
+		"<device-name>",
+		armdataboxedge.DeviceCapacityRequestInfo{
+			Properties: &armdataboxedge.DeviceCapacityRequestInfoProperties{
+				VMPlacementQuery: [][]*string{
+					{
+						to.Ptr("Standard_D2_v2")}},
 			},
 		},
-		&armdataboxedge.SupportPackagesClientBeginTriggerSupportPackageOptions{ResumeToken: ""})
+		&armdataboxedge.DeviceCapacityCheckClientBeginCheckResourceCreationFeasibilityOptions{CapacityName: nil,
+			ResumeToken: "",
+		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 		return

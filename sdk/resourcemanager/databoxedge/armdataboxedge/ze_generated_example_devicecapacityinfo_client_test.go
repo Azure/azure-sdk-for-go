@@ -16,31 +16,27 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databoxedge/armdataboxedge"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2022-03-01/examples/NodeGetAllInDevice.json
-func ExampleNodesClient_ListByDataBoxEdgeDevice() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2022-03-01/examples/DeviceCapacityGet.json
+func ExampleDeviceCapacityInfoClient_GetDeviceCapacityInfo() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 		return
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewNodesClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewDeviceCapacityInfoClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByDataBoxEdgeDevice("<device-name>",
+	res, err := client.GetDeviceCapacityInfo(ctx,
 		"<resource-group-name>",
+		"<device-name>",
 		nil)
-	for pager.More() {
-		nextResult, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-			return
-		}
-		for _, v := range nextResult.Value {
-			// TODO: use page item
-			_ = v
-		}
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
+	// TODO: use response item
+	_ = res
 }

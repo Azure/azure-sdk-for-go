@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,12 +8,7 @@
 
 package armautomanage
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
 
 // AssignmentReportProperties - Data related to the report detail.
 type AssignmentReportProperties struct {
@@ -48,22 +43,6 @@ type AssignmentReportProperties struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AssignmentReportProperties.
-func (a AssignmentReportProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "configurationProfile", a.ConfigurationProfile)
-	populate(objectMap, "duration", a.Duration)
-	populate(objectMap, "endTime", a.EndTime)
-	populate(objectMap, "error", a.Error)
-	populate(objectMap, "lastModifiedTime", a.LastModifiedTime)
-	populate(objectMap, "reportFormatVersion", a.ReportFormatVersion)
-	populate(objectMap, "resources", a.Resources)
-	populate(objectMap, "startTime", a.StartTime)
-	populate(objectMap, "status", a.Status)
-	populate(objectMap, "type", a.Type)
-	return json.Marshal(objectMap)
-}
-
 // BestPractice - Definition of the Automanage best practice.
 type BestPractice struct {
 	// Properties of the best practice.
@@ -86,13 +65,6 @@ type BestPractice struct {
 type BestPracticeList struct {
 	// Result of the list best practice operation.
 	Value []*BestPractice `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BestPracticeList.
-func (b BestPracticeList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", b.Value)
-	return json.Marshal(objectMap)
 }
 
 // BestPracticesClientGetOptions contains the optional parameters for the BestPracticesClient.Get method.
@@ -140,19 +112,6 @@ type ConfigurationProfile struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ConfigurationProfile.
-func (c ConfigurationProfile) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", c.ID)
-	populate(objectMap, "location", c.Location)
-	populate(objectMap, "name", c.Name)
-	populate(objectMap, "properties", c.Properties)
-	populate(objectMap, "systemData", c.SystemData)
-	populate(objectMap, "tags", c.Tags)
-	populate(objectMap, "type", c.Type)
-	return json.Marshal(objectMap)
-}
-
 // ConfigurationProfileAssignment - Configuration profile assignment is an association between a VM and automanage profile
 // configuration.
 type ConfigurationProfileAssignment struct {
@@ -178,36 +137,19 @@ type ConfigurationProfileAssignmentList struct {
 	Value []*ConfigurationProfileAssignment `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ConfigurationProfileAssignmentList.
-func (c ConfigurationProfileAssignmentList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", c.Value)
-	return json.Marshal(objectMap)
-}
-
 // ConfigurationProfileAssignmentProperties - Automanage configuration profile assignment properties.
 type ConfigurationProfileAssignmentProperties struct {
 	// The Automanage configurationProfile ARM Resource URI.
 	ConfigurationProfile *string `json:"configurationProfile,omitempty"`
 
 	// The profileOverrides setting for the configuration profile assignment.
-	ProfileOverrides map[string]map[string]interface{} `json:"profileOverrides,omitempty"`
+	ProfileOverrides map[string]interface{} `json:"profileOverrides,omitempty"`
 
 	// The target VM resource URI
 	TargetID *string `json:"targetId,omitempty"`
 
 	// READ-ONLY; The status of onboarding, which only appears in the response.
 	Status *string `json:"status,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ConfigurationProfileAssignmentProperties.
-func (c ConfigurationProfileAssignmentProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "configurationProfile", c.ConfigurationProfile)
-	populate(objectMap, "profileOverrides", c.ProfileOverrides)
-	populate(objectMap, "status", c.Status)
-	populate(objectMap, "targetId", c.TargetID)
-	return json.Marshal(objectMap)
 }
 
 // ConfigurationProfileAssignmentsClientCreateOrUpdateOptions contains the optional parameters for the ConfigurationProfileAssignmentsClient.CreateOrUpdate
@@ -246,28 +188,13 @@ type ConfigurationProfileList struct {
 	Value []*ConfigurationProfile `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ConfigurationProfileList.
-func (c ConfigurationProfileList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", c.Value)
-	return json.Marshal(objectMap)
-}
-
 // ConfigurationProfileProperties - Automanage configuration profile properties.
 type ConfigurationProfileProperties struct {
 	// configuration dictionary of the configuration profile.
-	Configuration map[string]interface{} `json:"configuration,omitempty"`
+	Configuration interface{} `json:"configuration,omitempty"`
 
 	// overrides of the configuration profile.
-	Overrides []map[string]interface{} `json:"overrides,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ConfigurationProfileProperties.
-func (c ConfigurationProfileProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "configuration", c.Configuration)
-	populate(objectMap, "overrides", c.Overrides)
-	return json.Marshal(objectMap)
+	Overrides []interface{} `json:"overrides,omitempty"`
 }
 
 // ConfigurationProfileUpdate - Definition of the configuration profile.
@@ -277,14 +204,6 @@ type ConfigurationProfileUpdate struct {
 
 	// The tags of the resource.
 	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ConfigurationProfileUpdate.
-func (c ConfigurationProfileUpdate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", c.Properties)
-	populate(objectMap, "tags", c.Tags)
-	return json.Marshal(objectMap)
 }
 
 // ConfigurationProfilesClientCreateOrUpdateOptions contains the optional parameters for the ConfigurationProfilesClient.CreateOrUpdate
@@ -353,7 +272,7 @@ type ConfigurationProfilesVersionsClientUpdateOptions struct {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info map[string]interface{} `json:"info,omitempty" azure:"ro"`
+	Info interface{} `json:"info,omitempty" azure:"ro"`
 
 	// READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -375,17 +294,6 @@ type ErrorDetail struct {
 
 	// READ-ONLY; The error target.
 	Target *string `json:"target,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ErrorDetail.
-func (e ErrorDetail) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalInfo", e.AdditionalInfo)
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "message", e.Message)
-	populate(objectMap, "target", e.Target)
-	return json.Marshal(objectMap)
 }
 
 // ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
@@ -444,14 +352,6 @@ type OperationListResult struct {
 	Value []*Operation `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
-func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
-}
-
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -492,13 +392,6 @@ type Report struct {
 type ReportList struct {
 	// Result of the list report operation.
 	Value []*Report `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ReportList.
-func (r ReportList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
 }
 
 // ReportResource - Details about the resource processed by the configuration profile assignment
@@ -542,6 +435,50 @@ type Resource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// ServicePrincipal - The Service Principal Id for the subscription.
+type ServicePrincipal struct {
+	// The Service Principal properties for the subscription
+	Properties *ServicePrincipalProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// ServicePrincipalListResult - The list of ServicePrincipals.
+type ServicePrincipalListResult struct {
+	// The list of servicePrincipals.
+	Value []*ServicePrincipal `json:"value,omitempty"`
+}
+
+// ServicePrincipalProperties - The Service Principal properties for the subscription.
+type ServicePrincipalProperties struct {
+	// READ-ONLY; Returns the contributor RBAC Role exist or not for the Service Principal Id.
+	AuthorizationSet *bool `json:"authorizationSet,omitempty" azure:"ro"`
+
+	// READ-ONLY; The Service Principal Id for the subscription.
+	ServicePrincipalID *string `json:"servicePrincipalId,omitempty" azure:"ro"`
+}
+
+// ServicePrincipalsClientGetOptions contains the optional parameters for the ServicePrincipalsClient.Get method.
+type ServicePrincipalsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServicePrincipalsClientListBySubscriptionOptions contains the optional parameters for the ServicePrincipalsClient.ListBySubscription
+// method.
+type ServicePrincipalsClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
@@ -563,53 +500,6 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SystemData.
-func (s SystemData) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
-	populate(objectMap, "createdBy", s.CreatedBy)
-	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
-	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
-	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SystemData.
-func (s *SystemData) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdAt":
-			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
-			delete(rawMsg, key)
-		case "createdBy":
-			err = unpopulate(val, &s.CreatedBy)
-			delete(rawMsg, key)
-		case "createdByType":
-			err = unpopulate(val, &s.CreatedByType)
-			delete(rawMsg, key)
-		case "lastModifiedAt":
-			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
-			delete(rawMsg, key)
-		case "lastModifiedBy":
-			err = unpopulate(val, &s.LastModifiedBy)
-			delete(rawMsg, key)
-		case "lastModifiedByType":
-			err = unpopulate(val, &s.LastModifiedByType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
 // and a 'location'
 type TrackedResource struct {
@@ -629,43 +519,8 @@ type TrackedResource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type TrackedResource.
-func (t TrackedResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", t.ID)
-	populate(objectMap, "location", t.Location)
-	populate(objectMap, "name", t.Name)
-	populate(objectMap, "tags", t.Tags)
-	populate(objectMap, "type", t.Type)
-	return json.Marshal(objectMap)
-}
-
 // UpdateResource - Represents an update resource
 type UpdateResource struct {
 	// The tags of the resource.
 	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type UpdateResource.
-func (u UpdateResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "tags", u.Tags)
-	return json.Marshal(objectMap)
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

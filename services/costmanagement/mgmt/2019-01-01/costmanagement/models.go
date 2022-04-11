@@ -736,7 +736,7 @@ type QueryDataset struct {
 	Grouping *[]QueryGrouping `json:"grouping,omitempty"`
 	// Sorting - Array of sorting by columns in query.
 	Sorting *[]QuerySortingConfiguration `json:"sorting,omitempty"`
-	// Filter - Has filter expression to use in the query.
+	// Filter - The filter expression to use in the query. Please reference our Query API REST documentation for how to properly format the filter.
 	Filter *QueryFilter `json:"filter,omitempty"`
 }
 

@@ -10,6 +10,7 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/Azure/go-autorest/tracing"
@@ -18,7 +19,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go/services/costmanagement/mgmt/2020-06-01/costmanagement"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/costmanagement/mgmt/2021-01-01/costmanagement"
 
 // Alert an individual alert.
 type Alert struct {
@@ -199,6 +200,8 @@ type CommonExportProperties struct {
 	Definition *ExportDefinition `json:"definition,omitempty"`
 	// RunHistory - If requested, has the most recent execution history for the export.
 	RunHistory *ExportExecutionListResult `json:"runHistory,omitempty"`
+	// PartitionData - If set to true, exported data will be partitioned by size and placed in a blob directory together with a manifest file. Note: this option is currently available only for modern commerce scopes.
+	PartitionData *bool `json:"partitionData,omitempty"`
 	// NextRunTimeEstimate - READ-ONLY; If the export has an active schedule, provides an estimate of the next execution time.
 	NextRunTimeEstimate *date.Time `json:"nextRunTimeEstimate,omitempty"`
 }
@@ -217,6 +220,9 @@ func (cep CommonExportProperties) MarshalJSON() ([]byte, error) {
 	}
 	if cep.RunHistory != nil {
 		objectMap["runHistory"] = cep.RunHistory
+	}
+	if cep.PartitionData != nil {
+		objectMap["partitionData"] = cep.PartitionData
 	}
 	return json.Marshal(objectMap)
 }
@@ -384,6 +390,14 @@ func (dap *DismissAlertPayload) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// DownloadURL the URL to download the generated report.
+type DownloadURL struct {
+	// DownloadURL - The URL to download the generated report.
+	DownloadURL *string `json:"downloadUrl,omitempty"`
+	// ValidTill - The time at which report URL becomes invalid/expires in UTC e.g. 2020-12-08T05:55:59.4394737Z.
+	ValidTill *date.Time `json:"validTill,omitempty"`
+}
+
 // ErrorDetails the details of the error.
 type ErrorDetails struct {
 	// Code - READ-ONLY; Error code.
@@ -526,18 +540,33 @@ type ExportDefinition struct {
 	DataSet *ExportDataset `json:"dataSet,omitempty"`
 }
 
-// ExportDeliveryDestination the destination information for the delivery of the export. To allow access to
-// a storage account, you must register the account's subscription with the Microsoft.CostManagementExports
-// resource provider. This is required once per subscription. When creating an export in the Azure portal,
-// it is done automatically, however API users need to register the subscription. For more information see
-// https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-manager-supported-services .
+// ExportDeliveryDestination this represents the blob storage account location where exports of costs will
+// be delivered. There are two ways to configure the destination. The approach recommended for most
+// customers is to specify the resourceId of the storage account. This requires a one-time registration of
+// the account's subscription with the Microsoft.CostManagementExports resource provider in order to give
+// Azure Cost Management services access to the storage. When creating an export in the Azure portal this
+// registration is performed automatically but API users may need to register the subscription explicitly
+// (for more information see
+// https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-manager-supported-services ).
+// Another way to configure the destination is available ONLY to Partners with a Microsoft Partner
+// Agreement plan who are global admins of their billing account. These Partners, instead of specifying the
+// resourceId of a storage account, can specify the storage account name along with a SAS token for the
+// account. This allows exports of costs to a storage account in any tenant. The SAS token should be
+// created for the blob service with Service/Container/Object resource types and with
+// Read/Write/Delete/List/Add/Create permissions (for more information see
+// https://docs.microsoft.com/en-us/azure/cost-management-billing/costs/export-cost-data-storage-account-sas-key
+// ).
 type ExportDeliveryDestination struct {
-	// ResourceID - The resource id of the storage account where exports will be delivered.
+	// ResourceID - The resource id of the storage account where exports will be delivered. This is not required if a sasToken and storageAccount are specified.
 	ResourceID *string `json:"resourceId,omitempty"`
-	// Container - The name of the container where exports will be uploaded.
+	// Container - The name of the container where exports will be uploaded. If the container does not exist it will be created.
 	Container *string `json:"container,omitempty"`
 	// RootFolderPath - The name of the directory where exports will be uploaded.
 	RootFolderPath *string `json:"rootFolderPath,omitempty"`
+	// SasToken - A SAS token for the storage account. For a restricted set of Azure customers this together with storageAccount can be specified instead of resourceId. Note: the value returned by the API for this property will always be obfuscated. Returning this same obfuscated value will not result in the SAS token being updated. To update this value a new SAS token must be specified.
+	SasToken *string `json:"sasToken,omitempty"`
+	// StorageAccount - The storage account where exports will be uploaded. For a restricted set of Azure customers this together with sasToken can be specified instead of resourceId.
+	StorageAccount *string `json:"storageAccount,omitempty"`
 }
 
 // ExportDeliveryInfo the delivery information associated with a export.
@@ -692,6 +721,8 @@ type ExportProperties struct {
 	Definition *ExportDefinition `json:"definition,omitempty"`
 	// RunHistory - If requested, has the most recent execution history for the export.
 	RunHistory *ExportExecutionListResult `json:"runHistory,omitempty"`
+	// PartitionData - If set to true, exported data will be partitioned by size and placed in a blob directory together with a manifest file. Note: this option is currently available only for modern commerce scopes.
+	PartitionData *bool `json:"partitionData,omitempty"`
 	// NextRunTimeEstimate - READ-ONLY; If the export has an active schedule, provides an estimate of the next execution time.
 	NextRunTimeEstimate *date.Time `json:"nextRunTimeEstimate,omitempty"`
 }
@@ -713,6 +744,9 @@ func (ep ExportProperties) MarshalJSON() ([]byte, error) {
 	}
 	if ep.RunHistory != nil {
 		objectMap["runHistory"] = ep.RunHistory
+	}
+	if ep.PartitionData != nil {
+		objectMap["partitionData"] = ep.PartitionData
 	}
 	return json.Marshal(objectMap)
 }
@@ -788,6 +822,284 @@ type ForecastDefinition struct {
 	IncludeActualCost *bool `json:"includeActualCost,omitempty"`
 	// IncludeFreshPartialCost - a boolean determining if FreshPartialCost will be included
 	IncludeFreshPartialCost *bool `json:"includeFreshPartialCost,omitempty"`
+}
+
+// GenerateDetailedCostReportCreateOperationFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
+type GenerateDetailedCostReportCreateOperationFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(GenerateDetailedCostReportClient) (GenerateDetailedCostReportOperationResult, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *GenerateDetailedCostReportCreateOperationFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for GenerateDetailedCostReportCreateOperationFuture.Result.
+func (future *GenerateDetailedCostReportCreateOperationFuture) result(client GenerateDetailedCostReportClient) (gdcror GenerateDetailedCostReportOperationResult, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "costmanagement.GenerateDetailedCostReportCreateOperationFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		gdcror.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("costmanagement.GenerateDetailedCostReportCreateOperationFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if gdcror.Response.Response, err = future.GetResult(sender); err == nil && gdcror.Response.Response.StatusCode != http.StatusNoContent {
+		gdcror, err = client.CreateOperationResponder(gdcror.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "costmanagement.GenerateDetailedCostReportCreateOperationFuture", "Result", gdcror.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// GenerateDetailedCostReportDefinition the definition of a cost detailed report.
+type GenerateDetailedCostReportDefinition struct {
+	// Metric - The type of the detailed report. By default ActualCost is provided. Possible values include: 'ActualCost', 'AmortizedCost'
+	Metric GenerateDetailedCostReportMetricType `json:"metric,omitempty"`
+	// TimePeriod - Has time period for pulling data for the cost detailed report. Can only have one of either timePeriod or invoiceId or billingPeriod parameters. If none provided current month cost is provided.
+	TimePeriod *GenerateDetailedCostReportTimePeriod `json:"timePeriod,omitempty"`
+	// BillingPeriod - Billing Period in YearMonth(e.g. 202008) format. Only for legacy enterprise customers can use this. Can only have one of either timePeriod or invoiceId or billingPeriod parameters. If none provided current month cost is provided.
+	BillingPeriod *string `json:"billingPeriod,omitempty"`
+	// InvoiceID - Invoice Id for PayAsYouGo customers and Modern billing profile scope. Can only have one of either timePeriod or invoiceId or billingPeriod parameters. If none provided current month cost is provided.
+	InvoiceID *string `json:"invoiceId,omitempty"`
+	// CustomerID - Customer Id for Modern (Invoice Id and billing profile is also required for this).
+	CustomerID *string `json:"customerId,omitempty"`
+}
+
+// GenerateDetailedCostReportErrorResponse error response indicates that the service is not able to process
+// the incoming request. The reason is provided in the error message.
+//
+// Some Error responses:
+//
+// * 413 Request Entity Too Large - Request is throttled. The amount of data required to fulfill the
+// request exceeds the maximum size permitted of 2Gb. Please utilize our Exports feature instead.
+//
+// * 429 TooManyRequests - Request is throttled. Retry after waiting for the time specified in the
+// "x-ms-ratelimit-microsoft.consumption-retry-after" header.
+//
+// * 503 ServiceUnavailable - Service is temporarily unavailable. Retry after waiting for the time
+// specified in the "Retry-After" header.
+type GenerateDetailedCostReportErrorResponse struct {
+	// Error - The details of the error.
+	Error *ErrorDetails `json:"error,omitempty"`
+}
+
+// GenerateDetailedCostReportOperationResult the result of the long running operation for cost detailed
+// report.
+type GenerateDetailedCostReportOperationResult struct {
+	autorest.Response `json:"-"`
+	// ID - The id of the long running operation.
+	ID *string `json:"id,omitempty"`
+	// Name - The name of the long running operation.
+	Name *string `json:"name,omitempty"`
+	// Type - The type of the long running operation.
+	Type *string `json:"type,omitempty"`
+	// DownloadURL - The properties of the resource generated.
+	*DownloadURL `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for GenerateDetailedCostReportOperationResult.
+func (gdcror GenerateDetailedCostReportOperationResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if gdcror.ID != nil {
+		objectMap["id"] = gdcror.ID
+	}
+	if gdcror.Name != nil {
+		objectMap["name"] = gdcror.Name
+	}
+	if gdcror.Type != nil {
+		objectMap["type"] = gdcror.Type
+	}
+	if gdcror.DownloadURL != nil {
+		objectMap["properties"] = gdcror.DownloadURL
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for GenerateDetailedCostReportOperationResult struct.
+func (gdcror *GenerateDetailedCostReportOperationResult) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				gdcror.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				gdcror.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				gdcror.Type = &typeVar
+			}
+		case "properties":
+			if v != nil {
+				var downloadURL DownloadURL
+				err = json.Unmarshal(*v, &downloadURL)
+				if err != nil {
+					return err
+				}
+				gdcror.DownloadURL = &downloadURL
+			}
+		}
+	}
+
+	return nil
+}
+
+// GenerateDetailedCostReportOperationStatuses the status of the long running operation for cost detailed
+// report.
+type GenerateDetailedCostReportOperationStatuses struct {
+	autorest.Response `json:"-"`
+	// ID - The id of the long running operation.
+	ID *string `json:"id,omitempty"`
+	// Name - The name of the long running operation.
+	Name *string `json:"name,omitempty"`
+	// Status - The status of the long running operation.
+	Status *Status `json:"status,omitempty"`
+	// Type - The type of the long running operation.
+	Type *string `json:"type,omitempty"`
+	// Error - The details of the error.
+	Error *ErrorDetails `json:"error,omitempty"`
+	// DownloadURL - The properties of the resource generated.
+	*DownloadURL `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for GenerateDetailedCostReportOperationStatuses.
+func (gdcros GenerateDetailedCostReportOperationStatuses) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if gdcros.ID != nil {
+		objectMap["id"] = gdcros.ID
+	}
+	if gdcros.Name != nil {
+		objectMap["name"] = gdcros.Name
+	}
+	if gdcros.Status != nil {
+		objectMap["status"] = gdcros.Status
+	}
+	if gdcros.Type != nil {
+		objectMap["type"] = gdcros.Type
+	}
+	if gdcros.Error != nil {
+		objectMap["error"] = gdcros.Error
+	}
+	if gdcros.DownloadURL != nil {
+		objectMap["properties"] = gdcros.DownloadURL
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for GenerateDetailedCostReportOperationStatuses struct.
+func (gdcros *GenerateDetailedCostReportOperationStatuses) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				gdcros.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				gdcros.Name = &name
+			}
+		case "status":
+			if v != nil {
+				var status Status
+				err = json.Unmarshal(*v, &status)
+				if err != nil {
+					return err
+				}
+				gdcros.Status = &status
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				gdcros.Type = &typeVar
+			}
+		case "error":
+			if v != nil {
+				var errorVar ErrorDetails
+				err = json.Unmarshal(*v, &errorVar)
+				if err != nil {
+					return err
+				}
+				gdcros.Error = &errorVar
+			}
+		case "properties":
+			if v != nil {
+				var downloadURL DownloadURL
+				err = json.Unmarshal(*v, &downloadURL)
+				if err != nil {
+					return err
+				}
+				gdcros.DownloadURL = &downloadURL
+			}
+		}
+	}
+
+	return nil
+}
+
+// GenerateDetailedCostReportTimePeriod the start and end date for pulling data for the cost detailed
+// report.
+type GenerateDetailedCostReportTimePeriod struct {
+	// Start - The start date to pull data from. example format 2020-03-15
+	Start *string `json:"start,omitempty"`
+	// End - The end date to pull data to. example format 2020-03-15
+	End *string `json:"end,omitempty"`
 }
 
 // KpiProperties each KPI must contain a 'type' and 'enabled' key.
@@ -1362,6 +1674,12 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Status the status of the long running operation.
+type Status struct {
+	// Status - The status of the long running operation. Possible values include: 'OperationStatusTypeInProgress', 'OperationStatusTypeCompleted', 'OperationStatusTypeFailed', 'OperationStatusTypeQueued', 'OperationStatusTypeNoDataFound', 'OperationStatusTypeReadyToDownload', 'OperationStatusTypeTimedOut'
+	Status OperationStatusType `json:"status,omitempty"`
+}
+
 // View states and configurations of Cost Analysis.
 type View struct {
 	autorest.Response `json:"-"`
@@ -1629,7 +1947,7 @@ type ViewProperties struct {
 	Chart ChartType `json:"chart,omitempty"`
 	// Accumulated - Show costs accumulated over time. Possible values include: 'True', 'False'
 	Accumulated AccumulatedType `json:"accumulated,omitempty"`
-	// Metric - Metric to use when displaying costs. Possible values include: 'ActualCost', 'AmortizedCost', 'AHUB'
+	// Metric - Metric to use when displaying costs. Possible values include: 'MetricTypeActualCost', 'MetricTypeAmortizedCost', 'MetricTypeAHUB'
 	Metric MetricType `json:"metric,omitempty"`
 	// Kpis - List of KPIs to show in Cost Analysis UI.
 	Kpis *[]KpiProperties `json:"kpis,omitempty"`

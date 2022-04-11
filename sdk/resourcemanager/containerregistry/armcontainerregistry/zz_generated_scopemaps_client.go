@@ -22,19 +22,19 @@ import (
 	"strings"
 )
 
-// ReplicationsClient contains the methods for the Replications group.
-// Don't use this type directly, use NewReplicationsClient() instead.
-type ReplicationsClient struct {
+// ScopeMapsClient contains the methods for the ScopeMaps group.
+// Don't use this type directly, use NewScopeMapsClient() instead.
+type ScopeMapsClient struct {
 	host           string
 	subscriptionID string
 	pl             runtime.Pipeline
 }
 
-// NewReplicationsClient creates a new instance of ReplicationsClient with the specified values.
+// NewScopeMapsClient creates a new instance of ScopeMapsClient with the specified values.
 // subscriptionID - The Microsoft Azure subscription ID.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewReplicationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ReplicationsClient, error) {
+func NewScopeMapsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ScopeMapsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
@@ -46,7 +46,7 @@ func NewReplicationsClient(subscriptionID string, credential azcore.TokenCredent
 	if err != nil {
 		return nil, err
 	}
-	client := &ReplicationsClient{
+	client := &ScopeMapsClient{
 		subscriptionID: subscriptionID,
 		host:           ep,
 		pl:             pl,
@@ -54,30 +54,29 @@ func NewReplicationsClient(subscriptionID string, credential azcore.TokenCredent
 	return client, nil
 }
 
-// BeginCreate - Creates a replication for a container registry with the specified parameters.
+// BeginCreate - Creates a scope map for a container registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.
-// replicationName - The name of the replication.
-// replication - The parameters for creating a replication.
-// options - ReplicationsClientBeginCreateOptions contains the optional parameters for the ReplicationsClient.BeginCreate
-// method.
-func (client *ReplicationsClient) BeginCreate(ctx context.Context, resourceGroupName string, registryName string, replicationName string, replication Replication, options *ReplicationsClientBeginCreateOptions) (*armruntime.Poller[ReplicationsClientCreateResponse], error) {
+// scopeMapName - The name of the scope map.
+// scopeMapCreateParameters - The parameters for creating a scope map.
+// options - ScopeMapsClientBeginCreateOptions contains the optional parameters for the ScopeMapsClient.BeginCreate method.
+func (client *ScopeMapsClient) BeginCreate(ctx context.Context, resourceGroupName string, registryName string, scopeMapName string, scopeMapCreateParameters ScopeMap, options *ScopeMapsClientBeginCreateOptions) (*armruntime.Poller[ScopeMapsClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.create(ctx, resourceGroupName, registryName, replicationName, replication, options)
+		resp, err := client.create(ctx, resourceGroupName, registryName, scopeMapName, scopeMapCreateParameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ReplicationsClientCreateResponse](resp, client.pl, nil)
+		return armruntime.NewPoller[ScopeMapsClientCreateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ReplicationsClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return armruntime.NewPollerFromResumeToken[ScopeMapsClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
-// Create - Creates a replication for a container registry with the specified parameters.
+// Create - Creates a scope map for a container registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ReplicationsClient) create(ctx context.Context, resourceGroupName string, registryName string, replicationName string, replication Replication, options *ReplicationsClientBeginCreateOptions) (*http.Response, error) {
-	req, err := client.createCreateRequest(ctx, resourceGroupName, registryName, replicationName, replication, options)
+func (client *ScopeMapsClient) create(ctx context.Context, resourceGroupName string, registryName string, scopeMapName string, scopeMapCreateParameters ScopeMap, options *ScopeMapsClientBeginCreateOptions) (*http.Response, error) {
+	req, err := client.createCreateRequest(ctx, resourceGroupName, registryName, scopeMapName, scopeMapCreateParameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -92,8 +91,8 @@ func (client *ReplicationsClient) create(ctx context.Context, resourceGroupName 
 }
 
 // createCreateRequest creates the Create request.
-func (client *ReplicationsClient) createCreateRequest(ctx context.Context, resourceGroupName string, registryName string, replicationName string, replication Replication, options *ReplicationsClientBeginCreateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/replications/{replicationName}"
+func (client *ScopeMapsClient) createCreateRequest(ctx context.Context, resourceGroupName string, registryName string, scopeMapName string, scopeMapCreateParameters ScopeMap, options *ScopeMapsClientBeginCreateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/scopeMaps/{scopeMapName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -106,10 +105,10 @@ func (client *ReplicationsClient) createCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter registryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{registryName}", url.PathEscape(registryName))
-	if replicationName == "" {
-		return nil, errors.New("parameter replicationName cannot be empty")
+	if scopeMapName == "" {
+		return nil, errors.New("parameter scopeMapName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{replicationName}", url.PathEscape(replicationName))
+	urlPath = strings.ReplaceAll(urlPath, "{scopeMapName}", url.PathEscape(scopeMapName))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
@@ -118,32 +117,31 @@ func (client *ReplicationsClient) createCreateRequest(ctx context.Context, resou
 	reqQP.Set("api-version", "2021-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
-	return req, runtime.MarshalAsJSON(req, replication)
+	return req, runtime.MarshalAsJSON(req, scopeMapCreateParameters)
 }
 
-// BeginDelete - Deletes a replication from a container registry.
+// BeginDelete - Deletes a scope map from a container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.
-// replicationName - The name of the replication.
-// options - ReplicationsClientBeginDeleteOptions contains the optional parameters for the ReplicationsClient.BeginDelete
-// method.
-func (client *ReplicationsClient) BeginDelete(ctx context.Context, resourceGroupName string, registryName string, replicationName string, options *ReplicationsClientBeginDeleteOptions) (*armruntime.Poller[ReplicationsClientDeleteResponse], error) {
+// scopeMapName - The name of the scope map.
+// options - ScopeMapsClientBeginDeleteOptions contains the optional parameters for the ScopeMapsClient.BeginDelete method.
+func (client *ScopeMapsClient) BeginDelete(ctx context.Context, resourceGroupName string, registryName string, scopeMapName string, options *ScopeMapsClientBeginDeleteOptions) (*armruntime.Poller[ScopeMapsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, registryName, replicationName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, registryName, scopeMapName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ReplicationsClientDeleteResponse](resp, client.pl, nil)
+		return armruntime.NewPoller[ScopeMapsClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ReplicationsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return armruntime.NewPollerFromResumeToken[ScopeMapsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
-// Delete - Deletes a replication from a container registry.
+// Delete - Deletes a scope map from a container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ReplicationsClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, replicationName string, options *ReplicationsClientBeginDeleteOptions) (*http.Response, error) {
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, registryName, replicationName, options)
+func (client *ScopeMapsClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, scopeMapName string, options *ScopeMapsClientBeginDeleteOptions) (*http.Response, error) {
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, registryName, scopeMapName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -158,8 +156,8 @@ func (client *ReplicationsClient) deleteOperation(ctx context.Context, resourceG
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ReplicationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, registryName string, replicationName string, options *ReplicationsClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/replications/{replicationName}"
+func (client *ScopeMapsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, registryName string, scopeMapName string, options *ScopeMapsClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/scopeMaps/{scopeMapName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -172,10 +170,10 @@ func (client *ReplicationsClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter registryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{registryName}", url.PathEscape(registryName))
-	if replicationName == "" {
-		return nil, errors.New("parameter replicationName cannot be empty")
+	if scopeMapName == "" {
+		return nil, errors.New("parameter scopeMapName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{replicationName}", url.PathEscape(replicationName))
+	urlPath = strings.ReplaceAll(urlPath, "{scopeMapName}", url.PathEscape(scopeMapName))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
@@ -183,33 +181,34 @@ func (client *ReplicationsClient) deleteCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
-// Get - Gets the properties of the specified replication.
+// Get - Gets the properties of the specified scope map.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.
-// replicationName - The name of the replication.
-// options - ReplicationsClientGetOptions contains the optional parameters for the ReplicationsClient.Get method.
-func (client *ReplicationsClient) Get(ctx context.Context, resourceGroupName string, registryName string, replicationName string, options *ReplicationsClientGetOptions) (ReplicationsClientGetResponse, error) {
-	req, err := client.getCreateRequest(ctx, resourceGroupName, registryName, replicationName, options)
+// scopeMapName - The name of the scope map.
+// options - ScopeMapsClientGetOptions contains the optional parameters for the ScopeMapsClient.Get method.
+func (client *ScopeMapsClient) Get(ctx context.Context, resourceGroupName string, registryName string, scopeMapName string, options *ScopeMapsClientGetOptions) (ScopeMapsClientGetResponse, error) {
+	req, err := client.getCreateRequest(ctx, resourceGroupName, registryName, scopeMapName, options)
 	if err != nil {
-		return ReplicationsClientGetResponse{}, err
+		return ScopeMapsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ReplicationsClientGetResponse{}, err
+		return ScopeMapsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ReplicationsClientGetResponse{}, runtime.NewResponseError(resp)
+		return ScopeMapsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ReplicationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, registryName string, replicationName string, options *ReplicationsClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/replications/{replicationName}"
+func (client *ScopeMapsClient) getCreateRequest(ctx context.Context, resourceGroupName string, registryName string, scopeMapName string, options *ScopeMapsClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/scopeMaps/{scopeMapName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -222,10 +221,10 @@ func (client *ReplicationsClient) getCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter registryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{registryName}", url.PathEscape(registryName))
-	if replicationName == "" {
-		return nil, errors.New("parameter replicationName cannot be empty")
+	if scopeMapName == "" {
+		return nil, errors.New("parameter scopeMapName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{replicationName}", url.PathEscape(replicationName))
+	urlPath = strings.ReplaceAll(urlPath, "{scopeMapName}", url.PathEscape(scopeMapName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
@@ -238,25 +237,25 @@ func (client *ReplicationsClient) getCreateRequest(ctx context.Context, resource
 }
 
 // getHandleResponse handles the Get response.
-func (client *ReplicationsClient) getHandleResponse(resp *http.Response) (ReplicationsClientGetResponse, error) {
-	result := ReplicationsClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.Replication); err != nil {
-		return ReplicationsClientGetResponse{}, err
+func (client *ScopeMapsClient) getHandleResponse(resp *http.Response) (ScopeMapsClientGetResponse, error) {
+	result := ScopeMapsClientGetResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ScopeMap); err != nil {
+		return ScopeMapsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// List - Lists all the replications for the specified container registry.
+// List - Lists all the scope maps for the specified container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.
-// options - ReplicationsClientListOptions contains the optional parameters for the ReplicationsClient.List method.
-func (client *ReplicationsClient) List(resourceGroupName string, registryName string, options *ReplicationsClientListOptions) *runtime.Pager[ReplicationsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ReplicationsClientListResponse]{
-		More: func(page ReplicationsClientListResponse) bool {
+// options - ScopeMapsClientListOptions contains the optional parameters for the ScopeMapsClient.List method.
+func (client *ScopeMapsClient) List(resourceGroupName string, registryName string, options *ScopeMapsClientListOptions) *runtime.Pager[ScopeMapsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ScopeMapsClientListResponse]{
+		More: func(page ScopeMapsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *ReplicationsClientListResponse) (ReplicationsClientListResponse, error) {
+		Fetcher: func(ctx context.Context, page *ScopeMapsClientListResponse) (ScopeMapsClientListResponse, error) {
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -265,14 +264,14 @@ func (client *ReplicationsClient) List(resourceGroupName string, registryName st
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
 			if err != nil {
-				return ReplicationsClientListResponse{}, err
+				return ScopeMapsClientListResponse{}, err
 			}
 			resp, err := client.pl.Do(req)
 			if err != nil {
-				return ReplicationsClientListResponse{}, err
+				return ScopeMapsClientListResponse{}, err
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ReplicationsClientListResponse{}, runtime.NewResponseError(resp)
+				return ScopeMapsClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -280,8 +279,8 @@ func (client *ReplicationsClient) List(resourceGroupName string, registryName st
 }
 
 // listCreateRequest creates the List request.
-func (client *ReplicationsClient) listCreateRequest(ctx context.Context, resourceGroupName string, registryName string, options *ReplicationsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/replications"
+func (client *ScopeMapsClient) listCreateRequest(ctx context.Context, resourceGroupName string, registryName string, options *ScopeMapsClientListOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/scopeMaps"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -306,38 +305,37 @@ func (client *ReplicationsClient) listCreateRequest(ctx context.Context, resourc
 }
 
 // listHandleResponse handles the List response.
-func (client *ReplicationsClient) listHandleResponse(resp *http.Response) (ReplicationsClientListResponse, error) {
-	result := ReplicationsClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ReplicationListResult); err != nil {
-		return ReplicationsClientListResponse{}, err
+func (client *ScopeMapsClient) listHandleResponse(resp *http.Response) (ScopeMapsClientListResponse, error) {
+	result := ScopeMapsClientListResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ScopeMapListResult); err != nil {
+		return ScopeMapsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// BeginUpdate - Updates a replication for a container registry with the specified parameters.
+// BeginUpdate - Updates a scope map with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.
-// replicationName - The name of the replication.
-// replicationUpdateParameters - The parameters for updating a replication.
-// options - ReplicationsClientBeginUpdateOptions contains the optional parameters for the ReplicationsClient.BeginUpdate
-// method.
-func (client *ReplicationsClient) BeginUpdate(ctx context.Context, resourceGroupName string, registryName string, replicationName string, replicationUpdateParameters ReplicationUpdateParameters, options *ReplicationsClientBeginUpdateOptions) (*armruntime.Poller[ReplicationsClientUpdateResponse], error) {
+// scopeMapName - The name of the scope map.
+// scopeMapUpdateParameters - The parameters for updating a scope map.
+// options - ScopeMapsClientBeginUpdateOptions contains the optional parameters for the ScopeMapsClient.BeginUpdate method.
+func (client *ScopeMapsClient) BeginUpdate(ctx context.Context, resourceGroupName string, registryName string, scopeMapName string, scopeMapUpdateParameters ScopeMapUpdateParameters, options *ScopeMapsClientBeginUpdateOptions) (*armruntime.Poller[ScopeMapsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, registryName, replicationName, replicationUpdateParameters, options)
+		resp, err := client.update(ctx, resourceGroupName, registryName, scopeMapName, scopeMapUpdateParameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ReplicationsClientUpdateResponse](resp, client.pl, nil)
+		return armruntime.NewPoller[ScopeMapsClientUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ReplicationsClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return armruntime.NewPollerFromResumeToken[ScopeMapsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
-// Update - Updates a replication for a container registry with the specified parameters.
+// Update - Updates a scope map with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ReplicationsClient) update(ctx context.Context, resourceGroupName string, registryName string, replicationName string, replicationUpdateParameters ReplicationUpdateParameters, options *ReplicationsClientBeginUpdateOptions) (*http.Response, error) {
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, registryName, replicationName, replicationUpdateParameters, options)
+func (client *ScopeMapsClient) update(ctx context.Context, resourceGroupName string, registryName string, scopeMapName string, scopeMapUpdateParameters ScopeMapUpdateParameters, options *ScopeMapsClientBeginUpdateOptions) (*http.Response, error) {
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, registryName, scopeMapName, scopeMapUpdateParameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -352,8 +350,8 @@ func (client *ReplicationsClient) update(ctx context.Context, resourceGroupName 
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ReplicationsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, registryName string, replicationName string, replicationUpdateParameters ReplicationUpdateParameters, options *ReplicationsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/replications/{replicationName}"
+func (client *ScopeMapsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, registryName string, scopeMapName string, scopeMapUpdateParameters ScopeMapUpdateParameters, options *ScopeMapsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/scopeMaps/{scopeMapName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -366,10 +364,10 @@ func (client *ReplicationsClient) updateCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter registryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{registryName}", url.PathEscape(registryName))
-	if replicationName == "" {
-		return nil, errors.New("parameter replicationName cannot be empty")
+	if scopeMapName == "" {
+		return nil, errors.New("parameter scopeMapName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{replicationName}", url.PathEscape(replicationName))
+	urlPath = strings.ReplaceAll(urlPath, "{scopeMapName}", url.PathEscape(scopeMapName))
 	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
@@ -378,5 +376,5 @@ func (client *ReplicationsClient) updateCreateRequest(ctx context.Context, resou
 	reqQP.Set("api-version", "2021-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
-	return req, runtime.MarshalAsJSON(req, replicationUpdateParameters)
+	return req, runtime.MarshalAsJSON(req, scopeMapUpdateParameters)
 }

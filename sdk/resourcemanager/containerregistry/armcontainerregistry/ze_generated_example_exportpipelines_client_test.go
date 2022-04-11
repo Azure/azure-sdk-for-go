@@ -19,24 +19,22 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/RunsList.json
-func ExampleRunsClient_List() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2021-12-01-preview/examples/ExportPipelineList.json
+func ExampleExportPipelinesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 		return
 	}
 	ctx := context.Background()
-	client, err := armcontainerregistry.NewRunsClient("<subscription-id>", cred, nil)
+	client, err := armcontainerregistry.NewExportPipelinesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
 	pager := client.List("<resource-group-name>",
 		"<registry-name>",
-		&armcontainerregistry.RunsClientListOptions{Filter: to.Ptr("<filter>"),
-			Top: to.Ptr[int32](10),
-		})
+		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -50,15 +48,15 @@ func ExampleRunsClient_List() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/RunsGet.json
-func ExampleRunsClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2021-12-01-preview/examples/ExportPipelineGet.json
+func ExampleExportPipelinesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 		return
 	}
 	ctx := context.Background()
-	client, err := armcontainerregistry.NewRunsClient("<subscription-id>", cred, nil)
+	client, err := armcontainerregistry.NewExportPipelinesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 		return
@@ -66,7 +64,7 @@ func ExampleRunsClient_Get() {
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<registry-name>",
-		"<run-id>",
+		"<export-pipeline-name>",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -76,27 +74,39 @@ func ExampleRunsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/RunsUpdate.json
-func ExampleRunsClient_BeginUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2021-12-01-preview/examples/ExportPipelineCreate.json
+func ExampleExportPipelinesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 		return
 	}
 	ctx := context.Background()
-	client, err := armcontainerregistry.NewRunsClient("<subscription-id>", cred, nil)
+	client, err := armcontainerregistry.NewExportPipelinesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	poller, err := client.BeginUpdate(ctx,
+	poller, err := client.BeginCreate(ctx,
 		"<resource-group-name>",
 		"<registry-name>",
-		"<run-id>",
-		armcontainerregistry.RunUpdateParameters{
-			IsArchiveEnabled: to.Ptr(true),
+		"<export-pipeline-name>",
+		armcontainerregistry.ExportPipeline{
+			Identity: &armcontainerregistry.IdentityProperties{
+				Type: to.Ptr(armcontainerregistry.ResourceIdentityTypeSystemAssigned),
+			},
+			Location: to.Ptr("<location>"),
+			Properties: &armcontainerregistry.ExportPipelineProperties{
+				Options: []*armcontainerregistry.PipelineOptions{
+					to.Ptr(armcontainerregistry.PipelineOptionsOverwriteBlobs)},
+				Target: &armcontainerregistry.ExportPipelineTargetProperties{
+					Type:        to.Ptr("<type>"),
+					KeyVaultURI: to.Ptr("<key-vault-uri>"),
+					URI:         to.Ptr("<uri>"),
+				},
+			},
 		},
-		&armcontainerregistry.RunsClientBeginUpdateOptions{ResumeToken: ""})
+		&armcontainerregistry.ExportPipelinesClientBeginCreateOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 		return
@@ -110,24 +120,24 @@ func ExampleRunsClient_BeginUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/RunsCancel.json
-func ExampleRunsClient_BeginCancel() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2021-12-01-preview/examples/ExportPipelineDelete.json
+func ExampleExportPipelinesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 		return
 	}
 	ctx := context.Background()
-	client, err := armcontainerregistry.NewRunsClient("<subscription-id>", cred, nil)
+	client, err := armcontainerregistry.NewExportPipelinesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	poller, err := client.BeginCancel(ctx,
+	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
 		"<registry-name>",
-		"<run-id>",
-		&armcontainerregistry.RunsClientBeginCancelOptions{ResumeToken: ""})
+		"<export-pipeline-name>",
+		&armcontainerregistry.ExportPipelinesClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 		return

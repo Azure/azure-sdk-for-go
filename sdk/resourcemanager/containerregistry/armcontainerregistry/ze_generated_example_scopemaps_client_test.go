@@ -19,15 +19,15 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2021-12-01-preview/examples/ReplicationList.json
-func ExampleReplicationsClient_List() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2021-12-01-preview/examples/ScopeMapList.json
+func ExampleScopeMapsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 		return
 	}
 	ctx := context.Background()
-	client, err := armcontainerregistry.NewReplicationsClient("<subscription-id>", cred, nil)
+	client, err := armcontainerregistry.NewScopeMapsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 		return
@@ -48,15 +48,15 @@ func ExampleReplicationsClient_List() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2021-12-01-preview/examples/ReplicationGet.json
-func ExampleReplicationsClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2021-12-01-preview/examples/ScopeMapGet.json
+func ExampleScopeMapsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 		return
 	}
 	ctx := context.Background()
-	client, err := armcontainerregistry.NewReplicationsClient("<subscription-id>", cred, nil)
+	client, err := armcontainerregistry.NewScopeMapsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 		return
@@ -64,7 +64,7 @@ func ExampleReplicationsClient_Get() {
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<registry-name>",
-		"<replication-name>",
+		"<scope-map-name>",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -74,15 +74,15 @@ func ExampleReplicationsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2021-12-01-preview/examples/ReplicationCreate.json
-func ExampleReplicationsClient_BeginCreate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2021-12-01-preview/examples/ScopeMapCreate.json
+func ExampleScopeMapsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 		return
 	}
 	ctx := context.Background()
-	client, err := armcontainerregistry.NewReplicationsClient("<subscription-id>", cred, nil)
+	client, err := armcontainerregistry.NewScopeMapsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 		return
@@ -90,14 +90,16 @@ func ExampleReplicationsClient_BeginCreate() {
 	poller, err := client.BeginCreate(ctx,
 		"<resource-group-name>",
 		"<registry-name>",
-		"<replication-name>",
-		armcontainerregistry.Replication{
-			Location: to.Ptr("<location>"),
-			Tags: map[string]*string{
-				"key": to.Ptr("value"),
+		"<scope-map-name>",
+		armcontainerregistry.ScopeMap{
+			Properties: &armcontainerregistry.ScopeMapProperties{
+				Description: to.Ptr("<description>"),
+				Actions: []*string{
+					to.Ptr("repositories/myrepository/contentWrite"),
+					to.Ptr("repositories/myrepository/delete")},
 			},
 		},
-		&armcontainerregistry.ReplicationsClientBeginCreateOptions{ResumeToken: ""})
+		&armcontainerregistry.ScopeMapsClientBeginCreateOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 		return
@@ -111,15 +113,15 @@ func ExampleReplicationsClient_BeginCreate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2021-12-01-preview/examples/ReplicationDelete.json
-func ExampleReplicationsClient_BeginDelete() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2021-12-01-preview/examples/ScopeMapDelete.json
+func ExampleScopeMapsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 		return
 	}
 	ctx := context.Background()
-	client, err := armcontainerregistry.NewReplicationsClient("<subscription-id>", cred, nil)
+	client, err := armcontainerregistry.NewScopeMapsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 		return
@@ -127,8 +129,8 @@ func ExampleReplicationsClient_BeginDelete() {
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
 		"<registry-name>",
-		"<replication-name>",
-		&armcontainerregistry.ReplicationsClientBeginDeleteOptions{ResumeToken: ""})
+		"<scope-map-name>",
+		&armcontainerregistry.ScopeMapsClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 		return
@@ -140,15 +142,15 @@ func ExampleReplicationsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2021-12-01-preview/examples/ReplicationUpdate.json
-func ExampleReplicationsClient_BeginUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2021-12-01-preview/examples/ScopeMapUpdate.json
+func ExampleScopeMapsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 		return
 	}
 	ctx := context.Background()
-	client, err := armcontainerregistry.NewReplicationsClient("<subscription-id>", cred, nil)
+	client, err := armcontainerregistry.NewScopeMapsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 		return
@@ -156,13 +158,16 @@ func ExampleReplicationsClient_BeginUpdate() {
 	poller, err := client.BeginUpdate(ctx,
 		"<resource-group-name>",
 		"<registry-name>",
-		"<replication-name>",
-		armcontainerregistry.ReplicationUpdateParameters{
-			Tags: map[string]*string{
-				"key": to.Ptr("value"),
+		"<scope-map-name>",
+		armcontainerregistry.ScopeMapUpdateParameters{
+			Properties: &armcontainerregistry.ScopeMapPropertiesUpdateParameters{
+				Description: to.Ptr("<description>"),
+				Actions: []*string{
+					to.Ptr("repositories/myrepository/contentWrite"),
+					to.Ptr("repositories/myrepository/contentRead")},
 			},
 		},
-		&armcontainerregistry.ReplicationsClientBeginUpdateOptions{ResumeToken: ""})
+		&armcontainerregistry.ScopeMapsClientBeginUpdateOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 		return

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armconfidentialledger
 
 const (
 	moduleName    = "armconfidentialledger"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // CheckNameAvailabilityReason - The reason why the given name is not available.
@@ -27,11 +27,6 @@ func PossibleCheckNameAvailabilityReasonValues() []CheckNameAvailabilityReason {
 		CheckNameAvailabilityReasonAlreadyExists,
 		CheckNameAvailabilityReasonInvalid,
 	}
-}
-
-// ToPtr returns a *CheckNameAvailabilityReason pointing to the current value.
-func (c CheckNameAvailabilityReason) ToPtr() *CheckNameAvailabilityReason {
-	return &c
 }
 
 // CreatedByType - The type of identity that created the resource.
@@ -54,11 +49,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
-}
-
 // LedgerRoleName - LedgerRole associated with the Security Principal of Ledger
 type LedgerRoleName string
 
@@ -77,11 +67,6 @@ func PossibleLedgerRoleNameValues() []LedgerRoleName {
 	}
 }
 
-// ToPtr returns a *LedgerRoleName pointing to the current value.
-func (c LedgerRoleName) ToPtr() *LedgerRoleName {
-	return &c
-}
-
 // LedgerType - Type of the ledger. Private means transaction data is encrypted.
 type LedgerType string
 
@@ -98,11 +83,6 @@ func PossibleLedgerTypeValues() []LedgerType {
 		LedgerTypePublic,
 		LedgerTypeUnknown,
 	}
-}
-
-// ToPtr returns a *LedgerType pointing to the current value.
-func (c LedgerType) ToPtr() *LedgerType {
-	return &c
 }
 
 // ProvisioningState - Object representing ProvisioningState for Confidential Ledger.
@@ -129,9 +109,4 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 		ProvisioningStateUnknown,
 		ProvisioningStateUpdating,
 	}
-}
-
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
 }

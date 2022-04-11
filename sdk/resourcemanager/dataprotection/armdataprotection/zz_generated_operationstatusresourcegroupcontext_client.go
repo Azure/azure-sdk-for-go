@@ -22,19 +22,19 @@ import (
 	"strings"
 )
 
-// OperationStatusClient contains the methods for the OperationStatus group.
-// Don't use this type directly, use NewOperationStatusClient() instead.
-type OperationStatusClient struct {
+// OperationStatusResourceGroupContextClient contains the methods for the OperationStatusResourceGroupContext group.
+// Don't use this type directly, use NewOperationStatusResourceGroupContextClient() instead.
+type OperationStatusResourceGroupContextClient struct {
 	host           string
 	subscriptionID string
 	pl             runtime.Pipeline
 }
 
-// NewOperationStatusClient creates a new instance of OperationStatusClient with the specified values.
+// NewOperationStatusResourceGroupContextClient creates a new instance of OperationStatusResourceGroupContextClient with the specified values.
 // subscriptionID - The subscription Id.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewOperationStatusClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OperationStatusClient, error) {
+func NewOperationStatusResourceGroupContextClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OperationStatusResourceGroupContextClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
@@ -46,7 +46,7 @@ func NewOperationStatusClient(subscriptionID string, credential azcore.TokenCred
 	if err != nil {
 		return nil, err
 	}
-	client := &OperationStatusClient{
+	client := &OperationStatusResourceGroupContextClient{
 		subscriptionID: subscriptionID,
 		host:           ep,
 		pl:             pl,
@@ -54,35 +54,37 @@ func NewOperationStatusClient(subscriptionID string, credential azcore.TokenCred
 	return client, nil
 }
 
-// Get - Gets the operation status for a resource.
+// Get - Gets the operation status for an operation over a ResourceGroup's context.
 // If the operation fails it returns an *azcore.ResponseError type.
-// options - OperationStatusClientGetOptions contains the optional parameters for the OperationStatusClient.Get method.
-func (client *OperationStatusClient) Get(ctx context.Context, location string, operationID string, options *OperationStatusClientGetOptions) (OperationStatusClientGetResponse, error) {
-	req, err := client.getCreateRequest(ctx, location, operationID, options)
+// resourceGroupName - The name of the resource group where the backup vault is present.
+// options - OperationStatusResourceGroupContextClientGetOptions contains the optional parameters for the OperationStatusResourceGroupContextClient.Get
+// method.
+func (client *OperationStatusResourceGroupContextClient) Get(ctx context.Context, resourceGroupName string, operationID string, options *OperationStatusResourceGroupContextClientGetOptions) (OperationStatusResourceGroupContextClientGetResponse, error) {
+	req, err := client.getCreateRequest(ctx, resourceGroupName, operationID, options)
 	if err != nil {
-		return OperationStatusClientGetResponse{}, err
+		return OperationStatusResourceGroupContextClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return OperationStatusClientGetResponse{}, err
+		return OperationStatusResourceGroupContextClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return OperationStatusClientGetResponse{}, runtime.NewResponseError(resp)
+		return OperationStatusResourceGroupContextClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *OperationStatusClient) getCreateRequest(ctx context.Context, location string, operationID string, options *OperationStatusClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DataProtection/locations/{location}/operationStatus/{operationId}"
+func (client *OperationStatusResourceGroupContextClient) getCreateRequest(ctx context.Context, resourceGroupName string, operationID string, options *OperationStatusResourceGroupContextClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/operationStatus/{operationId}"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if location == "" {
-		return nil, errors.New("parameter location cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
 	if operationID == "" {
 		return nil, errors.New("parameter operationID cannot be empty")
 	}
@@ -99,10 +101,10 @@ func (client *OperationStatusClient) getCreateRequest(ctx context.Context, locat
 }
 
 // getHandleResponse handles the Get response.
-func (client *OperationStatusClient) getHandleResponse(resp *http.Response) (OperationStatusClientGetResponse, error) {
-	result := OperationStatusClientGetResponse{}
+func (client *OperationStatusResourceGroupContextClient) getHandleResponse(resp *http.Response) (OperationStatusResourceGroupContextClientGetResponse, error) {
+	result := OperationStatusResourceGroupContextClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationResource); err != nil {
-		return OperationStatusClientGetResponse{}, err
+		return OperationStatusResourceGroupContextClientGetResponse{}, err
 	}
 	return result, nil
 }

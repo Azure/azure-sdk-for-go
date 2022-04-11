@@ -581,9 +581,9 @@ func (t *Client) UpsertEntity(ctx context.Context, entity []byte, options *Upser
 			&generated.TableClientMergeEntityOptions{TableEntityProperties: mapEntity},
 			&generated.QueryOptions{},
 		)
-			if err != nil {
-		return UpsertEntityResponse{}, parseErrorCode(err)
-	}
+		if err != nil {
+			return UpsertEntityResponse{}, parseErrorCode(err)
+		}
 		return insertEntityFromGeneratedMerge(&resp), err
 	case UpdateModeReplace:
 		resp, err := t.client.UpdateEntity(
@@ -595,9 +595,9 @@ func (t *Client) UpsertEntity(ctx context.Context, entity []byte, options *Upser
 			&generated.TableClientUpdateEntityOptions{TableEntityProperties: mapEntity},
 			&generated.QueryOptions{},
 		)
-			if err != nil {
-		return UpsertEntityResponse{}, parseErrorCode(err)
-	}
+		if err != nil {
+			return UpsertEntityResponse{}, parseErrorCode(err)
+		}
 		return insertEntityFromGeneratedUpdate(&resp), err
 	}
 	if pk == "" || rk == "" {

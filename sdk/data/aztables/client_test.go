@@ -121,6 +121,8 @@ func TestDeleteEntityWithETag(t *testing.T) {
 
 			_, err = client.DeleteEntity(ctx, simpleEntity2.PartitionKey, simpleEntity2.RowKey, &DeleteEntityOptions{IfMatch: &oldETag})
 			require.Error(t, err)
+			var httpErr *azcore.ResponseError
+			require.ErrorAs(t, err, &httpErr)
 
 			_, err = client.DeleteEntity(ctx, simpleEntity.PartitionKey, simpleEntity.RowKey, &DeleteEntityOptions{IfMatch: &oldETag})
 			require.NoError(t, err)
@@ -197,6 +199,9 @@ func TestMergeEntityDoesNotExist(t *testing.T) {
 
 			_, updateErr := client.UpdateEntity(ctx, marshalled, &UpdateEntityOptions{UpdateMode: UpdateModeMerge})
 			require.Error(t, updateErr)
+			var httpErr *azcore.ResponseError
+			require.ErrorAs(t, updateErr, &httpErr)
+			require.Equal(t, string(ResourceNotFound), httpErr.ErrorCode)
 		})
 	}
 }

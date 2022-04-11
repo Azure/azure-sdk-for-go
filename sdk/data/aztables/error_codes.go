@@ -6,7 +6,6 @@ package aztables
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io/ioutil"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -33,6 +32,7 @@ const (
 	PropertyNameInvalid          TableErrorCode = "PropertyNameInvalid"
 	PropertyNameTooLong          TableErrorCode = "PropertyNameTooLong"
 	PropertyValueTooLarge        TableErrorCode = "PropertyValueTooLarge"
+	ResourceNotFound             TableErrorCode = "ResourceNotFound"
 	TableAlreadyExists           TableErrorCode = "TableAlreadyExists"
 	TableBeingDeleted            TableErrorCode = "TableBeingDeleted"
 	TableNotFound                TableErrorCode = "TableNotFound"
@@ -95,8 +95,6 @@ func parseErrorCode(svcErr error) error {
 		if err != nil {
 			return svcErr
 		}
-
-		fmt.Println(oerr)
 
 		return &azcore.ResponseError{
 			RawResponse: httpErr.RawResponse,

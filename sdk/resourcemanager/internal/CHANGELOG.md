@@ -1,14 +1,9 @@
 # Release History
 
-## 0.2.1 (Unreleased)
-
-### Features Added
+## 0.3.0 (2022-04-08)
 
 ### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+* Upgrade to generic version for test helper
 
 ## 0.2.0 (2022-03-16)
 

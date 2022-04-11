@@ -37,7 +37,8 @@ func (r *testBody) Seek(offset int64, whence int) (int64, error) {
 func TestGetCredAndClientOptions(t *testing.T) {
 	testEndpoint := "http://test"
 	cred, options := GetCredAndClientOptions(t)
-	pl := armruntime.NewPipeline("testmodule", "v0.1.0", cred, runtime.PipelineOptions{}, options)
+	pl, err := armruntime.NewPipeline("testmodule", "v0.1.0", cred, runtime.PipelineOptions{}, options)
+	require.NoError(t, err)
 	req, err := runtime.NewRequest(context.Background(), http.MethodGet, testEndpoint)
 	require.NoError(t, err)
 	err = req.SetBody(&testBody{body: strings.NewReader("test")}, "text/plain")

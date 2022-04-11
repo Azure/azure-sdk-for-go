@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type AlertProcessingRulesClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewAlertProcessingRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AlertProcessingRulesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewAlertProcessingRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AlertProcessingRulesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &AlertProcessingRulesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Create or update an alert processing rule.
@@ -99,7 +104,7 @@ func (client *AlertProcessingRulesClient) createOrUpdateCreateRequest(ctx contex
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *AlertProcessingRulesClient) createOrUpdateHandleResponse(resp *http.Response) (AlertProcessingRulesClientCreateOrUpdateResponse, error) {
-	result := AlertProcessingRulesClientCreateOrUpdateResponse{RawResponse: resp}
+	result := AlertProcessingRulesClientCreateOrUpdateResponse{}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
 		result.XMSRequestID = &val
 	}
@@ -158,7 +163,7 @@ func (client *AlertProcessingRulesClient) deleteCreateRequest(ctx context.Contex
 
 // deleteHandleResponse handles the Delete response.
 func (client *AlertProcessingRulesClient) deleteHandleResponse(resp *http.Response) (AlertProcessingRulesClientDeleteResponse, error) {
-	result := AlertProcessingRulesClientDeleteResponse{RawResponse: resp}
+	result := AlertProcessingRulesClientDeleteResponse{}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
 		result.XMSRequestID = &val
 	}
@@ -214,7 +219,7 @@ func (client *AlertProcessingRulesClient) getByNameCreateRequest(ctx context.Con
 
 // getByNameHandleResponse handles the GetByName response.
 func (client *AlertProcessingRulesClient) getByNameHandleResponse(resp *http.Response) (AlertProcessingRulesClientGetByNameResponse, error) {
-	result := AlertProcessingRulesClientGetByNameResponse{RawResponse: resp}
+	result := AlertProcessingRulesClientGetByNameResponse{}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
 		result.XMSRequestID = &val
 	}
@@ -229,16 +234,32 @@ func (client *AlertProcessingRulesClient) getByNameHandleResponse(resp *http.Res
 // resourceGroupName - Resource group name where the resource is created.
 // options - AlertProcessingRulesClientListByResourceGroupOptions contains the optional parameters for the AlertProcessingRulesClient.ListByResourceGroup
 // method.
-func (client *AlertProcessingRulesClient) ListByResourceGroup(resourceGroupName string, options *AlertProcessingRulesClientListByResourceGroupOptions) *AlertProcessingRulesClientListByResourceGroupPager {
-	return &AlertProcessingRulesClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *AlertProcessingRulesClient) ListByResourceGroup(resourceGroupName string, options *AlertProcessingRulesClientListByResourceGroupOptions) *runtime.Pager[AlertProcessingRulesClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AlertProcessingRulesClientListByResourceGroupResponse]{
+		More: func(page AlertProcessingRulesClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AlertProcessingRulesClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AlertProcessingRulesList.NextLink)
+		Fetcher: func(ctx context.Context, page *AlertProcessingRulesClientListByResourceGroupResponse) (AlertProcessingRulesClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AlertProcessingRulesClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AlertProcessingRulesClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AlertProcessingRulesClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -265,7 +286,7 @@ func (client *AlertProcessingRulesClient) listByResourceGroupCreateRequest(ctx c
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *AlertProcessingRulesClient) listByResourceGroupHandleResponse(resp *http.Response) (AlertProcessingRulesClientListByResourceGroupResponse, error) {
-	result := AlertProcessingRulesClientListByResourceGroupResponse{RawResponse: resp}
+	result := AlertProcessingRulesClientListByResourceGroupResponse{}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
 		result.XMSRequestID = &val
 	}
@@ -279,16 +300,32 @@ func (client *AlertProcessingRulesClient) listByResourceGroupHandleResponse(resp
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AlertProcessingRulesClientListBySubscriptionOptions contains the optional parameters for the AlertProcessingRulesClient.ListBySubscription
 // method.
-func (client *AlertProcessingRulesClient) ListBySubscription(options *AlertProcessingRulesClientListBySubscriptionOptions) *AlertProcessingRulesClientListBySubscriptionPager {
-	return &AlertProcessingRulesClientListBySubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySubscriptionCreateRequest(ctx, options)
+func (client *AlertProcessingRulesClient) ListBySubscription(options *AlertProcessingRulesClientListBySubscriptionOptions) *runtime.Pager[AlertProcessingRulesClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AlertProcessingRulesClientListBySubscriptionResponse]{
+		More: func(page AlertProcessingRulesClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AlertProcessingRulesClientListBySubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AlertProcessingRulesList.NextLink)
+		Fetcher: func(ctx context.Context, page *AlertProcessingRulesClientListBySubscriptionResponse) (AlertProcessingRulesClientListBySubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySubscriptionCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AlertProcessingRulesClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AlertProcessingRulesClientListBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AlertProcessingRulesClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
@@ -311,7 +348,7 @@ func (client *AlertProcessingRulesClient) listBySubscriptionCreateRequest(ctx co
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
 func (client *AlertProcessingRulesClient) listBySubscriptionHandleResponse(resp *http.Response) (AlertProcessingRulesClientListBySubscriptionResponse, error) {
-	result := AlertProcessingRulesClientListBySubscriptionResponse{RawResponse: resp}
+	result := AlertProcessingRulesClientListBySubscriptionResponse{}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
 		result.XMSRequestID = &val
 	}
@@ -371,7 +408,7 @@ func (client *AlertProcessingRulesClient) updateCreateRequest(ctx context.Contex
 
 // updateHandleResponse handles the Update response.
 func (client *AlertProcessingRulesClient) updateHandleResponse(resp *http.Response) (AlertProcessingRulesClientUpdateResponse, error) {
-	result := AlertProcessingRulesClientUpdateResponse{RawResponse: resp}
+	result := AlertProcessingRulesClientUpdateResponse{}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
 		result.XMSRequestID = &val
 	}

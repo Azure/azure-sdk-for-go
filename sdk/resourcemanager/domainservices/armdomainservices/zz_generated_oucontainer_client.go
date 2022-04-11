@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type OuContainerClient struct {
 // ID forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewOuContainerClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *OuContainerClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewOuContainerClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OuContainerClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &OuContainerClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreate - The Create OuContainer operation creates a new OuContainer under the specified Domain Service instance.
@@ -57,22 +62,16 @@ func NewOuContainerClient(subscriptionID string, credential azcore.TokenCredenti
 // ouContainerName - The name of the OuContainer.
 // containerAccount - Container Account Description.
 // options - OuContainerClientBeginCreateOptions contains the optional parameters for the OuContainerClient.BeginCreate method.
-func (client *OuContainerClient) BeginCreate(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, containerAccount ContainerAccount, options *OuContainerClientBeginCreateOptions) (OuContainerClientCreatePollerResponse, error) {
-	resp, err := client.create(ctx, resourceGroupName, domainServiceName, ouContainerName, containerAccount, options)
-	if err != nil {
-		return OuContainerClientCreatePollerResponse{}, err
+func (client *OuContainerClient) BeginCreate(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, containerAccount ContainerAccount, options *OuContainerClientBeginCreateOptions) (*armruntime.Poller[OuContainerClientCreateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.create(ctx, resourceGroupName, domainServiceName, ouContainerName, containerAccount, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[OuContainerClientCreateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[OuContainerClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := OuContainerClientCreatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("OuContainerClient.Create", "", resp, client.pl)
-	if err != nil {
-		return OuContainerClientCreatePollerResponse{}, err
-	}
-	result.Poller = &OuContainerClientCreatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Create - The Create OuContainer operation creates a new OuContainer under the specified Domain Service instance.
@@ -128,22 +127,16 @@ func (client *OuContainerClient) createCreateRequest(ctx context.Context, resour
 // domainServiceName - The name of the domain service.
 // ouContainerName - The name of the OuContainer.
 // options - OuContainerClientBeginDeleteOptions contains the optional parameters for the OuContainerClient.BeginDelete method.
-func (client *OuContainerClient) BeginDelete(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, options *OuContainerClientBeginDeleteOptions) (OuContainerClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, domainServiceName, ouContainerName, options)
-	if err != nil {
-		return OuContainerClientDeletePollerResponse{}, err
+func (client *OuContainerClient) BeginDelete(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, options *OuContainerClientBeginDeleteOptions) (*armruntime.Poller[OuContainerClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, domainServiceName, ouContainerName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[OuContainerClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[OuContainerClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := OuContainerClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("OuContainerClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return OuContainerClientDeletePollerResponse{}, err
-	}
-	result.Poller = &OuContainerClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - The Delete OuContainer operation deletes specified OuContainer.
@@ -246,7 +239,7 @@ func (client *OuContainerClient) getCreateRequest(ctx context.Context, resourceG
 
 // getHandleResponse handles the Get response.
 func (client *OuContainerClient) getHandleResponse(resp *http.Response) (OuContainerClientGetResponse, error) {
-	result := OuContainerClientGetResponse{RawResponse: resp}
+	result := OuContainerClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OuContainer); err != nil {
 		return OuContainerClientGetResponse{}, err
 	}
@@ -258,16 +251,32 @@ func (client *OuContainerClient) getHandleResponse(resp *http.Response) (OuConta
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // domainServiceName - The name of the domain service.
 // options - OuContainerClientListOptions contains the optional parameters for the OuContainerClient.List method.
-func (client *OuContainerClient) List(resourceGroupName string, domainServiceName string, options *OuContainerClientListOptions) *OuContainerClientListPager {
-	return &OuContainerClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, domainServiceName, options)
+func (client *OuContainerClient) List(resourceGroupName string, domainServiceName string, options *OuContainerClientListOptions) *runtime.Pager[OuContainerClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[OuContainerClientListResponse]{
+		More: func(page OuContainerClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp OuContainerClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.OuContainerListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *OuContainerClientListResponse) (OuContainerClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, domainServiceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return OuContainerClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return OuContainerClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return OuContainerClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -298,7 +307,7 @@ func (client *OuContainerClient) listCreateRequest(ctx context.Context, resource
 
 // listHandleResponse handles the List response.
 func (client *OuContainerClient) listHandleResponse(resp *http.Response) (OuContainerClientListResponse, error) {
-	result := OuContainerClientListResponse{RawResponse: resp}
+	result := OuContainerClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OuContainerListResult); err != nil {
 		return OuContainerClientListResponse{}, err
 	}
@@ -312,22 +321,16 @@ func (client *OuContainerClient) listHandleResponse(resp *http.Response) (OuCont
 // ouContainerName - The name of the OuContainer.
 // containerAccount - Container Account Description.
 // options - OuContainerClientBeginUpdateOptions contains the optional parameters for the OuContainerClient.BeginUpdate method.
-func (client *OuContainerClient) BeginUpdate(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, containerAccount ContainerAccount, options *OuContainerClientBeginUpdateOptions) (OuContainerClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, domainServiceName, ouContainerName, containerAccount, options)
-	if err != nil {
-		return OuContainerClientUpdatePollerResponse{}, err
+func (client *OuContainerClient) BeginUpdate(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, containerAccount ContainerAccount, options *OuContainerClientBeginUpdateOptions) (*armruntime.Poller[OuContainerClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, domainServiceName, ouContainerName, containerAccount, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[OuContainerClientUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[OuContainerClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := OuContainerClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("OuContainerClient.Update", "", resp, client.pl)
-	if err != nil {
-		return OuContainerClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &OuContainerClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - The Update OuContainer operation can be used to update the existing OuContainers.

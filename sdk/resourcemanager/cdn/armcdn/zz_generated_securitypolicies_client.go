@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type SecurityPoliciesClient struct {
 // subscriptionID - Azure Subscription ID.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewSecurityPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SecurityPoliciesClient {
+func NewSecurityPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SecurityPoliciesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &SecurityPoliciesClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreate - Creates a new security policy within the specified profile.
@@ -58,22 +63,18 @@ func NewSecurityPoliciesClient(subscriptionID string, credential azcore.TokenCre
 // securityPolicy - The security policy properties.
 // options - SecurityPoliciesClientBeginCreateOptions contains the optional parameters for the SecurityPoliciesClient.BeginCreate
 // method.
-func (client *SecurityPoliciesClient) BeginCreate(ctx context.Context, resourceGroupName string, profileName string, securityPolicyName string, securityPolicy SecurityPolicy, options *SecurityPoliciesClientBeginCreateOptions) (SecurityPoliciesClientCreatePollerResponse, error) {
-	resp, err := client.create(ctx, resourceGroupName, profileName, securityPolicyName, securityPolicy, options)
-	if err != nil {
-		return SecurityPoliciesClientCreatePollerResponse{}, err
+func (client *SecurityPoliciesClient) BeginCreate(ctx context.Context, resourceGroupName string, profileName string, securityPolicyName string, securityPolicy SecurityPolicy, options *SecurityPoliciesClientBeginCreateOptions) (*armruntime.Poller[SecurityPoliciesClientCreateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.create(ctx, resourceGroupName, profileName, securityPolicyName, securityPolicy, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[SecurityPoliciesClientCreateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[SecurityPoliciesClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SecurityPoliciesClientCreatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SecurityPoliciesClient.Create", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return SecurityPoliciesClientCreatePollerResponse{}, err
-	}
-	result.Poller = &SecurityPoliciesClientCreatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Create - Creates a new security policy within the specified profile.
@@ -131,22 +132,18 @@ func (client *SecurityPoliciesClient) createCreateRequest(ctx context.Context, r
 // securityPolicyName - Name of the security policy under the profile.
 // options - SecurityPoliciesClientBeginDeleteOptions contains the optional parameters for the SecurityPoliciesClient.BeginDelete
 // method.
-func (client *SecurityPoliciesClient) BeginDelete(ctx context.Context, resourceGroupName string, profileName string, securityPolicyName string, options *SecurityPoliciesClientBeginDeleteOptions) (SecurityPoliciesClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, profileName, securityPolicyName, options)
-	if err != nil {
-		return SecurityPoliciesClientDeletePollerResponse{}, err
+func (client *SecurityPoliciesClient) BeginDelete(ctx context.Context, resourceGroupName string, profileName string, securityPolicyName string, options *SecurityPoliciesClientBeginDeleteOptions) (*armruntime.Poller[SecurityPoliciesClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, profileName, securityPolicyName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[SecurityPoliciesClientDeleteResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[SecurityPoliciesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SecurityPoliciesClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SecurityPoliciesClient.Delete", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return SecurityPoliciesClientDeletePollerResponse{}, err
-	}
-	result.Poller = &SecurityPoliciesClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes an existing security policy within profile.
@@ -250,7 +247,7 @@ func (client *SecurityPoliciesClient) getCreateRequest(ctx context.Context, reso
 
 // getHandleResponse handles the Get response.
 func (client *SecurityPoliciesClient) getHandleResponse(resp *http.Response) (SecurityPoliciesClientGetResponse, error) {
-	result := SecurityPoliciesClientGetResponse{RawResponse: resp}
+	result := SecurityPoliciesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecurityPolicy); err != nil {
 		return SecurityPoliciesClientGetResponse{}, err
 	}
@@ -264,16 +261,32 @@ func (client *SecurityPoliciesClient) getHandleResponse(resp *http.Response) (Se
 // group.
 // options - SecurityPoliciesClientListByProfileOptions contains the optional parameters for the SecurityPoliciesClient.ListByProfile
 // method.
-func (client *SecurityPoliciesClient) ListByProfile(resourceGroupName string, profileName string, options *SecurityPoliciesClientListByProfileOptions) *SecurityPoliciesClientListByProfilePager {
-	return &SecurityPoliciesClientListByProfilePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByProfileCreateRequest(ctx, resourceGroupName, profileName, options)
+func (client *SecurityPoliciesClient) ListByProfile(resourceGroupName string, profileName string, options *SecurityPoliciesClientListByProfileOptions) *runtime.Pager[SecurityPoliciesClientListByProfileResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SecurityPoliciesClientListByProfileResponse]{
+		More: func(page SecurityPoliciesClientListByProfileResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SecurityPoliciesClientListByProfileResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SecurityPolicyListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *SecurityPoliciesClientListByProfileResponse) (SecurityPoliciesClientListByProfileResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByProfileCreateRequest(ctx, resourceGroupName, profileName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SecurityPoliciesClientListByProfileResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SecurityPoliciesClientListByProfileResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SecurityPoliciesClientListByProfileResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByProfileHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByProfileCreateRequest creates the ListByProfile request.
@@ -304,7 +317,7 @@ func (client *SecurityPoliciesClient) listByProfileCreateRequest(ctx context.Con
 
 // listByProfileHandleResponse handles the ListByProfile response.
 func (client *SecurityPoliciesClient) listByProfileHandleResponse(resp *http.Response) (SecurityPoliciesClientListByProfileResponse, error) {
-	result := SecurityPoliciesClientListByProfileResponse{RawResponse: resp}
+	result := SecurityPoliciesClientListByProfileResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecurityPolicyListResult); err != nil {
 		return SecurityPoliciesClientListByProfileResponse{}, err
 	}
@@ -320,22 +333,18 @@ func (client *SecurityPoliciesClient) listByProfileHandleResponse(resp *http.Res
 // securityPolicyUpdateProperties - Security policy update properties
 // options - SecurityPoliciesClientBeginPatchOptions contains the optional parameters for the SecurityPoliciesClient.BeginPatch
 // method.
-func (client *SecurityPoliciesClient) BeginPatch(ctx context.Context, resourceGroupName string, profileName string, securityPolicyName string, securityPolicyUpdateProperties SecurityPolicyUpdateParameters, options *SecurityPoliciesClientBeginPatchOptions) (SecurityPoliciesClientPatchPollerResponse, error) {
-	resp, err := client.patch(ctx, resourceGroupName, profileName, securityPolicyName, securityPolicyUpdateProperties, options)
-	if err != nil {
-		return SecurityPoliciesClientPatchPollerResponse{}, err
+func (client *SecurityPoliciesClient) BeginPatch(ctx context.Context, resourceGroupName string, profileName string, securityPolicyName string, securityPolicyUpdateProperties SecurityPolicyUpdateParameters, options *SecurityPoliciesClientBeginPatchOptions) (*armruntime.Poller[SecurityPoliciesClientPatchResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.patch(ctx, resourceGroupName, profileName, securityPolicyName, securityPolicyUpdateProperties, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[SecurityPoliciesClientPatchResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[SecurityPoliciesClientPatchResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SecurityPoliciesClientPatchPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SecurityPoliciesClient.Patch", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return SecurityPoliciesClientPatchPollerResponse{}, err
-	}
-	result.Poller = &SecurityPoliciesClientPatchPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Patch - Updates an existing security policy within a profile.

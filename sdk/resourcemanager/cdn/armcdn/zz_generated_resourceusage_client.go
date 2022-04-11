@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,35 +34,55 @@ type ResourceUsageClient struct {
 // subscriptionID - Azure Subscription ID.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewResourceUsageClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ResourceUsageClient {
+func NewResourceUsageClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ResourceUsageClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ResourceUsageClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // List - Check the quota and actual usage of the CDN profiles under the given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ResourceUsageClientListOptions contains the optional parameters for the ResourceUsageClient.List method.
-func (client *ResourceUsageClient) List(options *ResourceUsageClientListOptions) *ResourceUsageClientListPager {
-	return &ResourceUsageClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *ResourceUsageClient) List(options *ResourceUsageClientListOptions) *runtime.Pager[ResourceUsageClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ResourceUsageClientListResponse]{
+		More: func(page ResourceUsageClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ResourceUsageClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ResourceUsageListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ResourceUsageClientListResponse) (ResourceUsageClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ResourceUsageClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ResourceUsageClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ResourceUsageClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -84,7 +105,7 @@ func (client *ResourceUsageClient) listCreateRequest(ctx context.Context, option
 
 // listHandleResponse handles the List response.
 func (client *ResourceUsageClient) listHandleResponse(resp *http.Response) (ResourceUsageClientListResponse, error) {
-	result := ResourceUsageClientListResponse{RawResponse: resp}
+	result := ResourceUsageClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceUsageListResult); err != nil {
 		return ResourceUsageClientListResponse{}, err
 	}

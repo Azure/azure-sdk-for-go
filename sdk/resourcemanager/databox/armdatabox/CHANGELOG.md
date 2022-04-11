@@ -1,5 +1,182 @@
 # Release History
 
+## 0.3.0 (2022-04-11)
+### Breaking Changes
+
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `*ServiceClient.ListAvailableSKUsByResourceGroup` return value(s) have been changed from `(*ServiceClientListAvailableSKUsByResourceGroupPager)` to `(*runtime.Pager[ServiceClientListAvailableSKUsByResourceGroupResponse])`
+- Function `*JobsClient.BeginDelete` return value(s) have been changed from `(JobsClientDeletePollerResponse, error)` to `(*armruntime.Poller[JobsClientDeleteResponse], error)`
+- Function `*JobsClient.List` return value(s) have been changed from `(*JobsClientListPager)` to `(*runtime.Pager[JobsClientListResponse])`
+- Function `*JobsClient.ListCredentials` parameter(s) have been changed from `(context.Context, string, string, *JobsClientListCredentialsOptions)` to `(string, string, *JobsClientListCredentialsOptions)`
+- Function `*JobsClient.ListCredentials` return value(s) have been changed from `(JobsClientListCredentialsResponse, error)` to `(*runtime.Pager[JobsClientListCredentialsResponse])`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `*JobsClient.BeginCreate` return value(s) have been changed from `(JobsClientCreatePollerResponse, error)` to `(*armruntime.Poller[JobsClientCreateResponse], error)`
+- Function `NewJobsClient` return value(s) have been changed from `(*JobsClient)` to `(*JobsClient, error)`
+- Function `*JobsClient.ListByResourceGroup` return value(s) have been changed from `(*JobsClientListByResourceGroupPager)` to `(*runtime.Pager[JobsClientListByResourceGroupResponse])`
+- Function `*JobsClient.BeginUpdate` return value(s) have been changed from `(JobsClientUpdatePollerResponse, error)` to `(*armruntime.Poller[JobsClientUpdateResponse], error)`
+- Function `NewServiceClient` return value(s) have been changed from `(*ServiceClient)` to `(*ServiceClient, error)`
+- Function `NewManagementClient` return value(s) have been changed from `(*ManagementClient)` to `(*ManagementClient, error)`
+- Function `SKUName.ToPtr` has been removed
+- Function `ShareDestinationFormatType.ToPtr` has been removed
+- Function `TransferConfigurationType.ToPtr` has been removed
+- Function `CustomerResolutionCode.ToPtr` has been removed
+- Function `*JobsClientUpdatePoller.ResumeToken` has been removed
+- Function `*JobsClientDeletePoller.FinalResponse` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `*JobsClientDeletePoller.ResumeToken` has been removed
+- Function `*JobsClientUpdatePollerResponse.Resume` has been removed
+- Function `*JobsClientCreatePollerResponse.Resume` has been removed
+- Function `DataAccountType.ToPtr` has been removed
+- Function `*JobsClientListPager.Err` has been removed
+- Function `AddressType.ToPtr` has been removed
+- Function `*JobsClientCreatePoller.ResumeToken` has been removed
+- Function `SKUDisabledReason.ToPtr` has been removed
+- Function `JobDeliveryType.ToPtr` has been removed
+- Function `*ServiceClientListAvailableSKUsByResourceGroupPager.Err` has been removed
+- Function `*JobsClientCreatePoller.FinalResponse` has been removed
+- Function `StageName.ToPtr` has been removed
+- Function `ClassDiscriminator.ToPtr` has been removed
+- Function `*JobsClientUpdatePoller.Done` has been removed
+- Function `*ServiceClientListAvailableSKUsByResourceGroupPager.NextPage` has been removed
+- Function `FilterFileType.ToPtr` has been removed
+- Function `*JobsClientListByResourceGroupPager.NextPage` has been removed
+- Function `JobsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `ValidationStatus.ToPtr` has been removed
+- Function `*ServiceClientListAvailableSKUsByResourceGroupPager.PageResponse` has been removed
+- Function `*JobsClientListPager.PageResponse` has been removed
+- Function `CopyStatus.ToPtr` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Function `*JobsClientListPager.NextPage` has been removed
+- Function `*JobsClientDeletePollerResponse.Resume` has been removed
+- Function `*JobsClientDeletePoller.Poll` has been removed
+- Function `LogCollectionLevel.ToPtr` has been removed
+- Function `*JobsClientListByResourceGroupPager.Err` has been removed
+- Function `DataCenterCode.ToPtr` has been removed
+- Function `JobsClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*JobsClientUpdatePoller.FinalResponse` has been removed
+- Function `DatacenterAddressType.ToPtr` has been removed
+- Function `TransportShipmentTypes.ToPtr` has been removed
+- Function `*JobsClientListByResourceGroupPager.PageResponse` has been removed
+- Function `TransferType.ToPtr` has been removed
+- Function `*JobsClientCreatePoller.Done` has been removed
+- Function `AccessProtocol.ToPtr` has been removed
+- Function `JobsClientCreatePollerResponse.PollUntilDone` has been removed
+- Function `NotificationStageName.ToPtr` has been removed
+- Function `AddressValidationStatus.ToPtr` has been removed
+- Function `*JobsClientUpdatePoller.Poll` has been removed
+- Function `OverallValidationStatus.ToPtr` has been removed
+- Function `KekType.ToPtr` has been removed
+- Function `*JobsClientCreatePoller.Poll` has been removed
+- Function `DoubleEncryption.ToPtr` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `*JobsClientDeletePoller.Done` has been removed
+- Function `StageStatus.ToPtr` has been removed
+- Function `ValidationInputDiscriminator.ToPtr` has been removed
+- Struct `JobsClientBookShipmentPickUpResult` has been removed
+- Struct `JobsClientCreatePoller` has been removed
+- Struct `JobsClientCreatePollerResponse` has been removed
+- Struct `JobsClientCreateResult` has been removed
+- Struct `JobsClientDeletePoller` has been removed
+- Struct `JobsClientDeletePollerResponse` has been removed
+- Struct `JobsClientGetResult` has been removed
+- Struct `JobsClientListByResourceGroupPager` has been removed
+- Struct `JobsClientListByResourceGroupResult` has been removed
+- Struct `JobsClientListCredentialsResult` has been removed
+- Struct `JobsClientListPager` has been removed
+- Struct `JobsClientListResult` has been removed
+- Struct `JobsClientUpdatePoller` has been removed
+- Struct `JobsClientUpdatePollerResponse` has been removed
+- Struct `JobsClientUpdateResult` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `ServiceClientListAvailableSKUsByResourceGroupPager` has been removed
+- Struct `ServiceClientListAvailableSKUsByResourceGroupResult` has been removed
+- Struct `ServiceClientRegionConfigurationByResourceGroupResult` has been removed
+- Struct `ServiceClientRegionConfigurationResult` has been removed
+- Struct `ServiceClientValidateAddressResult` has been removed
+- Struct `ServiceClientValidateInputsByResourceGroupResult` has been removed
+- Struct `ServiceClientValidateInputsResult` has been removed
+- Field `RawResponse` of struct `JobsClientCancelResponse` has been removed
+- Field `RawResponse` of struct `JobsClientDeleteResponse` has been removed
+- Field `ServiceClientValidateAddressResult` of struct `ServiceClientValidateAddressResponse` has been removed
+- Field `RawResponse` of struct `ServiceClientValidateAddressResponse` has been removed
+- Field `JobsClientCreateResult` of struct `JobsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `JobsClientCreateResponse` has been removed
+- Field `JobsClientUpdateResult` of struct `JobsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `JobsClientUpdateResponse` has been removed
+- Field `JobsClientGetResult` of struct `JobsClientGetResponse` has been removed
+- Field `RawResponse` of struct `JobsClientGetResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `ServiceClientValidateInputsResult` of struct `ServiceClientValidateInputsResponse` has been removed
+- Field `RawResponse` of struct `ServiceClientValidateInputsResponse` has been removed
+- Field `JobsClientBookShipmentPickUpResult` of struct `JobsClientBookShipmentPickUpResponse` has been removed
+- Field `RawResponse` of struct `JobsClientBookShipmentPickUpResponse` has been removed
+- Field `JobsClientListCredentialsResult` of struct `JobsClientListCredentialsResponse` has been removed
+- Field `RawResponse` of struct `JobsClientListCredentialsResponse` has been removed
+- Field `ServiceClientRegionConfigurationByResourceGroupResult` of struct `ServiceClientRegionConfigurationByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `ServiceClientRegionConfigurationByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `ManagementClientMitigateResponse` has been removed
+- Field `JobsClientListResult` of struct `JobsClientListResponse` has been removed
+- Field `RawResponse` of struct `JobsClientListResponse` has been removed
+- Field `ServiceClientRegionConfigurationResult` of struct `ServiceClientRegionConfigurationResponse` has been removed
+- Field `RawResponse` of struct `ServiceClientRegionConfigurationResponse` has been removed
+- Field `RawResponse` of struct `JobsClientMarkDevicesShippedResponse` has been removed
+- Field `JobsClientListByResourceGroupResult` of struct `JobsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `JobsClientListByResourceGroupResponse` has been removed
+- Field `ServiceClientValidateInputsByResourceGroupResult` of struct `ServiceClientValidateInputsByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `ServiceClientValidateInputsByResourceGroupResponse` has been removed
+- Field `ServiceClientListAvailableSKUsByResourceGroupResult` of struct `ServiceClientListAvailableSKUsByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `ServiceClientListAvailableSKUsByResourceGroupResponse` has been removed
+
+### Features Added
+
+- New const `CustomerResolutionCodeReachOutToOperation`
+- New const `DataCenterCodeBN7`
+- New const `DataCenterCodeOSA22`
+- New const `DataCenterCodeBJS20`
+- New const `DataCenterCodePAR22`
+- New const `DataCenterCodeDUB07`
+- New const `CustomerResolutionCodeRestart`
+- New const `DataCenterCodeSVG20`
+- New const `DataCenterCodePNQ01`
+- New const `DataCenterCodeOSA02`
+- New const `DataCenterCodeSN6`
+- New const `StageStatusCustomerActionPerformed`
+- New function `DiskGranularCopyLogDetails.MarshalJSON() ([]byte, error)`
+- New function `*DiskGranularCopyLogDetails.GetGranularCopyLogDetails() *GranularCopyLogDetails`
+- New function `*GranularCopyLogDetails.GetGranularCopyLogDetails() *GranularCopyLogDetails`
+- New function `ErrorDetail.MarshalJSON() ([]byte, error)`
+- New function `*DiskGranularCopyLogDetails.UnmarshalJSON([]byte) error`
+- New struct `APIError`
+- New struct `ArmBaseObject`
+- New struct `Details`
+- New struct `DiskGranularCopyLogDetails`
+- New struct `DiskGranularCopyProgress`
+- New struct `ErrorDetail`
+- New struct `GranularCopyLogDetails`
+- New struct `GranularCopyProgress`
+- New anonymous field `JobResource` in struct `JobsClientCreateResponse`
+- New anonymous field `AddressValidationOutput` in struct `ServiceClientValidateAddressResponse`
+- New field `ResumeToken` in struct `JobsClientBeginUpdateOptions`
+- New anonymous field `UnencryptedCredentialsList` in struct `JobsClientListCredentialsResponse`
+- New field `ResumeToken` in struct `JobsClientBeginDeleteOptions`
+- New anonymous field `JobResourceList` in struct `JobsClientListByResourceGroupResponse`
+- New anonymous field `JobResource` in struct `JobsClientGetResponse`
+- New anonymous field `ShipmentPickUpResponse` in struct `JobsClientBookShipmentPickUpResponse`
+- New anonymous field `AvailableSKUsResult` in struct `ServiceClientListAvailableSKUsByResourceGroupResponse`
+- New anonymous field `OperationList` in struct `OperationsClientListResponse`
+- New anonymous field `JobResource` in struct `JobsClientUpdateResponse`
+- New anonymous field `ValidationResponse` in struct `ServiceClientValidateInputsByResourceGroupResponse`
+- New field `ResumeToken` in struct `JobsClientBeginCreateOptions`
+- New anonymous field `RegionConfigurationResponse` in struct `ServiceClientRegionConfigurationResponse`
+- New field `GranularCopyProgress` in struct `DiskJobDetails`
+- New anonymous field `RegionConfigurationResponse` in struct `ServiceClientRegionConfigurationByResourceGroupResponse`
+- New anonymous field `ValidationResponse` in struct `ServiceClientValidateInputsResponse`
+- New anonymous field `JobResourceList` in struct `JobsClientListResponse`
+- New field `StorageAccountAccessTierPreferences` in struct `Preferences`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

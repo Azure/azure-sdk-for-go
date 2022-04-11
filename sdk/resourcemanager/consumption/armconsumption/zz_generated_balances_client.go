@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -31,19 +32,23 @@ type BalancesClient struct {
 // NewBalancesClient creates a new instance of BalancesClient with the specified values.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewBalancesClient(credential azcore.TokenCredential, options *arm.ClientOptions) *BalancesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewBalancesClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*BalancesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &BalancesClient{
-		host: string(cp.Endpoint),
-		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host: ep,
+		pl:   pl,
 	}
-	return client
+	return client, nil
 }
 
 // GetByBillingAccount - Gets the balances for a scope by billingAccountId. Balances are available via this API only for May
@@ -87,7 +92,7 @@ func (client *BalancesClient) getByBillingAccountCreateRequest(ctx context.Conte
 
 // getByBillingAccountHandleResponse handles the GetByBillingAccount response.
 func (client *BalancesClient) getByBillingAccountHandleResponse(resp *http.Response) (BalancesClientGetByBillingAccountResponse, error) {
-	result := BalancesClientGetByBillingAccountResponse{RawResponse: resp}
+	result := BalancesClientGetByBillingAccountResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Balance); err != nil {
 		return BalancesClientGetByBillingAccountResponse{}, err
 	}
@@ -140,7 +145,7 @@ func (client *BalancesClient) getForBillingPeriodByBillingAccountCreateRequest(c
 
 // getForBillingPeriodByBillingAccountHandleResponse handles the GetForBillingPeriodByBillingAccount response.
 func (client *BalancesClient) getForBillingPeriodByBillingAccountHandleResponse(resp *http.Response) (BalancesClientGetForBillingPeriodByBillingAccountResponse, error) {
-	result := BalancesClientGetForBillingPeriodByBillingAccountResponse{RawResponse: resp}
+	result := BalancesClientGetForBillingPeriodByBillingAccountResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Balance); err != nil {
 		return BalancesClientGetForBillingPeriodByBillingAccountResponse{}, err
 	}

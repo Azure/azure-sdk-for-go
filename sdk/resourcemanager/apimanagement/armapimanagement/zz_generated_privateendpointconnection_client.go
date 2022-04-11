@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type PrivateEndpointConnectionClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewPrivateEndpointConnectionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PrivateEndpointConnectionClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewPrivateEndpointConnectionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateEndpointConnectionClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &PrivateEndpointConnectionClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates a new Private Endpoint Connection or updates an existing one.
@@ -57,22 +62,16 @@ func NewPrivateEndpointConnectionClient(subscriptionID string, credential azcore
 // privateEndpointConnectionName - Name of the private endpoint connection.
 // options - PrivateEndpointConnectionClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionClient.BeginCreateOrUpdate
 // method.
-func (client *PrivateEndpointConnectionClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, privateEndpointConnectionName string, privateEndpointConnectionRequest PrivateEndpointConnectionRequest, options *PrivateEndpointConnectionClientBeginCreateOrUpdateOptions) (PrivateEndpointConnectionClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, serviceName, privateEndpointConnectionName, privateEndpointConnectionRequest, options)
-	if err != nil {
-		return PrivateEndpointConnectionClientCreateOrUpdatePollerResponse{}, err
+func (client *PrivateEndpointConnectionClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, privateEndpointConnectionName string, privateEndpointConnectionRequest PrivateEndpointConnectionRequest, options *PrivateEndpointConnectionClientBeginCreateOrUpdateOptions) (*armruntime.Poller[PrivateEndpointConnectionClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, serviceName, privateEndpointConnectionName, privateEndpointConnectionRequest, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[PrivateEndpointConnectionClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[PrivateEndpointConnectionClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := PrivateEndpointConnectionClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("PrivateEndpointConnectionClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return PrivateEndpointConnectionClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &PrivateEndpointConnectionClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates a new Private Endpoint Connection or updates an existing one.
@@ -129,22 +128,16 @@ func (client *PrivateEndpointConnectionClient) createOrUpdateCreateRequest(ctx c
 // privateEndpointConnectionName - Name of the private endpoint connection.
 // options - PrivateEndpointConnectionClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionClient.BeginDelete
 // method.
-func (client *PrivateEndpointConnectionClient) BeginDelete(ctx context.Context, resourceGroupName string, serviceName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionClientBeginDeleteOptions) (PrivateEndpointConnectionClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, serviceName, privateEndpointConnectionName, options)
-	if err != nil {
-		return PrivateEndpointConnectionClientDeletePollerResponse{}, err
+func (client *PrivateEndpointConnectionClient) BeginDelete(ctx context.Context, resourceGroupName string, serviceName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionClientBeginDeleteOptions) (*armruntime.Poller[PrivateEndpointConnectionClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, serviceName, privateEndpointConnectionName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[PrivateEndpointConnectionClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[PrivateEndpointConnectionClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := PrivateEndpointConnectionClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("PrivateEndpointConnectionClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return PrivateEndpointConnectionClientDeletePollerResponse{}, err
-	}
-	result.Poller = &PrivateEndpointConnectionClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes the specified Private Endpoint Connection.
@@ -248,7 +241,7 @@ func (client *PrivateEndpointConnectionClient) getByNameCreateRequest(ctx contex
 
 // getByNameHandleResponse handles the GetByName response.
 func (client *PrivateEndpointConnectionClient) getByNameHandleResponse(resp *http.Response) (PrivateEndpointConnectionClientGetByNameResponse, error) {
-	result := PrivateEndpointConnectionClientGetByNameResponse{RawResponse: resp}
+	result := PrivateEndpointConnectionClientGetByNameResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnection); err != nil {
 		return PrivateEndpointConnectionClientGetByNameResponse{}, err
 	}
@@ -309,7 +302,7 @@ func (client *PrivateEndpointConnectionClient) getPrivateLinkResourceCreateReque
 
 // getPrivateLinkResourceHandleResponse handles the GetPrivateLinkResource response.
 func (client *PrivateEndpointConnectionClient) getPrivateLinkResourceHandleResponse(resp *http.Response) (PrivateEndpointConnectionClientGetPrivateLinkResourceResponse, error) {
-	result := PrivateEndpointConnectionClientGetPrivateLinkResourceResponse{RawResponse: resp}
+	result := PrivateEndpointConnectionClientGetPrivateLinkResourceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResource); err != nil {
 		return PrivateEndpointConnectionClientGetPrivateLinkResourceResponse{}, err
 	}
@@ -322,19 +315,26 @@ func (client *PrivateEndpointConnectionClient) getPrivateLinkResourceHandleRespo
 // serviceName - The name of the API Management service.
 // options - PrivateEndpointConnectionClientListByServiceOptions contains the optional parameters for the PrivateEndpointConnectionClient.ListByService
 // method.
-func (client *PrivateEndpointConnectionClient) ListByService(ctx context.Context, resourceGroupName string, serviceName string, options *PrivateEndpointConnectionClientListByServiceOptions) (PrivateEndpointConnectionClientListByServiceResponse, error) {
-	req, err := client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
-	if err != nil {
-		return PrivateEndpointConnectionClientListByServiceResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return PrivateEndpointConnectionClientListByServiceResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PrivateEndpointConnectionClientListByServiceResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listByServiceHandleResponse(resp)
+func (client *PrivateEndpointConnectionClient) ListByService(resourceGroupName string, serviceName string, options *PrivateEndpointConnectionClientListByServiceOptions) *runtime.Pager[PrivateEndpointConnectionClientListByServiceResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PrivateEndpointConnectionClientListByServiceResponse]{
+		More: func(page PrivateEndpointConnectionClientListByServiceResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *PrivateEndpointConnectionClientListByServiceResponse) (PrivateEndpointConnectionClientListByServiceResponse, error) {
+			req, err := client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
+			if err != nil {
+				return PrivateEndpointConnectionClientListByServiceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PrivateEndpointConnectionClientListByServiceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PrivateEndpointConnectionClientListByServiceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByServiceHandleResponse(resp)
+		},
+	})
 }
 
 // listByServiceCreateRequest creates the ListByService request.
@@ -365,7 +365,7 @@ func (client *PrivateEndpointConnectionClient) listByServiceCreateRequest(ctx co
 
 // listByServiceHandleResponse handles the ListByService response.
 func (client *PrivateEndpointConnectionClient) listByServiceHandleResponse(resp *http.Response) (PrivateEndpointConnectionClientListByServiceResponse, error) {
-	result := PrivateEndpointConnectionClientListByServiceResponse{RawResponse: resp}
+	result := PrivateEndpointConnectionClientListByServiceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnectionListResult); err != nil {
 		return PrivateEndpointConnectionClientListByServiceResponse{}, err
 	}
@@ -421,7 +421,7 @@ func (client *PrivateEndpointConnectionClient) listPrivateLinkResourcesCreateReq
 
 // listPrivateLinkResourcesHandleResponse handles the ListPrivateLinkResources response.
 func (client *PrivateEndpointConnectionClient) listPrivateLinkResourcesHandleResponse(resp *http.Response) (PrivateEndpointConnectionClientListPrivateLinkResourcesResponse, error) {
-	result := PrivateEndpointConnectionClientListPrivateLinkResourcesResponse{RawResponse: resp}
+	result := PrivateEndpointConnectionClientListPrivateLinkResourcesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResourceListResult); err != nil {
 		return PrivateEndpointConnectionClientListPrivateLinkResourcesResponse{}, err
 	}

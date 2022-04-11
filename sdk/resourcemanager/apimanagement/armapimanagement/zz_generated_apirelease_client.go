@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -35,20 +36,24 @@ type APIReleaseClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewAPIReleaseClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *APIReleaseClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewAPIReleaseClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*APIReleaseClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &APIReleaseClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates a new Release for the API.
@@ -114,7 +119,7 @@ func (client *APIReleaseClient) createOrUpdateCreateRequest(ctx context.Context,
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *APIReleaseClient) createOrUpdateHandleResponse(resp *http.Response) (APIReleaseClientCreateOrUpdateResponse, error) {
-	result := APIReleaseClientCreateOrUpdateResponse{RawResponse: resp}
+	result := APIReleaseClientCreateOrUpdateResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -145,7 +150,7 @@ func (client *APIReleaseClient) Delete(ctx context.Context, resourceGroupName st
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return APIReleaseClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return APIReleaseClientDeleteResponse{RawResponse: resp}, nil
+	return APIReleaseClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -241,7 +246,7 @@ func (client *APIReleaseClient) getCreateRequest(ctx context.Context, resourceGr
 
 // getHandleResponse handles the Get response.
 func (client *APIReleaseClient) getHandleResponse(resp *http.Response) (APIReleaseClientGetResponse, error) {
-	result := APIReleaseClientGetResponse{RawResponse: resp}
+	result := APIReleaseClientGetResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -305,7 +310,7 @@ func (client *APIReleaseClient) getEntityTagCreateRequest(ctx context.Context, r
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
 func (client *APIReleaseClient) getEntityTagHandleResponse(resp *http.Response) (APIReleaseClientGetEntityTagResponse, error) {
-	result := APIReleaseClientGetEntityTagResponse{RawResponse: resp}
+	result := APIReleaseClientGetEntityTagResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -324,16 +329,32 @@ func (client *APIReleaseClient) getEntityTagHandleResponse(resp *http.Response) 
 // apiID - API identifier. Must be unique in the current API Management service instance.
 // options - APIReleaseClientListByServiceOptions contains the optional parameters for the APIReleaseClient.ListByService
 // method.
-func (client *APIReleaseClient) ListByService(resourceGroupName string, serviceName string, apiID string, options *APIReleaseClientListByServiceOptions) *APIReleaseClientListByServicePager {
-	return &APIReleaseClientListByServicePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, apiID, options)
+func (client *APIReleaseClient) ListByService(resourceGroupName string, serviceName string, apiID string, options *APIReleaseClientListByServiceOptions) *runtime.Pager[APIReleaseClientListByServiceResponse] {
+	return runtime.NewPager(runtime.PageProcessor[APIReleaseClientListByServiceResponse]{
+		More: func(page APIReleaseClientListByServiceResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp APIReleaseClientListByServiceResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.APIReleaseCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *APIReleaseClientListByServiceResponse) (APIReleaseClientListByServiceResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, apiID, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return APIReleaseClientListByServiceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return APIReleaseClientListByServiceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return APIReleaseClientListByServiceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByServiceHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByServiceCreateRequest creates the ListByService request.
@@ -377,7 +398,7 @@ func (client *APIReleaseClient) listByServiceCreateRequest(ctx context.Context, 
 
 // listByServiceHandleResponse handles the ListByService response.
 func (client *APIReleaseClient) listByServiceHandleResponse(resp *http.Response) (APIReleaseClientListByServiceResponse, error) {
-	result := APIReleaseClientListByServiceResponse{RawResponse: resp}
+	result := APIReleaseClientListByServiceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.APIReleaseCollection); err != nil {
 		return APIReleaseClientListByServiceResponse{}, err
 	}
@@ -446,7 +467,7 @@ func (client *APIReleaseClient) updateCreateRequest(ctx context.Context, resourc
 
 // updateHandleResponse handles the Update response.
 func (client *APIReleaseClient) updateHandleResponse(resp *http.Response) (APIReleaseClientUpdateResponse, error) {
-	result := APIReleaseClientUpdateResponse{RawResponse: resp}
+	result := APIReleaseClientUpdateResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}

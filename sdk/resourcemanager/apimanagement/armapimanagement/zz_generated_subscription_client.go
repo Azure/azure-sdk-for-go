@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -35,20 +36,24 @@ type SubscriptionClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewSubscriptionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SubscriptionClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewSubscriptionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SubscriptionClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &SubscriptionClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates the subscription of specified user to the specified product.
@@ -115,7 +120,7 @@ func (client *SubscriptionClient) createOrUpdateCreateRequest(ctx context.Contex
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *SubscriptionClient) createOrUpdateHandleResponse(resp *http.Response) (SubscriptionClientCreateOrUpdateResponse, error) {
-	result := SubscriptionClientCreateOrUpdateResponse{RawResponse: resp}
+	result := SubscriptionClientCreateOrUpdateResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -145,7 +150,7 @@ func (client *SubscriptionClient) Delete(ctx context.Context, resourceGroupName 
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return SubscriptionClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return SubscriptionClientDeleteResponse{RawResponse: resp}, nil
+	return SubscriptionClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -232,7 +237,7 @@ func (client *SubscriptionClient) getCreateRequest(ctx context.Context, resource
 
 // getHandleResponse handles the Get response.
 func (client *SubscriptionClient) getHandleResponse(resp *http.Response) (SubscriptionClientGetResponse, error) {
-	result := SubscriptionClientGetResponse{RawResponse: resp}
+	result := SubscriptionClientGetResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -292,7 +297,7 @@ func (client *SubscriptionClient) getEntityTagCreateRequest(ctx context.Context,
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
 func (client *SubscriptionClient) getEntityTagHandleResponse(resp *http.Response) (SubscriptionClientGetEntityTagResponse, error) {
-	result := SubscriptionClientGetEntityTagResponse{RawResponse: resp}
+	result := SubscriptionClientGetEntityTagResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -307,16 +312,32 @@ func (client *SubscriptionClient) getEntityTagHandleResponse(resp *http.Response
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // options - SubscriptionClientListOptions contains the optional parameters for the SubscriptionClient.List method.
-func (client *SubscriptionClient) List(resourceGroupName string, serviceName string, options *SubscriptionClientListOptions) *SubscriptionClientListPager {
-	return &SubscriptionClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, serviceName, options)
+func (client *SubscriptionClient) List(resourceGroupName string, serviceName string, options *SubscriptionClientListOptions) *runtime.Pager[SubscriptionClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SubscriptionClientListResponse]{
+		More: func(page SubscriptionClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SubscriptionClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SubscriptionCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *SubscriptionClientListResponse) (SubscriptionClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, serviceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SubscriptionClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SubscriptionClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SubscriptionClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -356,7 +377,7 @@ func (client *SubscriptionClient) listCreateRequest(ctx context.Context, resourc
 
 // listHandleResponse handles the List response.
 func (client *SubscriptionClient) listHandleResponse(resp *http.Response) (SubscriptionClientListResponse, error) {
-	result := SubscriptionClientListResponse{RawResponse: resp}
+	result := SubscriptionClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionCollection); err != nil {
 		return SubscriptionClientListResponse{}, err
 	}
@@ -417,7 +438,7 @@ func (client *SubscriptionClient) listSecretsCreateRequest(ctx context.Context, 
 
 // listSecretsHandleResponse handles the ListSecrets response.
 func (client *SubscriptionClient) listSecretsHandleResponse(resp *http.Response) (SubscriptionClientListSecretsResponse, error) {
-	result := SubscriptionClientListSecretsResponse{RawResponse: resp}
+	result := SubscriptionClientListSecretsResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -446,7 +467,7 @@ func (client *SubscriptionClient) RegeneratePrimaryKey(ctx context.Context, reso
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return SubscriptionClientRegeneratePrimaryKeyResponse{}, runtime.NewResponseError(resp)
 	}
-	return SubscriptionClientRegeneratePrimaryKeyResponse{RawResponse: resp}, nil
+	return SubscriptionClientRegeneratePrimaryKeyResponse{}, nil
 }
 
 // regeneratePrimaryKeyCreateRequest creates the RegeneratePrimaryKey request.
@@ -498,7 +519,7 @@ func (client *SubscriptionClient) RegenerateSecondaryKey(ctx context.Context, re
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return SubscriptionClientRegenerateSecondaryKeyResponse{}, runtime.NewResponseError(resp)
 	}
-	return SubscriptionClientRegenerateSecondaryKeyResponse{RawResponse: resp}, nil
+	return SubscriptionClientRegenerateSecondaryKeyResponse{}, nil
 }
 
 // regenerateSecondaryKeyCreateRequest creates the RegenerateSecondaryKey request.
@@ -594,7 +615,7 @@ func (client *SubscriptionClient) updateCreateRequest(ctx context.Context, resou
 
 // updateHandleResponse handles the Update response.
 func (client *SubscriptionClient) updateHandleResponse(resp *http.Response) (SubscriptionClientUpdateResponse, error) {
-	result := SubscriptionClientUpdateResponse{RawResponse: resp}
+	result := SubscriptionClientUpdateResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}

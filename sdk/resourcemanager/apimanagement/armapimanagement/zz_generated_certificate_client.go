@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -35,20 +36,24 @@ type CertificateClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewCertificateClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CertificateClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewCertificateClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CertificateClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &CertificateClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates the certificate being used for authentication with the backend.
@@ -109,7 +114,7 @@ func (client *CertificateClient) createOrUpdateCreateRequest(ctx context.Context
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *CertificateClient) createOrUpdateHandleResponse(resp *http.Response) (CertificateClientCreateOrUpdateResponse, error) {
-	result := CertificateClientCreateOrUpdateResponse{RawResponse: resp}
+	result := CertificateClientCreateOrUpdateResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -139,7 +144,7 @@ func (client *CertificateClient) Delete(ctx context.Context, resourceGroupName s
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return CertificateClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return CertificateClientDeleteResponse{RawResponse: resp}, nil
+	return CertificateClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -226,7 +231,7 @@ func (client *CertificateClient) getCreateRequest(ctx context.Context, resourceG
 
 // getHandleResponse handles the Get response.
 func (client *CertificateClient) getHandleResponse(resp *http.Response) (CertificateClientGetResponse, error) {
-	result := CertificateClientGetResponse{RawResponse: resp}
+	result := CertificateClientGetResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -286,7 +291,7 @@ func (client *CertificateClient) getEntityTagCreateRequest(ctx context.Context, 
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
 func (client *CertificateClient) getEntityTagHandleResponse(resp *http.Response) (CertificateClientGetEntityTagResponse, error) {
-	result := CertificateClientGetEntityTagResponse{RawResponse: resp}
+	result := CertificateClientGetEntityTagResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -302,16 +307,32 @@ func (client *CertificateClient) getEntityTagHandleResponse(resp *http.Response)
 // serviceName - The name of the API Management service.
 // options - CertificateClientListByServiceOptions contains the optional parameters for the CertificateClient.ListByService
 // method.
-func (client *CertificateClient) ListByService(resourceGroupName string, serviceName string, options *CertificateClientListByServiceOptions) *CertificateClientListByServicePager {
-	return &CertificateClientListByServicePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
+func (client *CertificateClient) ListByService(resourceGroupName string, serviceName string, options *CertificateClientListByServiceOptions) *runtime.Pager[CertificateClientListByServiceResponse] {
+	return runtime.NewPager(runtime.PageProcessor[CertificateClientListByServiceResponse]{
+		More: func(page CertificateClientListByServiceResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp CertificateClientListByServiceResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.CertificateCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *CertificateClientListByServiceResponse) (CertificateClientListByServiceResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return CertificateClientListByServiceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return CertificateClientListByServiceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return CertificateClientListByServiceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByServiceHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByServiceCreateRequest creates the ListByService request.
@@ -354,7 +375,7 @@ func (client *CertificateClient) listByServiceCreateRequest(ctx context.Context,
 
 // listByServiceHandleResponse handles the ListByService response.
 func (client *CertificateClient) listByServiceHandleResponse(resp *http.Response) (CertificateClientListByServiceResponse, error) {
-	result := CertificateClientListByServiceResponse{RawResponse: resp}
+	result := CertificateClientListByServiceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateCollection); err != nil {
 		return CertificateClientListByServiceResponse{}, err
 	}
@@ -415,7 +436,7 @@ func (client *CertificateClient) refreshSecretCreateRequest(ctx context.Context,
 
 // refreshSecretHandleResponse handles the RefreshSecret response.
 func (client *CertificateClient) refreshSecretHandleResponse(resp *http.Response) (CertificateClientRefreshSecretResponse, error) {
-	result := CertificateClientRefreshSecretResponse{RawResponse: resp}
+	result := CertificateClientRefreshSecretResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}

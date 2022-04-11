@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type RegionClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewRegionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RegionClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewRegionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RegionClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &RegionClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // ListByService - Lists all azure regions in which the service exists.
@@ -55,16 +60,32 @@ func NewRegionClient(subscriptionID string, credential azcore.TokenCredential, o
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // options - RegionClientListByServiceOptions contains the optional parameters for the RegionClient.ListByService method.
-func (client *RegionClient) ListByService(resourceGroupName string, serviceName string, options *RegionClientListByServiceOptions) *RegionClientListByServicePager {
-	return &RegionClientListByServicePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
+func (client *RegionClient) ListByService(resourceGroupName string, serviceName string, options *RegionClientListByServiceOptions) *runtime.Pager[RegionClientListByServiceResponse] {
+	return runtime.NewPager(runtime.PageProcessor[RegionClientListByServiceResponse]{
+		More: func(page RegionClientListByServiceResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp RegionClientListByServiceResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.RegionListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *RegionClientListByServiceResponse) (RegionClientListByServiceResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return RegionClientListByServiceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return RegionClientListByServiceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return RegionClientListByServiceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByServiceHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByServiceCreateRequest creates the ListByService request.
@@ -95,7 +116,7 @@ func (client *RegionClient) listByServiceCreateRequest(ctx context.Context, reso
 
 // listByServiceHandleResponse handles the ListByService response.
 func (client *RegionClient) listByServiceHandleResponse(resp *http.Response) (RegionClientListByServiceResponse, error) {
-	result := RegionClientListByServiceResponse{RawResponse: resp}
+	result := RegionClientListByServiceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RegionListResult); err != nil {
 		return RegionClientListByServiceResponse{}, err
 	}

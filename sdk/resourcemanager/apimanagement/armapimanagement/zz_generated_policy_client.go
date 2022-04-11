@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type PolicyClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewPolicyClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PolicyClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewPolicyClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PolicyClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &PolicyClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates the global policy configuration of the Api Management service.
@@ -107,7 +112,7 @@ func (client *PolicyClient) createOrUpdateCreateRequest(ctx context.Context, res
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *PolicyClient) createOrUpdateHandleResponse(resp *http.Response) (PolicyClientCreateOrUpdateResponse, error) {
-	result := PolicyClientCreateOrUpdateResponse{RawResponse: resp}
+	result := PolicyClientCreateOrUpdateResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -137,7 +142,7 @@ func (client *PolicyClient) Delete(ctx context.Context, resourceGroupName string
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return PolicyClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return PolicyClientDeleteResponse{RawResponse: resp}, nil
+	return PolicyClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -227,7 +232,7 @@ func (client *PolicyClient) getCreateRequest(ctx context.Context, resourceGroupN
 
 // getHandleResponse handles the Get response.
 func (client *PolicyClient) getHandleResponse(resp *http.Response) (PolicyClientGetResponse, error) {
-	result := PolicyClientGetResponse{RawResponse: resp}
+	result := PolicyClientGetResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -286,7 +291,7 @@ func (client *PolicyClient) getEntityTagCreateRequest(ctx context.Context, resou
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
 func (client *PolicyClient) getEntityTagHandleResponse(resp *http.Response) (PolicyClientGetEntityTagResponse, error) {
-	result := PolicyClientGetEntityTagResponse{RawResponse: resp}
+	result := PolicyClientGetEntityTagResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -344,7 +349,7 @@ func (client *PolicyClient) listByServiceCreateRequest(ctx context.Context, reso
 
 // listByServiceHandleResponse handles the ListByService response.
 func (client *PolicyClient) listByServiceHandleResponse(resp *http.Response) (PolicyClientListByServiceResponse, error) {
-	result := PolicyClientListByServiceResponse{RawResponse: resp}
+	result := PolicyClientListByServiceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PolicyCollection); err != nil {
 		return PolicyClientListByServiceResponse{}, err
 	}

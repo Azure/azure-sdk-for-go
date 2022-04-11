@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -35,20 +36,24 @@ type GatewayAPIClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewGatewayAPIClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *GatewayAPIClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewGatewayAPIClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GatewayAPIClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &GatewayAPIClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Adds an API to the specified Gateway.
@@ -114,7 +119,7 @@ func (client *GatewayAPIClient) createOrUpdateCreateRequest(ctx context.Context,
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *GatewayAPIClient) createOrUpdateHandleResponse(resp *http.Response) (GatewayAPIClientCreateOrUpdateResponse, error) {
-	result := GatewayAPIClientCreateOrUpdateResponse{RawResponse: resp}
+	result := GatewayAPIClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.APIContract); err != nil {
 		return GatewayAPIClientCreateOrUpdateResponse{}, err
 	}
@@ -141,7 +146,7 @@ func (client *GatewayAPIClient) Delete(ctx context.Context, resourceGroupName st
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return GatewayAPIClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return GatewayAPIClientDeleteResponse{RawResponse: resp}, nil
+	return GatewayAPIClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -233,7 +238,7 @@ func (client *GatewayAPIClient) getEntityTagCreateRequest(ctx context.Context, r
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
 func (client *GatewayAPIClient) getEntityTagHandleResponse(resp *http.Response) (GatewayAPIClientGetEntityTagResponse, error) {
-	result := GatewayAPIClientGetEntityTagResponse{RawResponse: resp}
+	result := GatewayAPIClientGetEntityTagResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -251,16 +256,32 @@ func (client *GatewayAPIClient) getEntityTagHandleResponse(resp *http.Response) 
 // 'managed'
 // options - GatewayAPIClientListByServiceOptions contains the optional parameters for the GatewayAPIClient.ListByService
 // method.
-func (client *GatewayAPIClient) ListByService(resourceGroupName string, serviceName string, gatewayID string, options *GatewayAPIClientListByServiceOptions) *GatewayAPIClientListByServicePager {
-	return &GatewayAPIClientListByServicePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, gatewayID, options)
+func (client *GatewayAPIClient) ListByService(resourceGroupName string, serviceName string, gatewayID string, options *GatewayAPIClientListByServiceOptions) *runtime.Pager[GatewayAPIClientListByServiceResponse] {
+	return runtime.NewPager(runtime.PageProcessor[GatewayAPIClientListByServiceResponse]{
+		More: func(page GatewayAPIClientListByServiceResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp GatewayAPIClientListByServiceResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.APICollection.NextLink)
+		Fetcher: func(ctx context.Context, page *GatewayAPIClientListByServiceResponse) (GatewayAPIClientListByServiceResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, gatewayID, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return GatewayAPIClientListByServiceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return GatewayAPIClientListByServiceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return GatewayAPIClientListByServiceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByServiceHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByServiceCreateRequest creates the ListByService request.
@@ -304,7 +325,7 @@ func (client *GatewayAPIClient) listByServiceCreateRequest(ctx context.Context, 
 
 // listByServiceHandleResponse handles the ListByService response.
 func (client *GatewayAPIClient) listByServiceHandleResponse(resp *http.Response) (GatewayAPIClientListByServiceResponse, error) {
-	result := GatewayAPIClientListByServiceResponse{RawResponse: resp}
+	result := GatewayAPIClientListByServiceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.APICollection); err != nil {
 		return GatewayAPIClientListByServiceResponse{}, err
 	}

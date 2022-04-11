@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armdnsresolver
 
 const (
 	moduleName    = "armdnsresolver"
-	moduleVersion = "v0.1.0"
+	moduleVersion = "v0.2.0"
 )
 
 // CreatedByType - The type of identity that created the resource.
@@ -33,11 +33,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
-}
-
 // DNSResolverState - The current status of the DNS resolver. This is a read-only property and any attempt to set this value
 // will be ignored.
 type DNSResolverState string
@@ -53,11 +48,6 @@ func PossibleDNSResolverStateValues() []DNSResolverState {
 		DNSResolverStateConnected,
 		DNSResolverStateDisconnected,
 	}
-}
-
-// ToPtr returns a *DNSResolverState pointing to the current value.
-func (c DNSResolverState) ToPtr() *DNSResolverState {
-	return &c
 }
 
 // ForwardingRuleState - The state of forwarding rule.
@@ -76,11 +66,6 @@ func PossibleForwardingRuleStateValues() []ForwardingRuleState {
 	}
 }
 
-// ToPtr returns a *ForwardingRuleState pointing to the current value.
-func (c ForwardingRuleState) ToPtr() *ForwardingRuleState {
-	return &c
-}
-
 // IPAllocationMethod - Private IP address allocation method.
 type IPAllocationMethod string
 
@@ -95,11 +80,6 @@ func PossibleIPAllocationMethodValues() []IPAllocationMethod {
 		IPAllocationMethodDynamic,
 		IPAllocationMethodStatic,
 	}
-}
-
-// ToPtr returns a *IPAllocationMethod pointing to the current value.
-func (c IPAllocationMethod) ToPtr() *IPAllocationMethod {
-	return &c
 }
 
 // ProvisioningState - The current provisioning state of the resource.
@@ -124,9 +104,4 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 		ProvisioningStateSucceeded,
 		ProvisioningStateUpdating,
 	}
-}
-
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
 }

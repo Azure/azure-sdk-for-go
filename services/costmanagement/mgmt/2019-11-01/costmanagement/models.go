@@ -1126,14 +1126,14 @@ type QueryComparisonExpression struct {
 type QueryDataset struct {
 	// Granularity - The granularity of rows in the query. Possible values include: 'GranularityTypeDaily'
 	Granularity GranularityType `json:"granularity,omitempty"`
-	// Configuration - Has configuration information for the data in the export. The configuration will be ignored if aggregation and grouping are provided.
-	Configuration *QueryDatasetConfiguration `json:"configuration,omitempty"`
 	// Aggregation - Dictionary of aggregation expression to use in the query. The key of each item in the dictionary is the alias for the aggregated column. Query can have up to 2 aggregation clauses.
 	Aggregation map[string]*QueryAggregation `json:"aggregation"`
 	// Grouping - Array of group by expression to use in the query. Query can have up to 2 group by clauses.
 	Grouping *[]QueryGrouping `json:"grouping,omitempty"`
 	// Filter - The filter expression to use in the query. Please reference our Query API REST documentation for how to properly format the filter.
 	Filter *QueryFilter `json:"filter,omitempty"`
+	// Configuration - Has configuration information for the data in the export. The configuration will be ignored if aggregation and grouping are provided.
+	Configuration *QueryDatasetConfiguration `json:"configuration,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for QueryDataset.
@@ -1141,9 +1141,6 @@ func (qd QueryDataset) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if qd.Granularity != "" {
 		objectMap["granularity"] = qd.Granularity
-	}
-	if qd.Configuration != nil {
-		objectMap["configuration"] = qd.Configuration
 	}
 	if qd.Aggregation != nil {
 		objectMap["aggregation"] = qd.Aggregation
@@ -1153,6 +1150,9 @@ func (qd QueryDataset) MarshalJSON() ([]byte, error) {
 	}
 	if qd.Filter != nil {
 		objectMap["filter"] = qd.Filter
+	}
+	if qd.Configuration != nil {
+		objectMap["configuration"] = qd.Configuration
 	}
 	return json.Marshal(objectMap)
 }

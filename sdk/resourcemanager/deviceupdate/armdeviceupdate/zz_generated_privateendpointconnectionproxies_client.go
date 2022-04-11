@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type PrivateEndpointConnectionProxiesClient struct {
 // subscriptionID - The Azure subscription ID.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewPrivateEndpointConnectionProxiesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PrivateEndpointConnectionProxiesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewPrivateEndpointConnectionProxiesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateEndpointConnectionProxiesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &PrivateEndpointConnectionProxiesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - (INTERNAL - DO NOT USE) Creates or updates the specified private endpoint connection proxy resource
@@ -58,22 +63,18 @@ func NewPrivateEndpointConnectionProxiesClient(subscriptionID string, credential
 // privateEndpointConnectionProxy - The parameters for creating a private endpoint connection proxy.
 // options - PrivateEndpointConnectionProxiesClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionProxiesClient.BeginCreateOrUpdate
 // method.
-func (client *PrivateEndpointConnectionProxiesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionProxyID string, privateEndpointConnectionProxy PrivateEndpointConnectionProxy, options *PrivateEndpointConnectionProxiesClientBeginCreateOrUpdateOptions) (PrivateEndpointConnectionProxiesClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, accountName, privateEndpointConnectionProxyID, privateEndpointConnectionProxy, options)
-	if err != nil {
-		return PrivateEndpointConnectionProxiesClientCreateOrUpdatePollerResponse{}, err
+func (client *PrivateEndpointConnectionProxiesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionProxyID string, privateEndpointConnectionProxy PrivateEndpointConnectionProxy, options *PrivateEndpointConnectionProxiesClientBeginCreateOrUpdateOptions) (*armruntime.Poller[PrivateEndpointConnectionProxiesClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, accountName, privateEndpointConnectionProxyID, privateEndpointConnectionProxy, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[PrivateEndpointConnectionProxiesClientCreateOrUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[PrivateEndpointConnectionProxiesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := PrivateEndpointConnectionProxiesClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("PrivateEndpointConnectionProxiesClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return PrivateEndpointConnectionProxiesClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &PrivateEndpointConnectionProxiesClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - (INTERNAL - DO NOT USE) Creates or updates the specified private endpoint connection proxy resource associated
@@ -132,22 +133,18 @@ func (client *PrivateEndpointConnectionProxiesClient) createOrUpdateCreateReques
 // privateEndpointConnectionProxyID - The ID of the private endpoint connection proxy object.
 // options - PrivateEndpointConnectionProxiesClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionProxiesClient.BeginDelete
 // method.
-func (client *PrivateEndpointConnectionProxiesClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionProxyID string, options *PrivateEndpointConnectionProxiesClientBeginDeleteOptions) (PrivateEndpointConnectionProxiesClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, privateEndpointConnectionProxyID, options)
-	if err != nil {
-		return PrivateEndpointConnectionProxiesClientDeletePollerResponse{}, err
+func (client *PrivateEndpointConnectionProxiesClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionProxyID string, options *PrivateEndpointConnectionProxiesClientBeginDeleteOptions) (*armruntime.Poller[PrivateEndpointConnectionProxiesClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, privateEndpointConnectionProxyID, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[PrivateEndpointConnectionProxiesClientDeleteResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[PrivateEndpointConnectionProxiesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := PrivateEndpointConnectionProxiesClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("PrivateEndpointConnectionProxiesClient.Delete", "location", resp, client.pl)
-	if err != nil {
-		return PrivateEndpointConnectionProxiesClientDeletePollerResponse{}, err
-	}
-	result.Poller = &PrivateEndpointConnectionProxiesClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - (INTERNAL - DO NOT USE) Deletes the specified private endpoint connection proxy associated with the device update
@@ -252,7 +249,7 @@ func (client *PrivateEndpointConnectionProxiesClient) getCreateRequest(ctx conte
 
 // getHandleResponse handles the Get response.
 func (client *PrivateEndpointConnectionProxiesClient) getHandleResponse(resp *http.Response) (PrivateEndpointConnectionProxiesClientGetResponse, error) {
-	result := PrivateEndpointConnectionProxiesClientGetResponse{RawResponse: resp}
+	result := PrivateEndpointConnectionProxiesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnectionProxy); err != nil {
 		return PrivateEndpointConnectionProxiesClientGetResponse{}, err
 	}
@@ -265,19 +262,26 @@ func (client *PrivateEndpointConnectionProxiesClient) getHandleResponse(resp *ht
 // accountName - Account name.
 // options - PrivateEndpointConnectionProxiesClientListByAccountOptions contains the optional parameters for the PrivateEndpointConnectionProxiesClient.ListByAccount
 // method.
-func (client *PrivateEndpointConnectionProxiesClient) ListByAccount(ctx context.Context, resourceGroupName string, accountName string, options *PrivateEndpointConnectionProxiesClientListByAccountOptions) (PrivateEndpointConnectionProxiesClientListByAccountResponse, error) {
-	req, err := client.listByAccountCreateRequest(ctx, resourceGroupName, accountName, options)
-	if err != nil {
-		return PrivateEndpointConnectionProxiesClientListByAccountResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return PrivateEndpointConnectionProxiesClientListByAccountResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PrivateEndpointConnectionProxiesClientListByAccountResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listByAccountHandleResponse(resp)
+func (client *PrivateEndpointConnectionProxiesClient) ListByAccount(resourceGroupName string, accountName string, options *PrivateEndpointConnectionProxiesClientListByAccountOptions) *runtime.Pager[PrivateEndpointConnectionProxiesClientListByAccountResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PrivateEndpointConnectionProxiesClientListByAccountResponse]{
+		More: func(page PrivateEndpointConnectionProxiesClientListByAccountResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *PrivateEndpointConnectionProxiesClientListByAccountResponse) (PrivateEndpointConnectionProxiesClientListByAccountResponse, error) {
+			req, err := client.listByAccountCreateRequest(ctx, resourceGroupName, accountName, options)
+			if err != nil {
+				return PrivateEndpointConnectionProxiesClientListByAccountResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PrivateEndpointConnectionProxiesClientListByAccountResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PrivateEndpointConnectionProxiesClientListByAccountResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByAccountHandleResponse(resp)
+		},
+	})
 }
 
 // listByAccountCreateRequest creates the ListByAccount request.
@@ -308,11 +312,65 @@ func (client *PrivateEndpointConnectionProxiesClient) listByAccountCreateRequest
 
 // listByAccountHandleResponse handles the ListByAccount response.
 func (client *PrivateEndpointConnectionProxiesClient) listByAccountHandleResponse(resp *http.Response) (PrivateEndpointConnectionProxiesClientListByAccountResponse, error) {
-	result := PrivateEndpointConnectionProxiesClientListByAccountResponse{RawResponse: resp}
+	result := PrivateEndpointConnectionProxiesClientListByAccountResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnectionProxyListResult); err != nil {
 		return PrivateEndpointConnectionProxiesClientListByAccountResponse{}, err
 	}
 	return result, nil
+}
+
+// UpdatePrivateEndpointProperties - (INTERNAL - DO NOT USE) Updates a private endpoint inside the private endpoint connection
+// proxy object.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// accountName - Account name.
+// privateEndpointConnectionProxyID - The ID of the private endpoint connection proxy object.
+// privateEndpointUpdate - The parameters for updating a private endpoint connection proxy.
+// options - PrivateEndpointConnectionProxiesClientUpdatePrivateEndpointPropertiesOptions contains the optional parameters
+// for the PrivateEndpointConnectionProxiesClient.UpdatePrivateEndpointProperties method.
+func (client *PrivateEndpointConnectionProxiesClient) UpdatePrivateEndpointProperties(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionProxyID string, privateEndpointUpdate PrivateEndpointUpdate, options *PrivateEndpointConnectionProxiesClientUpdatePrivateEndpointPropertiesOptions) (PrivateEndpointConnectionProxiesClientUpdatePrivateEndpointPropertiesResponse, error) {
+	req, err := client.updatePrivateEndpointPropertiesCreateRequest(ctx, resourceGroupName, accountName, privateEndpointConnectionProxyID, privateEndpointUpdate, options)
+	if err != nil {
+		return PrivateEndpointConnectionProxiesClientUpdatePrivateEndpointPropertiesResponse{}, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return PrivateEndpointConnectionProxiesClientUpdatePrivateEndpointPropertiesResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return PrivateEndpointConnectionProxiesClientUpdatePrivateEndpointPropertiesResponse{}, runtime.NewResponseError(resp)
+	}
+	return PrivateEndpointConnectionProxiesClientUpdatePrivateEndpointPropertiesResponse{}, nil
+}
+
+// updatePrivateEndpointPropertiesCreateRequest creates the UpdatePrivateEndpointProperties request.
+func (client *PrivateEndpointConnectionProxiesClient) updatePrivateEndpointPropertiesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionProxyID string, privateEndpointUpdate PrivateEndpointUpdate, options *PrivateEndpointConnectionProxiesClientUpdatePrivateEndpointPropertiesOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate/accounts/{accountName}/privateEndpointConnectionProxies/{privateEndpointConnectionProxyId}/updatePrivateEndpointProperties"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if privateEndpointConnectionProxyID == "" {
+		return nil, errors.New("parameter privateEndpointConnectionProxyID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{privateEndpointConnectionProxyId}", url.PathEscape(privateEndpointConnectionProxyID))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2020-03-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, privateEndpointUpdate)
 }
 
 // Validate - (INTERNAL - DO NOT USE) Validates a private endpoint connection proxy object.
@@ -335,7 +393,7 @@ func (client *PrivateEndpointConnectionProxiesClient) Validate(ctx context.Conte
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return PrivateEndpointConnectionProxiesClientValidateResponse{}, runtime.NewResponseError(resp)
 	}
-	return PrivateEndpointConnectionProxiesClientValidateResponse{RawResponse: resp}, nil
+	return PrivateEndpointConnectionProxiesClientValidateResponse{}, nil
 }
 
 // validateCreateRequest creates the Validate request.

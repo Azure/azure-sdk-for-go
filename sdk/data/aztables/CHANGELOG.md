@@ -6,6 +6,7 @@
 * Added `TableErrorCode` for determining reasons of failures
 
 ### Breaking Changes
+* Renamed `InsertEntityResponse/Options` to `UpsertEntityResponse/Options`
 
 ### Bugs Fixed
 

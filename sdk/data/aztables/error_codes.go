@@ -87,13 +87,13 @@ func parseErrorCode(svcErr error) error {
 	if errors.As(svcErr, &httpErr) {
 		body, err := ioutil.ReadAll(httpErr.RawResponse.Body)
 		if err != nil {
-			return err
+			return svcErr
 		}
 
 		var oerr oDataError
 		err = json.Unmarshal(body, &oerr)
 		if err != nil {
-			return err
+			return svcErr
 		}
 
 		fmt.Println(oerr)

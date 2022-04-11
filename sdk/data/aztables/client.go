@@ -7,7 +7,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"net/url"
 	"strings"
 	"time"
@@ -16,7 +15,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	generated "github.com/Azure/azure-sdk-for-go/sdk/data/aztables/internal"
-	"github.com/Azure/azure-sdk-for-go/sdk/data/aztables/internal/auth"
 )
 
 // Client represents a client to the tables service affinitized to a specific table.
@@ -37,11 +35,6 @@ func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOp
 	}
 
 	genOptions := options.toPolicyOptions()
-
-	if !isCosmosEndpoint(serviceURL) {
-		fmt.Println("adding challenge policy")
-		genOptions.PerRetryPolicies = append(genOptions.PerRetryPolicies, auth.NewStorageChallengePolicy(cred))
-	}
 
 	rawServiceURL, tableName, err := parseURL(serviceURL)
 	if err != nil {

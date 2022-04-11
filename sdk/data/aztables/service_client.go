@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	generated "github.com/Azure/azure-sdk-for-go/sdk/data/aztables/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/data/aztables/internal/auth"
 )
 
 // ServiceClient represents a client to the table service. It can be used to query
@@ -30,10 +31,17 @@ type ServiceClient struct {
 func NewServiceClient(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (*ServiceClient, error) {
 	conOptions := getConnectionOptions(serviceURL, options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, runtime.NewBearerTokenPolicy(cred, []string{"https://storage.azure.com/.default"}, nil))
-	con := generated.NewConnection(serviceURL, conOptions)
+
+	genOptions := options.toPolicyOptions()
+
+	if !isCosmosEndpoint(serviceURL) {
+		genOptions.PerRetryPolicies = append(genOptions.PerRetryPolicies, auth.NewStorageChallengePolicy(cred))
+	}
+
+	con := generated.NewConnection(serviceURL, genOptions)
 	return &ServiceClient{
-		client:  generated.NewTableClient(serviceURL, generated.Enum0("2020-12-06"), conOptions),
-		service: generated.NewServiceClient(serviceURL, generated.Enum0("2020-12-06"), conOptions),
+		client:  generated.NewTableClient(serviceURL, generated.Enum0("2020-12-06"), genOptions),
+		service: generated.NewServiceClient(serviceURL, generated.Enum0("2020-12-06"), genOptions),
 		con:     con,
 	}, nil
 }

@@ -41,7 +41,6 @@ func NewStorageChallengePolicy(cred azcore.TokenCredential) *StorageChallengePol
 }
 
 func (scp *StorageChallengePolicy) Do(req *policy.Request) (*http.Response, error) {
-	fmt.Println("running Do")
 	as := acquiringResourceState{
 		p:   scp,
 		req: req,
@@ -176,10 +175,10 @@ func (scp *StorageChallengePolicy) findScopeAndTenant(resp *http.Response) error
 		}
 	}
 
-	scp.tenantID = parseTenant(vals["authorization"])
+	scp.tenantID = parseTenant(vals["authorization_uri"])
 	if scope, ok := vals["scope"]; ok {
 		scp.scope = &scope
-	} else if resource, ok := vals["resource"]; ok {
+	} else if resource, ok := vals["resource_id"]; ok {
 		if !strings.HasSuffix(resource, "/.default") {
 			resource += "/.default"
 		}
@@ -192,7 +191,7 @@ func (scp *StorageChallengePolicy) findScopeAndTenant(resp *http.Response) error
 }
 
 func (k StorageChallengePolicy) getChallengeRequest(orig policy.Request) (*policy.Request, error) {
-	req, err := runtime.NewRequest(orig.Raw().Context(), orig.Raw().Method, orig.Raw().URL.String())
+	req, err := runtime.NewRequest(orig.Raw().Context(), "GET", orig.Raw().URL.String())
 	if err != nil {
 		return nil, &challengePolicyError{err: err}
 	}

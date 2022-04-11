@@ -49,11 +49,8 @@ func TestCreateTable(t *testing.T) {
 func TestAddEntity(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, delete := initClientTest(t, service, false)
+			client, delete := initClientTest(t, service, true)
 			defer delete()
-
-			_, err := client.CreateTable(ctx, nil)
-			require.NoError(t, err)
 
 			simpleEntity := createSimpleEntity(1, "partition")
 

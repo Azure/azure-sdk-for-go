@@ -138,9 +138,9 @@ client, err := armsubscriptions.NewClient(cred, nil)
 handle(err)
 ```
 
-### Managed identity
+## Managed identity
 
-#### `autorest/adal`
+### `autorest/adal`
 
 ```go
 import (
@@ -156,7 +156,7 @@ client := subscriptions.NewClient()
 client.Authorizer = autorest.NewBearerAuthorizer(spt)
 ```
 
-#### `azidentity`
+### `azidentity`
 
 ```go
 import (
@@ -171,7 +171,7 @@ client, err := armsubscriptions.NewClient(cred, nil)
 handle(err)
 ```
 
-#### User-assigned identities
+### User-assigned identities
 
 `autorest/adal`:
 
@@ -193,9 +193,9 @@ cred, err := azidentity.NewManagedIdentityCredential(&opts)
 handle(err)
 ```
 
-### Device code authentication
+## Device code authentication
 
-#### `autorest/adal`
+### `autorest/adal`
 
 ```go
 import (
@@ -226,7 +226,7 @@ client := subscriptions.NewClient()
 client.Authorizer = autorest.NewBearerAuthorizer(spt)
 ```
 
-#### `azidentity`
+### `azidentity`
 
 ```go
 import (

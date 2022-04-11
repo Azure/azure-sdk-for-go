@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armhybridkubernetes
 
 const (
 	moduleName    = "armhybridkubernetes"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // AuthenticationMethod - The mode of client authentication.
@@ -27,11 +27,6 @@ func PossibleAuthenticationMethodValues() []AuthenticationMethod {
 		AuthenticationMethodAAD,
 		AuthenticationMethodToken,
 	}
-}
-
-// ToPtr returns a *AuthenticationMethod pointing to the current value.
-func (c AuthenticationMethod) ToPtr() *AuthenticationMethod {
-	return &c
 }
 
 // ConnectivityStatus - Represents the connectivity status of the connected cluster.
@@ -54,11 +49,6 @@ func PossibleConnectivityStatusValues() []ConnectivityStatus {
 	}
 }
 
-// ToPtr returns a *ConnectivityStatus pointing to the current value.
-func (c ConnectivityStatus) ToPtr() *ConnectivityStatus {
-	return &c
-}
-
 // CreatedByType - The type of identity that created the resource.
 type CreatedByType string
 
@@ -79,11 +69,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
-}
-
 // LastModifiedByType - The type of identity that last modified the resource.
 type LastModifiedByType string
 
@@ -102,11 +87,6 @@ func PossibleLastModifiedByTypeValues() []LastModifiedByType {
 		LastModifiedByTypeManagedIdentity,
 		LastModifiedByTypeUser,
 	}
-}
-
-// ToPtr returns a *LastModifiedByType pointing to the current value.
-func (c LastModifiedByType) ToPtr() *LastModifiedByType {
-	return &c
 }
 
 // ProvisioningState - The current deployment state of connectedClusters.
@@ -135,11 +115,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	}
 }
 
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
-}
-
 // ResourceIdentityType - The type of identity used for the connected cluster. The type 'SystemAssigned, includes a system
 // created identity. The type 'None' means no identity is assigned to the connected cluster.
 type ResourceIdentityType string
@@ -155,9 +130,4 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 		ResourceIdentityTypeNone,
 		ResourceIdentityTypeSystemAssigned,
 	}
-}
-
-// ToPtr returns a *ResourceIdentityType pointing to the current value.
-func (c ResourceIdentityType) ToPtr() *ResourceIdentityType {
-	return &c
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,13 +8,7 @@
 
 package armhybridkubernetes
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"reflect"
-	"time"
-)
+import "time"
 
 // ConnectedCluster - Represents a connected cluster.
 type ConnectedCluster struct {
@@ -43,28 +37,16 @@ type ConnectedCluster struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ConnectedCluster.
-func (c ConnectedCluster) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", c.ID)
-	populate(objectMap, "identity", c.Identity)
-	populate(objectMap, "location", c.Location)
-	populate(objectMap, "name", c.Name)
-	populate(objectMap, "properties", c.Properties)
-	populate(objectMap, "systemData", c.SystemData)
-	populate(objectMap, "tags", c.Tags)
-	populate(objectMap, "type", c.Type)
-	return json.Marshal(objectMap)
-}
-
 // ConnectedClusterClientBeginCreateOptions contains the optional parameters for the ConnectedClusterClient.BeginCreate method.
 type ConnectedClusterClientBeginCreateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ConnectedClusterClientBeginDeleteOptions contains the optional parameters for the ConnectedClusterClient.BeginDelete method.
 type ConnectedClusterClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ConnectedClusterClientGetOptions contains the optional parameters for the ConnectedClusterClient.Get method.
@@ -118,29 +100,13 @@ type ConnectedClusterList struct {
 	Value []*ConnectedCluster `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ConnectedClusterList.
-func (c ConnectedClusterList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", c.NextLink)
-	populate(objectMap, "value", c.Value)
-	return json.Marshal(objectMap)
-}
-
 // ConnectedClusterPatch - Object containing updates for patch operations.
 type ConnectedClusterPatch struct {
 	// Describes the connected cluster resource properties that can be updated during PATCH operation.
-	Properties map[string]interface{} `json:"properties,omitempty"`
+	Properties interface{} `json:"properties,omitempty"`
 
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ConnectedClusterPatch.
-func (c ConnectedClusterPatch) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", c.Properties)
-	populate(objectMap, "tags", c.Tags)
-	return json.Marshal(objectMap)
 }
 
 // ConnectedClusterProperties - Properties of the connected cluster.
@@ -182,77 +148,6 @@ type ConnectedClusterProperties struct {
 	TotalNodeCount *int32 `json:"totalNodeCount,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ConnectedClusterProperties.
-func (c ConnectedClusterProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "agentPublicKeyCertificate", c.AgentPublicKeyCertificate)
-	populate(objectMap, "agentVersion", c.AgentVersion)
-	populate(objectMap, "connectivityStatus", c.ConnectivityStatus)
-	populate(objectMap, "distribution", c.Distribution)
-	populate(objectMap, "infrastructure", c.Infrastructure)
-	populate(objectMap, "kubernetesVersion", c.KubernetesVersion)
-	populateTimeRFC3339(objectMap, "lastConnectivityTime", c.LastConnectivityTime)
-	populateTimeRFC3339(objectMap, "managedIdentityCertificateExpirationTime", c.ManagedIdentityCertificateExpirationTime)
-	populate(objectMap, "offering", c.Offering)
-	populate(objectMap, "provisioningState", c.ProvisioningState)
-	populate(objectMap, "totalCoreCount", c.TotalCoreCount)
-	populate(objectMap, "totalNodeCount", c.TotalNodeCount)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ConnectedClusterProperties.
-func (c *ConnectedClusterProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "agentPublicKeyCertificate":
-			err = unpopulate(val, &c.AgentPublicKeyCertificate)
-			delete(rawMsg, key)
-		case "agentVersion":
-			err = unpopulate(val, &c.AgentVersion)
-			delete(rawMsg, key)
-		case "connectivityStatus":
-			err = unpopulate(val, &c.ConnectivityStatus)
-			delete(rawMsg, key)
-		case "distribution":
-			err = unpopulate(val, &c.Distribution)
-			delete(rawMsg, key)
-		case "infrastructure":
-			err = unpopulate(val, &c.Infrastructure)
-			delete(rawMsg, key)
-		case "kubernetesVersion":
-			err = unpopulate(val, &c.KubernetesVersion)
-			delete(rawMsg, key)
-		case "lastConnectivityTime":
-			err = unpopulateTimeRFC3339(val, &c.LastConnectivityTime)
-			delete(rawMsg, key)
-		case "managedIdentityCertificateExpirationTime":
-			err = unpopulateTimeRFC3339(val, &c.ManagedIdentityCertificateExpirationTime)
-			delete(rawMsg, key)
-		case "offering":
-			err = unpopulate(val, &c.Offering)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &c.ProvisioningState)
-			delete(rawMsg, key)
-		case "totalCoreCount":
-			err = unpopulate(val, &c.TotalCoreCount)
-			delete(rawMsg, key)
-		case "totalNodeCount":
-			err = unpopulate(val, &c.TotalNodeCount)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // CredentialResult - The credential result response.
 type CredentialResult struct {
 	// READ-ONLY; The name of the credential.
@@ -260,37 +155,6 @@ type CredentialResult struct {
 
 	// READ-ONLY; Base64-encoded Kubernetes configuration file.
 	Value []byte `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CredentialResult.
-func (c CredentialResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "name", c.Name)
-	populateByteArray(objectMap, "value", c.Value, runtime.Base64StdFormat)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type CredentialResult.
-func (c *CredentialResult) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "name":
-			err = unpopulate(val, &c.Name)
-			delete(rawMsg, key)
-		case "value":
-			err = runtime.DecodeByteArray(string(val), &c.Value, runtime.Base64StdFormat)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // CredentialResults - The list of credential result response.
@@ -302,18 +166,10 @@ type CredentialResults struct {
 	Kubeconfigs []*CredentialResult `json:"kubeconfigs,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CredentialResults.
-func (c CredentialResults) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "hybridConnectionConfig", c.HybridConnectionConfig)
-	populate(objectMap, "kubeconfigs", c.Kubeconfigs)
-	return json.Marshal(objectMap)
-}
-
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info map[string]interface{} `json:"info,omitempty" azure:"ro"`
+	Info interface{} `json:"info,omitempty" azure:"ro"`
 
 	// READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -335,17 +191,6 @@ type ErrorDetail struct {
 
 	// READ-ONLY; The error target.
 	Target *string `json:"target,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ErrorDetail.
-func (e ErrorDetail) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalInfo", e.AdditionalInfo)
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "message", e.Message)
-	populate(objectMap, "target", e.Target)
-	return json.Marshal(objectMap)
 }
 
 // ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
@@ -411,14 +256,6 @@ type OperationList struct {
 	Value []*Operation `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationList.
-func (o OperationList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
-}
-
 // OperationsClientGetOptions contains the optional parameters for the OperationsClient.Get method.
 type OperationsClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -457,53 +294,6 @@ type SystemData struct {
 	LastModifiedByType *LastModifiedByType `json:"lastModifiedByType,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SystemData.
-func (s SystemData) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
-	populate(objectMap, "createdBy", s.CreatedBy)
-	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
-	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
-	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SystemData.
-func (s *SystemData) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdAt":
-			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
-			delete(rawMsg, key)
-		case "createdBy":
-			err = unpopulate(val, &s.CreatedBy)
-			delete(rawMsg, key)
-		case "createdByType":
-			err = unpopulate(val, &s.CreatedByType)
-			delete(rawMsg, key)
-		case "lastModifiedAt":
-			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
-			delete(rawMsg, key)
-		case "lastModifiedBy":
-			err = unpopulate(val, &s.LastModifiedBy)
-			delete(rawMsg, key)
-		case "lastModifiedByType":
-			err = unpopulate(val, &s.LastModifiedByType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
 // and a 'location'
 type TrackedResource struct {
@@ -521,42 +311,4 @@ type TrackedResource struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type TrackedResource.
-func (t TrackedResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", t.ID)
-	populate(objectMap, "location", t.Location)
-	populate(objectMap, "name", t.Name)
-	populate(objectMap, "tags", t.Tags)
-	populate(objectMap, "type", t.Type)
-	return json.Marshal(objectMap)
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func populateByteArray(m map[string]interface{}, k string, b []byte, f runtime.Base64Encoding) {
-	if azcore.IsNullValue(b) {
-		m[k] = nil
-	} else if len(b) == 0 {
-		return
-	} else {
-		m[k] = runtime.EncodeByteArray(b, f)
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

@@ -1,5 +1,87 @@
 # Release History
 
+## 0.3.0 (2022-04-11)
+### Breaking Changes
+
+- Function `*ConnectedClusterClient.BeginCreate` return value(s) have been changed from `(ConnectedClusterClientCreatePollerResponse, error)` to `(*armruntime.Poller[ConnectedClusterClientCreateResponse], error)`
+- Function `*ConnectedClusterClient.ListBySubscription` return value(s) have been changed from `(*ConnectedClusterClientListBySubscriptionPager)` to `(*runtime.Pager[ConnectedClusterClientListBySubscriptionResponse])`
+- Function `NewConnectedClusterClient` return value(s) have been changed from `(*ConnectedClusterClient)` to `(*ConnectedClusterClient, error)`
+- Function `*ConnectedClusterClient.BeginDelete` return value(s) have been changed from `(ConnectedClusterClientDeletePollerResponse, error)` to `(*armruntime.Poller[ConnectedClusterClientDeleteResponse], error)`
+- Function `*ConnectedClusterClient.ListByResourceGroup` return value(s) have been changed from `(*ConnectedClusterClientListByResourceGroupPager)` to `(*runtime.Pager[ConnectedClusterClientListByResourceGroupResponse])`
+- Function `*OperationsClient.Get` return value(s) have been changed from `(*OperationsClientGetPager)` to `(*runtime.Pager[OperationsClientGetResponse])`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Type of `ErrorAdditionalInfo.Info` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `ConnectedClusterPatch.Properties` has been changed from `map[string]interface{}` to `interface{}`
+- Function `AuthenticationMethod.ToPtr` has been removed
+- Function `CreatedByType.ToPtr` has been removed
+- Function `*ConnectedClusterClientListByResourceGroupPager.PageResponse` has been removed
+- Function `ConnectivityStatus.ToPtr` has been removed
+- Function `*ConnectedClusterClientDeletePoller.Done` has been removed
+- Function `*OperationsClientGetPager.Err` has been removed
+- Function `LastModifiedByType.ToPtr` has been removed
+- Function `*ConnectedClusterClientCreatePoller.ResumeToken` has been removed
+- Function `*ConnectedClusterClientCreatePoller.Done` has been removed
+- Function `*ConnectedClusterClientListByResourceGroupPager.Err` has been removed
+- Function `ConnectedClusterClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `ResourceIdentityType.ToPtr` has been removed
+- Function `*OperationsClientGetPager.PageResponse` has been removed
+- Function `ProvisioningState.ToPtr` has been removed
+- Function `*ConnectedClusterClientCreatePollerResponse.Resume` has been removed
+- Function `*ConnectedClusterClientListBySubscriptionPager.PageResponse` has been removed
+- Function `*ConnectedClusterClientCreatePoller.FinalResponse` has been removed
+- Function `*ConnectedClusterClientListByResourceGroupPager.NextPage` has been removed
+- Function `*ConnectedClusterClientDeletePollerResponse.Resume` has been removed
+- Function `*ConnectedClusterClientDeletePoller.FinalResponse` has been removed
+- Function `*ConnectedClusterClientCreatePoller.Poll` has been removed
+- Function `ConnectedClusterClientCreatePollerResponse.PollUntilDone` has been removed
+- Function `*ConnectedClusterClientDeletePoller.ResumeToken` has been removed
+- Function `*ConnectedClusterClientListBySubscriptionPager.Err` has been removed
+- Function `*OperationsClientGetPager.NextPage` has been removed
+- Function `*ConnectedClusterClientListBySubscriptionPager.NextPage` has been removed
+- Function `*ConnectedClusterClientDeletePoller.Poll` has been removed
+- Struct `ConnectedClusterClientCreatePoller` has been removed
+- Struct `ConnectedClusterClientCreatePollerResponse` has been removed
+- Struct `ConnectedClusterClientCreateResult` has been removed
+- Struct `ConnectedClusterClientDeletePoller` has been removed
+- Struct `ConnectedClusterClientDeletePollerResponse` has been removed
+- Struct `ConnectedClusterClientGetResult` has been removed
+- Struct `ConnectedClusterClientListByResourceGroupPager` has been removed
+- Struct `ConnectedClusterClientListByResourceGroupResult` has been removed
+- Struct `ConnectedClusterClientListBySubscriptionPager` has been removed
+- Struct `ConnectedClusterClientListBySubscriptionResult` has been removed
+- Struct `ConnectedClusterClientListClusterUserCredentialResult` has been removed
+- Struct `ConnectedClusterClientUpdateResult` has been removed
+- Struct `OperationsClientGetPager` has been removed
+- Struct `OperationsClientGetResult` has been removed
+- Field `ConnectedClusterClientGetResult` of struct `ConnectedClusterClientGetResponse` has been removed
+- Field `RawResponse` of struct `ConnectedClusterClientGetResponse` has been removed
+- Field `OperationsClientGetResult` of struct `OperationsClientGetResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientGetResponse` has been removed
+- Field `ConnectedClusterClientListByResourceGroupResult` of struct `ConnectedClusterClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `ConnectedClusterClientListByResourceGroupResponse` has been removed
+- Field `ConnectedClusterClientUpdateResult` of struct `ConnectedClusterClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ConnectedClusterClientUpdateResponse` has been removed
+- Field `ConnectedClusterClientCreateResult` of struct `ConnectedClusterClientCreateResponse` has been removed
+- Field `RawResponse` of struct `ConnectedClusterClientCreateResponse` has been removed
+- Field `RawResponse` of struct `ConnectedClusterClientDeleteResponse` has been removed
+- Field `ConnectedClusterClientListBySubscriptionResult` of struct `ConnectedClusterClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `ConnectedClusterClientListBySubscriptionResponse` has been removed
+- Field `ConnectedClusterClientListClusterUserCredentialResult` of struct `ConnectedClusterClientListClusterUserCredentialResponse` has been removed
+- Field `RawResponse` of struct `ConnectedClusterClientListClusterUserCredentialResponse` has been removed
+
+### Features Added
+
+- New field `ResumeToken` in struct `ConnectedClusterClientBeginCreateOptions`
+- New anonymous field `ConnectedCluster` in struct `ConnectedClusterClientCreateResponse`
+- New anonymous field `OperationList` in struct `OperationsClientGetResponse`
+- New anonymous field `ConnectedCluster` in struct `ConnectedClusterClientGetResponse`
+- New anonymous field `CredentialResults` in struct `ConnectedClusterClientListClusterUserCredentialResponse`
+- New field `ResumeToken` in struct `ConnectedClusterClientBeginDeleteOptions`
+- New anonymous field `ConnectedClusterList` in struct `ConnectedClusterClientListByResourceGroupResponse`
+- New anonymous field `ConnectedClusterList` in struct `ConnectedClusterClientListBySubscriptionResponse`
+- New anonymous field `ConnectedCluster` in struct `ConnectedClusterClientUpdateResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

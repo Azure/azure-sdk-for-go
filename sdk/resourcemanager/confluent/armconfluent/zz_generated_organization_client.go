@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type OrganizationClient struct {
 // subscriptionID - Microsoft Azure subscription id
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewOrganizationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *OrganizationClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewOrganizationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OrganizationClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &OrganizationClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreate - Create Organization resource
@@ -55,22 +60,18 @@ func NewOrganizationClient(subscriptionID string, credential azcore.TokenCredent
 // organizationName - Organization resource name
 // options - OrganizationClientBeginCreateOptions contains the optional parameters for the OrganizationClient.BeginCreate
 // method.
-func (client *OrganizationClient) BeginCreate(ctx context.Context, resourceGroupName string, organizationName string, options *OrganizationClientBeginCreateOptions) (OrganizationClientCreatePollerResponse, error) {
-	resp, err := client.create(ctx, resourceGroupName, organizationName, options)
-	if err != nil {
-		return OrganizationClientCreatePollerResponse{}, err
+func (client *OrganizationClient) BeginCreate(ctx context.Context, resourceGroupName string, organizationName string, options *OrganizationClientBeginCreateOptions) (*armruntime.Poller[OrganizationClientCreateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.create(ctx, resourceGroupName, organizationName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[OrganizationClientCreateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[OrganizationClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := OrganizationClientCreatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("OrganizationClient.Create", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return OrganizationClientCreatePollerResponse{}, err
-	}
-	result.Poller = &OrganizationClientCreatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Create - Create Organization resource
@@ -110,7 +111,7 @@ func (client *OrganizationClient) createCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	if options != nil && options.Body != nil {
@@ -125,22 +126,18 @@ func (client *OrganizationClient) createCreateRequest(ctx context.Context, resou
 // organizationName - Organization resource name
 // options - OrganizationClientBeginDeleteOptions contains the optional parameters for the OrganizationClient.BeginDelete
 // method.
-func (client *OrganizationClient) BeginDelete(ctx context.Context, resourceGroupName string, organizationName string, options *OrganizationClientBeginDeleteOptions) (OrganizationClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, organizationName, options)
-	if err != nil {
-		return OrganizationClientDeletePollerResponse{}, err
+func (client *OrganizationClient) BeginDelete(ctx context.Context, resourceGroupName string, organizationName string, options *OrganizationClientBeginDeleteOptions) (*armruntime.Poller[OrganizationClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, organizationName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[OrganizationClientDeleteResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[OrganizationClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := OrganizationClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("OrganizationClient.Delete", "location", resp, client.pl)
-	if err != nil {
-		return OrganizationClientDeletePollerResponse{}, err
-	}
-	result.Poller = &OrganizationClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Delete Organization resource
@@ -180,7 +177,7 @@ func (client *OrganizationClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -226,7 +223,7 @@ func (client *OrganizationClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -234,7 +231,7 @@ func (client *OrganizationClient) getCreateRequest(ctx context.Context, resource
 
 // getHandleResponse handles the Get response.
 func (client *OrganizationClient) getHandleResponse(resp *http.Response) (OrganizationClientGetResponse, error) {
-	result := OrganizationClientGetResponse{RawResponse: resp}
+	result := OrganizationClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OrganizationResource); err != nil {
 		return OrganizationClientGetResponse{}, err
 	}
@@ -246,16 +243,32 @@ func (client *OrganizationClient) getHandleResponse(resp *http.Response) (Organi
 // resourceGroupName - Resource group name
 // options - OrganizationClientListByResourceGroupOptions contains the optional parameters for the OrganizationClient.ListByResourceGroup
 // method.
-func (client *OrganizationClient) ListByResourceGroup(resourceGroupName string, options *OrganizationClientListByResourceGroupOptions) *OrganizationClientListByResourceGroupPager {
-	return &OrganizationClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *OrganizationClient) ListByResourceGroup(resourceGroupName string, options *OrganizationClientListByResourceGroupOptions) *runtime.Pager[OrganizationClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[OrganizationClientListByResourceGroupResponse]{
+		More: func(page OrganizationClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp OrganizationClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.OrganizationResourceListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *OrganizationClientListByResourceGroupResponse) (OrganizationClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return OrganizationClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return OrganizationClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return OrganizationClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -274,7 +287,7 @@ func (client *OrganizationClient) listByResourceGroupCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -282,7 +295,7 @@ func (client *OrganizationClient) listByResourceGroupCreateRequest(ctx context.C
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *OrganizationClient) listByResourceGroupHandleResponse(resp *http.Response) (OrganizationClientListByResourceGroupResponse, error) {
-	result := OrganizationClientListByResourceGroupResponse{RawResponse: resp}
+	result := OrganizationClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OrganizationResourceListResult); err != nil {
 		return OrganizationClientListByResourceGroupResponse{}, err
 	}
@@ -293,16 +306,32 @@ func (client *OrganizationClient) listByResourceGroupHandleResponse(resp *http.R
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - OrganizationClientListBySubscriptionOptions contains the optional parameters for the OrganizationClient.ListBySubscription
 // method.
-func (client *OrganizationClient) ListBySubscription(options *OrganizationClientListBySubscriptionOptions) *OrganizationClientListBySubscriptionPager {
-	return &OrganizationClientListBySubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySubscriptionCreateRequest(ctx, options)
+func (client *OrganizationClient) ListBySubscription(options *OrganizationClientListBySubscriptionOptions) *runtime.Pager[OrganizationClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[OrganizationClientListBySubscriptionResponse]{
+		More: func(page OrganizationClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp OrganizationClientListBySubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.OrganizationResourceListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *OrganizationClientListBySubscriptionResponse) (OrganizationClientListBySubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySubscriptionCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return OrganizationClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return OrganizationClientListBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return OrganizationClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
@@ -317,7 +346,7 @@ func (client *OrganizationClient) listBySubscriptionCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -325,7 +354,7 @@ func (client *OrganizationClient) listBySubscriptionCreateRequest(ctx context.Co
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
 func (client *OrganizationClient) listBySubscriptionHandleResponse(resp *http.Response) (OrganizationClientListBySubscriptionResponse, error) {
-	result := OrganizationClientListBySubscriptionResponse{RawResponse: resp}
+	result := OrganizationClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OrganizationResourceListResult); err != nil {
 		return OrganizationClientListBySubscriptionResponse{}, err
 	}
@@ -372,7 +401,7 @@ func (client *OrganizationClient) updateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	if options != nil && options.Body != nil {
@@ -383,7 +412,7 @@ func (client *OrganizationClient) updateCreateRequest(ctx context.Context, resou
 
 // updateHandleResponse handles the Update response.
 func (client *OrganizationClient) updateHandleResponse(resp *http.Response) (OrganizationClientUpdateResponse, error) {
-	result := OrganizationClientUpdateResponse{RawResponse: resp}
+	result := OrganizationClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OrganizationResource); err != nil {
 		return OrganizationClientUpdateResponse{}, err
 	}

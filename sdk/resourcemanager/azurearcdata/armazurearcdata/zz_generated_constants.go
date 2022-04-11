@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armazurearcdata
 
 const (
 	moduleName    = "armazurearcdata"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // ArcSQLManagedInstanceLicenseType - The license type to apply for this managed instance.
@@ -29,11 +29,6 @@ func PossibleArcSQLManagedInstanceLicenseTypeValues() []ArcSQLManagedInstanceLic
 		ArcSQLManagedInstanceLicenseTypeDisasterRecovery,
 		ArcSQLManagedInstanceLicenseTypeLicenseIncluded,
 	}
-}
-
-// ToPtr returns a *ArcSQLManagedInstanceLicenseType pointing to the current value.
-func (c ArcSQLManagedInstanceLicenseType) ToPtr() *ArcSQLManagedInstanceLicenseType {
-	return &c
 }
 
 // ArcSQLServerLicenseType - SQL Server license type.
@@ -56,17 +51,13 @@ func PossibleArcSQLServerLicenseTypeValues() []ArcSQLServerLicenseType {
 	}
 }
 
-// ToPtr returns a *ArcSQLServerLicenseType pointing to the current value.
-func (c ArcSQLServerLicenseType) ToPtr() *ArcSQLServerLicenseType {
-	return &c
-}
-
 // ConnectionStatus - The cloud connectivity status.
 type ConnectionStatus string
 
 const (
 	ConnectionStatusConnected    ConnectionStatus = "Connected"
 	ConnectionStatusDisconnected ConnectionStatus = "Disconnected"
+	ConnectionStatusRegistered   ConnectionStatus = "Registered"
 	ConnectionStatusUnknown      ConnectionStatus = "Unknown"
 )
 
@@ -75,13 +66,9 @@ func PossibleConnectionStatusValues() []ConnectionStatus {
 	return []ConnectionStatus{
 		ConnectionStatusConnected,
 		ConnectionStatusDisconnected,
+		ConnectionStatusRegistered,
 		ConnectionStatusUnknown,
 	}
-}
-
-// ToPtr returns a *ConnectionStatus pointing to the current value.
-func (c ConnectionStatus) ToPtr() *ConnectionStatus {
-	return &c
 }
 
 // CreatedByType - The type of identity that created the resource.
@@ -104,11 +91,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
-}
-
 // DefenderStatus - Status of Azure Defender.
 type DefenderStatus string
 
@@ -125,11 +107,6 @@ func PossibleDefenderStatusValues() []DefenderStatus {
 		DefenderStatusUnknown,
 		DefenderStatusUnprotected,
 	}
-}
-
-// ToPtr returns a *DefenderStatus pointing to the current value.
-func (c DefenderStatus) ToPtr() *DefenderStatus {
-	return &c
 }
 
 // EditionType - SQL Server edition.
@@ -156,11 +133,6 @@ func PossibleEditionTypeValues() []EditionType {
 	}
 }
 
-// ToPtr returns a *EditionType pointing to the current value.
-func (c EditionType) ToPtr() *EditionType {
-	return &c
-}
-
 // ExtendedLocationTypes - The type of extendedLocation.
 type ExtendedLocationTypes string
 
@@ -175,9 +147,26 @@ func PossibleExtendedLocationTypesValues() []ExtendedLocationTypes {
 	}
 }
 
-// ToPtr returns a *ExtendedLocationTypes pointing to the current value.
-func (c ExtendedLocationTypes) ToPtr() *ExtendedLocationTypes {
-	return &c
+// HostType - Type of host for Azure Arc SQL Server
+type HostType string
+
+const (
+	HostTypeAWSVirtualMachine HostType = "AWS Virtual Machine"
+	HostTypeGCPVirtualMachine HostType = "GCP Virtual Machine"
+	HostTypeOther             HostType = "Other"
+	HostTypePhysicalServer    HostType = "Physical Server"
+	HostTypeVirtualMachine    HostType = "Virtual Machine"
+)
+
+// PossibleHostTypeValues returns the possible values for the HostType const type.
+func PossibleHostTypeValues() []HostType {
+	return []HostType{
+		HostTypeAWSVirtualMachine,
+		HostTypeGCPVirtualMachine,
+		HostTypeOther,
+		HostTypePhysicalServer,
+		HostTypeVirtualMachine,
+	}
 }
 
 // Infrastructure - The infrastructure the data controller is running on.
@@ -204,11 +193,6 @@ func PossibleInfrastructureValues() []Infrastructure {
 	}
 }
 
-// ToPtr returns a *Infrastructure pointing to the current value.
-func (c Infrastructure) ToPtr() *Infrastructure {
-	return &c
-}
-
 // OperationOrigin - The intended executor of the operation.
 type OperationOrigin string
 
@@ -223,30 +207,6 @@ func PossibleOperationOriginValues() []OperationOrigin {
 		OperationOriginSystem,
 		OperationOriginUser,
 	}
-}
-
-// ToPtr returns a *OperationOrigin pointing to the current value.
-func (c OperationOrigin) ToPtr() *OperationOrigin {
-	return &c
-}
-
-// SQLManagedInstanceSKUName - The name of the SKU.
-type SQLManagedInstanceSKUName string
-
-const (
-	SQLManagedInstanceSKUNameVCore SQLManagedInstanceSKUName = "vCore"
-)
-
-// PossibleSQLManagedInstanceSKUNameValues returns the possible values for the SQLManagedInstanceSKUName const type.
-func PossibleSQLManagedInstanceSKUNameValues() []SQLManagedInstanceSKUName {
-	return []SQLManagedInstanceSKUName{
-		SQLManagedInstanceSKUNameVCore,
-	}
-}
-
-// ToPtr returns a *SQLManagedInstanceSKUName pointing to the current value.
-func (c SQLManagedInstanceSKUName) ToPtr() *SQLManagedInstanceSKUName {
-	return &c
 }
 
 // SQLManagedInstanceSKUTier - The pricing tier for the instance.
@@ -265,30 +225,28 @@ func PossibleSQLManagedInstanceSKUTierValues() []SQLManagedInstanceSKUTier {
 	}
 }
 
-// ToPtr returns a *SQLManagedInstanceSKUTier pointing to the current value.
-func (c SQLManagedInstanceSKUTier) ToPtr() *SQLManagedInstanceSKUTier {
-	return &c
-}
-
 // SQLVersion - SQL Server version.
 type SQLVersion string
 
 const (
+	SQLVersionSQLServer2012 SQLVersion = "SQL Server 2012"
+	SQLVersionSQLServer2014 SQLVersion = "SQL Server 2014"
 	SQLVersionSQLServer2016 SQLVersion = "SQL Server 2016"
 	SQLVersionSQLServer2017 SQLVersion = "SQL Server 2017"
 	SQLVersionSQLServer2019 SQLVersion = "SQL Server 2019"
+	SQLVersionSQLServer2022 SQLVersion = "SQL Server 2022"
+	SQLVersionUnknown       SQLVersion = "Unknown"
 )
 
 // PossibleSQLVersionValues returns the possible values for the SQLVersion const type.
 func PossibleSQLVersionValues() []SQLVersion {
 	return []SQLVersion{
+		SQLVersionSQLServer2012,
+		SQLVersionSQLServer2014,
 		SQLVersionSQLServer2016,
 		SQLVersionSQLServer2017,
 		SQLVersionSQLServer2019,
+		SQLVersionSQLServer2022,
+		SQLVersionUnknown,
 	}
-}
-
-// ToPtr returns a *SQLVersion pointing to the current value.
-func (c SQLVersion) ToPtr() *SQLVersion {
-	return &c
 }

@@ -1,3 +1,6 @@
+//go:build go1.18
+// +build go1.18
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -7,12 +10,13 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/stretchr/testify/assert"
 	"io"
 	"math/rand"
 	"net"
 	"net/http"
 	"time"
+
+	"github.com/stretchr/testify/assert"
 )
 
 // Testings for RetryReader

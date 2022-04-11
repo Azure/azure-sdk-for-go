@@ -1,3 +1,6 @@
+//go:build go1.18
+// +build go1.18
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -310,8 +313,8 @@ func (s *azblobTestSuite) TestAccountDeleteRetentionPolicy() {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
 
-	days := to.Int32Ptr(5)
-	enabled := to.BoolPtr(true)
+	days := to.Ptr[int32](5)
+	enabled := to.Ptr(true)
 	_, err = svcClient.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: enabled, Days: days}})
 	_assert.Nil(err)
 
@@ -345,8 +348,8 @@ func (s *azblobTestSuite) TestAccountDeleteRetentionPolicyEmpty() {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
 
-	days := to.Int32Ptr(5)
-	enabled := to.BoolPtr(true)
+	days := to.Ptr[int32](5)
+	enabled := to.Ptr(true)
 	_, err = svcClient.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: enabled, Days: days}})
 	_assert.Nil(err)
 
@@ -372,8 +375,8 @@ func (s *azblobTestSuite) TestAccountDeleteRetentionPolicyNil() {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
 
-	days := to.Int32Ptr(5)
-	enabled := to.BoolPtr(true)
+	days := to.Ptr[int32](5)
+	enabled := to.Ptr(true)
 	_, err = svcClient.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: enabled, Days: days}})
 	_assert.Nil(err)
 
@@ -398,7 +401,7 @@ func (s *azblobTestSuite) TestAccountDeleteRetentionPolicyNil() {
 	_assert.EqualValues(*resp.StorageServiceProperties.DeleteRetentionPolicy.Days, *days)
 
 	// Disable for other tests
-	enabled = to.BoolPtr(false)
+	enabled = to.Ptr(false)
 	_, err = svcClient.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: enabled}})
 	_assert.Nil(err)
 }

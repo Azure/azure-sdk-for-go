@@ -1,3 +1,6 @@
+//go:build go1.18
+// +build go1.18
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -444,8 +447,8 @@ func (s *azblobUnrecordedTestSuite) TestBlobStartCopyUsingSASSrc() {
 	waitForCopy(_assert, copyBlobClient, resp)
 
 	downloadBlobOptions := DownloadBlobOptions{
-		Offset: to.Int64Ptr(0),
-		Count:  to.Int64Ptr(int64(len(blockBlobDefaultData))),
+		Offset: to.Ptr[int64](0),
+		Count:  to.Ptr(int64(len(blockBlobDefaultData))),
 	}
 	resp2, err := copyBlobClient.Download(ctx, &downloadBlobOptions)
 	_assert.Nil(err)
@@ -697,7 +700,7 @@ func (s *azblobTestSuite) TestBlobStartCopySourceIfNoneMatchTrue() {
 
 	options := StartCopyBlobOptions{
 		SourceModifiedAccessConditions: &SourceModifiedAccessConditions{
-			SourceIfNoneMatch: to.StringPtr("a"),
+			SourceIfNoneMatch: to.Ptr("a"),
 		},
 	}
 
@@ -1535,7 +1538,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataNegativeOffset() {
 	bbClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
 
 	options := DownloadBlobOptions{
-		Offset: to.Int64Ptr(-1),
+		Offset: to.Ptr[int64](-1),
 	}
 	_, err = bbClient.Download(ctx, &options)
 	_assert.Nil(err)
@@ -1558,7 +1561,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataOffsetOutOfRange() {
 	bbClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
 
 	options := DownloadBlobOptions{
-		Offset: to.Int64Ptr(int64(len(blockBlobDefaultData))),
+		Offset: to.Ptr(int64(len(blockBlobDefaultData))),
 	}
 	_, err = bbClient.Download(ctx, &options)
 	_assert.NotNil(err)
@@ -1582,7 +1585,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataCountNegative() {
 	bbClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
 
 	options := DownloadBlobOptions{
-		Count: to.Int64Ptr(-2),
+		Count: to.Ptr[int64](-2),
 	}
 	_, err = bbClient.Download(ctx, &options)
 	_assert.Nil(err)
@@ -1605,7 +1608,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataCountZero() {
 	bbClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
 
 	options := DownloadBlobOptions{
-		Count: to.Int64Ptr(0),
+		Count: to.Ptr[int64](0),
 	}
 	resp, err := bbClient.Download(ctx, &options)
 	_assert.Nil(err)
@@ -1661,7 +1664,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataCountOutOfRange() {
 	bbClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
 
 	options := DownloadBlobOptions{
-		Count: to.Int64Ptr(int64((len(blockBlobDefaultData)) * 2)),
+		Count: to.Ptr(int64((len(blockBlobDefaultData)) * 2)),
 	}
 	resp, err := bbClient.Download(ctx, &options)
 	_assert.Nil(err)
@@ -1688,8 +1691,8 @@ func (s *azblobTestSuite) TestBlobDownloadDataEmptyRangeStruct() {
 	bbClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
 
 	options := DownloadBlobOptions{
-		Count:  to.Int64Ptr(0),
-		Offset: to.Int64Ptr(0),
+		Count:  to.Ptr[int64](0),
+		Offset: to.Ptr[int64](0),
 	}
 	resp, err := bbClient.Download(ctx, &options)
 	_assert.Nil(err)
@@ -1716,9 +1719,9 @@ func (s *azblobTestSuite) TestBlobDownloadDataContentMD5() {
 	bbClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
 
 	options := DownloadBlobOptions{
-		Count:              to.Int64Ptr(3),
-		Offset:             to.Int64Ptr(10),
-		RangeGetContentMD5: to.BoolPtr(true),
+		Count:              to.Ptr[int64](3),
+		Offset:             to.Ptr[int64](10),
+		RangeGetContentMD5: to.Ptr(true),
 	}
 	resp, err := bbClient.Download(ctx, &options)
 	_assert.Nil(err)
@@ -2678,7 +2681,7 @@ func (s *azblobTestSuite) TestBlobSetPropertiesEmptyValue() {
 	blockBlobName := generateBlobName(testName)
 	bbClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
 
-	contentType := to.StringPtr("my_type")
+	contentType := to.Ptr("my_type")
 	_, err = bbClient.SetHTTPHeaders(ctx, BlobHTTPHeaders{BlobContentType: contentType}, nil)
 	_assert.Nil(err)
 
@@ -2722,7 +2725,7 @@ func (s *azblobTestSuite) TestBlobSetPropertiesIfModifiedSinceTrue() {
 
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, -10)
 
-	_, err = bbClient.SetHTTPHeaders(ctx, BlobHTTPHeaders{BlobContentDisposition: to.StringPtr("my_disposition")},
+	_, err = bbClient.SetHTTPHeaders(ctx, BlobHTTPHeaders{BlobContentDisposition: to.Ptr("my_disposition")},
 		&SetBlobHTTPHeadersOptions{ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: &currentTime}})
 	_assert.Nil(err)
 
@@ -2751,7 +2754,7 @@ func (s *azblobTestSuite) TestBlobSetPropertiesIfModifiedSinceFalse() {
 
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, 10)
 
-	_, err = bbClient.SetHTTPHeaders(ctx, BlobHTTPHeaders{BlobContentDisposition: to.StringPtr("my_disposition")},
+	_, err = bbClient.SetHTTPHeaders(ctx, BlobHTTPHeaders{BlobContentDisposition: to.Ptr("my_disposition")},
 		&SetBlobHTTPHeadersOptions{ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: &currentTime}})
 	_assert.NotNil(err)
 }
@@ -2778,7 +2781,7 @@ func (s *azblobTestSuite) TestBlobSetPropertiesIfUnmodifiedSinceTrue() {
 
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, 10)
 
-	_, err = bbClient.SetHTTPHeaders(ctx, BlobHTTPHeaders{BlobContentDisposition: to.StringPtr("my_disposition")},
+	_, err = bbClient.SetHTTPHeaders(ctx, BlobHTTPHeaders{BlobContentDisposition: to.Ptr("my_disposition")},
 		&SetBlobHTTPHeadersOptions{ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &currentTime}})
 	_assert.Nil(err)
 
@@ -2807,7 +2810,7 @@ func (s *azblobTestSuite) TestBlobSetPropertiesIfUnmodifiedSinceFalse() {
 
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, -10)
 
-	_, err = bbClient.SetHTTPHeaders(ctx, BlobHTTPHeaders{BlobContentDisposition: to.StringPtr("my_disposition")},
+	_, err = bbClient.SetHTTPHeaders(ctx, BlobHTTPHeaders{BlobContentDisposition: to.Ptr("my_disposition")},
 		&SetBlobHTTPHeadersOptions{ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &currentTime}})
 	_assert.NotNil(err)
 }
@@ -2831,7 +2834,7 @@ func (s *azblobTestSuite) TestBlobSetPropertiesIfMatchTrue() {
 	resp, err := bbClient.GetProperties(ctx, nil)
 	_assert.Nil(err)
 
-	_, err = bbClient.SetHTTPHeaders(ctx, BlobHTTPHeaders{BlobContentDisposition: to.StringPtr("my_disposition")},
+	_, err = bbClient.SetHTTPHeaders(ctx, BlobHTTPHeaders{BlobContentDisposition: to.Ptr("my_disposition")},
 		&SetBlobHTTPHeadersOptions{ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: resp.ETag}})
 	_assert.Nil(err)
 
@@ -2854,8 +2857,8 @@ func (s *azblobTestSuite) TestBlobSetPropertiesIfMatchFalse() {
 	blockBlobName := generateBlobName(testName)
 	bbClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
 
-	_, err = bbClient.SetHTTPHeaders(ctx, BlobHTTPHeaders{BlobContentDisposition: to.StringPtr("my_disposition")},
-		&SetBlobHTTPHeadersOptions{ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: to.StringPtr("garbage")}})
+	_, err = bbClient.SetHTTPHeaders(ctx, BlobHTTPHeaders{BlobContentDisposition: to.Ptr("my_disposition")},
+		&SetBlobHTTPHeadersOptions{ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: to.Ptr("garbage")}})
 	_assert.NotNil(err)
 }
 
@@ -2875,8 +2878,8 @@ func (s *azblobTestSuite) TestBlobSetPropertiesIfNoneMatchTrue() {
 	blockBlobName := generateBlobName(testName)
 	bbClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
 
-	_, err = bbClient.SetHTTPHeaders(ctx, BlobHTTPHeaders{BlobContentDisposition: to.StringPtr("my_disposition")},
-		&SetBlobHTTPHeadersOptions{ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: to.StringPtr("garbage")}})
+	_, err = bbClient.SetHTTPHeaders(ctx, BlobHTTPHeaders{BlobContentDisposition: to.Ptr("my_disposition")},
+		&SetBlobHTTPHeadersOptions{ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: to.Ptr("garbage")}})
 	_assert.Nil(err)
 
 	validatePropertiesSet(_assert, bbClient, "my_disposition")
@@ -2901,7 +2904,7 @@ func (s *azblobTestSuite) TestBlobSetPropertiesIfNoneMatchFalse() {
 	resp, err := bbClient.GetProperties(ctx, nil)
 	_assert.Nil(err)
 
-	_, err = bbClient.SetHTTPHeaders(ctx, BlobHTTPHeaders{BlobContentDisposition: to.StringPtr("my_disposition")},
+	_, err = bbClient.SetHTTPHeaders(ctx, BlobHTTPHeaders{BlobContentDisposition: to.Ptr("my_disposition")},
 		&SetBlobHTTPHeadersOptions{ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: resp.ETag}})
 	_assert.NotNil(err)
 }

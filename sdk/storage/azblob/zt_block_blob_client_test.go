@@ -1,3 +1,6 @@
+//go:build go1.18
+// +build go1.18
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -145,8 +148,8 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockFromURL() {
 	blockIDs := generateBlockIDsList(2)
 
 	stageResp1, err := destBlob.StageBlockFromURL(ctx, blockIDs[0], srcBlobURLWithSAS, 0, &StageBlockFromURLOptions{
-		Offset: to.Int64Ptr(0),
-		Count:  to.Int64Ptr(int64(contentSize / 2)),
+		Offset: to.Ptr[int64](0),
+		Count:  to.Ptr(int64(contentSize / 2)),
 	})
 	_assert.Nil(err)
 	_assert.Equal(stageResp1.RawResponse.StatusCode, 201)
@@ -156,8 +159,8 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockFromURL() {
 	_assert.Equal(stageResp1.Date.IsZero(), false)
 
 	stageResp2, err := destBlob.StageBlockFromURL(ctx, blockIDs[1], srcBlobURLWithSAS, 0, &StageBlockFromURLOptions{
-		Offset: to.Int64Ptr(int64(contentSize / 2)),
-		Count:  to.Int64Ptr(int64(CountToEnd)),
+		Offset: to.Ptr(int64(contentSize / 2)),
+		Count:  to.Ptr(int64(CountToEnd)),
 	})
 	_assert.Nil(err)
 	_assert.Equal(stageResp2.RawResponse.StatusCode, 201)

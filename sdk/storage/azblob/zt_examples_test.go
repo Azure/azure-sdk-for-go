@@ -1,3 +1,6 @@
+//go:build go1.18
+// +build go1.18
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -459,7 +462,7 @@ func ExampleBlobAccessConditions() {
 		&azblob.DownloadBlobOptions{
 			BlobAccessConditions: &azblob.BlobAccessConditions{
 				ModifiedAccessConditions: &azblob.ModifiedAccessConditions{
-					IfUnmodifiedSince: to.TimePtr(time.Now().UTC().Add(time.Hour * -24))},
+					IfUnmodifiedSince: to.Ptr(time.Now().UTC().Add(time.Hour * -24))},
 			},
 		},
 	)
@@ -491,7 +494,7 @@ func ExampleBlobAccessConditions() {
 		streaming.NopCloser(strings.NewReader("Text-3")),
 		&azblob.UploadBlockBlobOptions{
 			BlobAccessConditions: &azblob.BlobAccessConditions{
-				ModifiedAccessConditions: &azblob.ModifiedAccessConditions{IfNoneMatch: to.StringPtr(string(azcore.ETagAny))},
+				ModifiedAccessConditions: &azblob.ModifiedAccessConditions{IfNoneMatch: to.Ptr(string(azcore.ETagAny))},
 			},
 		}))
 }
@@ -620,8 +623,8 @@ func ExampleBlobHTTPHeaders() {
 		context.TODO(),
 		streaming.NopCloser(strings.NewReader("Some text")),
 		&azblob.UploadBlockBlobOptions{HTTPHeaders: &azblob.BlobHTTPHeaders{
-			BlobContentType:        to.StringPtr("text/html; charset=utf-8"),
-			BlobContentDisposition: to.StringPtr("attachment"),
+			BlobContentType:        to.Ptr("text/html; charset=utf-8"),
+			BlobContentDisposition: to.Ptr("attachment"),
 		}},
 	)
 	if err != nil {
@@ -642,7 +645,7 @@ func ExampleBlobHTTPHeaders() {
 	fmt.Println(httpHeaders.BlobContentType, httpHeaders.BlobContentDisposition)
 
 	// Update the blob's HTTP Headers and write them back to the blob
-	httpHeaders.BlobContentType = to.StringPtr("text/plain")
+	httpHeaders.BlobContentType = to.Ptr("text/plain")
 	_, err = blobClient.SetHTTPHeaders(context.TODO(), httpHeaders, nil)
 	if err != nil {
 		log.Fatal(err)
@@ -995,8 +998,8 @@ func Example_progressUploadDownload() {
 	})
 	_, err = blobClient.Upload(context.TODO(), requestProgress, &azblob.UploadBlockBlobOptions{
 		HTTPHeaders: &azblob.BlobHTTPHeaders{
-			BlobContentType:        to.StringPtr("text/html; charset=utf-8"),
-			BlobContentDisposition: to.StringPtr("attachment"),
+			BlobContentType:        to.Ptr("text/html; charset=utf-8"),
+			BlobContentDisposition: to.Ptr("attachment"),
 		},
 	})
 	if err != nil {
@@ -1249,7 +1252,7 @@ func ExampleContainerLeaseClient() {
 	// Create a unique ID for the lease
 	// A lease ID can be any valid GUID string format. To generate UUIDs, consider the github.com/google/uuid package
 	leaseID := "36b1a876-cf98-4eb2-a5c3-6d68489658ff"
-	containerLeaseClient, err := containerClient.NewContainerLeaseClient(to.StringPtr(leaseID))
+	containerLeaseClient, err := containerClient.NewContainerLeaseClient(to.Ptr(leaseID))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -1288,7 +1291,7 @@ func ExampleContainerLeaseClient() {
 	// We can change the ID of an existing lease.
 	newLeaseID := "6b3e65e5-e1bb-4a3f-8b72-13e9bc9cd3bf"
 	changeLeaseResponse, err := containerLeaseClient.ChangeLease(context.TODO(),
-		&azblob.ChangeLeaseContainerOptions{ProposedLeaseID: to.StringPtr(newLeaseID)})
+		&azblob.ChangeLeaseContainerOptions{ProposedLeaseID: to.Ptr(newLeaseID)})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -1302,7 +1305,7 @@ func ExampleContainerLeaseClient() {
 	fmt.Println("The lease was renewed with the same ID", *renewLeaseResponse.LeaseID)
 
 	// Finally, the lease can be broken and we could prevent others from acquiring a lease for a period of time
-	_, err = containerLeaseClient.BreakLease(context.TODO(), &azblob.BreakLeaseContainerOptions{BreakPeriod: to.Int32Ptr(60)})
+	_, err = containerLeaseClient.BreakLease(context.TODO(), &azblob.BreakLeaseContainerOptions{BreakPeriod: to.Ptr[int32](60)})
 	if err != nil {
 		log.Fatal(err)
 	}

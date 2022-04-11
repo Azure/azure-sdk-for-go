@@ -1,5 +1,436 @@
 # Release History
 
+## 0.3.0 (2022-04-11)
+### Breaking Changes
+
+- Function `NewScriptActionsClient` return value(s) have been changed from `(*ScriptActionsClient)` to `(*ScriptActionsClient, error)`
+- Function `NewConfigurationsClient` return value(s) have been changed from `(*ConfigurationsClient)` to `(*ConfigurationsClient, error)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `*PrivateEndpointConnectionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[PrivateEndpointConnectionsClientCreateOrUpdateResponse], error)`
+- Function `NewLocationsClient` return value(s) have been changed from `(*LocationsClient)` to `(*LocationsClient, error)`
+- Function `*ClustersClient.BeginUpdateAutoScaleConfiguration` return value(s) have been changed from `(ClustersClientUpdateAutoScaleConfigurationPollerResponse, error)` to `(*armruntime.Poller[ClustersClientUpdateAutoScaleConfigurationResponse], error)`
+- Function `*ClustersClient.BeginDelete` return value(s) have been changed from `(ClustersClientDeletePollerResponse, error)` to `(*armruntime.Poller[ClustersClientDeleteResponse], error)`
+- Function `*ExtensionsClient.BeginCreate` return value(s) have been changed from `(ExtensionsClientCreatePollerResponse, error)` to `(*armruntime.Poller[ExtensionsClientCreateResponse], error)`
+- Function `*ConfigurationsClient.BeginUpdate` return value(s) have been changed from `(ConfigurationsClientUpdatePollerResponse, error)` to `(*armruntime.Poller[ConfigurationsClientUpdateResponse], error)`
+- Function `*ExtensionsClient.BeginDisableMonitoring` return value(s) have been changed from `(ExtensionsClientDisableMonitoringPollerResponse, error)` to `(*armruntime.Poller[ExtensionsClientDisableMonitoringResponse], error)`
+- Function `*ApplicationsClient.BeginCreate` return value(s) have been changed from `(ApplicationsClientCreatePollerResponse, error)` to `(*armruntime.Poller[ApplicationsClientCreateResponse], error)`
+- Function `*ClustersClient.BeginUpdateIdentityCertificate` return value(s) have been changed from `(ClustersClientUpdateIdentityCertificatePollerResponse, error)` to `(*armruntime.Poller[ClustersClientUpdateIdentityCertificateResponse], error)`
+- Function `*ClustersClient.BeginRotateDiskEncryptionKey` return value(s) have been changed from `(ClustersClientRotateDiskEncryptionKeyPollerResponse, error)` to `(*armruntime.Poller[ClustersClientRotateDiskEncryptionKeyResponse], error)`
+- Function `NewApplicationsClient` return value(s) have been changed from `(*ApplicationsClient)` to `(*ApplicationsClient, error)`
+- Function `NewVirtualMachinesClient` return value(s) have been changed from `(*VirtualMachinesClient)` to `(*VirtualMachinesClient, error)`
+- Function `*ClustersClient.List` return value(s) have been changed from `(*ClustersClientListPager)` to `(*runtime.Pager[ClustersClientListResponse])`
+- Function `*ApplicationsClient.ListByCluster` return value(s) have been changed from `(*ApplicationsClientListByClusterPager)` to `(*runtime.Pager[ApplicationsClientListByClusterResponse])`
+- Function `*ExtensionsClient.BeginDisableAzureMonitor` return value(s) have been changed from `(ExtensionsClientDisableAzureMonitorPollerResponse, error)` to `(*armruntime.Poller[ExtensionsClientDisableAzureMonitorResponse], error)`
+- Function `NewClustersClient` return value(s) have been changed from `(*ClustersClient)` to `(*ClustersClient, error)`
+- Function `*ClustersClient.BeginExecuteScriptActions` return value(s) have been changed from `(ClustersClientExecuteScriptActionsPollerResponse, error)` to `(*armruntime.Poller[ClustersClientExecuteScriptActionsResponse], error)`
+- Function `*ApplicationsClient.BeginDelete` return value(s) have been changed from `(ApplicationsClientDeletePollerResponse, error)` to `(*armruntime.Poller[ApplicationsClientDeleteResponse], error)`
+- Function `*ScriptActionsClient.ListByCluster` return value(s) have been changed from `(*ScriptActionsClientListByClusterPager)` to `(*runtime.Pager[ScriptActionsClientListByClusterResponse])`
+- Function `*PrivateEndpointConnectionsClient.ListByCluster` return value(s) have been changed from `(*PrivateEndpointConnectionsClientListByClusterPager)` to `(*runtime.Pager[PrivateEndpointConnectionsClientListByClusterResponse])`
+- Function `*ClustersClient.ListByResourceGroup` return value(s) have been changed from `(*ClustersClientListByResourceGroupPager)` to `(*runtime.Pager[ClustersClientListByResourceGroupResponse])`
+- Function `*ExtensionsClient.BeginEnableAzureMonitor` return value(s) have been changed from `(ExtensionsClientEnableAzureMonitorPollerResponse, error)` to `(*armruntime.Poller[ExtensionsClientEnableAzureMonitorResponse], error)`
+- Function `*ClustersClient.BeginCreate` return value(s) have been changed from `(ClustersClientCreatePollerResponse, error)` to `(*armruntime.Poller[ClustersClientCreateResponse], error)`
+- Function `NewPrivateLinkResourcesClient` return value(s) have been changed from `(*PrivateLinkResourcesClient)` to `(*PrivateLinkResourcesClient, error)`
+- Function `NewScriptExecutionHistoryClient` return value(s) have been changed from `(*ScriptExecutionHistoryClient)` to `(*ScriptExecutionHistoryClient, error)`
+- Function `*ScriptExecutionHistoryClient.ListByCluster` return value(s) have been changed from `(*ScriptExecutionHistoryClientListByClusterPager)` to `(*runtime.Pager[ScriptExecutionHistoryClientListByClusterResponse])`
+- Function `NewPrivateEndpointConnectionsClient` return value(s) have been changed from `(*PrivateEndpointConnectionsClient)` to `(*PrivateEndpointConnectionsClient, error)`
+- Function `*VirtualMachinesClient.BeginRestartHosts` return value(s) have been changed from `(VirtualMachinesClientRestartHostsPollerResponse, error)` to `(*armruntime.Poller[VirtualMachinesClientRestartHostsResponse], error)`
+- Function `*ClustersClient.BeginUpdateGatewaySettings` return value(s) have been changed from `(ClustersClientUpdateGatewaySettingsPollerResponse, error)` to `(*armruntime.Poller[ClustersClientUpdateGatewaySettingsResponse], error)`
+- Function `*ExtensionsClient.BeginDelete` return value(s) have been changed from `(ExtensionsClientDeletePollerResponse, error)` to `(*armruntime.Poller[ExtensionsClientDeleteResponse], error)`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(PrivateEndpointConnectionsClientDeletePollerResponse, error)` to `(*armruntime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)`
+- Function `*ClustersClient.BeginResize` return value(s) have been changed from `(ClustersClientResizePollerResponse, error)` to `(*armruntime.Poller[ClustersClientResizeResponse], error)`
+- Function `*ExtensionsClient.BeginEnableMonitoring` return value(s) have been changed from `(ExtensionsClientEnableMonitoringPollerResponse, error)` to `(*armruntime.Poller[ExtensionsClientEnableMonitoringResponse], error)`
+- Function `NewExtensionsClient` return value(s) have been changed from `(*ExtensionsClient)` to `(*ExtensionsClient, error)`
+- Type of `ClusterDefinition.Configurations` has been changed from `map[string]interface{}` to `interface{}`
+- Function `*ExtensionsClientDisableAzureMonitorPollerResponse.Resume` has been removed
+- Function `*ClustersClientCreatePollerResponse.Resume` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePollerResponse.Resume` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePoller.FinalResponse` has been removed
+- Function `*ClustersClientCreatePoller.Done` has been removed
+- Function `PrivateLink.ToPtr` has been removed
+- Function `*ClustersClientRotateDiskEncryptionKeyPoller.Done` has been removed
+- Function `*ScriptActionsClientListByClusterPager.Err` has been removed
+- Function `*ClustersClientDeletePoller.Poll` has been removed
+- Function `*ClustersClientExecuteScriptActionsPoller.FinalResponse` has been removed
+- Function `*ExtensionsClientEnableAzureMonitorPoller.Done` has been removed
+- Function `*ClustersClientResizePoller.ResumeToken` has been removed
+- Function `*ExtensionsClientCreatePoller.Poll` has been removed
+- Function `*ClustersClientUpdateIdentityCertificatePoller.Done` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePoller.Poll` has been removed
+- Function `*ApplicationsClientCreatePoller.ResumeToken` has been removed
+- Function `ApplicationsClientCreatePollerResponse.PollUntilDone` has been removed
+- Function `ClustersClientUpdateAutoScaleConfigurationPollerResponse.PollUntilDone` has been removed
+- Function `*ClustersClientDeletePoller.Done` has been removed
+- Function `*ExtensionsClientCreatePoller.Done` has been removed
+- Function `ExtensionsClientEnableMonitoringPollerResponse.PollUntilDone` has been removed
+- Function `*ScriptExecutionHistoryClientListByClusterPager.NextPage` has been removed
+- Function `*PrivateEndpointConnectionsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*ClustersClientListPager.NextPage` has been removed
+- Function `*ApplicationsClientDeletePoller.FinalResponse` has been removed
+- Function `ClustersClientUpdateIdentityCertificatePollerResponse.PollUntilDone` has been removed
+- Function `*ApplicationsClientDeletePoller.Done` has been removed
+- Function `*ApplicationsClientDeletePoller.Poll` has been removed
+- Function `*VirtualMachinesClientRestartHostsPoller.ResumeToken` has been removed
+- Function `*ExtensionsClientEnableAzureMonitorPoller.Poll` has been removed
+- Function `*ScriptExecutionHistoryClientListByClusterPager.PageResponse` has been removed
+- Function `*ExtensionsClientEnableMonitoringPollerResponse.Resume` has been removed
+- Function `Tier.ToPtr` has been removed
+- Function `*ExtensionsClientEnableAzureMonitorPoller.ResumeToken` has been removed
+- Function `ExtensionsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ClustersClientRotateDiskEncryptionKeyPoller.ResumeToken` has been removed
+- Function `*ExtensionsClientEnableMonitoringPoller.Done` has been removed
+- Function `*ExtensionsClientDisableMonitoringPoller.ResumeToken` has been removed
+- Function `*ClustersClientUpdateGatewaySettingsPollerResponse.Resume` has been removed
+- Function `ResourceIdentityType.ToPtr` has been removed
+- Function `*ClustersClientUpdateGatewaySettingsPoller.ResumeToken` has been removed
+- Function `*ClustersClientResizePoller.FinalResponse` has been removed
+- Function `*ApplicationsClientDeletePollerResponse.Resume` has been removed
+- Function `*ConfigurationsClientUpdatePoller.ResumeToken` has been removed
+- Function `*ScriptActionsClientListByClusterPager.PageResponse` has been removed
+- Function `ClustersClientRotateDiskEncryptionKeyPollerResponse.PollUntilDone` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `*ApplicationsClientCreatePoller.Done` has been removed
+- Function `*ClustersClientResizePoller.Poll` has been removed
+- Function `ExtensionsClientDisableAzureMonitorPollerResponse.PollUntilDone` has been removed
+- Function `*ClustersClientResizePoller.Done` has been removed
+- Function `*ConfigurationsClientUpdatePoller.FinalResponse` has been removed
+- Function `*ClustersClientCreatePoller.FinalResponse` has been removed
+- Function `*PrivateEndpointConnectionsClientListByClusterPager.NextPage` has been removed
+- Function `*ApplicationsClientCreatePoller.FinalResponse` has been removed
+- Function `ClustersClientCreatePollerResponse.PollUntilDone` has been removed
+- Function `PrivateLinkServiceConnectionStatus.ToPtr` has been removed
+- Function `*ExtensionsClientDisableMonitoringPollerResponse.Resume` has been removed
+- Function `PrivateEndpointConnectionsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateEndpointConnectionsClientListByClusterPager.Err` has been removed
+- Function `*ScriptActionsClientListByClusterPager.NextPage` has been removed
+- Function `*ClustersClientDeletePoller.FinalResponse` has been removed
+- Function `*ClustersClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*ConfigurationsClientUpdatePoller.Done` has been removed
+- Function `PrivateLinkConfigurationProvisioningState.ToPtr` has been removed
+- Function `*ClustersClientRotateDiskEncryptionKeyPoller.FinalResponse` has been removed
+- Function `*ExtensionsClientDisableAzureMonitorPoller.Poll` has been removed
+- Function `*VirtualMachinesClientRestartHostsPoller.FinalResponse` has been removed
+- Function `*ClustersClientUpdateIdentityCertificatePoller.FinalResponse` has been removed
+- Function `OSType.ToPtr` has been removed
+- Function `*ExtensionsClientDeletePollerResponse.Resume` has been removed
+- Function `*ClustersClientUpdateIdentityCertificatePoller.ResumeToken` has been removed
+- Function `FilterMode.ToPtr` has been removed
+- Function `*VirtualMachinesClientRestartHostsPollerResponse.Resume` has been removed
+- Function `*ClustersClientUpdateAutoScaleConfigurationPollerResponse.Resume` has been removed
+- Function `*ClustersClientUpdateGatewaySettingsPoller.Poll` has been removed
+- Function `PrivateEndpointConnectionProvisioningState.ToPtr` has been removed
+- Function `*ApplicationsClientDeletePoller.ResumeToken` has been removed
+- Function `*ExtensionsClientCreatePoller.FinalResponse` has been removed
+- Function `*ExtensionsClientDeletePoller.Poll` has been removed
+- Function `*ClustersClientListByResourceGroupPager.NextPage` has been removed
+- Function `*ClustersClientListPager.PageResponse` has been removed
+- Function `*ClustersClientUpdateIdentityCertificatePollerResponse.Resume` has been removed
+- Function `*ApplicationsClientCreatePoller.Poll` has been removed
+- Function `*PrivateEndpointConnectionsClientListByClusterPager.PageResponse` has been removed
+- Function `*ExtensionsClientEnableAzureMonitorPollerResponse.Resume` has been removed
+- Function `*ClustersClientExecuteScriptActionsPoller.Poll` has been removed
+- Function `*ClustersClientUpdateAutoScaleConfigurationPoller.Poll` has been removed
+- Function `ApplicationsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Function `CreatedByType.ToPtr` has been removed
+- Function `PrivateIPAllocationMethod.ToPtr` has been removed
+- Function `ClustersClientResizePollerResponse.PollUntilDone` has been removed
+- Function `*ExtensionsClientDisableMonitoringPoller.FinalResponse` has been removed
+- Function `*ClustersClientUpdateIdentityCertificatePoller.Poll` has been removed
+- Function `*ClustersClientUpdateAutoScaleConfigurationPoller.FinalResponse` has been removed
+- Function `DirectoryType.ToPtr` has been removed
+- Function `*ConfigurationsClientUpdatePoller.Poll` has been removed
+- Function `*ClustersClientCreatePoller.Poll` has been removed
+- Function `*ApplicationsClientListByClusterPager.Err` has been removed
+- Function `*ClustersClientResizePollerResponse.Resume` has been removed
+- Function `ExtensionsClientCreatePollerResponse.PollUntilDone` has been removed
+- Function `*ClustersClientExecuteScriptActionsPoller.ResumeToken` has been removed
+- Function `HDInsightClusterProvisioningState.ToPtr` has been removed
+- Function `*ExtensionsClientEnableMonitoringPoller.ResumeToken` has been removed
+- Function `*ClustersClientExecuteScriptActionsPoller.Done` has been removed
+- Function `RoleName.ToPtr` has been removed
+- Function `*ConfigurationsClientUpdatePollerResponse.Resume` has been removed
+- Function `*ClustersClientListPager.Err` has been removed
+- Function `*ExtensionsClientDisableAzureMonitorPoller.FinalResponse` has been removed
+- Function `*PrivateEndpointConnectionsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `AsyncOperationState.ToPtr` has been removed
+- Function `*ClustersClientDeletePollerResponse.Resume` has been removed
+- Function `ExtensionsClientEnableAzureMonitorPollerResponse.PollUntilDone` has been removed
+- Function `*ClustersClientCreatePoller.ResumeToken` has been removed
+- Function `*ExtensionsClientDeletePoller.Done` has been removed
+- Function `*ExtensionsClientEnableAzureMonitorPoller.FinalResponse` has been removed
+- Function `*ClustersClientDeletePoller.ResumeToken` has been removed
+- Function `*ExtensionsClientDisableMonitoringPoller.Done` has been removed
+- Function `*ExtensionsClientDisableAzureMonitorPoller.ResumeToken` has been removed
+- Function `*ClustersClientExecuteScriptActionsPollerResponse.Resume` has been removed
+- Function `*ClustersClientUpdateGatewaySettingsPoller.Done` has been removed
+- Function `*ClustersClientRotateDiskEncryptionKeyPollerResponse.Resume` has been removed
+- Function `PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `ResourceProviderConnection.ToPtr` has been removed
+- Function `ConfigurationsClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ApplicationsClientListByClusterPager.NextPage` has been removed
+- Function `*ScriptExecutionHistoryClientListByClusterPager.Err` has been removed
+- Function `*ExtensionsClientCreatePoller.ResumeToken` has been removed
+- Function `*ClustersClientListByResourceGroupPager.Err` has been removed
+- Function `*ClustersClientUpdateAutoScaleConfigurationPoller.Done` has been removed
+- Function `*ExtensionsClientCreatePollerResponse.Resume` has been removed
+- Function `ClustersClientUpdateGatewaySettingsPollerResponse.PollUntilDone` has been removed
+- Function `*ClustersClientUpdateGatewaySettingsPoller.FinalResponse` has been removed
+- Function `ExtensionsClientDisableMonitoringPollerResponse.PollUntilDone` has been removed
+- Function `*PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ClustersClientRotateDiskEncryptionKeyPoller.Poll` has been removed
+- Function `*ExtensionsClientDeletePoller.FinalResponse` has been removed
+- Function `JSONWebKeyEncryptionAlgorithm.ToPtr` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePoller.ResumeToken` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePoller.Done` has been removed
+- Function `ClustersClientExecuteScriptActionsPollerResponse.PollUntilDone` has been removed
+- Function `DaysOfWeek.ToPtr` has been removed
+- Function `*PrivateEndpointConnectionsClientCreateOrUpdatePoller.Done` has been removed
+- Function `VirtualMachinesClientRestartHostsPollerResponse.PollUntilDone` has been removed
+- Function `*ExtensionsClientEnableMonitoringPoller.FinalResponse` has been removed
+- Function `*PrivateEndpointConnectionsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*VirtualMachinesClientRestartHostsPoller.Poll` has been removed
+- Function `*ExtensionsClientDisableAzureMonitorPoller.Done` has been removed
+- Function `*ExtensionsClientDisableMonitoringPoller.Poll` has been removed
+- Function `*ExtensionsClientDeletePoller.ResumeToken` has been removed
+- Function `*VirtualMachinesClientRestartHostsPoller.Done` has been removed
+- Function `*ExtensionsClientEnableMonitoringPoller.Poll` has been removed
+- Function `ClustersClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ApplicationsClientCreatePollerResponse.Resume` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `*ClustersClientUpdateAutoScaleConfigurationPoller.ResumeToken` has been removed
+- Function `*ApplicationsClientListByClusterPager.PageResponse` has been removed
+- Struct `ApplicationsClientCreatePoller` has been removed
+- Struct `ApplicationsClientCreatePollerResponse` has been removed
+- Struct `ApplicationsClientCreateResult` has been removed
+- Struct `ApplicationsClientDeletePoller` has been removed
+- Struct `ApplicationsClientDeletePollerResponse` has been removed
+- Struct `ApplicationsClientGetAzureAsyncOperationStatusResult` has been removed
+- Struct `ApplicationsClientGetResult` has been removed
+- Struct `ApplicationsClientListByClusterPager` has been removed
+- Struct `ApplicationsClientListByClusterResult` has been removed
+- Struct `ClustersClientCreatePoller` has been removed
+- Struct `ClustersClientCreatePollerResponse` has been removed
+- Struct `ClustersClientCreateResult` has been removed
+- Struct `ClustersClientDeletePoller` has been removed
+- Struct `ClustersClientDeletePollerResponse` has been removed
+- Struct `ClustersClientExecuteScriptActionsPoller` has been removed
+- Struct `ClustersClientExecuteScriptActionsPollerResponse` has been removed
+- Struct `ClustersClientGetAzureAsyncOperationStatusResult` has been removed
+- Struct `ClustersClientGetGatewaySettingsResult` has been removed
+- Struct `ClustersClientGetResult` has been removed
+- Struct `ClustersClientListByResourceGroupPager` has been removed
+- Struct `ClustersClientListByResourceGroupResult` has been removed
+- Struct `ClustersClientListPager` has been removed
+- Struct `ClustersClientListResult` has been removed
+- Struct `ClustersClientResizePoller` has been removed
+- Struct `ClustersClientResizePollerResponse` has been removed
+- Struct `ClustersClientRotateDiskEncryptionKeyPoller` has been removed
+- Struct `ClustersClientRotateDiskEncryptionKeyPollerResponse` has been removed
+- Struct `ClustersClientUpdateAutoScaleConfigurationPoller` has been removed
+- Struct `ClustersClientUpdateAutoScaleConfigurationPollerResponse` has been removed
+- Struct `ClustersClientUpdateGatewaySettingsPoller` has been removed
+- Struct `ClustersClientUpdateGatewaySettingsPollerResponse` has been removed
+- Struct `ClustersClientUpdateIdentityCertificatePoller` has been removed
+- Struct `ClustersClientUpdateIdentityCertificatePollerResponse` has been removed
+- Struct `ClustersClientUpdateResult` has been removed
+- Struct `ConfigurationsClientGetResult` has been removed
+- Struct `ConfigurationsClientListResult` has been removed
+- Struct `ConfigurationsClientUpdatePoller` has been removed
+- Struct `ConfigurationsClientUpdatePollerResponse` has been removed
+- Struct `ExtensionsClientCreatePoller` has been removed
+- Struct `ExtensionsClientCreatePollerResponse` has been removed
+- Struct `ExtensionsClientDeletePoller` has been removed
+- Struct `ExtensionsClientDeletePollerResponse` has been removed
+- Struct `ExtensionsClientDisableAzureMonitorPoller` has been removed
+- Struct `ExtensionsClientDisableAzureMonitorPollerResponse` has been removed
+- Struct `ExtensionsClientDisableMonitoringPoller` has been removed
+- Struct `ExtensionsClientDisableMonitoringPollerResponse` has been removed
+- Struct `ExtensionsClientEnableAzureMonitorPoller` has been removed
+- Struct `ExtensionsClientEnableAzureMonitorPollerResponse` has been removed
+- Struct `ExtensionsClientEnableMonitoringPoller` has been removed
+- Struct `ExtensionsClientEnableMonitoringPollerResponse` has been removed
+- Struct `ExtensionsClientGetAzureAsyncOperationStatusResult` has been removed
+- Struct `ExtensionsClientGetAzureMonitorStatusResult` has been removed
+- Struct `ExtensionsClientGetMonitoringStatusResult` has been removed
+- Struct `ExtensionsClientGetResult` has been removed
+- Struct `LocationsClientCheckNameAvailabilityResult` has been removed
+- Struct `LocationsClientGetAzureAsyncOperationStatusResult` has been removed
+- Struct `LocationsClientGetCapabilitiesResult` has been removed
+- Struct `LocationsClientListBillingSpecsResult` has been removed
+- Struct `LocationsClientListUsagesResult` has been removed
+- Struct `LocationsClientValidateClusterCreateRequestResult` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `PrivateEndpointConnectionsClientCreateOrUpdatePoller` has been removed
+- Struct `PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsClientCreateOrUpdateResult` has been removed
+- Struct `PrivateEndpointConnectionsClientDeletePoller` has been removed
+- Struct `PrivateEndpointConnectionsClientDeletePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsClientGetResult` has been removed
+- Struct `PrivateEndpointConnectionsClientListByClusterPager` has been removed
+- Struct `PrivateEndpointConnectionsClientListByClusterResult` has been removed
+- Struct `PrivateLinkResourcesClientGetResult` has been removed
+- Struct `PrivateLinkResourcesClientListByClusterResult` has been removed
+- Struct `ScriptActionsClientGetExecutionAsyncOperationStatusResult` has been removed
+- Struct `ScriptActionsClientGetExecutionDetailResult` has been removed
+- Struct `ScriptActionsClientListByClusterPager` has been removed
+- Struct `ScriptActionsClientListByClusterResult` has been removed
+- Struct `ScriptExecutionHistoryClientListByClusterPager` has been removed
+- Struct `ScriptExecutionHistoryClientListByClusterResult` has been removed
+- Struct `VirtualMachinesClientGetAsyncOperationStatusResult` has been removed
+- Struct `VirtualMachinesClientListHostsResult` has been removed
+- Struct `VirtualMachinesClientRestartHostsPoller` has been removed
+- Struct `VirtualMachinesClientRestartHostsPollerResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `ExtensionsClientEnableMonitoringResponse` has been removed
+- Field `RawResponse` of struct `ClustersClientUpdateIdentityCertificateResponse` has been removed
+- Field `RawResponse` of struct `ScriptActionsClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `ClustersClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachinesClientRestartHostsResponse` has been removed
+- Field `PrivateEndpointConnectionsClientGetResult` of struct `PrivateEndpointConnectionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ExtensionsClientDisableAzureMonitorResponse` has been removed
+- Field `RawResponse` of struct `ClustersClientUpdateAutoScaleConfigurationResponse` has been removed
+- Field `ScriptActionsClientListByClusterResult` of struct `ScriptActionsClientListByClusterResponse` has been removed
+- Field `RawResponse` of struct `ScriptActionsClientListByClusterResponse` has been removed
+- Field `ExtensionsClientGetResult` of struct `ExtensionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ExtensionsClientGetResponse` has been removed
+- Field `ApplicationsClientGetAzureAsyncOperationStatusResult` of struct `ApplicationsClientGetAzureAsyncOperationStatusResponse` has been removed
+- Field `RawResponse` of struct `ApplicationsClientGetAzureAsyncOperationStatusResponse` has been removed
+- Field `PrivateEndpointConnectionsClientCreateOrUpdateResult` of struct `PrivateEndpointConnectionsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientCreateOrUpdateResponse` has been removed
+- Field `ClustersClientGetResult` of struct `ClustersClientGetResponse` has been removed
+- Field `RawResponse` of struct `ClustersClientGetResponse` has been removed
+- Field `ScriptActionsClientGetExecutionDetailResult` of struct `ScriptActionsClientGetExecutionDetailResponse` has been removed
+- Field `RawResponse` of struct `ScriptActionsClientGetExecutionDetailResponse` has been removed
+- Field `LocationsClientValidateClusterCreateRequestResult` of struct `LocationsClientValidateClusterCreateRequestResponse` has been removed
+- Field `RawResponse` of struct `LocationsClientValidateClusterCreateRequestResponse` has been removed
+- Field `LocationsClientGetAzureAsyncOperationStatusResult` of struct `LocationsClientGetAzureAsyncOperationStatusResponse` has been removed
+- Field `RawResponse` of struct `LocationsClientGetAzureAsyncOperationStatusResponse` has been removed
+- Field `LocationsClientListBillingSpecsResult` of struct `LocationsClientListBillingSpecsResponse` has been removed
+- Field `RawResponse` of struct `LocationsClientListBillingSpecsResponse` has been removed
+- Field `RawResponse` of struct `ExtensionsClientEnableAzureMonitorResponse` has been removed
+- Field `RawResponse` of struct `ClustersClientUpdateGatewaySettingsResponse` has been removed
+- Field `ExtensionsClientGetAzureAsyncOperationStatusResult` of struct `ExtensionsClientGetAzureAsyncOperationStatusResponse` has been removed
+- Field `RawResponse` of struct `ExtensionsClientGetAzureAsyncOperationStatusResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `PrivateEndpointConnectionsClientListByClusterResult` of struct `PrivateEndpointConnectionsClientListByClusterResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientListByClusterResponse` has been removed
+- Field `LocationsClientGetCapabilitiesResult` of struct `LocationsClientGetCapabilitiesResponse` has been removed
+- Field `RawResponse` of struct `LocationsClientGetCapabilitiesResponse` has been removed
+- Field `RawResponse` of struct `ClustersClientExecuteScriptActionsResponse` has been removed
+- Field `ConfigurationsClientGetResult` of struct `ConfigurationsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ConfigurationsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ClustersClientResizeResponse` has been removed
+- Field `ApplicationsClientCreateResult` of struct `ApplicationsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `ApplicationsClientCreateResponse` has been removed
+- Field `ApplicationsClientListByClusterResult` of struct `ApplicationsClientListByClusterResponse` has been removed
+- Field `RawResponse` of struct `ApplicationsClientListByClusterResponse` has been removed
+- Field `ScriptActionsClientGetExecutionAsyncOperationStatusResult` of struct `ScriptActionsClientGetExecutionAsyncOperationStatusResponse` has been removed
+- Field `RawResponse` of struct `ScriptActionsClientGetExecutionAsyncOperationStatusResponse` has been removed
+- Field `ClustersClientCreateResult` of struct `ClustersClientCreateResponse` has been removed
+- Field `RawResponse` of struct `ClustersClientCreateResponse` has been removed
+- Field `RawResponse` of struct `ClustersClientRotateDiskEncryptionKeyResponse` has been removed
+- Field `RawResponse` of struct `ExtensionsClientDisableMonitoringResponse` has been removed
+- Field `VirtualMachinesClientGetAsyncOperationStatusResult` of struct `VirtualMachinesClientGetAsyncOperationStatusResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachinesClientGetAsyncOperationStatusResponse` has been removed
+- Field `VirtualMachinesClientListHostsResult` of struct `VirtualMachinesClientListHostsResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachinesClientListHostsResponse` has been removed
+- Field `RawResponse` of struct `ExtensionsClientDeleteResponse` has been removed
+- Field `LocationsClientListUsagesResult` of struct `LocationsClientListUsagesResponse` has been removed
+- Field `RawResponse` of struct `LocationsClientListUsagesResponse` has been removed
+- Field `PrivateLinkResourcesClientListByClusterResult` of struct `PrivateLinkResourcesClientListByClusterResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkResourcesClientListByClusterResponse` has been removed
+- Field `ApplicationsClientGetResult` of struct `ApplicationsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ApplicationsClientGetResponse` has been removed
+- Field `LocationsClientCheckNameAvailabilityResult` of struct `LocationsClientCheckNameAvailabilityResponse` has been removed
+- Field `RawResponse` of struct `LocationsClientCheckNameAvailabilityResponse` has been removed
+- Field `RawResponse` of struct `ScriptExecutionHistoryClientPromoteResponse` has been removed
+- Field `PrivateLinkResourcesClientGetResult` of struct `PrivateLinkResourcesClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkResourcesClientGetResponse` has been removed
+- Field `ScriptExecutionHistoryClientListByClusterResult` of struct `ScriptExecutionHistoryClientListByClusterResponse` has been removed
+- Field `RawResponse` of struct `ScriptExecutionHistoryClientListByClusterResponse` has been removed
+- Field `RawResponse` of struct `ExtensionsClientCreateResponse` has been removed
+- Field `ClustersClientGetAzureAsyncOperationStatusResult` of struct `ClustersClientGetAzureAsyncOperationStatusResponse` has been removed
+- Field `RawResponse` of struct `ClustersClientGetAzureAsyncOperationStatusResponse` has been removed
+- Field `ExtensionsClientGetAzureMonitorStatusResult` of struct `ExtensionsClientGetAzureMonitorStatusResponse` has been removed
+- Field `RawResponse` of struct `ExtensionsClientGetAzureMonitorStatusResponse` has been removed
+- Field `ExtensionsClientGetMonitoringStatusResult` of struct `ExtensionsClientGetMonitoringStatusResponse` has been removed
+- Field `RawResponse` of struct `ExtensionsClientGetMonitoringStatusResponse` has been removed
+- Field `ConfigurationsClientListResult` of struct `ConfigurationsClientListResponse` has been removed
+- Field `RawResponse` of struct `ConfigurationsClientListResponse` has been removed
+- Field `RawResponse` of struct `ApplicationsClientDeleteResponse` has been removed
+- Field `ClustersClientGetGatewaySettingsResult` of struct `ClustersClientGetGatewaySettingsResponse` has been removed
+- Field `RawResponse` of struct `ClustersClientGetGatewaySettingsResponse` has been removed
+- Field `ClustersClientUpdateResult` of struct `ClustersClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ClustersClientUpdateResponse` has been removed
+- Field `ClustersClientListByResourceGroupResult` of struct `ClustersClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `ClustersClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `ConfigurationsClientUpdateResponse` has been removed
+- Field `ClustersClientListResult` of struct `ClustersClientListResponse` has been removed
+- Field `RawResponse` of struct `ClustersClientListResponse` has been removed
+
+### Features Added
+
+- New field `ResumeToken` in struct `ClustersClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `ClustersClientBeginCreateOptions`
+- New anonymous field `Application` in struct `ApplicationsClientCreateResponse`
+- New field `Value` in struct `ConfigurationsClientGetResponse`
+- New field `ResumeToken` in struct `ExtensionsClientBeginEnableMonitoringOptions`
+- New field `ResumeToken` in struct `ExtensionsClientBeginDisableMonitoringOptions`
+- New anonymous field `PrivateEndpointConnectionListResult` in struct `PrivateEndpointConnectionsClientListByClusterResponse`
+- New anonymous field `Cluster` in struct `ClustersClientGetResponse`
+- New anonymous field `Cluster` in struct `ClustersClientUpdateResponse`
+- New anonymous field `GatewaySettings` in struct `ClustersClientGetGatewaySettingsResponse`
+- New field `ResumeToken` in struct `PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `ClustersClientBeginUpdateAutoScaleConfigurationOptions`
+- New anonymous field `ClusterCreateValidationResult` in struct `LocationsClientValidateClusterCreateRequestResponse`
+- New anonymous field `AsyncOperationResult` in struct `ScriptActionsClientGetExecutionAsyncOperationStatusResponse`
+- New field `ResumeToken` in struct `ExtensionsClientBeginDisableAzureMonitorOptions`
+- New anonymous field `RuntimeScriptActionDetail` in struct `ScriptActionsClientGetExecutionDetailResponse`
+- New anonymous field `PrivateLinkResourceListResult` in struct `PrivateLinkResourcesClientListByClusterResponse`
+- New anonymous field `PrivateEndpointConnection` in struct `PrivateEndpointConnectionsClientCreateOrUpdateResponse`
+- New anonymous field `AsyncOperationResult` in struct `VirtualMachinesClientGetAsyncOperationStatusResponse`
+- New anonymous field `AzureMonitorResponse` in struct `ExtensionsClientGetAzureMonitorStatusResponse`
+- New field `ResumeToken` in struct `ExtensionsClientBeginEnableAzureMonitorOptions`
+- New anonymous field `ScriptActionsList` in struct `ScriptActionsClientListByClusterResponse`
+- New field `ResumeToken` in struct `ApplicationsClientBeginDeleteOptions`
+- New anonymous field `ClusterConfigurations` in struct `ConfigurationsClientListResponse`
+- New anonymous field `AsyncOperationResult` in struct `LocationsClientGetAzureAsyncOperationStatusResponse`
+- New anonymous field `BillingResponseListResult` in struct `LocationsClientListBillingSpecsResponse`
+- New anonymous field `Cluster` in struct `ClustersClientCreateResponse`
+- New field `ResumeToken` in struct `PrivateEndpointConnectionsClientBeginDeleteOptions`
+- New anonymous field `AsyncOperationResult` in struct `ApplicationsClientGetAzureAsyncOperationStatusResponse`
+- New field `ResumeToken` in struct `ExtensionsClientBeginCreateOptions`
+- New anonymous field `PrivateLinkResource` in struct `PrivateLinkResourcesClientGetResponse`
+- New field `ResumeToken` in struct `VirtualMachinesClientBeginRestartHostsOptions`
+- New anonymous field `AsyncOperationResult` in struct `ExtensionsClientGetAzureAsyncOperationStatusResponse`
+- New field `ResumeToken` in struct `ExtensionsClientBeginDeleteOptions`
+- New anonymous field `NameAvailabilityCheckResult` in struct `LocationsClientCheckNameAvailabilityResponse`
+- New anonymous field `ScriptActionExecutionHistoryList` in struct `ScriptExecutionHistoryClientListByClusterResponse`
+- New field `ResumeToken` in struct `ClustersClientBeginUpdateIdentityCertificateOptions`
+- New anonymous field `ClusterListResult` in struct `ClustersClientListByResourceGroupResponse`
+- New anonymous field `AsyncOperationResult` in struct `ClustersClientGetAzureAsyncOperationStatusResponse`
+- New field `ResumeToken` in struct `ConfigurationsClientBeginUpdateOptions`
+- New anonymous field `CapabilitiesResult` in struct `LocationsClientGetCapabilitiesResponse`
+- New anonymous field `ClusterMonitoringResponse` in struct `ExtensionsClientGetResponse`
+- New anonymous field `ApplicationListResult` in struct `ApplicationsClientListByClusterResponse`
+- New field `ResumeToken` in struct `ApplicationsClientBeginCreateOptions`
+- New anonymous field `Application` in struct `ApplicationsClientGetResponse`
+- New field `ResumeToken` in struct `ClustersClientBeginResizeOptions`
+- New field `ResumeToken` in struct `ClustersClientBeginUpdateGatewaySettingsOptions`
+- New field `ResumeToken` in struct `ClustersClientBeginExecuteScriptActionsOptions`
+- New anonymous field `ClusterListResult` in struct `ClustersClientListResponse`
+- New anonymous field `ClusterMonitoringResponse` in struct `ExtensionsClientGetMonitoringStatusResponse`
+- New field `HostInfoArray` in struct `VirtualMachinesClientListHostsResponse`
+- New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
+- New field `ResumeToken` in struct `ClustersClientBeginRotateDiskEncryptionKeyOptions`
+- New anonymous field `UsagesListResult` in struct `LocationsClientListUsagesResponse`
+- New anonymous field `PrivateEndpointConnection` in struct `PrivateEndpointConnectionsClientGetResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

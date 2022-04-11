@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armhdinsight
 
 const (
 	moduleName    = "armhdinsight"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // AsyncOperationState - The async operation state.
@@ -31,11 +31,6 @@ func PossibleAsyncOperationStateValues() []AsyncOperationState {
 	}
 }
 
-// ToPtr returns a *AsyncOperationState pointing to the current value.
-func (c AsyncOperationState) ToPtr() *AsyncOperationState {
-	return &c
-}
-
 // CreatedByType - The type of identity that created the resource.
 type CreatedByType string
 
@@ -54,11 +49,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
 	}
-}
-
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
 }
 
 type DaysOfWeek string
@@ -86,11 +76,6 @@ func PossibleDaysOfWeekValues() []DaysOfWeek {
 	}
 }
 
-// ToPtr returns a *DaysOfWeek pointing to the current value.
-func (c DaysOfWeek) ToPtr() *DaysOfWeek {
-	return &c
-}
-
 // DirectoryType - The directory type.
 type DirectoryType string
 
@@ -103,11 +88,6 @@ func PossibleDirectoryTypeValues() []DirectoryType {
 	return []DirectoryType{
 		DirectoryTypeActiveDirectory,
 	}
-}
-
-// ToPtr returns a *DirectoryType pointing to the current value.
-func (c DirectoryType) ToPtr() *DirectoryType {
-	return &c
 }
 
 // FilterMode - The filtering mode. Effectively this can enabling or disabling the VM sizes in a particular set.
@@ -128,11 +108,6 @@ func PossibleFilterModeValues() []FilterMode {
 		FilterModeInclude,
 		FilterModeRecommend,
 	}
-}
-
-// ToPtr returns a *FilterMode pointing to the current value.
-func (c FilterMode) ToPtr() *FilterMode {
-	return &c
 }
 
 // HDInsightClusterProvisioningState - The provisioning state, which only appears in the response.
@@ -157,11 +132,6 @@ func PossibleHDInsightClusterProvisioningStateValues() []HDInsightClusterProvisi
 	}
 }
 
-// ToPtr returns a *HDInsightClusterProvisioningState pointing to the current value.
-func (c HDInsightClusterProvisioningState) ToPtr() *HDInsightClusterProvisioningState {
-	return &c
-}
-
 // JSONWebKeyEncryptionAlgorithm - Algorithm identifier for encryption, default RSA-OAEP.
 type JSONWebKeyEncryptionAlgorithm string
 
@@ -180,11 +150,6 @@ func PossibleJSONWebKeyEncryptionAlgorithmValues() []JSONWebKeyEncryptionAlgorit
 	}
 }
 
-// ToPtr returns a *JSONWebKeyEncryptionAlgorithm pointing to the current value.
-func (c JSONWebKeyEncryptionAlgorithm) ToPtr() *JSONWebKeyEncryptionAlgorithm {
-	return &c
-}
-
 // OSType - The type of operating system.
 type OSType string
 
@@ -199,11 +164,6 @@ func PossibleOSTypeValues() []OSType {
 		OSTypeLinux,
 		OSTypeWindows,
 	}
-}
-
-// ToPtr returns a *OSType pointing to the current value.
-func (c OSType) ToPtr() *OSType {
-	return &c
 }
 
 // PrivateEndpointConnectionProvisioningState - The provisioning state, which only appears in the response.
@@ -230,11 +190,6 @@ func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpoin
 	}
 }
 
-// ToPtr returns a *PrivateEndpointConnectionProvisioningState pointing to the current value.
-func (c PrivateEndpointConnectionProvisioningState) ToPtr() *PrivateEndpointConnectionProvisioningState {
-	return &c
-}
-
 // PrivateIPAllocationMethod - The method that private IP address is allocated.
 type PrivateIPAllocationMethod string
 
@@ -251,11 +206,6 @@ func PossiblePrivateIPAllocationMethodValues() []PrivateIPAllocationMethod {
 	}
 }
 
-// ToPtr returns a *PrivateIPAllocationMethod pointing to the current value.
-func (c PrivateIPAllocationMethod) ToPtr() *PrivateIPAllocationMethod {
-	return &c
-}
-
 // PrivateLink - Indicates whether or not private link is enabled.
 type PrivateLink string
 
@@ -270,11 +220,6 @@ func PossiblePrivateLinkValues() []PrivateLink {
 		PrivateLinkDisabled,
 		PrivateLinkEnabled,
 	}
-}
-
-// ToPtr returns a *PrivateLink pointing to the current value.
-func (c PrivateLink) ToPtr() *PrivateLink {
-	return &c
 }
 
 // PrivateLinkConfigurationProvisioningState - The private link configuration provisioning state, which only appears in the
@@ -300,11 +245,6 @@ func PossiblePrivateLinkConfigurationProvisioningStateValues() []PrivateLinkConf
 	}
 }
 
-// ToPtr returns a *PrivateLinkConfigurationProvisioningState pointing to the current value.
-func (c PrivateLinkConfigurationProvisioningState) ToPtr() *PrivateLinkConfigurationProvisioningState {
-	return &c
-}
-
 // PrivateLinkServiceConnectionStatus - The concrete private link service connection.
 type PrivateLinkServiceConnectionStatus string
 
@@ -323,11 +263,6 @@ func PossiblePrivateLinkServiceConnectionStatusValues() []PrivateLinkServiceConn
 		PrivateLinkServiceConnectionStatusRejected,
 		PrivateLinkServiceConnectionStatusRemoved,
 	}
-}
-
-// ToPtr returns a *PrivateLinkServiceConnectionStatus pointing to the current value.
-func (c PrivateLinkServiceConnectionStatus) ToPtr() *PrivateLinkServiceConnectionStatus {
-	return &c
 }
 
 // ResourceIdentityType - The type of identity used for the cluster. The type 'SystemAssigned, UserAssigned' includes both
@@ -351,11 +286,6 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	}
 }
 
-// ToPtr returns a *ResourceIdentityType pointing to the current value.
-func (c ResourceIdentityType) ToPtr() *ResourceIdentityType {
-	return &c
-}
-
 // ResourceProviderConnection - The direction for the resource provider connection.
 type ResourceProviderConnection string
 
@@ -372,11 +302,6 @@ func PossibleResourceProviderConnectionValues() []ResourceProviderConnection {
 	}
 }
 
-// ToPtr returns a *ResourceProviderConnection pointing to the current value.
-func (c ResourceProviderConnection) ToPtr() *ResourceProviderConnection {
-	return &c
-}
-
 type RoleName string
 
 const (
@@ -388,11 +313,6 @@ func PossibleRoleNameValues() []RoleName {
 	return []RoleName{
 		RoleNameWorkernode,
 	}
-}
-
-// ToPtr returns a *RoleName pointing to the current value.
-func (c RoleName) ToPtr() *RoleName {
-	return &c
 }
 
 // Tier - The cluster tier.
@@ -409,9 +329,4 @@ func PossibleTierValues() []Tier {
 		TierPremium,
 		TierStandard,
 	}
-}
-
-// ToPtr returns a *Tier pointing to the current value.
-func (c Tier) ToPtr() *Tier {
-	return &c
 }

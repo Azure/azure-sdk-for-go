@@ -55,7 +55,7 @@ handle(err)
 
 ```go
 import (
-	"github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2018-06-01/subscriptions"
+    "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2018-06-01/subscriptions"
     "github.com/Azure/go-autorest/autorest"
     "github.com/Azure/go-autorest/autorest/adal"
 )
@@ -94,7 +94,7 @@ handle(err)
 import (
     "os"
 
-	"github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2018-06-01/subscriptions"
+    "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2018-06-01/subscriptions"
     "github.com/Azure/go-autorest/autorest"
     "github.com/Azure/go-autorest/autorest/adal"
 )
@@ -108,7 +108,7 @@ oauthCfg, err := adal.NewOAuthConfig("https://login.microsoftonline.com", tenant
 handle(err)
 
 spt, err := adal.NewServicePrincipalTokenFromCertificate(
-	*oauthConfig, clientID, certificate, rsaPrivateKey, "https://management.azure.com/",
+    *oauthConfig, clientID, certificate, rsaPrivateKey, "https://management.azure.com/",
 )
 
 client := subscriptions.NewClient()
@@ -144,7 +144,7 @@ handle(err)
 
 ```go
 import (
-	"github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2018-06-01/subscriptions"
+    "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2018-06-01/subscriptions"
     "github.com/Azure/go-autorest/autorest"
     "github.com/Azure/go-autorest/autorest/adal"
 )
@@ -292,9 +292,9 @@ The [azidext module](https://pkg.go.dev/github.com/jongio/azidext/go/azidext) pr
 
 ```go
 import (
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2018-06-01/subscriptions"
-	"github.com/jongio/azidext/go/azidext"
+    "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+    "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2018-06-01/subscriptions"
+    "github.com/jongio/azidext/go/azidext"
 )
 
 cred, err := azidentity.NewClientSecretCredential(tenantID, clientID, secret, nil)

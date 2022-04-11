@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -31,19 +32,23 @@ type ProfilesClient struct {
 // NewProfilesClient creates a new instance of ProfilesClient with the specified values.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewProfilesClient(credential azcore.TokenCredential, options *arm.ClientOptions) *ProfilesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewProfilesClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ProfilesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ProfilesClient{
-		host: string(cp.Endpoint),
-		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host: ep,
+		pl:   pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates a billing profile. The operation is supported for billing accounts with agreement
@@ -54,22 +59,16 @@ func NewProfilesClient(credential azcore.TokenCredential, options *arm.ClientOpt
 // parameters - The new or updated billing profile.
 // options - ProfilesClientBeginCreateOrUpdateOptions contains the optional parameters for the ProfilesClient.BeginCreateOrUpdate
 // method.
-func (client *ProfilesClient) BeginCreateOrUpdate(ctx context.Context, billingAccountName string, billingProfileName string, parameters Profile, options *ProfilesClientBeginCreateOrUpdateOptions) (ProfilesClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, billingAccountName, billingProfileName, parameters, options)
-	if err != nil {
-		return ProfilesClientCreateOrUpdatePollerResponse{}, err
+func (client *ProfilesClient) BeginCreateOrUpdate(ctx context.Context, billingAccountName string, billingProfileName string, parameters Profile, options *ProfilesClientBeginCreateOrUpdateOptions) (*armruntime.Poller[ProfilesClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, billingAccountName, billingProfileName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ProfilesClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ProfilesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ProfilesClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ProfilesClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return ProfilesClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &ProfilesClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a billing profile. The operation is supported for billing accounts with agreement type
@@ -160,7 +159,7 @@ func (client *ProfilesClient) getCreateRequest(ctx context.Context, billingAccou
 
 // getHandleResponse handles the Get response.
 func (client *ProfilesClient) getHandleResponse(resp *http.Response) (ProfilesClientGetResponse, error) {
-	result := ProfilesClientGetResponse{RawResponse: resp}
+	result := ProfilesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Profile); err != nil {
 		return ProfilesClientGetResponse{}, err
 	}
@@ -173,16 +172,32 @@ func (client *ProfilesClient) getHandleResponse(resp *http.Response) (ProfilesCl
 // billingAccountName - The ID that uniquely identifies a billing account.
 // options - ProfilesClientListByBillingAccountOptions contains the optional parameters for the ProfilesClient.ListByBillingAccount
 // method.
-func (client *ProfilesClient) ListByBillingAccount(billingAccountName string, options *ProfilesClientListByBillingAccountOptions) *ProfilesClientListByBillingAccountPager {
-	return &ProfilesClientListByBillingAccountPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByBillingAccountCreateRequest(ctx, billingAccountName, options)
+func (client *ProfilesClient) ListByBillingAccount(billingAccountName string, options *ProfilesClientListByBillingAccountOptions) *runtime.Pager[ProfilesClientListByBillingAccountResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ProfilesClientListByBillingAccountResponse]{
+		More: func(page ProfilesClientListByBillingAccountResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ProfilesClientListByBillingAccountResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ProfileListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ProfilesClientListByBillingAccountResponse) (ProfilesClientListByBillingAccountResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByBillingAccountCreateRequest(ctx, billingAccountName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ProfilesClientListByBillingAccountResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ProfilesClientListByBillingAccountResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ProfilesClientListByBillingAccountResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByBillingAccountHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByBillingAccountCreateRequest creates the ListByBillingAccount request.
@@ -208,7 +223,7 @@ func (client *ProfilesClient) listByBillingAccountCreateRequest(ctx context.Cont
 
 // listByBillingAccountHandleResponse handles the ListByBillingAccount response.
 func (client *ProfilesClient) listByBillingAccountHandleResponse(resp *http.Response) (ProfilesClientListByBillingAccountResponse, error) {
-	result := ProfilesClientListByBillingAccountResponse{RawResponse: resp}
+	result := ProfilesClientListByBillingAccountResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProfileListResult); err != nil {
 		return ProfilesClientListByBillingAccountResponse{}, err
 	}

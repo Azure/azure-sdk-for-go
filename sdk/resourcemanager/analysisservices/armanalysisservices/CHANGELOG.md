@@ -1,5 +1,130 @@
 # Release History
 
+## 0.3.0 (2022-04-11)
+### Breaking Changes
+
+- Function `*ServersClient.BeginResume` return value(s) have been changed from `(ServersClientResumePollerResponse, error)` to `(*armruntime.Poller[ServersClientResumeResponse], error)`
+- Function `*ServersClient.List` parameter(s) have been changed from `(context.Context, *ServersClientListOptions)` to `(*ServersClientListOptions)`
+- Function `*ServersClient.List` return value(s) have been changed from `(ServersClientListResponse, error)` to `(*runtime.Pager[ServersClientListResponse])`
+- Function `NewServersClient` return value(s) have been changed from `(*ServersClient)` to `(*ServersClient, error)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `*ServersClient.BeginDelete` return value(s) have been changed from `(ServersClientDeletePollerResponse, error)` to `(*armruntime.Poller[ServersClientDeleteResponse], error)`
+- Function `*ServersClient.ListByResourceGroup` parameter(s) have been changed from `(context.Context, string, *ServersClientListByResourceGroupOptions)` to `(string, *ServersClientListByResourceGroupOptions)`
+- Function `*ServersClient.ListByResourceGroup` return value(s) have been changed from `(ServersClientListByResourceGroupResponse, error)` to `(*runtime.Pager[ServersClientListByResourceGroupResponse])`
+- Function `*ServersClient.BeginSuspend` return value(s) have been changed from `(ServersClientSuspendPollerResponse, error)` to `(*armruntime.Poller[ServersClientSuspendResponse], error)`
+- Function `*ServersClient.BeginUpdate` return value(s) have been changed from `(ServersClientUpdatePollerResponse, error)` to `(*armruntime.Poller[ServersClientUpdateResponse], error)`
+- Function `*ServersClient.BeginCreate` return value(s) have been changed from `(ServersClientCreatePollerResponse, error)` to `(*armruntime.Poller[ServersClientCreateResponse], error)`
+- Type of `ErrorAdditionalInfo.Info` has been changed from `map[string]interface{}` to `interface{}`
+- Function `*ServersClientSuspendPoller.Poll` has been removed
+- Function `*ServersClientCreatePoller.Done` has been removed
+- Function `*ServersClientDeletePoller.Done` has been removed
+- Function `*ServersClientUpdatePoller.Poll` has been removed
+- Function `*ServersClientDeletePoller.FinalResponse` has been removed
+- Function `*ServersClientCreatePollerResponse.Resume` has been removed
+- Function `ServersClientResumePollerResponse.PollUntilDone` has been removed
+- Function `SKUTier.ToPtr` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `ServersClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ServersClientSuspendPollerResponse.Resume` has been removed
+- Function `*ServersClientUpdatePollerResponse.Resume` has been removed
+- Function `*ServersClientCreatePoller.FinalResponse` has been removed
+- Function `*ServersClientSuspendPoller.Done` has been removed
+- Function `*ServersClientSuspendPoller.ResumeToken` has been removed
+- Function `*ServersClientCreatePoller.ResumeToken` has been removed
+- Function `ConnectionMode.ToPtr` has been removed
+- Function `ManagedMode.ToPtr` has been removed
+- Function `*ServersClientResumePoller.ResumeToken` has been removed
+- Function `*ServersClientCreatePoller.Poll` has been removed
+- Function `*ServersClientSuspendPoller.FinalResponse` has been removed
+- Function `*ServersClientUpdatePoller.FinalResponse` has been removed
+- Function `*ServersClientResumePoller.Poll` has been removed
+- Function `*ServersClientUpdatePoller.Done` has been removed
+- Function `State.ToPtr` has been removed
+- Function `ServerMonitorMode.ToPtr` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Function `*ServersClientResumePoller.FinalResponse` has been removed
+- Function `*ServersClientResumePollerResponse.Resume` has been removed
+- Function `ServersClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `ServersClientSuspendPollerResponse.PollUntilDone` has been removed
+- Function `*ServersClientResumePoller.Done` has been removed
+- Function `*ServersClientDeletePoller.Poll` has been removed
+- Function `*ServersClientDeletePollerResponse.Resume` has been removed
+- Function `ServersClientCreatePollerResponse.PollUntilDone` has been removed
+- Function `ProvisioningState.ToPtr` has been removed
+- Function `*ServersClientDeletePoller.ResumeToken` has been removed
+- Function `*ServersClientUpdatePoller.ResumeToken` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `ServersClientCheckNameAvailabilityResult` has been removed
+- Struct `ServersClientCreatePoller` has been removed
+- Struct `ServersClientCreatePollerResponse` has been removed
+- Struct `ServersClientCreateResult` has been removed
+- Struct `ServersClientDeletePoller` has been removed
+- Struct `ServersClientDeletePollerResponse` has been removed
+- Struct `ServersClientGetDetailsResult` has been removed
+- Struct `ServersClientListByResourceGroupResult` has been removed
+- Struct `ServersClientListGatewayStatusResult` has been removed
+- Struct `ServersClientListOperationStatusesResult` has been removed
+- Struct `ServersClientListResult` has been removed
+- Struct `ServersClientListSKUsForExistingResult` has been removed
+- Struct `ServersClientListSKUsForNewResult` has been removed
+- Struct `ServersClientResumePoller` has been removed
+- Struct `ServersClientResumePollerResponse` has been removed
+- Struct `ServersClientSuspendPoller` has been removed
+- Struct `ServersClientSuspendPollerResponse` has been removed
+- Struct `ServersClientUpdatePoller` has been removed
+- Struct `ServersClientUpdatePollerResponse` has been removed
+- Struct `ServersClientUpdateResult` has been removed
+- Field `ServersClientGetDetailsResult` of struct `ServersClientGetDetailsResponse` has been removed
+- Field `RawResponse` of struct `ServersClientGetDetailsResponse` has been removed
+- Field `RawResponse` of struct `ServersClientDeleteResponse` has been removed
+- Field `ServersClientListSKUsForNewResult` of struct `ServersClientListSKUsForNewResponse` has been removed
+- Field `RawResponse` of struct `ServersClientListSKUsForNewResponse` has been removed
+- Field `RawResponse` of struct `ServersClientDissociateGatewayResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `ServersClientResumeResponse` has been removed
+- Field `ServersClientListOperationStatusesResult` of struct `ServersClientListOperationStatusesResponse` has been removed
+- Field `RawResponse` of struct `ServersClientListOperationStatusesResponse` has been removed
+- Field `ServersClientCreateResult` of struct `ServersClientCreateResponse` has been removed
+- Field `RawResponse` of struct `ServersClientCreateResponse` has been removed
+- Field `RawResponse` of struct `ServersClientListOperationResultsResponse` has been removed
+- Field `RawResponse` of struct `ServersClientSuspendResponse` has been removed
+- Field `ServersClientCheckNameAvailabilityResult` of struct `ServersClientCheckNameAvailabilityResponse` has been removed
+- Field `RawResponse` of struct `ServersClientCheckNameAvailabilityResponse` has been removed
+- Field `ServersClientListSKUsForExistingResult` of struct `ServersClientListSKUsForExistingResponse` has been removed
+- Field `RawResponse` of struct `ServersClientListSKUsForExistingResponse` has been removed
+- Field `ServersClientListByResourceGroupResult` of struct `ServersClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `ServersClientListByResourceGroupResponse` has been removed
+- Field `ServersClientUpdateResult` of struct `ServersClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ServersClientUpdateResponse` has been removed
+- Field `ServersClientListResult` of struct `ServersClientListResponse` has been removed
+- Field `RawResponse` of struct `ServersClientListResponse` has been removed
+- Field `ServersClientListGatewayStatusResult` of struct `ServersClientListGatewayStatusResponse` has been removed
+- Field `RawResponse` of struct `ServersClientListGatewayStatusResponse` has been removed
+
+### Features Added
+
+- New field `ResumeToken` in struct `ServersClientBeginResumeOptions`
+- New anonymous field `CheckServerNameAvailabilityResult` in struct `ServersClientCheckNameAvailabilityResponse`
+- New anonymous field `OperationStatus` in struct `ServersClientListOperationStatusesResponse`
+- New anonymous field `SKUEnumerationForExistingResourceResult` in struct `ServersClientListSKUsForExistingResponse`
+- New field `ResumeToken` in struct `ServersClientBeginSuspendOptions`
+- New anonymous field `GatewayListStatusLive` in struct `ServersClientListGatewayStatusResponse`
+- New anonymous field `Servers` in struct `ServersClientListByResourceGroupResponse`
+- New anonymous field `Server` in struct `ServersClientUpdateResponse`
+- New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
+- New anonymous field `SKUEnumerationForNewResourceResult` in struct `ServersClientListSKUsForNewResponse`
+- New field `ResumeToken` in struct `ServersClientBeginCreateOptions`
+- New field `ResumeToken` in struct `ServersClientBeginDeleteOptions`
+- New anonymous field `Servers` in struct `ServersClientListResponse`
+- New field `ResumeToken` in struct `ServersClientBeginUpdateOptions`
+- New anonymous field `Server` in struct `ServersClientCreateResponse`
+- New anonymous field `Server` in struct `ServersClientGetDetailsResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

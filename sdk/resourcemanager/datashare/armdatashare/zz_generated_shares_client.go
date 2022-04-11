@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type SharesClient struct {
 // subscriptionID - The subscription identifier
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewSharesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SharesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewSharesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SharesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &SharesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Create - Create a share
@@ -103,7 +108,7 @@ func (client *SharesClient) createCreateRequest(ctx context.Context, resourceGro
 
 // createHandleResponse handles the Create response.
 func (client *SharesClient) createHandleResponse(resp *http.Response) (SharesClientCreateResponse, error) {
-	result := SharesClientCreateResponse{RawResponse: resp}
+	result := SharesClientCreateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Share); err != nil {
 		return SharesClientCreateResponse{}, err
 	}
@@ -116,22 +121,16 @@ func (client *SharesClient) createHandleResponse(resp *http.Response) (SharesCli
 // accountName - The name of the share account.
 // shareName - The name of the share.
 // options - SharesClientBeginDeleteOptions contains the optional parameters for the SharesClient.BeginDelete method.
-func (client *SharesClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, shareName string, options *SharesClientBeginDeleteOptions) (SharesClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, shareName, options)
-	if err != nil {
-		return SharesClientDeletePollerResponse{}, err
+func (client *SharesClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, shareName string, options *SharesClientBeginDeleteOptions) (*armruntime.Poller[SharesClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, shareName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[SharesClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[SharesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SharesClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SharesClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return SharesClientDeletePollerResponse{}, err
-	}
-	result.Poller = &SharesClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Delete a share
@@ -234,7 +233,7 @@ func (client *SharesClient) getCreateRequest(ctx context.Context, resourceGroupN
 
 // getHandleResponse handles the Get response.
 func (client *SharesClient) getHandleResponse(resp *http.Response) (SharesClientGetResponse, error) {
-	result := SharesClientGetResponse{RawResponse: resp}
+	result := SharesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Share); err != nil {
 		return SharesClientGetResponse{}, err
 	}
@@ -246,16 +245,32 @@ func (client *SharesClient) getHandleResponse(resp *http.Response) (SharesClient
 // resourceGroupName - The resource group name.
 // accountName - The name of the share account.
 // options - SharesClientListByAccountOptions contains the optional parameters for the SharesClient.ListByAccount method.
-func (client *SharesClient) ListByAccount(resourceGroupName string, accountName string, options *SharesClientListByAccountOptions) *SharesClientListByAccountPager {
-	return &SharesClientListByAccountPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByAccountCreateRequest(ctx, resourceGroupName, accountName, options)
+func (client *SharesClient) ListByAccount(resourceGroupName string, accountName string, options *SharesClientListByAccountOptions) *runtime.Pager[SharesClientListByAccountResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SharesClientListByAccountResponse]{
+		More: func(page SharesClientListByAccountResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SharesClientListByAccountResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ShareList.NextLink)
+		Fetcher: func(ctx context.Context, page *SharesClientListByAccountResponse) (SharesClientListByAccountResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByAccountCreateRequest(ctx, resourceGroupName, accountName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SharesClientListByAccountResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SharesClientListByAccountResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SharesClientListByAccountResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByAccountHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByAccountCreateRequest creates the ListByAccount request.
@@ -295,7 +310,7 @@ func (client *SharesClient) listByAccountCreateRequest(ctx context.Context, reso
 
 // listByAccountHandleResponse handles the ListByAccount response.
 func (client *SharesClient) listByAccountHandleResponse(resp *http.Response) (SharesClientListByAccountResponse, error) {
-	result := SharesClientListByAccountResponse{RawResponse: resp}
+	result := SharesClientListByAccountResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ShareList); err != nil {
 		return SharesClientListByAccountResponse{}, err
 	}
@@ -310,16 +325,32 @@ func (client *SharesClient) listByAccountHandleResponse(resp *http.Response) (Sh
 // shareSynchronization - Share Synchronization payload.
 // options - SharesClientListSynchronizationDetailsOptions contains the optional parameters for the SharesClient.ListSynchronizationDetails
 // method.
-func (client *SharesClient) ListSynchronizationDetails(resourceGroupName string, accountName string, shareName string, shareSynchronization ShareSynchronization, options *SharesClientListSynchronizationDetailsOptions) *SharesClientListSynchronizationDetailsPager {
-	return &SharesClientListSynchronizationDetailsPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listSynchronizationDetailsCreateRequest(ctx, resourceGroupName, accountName, shareName, shareSynchronization, options)
+func (client *SharesClient) ListSynchronizationDetails(resourceGroupName string, accountName string, shareName string, shareSynchronization ShareSynchronization, options *SharesClientListSynchronizationDetailsOptions) *runtime.Pager[SharesClientListSynchronizationDetailsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SharesClientListSynchronizationDetailsResponse]{
+		More: func(page SharesClientListSynchronizationDetailsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SharesClientListSynchronizationDetailsResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SynchronizationDetailsList.NextLink)
+		Fetcher: func(ctx context.Context, page *SharesClientListSynchronizationDetailsResponse) (SharesClientListSynchronizationDetailsResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listSynchronizationDetailsCreateRequest(ctx, resourceGroupName, accountName, shareName, shareSynchronization, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SharesClientListSynchronizationDetailsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SharesClientListSynchronizationDetailsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SharesClientListSynchronizationDetailsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listSynchronizationDetailsHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listSynchronizationDetailsCreateRequest creates the ListSynchronizationDetails request.
@@ -363,7 +394,7 @@ func (client *SharesClient) listSynchronizationDetailsCreateRequest(ctx context.
 
 // listSynchronizationDetailsHandleResponse handles the ListSynchronizationDetails response.
 func (client *SharesClient) listSynchronizationDetailsHandleResponse(resp *http.Response) (SharesClientListSynchronizationDetailsResponse, error) {
-	result := SharesClientListSynchronizationDetailsResponse{RawResponse: resp}
+	result := SharesClientListSynchronizationDetailsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SynchronizationDetailsList); err != nil {
 		return SharesClientListSynchronizationDetailsResponse{}, err
 	}
@@ -377,16 +408,32 @@ func (client *SharesClient) listSynchronizationDetailsHandleResponse(resp *http.
 // shareName - The name of the share.
 // options - SharesClientListSynchronizationsOptions contains the optional parameters for the SharesClient.ListSynchronizations
 // method.
-func (client *SharesClient) ListSynchronizations(resourceGroupName string, accountName string, shareName string, options *SharesClientListSynchronizationsOptions) *SharesClientListSynchronizationsPager {
-	return &SharesClientListSynchronizationsPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listSynchronizationsCreateRequest(ctx, resourceGroupName, accountName, shareName, options)
+func (client *SharesClient) ListSynchronizations(resourceGroupName string, accountName string, shareName string, options *SharesClientListSynchronizationsOptions) *runtime.Pager[SharesClientListSynchronizationsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SharesClientListSynchronizationsResponse]{
+		More: func(page SharesClientListSynchronizationsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SharesClientListSynchronizationsResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ShareSynchronizationList.NextLink)
+		Fetcher: func(ctx context.Context, page *SharesClientListSynchronizationsResponse) (SharesClientListSynchronizationsResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listSynchronizationsCreateRequest(ctx, resourceGroupName, accountName, shareName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SharesClientListSynchronizationsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SharesClientListSynchronizationsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SharesClientListSynchronizationsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listSynchronizationsHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listSynchronizationsCreateRequest creates the ListSynchronizations request.
@@ -430,7 +477,7 @@ func (client *SharesClient) listSynchronizationsCreateRequest(ctx context.Contex
 
 // listSynchronizationsHandleResponse handles the ListSynchronizations response.
 func (client *SharesClient) listSynchronizationsHandleResponse(resp *http.Response) (SharesClientListSynchronizationsResponse, error) {
-	result := SharesClientListSynchronizationsResponse{RawResponse: resp}
+	result := SharesClientListSynchronizationsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ShareSynchronizationList); err != nil {
 		return SharesClientListSynchronizationsResponse{}, err
 	}

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ProviderShareSubscriptionsClient struct {
 // subscriptionID - The subscription identifier
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewProviderShareSubscriptionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ProviderShareSubscriptionsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewProviderShareSubscriptionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProviderShareSubscriptionsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ProviderShareSubscriptionsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Adjust - Adjust a share subscription's expiration date in a provider share
@@ -109,7 +114,7 @@ func (client *ProviderShareSubscriptionsClient) adjustCreateRequest(ctx context.
 
 // adjustHandleResponse handles the Adjust response.
 func (client *ProviderShareSubscriptionsClient) adjustHandleResponse(resp *http.Response) (ProviderShareSubscriptionsClientAdjustResponse, error) {
-	result := ProviderShareSubscriptionsClientAdjustResponse{RawResponse: resp}
+	result := ProviderShareSubscriptionsClientAdjustResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProviderShareSubscription); err != nil {
 		return ProviderShareSubscriptionsClientAdjustResponse{}, err
 	}
@@ -175,7 +180,7 @@ func (client *ProviderShareSubscriptionsClient) getByShareCreateRequest(ctx cont
 
 // getByShareHandleResponse handles the GetByShare response.
 func (client *ProviderShareSubscriptionsClient) getByShareHandleResponse(resp *http.Response) (ProviderShareSubscriptionsClientGetByShareResponse, error) {
-	result := ProviderShareSubscriptionsClientGetByShareResponse{RawResponse: resp}
+	result := ProviderShareSubscriptionsClientGetByShareResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProviderShareSubscription); err != nil {
 		return ProviderShareSubscriptionsClientGetByShareResponse{}, err
 	}
@@ -189,16 +194,32 @@ func (client *ProviderShareSubscriptionsClient) getByShareHandleResponse(resp *h
 // shareName - The name of the share.
 // options - ProviderShareSubscriptionsClientListByShareOptions contains the optional parameters for the ProviderShareSubscriptionsClient.ListByShare
 // method.
-func (client *ProviderShareSubscriptionsClient) ListByShare(resourceGroupName string, accountName string, shareName string, options *ProviderShareSubscriptionsClientListByShareOptions) *ProviderShareSubscriptionsClientListBySharePager {
-	return &ProviderShareSubscriptionsClientListBySharePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByShareCreateRequest(ctx, resourceGroupName, accountName, shareName, options)
+func (client *ProviderShareSubscriptionsClient) ListByShare(resourceGroupName string, accountName string, shareName string, options *ProviderShareSubscriptionsClientListByShareOptions) *runtime.Pager[ProviderShareSubscriptionsClientListByShareResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ProviderShareSubscriptionsClientListByShareResponse]{
+		More: func(page ProviderShareSubscriptionsClientListByShareResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ProviderShareSubscriptionsClientListByShareResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ProviderShareSubscriptionList.NextLink)
+		Fetcher: func(ctx context.Context, page *ProviderShareSubscriptionsClientListByShareResponse) (ProviderShareSubscriptionsClientListByShareResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByShareCreateRequest(ctx, resourceGroupName, accountName, shareName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ProviderShareSubscriptionsClientListByShareResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ProviderShareSubscriptionsClientListByShareResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ProviderShareSubscriptionsClientListByShareResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByShareHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByShareCreateRequest creates the ListByShare request.
@@ -236,7 +257,7 @@ func (client *ProviderShareSubscriptionsClient) listByShareCreateRequest(ctx con
 
 // listByShareHandleResponse handles the ListByShare response.
 func (client *ProviderShareSubscriptionsClient) listByShareHandleResponse(resp *http.Response) (ProviderShareSubscriptionsClientListByShareResponse, error) {
-	result := ProviderShareSubscriptionsClientListByShareResponse{RawResponse: resp}
+	result := ProviderShareSubscriptionsClientListByShareResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProviderShareSubscriptionList); err != nil {
 		return ProviderShareSubscriptionsClientListByShareResponse{}, err
 	}
@@ -303,7 +324,7 @@ func (client *ProviderShareSubscriptionsClient) reinstateCreateRequest(ctx conte
 
 // reinstateHandleResponse handles the Reinstate response.
 func (client *ProviderShareSubscriptionsClient) reinstateHandleResponse(resp *http.Response) (ProviderShareSubscriptionsClientReinstateResponse, error) {
-	result := ProviderShareSubscriptionsClientReinstateResponse{RawResponse: resp}
+	result := ProviderShareSubscriptionsClientReinstateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProviderShareSubscription); err != nil {
 		return ProviderShareSubscriptionsClientReinstateResponse{}, err
 	}
@@ -318,22 +339,18 @@ func (client *ProviderShareSubscriptionsClient) reinstateHandleResponse(resp *ht
 // providerShareSubscriptionID - To locate shareSubscription
 // options - ProviderShareSubscriptionsClientBeginRevokeOptions contains the optional parameters for the ProviderShareSubscriptionsClient.BeginRevoke
 // method.
-func (client *ProviderShareSubscriptionsClient) BeginRevoke(ctx context.Context, resourceGroupName string, accountName string, shareName string, providerShareSubscriptionID string, options *ProviderShareSubscriptionsClientBeginRevokeOptions) (ProviderShareSubscriptionsClientRevokePollerResponse, error) {
-	resp, err := client.revoke(ctx, resourceGroupName, accountName, shareName, providerShareSubscriptionID, options)
-	if err != nil {
-		return ProviderShareSubscriptionsClientRevokePollerResponse{}, err
+func (client *ProviderShareSubscriptionsClient) BeginRevoke(ctx context.Context, resourceGroupName string, accountName string, shareName string, providerShareSubscriptionID string, options *ProviderShareSubscriptionsClientBeginRevokeOptions) (*armruntime.Poller[ProviderShareSubscriptionsClientRevokeResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.revoke(ctx, resourceGroupName, accountName, shareName, providerShareSubscriptionID, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ProviderShareSubscriptionsClientRevokeResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[ProviderShareSubscriptionsClientRevokeResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ProviderShareSubscriptionsClientRevokePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ProviderShareSubscriptionsClient.Revoke", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return ProviderShareSubscriptionsClientRevokePollerResponse{}, err
-	}
-	result.Poller = &ProviderShareSubscriptionsClientRevokePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Revoke - Revoke share subscription in a provider share

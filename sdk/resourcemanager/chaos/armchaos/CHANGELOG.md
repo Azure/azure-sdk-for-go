@@ -1,5 +1,177 @@
 # Release History
 
+## 0.3.0 (2022-04-11)
+### Breaking Changes
+
+- Function `*ExperimentsClient.BeginCreateOrUpdate` return value(s) have been changed from `(ExperimentsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ExperimentsClientCreateOrUpdateResponse], error)`
+- Function `NewCapabilitiesClient` return value(s) have been changed from `(*CapabilitiesClient)` to `(*CapabilitiesClient, error)`
+- Function `*ExperimentsClient.ListAll` return value(s) have been changed from `(*ExperimentsClientListAllPager)` to `(*runtime.Pager[ExperimentsClientListAllResponse])`
+- Function `*ExperimentsClient.BeginCancel` return value(s) have been changed from `(ExperimentsClientCancelPollerResponse, error)` to `(*armruntime.Poller[ExperimentsClientCancelResponse], error)`
+- Function `*TargetTypesClient.List` return value(s) have been changed from `(*TargetTypesClientListPager)` to `(*runtime.Pager[TargetTypesClientListResponse])`
+- Function `*TargetsClient.List` return value(s) have been changed from `(*TargetsClientListPager)` to `(*runtime.Pager[TargetsClientListResponse])`
+- Function `NewCapabilityTypesClient` return value(s) have been changed from `(*CapabilityTypesClient)` to `(*CapabilityTypesClient, error)`
+- Function `NewTargetTypesClient` return value(s) have been changed from `(*TargetTypesClient)` to `(*TargetTypesClient, error)`
+- Function `NewTargetsClient` return value(s) have been changed from `(*TargetsClient)` to `(*TargetsClient, error)`
+- Function `*CapabilitiesClient.List` return value(s) have been changed from `(*CapabilitiesClientListPager)` to `(*runtime.Pager[CapabilitiesClientListResponse])`
+- Function `*ExperimentsClient.ListAllStatuses` return value(s) have been changed from `(*ExperimentsClientListAllStatusesPager)` to `(*runtime.Pager[ExperimentsClientListAllStatusesResponse])`
+- Function `*CapabilityTypesClient.List` return value(s) have been changed from `(*CapabilityTypesClientListPager)` to `(*runtime.Pager[CapabilityTypesClientListResponse])`
+- Function `*OperationsClient.ListAll` return value(s) have been changed from `(*OperationsClientListAllPager)` to `(*runtime.Pager[OperationsClientListAllResponse])`
+- Function `*ExperimentsClient.List` return value(s) have been changed from `(*ExperimentsClientListPager)` to `(*runtime.Pager[ExperimentsClientListResponse])`
+- Function `NewExperimentsClient` return value(s) have been changed from `(*ExperimentsClient)` to `(*ExperimentsClient, error)`
+- Function `*ExperimentsClient.ListExecutionDetails` return value(s) have been changed from `(*ExperimentsClientListExecutionDetailsPager)` to `(*runtime.Pager[ExperimentsClientListExecutionDetailsResponse])`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Type of `ErrorAdditionalInfo.Info` has been changed from `map[string]interface{}` to `interface{}`
+- Function `ResourceIdentityType.ToPtr` has been removed
+- Function `*TargetTypesClientListPager.NextPage` has been removed
+- Function `*CapabilityTypesClientListPager.Err` has been removed
+- Function `*ExperimentsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*ExperimentsClientListPager.NextPage` has been removed
+- Function `ExperimentsClientCancelPollerResponse.PollUntilDone` has been removed
+- Function `*OperationsClientListAllPager.Err` has been removed
+- Function `*ExperimentsClientCancelPoller.Done` has been removed
+- Function `*ExperimentsClientListAllPager.PageResponse` has been removed
+- Function `ExperimentsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ExperimentsClientListAllStatusesPager.NextPage` has been removed
+- Function `SelectorType.ToPtr` has been removed
+- Function `*ExperimentsClientListAllStatusesPager.Err` has been removed
+- Function `*ExperimentsClientListExecutionDetailsPager.NextPage` has been removed
+- Function `*ExperimentsClientCancelPoller.FinalResponse` has been removed
+- Function `*OperationsClientListAllPager.PageResponse` has been removed
+- Function `CreatedByType.ToPtr` has been removed
+- Function `*CapabilitiesClientListPager.NextPage` has been removed
+- Function `*TargetTypesClientListPager.Err` has been removed
+- Function `*ExperimentsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ExperimentsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*CapabilitiesClientListPager.Err` has been removed
+- Function `Origin.ToPtr` has been removed
+- Function `*CapabilityTypesClientListPager.NextPage` has been removed
+- Function `*TargetsClientListPager.PageResponse` has been removed
+- Function `*ExperimentsClientListExecutionDetailsPager.PageResponse` has been removed
+- Function `*ExperimentsClientListExecutionDetailsPager.Err` has been removed
+- Function `*ExperimentsClientListAllStatusesPager.PageResponse` has been removed
+- Function `*ExperimentsClientCancelPoller.Poll` has been removed
+- Function `*ExperimentsClientListAllPager.Err` has been removed
+- Function `*TargetsClientListPager.Err` has been removed
+- Function `*ExperimentsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*CapabilitiesClientListPager.PageResponse` has been removed
+- Function `*ExperimentsClientListPager.PageResponse` has been removed
+- Function `*ExperimentsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*TargetTypesClientListPager.PageResponse` has been removed
+- Function `*CapabilityTypesClientListPager.PageResponse` has been removed
+- Function `ActionType.ToPtr` has been removed
+- Function `*TargetsClientListPager.NextPage` has been removed
+- Function `*ExperimentsClientCancelPoller.ResumeToken` has been removed
+- Function `*ExperimentsClientListAllPager.NextPage` has been removed
+- Function `*ExperimentsClientCancelPollerResponse.Resume` has been removed
+- Function `*ExperimentsClientListPager.Err` has been removed
+- Function `*OperationsClientListAllPager.NextPage` has been removed
+- Struct `CapabilitiesClientCreateOrUpdateResult` has been removed
+- Struct `CapabilitiesClientGetResult` has been removed
+- Struct `CapabilitiesClientListPager` has been removed
+- Struct `CapabilitiesClientListResult` has been removed
+- Struct `CapabilityTypesClientGetResult` has been removed
+- Struct `CapabilityTypesClientListPager` has been removed
+- Struct `CapabilityTypesClientListResult` has been removed
+- Struct `ExperimentsClientCancelPoller` has been removed
+- Struct `ExperimentsClientCancelPollerResponse` has been removed
+- Struct `ExperimentsClientCancelResult` has been removed
+- Struct `ExperimentsClientCreateOrUpdatePoller` has been removed
+- Struct `ExperimentsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ExperimentsClientCreateOrUpdateResult` has been removed
+- Struct `ExperimentsClientGetExecutionDetailsResult` has been removed
+- Struct `ExperimentsClientGetResult` has been removed
+- Struct `ExperimentsClientGetStatusResult` has been removed
+- Struct `ExperimentsClientListAllPager` has been removed
+- Struct `ExperimentsClientListAllResult` has been removed
+- Struct `ExperimentsClientListAllStatusesPager` has been removed
+- Struct `ExperimentsClientListAllStatusesResult` has been removed
+- Struct `ExperimentsClientListExecutionDetailsPager` has been removed
+- Struct `ExperimentsClientListExecutionDetailsResult` has been removed
+- Struct `ExperimentsClientListPager` has been removed
+- Struct `ExperimentsClientListResult` has been removed
+- Struct `ExperimentsClientStartResult` has been removed
+- Struct `OperationsClientListAllPager` has been removed
+- Struct `OperationsClientListAllResult` has been removed
+- Struct `TargetTypesClientGetResult` has been removed
+- Struct `TargetTypesClientListPager` has been removed
+- Struct `TargetTypesClientListResult` has been removed
+- Struct `TargetsClientCreateOrUpdateResult` has been removed
+- Struct `TargetsClientGetResult` has been removed
+- Struct `TargetsClientListPager` has been removed
+- Struct `TargetsClientListResult` has been removed
+- Field `RawResponse` of struct `TargetsClientDeleteResponse` has been removed
+- Field `CapabilitiesClientGetResult` of struct `CapabilitiesClientGetResponse` has been removed
+- Field `RawResponse` of struct `CapabilitiesClientGetResponse` has been removed
+- Field `OperationsClientListAllResult` of struct `OperationsClientListAllResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListAllResponse` has been removed
+- Field `TargetsClientListResult` of struct `TargetsClientListResponse` has been removed
+- Field `RawResponse` of struct `TargetsClientListResponse` has been removed
+- Field `CapabilityTypesClientListResult` of struct `CapabilityTypesClientListResponse` has been removed
+- Field `RawResponse` of struct `CapabilityTypesClientListResponse` has been removed
+- Field `CapabilitiesClientListResult` of struct `CapabilitiesClientListResponse` has been removed
+- Field `RawResponse` of struct `CapabilitiesClientListResponse` has been removed
+- Field `CapabilitiesClientCreateOrUpdateResult` of struct `CapabilitiesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `CapabilitiesClientCreateOrUpdateResponse` has been removed
+- Field `TargetTypesClientListResult` of struct `TargetTypesClientListResponse` has been removed
+- Field `RawResponse` of struct `TargetTypesClientListResponse` has been removed
+- Field `ExperimentsClientListExecutionDetailsResult` of struct `ExperimentsClientListExecutionDetailsResponse` has been removed
+- Field `RawResponse` of struct `ExperimentsClientListExecutionDetailsResponse` has been removed
+- Field `ExperimentsClientCancelResult` of struct `ExperimentsClientCancelResponse` has been removed
+- Field `RawResponse` of struct `ExperimentsClientCancelResponse` has been removed
+- Field `ExperimentsClientStartResult` of struct `ExperimentsClientStartResponse` has been removed
+- Field `RawResponse` of struct `ExperimentsClientStartResponse` has been removed
+- Field `RawResponse` of struct `ExperimentsClientDeleteResponse` has been removed
+- Field `ExperimentsClientGetStatusResult` of struct `ExperimentsClientGetStatusResponse` has been removed
+- Field `RawResponse` of struct `ExperimentsClientGetStatusResponse` has been removed
+- Field `CapabilityTypesClientGetResult` of struct `CapabilityTypesClientGetResponse` has been removed
+- Field `RawResponse` of struct `CapabilityTypesClientGetResponse` has been removed
+- Field `ExperimentsClientGetExecutionDetailsResult` of struct `ExperimentsClientGetExecutionDetailsResponse` has been removed
+- Field `RawResponse` of struct `ExperimentsClientGetExecutionDetailsResponse` has been removed
+- Field `TargetsClientCreateOrUpdateResult` of struct `TargetsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `TargetsClientCreateOrUpdateResponse` has been removed
+- Field `ExperimentsClientListAllStatusesResult` of struct `ExperimentsClientListAllStatusesResponse` has been removed
+- Field `RawResponse` of struct `ExperimentsClientListAllStatusesResponse` has been removed
+- Field `RawResponse` of struct `CapabilitiesClientDeleteResponse` has been removed
+- Field `TargetsClientGetResult` of struct `TargetsClientGetResponse` has been removed
+- Field `RawResponse` of struct `TargetsClientGetResponse` has been removed
+- Field `ExperimentsClientListAllResult` of struct `ExperimentsClientListAllResponse` has been removed
+- Field `RawResponse` of struct `ExperimentsClientListAllResponse` has been removed
+- Field `ExperimentsClientGetResult` of struct `ExperimentsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ExperimentsClientGetResponse` has been removed
+- Field `ExperimentsClientCreateOrUpdateResult` of struct `ExperimentsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ExperimentsClientCreateOrUpdateResponse` has been removed
+- Field `ExperimentsClientListResult` of struct `ExperimentsClientListResponse` has been removed
+- Field `RawResponse` of struct `ExperimentsClientListResponse` has been removed
+- Field `TargetTypesClientGetResult` of struct `TargetTypesClientGetResponse` has been removed
+- Field `RawResponse` of struct `TargetTypesClientGetResponse` has been removed
+
+### Features Added
+
+- New anonymous field `ExperimentStatus` in struct `ExperimentsClientGetStatusResponse`
+- New anonymous field `TargetListResult` in struct `TargetsClientListResponse`
+- New anonymous field `ExperimentListResult` in struct `ExperimentsClientListResponse`
+- New field `ResumeToken` in struct `ExperimentsClientBeginCancelOptions`
+- New anonymous field `ExperimentCancelOperationResult` in struct `ExperimentsClientCancelResponse`
+- New anonymous field `Experiment` in struct `ExperimentsClientCreateOrUpdateResponse`
+- New anonymous field `Target` in struct `TargetsClientCreateOrUpdateResponse`
+- New anonymous field `Experiment` in struct `ExperimentsClientGetResponse`
+- New field `ResumeToken` in struct `ExperimentsClientBeginCreateOrUpdateOptions`
+- New anonymous field `ExperimentListResult` in struct `ExperimentsClientListAllResponse`
+- New anonymous field `TargetType` in struct `TargetTypesClientGetResponse`
+- New anonymous field `ExperimentStatusListResult` in struct `ExperimentsClientListAllStatusesResponse`
+- New anonymous field `ExperimentExecutionDetailsListResult` in struct `ExperimentsClientListExecutionDetailsResponse`
+- New anonymous field `OperationListResult` in struct `OperationsClientListAllResponse`
+- New anonymous field `ExperimentStartOperationResult` in struct `ExperimentsClientStartResponse`
+- New anonymous field `Capability` in struct `CapabilitiesClientGetResponse`
+- New anonymous field `CapabilityListResult` in struct `CapabilitiesClientListResponse`
+- New anonymous field `CapabilityType` in struct `CapabilityTypesClientGetResponse`
+- New anonymous field `Capability` in struct `CapabilitiesClientCreateOrUpdateResponse`
+- New anonymous field `CapabilityTypeListResult` in struct `CapabilityTypesClientListResponse`
+- New anonymous field `TargetTypeListResult` in struct `TargetTypesClientListResponse`
+- New anonymous field `ExperimentExecutionDetails` in struct `ExperimentsClientGetExecutionDetailsResponse`
+- New anonymous field `Target` in struct `TargetsClientGetResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

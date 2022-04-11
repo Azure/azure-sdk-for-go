@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armchaos
 
 const (
 	moduleName    = "armchaos"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -25,11 +25,6 @@ func PossibleActionTypeValues() []ActionType {
 	return []ActionType{
 		ActionTypeInternal,
 	}
-}
-
-// ToPtr returns a *ActionType pointing to the current value.
-func (c ActionType) ToPtr() *ActionType {
-	return &c
 }
 
 // CreatedByType - The type of identity that created the resource.
@@ -52,11 +47,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
-}
-
 // Origin - The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
 // value is "user,system"
 type Origin string
@@ -76,11 +66,6 @@ func PossibleOriginValues() []Origin {
 	}
 }
 
-// ToPtr returns a *Origin pointing to the current value.
-func (c Origin) ToPtr() *Origin {
-	return &c
-}
-
 // ResourceIdentityType - String of the resource identity type.
 type ResourceIdentityType string
 
@@ -95,11 +80,6 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 		ResourceIdentityTypeNone,
 		ResourceIdentityTypeSystemAssigned,
 	}
-}
-
-// ToPtr returns a *ResourceIdentityType pointing to the current value.
-func (c ResourceIdentityType) ToPtr() *ResourceIdentityType {
-	return &c
 }
 
 // SelectorType - Enum of the selector type.
@@ -120,9 +100,4 @@ func PossibleSelectorTypeValues() []SelectorType {
 		SelectorTypeTag,
 		SelectorTypeList,
 	}
-}
-
-// ToPtr returns a *SelectorType pointing to the current value.
-func (c SelectorType) ToPtr() *SelectorType {
-	return &c
 }

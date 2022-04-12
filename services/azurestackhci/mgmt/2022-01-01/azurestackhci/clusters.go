@@ -91,7 +91,7 @@ func (client ClustersClient) CreatePreparer(ctx context.Context, resourceGroupNa
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-10-01"
+	const APIVersion = "2022-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -179,7 +179,7 @@ func (client ClustersClient) DeletePreparer(ctx context.Context, resourceGroupNa
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-10-01"
+	const APIVersion = "2022-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -263,7 +263,7 @@ func (client ClustersClient) GetPreparer(ctx context.Context, resourceGroupName 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-10-01"
+	const APIVersion = "2022-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -351,7 +351,7 @@ func (client ClustersClient) ListByResourceGroupPreparer(ctx context.Context, re
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-10-01"
+	const APIVersion = "2022-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -470,7 +470,7 @@ func (client ClustersClient) ListBySubscriptionPreparer(ctx context.Context) (*h
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-10-01"
+	const APIVersion = "2022-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -543,7 +543,7 @@ func (client ClustersClient) ListBySubscriptionComplete(ctx context.Context) (re
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // clusterName - the name of the cluster.
 // cluster - details of the HCI cluster.
-func (client ClustersClient) Update(ctx context.Context, resourceGroupName string, clusterName string, cluster ClusterUpdate) (result Cluster, err error) {
+func (client ClustersClient) Update(ctx context.Context, resourceGroupName string, clusterName string, cluster ClusterPatch) (result Cluster, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ClustersClient.Update")
 		defer func() {
@@ -586,14 +586,14 @@ func (client ClustersClient) Update(ctx context.Context, resourceGroupName strin
 }
 
 // UpdatePreparer prepares the Update request.
-func (client ClustersClient) UpdatePreparer(ctx context.Context, resourceGroupName string, clusterName string, cluster ClusterUpdate) (*http.Request, error) {
+func (client ClustersClient) UpdatePreparer(ctx context.Context, resourceGroupName string, clusterName string, cluster ClusterPatch) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"clusterName":       autorest.Encode("path", clusterName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-10-01"
+	const APIVersion = "2022-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

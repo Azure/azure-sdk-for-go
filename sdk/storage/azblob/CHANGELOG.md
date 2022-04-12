@@ -2,15 +2,16 @@
 
 ## 0.4.0 (Unreleased)
 
-### Breaking Changes
+### Features Added
 
-* Returns all clients by pointers
+### Breaking Changes
+* [#17321](https://github.com/Azure/azure-sdk-for-go/pull/17321): Returns all clients by pointers
 
 ### Bugs Fixed
 
-* Fixed SAS Issue
+### Other Changes
 
-## 0.3.0 (2022-04-12)
+## 0.3.0 (2022-02-09)
 
 ### Breaking Changes
 

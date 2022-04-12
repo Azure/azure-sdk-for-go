@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type RecoveryPointsClient struct {
 // subscriptionID - The subscription Id.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewRecoveryPointsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RecoveryPointsClient {
+func NewRecoveryPointsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RecoveryPointsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &RecoveryPointsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Provides the information of the backed up data identified using RecoveryPointID. This is an asynchronous operation.
@@ -118,7 +123,7 @@ func (client *RecoveryPointsClient) getCreateRequest(ctx context.Context, vaultN
 
 // getHandleResponse handles the Get response.
 func (client *RecoveryPointsClient) getHandleResponse(resp *http.Response) (RecoveryPointsClientGetResponse, error) {
-	result := RecoveryPointsClientGetResponse{RawResponse: resp}
+	result := RecoveryPointsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecoveryPointResource); err != nil {
 		return RecoveryPointsClientGetResponse{}, err
 	}
@@ -133,16 +138,32 @@ func (client *RecoveryPointsClient) getHandleResponse(resp *http.Response) (Reco
 // containerName - Container name associated with the backed up item.
 // protectedItemName - Backed up item whose backup copies are to be fetched.
 // options - RecoveryPointsClientListOptions contains the optional parameters for the RecoveryPointsClient.List method.
-func (client *RecoveryPointsClient) List(vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, options *RecoveryPointsClientListOptions) *RecoveryPointsClientListPager {
-	return &RecoveryPointsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, vaultName, resourceGroupName, fabricName, containerName, protectedItemName, options)
+func (client *RecoveryPointsClient) List(vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, options *RecoveryPointsClientListOptions) *runtime.Pager[RecoveryPointsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[RecoveryPointsClientListResponse]{
+		More: func(page RecoveryPointsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp RecoveryPointsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.RecoveryPointResourceList.NextLink)
+		Fetcher: func(ctx context.Context, page *RecoveryPointsClientListResponse) (RecoveryPointsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, vaultName, resourceGroupName, fabricName, containerName, protectedItemName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return RecoveryPointsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return RecoveryPointsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return RecoveryPointsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -188,7 +209,7 @@ func (client *RecoveryPointsClient) listCreateRequest(ctx context.Context, vault
 
 // listHandleResponse handles the List response.
 func (client *RecoveryPointsClient) listHandleResponse(resp *http.Response) (RecoveryPointsClientListResponse, error) {
-	result := RecoveryPointsClientListResponse{RawResponse: resp}
+	result := RecoveryPointsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecoveryPointResourceList); err != nil {
 		return RecoveryPointsClientListResponse{}, err
 	}

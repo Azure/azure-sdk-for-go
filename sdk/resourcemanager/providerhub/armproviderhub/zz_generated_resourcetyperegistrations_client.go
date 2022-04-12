@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ResourceTypeRegistrationsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewResourceTypeRegistrationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ResourceTypeRegistrationsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewResourceTypeRegistrationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ResourceTypeRegistrationsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ResourceTypeRegistrationsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates a resource type.
@@ -56,22 +61,18 @@ func NewResourceTypeRegistrationsClient(subscriptionID string, credential azcore
 // properties - The required request body parameters supplied to the resource type registration CreateOrUpdate operation.
 // options - ResourceTypeRegistrationsClientBeginCreateOrUpdateOptions contains the optional parameters for the ResourceTypeRegistrationsClient.BeginCreateOrUpdate
 // method.
-func (client *ResourceTypeRegistrationsClient) BeginCreateOrUpdate(ctx context.Context, providerNamespace string, resourceType string, properties ResourceTypeRegistration, options *ResourceTypeRegistrationsClientBeginCreateOrUpdateOptions) (ResourceTypeRegistrationsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, providerNamespace, resourceType, properties, options)
-	if err != nil {
-		return ResourceTypeRegistrationsClientCreateOrUpdatePollerResponse{}, err
+func (client *ResourceTypeRegistrationsClient) BeginCreateOrUpdate(ctx context.Context, providerNamespace string, resourceType string, properties ResourceTypeRegistration, options *ResourceTypeRegistrationsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[ResourceTypeRegistrationsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, providerNamespace, resourceType, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ResourceTypeRegistrationsClientCreateOrUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[ResourceTypeRegistrationsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ResourceTypeRegistrationsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ResourceTypeRegistrationsClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return ResourceTypeRegistrationsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &ResourceTypeRegistrationsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a resource type.
@@ -135,7 +136,7 @@ func (client *ResourceTypeRegistrationsClient) Delete(ctx context.Context, provi
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return ResourceTypeRegistrationsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ResourceTypeRegistrationsClientDeleteResponse{RawResponse: resp}, nil
+	return ResourceTypeRegistrationsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -213,7 +214,7 @@ func (client *ResourceTypeRegistrationsClient) getCreateRequest(ctx context.Cont
 
 // getHandleResponse handles the Get response.
 func (client *ResourceTypeRegistrationsClient) getHandleResponse(resp *http.Response) (ResourceTypeRegistrationsClientGetResponse, error) {
-	result := ResourceTypeRegistrationsClientGetResponse{RawResponse: resp}
+	result := ResourceTypeRegistrationsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceTypeRegistration); err != nil {
 		return ResourceTypeRegistrationsClientGetResponse{}, err
 	}
@@ -225,16 +226,32 @@ func (client *ResourceTypeRegistrationsClient) getHandleResponse(resp *http.Resp
 // providerNamespace - The name of the resource provider hosted within ProviderHub.
 // options - ResourceTypeRegistrationsClientListByProviderRegistrationOptions contains the optional parameters for the ResourceTypeRegistrationsClient.ListByProviderRegistration
 // method.
-func (client *ResourceTypeRegistrationsClient) ListByProviderRegistration(providerNamespace string, options *ResourceTypeRegistrationsClientListByProviderRegistrationOptions) *ResourceTypeRegistrationsClientListByProviderRegistrationPager {
-	return &ResourceTypeRegistrationsClientListByProviderRegistrationPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByProviderRegistrationCreateRequest(ctx, providerNamespace, options)
+func (client *ResourceTypeRegistrationsClient) ListByProviderRegistration(providerNamespace string, options *ResourceTypeRegistrationsClientListByProviderRegistrationOptions) *runtime.Pager[ResourceTypeRegistrationsClientListByProviderRegistrationResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ResourceTypeRegistrationsClientListByProviderRegistrationResponse]{
+		More: func(page ResourceTypeRegistrationsClientListByProviderRegistrationResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ResourceTypeRegistrationsClientListByProviderRegistrationResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ResourceTypeRegistrationArrayResponseWithContinuation.NextLink)
+		Fetcher: func(ctx context.Context, page *ResourceTypeRegistrationsClientListByProviderRegistrationResponse) (ResourceTypeRegistrationsClientListByProviderRegistrationResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByProviderRegistrationCreateRequest(ctx, providerNamespace, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ResourceTypeRegistrationsClientListByProviderRegistrationResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ResourceTypeRegistrationsClientListByProviderRegistrationResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ResourceTypeRegistrationsClientListByProviderRegistrationResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByProviderRegistrationHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByProviderRegistrationCreateRequest creates the ListByProviderRegistration request.
@@ -261,7 +278,7 @@ func (client *ResourceTypeRegistrationsClient) listByProviderRegistrationCreateR
 
 // listByProviderRegistrationHandleResponse handles the ListByProviderRegistration response.
 func (client *ResourceTypeRegistrationsClient) listByProviderRegistrationHandleResponse(resp *http.Response) (ResourceTypeRegistrationsClientListByProviderRegistrationResponse, error) {
-	result := ResourceTypeRegistrationsClientListByProviderRegistrationResponse{RawResponse: resp}
+	result := ResourceTypeRegistrationsClientListByProviderRegistrationResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceTypeRegistrationArrayResponseWithContinuation); err != nil {
 		return ResourceTypeRegistrationsClientListByProviderRegistrationResponse{}, err
 	}

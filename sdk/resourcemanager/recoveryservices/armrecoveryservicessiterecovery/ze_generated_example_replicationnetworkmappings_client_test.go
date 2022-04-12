@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,64 +19,80 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery"
 )
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationNetworkMappings_ListByReplicationNetworks.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/ReplicationNetworkMappings_ListByReplicationNetworks.json
 func ExampleReplicationNetworkMappingsClient_ListByReplicationNetworks() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armrecoveryservicessiterecovery.NewReplicationNetworkMappingsClient("<resource-name>",
+	client, err := armrecoveryservicessiterecovery.NewReplicationNetworkMappingsClient("<resource-name>",
 		"<resource-group-name>",
 		"<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListByReplicationNetworks("<fabric-name>",
 		"<network-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationNetworkMappings_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/ReplicationNetworkMappings_Get.json
 func ExampleReplicationNetworkMappingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armrecoveryservicessiterecovery.NewReplicationNetworkMappingsClient("<resource-name>",
+	client, err := armrecoveryservicessiterecovery.NewReplicationNetworkMappingsClient("<resource-name>",
 		"<resource-group-name>",
 		"<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<fabric-name>",
 		"<network-name>",
 		"<network-mapping-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ReplicationNetworkMappingsClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationNetworkMappings_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/ReplicationNetworkMappings_Create.json
 func ExampleReplicationNetworkMappingsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armrecoveryservicessiterecovery.NewReplicationNetworkMappingsClient("<resource-name>",
+	client, err := armrecoveryservicessiterecovery.NewReplicationNetworkMappingsClient("<resource-name>",
 		"<resource-group-name>",
 		"<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreate(ctx,
 		"<fabric-name>",
 		"<network-name>",
@@ -84,57 +100,72 @@ func ExampleReplicationNetworkMappingsClient_BeginCreate() {
 		armrecoveryservicessiterecovery.CreateNetworkMappingInput{
 			Properties: &armrecoveryservicessiterecovery.CreateNetworkMappingInputProperties{
 				FabricSpecificDetails: &armrecoveryservicessiterecovery.VmmToAzureCreateNetworkMappingInput{
-					InstanceType: to.StringPtr("<instance-type>"),
+					InstanceType: to.Ptr("<instance-type>"),
 				},
-				RecoveryFabricName: to.StringPtr("<recovery-fabric-name>"),
-				RecoveryNetworkID:  to.StringPtr("<recovery-network-id>"),
+				RecoveryFabricName: to.Ptr("<recovery-fabric-name>"),
+				RecoveryNetworkID:  to.Ptr("<recovery-network-id>"),
 			},
 		},
-		nil)
+		&armrecoveryservicessiterecovery.ReplicationNetworkMappingsClientBeginCreateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ReplicationNetworkMappingsClientCreateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationNetworkMappings_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/ReplicationNetworkMappings_Delete.json
 func ExampleReplicationNetworkMappingsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armrecoveryservicessiterecovery.NewReplicationNetworkMappingsClient("<resource-name>",
+	client, err := armrecoveryservicessiterecovery.NewReplicationNetworkMappingsClient("<resource-name>",
 		"<resource-group-name>",
 		"<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginDelete(ctx,
 		"<fabric-name>",
 		"<network-name>",
 		"<network-mapping-name>",
-		nil)
+		&armrecoveryservicessiterecovery.ReplicationNetworkMappingsClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationNetworkMappings_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/ReplicationNetworkMappings_Update.json
 func ExampleReplicationNetworkMappingsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armrecoveryservicessiterecovery.NewReplicationNetworkMappingsClient("<resource-name>",
+	client, err := armrecoveryservicessiterecovery.NewReplicationNetworkMappingsClient("<resource-name>",
 		"<resource-group-name>",
 		"<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginUpdate(ctx,
 		"<fabric-name>",
 		"<network-name>",
@@ -142,44 +173,51 @@ func ExampleReplicationNetworkMappingsClient_BeginUpdate() {
 		armrecoveryservicessiterecovery.UpdateNetworkMappingInput{
 			Properties: &armrecoveryservicessiterecovery.UpdateNetworkMappingInputProperties{
 				FabricSpecificDetails: &armrecoveryservicessiterecovery.VmmToAzureUpdateNetworkMappingInput{
-					InstanceType: to.StringPtr("<instance-type>"),
+					InstanceType: to.Ptr("<instance-type>"),
 				},
-				RecoveryFabricName: to.StringPtr("<recovery-fabric-name>"),
-				RecoveryNetworkID:  to.StringPtr("<recovery-network-id>"),
+				RecoveryFabricName: to.Ptr("<recovery-fabric-name>"),
+				RecoveryNetworkID:  to.Ptr("<recovery-network-id>"),
 			},
 		},
-		nil)
+		&armrecoveryservicessiterecovery.ReplicationNetworkMappingsClientBeginUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ReplicationNetworkMappingsClientUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationNetworkMappings_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/ReplicationNetworkMappings_List.json
 func ExampleReplicationNetworkMappingsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armrecoveryservicessiterecovery.NewReplicationNetworkMappingsClient("<resource-name>",
+	client, err := armrecoveryservicessiterecovery.NewReplicationNetworkMappingsClient("<resource-name>",
 		"<resource-group-name>",
 		"<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.List(nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,37 +17,49 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup"
 )
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/AzureIaasVm/ProtectionIntent_Validate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/AzureIaasVm/ProtectionIntent_Validate.json
 func ExampleProtectionIntentClient_Validate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armrecoveryservicesbackup.NewProtectionIntentClient("<subscription-id>", cred, nil)
+	client, err := armrecoveryservicesbackup.NewProtectionIntentClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Validate(ctx,
 		"<azure-region>",
 		armrecoveryservicesbackup.PreValidateEnableBackupRequest{
-			Properties:   to.StringPtr("<properties>"),
-			ResourceID:   to.StringPtr("<resource-id>"),
-			ResourceType: armrecoveryservicesbackup.DataSourceType("VM").ToPtr(),
-			VaultID:      to.StringPtr("<vault-id>"),
+			Properties:   to.Ptr("<properties>"),
+			ResourceID:   to.Ptr("<resource-id>"),
+			ResourceType: to.Ptr(armrecoveryservicesbackup.DataSourceTypeVM),
+			VaultID:      to.Ptr("<vault-id>"),
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ProtectionIntentClientValidateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/AzureWorkload/BackupProtectionIntent_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/AzureWorkload/BackupProtectionIntent_Get.json
 func ExampleProtectionIntentClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armrecoveryservicesbackup.NewProtectionIntentClient("<subscription-id>", cred, nil)
+	client, err := armrecoveryservicesbackup.NewProtectionIntentClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<vault-name>",
 		"<resource-group-name>",
@@ -55,19 +67,26 @@ func ExampleProtectionIntentClient_Get() {
 		"<intent-object-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ProtectionIntentClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/AzureIaasVm/ProtectionIntent_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/AzureIaasVm/ProtectionIntent_CreateOrUpdate.json
 func ExampleProtectionIntentClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armrecoveryservicesbackup.NewProtectionIntentClient("<subscription-id>", cred, nil)
+	client, err := armrecoveryservicesbackup.NewProtectionIntentClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.CreateOrUpdate(ctx,
 		"<vault-name>",
 		"<resource-group-name>",
@@ -75,26 +94,33 @@ func ExampleProtectionIntentClient_CreateOrUpdate() {
 		"<intent-object-name>",
 		armrecoveryservicesbackup.ProtectionIntentResource{
 			Properties: &armrecoveryservicesbackup.AzureResourceProtectionIntent{
-				PolicyID:                 to.StringPtr("<policy-id>"),
-				ProtectionIntentItemType: armrecoveryservicesbackup.ProtectionIntentItemType("AzureResourceItem").ToPtr(),
-				SourceResourceID:         to.StringPtr("<source-resource-id>"),
+				PolicyID:                 to.Ptr("<policy-id>"),
+				ProtectionIntentItemType: to.Ptr(armrecoveryservicesbackup.ProtectionIntentItemTypeAzureResourceItem),
+				SourceResourceID:         to.Ptr("<source-resource-id>"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ProtectionIntentClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/AzureWorkload/BackupProtectionIntent_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/AzureWorkload/BackupProtectionIntent_Delete.json
 func ExampleProtectionIntentClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armrecoveryservicesbackup.NewProtectionIntentClient("<subscription-id>", cred, nil)
+	client, err := armrecoveryservicesbackup.NewProtectionIntentClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Delete(ctx,
 		"<vault-name>",
 		"<resource-group-name>",
@@ -102,6 +128,7 @@ func ExampleProtectionIntentClient_Delete() {
 		"<intent-object-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }

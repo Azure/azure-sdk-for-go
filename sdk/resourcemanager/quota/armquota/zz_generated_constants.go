@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armquota
 
 const (
 	moduleName    = "armquota"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // LimitType - The limit object type.
@@ -27,11 +27,6 @@ func PossibleLimitTypeValues() []LimitType {
 	}
 }
 
-// ToPtr returns a *LimitType pointing to the current value.
-func (c LimitType) ToPtr() *LimitType {
-	return &c
-}
-
 // QuotaLimitTypes - The quota or usages limit types.
 type QuotaLimitTypes string
 
@@ -46,11 +41,6 @@ func PossibleQuotaLimitTypesValues() []QuotaLimitTypes {
 		QuotaLimitTypesIndependent,
 		QuotaLimitTypesShared,
 	}
-}
-
-// ToPtr returns a *QuotaLimitTypes pointing to the current value.
-func (c QuotaLimitTypes) ToPtr() *QuotaLimitTypes {
-	return &c
 }
 
 // QuotaRequestState - Quota request status.
@@ -75,11 +65,6 @@ func PossibleQuotaRequestStateValues() []QuotaRequestState {
 	}
 }
 
-// ToPtr returns a *QuotaRequestState pointing to the current value.
-func (c QuotaRequestState) ToPtr() *QuotaRequestState {
-	return &c
-}
-
 // UsagesTypes - The quota or usages limit types.
 type UsagesTypes string
 
@@ -94,9 +79,4 @@ func PossibleUsagesTypesValues() []UsagesTypes {
 		UsagesTypesCombined,
 		UsagesTypesIndividual,
 	}
-}
-
-// ToPtr returns a *UsagesTypes pointing to the current value.
-func (c UsagesTypes) ToPtr() *UsagesTypes {
-	return &c
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type PatchSchedulesClient struct {
 // ID forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewPatchSchedulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PatchSchedulesClient {
+func NewPatchSchedulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PatchSchedulesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &PatchSchedulesClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Create or replace the patching schedule for Redis cache.
@@ -105,7 +110,7 @@ func (client *PatchSchedulesClient) createOrUpdateCreateRequest(ctx context.Cont
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *PatchSchedulesClient) createOrUpdateHandleResponse(resp *http.Response) (PatchSchedulesClientCreateOrUpdateResponse, error) {
-	result := PatchSchedulesClientCreateOrUpdateResponse{RawResponse: resp}
+	result := PatchSchedulesClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PatchSchedule); err != nil {
 		return PatchSchedulesClientCreateOrUpdateResponse{}, err
 	}
@@ -130,7 +135,7 @@ func (client *PatchSchedulesClient) Delete(ctx context.Context, resourceGroupNam
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return PatchSchedulesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return PatchSchedulesClientDeleteResponse{RawResponse: resp}, nil
+	return PatchSchedulesClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -216,7 +221,7 @@ func (client *PatchSchedulesClient) getCreateRequest(ctx context.Context, resour
 
 // getHandleResponse handles the Get response.
 func (client *PatchSchedulesClient) getHandleResponse(resp *http.Response) (PatchSchedulesClientGetResponse, error) {
-	result := PatchSchedulesClientGetResponse{RawResponse: resp}
+	result := PatchSchedulesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PatchSchedule); err != nil {
 		return PatchSchedulesClientGetResponse{}, err
 	}
@@ -229,16 +234,32 @@ func (client *PatchSchedulesClient) getHandleResponse(resp *http.Response) (Patc
 // cacheName - The name of the Redis cache.
 // options - PatchSchedulesClientListByRedisResourceOptions contains the optional parameters for the PatchSchedulesClient.ListByRedisResource
 // method.
-func (client *PatchSchedulesClient) ListByRedisResource(resourceGroupName string, cacheName string, options *PatchSchedulesClientListByRedisResourceOptions) *PatchSchedulesClientListByRedisResourcePager {
-	return &PatchSchedulesClientListByRedisResourcePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByRedisResourceCreateRequest(ctx, resourceGroupName, cacheName, options)
+func (client *PatchSchedulesClient) ListByRedisResource(resourceGroupName string, cacheName string, options *PatchSchedulesClientListByRedisResourceOptions) *runtime.Pager[PatchSchedulesClientListByRedisResourceResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PatchSchedulesClientListByRedisResourceResponse]{
+		More: func(page PatchSchedulesClientListByRedisResourceResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PatchSchedulesClientListByRedisResourceResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PatchScheduleListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *PatchSchedulesClientListByRedisResourceResponse) (PatchSchedulesClientListByRedisResourceResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByRedisResourceCreateRequest(ctx, resourceGroupName, cacheName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return PatchSchedulesClientListByRedisResourceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PatchSchedulesClientListByRedisResourceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PatchSchedulesClientListByRedisResourceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByRedisResourceHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByRedisResourceCreateRequest creates the ListByRedisResource request.
@@ -269,7 +290,7 @@ func (client *PatchSchedulesClient) listByRedisResourceCreateRequest(ctx context
 
 // listByRedisResourceHandleResponse handles the ListByRedisResource response.
 func (client *PatchSchedulesClient) listByRedisResourceHandleResponse(resp *http.Response) (PatchSchedulesClientListByRedisResourceResponse, error) {
-	result := PatchSchedulesClientListByRedisResourceResponse{RawResponse: resp}
+	result := PatchSchedulesClientListByRedisResourceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PatchScheduleListResult); err != nil {
 		return PatchSchedulesClientListByRedisResourceResponse{}, err
 	}

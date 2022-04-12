@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type NotificationRegistrationsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewNotificationRegistrationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *NotificationRegistrationsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewNotificationRegistrationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NotificationRegistrationsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &NotificationRegistrationsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates a notification registration.
@@ -99,7 +104,7 @@ func (client *NotificationRegistrationsClient) createOrUpdateCreateRequest(ctx c
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *NotificationRegistrationsClient) createOrUpdateHandleResponse(resp *http.Response) (NotificationRegistrationsClientCreateOrUpdateResponse, error) {
-	result := NotificationRegistrationsClientCreateOrUpdateResponse{RawResponse: resp}
+	result := NotificationRegistrationsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NotificationRegistration); err != nil {
 		return NotificationRegistrationsClientCreateOrUpdateResponse{}, err
 	}
@@ -124,7 +129,7 @@ func (client *NotificationRegistrationsClient) Delete(ctx context.Context, provi
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return NotificationRegistrationsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return NotificationRegistrationsClientDeleteResponse{RawResponse: resp}, nil
+	return NotificationRegistrationsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -202,7 +207,7 @@ func (client *NotificationRegistrationsClient) getCreateRequest(ctx context.Cont
 
 // getHandleResponse handles the Get response.
 func (client *NotificationRegistrationsClient) getHandleResponse(resp *http.Response) (NotificationRegistrationsClientGetResponse, error) {
-	result := NotificationRegistrationsClientGetResponse{RawResponse: resp}
+	result := NotificationRegistrationsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NotificationRegistration); err != nil {
 		return NotificationRegistrationsClientGetResponse{}, err
 	}
@@ -214,16 +219,32 @@ func (client *NotificationRegistrationsClient) getHandleResponse(resp *http.Resp
 // providerNamespace - The name of the resource provider hosted within ProviderHub.
 // options - NotificationRegistrationsClientListByProviderRegistrationOptions contains the optional parameters for the NotificationRegistrationsClient.ListByProviderRegistration
 // method.
-func (client *NotificationRegistrationsClient) ListByProviderRegistration(providerNamespace string, options *NotificationRegistrationsClientListByProviderRegistrationOptions) *NotificationRegistrationsClientListByProviderRegistrationPager {
-	return &NotificationRegistrationsClientListByProviderRegistrationPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByProviderRegistrationCreateRequest(ctx, providerNamespace, options)
+func (client *NotificationRegistrationsClient) ListByProviderRegistration(providerNamespace string, options *NotificationRegistrationsClientListByProviderRegistrationOptions) *runtime.Pager[NotificationRegistrationsClientListByProviderRegistrationResponse] {
+	return runtime.NewPager(runtime.PageProcessor[NotificationRegistrationsClientListByProviderRegistrationResponse]{
+		More: func(page NotificationRegistrationsClientListByProviderRegistrationResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp NotificationRegistrationsClientListByProviderRegistrationResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.NotificationRegistrationArrayResponseWithContinuation.NextLink)
+		Fetcher: func(ctx context.Context, page *NotificationRegistrationsClientListByProviderRegistrationResponse) (NotificationRegistrationsClientListByProviderRegistrationResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByProviderRegistrationCreateRequest(ctx, providerNamespace, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return NotificationRegistrationsClientListByProviderRegistrationResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return NotificationRegistrationsClientListByProviderRegistrationResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return NotificationRegistrationsClientListByProviderRegistrationResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByProviderRegistrationHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByProviderRegistrationCreateRequest creates the ListByProviderRegistration request.
@@ -250,7 +271,7 @@ func (client *NotificationRegistrationsClient) listByProviderRegistrationCreateR
 
 // listByProviderRegistrationHandleResponse handles the ListByProviderRegistration response.
 func (client *NotificationRegistrationsClient) listByProviderRegistrationHandleResponse(resp *http.Response) (NotificationRegistrationsClientListByProviderRegistrationResponse, error) {
-	result := NotificationRegistrationsClientListByProviderRegistrationResponse{RawResponse: resp}
+	result := NotificationRegistrationsClientListByProviderRegistrationResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NotificationRegistrationArrayResponseWithContinuation); err != nil {
 		return NotificationRegistrationsClientListByProviderRegistrationResponse{}, err
 	}

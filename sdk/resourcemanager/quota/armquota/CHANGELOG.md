@@ -1,5 +1,105 @@
 # Release History
 
+## 0.3.0 (2022-04-12)
+### Breaking Changes
+
+- Function `*RequestStatusClient.List` return value(s) have been changed from `(*RequestStatusClientListPager)` to `(*runtime.Pager[RequestStatusClientListResponse])`
+- Function `NewClient` return value(s) have been changed from `(*Client)` to `(*Client, error)`
+- Function `NewUsagesClient` return value(s) have been changed from `(*UsagesClient)` to `(*UsagesClient, error)`
+- Function `*UsagesClient.List` return value(s) have been changed from `(*UsagesClientListPager)` to `(*runtime.Pager[UsagesClientListResponse])`
+- Function `NewRequestStatusClient` return value(s) have been changed from `(*RequestStatusClient)` to `(*RequestStatusClient, error)`
+- Function `*Client.BeginUpdate` return value(s) have been changed from `(ClientUpdatePollerResponse, error)` to `(*armruntime.Poller[ClientUpdateResponse], error)`
+- Function `NewOperationClient` return value(s) have been changed from `(*OperationClient)` to `(*OperationClient, error)`
+- Function `*Client.BeginCreateOrUpdate` return value(s) have been changed from `(ClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ClientCreateOrUpdateResponse], error)`
+- Function `*OperationClient.List` return value(s) have been changed from `(*OperationClientListPager)` to `(*runtime.Pager[OperationClientListResponse])`
+- Function `*Client.List` return value(s) have been changed from `(*ClientListPager)` to `(*runtime.Pager[ClientListResponse])`
+- Type of `RequestOneResourceProperties.Properties` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `Properties.Properties` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `UsagesProperties.Properties` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `RequestStatusDetails.Properties` has been changed from `map[string]interface{}` to `interface{}`
+- Function `ClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ClientListPager.PageResponse` has been removed
+- Function `*RequestStatusClientListPager.NextPage` has been removed
+- Function `*ClientUpdatePoller.ResumeToken` has been removed
+- Function `QuotaLimitTypes.ToPtr` has been removed
+- Function `*OperationClientListPager.Err` has been removed
+- Function `QuotaRequestState.ToPtr` has been removed
+- Function `*UsagesClientListPager.NextPage` has been removed
+- Function `*OperationClientListPager.PageResponse` has been removed
+- Function `*ClientUpdatePollerResponse.Resume` has been removed
+- Function `*ClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*UsagesClientListPager.Err` has been removed
+- Function `*RequestStatusClientListPager.Err` has been removed
+- Function `*ClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*OperationClientListPager.NextPage` has been removed
+- Function `*ClientListPager.Err` has been removed
+- Function `ClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ClientCreateOrUpdatePoller.Done` has been removed
+- Function `LimitType.ToPtr` has been removed
+- Function `*ClientUpdatePoller.Done` has been removed
+- Function `*ClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ClientListPager.NextPage` has been removed
+- Function `*ClientUpdatePoller.FinalResponse` has been removed
+- Function `*ClientUpdatePoller.Poll` has been removed
+- Function `*RequestStatusClientListPager.PageResponse` has been removed
+- Function `*UsagesClientListPager.PageResponse` has been removed
+- Function `UsagesTypes.ToPtr` has been removed
+- Struct `ClientCreateOrUpdatePoller` has been removed
+- Struct `ClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ClientCreateOrUpdateResult` has been removed
+- Struct `ClientGetResult` has been removed
+- Struct `ClientListPager` has been removed
+- Struct `ClientListResult` has been removed
+- Struct `ClientUpdatePoller` has been removed
+- Struct `ClientUpdatePollerResponse` has been removed
+- Struct `ClientUpdateResult` has been removed
+- Struct `OperationClientListPager` has been removed
+- Struct `OperationClientListResult` has been removed
+- Struct `RequestStatusClientGetResult` has been removed
+- Struct `RequestStatusClientListPager` has been removed
+- Struct `RequestStatusClientListResult` has been removed
+- Struct `UsagesClientGetResult` has been removed
+- Struct `UsagesClientListPager` has been removed
+- Struct `UsagesClientListResult` has been removed
+- Field `OperationClientListResult` of struct `OperationClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationClientListResponse` has been removed
+- Field `ClientGetResult` of struct `ClientGetResponse` has been removed
+- Field `RawResponse` of struct `ClientGetResponse` has been removed
+- Field `ClientListResult` of struct `ClientListResponse` has been removed
+- Field `RawResponse` of struct `ClientListResponse` has been removed
+- Field `ClientUpdateResult` of struct `ClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ClientUpdateResponse` has been removed
+- Field `RequestStatusClientListResult` of struct `RequestStatusClientListResponse` has been removed
+- Field `RawResponse` of struct `RequestStatusClientListResponse` has been removed
+- Field `RequestStatusClientGetResult` of struct `RequestStatusClientGetResponse` has been removed
+- Field `RawResponse` of struct `RequestStatusClientGetResponse` has been removed
+- Field `UsagesClientGetResult` of struct `UsagesClientGetResponse` has been removed
+- Field `RawResponse` of struct `UsagesClientGetResponse` has been removed
+- Field `UsagesClientListResult` of struct `UsagesClientListResponse` has been removed
+- Field `RawResponse` of struct `UsagesClientListResponse` has been removed
+- Field `ClientCreateOrUpdateResult` of struct `ClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ClientCreateOrUpdateResponse` has been removed
+
+### Features Added
+
+- New anonymous field `CurrentQuotaLimitBase` in struct `ClientGetResponse`
+- New field `ETag` in struct `ClientGetResponse`
+- New field `ResumeToken` in struct `ClientBeginUpdateOptions`
+- New anonymous field `OperationList` in struct `OperationClientListResponse`
+- New field `ResumeToken` in struct `ClientBeginCreateOrUpdateOptions`
+- New anonymous field `CurrentQuotaLimitBase` in struct `ClientUpdateResponse`
+- New anonymous field `RequestDetails` in struct `RequestStatusClientGetResponse`
+- New anonymous field `UsagesLimits` in struct `UsagesClientListResponse`
+- New field `ETag` in struct `UsagesClientListResponse`
+- New anonymous field `CurrentUsagesBase` in struct `UsagesClientGetResponse`
+- New field `ETag` in struct `UsagesClientGetResponse`
+- New anonymous field `CurrentQuotaLimitBase` in struct `ClientCreateOrUpdateResponse`
+- New anonymous field `RequestDetailsList` in struct `RequestStatusClientListResponse`
+- New anonymous field `Limits` in struct `ClientListResponse`
+- New field `ETag` in struct `ClientListResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

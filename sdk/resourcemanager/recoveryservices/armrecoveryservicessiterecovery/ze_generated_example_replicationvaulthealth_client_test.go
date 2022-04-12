@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -18,42 +18,57 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery"
 )
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationVaultHealth_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/ReplicationVaultHealth_Get.json
 func ExampleReplicationVaultHealthClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armrecoveryservicessiterecovery.NewReplicationVaultHealthClient("<resource-name>",
+	client, err := armrecoveryservicessiterecovery.NewReplicationVaultHealthClient("<resource-name>",
 		"<resource-group-name>",
 		"<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ReplicationVaultHealthClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationVaultHealth_Refresh.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/ReplicationVaultHealth_Refresh.json
 func ExampleReplicationVaultHealthClient_BeginRefresh() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armrecoveryservicessiterecovery.NewReplicationVaultHealthClient("<resource-name>",
+	client, err := armrecoveryservicessiterecovery.NewReplicationVaultHealthClient("<resource-name>",
 		"<resource-group-name>",
 		"<subscription-id>", cred, nil)
-	poller, err := client.BeginRefresh(ctx,
-		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
+	poller, err := client.BeginRefresh(ctx,
+		&armrecoveryservicessiterecovery.ReplicationVaultHealthClientBeginRefreshOptions{ResumeToken: ""})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ReplicationVaultHealthClientRefreshResult)
+	// TODO: use response item
+	_ = res
 }

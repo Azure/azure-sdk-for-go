@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type RestoresClient struct {
 // subscriptionID - The subscription Id.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewRestoresClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RestoresClient {
+func NewRestoresClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RestoresClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &RestoresClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginTrigger - Restores the specified backed up data. This is an asynchronous operation. To know the status of this API
@@ -60,22 +65,16 @@ func NewRestoresClient(subscriptionID string, credential azcore.TokenCredential,
 // recoveryPointID - Recovery point ID which represents the backed up data to be restored.
 // parameters - resource restore request
 // options - RestoresClientBeginTriggerOptions contains the optional parameters for the RestoresClient.BeginTrigger method.
-func (client *RestoresClient) BeginTrigger(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, parameters RestoreRequestResource, options *RestoresClientBeginTriggerOptions) (RestoresClientTriggerPollerResponse, error) {
-	resp, err := client.trigger(ctx, vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointID, parameters, options)
-	if err != nil {
-		return RestoresClientTriggerPollerResponse{}, err
+func (client *RestoresClient) BeginTrigger(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, parameters RestoreRequestResource, options *RestoresClientBeginTriggerOptions) (*armruntime.Poller[RestoresClientTriggerResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.trigger(ctx, vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointID, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[RestoresClientTriggerResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[RestoresClientTriggerResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := RestoresClientTriggerPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("RestoresClient.Trigger", "", resp, client.pl)
-	if err != nil {
-		return RestoresClientTriggerPollerResponse{}, err
-	}
-	result.Poller = &RestoresClientTriggerPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Trigger - Restores the specified backed up data. This is an asynchronous operation. To know the status of this API call,

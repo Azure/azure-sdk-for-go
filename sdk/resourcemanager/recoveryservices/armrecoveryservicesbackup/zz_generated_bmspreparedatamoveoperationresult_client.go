@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type BMSPrepareDataMoveOperationResultClient struct {
 // subscriptionID - The subscription Id.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewBMSPrepareDataMoveOperationResultClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *BMSPrepareDataMoveOperationResultClient {
+func NewBMSPrepareDataMoveOperationResultClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BMSPrepareDataMoveOperationResultClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &BMSPrepareDataMoveOperationResultClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Fetches Operation Result for Prepare Data Move
@@ -102,7 +107,7 @@ func (client *BMSPrepareDataMoveOperationResultClient) getCreateRequest(ctx cont
 
 // getHandleResponse handles the Get response.
 func (client *BMSPrepareDataMoveOperationResultClient) getHandleResponse(resp *http.Response) (BMSPrepareDataMoveOperationResultClientGetResponse, error) {
-	result := BMSPrepareDataMoveOperationResultClientGetResponse{RawResponse: resp}
+	result := BMSPrepareDataMoveOperationResultClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
 		return BMSPrepareDataMoveOperationResultClientGetResponse{}, err
 	}

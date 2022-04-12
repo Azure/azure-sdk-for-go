@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,45 +17,58 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup"
 )
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/BackupResourceEncryptionConfig_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/BackupResourceEncryptionConfig_Get.json
 func ExampleBackupResourceEncryptionConfigsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armrecoveryservicesbackup.NewBackupResourceEncryptionConfigsClient("<subscription-id>", cred, nil)
+	client, err := armrecoveryservicesbackup.NewBackupResourceEncryptionConfigsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<vault-name>",
 		"<resource-group-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.BackupResourceEncryptionConfigsClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/BackupResourceEncryptionConfig_Put.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/BackupResourceEncryptionConfig_Put.json
 func ExampleBackupResourceEncryptionConfigsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armrecoveryservicesbackup.NewBackupResourceEncryptionConfigsClient("<subscription-id>", cred, nil)
+	client, err := armrecoveryservicesbackup.NewBackupResourceEncryptionConfigsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Update(ctx,
 		"<vault-name>",
 		"<resource-group-name>",
 		armrecoveryservicesbackup.BackupResourceEncryptionConfigResource{
 			Properties: &armrecoveryservicesbackup.BackupResourceEncryptionConfig{
-				EncryptionAtRestType:          armrecoveryservicesbackup.EncryptionAtRestType("CustomerManaged").ToPtr(),
-				InfrastructureEncryptionState: armrecoveryservicesbackup.InfrastructureEncryptionState("true").ToPtr(),
-				KeyURI:                        to.StringPtr("<key-uri>"),
-				SubscriptionID:                to.StringPtr("<subscription-id>"),
+				EncryptionAtRestType:          to.Ptr(armrecoveryservicesbackup.EncryptionAtRestTypeCustomerManaged),
+				InfrastructureEncryptionState: to.Ptr(armrecoveryservicesbackup.InfrastructureEncryptionState("true")),
+				KeyURI:                        to.Ptr("<key-uri>"),
+				SubscriptionID:                to.Ptr("<subscription-id>"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }

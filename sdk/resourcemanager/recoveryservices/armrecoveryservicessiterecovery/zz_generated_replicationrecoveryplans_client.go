@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -37,22 +38,26 @@ type ReplicationRecoveryPlansClient struct {
 // subscriptionID - The subscription Id.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewReplicationRecoveryPlansClient(resourceName string, resourceGroupName string, subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ReplicationRecoveryPlansClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewReplicationRecoveryPlansClient(resourceName string, resourceGroupName string, subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ReplicationRecoveryPlansClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ReplicationRecoveryPlansClient{
 		resourceName:      resourceName,
 		resourceGroupName: resourceGroupName,
 		subscriptionID:    subscriptionID,
-		host:              string(cp.Endpoint),
-		pl:                armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:              ep,
+		pl:                pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreate - The operation to create a recovery plan.
@@ -61,22 +66,16 @@ func NewReplicationRecoveryPlansClient(resourceName string, resourceGroupName st
 // input - Recovery Plan creation input.
 // options - ReplicationRecoveryPlansClientBeginCreateOptions contains the optional parameters for the ReplicationRecoveryPlansClient.BeginCreate
 // method.
-func (client *ReplicationRecoveryPlansClient) BeginCreate(ctx context.Context, recoveryPlanName string, input CreateRecoveryPlanInput, options *ReplicationRecoveryPlansClientBeginCreateOptions) (ReplicationRecoveryPlansClientCreatePollerResponse, error) {
-	resp, err := client.create(ctx, recoveryPlanName, input, options)
-	if err != nil {
-		return ReplicationRecoveryPlansClientCreatePollerResponse{}, err
+func (client *ReplicationRecoveryPlansClient) BeginCreate(ctx context.Context, recoveryPlanName string, input CreateRecoveryPlanInput, options *ReplicationRecoveryPlansClientBeginCreateOptions) (*armruntime.Poller[ReplicationRecoveryPlansClientCreateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.create(ctx, recoveryPlanName, input, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ReplicationRecoveryPlansClientCreateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ReplicationRecoveryPlansClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ReplicationRecoveryPlansClientCreatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ReplicationRecoveryPlansClient.Create", "", resp, client.pl)
-	if err != nil {
-		return ReplicationRecoveryPlansClientCreatePollerResponse{}, err
-	}
-	result.Poller = &ReplicationRecoveryPlansClientCreatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Create - The operation to create a recovery plan.
@@ -120,7 +119,7 @@ func (client *ReplicationRecoveryPlansClient) createCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, input)
@@ -131,22 +130,16 @@ func (client *ReplicationRecoveryPlansClient) createCreateRequest(ctx context.Co
 // recoveryPlanName - Recovery plan name.
 // options - ReplicationRecoveryPlansClientBeginDeleteOptions contains the optional parameters for the ReplicationRecoveryPlansClient.BeginDelete
 // method.
-func (client *ReplicationRecoveryPlansClient) BeginDelete(ctx context.Context, recoveryPlanName string, options *ReplicationRecoveryPlansClientBeginDeleteOptions) (ReplicationRecoveryPlansClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, recoveryPlanName, options)
-	if err != nil {
-		return ReplicationRecoveryPlansClientDeletePollerResponse{}, err
+func (client *ReplicationRecoveryPlansClient) BeginDelete(ctx context.Context, recoveryPlanName string, options *ReplicationRecoveryPlansClientBeginDeleteOptions) (*armruntime.Poller[ReplicationRecoveryPlansClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, recoveryPlanName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ReplicationRecoveryPlansClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ReplicationRecoveryPlansClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ReplicationRecoveryPlansClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ReplicationRecoveryPlansClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return ReplicationRecoveryPlansClientDeletePollerResponse{}, err
-	}
-	result.Poller = &ReplicationRecoveryPlansClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Delete a recovery plan.
@@ -190,7 +183,7 @@ func (client *ReplicationRecoveryPlansClient) deleteCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -200,22 +193,16 @@ func (client *ReplicationRecoveryPlansClient) deleteCreateRequest(ctx context.Co
 // recoveryPlanName - Recovery plan name.
 // options - ReplicationRecoveryPlansClientBeginFailoverCancelOptions contains the optional parameters for the ReplicationRecoveryPlansClient.BeginFailoverCancel
 // method.
-func (client *ReplicationRecoveryPlansClient) BeginFailoverCancel(ctx context.Context, recoveryPlanName string, options *ReplicationRecoveryPlansClientBeginFailoverCancelOptions) (ReplicationRecoveryPlansClientFailoverCancelPollerResponse, error) {
-	resp, err := client.failoverCancel(ctx, recoveryPlanName, options)
-	if err != nil {
-		return ReplicationRecoveryPlansClientFailoverCancelPollerResponse{}, err
+func (client *ReplicationRecoveryPlansClient) BeginFailoverCancel(ctx context.Context, recoveryPlanName string, options *ReplicationRecoveryPlansClientBeginFailoverCancelOptions) (*armruntime.Poller[ReplicationRecoveryPlansClientFailoverCancelResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.failoverCancel(ctx, recoveryPlanName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ReplicationRecoveryPlansClientFailoverCancelResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ReplicationRecoveryPlansClientFailoverCancelResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ReplicationRecoveryPlansClientFailoverCancelPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ReplicationRecoveryPlansClient.FailoverCancel", "", resp, client.pl)
-	if err != nil {
-		return ReplicationRecoveryPlansClientFailoverCancelPollerResponse{}, err
-	}
-	result.Poller = &ReplicationRecoveryPlansClientFailoverCancelPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // FailoverCancel - The operation to cancel the failover of a recovery plan.
@@ -259,7 +246,7 @@ func (client *ReplicationRecoveryPlansClient) failoverCancelCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -270,22 +257,16 @@ func (client *ReplicationRecoveryPlansClient) failoverCancelCreateRequest(ctx co
 // recoveryPlanName - Recovery plan name.
 // options - ReplicationRecoveryPlansClientBeginFailoverCommitOptions contains the optional parameters for the ReplicationRecoveryPlansClient.BeginFailoverCommit
 // method.
-func (client *ReplicationRecoveryPlansClient) BeginFailoverCommit(ctx context.Context, recoveryPlanName string, options *ReplicationRecoveryPlansClientBeginFailoverCommitOptions) (ReplicationRecoveryPlansClientFailoverCommitPollerResponse, error) {
-	resp, err := client.failoverCommit(ctx, recoveryPlanName, options)
-	if err != nil {
-		return ReplicationRecoveryPlansClientFailoverCommitPollerResponse{}, err
+func (client *ReplicationRecoveryPlansClient) BeginFailoverCommit(ctx context.Context, recoveryPlanName string, options *ReplicationRecoveryPlansClientBeginFailoverCommitOptions) (*armruntime.Poller[ReplicationRecoveryPlansClientFailoverCommitResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.failoverCommit(ctx, recoveryPlanName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ReplicationRecoveryPlansClientFailoverCommitResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ReplicationRecoveryPlansClientFailoverCommitResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ReplicationRecoveryPlansClientFailoverCommitPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ReplicationRecoveryPlansClient.FailoverCommit", "", resp, client.pl)
-	if err != nil {
-		return ReplicationRecoveryPlansClientFailoverCommitPollerResponse{}, err
-	}
-	result.Poller = &ReplicationRecoveryPlansClientFailoverCommitPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // FailoverCommit - The operation to commit the failover of a recovery plan.
@@ -329,7 +310,7 @@ func (client *ReplicationRecoveryPlansClient) failoverCommitCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -379,7 +360,7 @@ func (client *ReplicationRecoveryPlansClient) getCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -387,7 +368,7 @@ func (client *ReplicationRecoveryPlansClient) getCreateRequest(ctx context.Conte
 
 // getHandleResponse handles the Get response.
 func (client *ReplicationRecoveryPlansClient) getHandleResponse(resp *http.Response) (ReplicationRecoveryPlansClientGetResponse, error) {
-	result := ReplicationRecoveryPlansClientGetResponse{RawResponse: resp}
+	result := ReplicationRecoveryPlansClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecoveryPlan); err != nil {
 		return ReplicationRecoveryPlansClientGetResponse{}, err
 	}
@@ -398,16 +379,32 @@ func (client *ReplicationRecoveryPlansClient) getHandleResponse(resp *http.Respo
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ReplicationRecoveryPlansClientListOptions contains the optional parameters for the ReplicationRecoveryPlansClient.List
 // method.
-func (client *ReplicationRecoveryPlansClient) List(options *ReplicationRecoveryPlansClientListOptions) *ReplicationRecoveryPlansClientListPager {
-	return &ReplicationRecoveryPlansClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *ReplicationRecoveryPlansClient) List(options *ReplicationRecoveryPlansClientListOptions) *runtime.Pager[ReplicationRecoveryPlansClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ReplicationRecoveryPlansClientListResponse]{
+		More: func(page ReplicationRecoveryPlansClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ReplicationRecoveryPlansClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.RecoveryPlanCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *ReplicationRecoveryPlansClientListResponse) (ReplicationRecoveryPlansClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ReplicationRecoveryPlansClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ReplicationRecoveryPlansClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ReplicationRecoveryPlansClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -430,7 +427,7 @@ func (client *ReplicationRecoveryPlansClient) listCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -438,7 +435,7 @@ func (client *ReplicationRecoveryPlansClient) listCreateRequest(ctx context.Cont
 
 // listHandleResponse handles the List response.
 func (client *ReplicationRecoveryPlansClient) listHandleResponse(resp *http.Response) (ReplicationRecoveryPlansClientListResponse, error) {
-	result := ReplicationRecoveryPlansClientListResponse{RawResponse: resp}
+	result := ReplicationRecoveryPlansClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecoveryPlanCollection); err != nil {
 		return ReplicationRecoveryPlansClientListResponse{}, err
 	}
@@ -451,22 +448,16 @@ func (client *ReplicationRecoveryPlansClient) listHandleResponse(resp *http.Resp
 // input - Failover input.
 // options - ReplicationRecoveryPlansClientBeginPlannedFailoverOptions contains the optional parameters for the ReplicationRecoveryPlansClient.BeginPlannedFailover
 // method.
-func (client *ReplicationRecoveryPlansClient) BeginPlannedFailover(ctx context.Context, recoveryPlanName string, input RecoveryPlanPlannedFailoverInput, options *ReplicationRecoveryPlansClientBeginPlannedFailoverOptions) (ReplicationRecoveryPlansClientPlannedFailoverPollerResponse, error) {
-	resp, err := client.plannedFailover(ctx, recoveryPlanName, input, options)
-	if err != nil {
-		return ReplicationRecoveryPlansClientPlannedFailoverPollerResponse{}, err
+func (client *ReplicationRecoveryPlansClient) BeginPlannedFailover(ctx context.Context, recoveryPlanName string, input RecoveryPlanPlannedFailoverInput, options *ReplicationRecoveryPlansClientBeginPlannedFailoverOptions) (*armruntime.Poller[ReplicationRecoveryPlansClientPlannedFailoverResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.plannedFailover(ctx, recoveryPlanName, input, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ReplicationRecoveryPlansClientPlannedFailoverResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ReplicationRecoveryPlansClientPlannedFailoverResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ReplicationRecoveryPlansClientPlannedFailoverPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ReplicationRecoveryPlansClient.PlannedFailover", "", resp, client.pl)
-	if err != nil {
-		return ReplicationRecoveryPlansClientPlannedFailoverPollerResponse{}, err
-	}
-	result.Poller = &ReplicationRecoveryPlansClientPlannedFailoverPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // PlannedFailover - The operation to start the planned failover of a recovery plan.
@@ -510,7 +501,7 @@ func (client *ReplicationRecoveryPlansClient) plannedFailoverCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, input)
@@ -521,22 +512,16 @@ func (client *ReplicationRecoveryPlansClient) plannedFailoverCreateRequest(ctx c
 // recoveryPlanName - Recovery plan name.
 // options - ReplicationRecoveryPlansClientBeginReprotectOptions contains the optional parameters for the ReplicationRecoveryPlansClient.BeginReprotect
 // method.
-func (client *ReplicationRecoveryPlansClient) BeginReprotect(ctx context.Context, recoveryPlanName string, options *ReplicationRecoveryPlansClientBeginReprotectOptions) (ReplicationRecoveryPlansClientReprotectPollerResponse, error) {
-	resp, err := client.reprotect(ctx, recoveryPlanName, options)
-	if err != nil {
-		return ReplicationRecoveryPlansClientReprotectPollerResponse{}, err
+func (client *ReplicationRecoveryPlansClient) BeginReprotect(ctx context.Context, recoveryPlanName string, options *ReplicationRecoveryPlansClientBeginReprotectOptions) (*armruntime.Poller[ReplicationRecoveryPlansClientReprotectResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.reprotect(ctx, recoveryPlanName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ReplicationRecoveryPlansClientReprotectResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ReplicationRecoveryPlansClientReprotectResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ReplicationRecoveryPlansClientReprotectPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ReplicationRecoveryPlansClient.Reprotect", "", resp, client.pl)
-	if err != nil {
-		return ReplicationRecoveryPlansClientReprotectPollerResponse{}, err
-	}
-	result.Poller = &ReplicationRecoveryPlansClientReprotectPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Reprotect - The operation to reprotect(reverse replicate) a recovery plan.
@@ -580,7 +565,7 @@ func (client *ReplicationRecoveryPlansClient) reprotectCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -592,22 +577,16 @@ func (client *ReplicationRecoveryPlansClient) reprotectCreateRequest(ctx context
 // input - Recovery plan test failover input.
 // options - ReplicationRecoveryPlansClientBeginTestFailoverOptions contains the optional parameters for the ReplicationRecoveryPlansClient.BeginTestFailover
 // method.
-func (client *ReplicationRecoveryPlansClient) BeginTestFailover(ctx context.Context, recoveryPlanName string, input RecoveryPlanTestFailoverInput, options *ReplicationRecoveryPlansClientBeginTestFailoverOptions) (ReplicationRecoveryPlansClientTestFailoverPollerResponse, error) {
-	resp, err := client.testFailover(ctx, recoveryPlanName, input, options)
-	if err != nil {
-		return ReplicationRecoveryPlansClientTestFailoverPollerResponse{}, err
+func (client *ReplicationRecoveryPlansClient) BeginTestFailover(ctx context.Context, recoveryPlanName string, input RecoveryPlanTestFailoverInput, options *ReplicationRecoveryPlansClientBeginTestFailoverOptions) (*armruntime.Poller[ReplicationRecoveryPlansClientTestFailoverResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.testFailover(ctx, recoveryPlanName, input, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ReplicationRecoveryPlansClientTestFailoverResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ReplicationRecoveryPlansClientTestFailoverResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ReplicationRecoveryPlansClientTestFailoverPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ReplicationRecoveryPlansClient.TestFailover", "", resp, client.pl)
-	if err != nil {
-		return ReplicationRecoveryPlansClientTestFailoverPollerResponse{}, err
-	}
-	result.Poller = &ReplicationRecoveryPlansClientTestFailoverPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // TestFailover - The operation to start the test failover of a recovery plan.
@@ -651,7 +630,7 @@ func (client *ReplicationRecoveryPlansClient) testFailoverCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, input)
@@ -663,22 +642,16 @@ func (client *ReplicationRecoveryPlansClient) testFailoverCreateRequest(ctx cont
 // input - Recovery plan test failover cleanup input.
 // options - ReplicationRecoveryPlansClientBeginTestFailoverCleanupOptions contains the optional parameters for the ReplicationRecoveryPlansClient.BeginTestFailoverCleanup
 // method.
-func (client *ReplicationRecoveryPlansClient) BeginTestFailoverCleanup(ctx context.Context, recoveryPlanName string, input RecoveryPlanTestFailoverCleanupInput, options *ReplicationRecoveryPlansClientBeginTestFailoverCleanupOptions) (ReplicationRecoveryPlansClientTestFailoverCleanupPollerResponse, error) {
-	resp, err := client.testFailoverCleanup(ctx, recoveryPlanName, input, options)
-	if err != nil {
-		return ReplicationRecoveryPlansClientTestFailoverCleanupPollerResponse{}, err
+func (client *ReplicationRecoveryPlansClient) BeginTestFailoverCleanup(ctx context.Context, recoveryPlanName string, input RecoveryPlanTestFailoverCleanupInput, options *ReplicationRecoveryPlansClientBeginTestFailoverCleanupOptions) (*armruntime.Poller[ReplicationRecoveryPlansClientTestFailoverCleanupResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.testFailoverCleanup(ctx, recoveryPlanName, input, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ReplicationRecoveryPlansClientTestFailoverCleanupResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ReplicationRecoveryPlansClientTestFailoverCleanupResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ReplicationRecoveryPlansClientTestFailoverCleanupPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ReplicationRecoveryPlansClient.TestFailoverCleanup", "", resp, client.pl)
-	if err != nil {
-		return ReplicationRecoveryPlansClientTestFailoverCleanupPollerResponse{}, err
-	}
-	result.Poller = &ReplicationRecoveryPlansClientTestFailoverCleanupPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // TestFailoverCleanup - The operation to cleanup test failover of a recovery plan.
@@ -722,7 +695,7 @@ func (client *ReplicationRecoveryPlansClient) testFailoverCleanupCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, input)
@@ -734,22 +707,16 @@ func (client *ReplicationRecoveryPlansClient) testFailoverCleanupCreateRequest(c
 // input - Recovery plan unplanned failover input.
 // options - ReplicationRecoveryPlansClientBeginUnplannedFailoverOptions contains the optional parameters for the ReplicationRecoveryPlansClient.BeginUnplannedFailover
 // method.
-func (client *ReplicationRecoveryPlansClient) BeginUnplannedFailover(ctx context.Context, recoveryPlanName string, input RecoveryPlanUnplannedFailoverInput, options *ReplicationRecoveryPlansClientBeginUnplannedFailoverOptions) (ReplicationRecoveryPlansClientUnplannedFailoverPollerResponse, error) {
-	resp, err := client.unplannedFailover(ctx, recoveryPlanName, input, options)
-	if err != nil {
-		return ReplicationRecoveryPlansClientUnplannedFailoverPollerResponse{}, err
+func (client *ReplicationRecoveryPlansClient) BeginUnplannedFailover(ctx context.Context, recoveryPlanName string, input RecoveryPlanUnplannedFailoverInput, options *ReplicationRecoveryPlansClientBeginUnplannedFailoverOptions) (*armruntime.Poller[ReplicationRecoveryPlansClientUnplannedFailoverResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.unplannedFailover(ctx, recoveryPlanName, input, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ReplicationRecoveryPlansClientUnplannedFailoverResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ReplicationRecoveryPlansClientUnplannedFailoverResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ReplicationRecoveryPlansClientUnplannedFailoverPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ReplicationRecoveryPlansClient.UnplannedFailover", "", resp, client.pl)
-	if err != nil {
-		return ReplicationRecoveryPlansClientUnplannedFailoverPollerResponse{}, err
-	}
-	result.Poller = &ReplicationRecoveryPlansClientUnplannedFailoverPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // UnplannedFailover - The operation to start the unplanned failover of a recovery plan.
@@ -793,7 +760,7 @@ func (client *ReplicationRecoveryPlansClient) unplannedFailoverCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, input)
@@ -805,22 +772,16 @@ func (client *ReplicationRecoveryPlansClient) unplannedFailoverCreateRequest(ctx
 // input - Update recovery plan input.
 // options - ReplicationRecoveryPlansClientBeginUpdateOptions contains the optional parameters for the ReplicationRecoveryPlansClient.BeginUpdate
 // method.
-func (client *ReplicationRecoveryPlansClient) BeginUpdate(ctx context.Context, recoveryPlanName string, input UpdateRecoveryPlanInput, options *ReplicationRecoveryPlansClientBeginUpdateOptions) (ReplicationRecoveryPlansClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, recoveryPlanName, input, options)
-	if err != nil {
-		return ReplicationRecoveryPlansClientUpdatePollerResponse{}, err
+func (client *ReplicationRecoveryPlansClient) BeginUpdate(ctx context.Context, recoveryPlanName string, input UpdateRecoveryPlanInput, options *ReplicationRecoveryPlansClientBeginUpdateOptions) (*armruntime.Poller[ReplicationRecoveryPlansClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, recoveryPlanName, input, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ReplicationRecoveryPlansClientUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ReplicationRecoveryPlansClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ReplicationRecoveryPlansClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ReplicationRecoveryPlansClient.Update", "", resp, client.pl)
-	if err != nil {
-		return ReplicationRecoveryPlansClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &ReplicationRecoveryPlansClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - The operation to update a recovery plan.
@@ -864,7 +825,7 @@ func (client *ReplicationRecoveryPlansClient) updateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, input)

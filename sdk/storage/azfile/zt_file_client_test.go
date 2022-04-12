@@ -10,7 +10,10 @@ import (
 	"bytes"
 	"crypto/md5"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal"
+	"github.com/stretchr/testify/require"
 	"io"
 	"io/ioutil"
 	"net/http"
@@ -105,7 +108,7 @@ func (s *azfileLiveTestSuite) TestFileCreateNonDefaultMetadataNonEmpty() {
 
 	resp, err := fClient.GetProperties(ctx, nil)
 	_require.Nil(err)
-	_requireLen(resp.Metadata, len(basicMetadata))
+	_require.Len(resp.Metadata, len(basicMetadata))
 }
 
 func (s *azfileLiveTestSuite) TestFileCreateNonDefaultHTTPHeaders() {
@@ -182,12 +185,12 @@ func (s *azfileLiveTestSuite) TestFileCreateNegativeMetadataInvalid() {
 //			FileLastWriteTime: &lastWriteTime,
 //		},
 //		FileHTTPHeaders: &FileHTTPHeaders{
-//			FileContentType:        to.StringPtr("text/html"),
-//			FileContentEncoding:    to.StringPtr("gzip"),
-//			FileContentLanguage:    to.StringPtr("tr,en"),
+//			FileContentType:        to.Ptr("text/html"),
+//			FileContentEncoding:    to.Ptr("gzip"),
+//			FileContentLanguage:    to.Ptr("tr,en"),
 //			FileContentMD5:         testMd5,
-//			FileCacheControl:       to.StringPtr("no-transform"),
-//			FileContentDisposition: to.StringPtr("attachment"),
+//			FileCacheControl:       to.Ptr("no-transform"),
+//			FileContentDisposition: to.Ptr("attachment"),
 //		},
 //	}
 //	setResp, err := fClient.SetHTTPHeaders(ctx, options)
@@ -259,9 +262,9 @@ func (s *azfileLiveTestSuite) TestFileCreateNegativeMetadataInvalid() {
 //	copy(testMd5[:], md5Str)
 //
 //	properties := FileHTTPHeaders{
-//		FileContentType:        to.StringPtr("text/html"),
-//		FileContentEncoding:        to.StringPtr("gzip"),
-//		FileContentLanguage:        to.StringPtr("tr,en"),
+//		FileContentType:        to.Ptr("text/html"),
+//		FileContentEncoding:        to.Ptr("gzip"),
+//		FileContentLanguage:        to.Ptr("tr,en"),
 //		ContentMD5:         testMd5,
 //		CacheControl:       "no-transform",
 //		ContentDisposition: "attachment",
@@ -326,9 +329,9 @@ func (s *azfileLiveTestSuite) TestFileCreateNegativeMetadataInvalid() {
 //	copy(testMd5[:], md5Str)
 //
 //	properties := FileHTTPHeaders{
-//		FileContentType:        to.StringPtr("text/html"),
-//		FileContentEncoding:        to.StringPtr("gzip"),
-//		FileContentLanguage:        to.StringPtr("tr,en"),
+//		FileContentType:        to.Ptr("text/html"),
+//		FileContentEncoding:        to.Ptr("gzip"),
+//		FileContentLanguage:        to.Ptr("tr,en"),
 //		FileContentMD5:         testMd5,
 //		FileCacheControl:       "no-transform",
 //		ContentDisposition: "attachment",
@@ -528,7 +531,7 @@ func (s *azfileLiveTestSuite) TestFileCreateNegativeMetadataInvalid() {
 //	}
 //}
 
-func waitForCopy(_assert *assert.Assertions, copyfClient FileClient, fileCopyResponse FileStartCopyResponse) {
+func waitForCopy(_require *require.Assertions, copyfClient *FileClient, fileCopyResponse FileStartCopyResponse) {
 	status := fileCopyResponse.CopyStatus
 	// Wait for the copy to finish. If the copy takes longer than a minute, we will fail
 	start := time.Now()
@@ -537,7 +540,7 @@ func waitForCopy(_assert *assert.Assertions, copyfClient FileClient, fileCopyRes
 		status = GetPropertiesResult.CopyStatus
 		currentTime := time.Now()
 		if currentTime.Sub(start) >= time.Minute {
-			_requireFail("")
+			_require.Fail("")
 		}
 	}
 }
@@ -612,7 +615,7 @@ func (s *azfileLiveTestSuite) TestFileStartCopyMetadataNil() {
 
 	resp2, err := copyfClient.GetProperties(ctx, nil)
 	_require.Nil(err)
-	_requireLen(resp2.Metadata, 0)
+	_require.Len(resp2.Metadata, 0)
 }
 
 func (s *azfileLiveTestSuite) TestFileStartCopyMetadataEmpty() {
@@ -638,7 +641,7 @@ func (s *azfileLiveTestSuite) TestFileStartCopyMetadataEmpty() {
 
 	resp2, err := copyfClient.GetProperties(ctx, nil)
 	_require.Nil(err)
-	_requireLen(resp2.Metadata, 0)
+	_require.Len(resp2.Metadata, 0)
 }
 
 func (s *azfileLiveTestSuite) TestFileStartCopyNegativeMetadataInvalidField() {
@@ -792,7 +795,7 @@ func (s *azfileLiveTestSuite) TestFileStartCopySourceNonExistent() {
 //	for i := range fileData {
 //		fileData[i] = byte('a' + i%26)
 //	}
-//	_, err = fClient.Create(ctx, &FileCreateOptions{FileContentLength: to.Int64Ptr(int64(fileSize)), FileHTTPHeaders: &FileHTTPHeaders{}})
+//	_, err = fClient.Create(ctx, &FileCreateOptions{FileContentLength: to.Ptr(int64(fileSize)), FileHTTPHeaders: &FileHTTPHeaders{}})
 //	_require.Nil(err)
 //
 //	_, err = fClient.UploadRange(ctx, 0, internal.NopCloser(bytes.NewReader(fileData[0:4*1024*1024])), nil)
@@ -1107,7 +1110,7 @@ func (s *azfileLiveTestSuite) TestFileAbortCopyNoCopyStarted() {
 //		&SetFileHTTPHeadersOptions{
 //		FileHTTPHeaders: &FileHTTPHeaders{
 //			FileContentMD5: pResp.ContentMD5,
-//			FileContentLanguage: to.StringPtr("test")}})
+//			FileContentLanguage: to.Ptr("test")}})
 //	_require.Nil(err)
 //
 //	// Test get with another type of range index, and validate if FileContentMD5 can be got correct.
@@ -1331,7 +1334,7 @@ func (s *azfileLiveTestSuite) TestFileUploadRangeNilBody() {
 
 	_, err = fClient.UploadRange(ctx, 0, nil, nil)
 	_require.NotNil(err)
-	_requireContains(err.Error(), "body must not be nil")
+	_require.Contains(err.Error(), "body must not be nil")
 }
 
 func (s *azfileLiveTestSuite) TestFileUploadRangeEmptyBody() {
@@ -1345,9 +1348,9 @@ func (s *azfileLiveTestSuite) TestFileUploadRangeEmptyBody() {
 	defer delShare(_require, srClient, nil)
 	fClient := createNewFileFromShare(_require, generateFileName(testName), 0, srClient)
 
-	_, err = fClient.UploadRange(ctx, 0, NopCloser(bytes.NewReader([]byte{})), nil)
+	_, err = fClient.UploadRange(ctx, 0, internal.NopCloser(bytes.NewReader([]byte{})), nil)
 	_require.NotNil(err)
-	_requireContains(err.Error(), "body must contain readable data whose size is > 0")
+	_require.Contains(err.Error(), "body must contain readable data whose size is > 0")
 }
 
 func (s *azfileLiveTestSuite) TestFileUploadRangeNonExistentFile() {
@@ -1395,7 +1398,7 @@ func (s *azfileLiveTestSuite) TestFileUploadRangeTransactionalMD5() {
 	_require.EqualValues(pResp.ContentMD5, md5[:])
 
 	// Upload range with empty MD5, nil MD5 is covered by other cases.
-	pResp, err = fClient.UploadRange(ctx, 1024, NopCloser(bytes.NewReader(contentD[1024:])), nil)
+	pResp, err = fClient.UploadRange(ctx, 1024, internal.NopCloser(bytes.NewReader(contentD[1024:])), nil)
 	_require.Nil(err)
 	_require.NotNil(pResp.ContentMD5)
 	_require.Equal(pResp.RawResponse.StatusCode, http.StatusCreated)
@@ -1499,7 +1502,7 @@ func (s *azfileLiveTestSuite) TestGetRangeListNonDefaultExact() {
 
 	fileSize := int64(512 * 10)
 
-	_, err = fClient.Create(ctx, &FileCreateOptions{FileContentLength: to.Int64Ptr(fileSize), FileHTTPHeaders: &FileHTTPHeaders{}})
+	_, err = fClient.Create(ctx, &FileCreateOptions{FileContentLength: to.Ptr(fileSize), FileHTTPHeaders: &FileHTTPHeaders{}})
 	_require.Nil(err)
 
 	defer delFile(_require, fClient)
@@ -1524,8 +1527,8 @@ func (s *azfileLiveTestSuite) TestGetRangeListNonDefaultExact() {
 	_require.NotEqual(rangeList.RequestID, "")
 	_require.NotEqual(rangeList.Version, "")
 	_require.Equal(rangeList.Date.IsZero(), false)
-	_requireLen(rangeList.Ranges, 1)
-	_require.EqualValues(*rangeList.Ranges[0], FileRange{Start: to.Int64Ptr(0), End: to.Int64Ptr(1023)})
+	_require.Len(rangeList.Ranges, 1)
+	_require.EqualValues(*rangeList.Ranges[0], FileRange{Start: to.Ptr(int64(0)), End: to.Ptr(int64(1023))})
 }
 
 // Default means clear the entire file's range
@@ -1552,7 +1555,7 @@ func (s *azfileLiveTestSuite) TestClearRangeDefault() {
 
 	rangeList, err := fClient.GetRangeList(ctx, 0, CountToEnd, nil)
 	_require.Nil(err)
-	_requireLen(rangeList.Ranges, 0)
+	_require.Len(rangeList.Ranges, 0)
 }
 
 func (s *azfileLiveTestSuite) TestClearRangeNonDefault() {
@@ -1578,7 +1581,7 @@ func (s *azfileLiveTestSuite) TestClearRangeNonDefault() {
 
 	rangeList, err := fClient.GetRangeList(ctx, 0, CountToEnd, nil)
 	_require.Nil(err)
-	_requireLen(rangeList.Ranges, 0)
+	_require.Len(rangeList.Ranges, 0)
 }
 
 func (s *azfileLiveTestSuite) TestClearRangeMultipleRanges() {
@@ -1604,8 +1607,8 @@ func (s *azfileLiveTestSuite) TestClearRangeMultipleRanges() {
 
 	rangeList, err := fClient.GetRangeList(ctx, 0, CountToEnd, nil)
 	_require.Nil(err)
-	_requireLen(rangeList.Ranges, 1)
-	_require.EqualValues(*rangeList.Ranges[0], FileRange{Start: to.Int64Ptr(0), End: to.Int64Ptr(1023)})
+	_require.Len(rangeList.Ranges, 1)
+	_require.EqualValues(*rangeList.Ranges[0], FileRange{Start: to.Ptr(int64(0)), End: to.Ptr(int64(1023))})
 }
 
 // When not 512 aligned, clear range will set 0 the non-512 aligned range, and will not eliminate the range.
@@ -1623,7 +1626,7 @@ func (s *azfileLiveTestSuite) TestClearRangeNonDefaultCount() {
 	defer delFile(_require, fClient)
 
 	d := []byte{1}
-	_, err = fClient.UploadRange(ctx, 0, NopCloser(bytes.NewReader(d)), nil)
+	_, err = fClient.UploadRange(ctx, 0, internal.NopCloser(bytes.NewReader(d)), nil)
 	_require.Nil(err)
 
 	clearResp, err := fClient.ClearRange(ctx, 0, 1, nil)
@@ -1632,8 +1635,8 @@ func (s *azfileLiveTestSuite) TestClearRangeNonDefaultCount() {
 
 	rangeList, err := fClient.GetRangeList(ctx, 0, CountToEnd, nil)
 	_require.Nil(err)
-	_requireLen(rangeList.Ranges, 1)
-	_require.EqualValues(*rangeList.Ranges[0], FileRange{Start: to.Int64Ptr(0), End: to.Int64Ptr(0)})
+	_require.Len(rangeList.Ranges, 1)
+	_require.EqualValues(*rangeList.Ranges[0], FileRange{Start: to.Ptr(int64(0)), End: to.Ptr(int64(0))})
 
 	dResp, err := fClient.Download(ctx, 0, CountToEnd, nil)
 	_require.Nil(err)
@@ -1675,7 +1678,7 @@ func (s *azfileLiveTestSuite) TestFileClearRangeNegativeInvalidCount() {
 	_require.Equal(strings.Contains(err.Error(), "invalid argument: either offset is < 0 or count <= 0"), true)
 }
 
-func setupGetRangeListTest(_assert *assert.Assertions, testName string) (srClient ShareClient, fClient FileClient) {
+func setupGetRangeListTest(_require *require.Assertions, testName string) (srClient *ShareClient, fClient *FileClient) {
 	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 	_require.Nil(err)
 	srClient = createNewShare(_require, generateShareName(testName), svcClient)
@@ -1687,10 +1690,10 @@ func setupGetRangeListTest(_assert *assert.Assertions, testName string) (srClien
 	return
 }
 
-func validateBasicGetRangeList(_assert *assert.Assertions, resp FileGetRangeListResponse, err error) {
+func validateBasicGetRangeList(_require *require.Assertions, resp FileGetRangeListResponse, err error) {
 	_require.Nil(err)
-	_requireLen(resp.Ranges, 1)
-	_require.EqualValues(*resp.Ranges[0], FileRange{Start: to.Int64Ptr(0), End: to.Int64Ptr(int64(testFileRangeSize - 1))})
+	_require.Len(resp.Ranges, 1)
+	_require.EqualValues(*resp.Ranges[0], FileRange{Start: to.Ptr(int64(0)), End: to.Ptr(int64(testFileRangeSize - 1))})
 }
 
 func (s *azfileLiveTestSuite) TestFileGetRangeListDefaultEmptyFile() {
@@ -1706,7 +1709,7 @@ func (s *azfileLiveTestSuite) TestFileGetRangeListDefaultEmptyFile() {
 
 	resp, err := fClient.GetRangeList(ctx, 0, CountToEnd, nil)
 	_require.Nil(err)
-	_requireLen(resp.Ranges, 0)
+	_require.Len(resp.Ranges, 0)
 }
 
 func (s *azfileLiveTestSuite) TestFileGetRangeListDefaultRange() {
@@ -1733,9 +1736,9 @@ func (s *azfileLiveTestSuite) TestFileGetRangeListNonContiguousRanges() {
 	_require.Nil(err)
 	resp, err := fClient.GetRangeList(ctx, 0, CountToEnd, nil)
 	_require.Nil(err)
-	_requireLen(resp.Ranges, 2)
-	_require.EqualValues(*resp.Ranges[0], FileRange{Start: to.Int64Ptr(0), End: to.Int64Ptr(int64(testFileRangeSize - 1))})
-	_require.EqualValues(*resp.Ranges[1], FileRange{Start: to.Int64Ptr(int64(testFileRangeSize * 2)), End: to.Int64Ptr(int64((testFileRangeSize * 3) - 1))})
+	_require.Len(resp.Ranges, 2)
+	_require.EqualValues(*resp.Ranges[0], FileRange{Start: to.Ptr(int64(0)), End: to.Ptr(int64(testFileRangeSize - 1))})
+	_require.EqualValues(*resp.Ranges[1], FileRange{Start: to.Ptr(int64(testFileRangeSize * 2)), End: to.Ptr(int64((testFileRangeSize * 3) - 1))})
 }
 
 func (s *azfileLiveTestSuite) TestFileGetRangeListNonContiguousRangesCountLess() {
@@ -1746,8 +1749,8 @@ func (s *azfileLiveTestSuite) TestFileGetRangeListNonContiguousRangesCountLess()
 
 	resp, err := fClient.GetRangeList(ctx, 0, int64(testFileRangeSize-1), nil)
 	_require.Nil(err)
-	_requireLen(resp.Ranges, 1)
-	_require.EqualValues(*resp.Ranges[0], FileRange{Start: to.Int64Ptr(0), End: to.Int64Ptr(int64(testFileRangeSize - 1))})
+	_require.Len(resp.Ranges, 1)
+	_require.EqualValues(*resp.Ranges[0], FileRange{Start: to.Ptr(int64(0)), End: to.Ptr(int64(testFileRangeSize - 1))})
 }
 
 func (s *azfileLiveTestSuite) TestFileGetRangeListNonContiguousRangesCountExceed() {
@@ -1770,7 +1773,8 @@ func (s *azfileLiveTestSuite) TestFileGetRangeListSnapshot() {
 
 	resp, _ := srClient.CreateSnapshot(ctx, &ShareCreateSnapshotOptions{Metadata: map[string]string{}})
 	_require.NotNil(resp.Snapshot)
-	fClientWithSnapshot := fClient.WithSnapshot(*resp.Snapshot)
+	fClientWithSnapshot, err := fClient.WithSnapshot(*resp.Snapshot)
+	_require.Nil(err)
 
 	resp2, err := fClientWithSnapshot.GetRangeList(ctx, 0, CountToEnd, nil)
 	_require.Nil(err)

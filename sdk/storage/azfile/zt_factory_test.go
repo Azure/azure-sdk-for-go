@@ -15,6 +15,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	testframework "github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal"
+	"github.com/stretchr/testify/require"
 	"io"
 	"net/url"
 	"os"
@@ -94,7 +96,8 @@ func getGenericCredential(recording *testframework.Recording, accountType testAc
 	accountName, accountKey, err := getAccountInfo(recording, accountType)
 	if err != nil {
 		return nil, err
-	} else if accountName == "" || accountKey == "" {
+	}
+	if accountName == "" || accountKey == "" {
 		return nil, errors.New(string(accountType) + AccountNameEnvVar + " and/or " + string(accountType) + AccountKeyEnvVar + " environment variables not specified.")
 	}
 	return NewSharedKeyCredential(accountName, accountKey)
@@ -102,56 +105,61 @@ func getGenericCredential(recording *testframework.Recording, accountType testAc
 
 // 1. ServiceClient -----------------------------------------------------------------------------------------------------
 
-func getServiceClient(recording *testframework.Recording, accountType testAccountType, options *ClientOptions) (ServiceClient, error) {
+func getServiceClient(recording *testframework.Recording, accountType testAccountType,
+	options *ClientOptions) (*ServiceClient, error) {
 	if recording != nil {
 		if options == nil {
 			options = &ClientOptions{
-				Transporter: recording,
-				Retry:       policy.RetryOptions{MaxRetries: -1}}
+				Transport: recording,
+				Retry:     policy.RetryOptions{MaxRetries: -1},
+			}
 		}
 	}
 
 	cred, err := getGenericCredential(recording, accountType)
 	if err != nil {
-		return ServiceClient{}, err
+		return nil, err
 	}
 
 	serviceURL, _ := url.Parse("https://" + cred.AccountName() + ".file.core.windows.net/")
-	serviceClient, err := NewServiceClient(serviceURL.String(), cred, options)
+	serviceClient, err := NewServiceClientWithSharedKey(serviceURL.String(), cred, options)
 
 	return serviceClient, err
 }
 
 //nolint
-func getServiceClientFromConnectionString(recording *testframework.Recording, accountType testAccountType, options *ClientOptions) (ServiceClient, error) {
+func getServiceClientFromConnectionString(recording *testframework.Recording, accountType testAccountType,
+	options *ClientOptions) (*ServiceClient, error) {
 	if recording != nil {
 		if options == nil {
 			options = &ClientOptions{
-				Transporter: recording,
-				Retry:       policy.RetryOptions{MaxRetries: -1}}
+				Transport: recording,
+				Retry:     policy.RetryOptions{MaxRetries: -1},
+			}
 		}
 	}
 
 	connectionString, err := getConnectionString(recording, accountType)
 	if err != nil {
-		return ServiceClient{}, nil
-	}
-	primaryURL, cred, err := parseConnectionString(connectionString)
-	if err != nil {
-		return ServiceClient{}, nil
+		return nil, err
 	}
 
-	svcClient, err := NewServiceClient(primaryURL, cred, options)
+	primaryURL, cred, err := parseConnectionString(connectionString)
+	if err != nil {
+		return nil, err
+	}
+
+	svcClient, err := NewServiceClientWithSharedKey(primaryURL, cred, options)
 	return svcClient, err
 }
 
 // 2. ShareClient  --------------------------------------------------------------------------------------------------------
 
-func getShareClient(shareName string, s ServiceClient) (ShareClient, error) {
+func getShareClient(shareName string, s *ServiceClient) (*ShareClient, error) {
 	return s.NewShareClient(shareName)
 }
 
-func createNewShare(_assert *assert.Assertions, shareName string, serviceClient ServiceClient) ShareClient {
+func createNewShare(_require *require.Assertions, shareName string, serviceClient *ServiceClient) *ShareClient {
 	srClient, err := getShareClient(shareName, serviceClient)
 	_require.Nil(err)
 
@@ -161,7 +169,7 @@ func createNewShare(_assert *assert.Assertions, shareName string, serviceClient 
 	return srClient
 }
 
-func delShare(_assert *assert.Assertions, srClient ShareClient, options *ShareDeleteOptions) {
+func delShare(_require *require.Assertions, srClient *ShareClient, options *ShareDeleteOptions) {
 	deleteShareResp, err := srClient.Delete(context.Background(), options)
 	_require.Nil(err)
 	_require.Equal(deleteShareResp.RawResponse.StatusCode, 202)
@@ -169,13 +177,13 @@ func delShare(_assert *assert.Assertions, srClient ShareClient, options *ShareDe
 
 // 3. DirectoryClient -----------------------------------------------------------------------------------------------------
 
-func getDirectoryClientFromShare(_assert *assert.Assertions, dirName string, srClient ShareClient) DirectoryClient {
+func getDirectoryClientFromShare(_require *require.Assertions, dirName string, srClient *ShareClient) *DirectoryClient {
 	dirClient, err := srClient.NewDirectoryClient(dirName)
 	_require.Nil(err)
 	return dirClient
 }
 
-func createNewDirectoryFromShare(_assert *assert.Assertions, dirName string, srClient ShareClient) DirectoryClient {
+func createNewDirectoryFromShare(_require *require.Assertions, dirName string, srClient *ShareClient) *DirectoryClient {
 	dirClient := getDirectoryClientFromShare(_require, dirName, srClient)
 
 	cResp, err := dirClient.Create(ctx, nil)
@@ -184,7 +192,7 @@ func createNewDirectoryFromShare(_assert *assert.Assertions, dirName string, srC
 	return dirClient
 }
 
-func delDirectory(_assert *assert.Assertions, dirClient DirectoryClient) {
+func delDirectory(_require *require.Assertions, dirClient *DirectoryClient) {
 	resp, err := dirClient.Delete(context.Background(), nil)
 	_require.Nil(err)
 	_require.Equal(resp.RawResponse.StatusCode, 202)
@@ -192,14 +200,14 @@ func delDirectory(_assert *assert.Assertions, dirClient DirectoryClient) {
 
 // 4. FileClient -------------------------------------------------------------------------------------------------------
 
-func getFileClientFromDirectory(_assert *assert.Assertions, fileName string, dirClient DirectoryClient) FileClient {
+func getFileClientFromDirectory(_require *require.Assertions, fileName string, dirClient *DirectoryClient) *FileClient {
 	fClient, err := dirClient.NewFileClient(fileName)
 	_require.Nil(err)
 	return fClient
 }
 
 // This is a convenience method, No public API to create file URL from share now. This method uses share's root directory.
-func getFileClientFromShare(_assert *assert.Assertions, fileName string, srClient ShareClient) FileClient {
+func getFileClientFromShare(_require *require.Assertions, fileName string, srClient *ShareClient) *FileClient {
 	dirClient, err := srClient.NewRootDirectoryClient()
 	_require.Nil(err)
 	fClient, err := dirClient.NewFileClient(fileName)
@@ -207,14 +215,15 @@ func getFileClientFromShare(_assert *assert.Assertions, fileName string, srClien
 	return fClient
 }
 
-func createNewFileFromShare(_assert *assert.Assertions, fileName string, fileSize int64, srClient ShareClient) FileClient {
+func createNewFileFromShare(_require *require.Assertions, fileName string, fileSize int64,
+	srClient *ShareClient) *FileClient {
 	dirClient, err := srClient.NewRootDirectoryClient()
 	_require.Nil(err)
 
 	fClient := getFileClientFromDirectory(_require, fileName, dirClient)
 
 	cResp, err := fClient.Create(ctx, &FileCreateOptions{
-		FileContentLength: to.Int64Ptr(fileSize),
+		FileContentLength: to.Ptr(fileSize),
 	})
 	_require.Nil(err)
 	_require.Equal(cResp.RawResponse.StatusCode, 201)
@@ -222,11 +231,12 @@ func createNewFileFromShare(_assert *assert.Assertions, fileName string, fileSiz
 	return fClient
 }
 
-func createNewFileFromShareWithPermissions(_assert *assert.Assertions, fileName string, fileSize int64, srClient ShareClient) (fClient FileClient) {
-	fClient = getFileClientFromShare(_require, fileName, srClient)
+func createNewFileFromShareWithPermissions(_require *require.Assertions, fileName string,
+	fileSize int64, srClient *ShareClient) *FileClient {
+	fClient := getFileClientFromShare(_require, fileName, srClient)
 
 	cResp, err := fClient.Create(ctx, &FileCreateOptions{
-		FileContentLength: to.Int64Ptr(fileSize),
+		FileContentLength: to.Ptr(fileSize),
 		FilePermissions: &FilePermissions{
 			PermissionStr: &sampleSDDL,
 		},
@@ -238,11 +248,12 @@ func createNewFileFromShareWithPermissions(_assert *assert.Assertions, fileName 
 }
 
 // This is a convenience method, No public API to create file URL from share now. This method uses share's root directory.
-func createNewFileFromShareWithGivenData(_assert *assert.Assertions, fileName string, fileData string, srClient ShareClient) (fClient FileClient) {
-	fClient = getFileClientFromShare(_require, fileName, srClient)
+func createNewFileFromShareWithGivenData(_require *require.Assertions, fileName string,
+	fileData string, srClient *ShareClient) *FileClient {
+	fClient := getFileClientFromShare(_require, fileName, srClient)
 
 	cResp, err := fClient.Create(ctx, &FileCreateOptions{
-		FileContentLength: to.Int64Ptr(int64(len(fileData))),
+		FileContentLength: to.Ptr(int64(len(fileData))),
 		FilePermissions: &FilePermissions{
 			PermissionStr: &sampleSDDL,
 		},
@@ -250,7 +261,7 @@ func createNewFileFromShareWithGivenData(_assert *assert.Assertions, fileName st
 	_require.Nil(err)
 	_require.Equal(cResp.RawResponse.StatusCode, 201)
 
-	putResp, err := fClient.UploadRange(ctx, 0, NopCloser(strings.NewReader(fileDefaultData)), nil)
+	putResp, err := fClient.UploadRange(ctx, 0, internal.NopCloser(strings.NewReader(fileDefaultData)), nil)
 	_require.Nil(err)
 	_require.Equal(putResp.RawResponse.StatusCode, 201)
 	_require.Equal(putResp.LastModified.IsZero(), false)
@@ -259,10 +270,10 @@ func createNewFileFromShareWithGivenData(_assert *assert.Assertions, fileName st
 	_require.NotEqual(putResp.Version, "")
 	_require.Equal(putResp.Date.IsZero(), false)
 
-	return
+	return fClient
 }
 
-func delFile(_assert *assert.Assertions, fileClient FileClient) {
+func delFile(_require *require.Assertions, fileClient *FileClient) {
 	resp, err := fileClient.Delete(context.Background(), nil)
 	_require.Nil(err)
 	_require.Equal(resp.RawResponse.StatusCode, 202)
@@ -272,13 +283,16 @@ func delFile(_assert *assert.Assertions, fileClient FileClient) {
 
 func getReaderToGeneratedBytes(n int) io.ReadSeekCloser {
 	r, _ := generateData(n)
-	return NopCloser(r)
+	return internal.NopCloser(r)
 }
 
 //nolint
 func getRandomDataAndReader(n int) (*bytes.Reader, []byte) {
 	data := make([]byte, n)
-	rand.Read(data)
+	_, err := rand.Read(data)
+	if err != nil {
+		return nil, nil
+	}
 	return bytes.NewReader(data), data
 }
 
@@ -296,7 +310,7 @@ func generateData(sizeInBytes int) (io.ReadSeekCloser, []byte) {
 	} else {
 		copy(data[:], random64BString)
 	}
-	return NopCloser(bytes.NewReader(data)), data
+	return internal.NopCloser(bytes.NewReader(data)), data
 }
 
 // This function generates an entity name by concatenating the passed prefix,

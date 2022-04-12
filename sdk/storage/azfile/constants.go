@@ -60,7 +60,7 @@ const (
 	etagOData = "odata.etag"
 	rfc3339   = "2006-01-02T15:04:05.9999999Z"
 	timestamp = "Timestamp"
-	etag      = "ETag"
+	//etag      = "ETag"
 
 	tokenScope = "https://storage.azure.com/.default"
 )

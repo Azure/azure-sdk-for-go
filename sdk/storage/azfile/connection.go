@@ -8,28 +8,8 @@ package azfile
 
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
-
-// connectionOptions contains configuration settings for the connection's pipeline.
-// All zero-value fields will be initialized with their default values.
-type connectionOptions struct {
-	// HTTPClient sets the transport for making HTTP requests.
-	HTTPClient policy.Transporter
-	// Retry configures the built-in retry policy behavior.
-	Retry policy.RetryOptions
-	// Telemetry configures the built-in telemetry policy behavior.
-	Telemetry policy.TelemetryOptions
-	// Logging configures the built-in logging policy behavior.
-	Logging policy.LogOptions
-	// PerCallPolicies contains custom policies to inject into the pipeline.
-	// Each policy is executed once per request.
-	PerCallPolicies []policy.Policy
-	// PerRetryPolicies contains custom policies to inject into the pipeline.
-	// Each policy is executed once per request, and for each retry request.
-	PerRetryPolicies []policy.Policy
-}
 
 type connection struct {
 	u string

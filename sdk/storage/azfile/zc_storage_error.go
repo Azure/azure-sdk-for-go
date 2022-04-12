@@ -11,10 +11,13 @@ import (
 	"encoding/xml"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"net/http"
 	"sort"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // InternalError is an internal error type that all errors get wrapped in.
@@ -22,6 +25,7 @@ type InternalError struct {
 	cause error
 }
 
+// Error checks if InternalError can be cast as StorageError
 func (e *InternalError) Error() string {
 	if (errors.Is(e.cause, StorageError{})) {
 		return e.cause.Error()
@@ -30,12 +34,14 @@ func (e *InternalError) Error() string {
 	return fmt.Sprintf("===== INTERNAL ERROR =====\n%s", e.cause.Error())
 }
 
+// Is casts err into InternalError
 func (e *InternalError) Is(err error) bool {
 	_, ok := err.(*InternalError)
 
 	return ok
 }
 
+// As casts target interface into InternalError
 func (e *InternalError) As(target interface{}) bool {
 	nt, ok := target.(**InternalError)
 
@@ -52,8 +58,6 @@ func (e *InternalError) As(target interface{}) bool {
 // TL;DR: This implements xml.Unmarshaler, and when the original StorageError is substituted, this unmarshaler kicks in.
 // This handles the description and details. defunkifyStorageError handles the response, cause, and service code.
 type StorageError struct {
-	raw         string
-	Message     *string `xml:"Message"`
 	response    *http.Response
 	description string
 
@@ -62,8 +66,12 @@ type StorageError struct {
 }
 
 func handleError(err error) error {
-	if err, ok := err.(ResponseError); ok {
-		return &InternalError{defunkifyStorageError(err)}
+	if err == nil {
+		return nil
+	}
+	var respErr *azcore.ResponseError
+	if errors.As(err, &respErr) {
+		return &InternalError{responseErrorToStorageError(respErr)}
 	}
 
 	if err != nil {
@@ -73,23 +81,31 @@ func handleError(err error) error {
 	return nil
 }
 
-// defunkifyStorageError is a function that takes the "funky" ResponseError and reduces it to a storageError.
-func defunkifyStorageError(responseError ResponseError) error {
-	if err, ok := responseError.Unwrap().(*StorageError); ok {
-		// errors.Unwrap(responseError.Unwrap())
-
-		err.response = responseError.RawResponse()
-
-		err.ErrorCode = StorageErrorCode(responseError.RawResponse().Header.Get("x-ms-error-code"))
-
-		if code, ok := err.details["Code"]; ok {
-			err.ErrorCode = StorageErrorCode(code)
-			delete(err.details, "Code")
+// converts an *azcore.ResponseError to a *StorageError, or if that fails, a *InternalError
+func responseErrorToStorageError(responseError *azcore.ResponseError) error {
+	var storageError StorageError
+	body, err := runtime.Payload(responseError.RawResponse)
+	if err != nil {
+		goto Default
+	}
+	if len(body) > 0 {
+		if err := xml.Unmarshal(body, &storageError); err != nil {
+			goto Default
 		}
-
-		return err
 	}
 
+	storageError.response = responseError.RawResponse
+
+	storageError.ErrorCode = StorageErrorCode(responseError.RawResponse.Header.Get("x-ms-error-code"))
+
+	if code, ok := storageError.details["Code"]; ok {
+		storageError.ErrorCode = StorageErrorCode(code)
+		delete(storageError.details, "Code")
+	}
+
+	return &storageError
+
+Default:
 	return &InternalError{
 		cause: responseError,
 	}
@@ -131,6 +147,7 @@ func (e StorageError) Error() string {
 	// return e.ErrorNode.Error(b.String())
 }
 
+// Is checks if err can be cast as StorageError
 func (e StorageError) Is(err error) bool {
 	_, ok := err.(StorageError)
 	_, ok2 := err.(*StorageError)
@@ -138,6 +155,7 @@ func (e StorageError) Is(err error) bool {
 	return ok || ok2
 }
 
+// Response returns StorageError.response
 func (e StorageError) Response() *http.Response {
 	return e.response
 }
@@ -197,8 +215,12 @@ func (e *StorageError) UnmarshalXML(d *xml.Decoder, start xml.StartElement) (err
 		switch tt := t.(type) {
 		case xml.StartElement:
 			tokName = tt.Name.Local
+		case xml.EndElement:
+			tokName = ""
 		case xml.CharData:
 			switch tokName {
+			case "":
+				continue
 			case "Message":
 				e.description = string(tt)
 			default:

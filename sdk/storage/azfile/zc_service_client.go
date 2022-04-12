@@ -80,9 +80,9 @@ func NewServiceClientFromConnectionString(connectionString string, options *Clie
 // The new ShareURL uses the same request policy pipeline as the ServiceURL.
 // To change the pipeline, create the ShareURL and then call its WithPipeline method passing in the desired pipeline object.
 // Or, call this package's NewShareURL instead of calling this object's NewShareURL method.
-func (s ServiceClient) NewShareClient(shareName string) (ShareClient, error) {
+func (s *ServiceClient) NewShareClient(shareName string) (*ShareClient, error) {
 	shareURL := appendToURLPath(s.client.endpoint, shareName)
-	return ShareClient{
+	return &ShareClient{
 		client:    newShareClient(shareURL, s.client.pl),
 		sharedKey: s.sharedKey,
 	}, nil
@@ -90,7 +90,7 @@ func (s ServiceClient) NewShareClient(shareName string) (ShareClient, error) {
 
 // GetProperties returns the properties of the File service.
 // For more information, see https://docs.microsoft.com/en-us/rest/api/storageservices/get-file-service-properties.
-func (s ServiceClient) GetProperties(ctx context.Context, o *ServiceGetPropertiesOptions) (ServiceGetPropertiesResponse, error) {
+func (s *ServiceClient) GetProperties(ctx context.Context, o *ServiceGetPropertiesOptions) (ServiceGetPropertiesResponse, error) {
 	options := o.format()
 	getPropertiesResponse, err := s.client.GetProperties(ctx, options)
 
@@ -99,7 +99,7 @@ func (s ServiceClient) GetProperties(ctx context.Context, o *ServiceGetPropertie
 
 // SetProperties sets the properties of the File service.
 // For more information, see https://docs.microsoft.com/en-us/rest/api/storageservices/set-file-service-properties.
-func (s ServiceClient) SetProperties(ctx context.Context, o *ServiceSetPropertiesOptions) (ServiceSetPropertiesResponse, error) {
+func (s *ServiceClient) SetProperties(ctx context.Context, o *ServiceSetPropertiesOptions) (ServiceSetPropertiesResponse, error) {
 	properties, serviceSetPropertiesOptions := o.format()
 	setPropertiesResponse, err := s.client.SetProperties(ctx, properties, serviceSetPropertiesOptions)
 

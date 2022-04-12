@@ -11,6 +11,7 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	testframework "github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 	"log"
 	"testing"
@@ -22,12 +23,12 @@ var ctx = context.Background()
 
 var (
 	basicHeaders = FileHTTPHeaders{
-		FileContentType:        to.StringPtr("my_type"),
-		FileContentDisposition: to.StringPtr("my_disposition"),
-		FileCacheControl:       to.StringPtr("control"),
+		FileContentType:        to.Ptr("my_type"),
+		FileContentDisposition: to.Ptr("my_disposition"),
+		FileCacheControl:       to.Ptr("control"),
 		FileContentMD5:         nil,
-		FileContentLanguage:    to.StringPtr("my_language"),
-		FileContentEncoding:    to.StringPtr("my_encoding"),
+		FileContentLanguage:    to.Ptr("my_language"),
+		FileContentEncoding:    to.Ptr("my_encoding"),
 	}
 
 	basicMetadata = map[string]string{"foo": "bar"}
@@ -82,11 +83,11 @@ var clientsMap = make(map[string]*testContext)
 // recordedTestSetup is called before each test execution by the test suite's BeforeTest method
 func recordedTestSetup(t *testing.T, mode testframework.RecordMode) {
 	testName := t.Name()
-	_assert := assert.New(t)
+	_require := require.New(t)
 
 	// init the test framework
 	_testContext := testframework.NewTestContext(
-		func(msg string) { _requireFailNow(msg) },
+		func(msg string) { _require.FailNow(msg) },
 		func(msg string) { t.Log(msg) },
 		func() string { return testName })
 
@@ -142,7 +143,7 @@ func (s *azfileLiveTestSuite) AfterTest(suite string, test string) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-func validateStorageError(_assert *assert.Assertions, err error, code StorageErrorCode) {
+func validateStorageError(_require *require.Assertions, err error, code StorageErrorCode) {
 	_require.NotNil(err)
 	var storageError *StorageError
 	_require.Equal(errors.As(err, &storageError), true)

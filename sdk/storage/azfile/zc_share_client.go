@@ -73,10 +73,10 @@ func (s *ShareClient) WithSnapshot(shareSnapshot string) (*ShareClient, error) {
 
 // NewRootDirectoryClient creates a new DirectoryClient object using ShareClient's URL.
 // The new DirectoryClient uses the same request policy pipeline as the ShareClient.
-func (s *ShareClient) NewRootDirectoryClient() (DirectoryClient, error) {
+func (s *ShareClient) NewRootDirectoryClient() (*DirectoryClient, error) {
 	// TODO: Come Here
 	directoryURL := s.URL()
-	return DirectoryClient{
+	return &DirectoryClient{
 		client: newDirectoryClient(directoryURL, s.client.pl),
 	}, nil
 }
@@ -86,10 +86,10 @@ func (s *ShareClient) NewRootDirectoryClient() (DirectoryClient, error) {
 // To change the pipeline, create the DirectoryURL and then call its WithPipeline method passing in the
 // desired pipeline object. Or, call this package's NewDirectoryURL instead of calling this object's
 // NewDirectoryURL method.
-func (s *ShareClient) NewDirectoryClient(directoryName string) (DirectoryClient, error) {
+func (s *ShareClient) NewDirectoryClient(directoryName string) (*DirectoryClient, error) {
 	directoryURL := appendToURLPath(s.URL(), directoryName)
 
-	return DirectoryClient{
+	return &DirectoryClient{
 		client:    newDirectoryClient(directoryURL, s.client.pl),
 		sharedKey: s.sharedKey,
 	}, nil

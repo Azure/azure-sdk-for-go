@@ -32,7 +32,7 @@ type AccountSASSignatureValues struct {
 func (v AccountSASSignatureValues) Sign(sharedKeyCredential *SharedKeyCredential) (SASQueryParameters, error) {
 	// https://docs.microsoft.com/en-us/rest/api/storageservices/Constructing-an-Account-SAS
 	if v.ExpiryTime.IsZero() || v.Permissions == "" || v.ResourceTypes == "" || v.Services == "" {
-		return SASQueryParameters{}, errors.New("account SAS is missing at least one of these: ExpiryTime, FilePermissions, Service, or ResourceType")
+		return SASQueryParameters{}, errors.New("account SAS is missing at least one of these: ExpiryTime, Permissions, Service, or ResourceType")
 	}
 	if v.Version == "" {
 		v.Version = SASVersion
@@ -82,14 +82,14 @@ func (v AccountSASSignatureValues) Sign(sharedKeyCredential *SharedKeyCredential
 	return p, nil
 }
 
-// The AccountSASPermissions type simplifies creating the permissions string for an Azure Storage Account SAS.
-// Initialize an instance of this type and then call its String method to set AccountSASSignatureValues's FilePermissions field.
+// AccountSASPermissions type simplifies creating the permissions string for an Azure Storage Account SAS.
+// Initialize an instance of this type and then call its String method to set AccountSASSignatureValues's Permissions field.
 type AccountSASPermissions struct {
 	Read, Write, Delete, DeletePreviousVersion, List, Add, Create, Update, Process bool
 }
 
 // String produces the SAS permissions string for an Azure Storage account.
-// Call this method to set AccountSASSignatureValues's FilePermissions field.
+// Call this method to set AccountSASSignatureValues's Permissions field.
 func (p AccountSASPermissions) String() string {
 	var buffer bytes.Buffer
 	if p.Read {
@@ -122,7 +122,7 @@ func (p AccountSASPermissions) String() string {
 	return buffer.String()
 }
 
-// Parse initializes the AccountSASPermissions' fields from a string.
+// Parse initializes the AccountSASPermissions's fields from a string.
 func (p *AccountSASPermissions) Parse(s string) error {
 	*p = AccountSASPermissions{} // Clear out the flags
 	for _, r := range s {
@@ -152,7 +152,7 @@ func (p *AccountSASPermissions) Parse(s string) error {
 	return nil
 }
 
-// The AccountSASServices type simplifies creating the services string for an Azure Storage Account SAS.
+// AccountSASServices type simplifies creating the services string for an Azure Storage Account SAS.
 // Initialize an instance of this type and then call its String method to set AccountSASSignatureValues's Services field.
 type AccountSASServices struct {
 	Blob, Queue, File bool
@@ -192,7 +192,7 @@ func (s *AccountSASServices) Parse(str string) error {
 	return nil
 }
 
-// The AccountSASResourceTypes type simplifies creating the resource types string for an Azure Storage Account SAS.
+// AccountSASResourceTypes type simplifies creating the resource types string for an Azure Storage Account SAS.
 // Initialize an instance of this type and then call its String method to set AccountSASSignatureValues's ResourceTypes field.
 type AccountSASResourceTypes struct {
 	Service, Container, Object bool

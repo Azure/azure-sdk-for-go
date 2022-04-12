@@ -9,6 +9,7 @@ package azfile
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/stretchr/testify/require"
 	"os"
 	"strconv"
 	"time"
@@ -91,30 +92,30 @@ func (s *azfileLiveTestSuite) TestShareCreateDirectoryURL() {
 //
 //	cResp, err := srClient.Create(context.Background(), &ShareCreateOptions{Quota: to.Int32Ptr(quota), Metadata: md})
 //	_require.Nil(err)
-//	_assert(cResp.RawResponse.StatusCode, chk.Equals, 201)
-//	_assert(cResp.Date().IsZero(), chk.Equals, false)
-//	_assert(cResp.ETag(), chk.Not(chk.Equals), ETagNone)
-//	_assert(cResp.LastModified.IsZero(), chk.Equals, false)
-//	_assert(cResp.RequestID(), chk.Not(chk.Equals), "")
-//	_assert(cResp.Version(), chk.Not(chk.Equals), "")
+//	_require(cResp.RawResponse.StatusCode, chk.Equals, 201)
+//	_require(cResp.Date().IsZero(), chk.Equals, false)
+//	_require(cResp.ETag(), chk.Not(chk.Equals), ETagNone)
+//	_require(cResp.LastModified.IsZero(), chk.Equals, false)
+//	_require(cResp.RequestID(), chk.Not(chk.Equals), "")
+//	_require(cResp.Version(), chk.Not(chk.Equals), "")
 //
 //	shares, err := srClient.ListSharesSegment(context.Background(), Marker{}, ListSharesOptions{Prefix: shareName, Detail: ListSharesDetail{Metadata: true}})
 //	_require.Nil(err)
-//	_assert(shares.ShareItems, chk.HasLen, 1)
-//	_assert(shares.ShareItems[0].Name, chk.Equals, shareName)
-//	_assert(shares.ShareItems[0].Metadata, chk.DeepEquals, md)
-//	_assert(shares.ShareItems[0].Properties.Quota, chk.Equals, quota)
+//	_require(shares.ShareItems, chk.HasLen, 1)
+//	_require(shares.ShareItems[0].Name, chk.Equals, shareName)
+//	_require(shares.ShareItems[0].Metadata, chk.DeepEquals, md)
+//	_require(shares.ShareItems[0].Properties.Quota, chk.Equals, quota)
 //
 //	dResp, err := srClient.Delete(context.Background(), DeleteSnapshotsOptionNone)
 //	_require.Nil(err)
-//	_assert(dResp.RawResponse.StatusCode, chk.Equals, 202)
-//	_assert(dResp.Date().IsZero(), chk.Equals, false)
-//	_assert(dResp.RequestID(), chk.Not(chk.Equals), "")
-//	_assert(dResp.Version(), chk.Not(chk.Equals), "")
+//	_require(dResp.RawResponse.StatusCode, chk.Equals, 202)
+//	_require(dResp.Date().IsZero(), chk.Equals, false)
+//	_require(dResp.RequestID(), chk.Not(chk.Equals), "")
+//	_require(dResp.Version(), chk.Not(chk.Equals), "")
 //
 //	shares, err = srClient.ListSharesSegment(context.Background(), Marker{}, ListSharesOptions{Prefix: shareName})
 //	_require.Nil(err)
-//	_assert(shares.ShareItems, chk.HasLen, 0)
+//	_require(shares.ShareItems, chk.HasLen, 0)
 //}
 
 func (s *azfileLiveTestSuite) TestShareCreateNilMetadata() {
@@ -134,7 +135,7 @@ func (s *azfileLiveTestSuite) TestShareCreateNilMetadata() {
 
 	response, err := srClient.GetProperties(ctx, nil)
 	_require.Nil(err)
-	_requireLen(response.Metadata, 0)
+	_require.Len(response.Metadata, 0)
 }
 
 func (s *azfileLiveTestSuite) TestShareCreateNegativeInvalidName() {
@@ -162,7 +163,7 @@ func (s *azfileLiveTestSuite) TestShareCreateNegativeInvalidMetadata() {
 	srClient, err := getShareClient(shareName, svcClient)
 	_require.Nil(err)
 
-	_, err = srClient.Create(ctx, &ShareCreateOptions{Metadata: map[string]string{"!@#$%^&*()": "!@#$%^&*()"}, Quota: to.Int32Ptr(0)})
+	_, err = srClient.Create(ctx, &ShareCreateOptions{Metadata: map[string]string{"!@#$%^&*()": "!@#$%^&*()"}, Quota: to.Ptr(int32(0))})
 	_require.NotNil(err)
 }
 
@@ -194,7 +195,7 @@ func (s *azfileLiveTestSuite) TestShareGetSetPropertiesNonDefault() {
 
 	newQuota := int32(1234)
 
-	sResp, err := srClient.SetProperties(ctx, &ShareSetPropertiesOptions{Quota: to.Int32Ptr(newQuota)})
+	sResp, err := srClient.SetProperties(ctx, &ShareSetPropertiesOptions{Quota: to.Ptr(newQuota)})
 	_require.Nil(err)
 	_require.Equal(sResp.RawResponse.StatusCode, 200)
 	_require.NotEqual(*sResp.ETag, "")
@@ -242,7 +243,7 @@ func (s *azfileLiveTestSuite) TestShareGetSetPropertiesDefault() {
 	_require.NotEqual(*props.RequestID, "")
 	_require.NotEqual(*props.Version, "")
 	_require.Equal(props.Date.IsZero(), false)
-	_requireTrue(*props.Quota >= 0) // When using service default quota, it could be any value
+	_require.True(*props.Quota >= 0) // When using service default quota, it could be any value
 }
 
 func (s *azfileLiveTestSuite) TestShareSetQuotaNegative() {
@@ -256,9 +257,9 @@ func (s *azfileLiveTestSuite) TestShareSetQuotaNegative() {
 	srClient := createNewShare(_require, shareName, svcClient)
 	defer delShare(_require, srClient, nil)
 
-	_, err = srClient.SetProperties(ctx, &ShareSetPropertiesOptions{Quota: to.Int32Ptr(-1)})
+	_, err = srClient.SetProperties(ctx, &ShareSetPropertiesOptions{Quota: to.Ptr(int32(-1))})
 	_require.NotNil(err)
-	_requireContains(err.Error(), "validation failed: share quote cannot be negative")
+	_require.Contains(err.Error(), "validation failed: share quote cannot be negative")
 }
 
 func (s *azfileLiveTestSuite) TestShareGetPropertiesNegative() {
@@ -305,7 +306,7 @@ func (s *azfileLiveTestSuite) TestShareGetSetPermissionsNonDefault() {
 
 	permissions := []*SignedIdentifier{
 		{
-			ID: to.StringPtr("MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTI="),
+			ID: to.Ptr("MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTI="),
 			AccessPolicy: &AccessPolicy{
 				Start:      &now,
 				Expiry:     &expiryTIme,
@@ -330,7 +331,7 @@ func (s *azfileLiveTestSuite) TestShareGetSetPermissionsNonDefault() {
 	_require.Equal(gResp.LastModified.IsZero(), false)
 	_require.NotEqual(*gResp.RequestID, "")
 	_require.NotEqual(*gResp.Version, "")
-	_requireLen(gResp.SignedIdentifiers, 1)
+	_require.Len(gResp.SignedIdentifiers, 1)
 	_require.EqualValues(*(gResp.SignedIdentifiers[0]), *permissions[0])
 }
 
@@ -354,7 +355,7 @@ func (s *azfileLiveTestSuite) TestShareGetSetPermissionsNonDefaultMultiple() {
 
 	permissions := []*SignedIdentifier{
 		{
-			ID: to.StringPtr("MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTI="),
+			ID: to.Ptr("MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTI="),
 			AccessPolicy: &AccessPolicy{
 				Start:      &now,
 				Expiry:     &expiryTIme,
@@ -362,7 +363,7 @@ func (s *azfileLiveTestSuite) TestShareGetSetPermissionsNonDefaultMultiple() {
 			},
 		},
 		{
-			ID: to.StringPtr("2"),
+			ID: to.Ptr("2"),
 			AccessPolicy: &AccessPolicy{
 				Start:      &now,
 				Expiry:     &expiryTIme,
@@ -387,7 +388,7 @@ func (s *azfileLiveTestSuite) TestShareGetSetPermissionsNonDefaultMultiple() {
 	_require.Equal(gResp.LastModified.IsZero(), false)
 	_require.NotEqual(*gResp.RequestID, "")
 	_require.NotEqual(*gResp.Version, "")
-	_requireLen(gResp.SignedIdentifiers, 2)
+	_require.Len(gResp.SignedIdentifiers, 2)
 	_require.EqualValues(gResp.SignedIdentifiers[0], permissions[0])
 }
 
@@ -419,7 +420,7 @@ func (s *azfileLiveTestSuite) TestShareGetSetPermissionsDefault() {
 	_require.Equal(gResp.LastModified.IsZero(), false)
 	_require.NotEqual(*gResp.RequestID, "")
 	_require.NotEqual(*gResp.Version, "")
-	_requireLen(gResp.SignedIdentifiers, 0)
+	_require.Len(gResp.SignedIdentifiers, 0)
 }
 
 func (s *azfileLiveTestSuite) TestShareGetPermissionNegative() {
@@ -456,7 +457,7 @@ func (s *azfileLiveTestSuite) TestShareSetPermissionsNonDefaultDeleteAndModifyAC
 	permissions := make([]*SignedIdentifier, 2, 2)
 	for i := 0; i < 2; i++ {
 		permissions[i] = &SignedIdentifier{
-			ID: to.StringPtr("000" + strconv.Itoa(i)),
+			ID: to.Ptr("000" + strconv.Itoa(i)),
 			AccessPolicy: &AccessPolicy{
 				Start:      &start,
 				Expiry:     &expiry,
@@ -474,12 +475,12 @@ func (s *azfileLiveTestSuite) TestShareSetPermissionsNonDefaultDeleteAndModifyAC
 	_require.EqualValues(resp.SignedIdentifiers, permissions)
 
 	permissions = resp.SignedIdentifiers[:1] // Delete the first policy by removing it from the slice
-	permissions[0].ID = to.StringPtr("0004") // Modify the remaining policy which is at index 0 in the new slice
+	permissions[0].ID = to.Ptr("0004")       // Modify the remaining policy which is at index 0 in the new slice
 	_, err = srClient.SetPermissions(ctx, permissions, nil)
 
 	resp, err = srClient.GetPermissions(ctx, nil)
 	_require.Nil(err)
-	_requireLen(resp.SignedIdentifiers, 1)
+	_require.Len(resp.SignedIdentifiers, 1)
 
 	_require.EqualValues(resp.SignedIdentifiers, permissions)
 }
@@ -502,7 +503,7 @@ func (s *azfileLiveTestSuite) TestShareSetPermissionsDeleteAllPolicies() {
 	permissions := make([]*SignedIdentifier, 2, 2)
 	for i := 0; i < 2; i++ {
 		permissions[i] = &SignedIdentifier{
-			ID: to.StringPtr("000" + strconv.Itoa(i)),
+			ID: to.Ptr("000" + strconv.Itoa(i)),
 			AccessPolicy: &AccessPolicy{
 				Start:      &start,
 				Expiry:     &expiry,
@@ -519,7 +520,7 @@ func (s *azfileLiveTestSuite) TestShareSetPermissionsDeleteAllPolicies() {
 
 	resp, err := srClient.GetPermissions(ctx, nil)
 	_require.Nil(err)
-	_requireLen(resp.SignedIdentifiers, 0)
+	_require.Len(resp.SignedIdentifiers, 0)
 }
 
 // Note: No error happened
@@ -541,7 +542,7 @@ func (s *azfileLiveTestSuite) TestShareSetPermissionsNegativeInvalidPolicyTimes(
 	permissions := make([]*SignedIdentifier, 2, 2)
 	for i := 0; i < 2; i++ {
 		permissions[i] = &SignedIdentifier{
-			ID: to.StringPtr("000" + strconv.Itoa(i)),
+			ID: to.Ptr("000" + strconv.Itoa(i)),
 			AccessPolicy: &AccessPolicy{
 				Start:      &start,
 				Expiry:     &expiry,
@@ -593,7 +594,7 @@ func (s *azfileLiveTestSuite) TestShareSetPermissionsNegative() {
 	permissions := make([]*SignedIdentifier, 2, 2)
 	for i := 0; i < 2; i++ {
 		permissions[i] = &SignedIdentifier{
-			ID: to.StringPtr(id),
+			ID: to.Ptr(id),
 			AccessPolicy: &AccessPolicy{
 				Start:      &start,
 				Expiry:     &expiry,
@@ -634,7 +635,7 @@ func (s *azfileLiveTestSuite) TestShareGetSetMetadataDefault() {
 	_require.Equal(gResp.LastModified.IsZero(), false)
 	_require.NotEqual(*gResp.RequestID, "")
 	_require.NotEqual(*gResp.Version, "")
-	_requireLen(gResp.Metadata, 0)
+	_require.Len(gResp.Metadata, 0)
 }
 
 func (s *azfileLiveTestSuite) TestShareGetSetMetadataNonDefault() {
@@ -704,7 +705,7 @@ func (s *azfileLiveTestSuite) TestShareGetStats() {
 	newQuota := int32(300)
 
 	// In order to test and get LastModified property.
-	sResp, err := srClient.SetProperties(context.Background(), &ShareSetPropertiesOptions{Quota: to.Int32Ptr(newQuota)})
+	sResp, err := srClient.SetProperties(context.Background(), &ShareSetPropertiesOptions{Quota: to.Ptr(newQuota)})
 	_require.Nil(err)
 	_require.Equal(sResp.RawResponse.StatusCode, 200)
 
@@ -746,7 +747,7 @@ func (s *azfileLiveTestSuite) TestSetAndGetStatistics() {
 	srClient, err := getShareClient(shareName, svcClient)
 	_require.Nil(err)
 
-	cResp, err := srClient.Create(ctx, &ShareCreateOptions{Quota: to.Int32Ptr(1024)})
+	cResp, err := srClient.Create(ctx, &ShareCreateOptions{Quota: to.Ptr(int32(1024))})
 	_require.Nil(err)
 	_require.Equal(cResp.RawResponse.StatusCode, 201)
 	defer delShare(_require, srClient, nil)
@@ -757,7 +758,7 @@ func (s *azfileLiveTestSuite) TestSetAndGetStatistics() {
 	_require.Nil(err)
 
 	fCLient, err := dirClient.NewFileClient("testfile")
-	_, err = fCLient.Create(ctx, &FileCreateOptions{FileContentLength: to.Int64Ptr(1024 * 1024 * 1024 * 1024)})
+	_, err = fCLient.Create(ctx, &FileCreateOptions{FileContentLength: to.Ptr(int64(1024 * 1024 * 1024 * 1024))})
 	_require.Nil(err)
 
 	getStats, err := srClient.GetStatistics(ctx, nil)
@@ -789,9 +790,9 @@ func (s *azfileLiveTestSuite) TestSetAndGetStatistics() {
 //	_require.Equal(cResp.Date().IsZero(), chk.Equals, false)
 //	_require.NotEqual(*cResp.ETag, chk.Not(chk.Equals), ETagNone)
 //	_require.Equal(cResp.LastModified.IsZero(), chk.Equals, false)
-//	_assert(cResp.RequestID(), chk.Not(chk.Equals), "")
-//	_assert(cResp.Version(), chk.Not(chk.Equals), "")
-//	_assert(cResp.Snapshot(), chk.Not(chk.Equals), nil)
+//	_require(cResp.RequestID(), chk.Not(chk.Equals), "")
+//	_require(cResp.Version(), chk.Not(chk.Equals), "")
+//	_require(cResp.Snapshot(), chk.Not(chk.Equals), nil)
 //
 //	cSnapshot := cResp.Snapshot()
 //
@@ -806,17 +807,17 @@ func (s *azfileLiveTestSuite) TestSetAndGetStatistics() {
 //		})
 //
 //	_require.Nil(err)
-//	_assert(lResp.Response().StatusCode, chk.Equals, 200)
-//	_assert(lResp.ShareItems, chk.HasLen, 2)
+//	_require(lResp.Response().StatusCode, chk.Equals, 200)
+//	_require(lResp.ShareItems, chk.HasLen, 2)
 //
 //	if lResp.ShareItems[0].Snapshot != nil {
-//		_assert(*(lResp.ShareItems[0].Snapshot), chk.Equals, cSnapshot)
-//		_assert(lResp.ShareItems[0].Metadata, chk.DeepEquals, md)
-//		_assert(len(lResp.ShareItems[1].Metadata), chk.Equals, 0)
+//		_require(*(lResp.ShareItems[0].Snapshot), chk.Equals, cSnapshot)
+//		_require(lResp.ShareItems[0].Metadata, chk.DeepEquals, md)
+//		_require(len(lResp.ShareItems[1].Metadata), chk.Equals, 0)
 //	} else {
-//		_assert(*(lResp.ShareItems[1].Snapshot), chk.Equals, cSnapshot)
-//		_assert(lResp.ShareItems[1].Metadata, chk.DeepEquals, md)
-//		_assert(len(lResp.ShareItems[0].Metadata), chk.Equals, 0)
+//		_require(*(lResp.ShareItems[1].Snapshot), chk.Equals, cSnapshot)
+//		_require(lResp.ShareItems[1].Metadata, chk.DeepEquals, md)
+//		_require(len(lResp.ShareItems[0].Metadata), chk.Equals, 0)
 //	}
 //
 //}
@@ -920,16 +921,19 @@ func (s *azfileLiveTestSuite) TestShareCreateSnapshotNegativeSnapshotOfSnapshot(
 	srClient := createNewShare(_require, shareName, svcClient)
 	defer delShare(_require, srClient, &ShareDeleteOptions{DeleteSnapshots: &deleteSnapshotsInclude})
 
-	snapshotURL := srClient.WithSnapshot(time.Now().UTC().String())
+	snapshotURL, err := srClient.WithSnapshot(time.Now().UTC().String())
+	_require.Nil(err)
+
 	cResp, err := snapshotURL.CreateSnapshot(ctx, nil)
 	_require.Nil(err) //Note: this would not fail, snapshot would be ignored.
 
-	snapshotRecursiveURL := srClient.WithSnapshot(*cResp.Snapshot)
+	snapshotRecursiveURL, err := srClient.WithSnapshot(*cResp.Snapshot)
+	_require.Nil(err)
 	_, err = snapshotRecursiveURL.CreateSnapshot(ctx, nil)
 	_require.Nil(err) //Note: this would not fail, snapshot would be ignored.
 }
 
-func validateShareDeleted(_assert *assert.Assertions, srClient ShareClient) {
+func validateShareDeleted(_require *require.Assertions, srClient *ShareClient) {
 	_, err := srClient.GetProperties(ctx, nil)
 	validateStorageError(_require, err, StorageErrorCodeShareNotFound)
 }
@@ -947,7 +951,8 @@ func (s *azfileLiveTestSuite) TestShareDeleteSnapshot() {
 
 	resp, err := srClient.CreateSnapshot(ctx, nil)
 	_require.Nil(err)
-	snapshotURL := srClient.WithSnapshot(*resp.Snapshot)
+	snapshotURL, err := srClient.WithSnapshot(*resp.Snapshot)
+	_require.Nil(err)
 
 	_, err = snapshotURL.Delete(ctx, nil)
 	_require.Nil(err)
@@ -971,7 +976,7 @@ func (s *azfileLiveTestSuite) TestShareDeleteSnapshot() {
 //	_require.Nil(err)
 //
 //	lResp, _ := svcClient.ListSharesSegment(ctx, Marker{}, ListSharesOptions{Detail: ListSharesDetail{Snapshots: true}, Prefix: shareName})
-//	_assert(lResp.ShareItems, chk.HasLen, 0)
+//	_require(lResp.ShareItems, chk.HasLen, 0)
 //}
 
 func (s *azfileLiveTestSuite) TestShareDeleteSnapshotsNoneWithSnapshots() {

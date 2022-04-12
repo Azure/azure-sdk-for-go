@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armredhatopenshift
 
 const (
 	moduleName    = "armredhatopenshift"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // ProvisioningState - ProvisioningState represents a provisioning state.
@@ -37,11 +37,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	}
 }
 
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
-}
-
 // VMSize - VMSize represents a VM size.
 type VMSize string
 
@@ -60,11 +55,6 @@ func PossibleVMSizeValues() []VMSize {
 	}
 }
 
-// ToPtr returns a *VMSize pointing to the current value.
-func (c VMSize) ToPtr() *VMSize {
-	return &c
-}
-
 // Visibility - Visibility represents visibility.
 type Visibility string
 
@@ -79,9 +69,4 @@ func PossibleVisibilityValues() []Visibility {
 		VisibilityPrivate,
 		VisibilityPublic,
 	}
-}
-
-// ToPtr returns a *Visibility pointing to the current value.
-func (c Visibility) ToPtr() *Visibility {
-	return &c
 }

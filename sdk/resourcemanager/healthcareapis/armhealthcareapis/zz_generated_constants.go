@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armhealthcareapis
 
 const (
 	moduleName    = "armhealthcareapis"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -25,11 +25,6 @@ func PossibleActionTypeValues() []ActionType {
 	return []ActionType{
 		ActionTypeInternal,
 	}
-}
-
-// ToPtr returns a *ActionType pointing to the current value.
-func (c ActionType) ToPtr() *ActionType {
-	return &c
 }
 
 // CreatedByType - The type of identity that created the resource.
@@ -52,9 +47,22 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
+// FhirResourceVersionPolicy - Controls how resources are versioned on the FHIR service
+type FhirResourceVersionPolicy string
+
+const (
+	FhirResourceVersionPolicyNoVersion       FhirResourceVersionPolicy = "no-version"
+	FhirResourceVersionPolicyVersioned       FhirResourceVersionPolicy = "versioned"
+	FhirResourceVersionPolicyVersionedUpdate FhirResourceVersionPolicy = "versioned-update"
+)
+
+// PossibleFhirResourceVersionPolicyValues returns the possible values for the FhirResourceVersionPolicy const type.
+func PossibleFhirResourceVersionPolicyValues() []FhirResourceVersionPolicy {
+	return []FhirResourceVersionPolicy{
+		FhirResourceVersionPolicyNoVersion,
+		FhirResourceVersionPolicyVersioned,
+		FhirResourceVersionPolicyVersionedUpdate,
+	}
 }
 
 // FhirServiceKind - The kind of the service.
@@ -73,11 +81,6 @@ func PossibleFhirServiceKindValues() []FhirServiceKind {
 	}
 }
 
-// ToPtr returns a *FhirServiceKind pointing to the current value.
-func (c FhirServiceKind) ToPtr() *FhirServiceKind {
-	return &c
-}
-
 // IotIdentityResolutionType - The type of IoT identity resolution to use with the destination.
 type IotIdentityResolutionType string
 
@@ -92,11 +95,6 @@ func PossibleIotIdentityResolutionTypeValues() []IotIdentityResolutionType {
 		IotIdentityResolutionTypeCreate,
 		IotIdentityResolutionTypeLookup,
 	}
-}
-
-// ToPtr returns a *IotIdentityResolutionType pointing to the current value.
-func (c IotIdentityResolutionType) ToPtr() *IotIdentityResolutionType {
-	return &c
 }
 
 // Kind - The kind of the service.
@@ -117,11 +115,6 @@ func PossibleKindValues() []Kind {
 	}
 }
 
-// ToPtr returns a *Kind pointing to the current value.
-func (c Kind) ToPtr() *Kind {
-	return &c
-}
-
 // ManagedServiceIdentityType - Type of identity being specified, currently SystemAssigned and None are allowed.
 type ManagedServiceIdentityType string
 
@@ -136,11 +129,6 @@ func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
 		ManagedServiceIdentityTypeNone,
 		ManagedServiceIdentityTypeSystemAssigned,
 	}
-}
-
-// ToPtr returns a *ManagedServiceIdentityType pointing to the current value.
-func (c ManagedServiceIdentityType) ToPtr() *ManagedServiceIdentityType {
-	return &c
 }
 
 // OperationResultStatus - The status of the operation being performed.
@@ -165,11 +153,6 @@ func PossibleOperationResultStatusValues() []OperationResultStatus {
 	}
 }
 
-// ToPtr returns a *OperationResultStatus pointing to the current value.
-func (c OperationResultStatus) ToPtr() *OperationResultStatus {
-	return &c
-}
-
 // PrivateEndpointConnectionProvisioningState - The current provisioning state.
 type PrivateEndpointConnectionProvisioningState string
 
@@ -190,11 +173,6 @@ func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpoin
 	}
 }
 
-// ToPtr returns a *PrivateEndpointConnectionProvisioningState pointing to the current value.
-func (c PrivateEndpointConnectionProvisioningState) ToPtr() *PrivateEndpointConnectionProvisioningState {
-	return &c
-}
-
 // PrivateEndpointServiceConnectionStatus - The private endpoint connection status.
 type PrivateEndpointServiceConnectionStatus string
 
@@ -211,11 +189,6 @@ func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointSer
 		PrivateEndpointServiceConnectionStatusPending,
 		PrivateEndpointServiceConnectionStatusRejected,
 	}
-}
-
-// ToPtr returns a *PrivateEndpointServiceConnectionStatus pointing to the current value.
-func (c PrivateEndpointServiceConnectionStatus) ToPtr() *PrivateEndpointServiceConnectionStatus {
-	return &c
 }
 
 // ProvisioningState - The provisioning state.
@@ -256,11 +229,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	}
 }
 
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
-}
-
 // PublicNetworkAccess - Control permission for data plane traffic coming from public networks while private endpoint is enabled.
 type PublicNetworkAccess string
 
@@ -277,9 +245,42 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 	}
 }
 
-// ToPtr returns a *PublicNetworkAccess pointing to the current value.
-func (c PublicNetworkAccess) ToPtr() *PublicNetworkAccess {
-	return &c
+// ServiceEventState - Indicates the current status of event support for the resource.
+type ServiceEventState string
+
+const (
+	ServiceEventStateDisabled ServiceEventState = "Disabled"
+	ServiceEventStateEnabled  ServiceEventState = "Enabled"
+	ServiceEventStateUpdating ServiceEventState = "Updating"
+)
+
+// PossibleServiceEventStateValues returns the possible values for the ServiceEventState const type.
+func PossibleServiceEventStateValues() []ServiceEventState {
+	return []ServiceEventState{
+		ServiceEventStateDisabled,
+		ServiceEventStateEnabled,
+		ServiceEventStateUpdating,
+	}
+}
+
+// ServiceManagedIdentityType - Type of identity being specified, currently SystemAssigned and None are allowed.
+type ServiceManagedIdentityType string
+
+const (
+	ServiceManagedIdentityTypeNone                       ServiceManagedIdentityType = "None"
+	ServiceManagedIdentityTypeSystemAssigned             ServiceManagedIdentityType = "SystemAssigned"
+	ServiceManagedIdentityTypeSystemAssignedUserAssigned ServiceManagedIdentityType = "SystemAssigned,UserAssigned"
+	ServiceManagedIdentityTypeUserAssigned               ServiceManagedIdentityType = "UserAssigned"
+)
+
+// PossibleServiceManagedIdentityTypeValues returns the possible values for the ServiceManagedIdentityType const type.
+func PossibleServiceManagedIdentityTypeValues() []ServiceManagedIdentityType {
+	return []ServiceManagedIdentityType{
+		ServiceManagedIdentityTypeNone,
+		ServiceManagedIdentityTypeSystemAssigned,
+		ServiceManagedIdentityTypeSystemAssignedUserAssigned,
+		ServiceManagedIdentityTypeUserAssigned,
+	}
 }
 
 // ServiceNameUnavailabilityReason - The reason for unavailability.
@@ -296,9 +297,4 @@ func PossibleServiceNameUnavailabilityReasonValues() []ServiceNameUnavailability
 		ServiceNameUnavailabilityReasonInvalid,
 		ServiceNameUnavailabilityReasonAlreadyExists,
 	}
-}
-
-// ToPtr returns a *ServiceNameUnavailabilityReason pointing to the current value.
-func (c ServiceNameUnavailabilityReason) ToPtr() *ServiceNameUnavailabilityReason {
-	return &c
 }

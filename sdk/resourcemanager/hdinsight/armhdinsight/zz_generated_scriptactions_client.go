@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type ScriptActionsClient struct {
 // forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewScriptActionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ScriptActionsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewScriptActionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ScriptActionsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ScriptActionsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Delete - Deletes a specified persisted script action of the cluster.
@@ -68,7 +73,7 @@ func (client *ScriptActionsClient) Delete(ctx context.Context, resourceGroupName
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return ScriptActionsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ScriptActionsClientDeleteResponse{RawResponse: resp}, nil
+	return ScriptActionsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -155,7 +160,7 @@ func (client *ScriptActionsClient) getExecutionAsyncOperationStatusCreateRequest
 
 // getExecutionAsyncOperationStatusHandleResponse handles the GetExecutionAsyncOperationStatus response.
 func (client *ScriptActionsClient) getExecutionAsyncOperationStatusHandleResponse(resp *http.Response) (ScriptActionsClientGetExecutionAsyncOperationStatusResponse, error) {
-	result := ScriptActionsClientGetExecutionAsyncOperationStatusResponse{RawResponse: resp}
+	result := ScriptActionsClientGetExecutionAsyncOperationStatusResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AsyncOperationResult); err != nil {
 		return ScriptActionsClientGetExecutionAsyncOperationStatusResponse{}, err
 	}
@@ -216,7 +221,7 @@ func (client *ScriptActionsClient) getExecutionDetailCreateRequest(ctx context.C
 
 // getExecutionDetailHandleResponse handles the GetExecutionDetail response.
 func (client *ScriptActionsClient) getExecutionDetailHandleResponse(resp *http.Response) (ScriptActionsClientGetExecutionDetailResponse, error) {
-	result := ScriptActionsClientGetExecutionDetailResponse{RawResponse: resp}
+	result := ScriptActionsClientGetExecutionDetailResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RuntimeScriptActionDetail); err != nil {
 		return ScriptActionsClientGetExecutionDetailResponse{}, err
 	}
@@ -229,16 +234,32 @@ func (client *ScriptActionsClient) getExecutionDetailHandleResponse(resp *http.R
 // clusterName - The name of the cluster.
 // options - ScriptActionsClientListByClusterOptions contains the optional parameters for the ScriptActionsClient.ListByCluster
 // method.
-func (client *ScriptActionsClient) ListByCluster(resourceGroupName string, clusterName string, options *ScriptActionsClientListByClusterOptions) *ScriptActionsClientListByClusterPager {
-	return &ScriptActionsClientListByClusterPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByClusterCreateRequest(ctx, resourceGroupName, clusterName, options)
+func (client *ScriptActionsClient) ListByCluster(resourceGroupName string, clusterName string, options *ScriptActionsClientListByClusterOptions) *runtime.Pager[ScriptActionsClientListByClusterResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ScriptActionsClientListByClusterResponse]{
+		More: func(page ScriptActionsClientListByClusterResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ScriptActionsClientListByClusterResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ScriptActionsList.NextLink)
+		Fetcher: func(ctx context.Context, page *ScriptActionsClientListByClusterResponse) (ScriptActionsClientListByClusterResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByClusterCreateRequest(ctx, resourceGroupName, clusterName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ScriptActionsClientListByClusterResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ScriptActionsClientListByClusterResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ScriptActionsClientListByClusterResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByClusterHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByClusterCreateRequest creates the ListByCluster request.
@@ -269,7 +290,7 @@ func (client *ScriptActionsClient) listByClusterCreateRequest(ctx context.Contex
 
 // listByClusterHandleResponse handles the ListByCluster response.
 func (client *ScriptActionsClient) listByClusterHandleResponse(resp *http.Response) (ScriptActionsClientListByClusterResponse, error) {
-	result := ScriptActionsClientListByClusterResponse{RawResponse: resp}
+	result := ScriptActionsClientListByClusterResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ScriptActionsList); err != nil {
 		return ScriptActionsClientListByClusterResponse{}, err
 	}

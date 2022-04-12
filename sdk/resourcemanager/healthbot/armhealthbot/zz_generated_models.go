@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,12 +8,7 @@
 
 package armhealthbot
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
 
 // AvailableOperations - Available operations of the service
 type AvailableOperations struct {
@@ -22,14 +17,6 @@ type AvailableOperations struct {
 
 	// Collection of available operation details
 	Value []*OperationDetail `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AvailableOperations.
-func (a AvailableOperations) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
 }
 
 // BotResponseList - The list of Azure Health Bot operation response.
@@ -41,22 +28,16 @@ type BotResponseList struct {
 	Value []*HealthBot `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type BotResponseList.
-func (b BotResponseList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", b.NextLink)
-	populate(objectMap, "value", b.Value)
-	return json.Marshal(objectMap)
-}
-
 // BotsClientBeginCreateOptions contains the optional parameters for the BotsClient.BeginCreate method.
 type BotsClientBeginCreateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // BotsClientBeginDeleteOptions contains the optional parameters for the BotsClient.BeginDelete method.
 type BotsClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // BotsClientGetOptions contains the optional parameters for the BotsClient.Get method.
@@ -88,7 +69,7 @@ type Error struct {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info map[string]interface{} `json:"info,omitempty" azure:"ro"`
+	Info interface{} `json:"info,omitempty" azure:"ro"`
 
 	// READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -110,17 +91,6 @@ type ErrorError struct {
 
 	// READ-ONLY; The error target.
 	Target *string `json:"target,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ErrorError.
-func (e ErrorError) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalInfo", e.AdditionalInfo)
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "message", e.Message)
-	populate(objectMap, "target", e.Target)
-	return json.Marshal(objectMap)
 }
 
 // HealthBot - Azure Health Bot resource definition
@@ -153,21 +123,6 @@ type HealthBot struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type HealthBot.
-func (h HealthBot) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", h.ID)
-	populate(objectMap, "identity", h.Identity)
-	populate(objectMap, "location", h.Location)
-	populate(objectMap, "name", h.Name)
-	populate(objectMap, "properties", h.Properties)
-	populate(objectMap, "sku", h.SKU)
-	populate(objectMap, "systemData", h.SystemData)
-	populate(objectMap, "tags", h.Tags)
-	populate(objectMap, "type", h.Type)
-	return json.Marshal(objectMap)
-}
-
 // Identity for the resource.
 type Identity struct {
 	// The identity type. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity and a set of user
@@ -187,16 +142,6 @@ type Identity struct {
 	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Identity.
-func (i Identity) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "principalId", i.PrincipalID)
-	populate(objectMap, "tenantId", i.TenantID)
-	populate(objectMap, "type", i.Type)
-	populate(objectMap, "userAssignedIdentities", i.UserAssignedIdentities)
-	return json.Marshal(objectMap)
-}
-
 // OperationDetail - Operation detail payload
 type OperationDetail struct {
 	// Display of the operation
@@ -212,7 +157,7 @@ type OperationDetail struct {
 	Origin *string `json:"origin,omitempty"`
 
 	// Additional properties.
-	Properties map[string]interface{} `json:"properties,omitempty"`
+	Properties interface{} `json:"properties,omitempty"`
 }
 
 // OperationDisplay - Operation display payload
@@ -288,53 +233,6 @@ type SystemData struct {
 	LastModifiedByType *IdentityType `json:"lastModifiedByType,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SystemData.
-func (s SystemData) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
-	populate(objectMap, "createdBy", s.CreatedBy)
-	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
-	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
-	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SystemData.
-func (s *SystemData) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdAt":
-			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
-			delete(rawMsg, key)
-		case "createdBy":
-			err = unpopulate(val, &s.CreatedBy)
-			delete(rawMsg, key)
-		case "createdByType":
-			err = unpopulate(val, &s.CreatedByType)
-			delete(rawMsg, key)
-		case "lastModifiedAt":
-			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
-			delete(rawMsg, key)
-		case "lastModifiedBy":
-			err = unpopulate(val, &s.LastModifiedBy)
-			delete(rawMsg, key)
-		case "lastModifiedByType":
-			err = unpopulate(val, &s.LastModifiedByType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // TrackedResource - The resource model definition for a ARM tracked top level resource
 type TrackedResource struct {
 	// REQUIRED; The geo-location where the resource lives
@@ -356,18 +254,6 @@ type TrackedResource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type TrackedResource.
-func (t TrackedResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", t.ID)
-	populate(objectMap, "location", t.Location)
-	populate(objectMap, "name", t.Name)
-	populate(objectMap, "systemData", t.SystemData)
-	populate(objectMap, "tags", t.Tags)
-	populate(objectMap, "type", t.Type)
-	return json.Marshal(objectMap)
-}
-
 // UpdateParameters - Parameters for updating a Azure Health Bot.
 type UpdateParameters struct {
 	// The identity of the Azure Health Bot.
@@ -379,16 +265,6 @@ type UpdateParameters struct {
 
 	// Tags for a Azure Health Bot.
 	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type UpdateParameters.
-func (u UpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "identity", u.Identity)
-	populate(objectMap, "location", u.Location)
-	populate(objectMap, "sku", u.SKU)
-	populate(objectMap, "tags", u.Tags)
-	return json.Marshal(objectMap)
 }
 
 // UserAssignedIdentity - The details of the user assigned managed identity used by the Video Analyzer resource.
@@ -404,21 +280,4 @@ type UserAssignedIdentity struct {
 type ValidationResult struct {
 	// The status code of the response validation.
 	Status *string `json:"status,omitempty"`
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

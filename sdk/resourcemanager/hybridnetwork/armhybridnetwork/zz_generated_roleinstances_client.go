@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type RoleInstancesClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewRoleInstancesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RoleInstancesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewRoleInstancesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RoleInstancesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &RoleInstancesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Gets the information of role instance of vendor network function.
@@ -99,7 +104,7 @@ func (client *RoleInstancesClient) getCreateRequest(ctx context.Context, locatio
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -107,7 +112,7 @@ func (client *RoleInstancesClient) getCreateRequest(ctx context.Context, locatio
 
 // getHandleResponse handles the Get response.
 func (client *RoleInstancesClient) getHandleResponse(resp *http.Response) (RoleInstancesClientGetResponse, error) {
-	result := RoleInstancesClientGetResponse{RawResponse: resp}
+	result := RoleInstancesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleInstance); err != nil {
 		return RoleInstancesClientGetResponse{}, err
 	}
@@ -120,16 +125,32 @@ func (client *RoleInstancesClient) getHandleResponse(resp *http.Response) (RoleI
 // vendorName - The name of the vendor.
 // serviceKey - The GUID for the vendor network function.
 // options - RoleInstancesClientListOptions contains the optional parameters for the RoleInstancesClient.List method.
-func (client *RoleInstancesClient) List(locationName string, vendorName string, serviceKey string, options *RoleInstancesClientListOptions) *RoleInstancesClientListPager {
-	return &RoleInstancesClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, locationName, vendorName, serviceKey, options)
+func (client *RoleInstancesClient) List(locationName string, vendorName string, serviceKey string, options *RoleInstancesClientListOptions) *runtime.Pager[RoleInstancesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[RoleInstancesClientListResponse]{
+		More: func(page RoleInstancesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp RoleInstancesClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.NetworkFunctionRoleInstanceListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *RoleInstancesClientListResponse) (RoleInstancesClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, locationName, vendorName, serviceKey, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return RoleInstancesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return RoleInstancesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return RoleInstancesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -156,7 +177,7 @@ func (client *RoleInstancesClient) listCreateRequest(ctx context.Context, locati
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -164,7 +185,7 @@ func (client *RoleInstancesClient) listCreateRequest(ctx context.Context, locati
 
 // listHandleResponse handles the List response.
 func (client *RoleInstancesClient) listHandleResponse(resp *http.Response) (RoleInstancesClientListResponse, error) {
-	result := RoleInstancesClientListResponse{RawResponse: resp}
+	result := RoleInstancesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkFunctionRoleInstanceListResult); err != nil {
 		return RoleInstancesClientListResponse{}, err
 	}
@@ -179,22 +200,18 @@ func (client *RoleInstancesClient) listHandleResponse(resp *http.Response) (Role
 // roleInstanceName - The name of the role instance of the vendor network function.
 // options - RoleInstancesClientBeginRestartOptions contains the optional parameters for the RoleInstancesClient.BeginRestart
 // method.
-func (client *RoleInstancesClient) BeginRestart(ctx context.Context, locationName string, vendorName string, serviceKey string, roleInstanceName string, options *RoleInstancesClientBeginRestartOptions) (RoleInstancesClientRestartPollerResponse, error) {
-	resp, err := client.restart(ctx, locationName, vendorName, serviceKey, roleInstanceName, options)
-	if err != nil {
-		return RoleInstancesClientRestartPollerResponse{}, err
+func (client *RoleInstancesClient) BeginRestart(ctx context.Context, locationName string, vendorName string, serviceKey string, roleInstanceName string, options *RoleInstancesClientBeginRestartOptions) (*armruntime.Poller[RoleInstancesClientRestartResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.restart(ctx, locationName, vendorName, serviceKey, roleInstanceName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[RoleInstancesClientRestartResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[RoleInstancesClientRestartResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := RoleInstancesClientRestartPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("RoleInstancesClient.Restart", "location", resp, client.pl)
-	if err != nil {
-		return RoleInstancesClientRestartPollerResponse{}, err
-	}
-	result.Poller = &RoleInstancesClientRestartPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Restart - Restarts a role instance of a vendor network function.
@@ -242,7 +259,7 @@ func (client *RoleInstancesClient) restartCreateRequest(ctx context.Context, loc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -256,22 +273,18 @@ func (client *RoleInstancesClient) restartCreateRequest(ctx context.Context, loc
 // roleInstanceName - The name of the role instance of the vendor network function.
 // options - RoleInstancesClientBeginStartOptions contains the optional parameters for the RoleInstancesClient.BeginStart
 // method.
-func (client *RoleInstancesClient) BeginStart(ctx context.Context, locationName string, vendorName string, serviceKey string, roleInstanceName string, options *RoleInstancesClientBeginStartOptions) (RoleInstancesClientStartPollerResponse, error) {
-	resp, err := client.start(ctx, locationName, vendorName, serviceKey, roleInstanceName, options)
-	if err != nil {
-		return RoleInstancesClientStartPollerResponse{}, err
+func (client *RoleInstancesClient) BeginStart(ctx context.Context, locationName string, vendorName string, serviceKey string, roleInstanceName string, options *RoleInstancesClientBeginStartOptions) (*armruntime.Poller[RoleInstancesClientStartResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.start(ctx, locationName, vendorName, serviceKey, roleInstanceName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[RoleInstancesClientStartResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[RoleInstancesClientStartResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := RoleInstancesClientStartPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("RoleInstancesClient.Start", "location", resp, client.pl)
-	if err != nil {
-		return RoleInstancesClientStartPollerResponse{}, err
-	}
-	result.Poller = &RoleInstancesClientStartPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Start - Starts a role instance of a vendor network function.
@@ -319,7 +332,7 @@ func (client *RoleInstancesClient) startCreateRequest(ctx context.Context, locat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -332,22 +345,18 @@ func (client *RoleInstancesClient) startCreateRequest(ctx context.Context, locat
 // serviceKey - The GUID for the vendor network function.
 // roleInstanceName - The name of the role instance of the vendor network function.
 // options - RoleInstancesClientBeginStopOptions contains the optional parameters for the RoleInstancesClient.BeginStop method.
-func (client *RoleInstancesClient) BeginStop(ctx context.Context, locationName string, vendorName string, serviceKey string, roleInstanceName string, options *RoleInstancesClientBeginStopOptions) (RoleInstancesClientStopPollerResponse, error) {
-	resp, err := client.stop(ctx, locationName, vendorName, serviceKey, roleInstanceName, options)
-	if err != nil {
-		return RoleInstancesClientStopPollerResponse{}, err
+func (client *RoleInstancesClient) BeginStop(ctx context.Context, locationName string, vendorName string, serviceKey string, roleInstanceName string, options *RoleInstancesClientBeginStopOptions) (*armruntime.Poller[RoleInstancesClientStopResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.stop(ctx, locationName, vendorName, serviceKey, roleInstanceName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[RoleInstancesClientStopResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[RoleInstancesClientStopResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := RoleInstancesClientStopPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("RoleInstancesClient.Stop", "location", resp, client.pl)
-	if err != nil {
-		return RoleInstancesClientStopPollerResponse{}, err
-	}
-	result.Poller = &RoleInstancesClientStopPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Stop - Powers off (stop) a role instance of a vendor network function.
@@ -395,7 +404,7 @@ func (client *RoleInstancesClient) stopCreateRequest(ctx context.Context, locati
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil

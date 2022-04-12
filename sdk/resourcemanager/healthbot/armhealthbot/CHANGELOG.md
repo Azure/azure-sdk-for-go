@@ -1,5 +1,80 @@
 # Release History
 
+## 0.3.0 (2022-04-11)
+### Breaking Changes
+
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `*BotsClient.ListByResourceGroup` return value(s) have been changed from `(*BotsClientListByResourceGroupPager)` to `(*runtime.Pager[BotsClientListByResourceGroupResponse])`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `*BotsClient.BeginCreate` return value(s) have been changed from `(BotsClientCreatePollerResponse, error)` to `(*armruntime.Poller[BotsClientCreateResponse], error)`
+- Function `*BotsClient.List` return value(s) have been changed from `(*BotsClientListPager)` to `(*runtime.Pager[BotsClientListResponse])`
+- Function `*BotsClient.BeginDelete` return value(s) have been changed from `(BotsClientDeletePollerResponse, error)` to `(*armruntime.Poller[BotsClientDeleteResponse], error)`
+- Function `NewBotsClient` return value(s) have been changed from `(*BotsClient)` to `(*BotsClient, error)`
+- Type of `ErrorAdditionalInfo.Info` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `OperationDetail.Properties` has been changed from `map[string]interface{}` to `interface{}`
+- Function `SKUName.ToPtr` has been removed
+- Function `BotsClientCreatePollerResponse.PollUntilDone` has been removed
+- Function `*BotsClientCreatePoller.ResumeToken` has been removed
+- Function `*BotsClientDeletePoller.ResumeToken` has been removed
+- Function `IdentityType.ToPtr` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `*BotsClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*BotsClientCreatePoller.Poll` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `*BotsClientDeletePoller.FinalResponse` has been removed
+- Function `BotsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*BotsClientListPager.PageResponse` has been removed
+- Function `*BotsClientCreatePoller.Done` has been removed
+- Function `*BotsClientDeletePollerResponse.Resume` has been removed
+- Function `*BotsClientDeletePoller.Poll` has been removed
+- Function `*BotsClientListByResourceGroupPager.Err` has been removed
+- Function `*BotsClientCreatePoller.FinalResponse` has been removed
+- Function `ResourceIdentityType.ToPtr` has been removed
+- Function `*BotsClientDeletePoller.Done` has been removed
+- Function `*BotsClientListByResourceGroupPager.NextPage` has been removed
+- Function `*BotsClientCreatePollerResponse.Resume` has been removed
+- Function `*BotsClientListPager.Err` has been removed
+- Function `*BotsClientListPager.NextPage` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Struct `BotsClientCreatePoller` has been removed
+- Struct `BotsClientCreatePollerResponse` has been removed
+- Struct `BotsClientCreateResult` has been removed
+- Struct `BotsClientDeletePoller` has been removed
+- Struct `BotsClientDeletePollerResponse` has been removed
+- Struct `BotsClientGetResult` has been removed
+- Struct `BotsClientListByResourceGroupPager` has been removed
+- Struct `BotsClientListByResourceGroupResult` has been removed
+- Struct `BotsClientListPager` has been removed
+- Struct `BotsClientListResult` has been removed
+- Struct `BotsClientUpdateResult` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Field `BotsClientListResult` of struct `BotsClientListResponse` has been removed
+- Field `RawResponse` of struct `BotsClientListResponse` has been removed
+- Field `BotsClientGetResult` of struct `BotsClientGetResponse` has been removed
+- Field `RawResponse` of struct `BotsClientGetResponse` has been removed
+- Field `BotsClientListByResourceGroupResult` of struct `BotsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `BotsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `BotsClientDeleteResponse` has been removed
+- Field `BotsClientUpdateResult` of struct `BotsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `BotsClientUpdateResponse` has been removed
+- Field `BotsClientCreateResult` of struct `BotsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `BotsClientCreateResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+
+### Features Added
+
+- New anonymous field `BotResponseList` in struct `BotsClientListResponse`
+- New field `ResumeToken` in struct `BotsClientBeginCreateOptions`
+- New anonymous field `BotResponseList` in struct `BotsClientListByResourceGroupResponse`
+- New anonymous field `AvailableOperations` in struct `OperationsClientListResponse`
+- New anonymous field `HealthBot` in struct `BotsClientGetResponse`
+- New anonymous field `HealthBot` in struct `BotsClientUpdateResponse`
+- New field `ResumeToken` in struct `BotsClientBeginDeleteOptions`
+- New anonymous field `HealthBot` in struct `BotsClientCreateResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

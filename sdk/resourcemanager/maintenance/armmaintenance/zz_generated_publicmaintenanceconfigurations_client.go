@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type PublicMaintenanceConfigurationsClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewPublicMaintenanceConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PublicMaintenanceConfigurationsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewPublicMaintenanceConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PublicMaintenanceConfigurationsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &PublicMaintenanceConfigurationsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Get Public Maintenance Configuration record
@@ -94,7 +99,7 @@ func (client *PublicMaintenanceConfigurationsClient) getCreateRequest(ctx contex
 
 // getHandleResponse handles the Get response.
 func (client *PublicMaintenanceConfigurationsClient) getHandleResponse(resp *http.Response) (PublicMaintenanceConfigurationsClientGetResponse, error) {
-	result := PublicMaintenanceConfigurationsClientGetResponse{RawResponse: resp}
+	result := PublicMaintenanceConfigurationsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Configuration); err != nil {
 		return PublicMaintenanceConfigurationsClientGetResponse{}, err
 	}
@@ -105,19 +110,26 @@ func (client *PublicMaintenanceConfigurationsClient) getHandleResponse(resp *htt
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - PublicMaintenanceConfigurationsClientListOptions contains the optional parameters for the PublicMaintenanceConfigurationsClient.List
 // method.
-func (client *PublicMaintenanceConfigurationsClient) List(ctx context.Context, options *PublicMaintenanceConfigurationsClientListOptions) (PublicMaintenanceConfigurationsClientListResponse, error) {
-	req, err := client.listCreateRequest(ctx, options)
-	if err != nil {
-		return PublicMaintenanceConfigurationsClientListResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return PublicMaintenanceConfigurationsClientListResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PublicMaintenanceConfigurationsClientListResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listHandleResponse(resp)
+func (client *PublicMaintenanceConfigurationsClient) List(options *PublicMaintenanceConfigurationsClientListOptions) *runtime.Pager[PublicMaintenanceConfigurationsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PublicMaintenanceConfigurationsClientListResponse]{
+		More: func(page PublicMaintenanceConfigurationsClientListResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *PublicMaintenanceConfigurationsClientListResponse) (PublicMaintenanceConfigurationsClientListResponse, error) {
+			req, err := client.listCreateRequest(ctx, options)
+			if err != nil {
+				return PublicMaintenanceConfigurationsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PublicMaintenanceConfigurationsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PublicMaintenanceConfigurationsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
+		},
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -140,7 +152,7 @@ func (client *PublicMaintenanceConfigurationsClient) listCreateRequest(ctx conte
 
 // listHandleResponse handles the List response.
 func (client *PublicMaintenanceConfigurationsClient) listHandleResponse(resp *http.Response) (PublicMaintenanceConfigurationsClientListResponse, error) {
-	result := PublicMaintenanceConfigurationsClientListResponse{RawResponse: resp}
+	result := PublicMaintenanceConfigurationsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListMaintenanceConfigurationsResult); err != nil {
 		return PublicMaintenanceConfigurationsClientListResponse{}, err
 	}

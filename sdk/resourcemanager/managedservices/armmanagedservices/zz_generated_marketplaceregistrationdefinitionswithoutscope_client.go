@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -31,19 +32,23 @@ type MarketplaceRegistrationDefinitionsWithoutScopeClient struct {
 // NewMarketplaceRegistrationDefinitionsWithoutScopeClient creates a new instance of MarketplaceRegistrationDefinitionsWithoutScopeClient with the specified values.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewMarketplaceRegistrationDefinitionsWithoutScopeClient(credential azcore.TokenCredential, options *arm.ClientOptions) *MarketplaceRegistrationDefinitionsWithoutScopeClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewMarketplaceRegistrationDefinitionsWithoutScopeClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*MarketplaceRegistrationDefinitionsWithoutScopeClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &MarketplaceRegistrationDefinitionsWithoutScopeClient{
-		host: string(cp.Endpoint),
-		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host: ep,
+		pl:   pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Get the marketplace registration definition for the marketplace identifier.
@@ -80,7 +85,7 @@ func (client *MarketplaceRegistrationDefinitionsWithoutScopeClient) getCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-02-01-preview")
+	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -88,7 +93,7 @@ func (client *MarketplaceRegistrationDefinitionsWithoutScopeClient) getCreateReq
 
 // getHandleResponse handles the Get response.
 func (client *MarketplaceRegistrationDefinitionsWithoutScopeClient) getHandleResponse(resp *http.Response) (MarketplaceRegistrationDefinitionsWithoutScopeClientGetResponse, error) {
-	result := MarketplaceRegistrationDefinitionsWithoutScopeClientGetResponse{RawResponse: resp}
+	result := MarketplaceRegistrationDefinitionsWithoutScopeClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MarketplaceRegistrationDefinition); err != nil {
 		return MarketplaceRegistrationDefinitionsWithoutScopeClientGetResponse{}, err
 	}
@@ -99,16 +104,32 @@ func (client *MarketplaceRegistrationDefinitionsWithoutScopeClient) getHandleRes
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - MarketplaceRegistrationDefinitionsWithoutScopeClientListOptions contains the optional parameters for the MarketplaceRegistrationDefinitionsWithoutScopeClient.List
 // method.
-func (client *MarketplaceRegistrationDefinitionsWithoutScopeClient) List(options *MarketplaceRegistrationDefinitionsWithoutScopeClientListOptions) *MarketplaceRegistrationDefinitionsWithoutScopeClientListPager {
-	return &MarketplaceRegistrationDefinitionsWithoutScopeClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *MarketplaceRegistrationDefinitionsWithoutScopeClient) List(options *MarketplaceRegistrationDefinitionsWithoutScopeClientListOptions) *runtime.Pager[MarketplaceRegistrationDefinitionsWithoutScopeClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[MarketplaceRegistrationDefinitionsWithoutScopeClientListResponse]{
+		More: func(page MarketplaceRegistrationDefinitionsWithoutScopeClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp MarketplaceRegistrationDefinitionsWithoutScopeClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.MarketplaceRegistrationDefinitionList.NextLink)
+		Fetcher: func(ctx context.Context, page *MarketplaceRegistrationDefinitionsWithoutScopeClientListResponse) (MarketplaceRegistrationDefinitionsWithoutScopeClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return MarketplaceRegistrationDefinitionsWithoutScopeClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return MarketplaceRegistrationDefinitionsWithoutScopeClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return MarketplaceRegistrationDefinitionsWithoutScopeClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -122,7 +143,7 @@ func (client *MarketplaceRegistrationDefinitionsWithoutScopeClient) listCreateRe
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2020-02-01-preview")
+	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -130,7 +151,7 @@ func (client *MarketplaceRegistrationDefinitionsWithoutScopeClient) listCreateRe
 
 // listHandleResponse handles the List response.
 func (client *MarketplaceRegistrationDefinitionsWithoutScopeClient) listHandleResponse(resp *http.Response) (MarketplaceRegistrationDefinitionsWithoutScopeClientListResponse, error) {
-	result := MarketplaceRegistrationDefinitionsWithoutScopeClientListResponse{RawResponse: resp}
+	result := MarketplaceRegistrationDefinitionsWithoutScopeClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MarketplaceRegistrationDefinitionList); err != nil {
 		return MarketplaceRegistrationDefinitionsWithoutScopeClientListResponse{}, err
 	}

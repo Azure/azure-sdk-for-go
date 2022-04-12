@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,40 +17,49 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mediaservices/armmediaservices"
 )
 
-// x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/assetFilters-list-all.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/assetFilters-list-all.json
 func ExampleAssetFiltersClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armmediaservices.NewAssetFiltersClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewAssetFiltersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.List("<resource-group-name>",
 		"<account-name>",
 		"<asset-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/assetFilters-get-by-name.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/assetFilters-get-by-name.json
 func ExampleAssetFiltersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armmediaservices.NewAssetFiltersClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewAssetFiltersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<account-name>",
@@ -58,19 +67,26 @@ func ExampleAssetFiltersClient_Get() {
 		"<filter-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.AssetFiltersClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/assetFilters-create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/assetFilters-create.json
 func ExampleAssetFiltersClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armmediaservices.NewAssetFiltersClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewAssetFiltersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.CreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<account-name>",
@@ -79,65 +95,72 @@ func ExampleAssetFiltersClient_CreateOrUpdate() {
 		armmediaservices.AssetFilter{
 			Properties: &armmediaservices.MediaFilterProperties{
 				FirstQuality: &armmediaservices.FirstQuality{
-					Bitrate: to.Int32Ptr(128000),
+					Bitrate: to.Ptr[int32](128000),
 				},
 				PresentationTimeRange: &armmediaservices.PresentationTimeRange{
-					EndTimestamp:               to.Int64Ptr(170000000),
-					ForceEndTimestamp:          to.BoolPtr(false),
-					LiveBackoffDuration:        to.Int64Ptr(0),
-					PresentationWindowDuration: to.Int64Ptr(9223372036854775000),
-					StartTimestamp:             to.Int64Ptr(0),
-					Timescale:                  to.Int64Ptr(10000000),
+					EndTimestamp:               to.Ptr[int64](170000000),
+					ForceEndTimestamp:          to.Ptr(false),
+					LiveBackoffDuration:        to.Ptr[int64](0),
+					PresentationWindowDuration: to.Ptr[int64](9223372036854775000),
+					StartTimestamp:             to.Ptr[int64](0),
+					Timescale:                  to.Ptr[int64](10000000),
 				},
 				Tracks: []*armmediaservices.FilterTrackSelection{
 					{
 						TrackSelections: []*armmediaservices.FilterTrackPropertyCondition{
 							{
-								Operation: armmediaservices.FilterTrackPropertyCompareOperation("Equal").ToPtr(),
-								Property:  armmediaservices.FilterTrackPropertyType("Type").ToPtr(),
-								Value:     to.StringPtr("<value>"),
+								Operation: to.Ptr(armmediaservices.FilterTrackPropertyCompareOperationEqual),
+								Property:  to.Ptr(armmediaservices.FilterTrackPropertyTypeType),
+								Value:     to.Ptr("<value>"),
 							},
 							{
-								Operation: armmediaservices.FilterTrackPropertyCompareOperation("NotEqual").ToPtr(),
-								Property:  armmediaservices.FilterTrackPropertyType("Language").ToPtr(),
-								Value:     to.StringPtr("<value>"),
+								Operation: to.Ptr(armmediaservices.FilterTrackPropertyCompareOperationNotEqual),
+								Property:  to.Ptr(armmediaservices.FilterTrackPropertyTypeLanguage),
+								Value:     to.Ptr("<value>"),
 							},
 							{
-								Operation: armmediaservices.FilterTrackPropertyCompareOperation("NotEqual").ToPtr(),
-								Property:  armmediaservices.FilterTrackPropertyType("FourCC").ToPtr(),
-								Value:     to.StringPtr("<value>"),
+								Operation: to.Ptr(armmediaservices.FilterTrackPropertyCompareOperationNotEqual),
+								Property:  to.Ptr(armmediaservices.FilterTrackPropertyTypeFourCC),
+								Value:     to.Ptr("<value>"),
 							}},
 					},
 					{
 						TrackSelections: []*armmediaservices.FilterTrackPropertyCondition{
 							{
-								Operation: armmediaservices.FilterTrackPropertyCompareOperation("Equal").ToPtr(),
-								Property:  armmediaservices.FilterTrackPropertyType("Type").ToPtr(),
-								Value:     to.StringPtr("<value>"),
+								Operation: to.Ptr(armmediaservices.FilterTrackPropertyCompareOperationEqual),
+								Property:  to.Ptr(armmediaservices.FilterTrackPropertyTypeType),
+								Value:     to.Ptr("<value>"),
 							},
 							{
-								Operation: armmediaservices.FilterTrackPropertyCompareOperation("Equal").ToPtr(),
-								Property:  armmediaservices.FilterTrackPropertyType("Bitrate").ToPtr(),
-								Value:     to.StringPtr("<value>"),
+								Operation: to.Ptr(armmediaservices.FilterTrackPropertyCompareOperationEqual),
+								Property:  to.Ptr(armmediaservices.FilterTrackPropertyTypeBitrate),
+								Value:     to.Ptr("<value>"),
 							}},
 					}},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.AssetFiltersClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/assetFilters-delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/assetFilters-delete.json
 func ExampleAssetFiltersClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armmediaservices.NewAssetFiltersClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewAssetFiltersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Delete(ctx,
 		"<resource-group-name>",
 		"<account-name>",
@@ -145,18 +168,24 @@ func ExampleAssetFiltersClient_Delete() {
 		"<filter-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/assetFilters-update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/assetFilters-update.json
 func ExampleAssetFiltersClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armmediaservices.NewAssetFiltersClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewAssetFiltersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Update(ctx,
 		"<resource-group-name>",
 		"<account-name>",
@@ -165,21 +194,23 @@ func ExampleAssetFiltersClient_Update() {
 		armmediaservices.AssetFilter{
 			Properties: &armmediaservices.MediaFilterProperties{
 				FirstQuality: &armmediaservices.FirstQuality{
-					Bitrate: to.Int32Ptr(128000),
+					Bitrate: to.Ptr[int32](128000),
 				},
 				PresentationTimeRange: &armmediaservices.PresentationTimeRange{
-					EndTimestamp:               to.Int64Ptr(170000000),
-					ForceEndTimestamp:          to.BoolPtr(false),
-					LiveBackoffDuration:        to.Int64Ptr(0),
-					PresentationWindowDuration: to.Int64Ptr(9223372036854775000),
-					StartTimestamp:             to.Int64Ptr(10),
-					Timescale:                  to.Int64Ptr(10000000),
+					EndTimestamp:               to.Ptr[int64](170000000),
+					ForceEndTimestamp:          to.Ptr(false),
+					LiveBackoffDuration:        to.Ptr[int64](0),
+					PresentationWindowDuration: to.Ptr[int64](9223372036854775000),
+					StartTimestamp:             to.Ptr[int64](10),
+					Timescale:                  to.Ptr[int64](10000000),
 				},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.AssetFiltersClientUpdateResult)
+	// TODO: use response item
+	_ = res
 }

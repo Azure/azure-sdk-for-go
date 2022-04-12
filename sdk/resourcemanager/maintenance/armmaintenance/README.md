@@ -11,7 +11,7 @@ The `armmaintenance` module provides operations for working with Azure Maintenan
 ## Prerequisites
 
 - an [Azure subscription](https://azure.microsoft.com/free/)
-- Go 1.16 or above
+- Go 1.18 or above
 
 ## Install the package
 
@@ -38,16 +38,18 @@ For more information on authentication, please see the documentation for `aziden
 Azure Maintenance modules consist of one or more clients.  A client groups a set of related APIs, providing access to its functionality within the specified subscription.  Create one or more clients to access the APIs you require using your credential.
 
 ```go
-client := armmaintenance.NewApplyUpdatesClient(<subscription ID>, cred, nil)
+client, err := armmaintenance.NewApplyUpdatesClient(<subscription ID>, cred, nil)
 ```
 
 You can use `ClientOptions` in package `github.com/Azure/azure-sdk-for-go/sdk/azcore/arm` to set endpoint to connect with public and sovereign clouds as well as Azure Stack. For more information, please see the documentation for `azcore` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore).
 
 ```go
-options = arm.ClientOptions{
-    Host: arm.AzureChina,
+options := arm.ClientOptions {
+    ClientOptions: azcore.ClientOptions {
+        Cloud: cloud.AzureChina,
+    },
 }
-client := armmaintenance.NewApplyUpdatesClient(<subscription ID>, cred, &options)
+client, err := armmaintenance.NewApplyUpdatesClient(<subscription ID>, cred, &options)
 ```
 
 ## Provide Feedback

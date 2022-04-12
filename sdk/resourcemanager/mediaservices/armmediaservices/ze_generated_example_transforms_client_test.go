@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,129 +17,160 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mediaservices/armmediaservices"
 )
 
-// x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/transforms-list-all.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/transforms-list-all.json
 func ExampleTransformsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armmediaservices.NewTransformsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewTransformsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.List("<resource-group-name>",
 		"<account-name>",
 		&armmediaservices.TransformsClientListOptions{Filter: nil,
 			Orderby: nil,
 		})
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/transforms-get-by-name.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/transforms-get-by-name.json
 func ExampleTransformsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armmediaservices.NewTransformsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewTransformsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		"<transform-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.TransformsClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/transforms-create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/transforms-create.json
 func ExampleTransformsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armmediaservices.NewTransformsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewTransformsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.CreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		"<transform-name>",
 		armmediaservices.Transform{
 			Properties: &armmediaservices.TransformProperties{
-				Description: to.StringPtr("<description>"),
+				Description: to.Ptr("<description>"),
 				Outputs: []*armmediaservices.TransformOutput{
 					{
 						Preset: &armmediaservices.BuiltInStandardEncoderPreset{
-							ODataType:  to.StringPtr("<odata-type>"),
-							PresetName: armmediaservices.EncoderNamedPreset("AdaptiveStreaming").ToPtr(),
+							ODataType:  to.Ptr("<odata-type>"),
+							PresetName: to.Ptr(armmediaservices.EncoderNamedPresetAdaptiveStreaming),
 						},
 					}},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.TransformsClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/transforms-delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/transforms-delete.json
 func ExampleTransformsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armmediaservices.NewTransformsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewTransformsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Delete(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		"<transform-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/transforms-update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/transforms-update.json
 func ExampleTransformsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armmediaservices.NewTransformsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewTransformsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Update(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		"<transform-name>",
 		armmediaservices.Transform{
 			Properties: &armmediaservices.TransformProperties{
-				Description: to.StringPtr("<description>"),
+				Description: to.Ptr("<description>"),
 				Outputs: []*armmediaservices.TransformOutput{
 					{
 						Preset: &armmediaservices.BuiltInStandardEncoderPreset{
-							ODataType:  to.StringPtr("<odata-type>"),
-							PresetName: armmediaservices.EncoderNamedPreset("H264MultipleBitrate720p").ToPtr(),
+							ODataType:  to.Ptr("<odata-type>"),
+							PresetName: to.Ptr(armmediaservices.EncoderNamedPresetH264MultipleBitrate720P),
 						},
-						RelativePriority: armmediaservices.Priority("High").ToPtr(),
+						RelativePriority: to.Ptr(armmediaservices.PriorityHigh),
 					}},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.TransformsClientUpdateResult)
+	// TODO: use response item
+	_ = res
 }

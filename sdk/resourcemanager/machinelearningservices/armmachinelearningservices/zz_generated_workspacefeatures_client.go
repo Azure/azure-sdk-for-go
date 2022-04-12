@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type WorkspaceFeaturesClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewWorkspaceFeaturesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *WorkspaceFeaturesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewWorkspaceFeaturesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkspaceFeaturesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &WorkspaceFeaturesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // List - Lists all enabled features for a workspace
@@ -54,16 +59,32 @@ func NewWorkspaceFeaturesClient(subscriptionID string, credential azcore.TokenCr
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - Name of Azure Machine Learning workspace.
 // options - WorkspaceFeaturesClientListOptions contains the optional parameters for the WorkspaceFeaturesClient.List method.
-func (client *WorkspaceFeaturesClient) List(resourceGroupName string, workspaceName string, options *WorkspaceFeaturesClientListOptions) *WorkspaceFeaturesClientListPager {
-	return &WorkspaceFeaturesClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, workspaceName, options)
+func (client *WorkspaceFeaturesClient) List(resourceGroupName string, workspaceName string, options *WorkspaceFeaturesClientListOptions) *runtime.Pager[WorkspaceFeaturesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[WorkspaceFeaturesClientListResponse]{
+		More: func(page WorkspaceFeaturesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp WorkspaceFeaturesClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ListAmlUserFeatureResult.NextLink)
+		Fetcher: func(ctx context.Context, page *WorkspaceFeaturesClientListResponse) (WorkspaceFeaturesClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, workspaceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return WorkspaceFeaturesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return WorkspaceFeaturesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return WorkspaceFeaturesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -94,7 +115,7 @@ func (client *WorkspaceFeaturesClient) listCreateRequest(ctx context.Context, re
 
 // listHandleResponse handles the List response.
 func (client *WorkspaceFeaturesClient) listHandleResponse(resp *http.Response) (WorkspaceFeaturesClientListResponse, error) {
-	result := WorkspaceFeaturesClientListResponse{RawResponse: resp}
+	result := WorkspaceFeaturesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListAmlUserFeatureResult); err != nil {
 		return WorkspaceFeaturesClientListResponse{}, err
 	}

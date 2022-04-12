@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,230 +19,287 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mediaservices/armmediaservices"
 )
 
-// x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/streamingendpoint-list-all.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/streamingendpoint-list-all.json
 func ExampleStreamingEndpointsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armmediaservices.NewStreamingEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewStreamingEndpointsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.List("<resource-group-name>",
 		"<account-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/streamingendpoint-list-by-name.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/streamingendpoint-list-by-name.json
 func ExampleStreamingEndpointsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armmediaservices.NewStreamingEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewStreamingEndpointsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		"<streaming-endpoint-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.StreamingEndpointsClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/streamingendpoint-create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/streamingendpoint-create.json
 func ExampleStreamingEndpointsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armmediaservices.NewStreamingEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewStreamingEndpointsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreate(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		"<streaming-endpoint-name>",
 		armmediaservices.StreamingEndpoint{
-			Location: to.StringPtr("<location>"),
+			Location: to.Ptr("<location>"),
 			Tags: map[string]*string{
-				"tag1": to.StringPtr("value1"),
-				"tag2": to.StringPtr("value2"),
+				"tag1": to.Ptr("value1"),
+				"tag2": to.Ptr("value2"),
 			},
 			Properties: &armmediaservices.StreamingEndpointProperties{
-				Description: to.StringPtr("<description>"),
+				Description: to.Ptr("<description>"),
 				AccessControl: &armmediaservices.StreamingEndpointAccessControl{
 					Akamai: &armmediaservices.AkamaiAccessControl{
 						AkamaiSignatureHeaderAuthenticationKeyList: []*armmediaservices.AkamaiSignatureHeaderAuthenticationKey{
 							{
-								Base64Key:  to.StringPtr("<base64key>"),
-								Expiration: to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2029-12-31T16:00:00-08:00"); return t }()),
-								Identifier: to.StringPtr("<identifier>"),
+								Base64Key:  to.Ptr("<base64key>"),
+								Expiration: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2029-12-31T16:00:00-08:00"); return t }()),
+								Identifier: to.Ptr("<identifier>"),
 							},
 							{
-								Base64Key:  to.StringPtr("<base64key>"),
-								Expiration: to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2030-12-31T16:00:00-08:00"); return t }()),
-								Identifier: to.StringPtr("<identifier>"),
+								Base64Key:  to.Ptr("<base64key>"),
+								Expiration: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2030-12-31T16:00:00-08:00"); return t }()),
+								Identifier: to.Ptr("<identifier>"),
 							}},
 					},
 					IP: &armmediaservices.IPAccessControl{
 						Allow: []*armmediaservices.IPRange{
 							{
-								Name:    to.StringPtr("<name>"),
-								Address: to.StringPtr("<address>"),
+								Name:    to.Ptr("<name>"),
+								Address: to.Ptr("<address>"),
 							}},
 					},
 				},
-				AvailabilitySetName: to.StringPtr("<availability-set-name>"),
-				CdnEnabled:          to.BoolPtr(false),
-				ScaleUnits:          to.Int32Ptr(1),
+				AvailabilitySetName: to.Ptr("<availability-set-name>"),
+				CdnEnabled:          to.Ptr(false),
+				ScaleUnits:          to.Ptr[int32](1),
 			},
 		},
-		&armmediaservices.StreamingEndpointsClientBeginCreateOptions{AutoStart: nil})
+		&armmediaservices.StreamingEndpointsClientBeginCreateOptions{AutoStart: nil,
+			ResumeToken: "",
+		})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.StreamingEndpointsClientCreateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/streamingendpoint-update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/streamingendpoint-update.json
 func ExampleStreamingEndpointsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armmediaservices.NewStreamingEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewStreamingEndpointsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginUpdate(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		"<streaming-endpoint-name>",
 		armmediaservices.StreamingEndpoint{
-			Location: to.StringPtr("<location>"),
+			Location: to.Ptr("<location>"),
 			Tags: map[string]*string{
-				"tag3": to.StringPtr("value3"),
-				"tag5": to.StringPtr("value5"),
+				"tag3": to.Ptr("value3"),
+				"tag5": to.Ptr("value5"),
 			},
 			Properties: &armmediaservices.StreamingEndpointProperties{
-				Description:         to.StringPtr("<description>"),
-				AvailabilitySetName: to.StringPtr("<availability-set-name>"),
-				ScaleUnits:          to.Int32Ptr(5),
+				Description:         to.Ptr("<description>"),
+				AvailabilitySetName: to.Ptr("<availability-set-name>"),
+				ScaleUnits:          to.Ptr[int32](5),
 			},
 		},
-		nil)
+		&armmediaservices.StreamingEndpointsClientBeginUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.StreamingEndpointsClientUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/streamingendpoint-delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/streamingendpoint-delete.json
 func ExampleStreamingEndpointsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armmediaservices.NewStreamingEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewStreamingEndpointsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		"<streaming-endpoint-name>",
-		nil)
+		&armmediaservices.StreamingEndpointsClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/streamingendpoint-start.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/streamingendpoint-start.json
 func ExampleStreamingEndpointsClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armmediaservices.NewStreamingEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewStreamingEndpointsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginStart(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		"<streaming-endpoint-name>",
-		nil)
+		&armmediaservices.StreamingEndpointsClientBeginStartOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/streamingendpoint-stop.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/streamingendpoint-stop.json
 func ExampleStreamingEndpointsClient_BeginStop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armmediaservices.NewStreamingEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewStreamingEndpointsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginStop(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		"<streaming-endpoint-name>",
-		nil)
+		&armmediaservices.StreamingEndpointsClientBeginStopOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/streamingendpoint-scale.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/streamingendpoint-scale.json
 func ExampleStreamingEndpointsClient_BeginScale() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armmediaservices.NewStreamingEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewStreamingEndpointsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginScale(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		"<streaming-endpoint-name>",
 		armmediaservices.StreamingEntityScaleUnit{
-			ScaleUnit: to.Int32Ptr(5),
+			ScaleUnit: to.Ptr[int32](5),
 		},
-		nil)
+		&armmediaservices.StreamingEndpointsClientBeginScaleOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }

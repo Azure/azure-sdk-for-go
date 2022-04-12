@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armmaps
 
 const (
 	moduleName    = "armmaps"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // CreatedByType - The type of identity that created the resource.
@@ -33,11 +33,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
-}
-
 // KeyType - Whether the operation refers to the primary or secondary key.
 type KeyType string
 
@@ -52,11 +47,6 @@ func PossibleKeyTypeValues() []KeyType {
 		KeyTypePrimary,
 		KeyTypeSecondary,
 	}
-}
-
-// ToPtr returns a *KeyType pointing to the current value.
-func (c KeyType) ToPtr() *KeyType {
-	return &c
 }
 
 // Kind - The Kind of the Maps Account.
@@ -75,11 +65,6 @@ func PossibleKindValues() []Kind {
 	}
 }
 
-// ToPtr returns a *Kind pointing to the current value.
-func (c Kind) ToPtr() *Kind {
-	return &c
-}
-
 // Name - The name of the SKU, in standard format (such as S0).
 type Name string
 
@@ -96,11 +81,6 @@ func PossibleNameValues() []Name {
 		NameS0,
 		NameS1,
 	}
-}
-
-// ToPtr returns a *Name pointing to the current value.
-func (c Name) ToPtr() *Name {
-	return &c
 }
 
 // ResourceIdentityType - The identity type.
@@ -123,11 +103,6 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	}
 }
 
-// ToPtr returns a *ResourceIdentityType pointing to the current value.
-func (c ResourceIdentityType) ToPtr() *ResourceIdentityType {
-	return &c
-}
-
 // SigningKey - The Map account key to use for signing.
 type SigningKey string
 
@@ -142,9 +117,4 @@ func PossibleSigningKeyValues() []SigningKey {
 		SigningKeyPrimaryKey,
 		SigningKeySecondaryKey,
 	}
-}
-
-// ToPtr returns a *SigningKey pointing to the current value.
-func (c SigningKey) ToPtr() *SigningKey {
-	return &c
 }

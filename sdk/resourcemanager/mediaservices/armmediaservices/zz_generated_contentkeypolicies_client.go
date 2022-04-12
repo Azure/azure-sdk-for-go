@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type ContentKeyPoliciesClient struct {
 // subscriptionID - The unique identifier for a Microsoft Azure subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewContentKeyPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ContentKeyPoliciesClient {
+func NewContentKeyPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ContentKeyPoliciesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ContentKeyPoliciesClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Create or update a Content Key Policy in the Media Services account
@@ -105,7 +110,7 @@ func (client *ContentKeyPoliciesClient) createOrUpdateCreateRequest(ctx context.
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *ContentKeyPoliciesClient) createOrUpdateHandleResponse(resp *http.Response) (ContentKeyPoliciesClientCreateOrUpdateResponse, error) {
-	result := ContentKeyPoliciesClientCreateOrUpdateResponse{RawResponse: resp}
+	result := ContentKeyPoliciesClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ContentKeyPolicy); err != nil {
 		return ContentKeyPoliciesClientCreateOrUpdateResponse{}, err
 	}
@@ -131,7 +136,7 @@ func (client *ContentKeyPoliciesClient) Delete(ctx context.Context, resourceGrou
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return ContentKeyPoliciesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ContentKeyPoliciesClientDeleteResponse{RawResponse: resp}, nil
+	return ContentKeyPoliciesClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -217,7 +222,7 @@ func (client *ContentKeyPoliciesClient) getCreateRequest(ctx context.Context, re
 
 // getHandleResponse handles the Get response.
 func (client *ContentKeyPoliciesClient) getHandleResponse(resp *http.Response) (ContentKeyPoliciesClientGetResponse, error) {
-	result := ContentKeyPoliciesClientGetResponse{RawResponse: resp}
+	result := ContentKeyPoliciesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ContentKeyPolicy); err != nil {
 		return ContentKeyPoliciesClientGetResponse{}, err
 	}
@@ -278,7 +283,7 @@ func (client *ContentKeyPoliciesClient) getPolicyPropertiesWithSecretsCreateRequ
 
 // getPolicyPropertiesWithSecretsHandleResponse handles the GetPolicyPropertiesWithSecrets response.
 func (client *ContentKeyPoliciesClient) getPolicyPropertiesWithSecretsHandleResponse(resp *http.Response) (ContentKeyPoliciesClientGetPolicyPropertiesWithSecretsResponse, error) {
-	result := ContentKeyPoliciesClientGetPolicyPropertiesWithSecretsResponse{RawResponse: resp}
+	result := ContentKeyPoliciesClientGetPolicyPropertiesWithSecretsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ContentKeyPolicyProperties); err != nil {
 		return ContentKeyPoliciesClientGetPolicyPropertiesWithSecretsResponse{}, err
 	}
@@ -290,16 +295,32 @@ func (client *ContentKeyPoliciesClient) getPolicyPropertiesWithSecretsHandleResp
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // options - ContentKeyPoliciesClientListOptions contains the optional parameters for the ContentKeyPoliciesClient.List method.
-func (client *ContentKeyPoliciesClient) List(resourceGroupName string, accountName string, options *ContentKeyPoliciesClientListOptions) *ContentKeyPoliciesClientListPager {
-	return &ContentKeyPoliciesClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, accountName, options)
+func (client *ContentKeyPoliciesClient) List(resourceGroupName string, accountName string, options *ContentKeyPoliciesClientListOptions) *runtime.Pager[ContentKeyPoliciesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ContentKeyPoliciesClientListResponse]{
+		More: func(page ContentKeyPoliciesClientListResponse) bool {
+			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ContentKeyPoliciesClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ContentKeyPolicyCollection.ODataNextLink)
+		Fetcher: func(ctx context.Context, page *ContentKeyPoliciesClientListResponse) (ContentKeyPoliciesClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, accountName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.ODataNextLink)
+			}
+			if err != nil {
+				return ContentKeyPoliciesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ContentKeyPoliciesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ContentKeyPoliciesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -339,7 +360,7 @@ func (client *ContentKeyPoliciesClient) listCreateRequest(ctx context.Context, r
 
 // listHandleResponse handles the List response.
 func (client *ContentKeyPoliciesClient) listHandleResponse(resp *http.Response) (ContentKeyPoliciesClientListResponse, error) {
-	result := ContentKeyPoliciesClientListResponse{RawResponse: resp}
+	result := ContentKeyPoliciesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ContentKeyPolicyCollection); err != nil {
 		return ContentKeyPoliciesClientListResponse{}, err
 	}
@@ -401,7 +422,7 @@ func (client *ContentKeyPoliciesClient) updateCreateRequest(ctx context.Context,
 
 // updateHandleResponse handles the Update response.
 func (client *ContentKeyPoliciesClient) updateHandleResponse(resp *http.Response) (ContentKeyPoliciesClientUpdateResponse, error) {
-	result := ContentKeyPoliciesClientUpdateResponse{RawResponse: resp}
+	result := ContentKeyPoliciesClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ContentKeyPolicy); err != nil {
 		return ContentKeyPoliciesClientUpdateResponse{}, err
 	}

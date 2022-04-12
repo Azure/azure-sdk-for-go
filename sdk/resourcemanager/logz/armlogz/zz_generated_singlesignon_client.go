@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type SingleSignOnClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewSingleSignOnClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SingleSignOnClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewSingleSignOnClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SingleSignOnClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &SingleSignOnClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Configures single-sign-on for this resource. This operation can take upto 10 minutes to complete.
@@ -55,22 +60,18 @@ func NewSingleSignOnClient(subscriptionID string, credential azcore.TokenCredent
 // monitorName - Monitor resource name
 // options - SingleSignOnClientBeginCreateOrUpdateOptions contains the optional parameters for the SingleSignOnClient.BeginCreateOrUpdate
 // method.
-func (client *SingleSignOnClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, options *SingleSignOnClientBeginCreateOrUpdateOptions) (SingleSignOnClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, monitorName, configurationName, options)
-	if err != nil {
-		return SingleSignOnClientCreateOrUpdatePollerResponse{}, err
+func (client *SingleSignOnClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, options *SingleSignOnClientBeginCreateOrUpdateOptions) (*armruntime.Poller[SingleSignOnClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, monitorName, configurationName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[SingleSignOnClientCreateOrUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[SingleSignOnClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SingleSignOnClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SingleSignOnClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return SingleSignOnClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &SingleSignOnClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Configures single-sign-on for this resource. This operation can take upto 10 minutes to complete.
@@ -175,7 +176,7 @@ func (client *SingleSignOnClient) getCreateRequest(ctx context.Context, resource
 
 // getHandleResponse handles the Get response.
 func (client *SingleSignOnClient) getHandleResponse(resp *http.Response) (SingleSignOnClientGetResponse, error) {
-	result := SingleSignOnClientGetResponse{RawResponse: resp}
+	result := SingleSignOnClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SingleSignOnResource); err != nil {
 		return SingleSignOnClientGetResponse{}, err
 	}
@@ -187,16 +188,32 @@ func (client *SingleSignOnClient) getHandleResponse(resp *http.Response) (Single
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // monitorName - Monitor resource name
 // options - SingleSignOnClientListOptions contains the optional parameters for the SingleSignOnClient.List method.
-func (client *SingleSignOnClient) List(resourceGroupName string, monitorName string, options *SingleSignOnClientListOptions) *SingleSignOnClientListPager {
-	return &SingleSignOnClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, monitorName, options)
+func (client *SingleSignOnClient) List(resourceGroupName string, monitorName string, options *SingleSignOnClientListOptions) *runtime.Pager[SingleSignOnClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SingleSignOnClientListResponse]{
+		More: func(page SingleSignOnClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SingleSignOnClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SingleSignOnResourceListResponse.NextLink)
+		Fetcher: func(ctx context.Context, page *SingleSignOnClientListResponse) (SingleSignOnClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, monitorName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SingleSignOnClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SingleSignOnClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SingleSignOnClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -227,7 +244,7 @@ func (client *SingleSignOnClient) listCreateRequest(ctx context.Context, resourc
 
 // listHandleResponse handles the List response.
 func (client *SingleSignOnClient) listHandleResponse(resp *http.Response) (SingleSignOnClientListResponse, error) {
-	result := SingleSignOnClientListResponse{RawResponse: resp}
+	result := SingleSignOnClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SingleSignOnResourceListResponse); err != nil {
 		return SingleSignOnClientListResponse{}, err
 	}

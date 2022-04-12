@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armpowerbiembedded
 
 const (
 	moduleName    = "armpowerbiembedded"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // AccessKeyName - Key name
@@ -29,11 +29,6 @@ func PossibleAccessKeyNameValues() []AccessKeyName {
 	}
 }
 
-// ToPtr returns a *AccessKeyName pointing to the current value.
-func (c AccessKeyName) ToPtr() *AccessKeyName {
-	return &c
-}
-
 // AzureSKUName - SKU name
 type AzureSKUName string
 
@@ -46,11 +41,6 @@ func PossibleAzureSKUNameValues() []AzureSKUName {
 	return []AzureSKUName{
 		AzureSKUNameS1,
 	}
-}
-
-// ToPtr returns a *AzureSKUName pointing to the current value.
-func (c AzureSKUName) ToPtr() *AzureSKUName {
-	return &c
 }
 
 // AzureSKUTier - SKU tier
@@ -67,11 +57,6 @@ func PossibleAzureSKUTierValues() []AzureSKUTier {
 	}
 }
 
-// ToPtr returns a *AzureSKUTier pointing to the current value.
-func (c AzureSKUTier) ToPtr() *AzureSKUTier {
-	return &c
-}
-
 // CheckNameReason - Reason why the workspace collection name cannot be used.
 type CheckNameReason string
 
@@ -86,9 +71,4 @@ func PossibleCheckNameReasonValues() []CheckNameReason {
 		CheckNameReasonInvalid,
 		CheckNameReasonUnavailable,
 	}
-}
-
-// ToPtr returns a *CheckNameReason pointing to the current value.
-func (c CheckNameReason) ToPtr() *CheckNameReason {
-	return &c
 }

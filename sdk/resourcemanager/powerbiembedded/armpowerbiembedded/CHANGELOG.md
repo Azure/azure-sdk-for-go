@@ -1,5 +1,80 @@
 # Release History
 
+## 0.3.0 (2022-04-12)
+### Breaking Changes
+
+- Function `*WorkspacesClient.List` parameter(s) have been changed from `(context.Context, string, string, *WorkspacesClientListOptions)` to `(string, string, *WorkspacesClientListOptions)`
+- Function `*WorkspacesClient.List` return value(s) have been changed from `(WorkspacesClientListResponse, error)` to `(*runtime.Pager[WorkspacesClientListResponse])`
+- Function `NewWorkspaceCollectionsClient` return value(s) have been changed from `(*WorkspaceCollectionsClient)` to `(*WorkspaceCollectionsClient, error)`
+- Function `NewWorkspacesClient` return value(s) have been changed from `(*WorkspacesClient)` to `(*WorkspacesClient, error)`
+- Function `NewManagementClient` return value(s) have been changed from `(*ManagementClient)` to `(*ManagementClient, error)`
+- Function `*WorkspaceCollectionsClient.ListByResourceGroup` parameter(s) have been changed from `(context.Context, string, *WorkspaceCollectionsClientListByResourceGroupOptions)` to `(string, *WorkspaceCollectionsClientListByResourceGroupOptions)`
+- Function `*WorkspaceCollectionsClient.ListByResourceGroup` return value(s) have been changed from `(WorkspaceCollectionsClientListByResourceGroupResponse, error)` to `(*runtime.Pager[WorkspaceCollectionsClientListByResourceGroupResponse])`
+- Function `*WorkspaceCollectionsClient.BeginDelete` return value(s) have been changed from `(WorkspaceCollectionsClientDeletePollerResponse, error)` to `(*armruntime.Poller[WorkspaceCollectionsClientDeleteResponse], error)`
+- Function `*WorkspaceCollectionsClient.ListBySubscription` parameter(s) have been changed from `(context.Context, *WorkspaceCollectionsClientListBySubscriptionOptions)` to `(*WorkspaceCollectionsClientListBySubscriptionOptions)`
+- Function `*WorkspaceCollectionsClient.ListBySubscription` return value(s) have been changed from `(WorkspaceCollectionsClientListBySubscriptionResponse, error)` to `(*runtime.Pager[WorkspaceCollectionsClientListBySubscriptionResponse])`
+- Type of `Workspace.Properties` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `WorkspaceCollection.Properties` has been changed from `map[string]interface{}` to `interface{}`
+- Function `*WorkspaceCollectionsClientDeletePoller.ResumeToken` has been removed
+- Function `*WorkspaceCollectionsClientDeletePoller.FinalResponse` has been removed
+- Function `AzureSKUName.ToPtr` has been removed
+- Function `*WorkspaceCollectionsClientDeletePoller.Done` has been removed
+- Function `*WorkspaceCollectionsClientDeletePollerResponse.Resume` has been removed
+- Function `*WorkspaceCollectionsClientDeletePoller.Poll` has been removed
+- Function `AccessKeyName.ToPtr` has been removed
+- Function `WorkspaceCollectionsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `CheckNameReason.ToPtr` has been removed
+- Function `AzureSKUTier.ToPtr` has been removed
+- Struct `ManagementClientGetAvailableOperationsResult` has been removed
+- Struct `WorkspaceCollectionsClientCheckNameAvailabilityResult` has been removed
+- Struct `WorkspaceCollectionsClientCreateResult` has been removed
+- Struct `WorkspaceCollectionsClientDeletePoller` has been removed
+- Struct `WorkspaceCollectionsClientDeletePollerResponse` has been removed
+- Struct `WorkspaceCollectionsClientGetAccessKeysResult` has been removed
+- Struct `WorkspaceCollectionsClientGetByNameResult` has been removed
+- Struct `WorkspaceCollectionsClientListByResourceGroupResult` has been removed
+- Struct `WorkspaceCollectionsClientListBySubscriptionResult` has been removed
+- Struct `WorkspaceCollectionsClientRegenerateKeyResult` has been removed
+- Struct `WorkspaceCollectionsClientUpdateResult` has been removed
+- Struct `WorkspacesClientListResult` has been removed
+- Field `WorkspacesClientListResult` of struct `WorkspacesClientListResponse` has been removed
+- Field `RawResponse` of struct `WorkspacesClientListResponse` has been removed
+- Field `ManagementClientGetAvailableOperationsResult` of struct `ManagementClientGetAvailableOperationsResponse` has been removed
+- Field `RawResponse` of struct `ManagementClientGetAvailableOperationsResponse` has been removed
+- Field `RawResponse` of struct `WorkspaceCollectionsClientDeleteResponse` has been removed
+- Field `WorkspaceCollectionsClientGetByNameResult` of struct `WorkspaceCollectionsClientGetByNameResponse` has been removed
+- Field `RawResponse` of struct `WorkspaceCollectionsClientGetByNameResponse` has been removed
+- Field `WorkspaceCollectionsClientRegenerateKeyResult` of struct `WorkspaceCollectionsClientRegenerateKeyResponse` has been removed
+- Field `RawResponse` of struct `WorkspaceCollectionsClientRegenerateKeyResponse` has been removed
+- Field `WorkspaceCollectionsClientCreateResult` of struct `WorkspaceCollectionsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `WorkspaceCollectionsClientCreateResponse` has been removed
+- Field `WorkspaceCollectionsClientListByResourceGroupResult` of struct `WorkspaceCollectionsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `WorkspaceCollectionsClientListByResourceGroupResponse` has been removed
+- Field `WorkspaceCollectionsClientUpdateResult` of struct `WorkspaceCollectionsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `WorkspaceCollectionsClientUpdateResponse` has been removed
+- Field `WorkspaceCollectionsClientCheckNameAvailabilityResult` of struct `WorkspaceCollectionsClientCheckNameAvailabilityResponse` has been removed
+- Field `RawResponse` of struct `WorkspaceCollectionsClientCheckNameAvailabilityResponse` has been removed
+- Field `WorkspaceCollectionsClientListBySubscriptionResult` of struct `WorkspaceCollectionsClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `WorkspaceCollectionsClientListBySubscriptionResponse` has been removed
+- Field `WorkspaceCollectionsClientGetAccessKeysResult` of struct `WorkspaceCollectionsClientGetAccessKeysResponse` has been removed
+- Field `RawResponse` of struct `WorkspaceCollectionsClientGetAccessKeysResponse` has been removed
+- Field `RawResponse` of struct `WorkspaceCollectionsClientMigrateResponse` has been removed
+
+### Features Added
+
+- New anonymous field `WorkspaceCollectionAccessKeys` in struct `WorkspaceCollectionsClientGetAccessKeysResponse`
+- New anonymous field `OperationList` in struct `ManagementClientGetAvailableOperationsResponse`
+- New anonymous field `WorkspaceCollection` in struct `WorkspaceCollectionsClientGetByNameResponse`
+- New anonymous field `WorkspaceList` in struct `WorkspacesClientListResponse`
+- New anonymous field `WorkspaceCollection` in struct `WorkspaceCollectionsClientUpdateResponse`
+- New anonymous field `WorkspaceCollectionAccessKeys` in struct `WorkspaceCollectionsClientRegenerateKeyResponse`
+- New field `ResumeToken` in struct `WorkspaceCollectionsClientBeginDeleteOptions`
+- New anonymous field `WorkspaceCollectionList` in struct `WorkspaceCollectionsClientListBySubscriptionResponse`
+- New anonymous field `CheckNameResponse` in struct `WorkspaceCollectionsClientCheckNameAvailabilityResponse`
+- New anonymous field `WorkspaceCollectionList` in struct `WorkspaceCollectionsClientListByResourceGroupResponse`
+- New anonymous field `WorkspaceCollection` in struct `WorkspaceCollectionsClientCreateResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

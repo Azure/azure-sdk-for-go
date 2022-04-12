@@ -35,7 +35,7 @@ func NewServiceClient(serviceURL string, cred azcore.TokenCredential, options *C
 	genOptions := options.toPolicyOptions()
 
 	if !isCosmosEndpoint(serviceURL) {
-		genOptions.PerRetryPolicies = append(genOptions.PerRetryPolicies, auth.NewStorageChallengePolicy(cred))
+		genOptions.PerRetryPolicies = append(genOptions.PerRetryPolicies, auth.NewTablesChallengePolicy(cred))
 	}
 
 	con := generated.NewConnection(serviceURL, genOptions)

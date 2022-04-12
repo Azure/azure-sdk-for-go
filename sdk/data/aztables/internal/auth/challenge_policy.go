@@ -25,7 +25,7 @@ import (
 const headerAuthorization = "Authorization"
 const bearerHeader = "Bearer "
 
-type StorageChallengePolicy struct {
+type TablesChallengePolicy struct {
 	// mainResource is the resource to be retrieved using the tenant specified in the credential
 	mainResource *ExpiringResource
 	cred         azcore.TokenCredential
@@ -33,14 +33,14 @@ type StorageChallengePolicy struct {
 	tenantID     *string
 }
 
-func NewStorageChallengePolicy(cred azcore.TokenCredential) *StorageChallengePolicy {
-	return &StorageChallengePolicy{
+func NewTablesChallengePolicy(cred azcore.TokenCredential) *TablesChallengePolicy {
+	return &TablesChallengePolicy{
 		cred:         cred,
 		mainResource: NewExpiringResource(acquire),
 	}
 }
 
-func (scp *StorageChallengePolicy) Do(req *policy.Request) (*http.Response, error) {
+func (scp *TablesChallengePolicy) Do(req *policy.Request) (*http.Response, error) {
 	as := acquiringResourceState{
 		p:   scp,
 		req: req,
@@ -152,7 +152,7 @@ func (c *challengePolicyError) Unwrap() error {
 var _ errorinfo.NonRetriable = (*challengePolicyError)(nil)
 
 // sets the scp.scope and scp.tenantID from the WWW-Authenticate header
-func (scp *StorageChallengePolicy) findScopeAndTenant(resp *http.Response) error {
+func (scp *TablesChallengePolicy) findScopeAndTenant(resp *http.Response) error {
 	authHeader := resp.Header.Get("WWW-Authenticate")
 	if authHeader == "" {
 		return &challengePolicyError{err: errors.New("response has no WWW-Authenticate header for challenge authentication")}
@@ -190,7 +190,7 @@ func (scp *StorageChallengePolicy) findScopeAndTenant(resp *http.Response) error
 	return nil
 }
 
-func (k StorageChallengePolicy) getChallengeRequest(orig policy.Request) (*policy.Request, error) {
+func (k TablesChallengePolicy) getChallengeRequest(orig policy.Request) (*policy.Request, error) {
 	req, err := runtime.NewRequest(orig.Raw().Context(), "GET", orig.Raw().URL.String())
 	if err != nil {
 		return nil, &challengePolicyError{err: err}
@@ -215,7 +215,7 @@ func (k StorageChallengePolicy) getChallengeRequest(orig policy.Request) (*polic
 
 type acquiringResourceState struct {
 	req *policy.Request
-	p   *StorageChallengePolicy
+	p   *TablesChallengePolicy
 }
 
 // acquire acquires or updates the resource; only one

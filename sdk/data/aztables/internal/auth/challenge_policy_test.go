@@ -36,7 +36,7 @@ func TestParseTenantID(t *testing.T) {
 }
 
 func TestFindScopeAndTenant(t *testing.T) {
-	p := StorageChallengePolicy{}
+	p := TablesChallengePolicy{}
 	resp := http.Response{}
 	resp.Header = http.Header{}
 
@@ -104,7 +104,7 @@ func TestDo(t *testing.T) {
 	defer close()
 
 	fakeCred := fakeCredential{}
-	p := NewStorageChallengePolicy(fakeCred)
+	p := NewTablesChallengePolicy(fakeCred)
 
 	srv.SetResponse(mock.WithStatusCode(http.StatusUnauthorized), mock.WithHeader("WWW-Authenticate", fmt.Sprintf(authResourceScope, fakeTenant, resource, scope)))
 	pl := runtime.NewPipeline("test", "test", runtime.PipelineOptions{}, &policy.ClientOptions{

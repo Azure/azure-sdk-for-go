@@ -26,3 +26,4 @@ stages:
   parameters:
     ServiceDirectory: 'data/aztables'
     RunLiveTests: true
+    Location: 'canadacentral'

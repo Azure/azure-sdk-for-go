@@ -566,7 +566,9 @@ func TestMultiTenantAuth(t *testing.T) {
 	_, err = client.CreateTable(context.Background(), nil)
 	require.NoError(t, err)
 	defer func() {
-		_, err = client.Delete(context.Background(), nil)
+		svc, err := NewServiceClient(fmt.Sprintf("https://%s.table.core.windows.net/", accountName), cred, nil)
+		require.NoError(t, err)
+		_, err = svc.DeleteTable(context.Background(), "MyTable", nil)
 		require.NoError(t, err)
 	}()
 

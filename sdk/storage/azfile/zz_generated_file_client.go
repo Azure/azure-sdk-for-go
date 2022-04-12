@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -21,7 +21,7 @@ import (
 
 type fileClient struct {
 	endpoint string
-	pl runtime.Pipeline
+	pl       runtime.Pipeline
 }
 
 // newFileClient creates a new instance of fileClient with the specified values.
@@ -30,7 +30,7 @@ type fileClient struct {
 func newFileClient(endpoint string, pl runtime.Pipeline) *fileClient {
 	client := &fileClient{
 		endpoint: endpoint,
-		pl: pl,
+		pl:       pl,
 	}
 	return client
 }
@@ -1619,7 +1619,7 @@ func (client *fileClient) uploadRangeCreateRequest(ctx context.Context, rangePar
 	}
 	req.Raw().Header.Set("Accept", "application/xml")
 	if fileClientUploadRangeOptions != nil && fileClientUploadRangeOptions.Optionalbody != nil {
-	return req, req.SetBody(fileClientUploadRangeOptions.Optionalbody, "application/octet-stream")
+		return req, req.SetBody(fileClientUploadRangeOptions.Optionalbody, "application/octet-stream")
 	}
 	return req, nil
 }
@@ -1786,4 +1786,3 @@ func (client *fileClient) uploadRangeFromURLHandleResponse(resp *http.Response) 
 	}
 	return result, nil
 }
-

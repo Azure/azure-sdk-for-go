@@ -1,3 +1,6 @@
+//go:build go1.18
+// +build go1.18
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -57,8 +60,11 @@ func isIPEndpointStyle(host string) bool {
 
 // NewFileURLParts parses a URL initializing FileURLParts' fields including any SAS-related & sharesnapshot query parameters. Any other
 // query parameters remain in the UnparsedParams field. This method overwrites all fields in the FileURLParts object.
-func NewFileURLParts(u string) FileURLParts {
-	uri, _ := url.Parse(u)
+func NewFileURLParts(u string) (FileURLParts, error) {
+	uri, err := url.Parse(u)
+	if err != nil {
+		return FileURLParts{}, err
+	}
 
 	up := FileURLParts{
 		Scheme:              uri.Scheme,
@@ -109,7 +115,7 @@ func NewFileURLParts(u string) FileURLParts {
 	}
 	up.SAS = newSASQueryParameters(paramsMap, true)
 	up.UnparsedParams = paramsMap.Encode()
-	return up
+	return up, nil
 }
 
 type caseInsensitiveValues url.Values // map[string][]string

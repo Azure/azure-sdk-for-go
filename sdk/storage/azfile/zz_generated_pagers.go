@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -18,11 +18,11 @@ import (
 
 // directoryClientListFilesAndDirectoriesSegmentPager provides operations for iterating over paged responses.
 type directoryClientListFilesAndDirectoriesSegmentPager struct {
-	client *directoryClient
-	current directoryClientListFilesAndDirectoriesSegmentResponse
-	err error
+	client    *directoryClient
+	current   directoryClientListFilesAndDirectoriesSegmentResponse
+	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer func(context.Context, directoryClientListFilesAndDirectoriesSegmentResponse) (*policy.Request, error)
+	advancer  func(context.Context, directoryClientListFilesAndDirectoriesSegmentResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
@@ -72,11 +72,11 @@ func (p *directoryClientListFilesAndDirectoriesSegmentPager) PageResponse() dire
 
 // serviceClientListSharesSegmentPager provides operations for iterating over paged responses.
 type serviceClientListSharesSegmentPager struct {
-	client *serviceClient
-	current serviceClientListSharesSegmentResponse
-	err error
+	client    *serviceClient
+	current   serviceClientListSharesSegmentResponse
+	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer func(context.Context, serviceClientListSharesSegmentResponse) (*policy.Request, error)
+	advancer  func(context.Context, serviceClientListSharesSegmentResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
@@ -123,4 +123,3 @@ func (p *serviceClientListSharesSegmentPager) NextPage(ctx context.Context) bool
 func (p *serviceClientListSharesSegmentPager) PageResponse() serviceClientListSharesSegmentResponse {
 	return p.current
 }
-

@@ -1,3 +1,6 @@
+//go:build go1.18
+// +build go1.18
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -8,7 +11,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	testframework "github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 	"log"
 	"testing"
@@ -65,7 +67,7 @@ type azfileLiveTestSuite struct {
 
 // Hookup to the testing framework
 func Test(t *testing.T) {
-	suite.Run(t, &azfileTestSuite{mode: testframework.Playback})
+	suite.Run(t, &azfileTestSuite{mode: testframework.Live})
 	suite.Run(t, &azfileLiveTestSuite{})
 }
 
@@ -84,14 +86,14 @@ func recordedTestSetup(t *testing.T, mode testframework.RecordMode) {
 
 	// init the test framework
 	_testContext := testframework.NewTestContext(
-		func(msg string) { _assert.FailNow(msg) },
+		func(msg string) { _requireFailNow(msg) },
 		func(msg string) { t.Log(msg) },
 		func() string { return testName })
 
 	// mode should be test_framework.Playback.
 	// This will automatically record if no test recording is available and playback if it is.
 	recording, err := testframework.NewRecording(_testContext, mode)
-	_assert.Nil(err)
+	_require.Nil(err)
 
 	_, err = recording.GetEnvVar(AccountNameEnvVar, testframework.NoSanitization)
 	if err != nil {
@@ -141,9 +143,9 @@ func (s *azfileLiveTestSuite) AfterTest(suite string, test string) {
 //----------------------------------------------------------------------------------------------------------------------
 
 func validateStorageError(_assert *assert.Assertions, err error, code StorageErrorCode) {
-	_assert.NotNil(err)
+	_require.NotNil(err)
 	var storageError *StorageError
-	_assert.Equal(errors.As(err, &storageError), true)
+	_require.Equal(errors.As(err, &storageError), true)
 
-	_assert.Equal(storageError.ErrorCode, code)
+	_require.Equal(storageError.ErrorCode, code)
 }

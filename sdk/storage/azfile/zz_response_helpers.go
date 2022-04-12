@@ -1,3 +1,6 @@
+//go:build go1.18
+// +build go1.18
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -13,8 +16,7 @@ import (
 
 // DownloadResponse wraps AutoRest generated DownloadResponse and helps to provide info for retry.
 type DownloadResponse struct {
-	FileDownloadResponse
-
+	fileClientDownloadResponse
 	// Fields need for retry.
 	ctx  context.Context
 	f    FileClient

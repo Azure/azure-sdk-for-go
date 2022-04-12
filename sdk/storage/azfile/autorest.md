@@ -23,16 +23,17 @@ file-prefix: "zz_generated_"
 openapi-type: "data-plane"
 verbose: true
 security: AzureKey
-module-version: "0.3.0"
+module-version: "0.1.0"
 modelerfour:
   group-parameters: false
   seal-single-value-enum-by-default: true
   lenient-model-deduplication: true
 export-clients: false
-use: "@autorest/go@4.0.0-preview.35"
+use: "@autorest/go@4.0.0-preview.36"
 ```
 
 ### Don't include share name, directory, or file name in path - we have direct URIs.
+
 ``` yaml
 directive:
 - from: swagger-document
@@ -56,6 +57,7 @@ directive:
 ```
 
 ### Metrics
+
 ``` yaml
 directive:
 - from: swagger-document
@@ -67,8 +69,11 @@ directive:
 <<<<<<< HEAD
 ### Times aren't required
 =======
+
 ### Formats aren't required
->>>>>>> feature/storage/stg82base
+
+> > > > > > > feature/storage/stg82base
+
 ``` yaml
 directive:
 - from: swagger-document
@@ -85,16 +90,8 @@ directive:
     delete $.format;
 ```
 
-### ErrorCode
-``` yaml
-directive:
-- from: swagger-document
-  where: $.definitions.ErrorCode["x-ms-enum"]
-  transform: >
-    $.name = "ShareErrorCode";
-```
-
 ### ShareFileRangeList
+
 ``` yaml
 directive:
 - from: swagger-document
@@ -106,6 +103,7 @@ directive:
 ```
 
 ### Add Last-Modified to SetMetadata
+
 ``` yaml
 directive:
 - from: swagger-document
@@ -119,6 +117,7 @@ directive:
 ```
 
 ### Add Content-MD5 to Put Range from URL
+
 ``` yaml
 directive:
 - from: swagger-document
@@ -132,6 +131,7 @@ directive:
 ```
 
 ### Remove ShareName, Directory, and FileName - we have direct URIs
+
 ``` yaml
 directive:
 - from: swagger-document
@@ -156,16 +156,8 @@ directive:
    });
 ```
 
-### Don't buffer downloads
-
-``` yaml
-directive:
-- from: swagger-document
-  where: $..[?(@.operationId=='File_Download')]
-  transform: $["x-csharp-buffer-response"] = false;
-```
-
 ### Remove conditions parameter groupings
+
 ``` yaml
 directive:
 - from: swagger-document

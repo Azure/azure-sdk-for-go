@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -1285,7 +1285,7 @@ type shareClientGetPropertiesResult struct {
 	Metadata map[string]string
 
 	// NextAllowedQuotaDowngradeTime contains the information returned from the x-ms-share-next-allowed-quota-downgrade-time header
-// response.
+	// response.
 	NextAllowedQuotaDowngradeTime *time.Time
 
 	// ProvisionedEgressMBps contains the information returned from the x-ms-share-provisioned-egress-mbps header response.
@@ -1497,4 +1497,3 @@ type shareClientSetPropertiesResult struct {
 	// Version contains the information returned from the x-ms-version header response.
 	Version *string
 }
-

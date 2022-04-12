@@ -1,3 +1,6 @@
+//go:build go1.18
+// +build go1.18
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -12,8 +15,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	testframework "github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal"
-	"github.com/stretchr/testify/assert"
 	"io"
 	"net/url"
 	"os"
@@ -152,77 +153,77 @@ func getShareClient(shareName string, s ServiceClient) (ShareClient, error) {
 
 func createNewShare(_assert *assert.Assertions, shareName string, serviceClient ServiceClient) ShareClient {
 	srClient, err := getShareClient(shareName, serviceClient)
-	_assert.Nil(err)
+	_require.Nil(err)
 
 	cResp, err := srClient.Create(ctx, nil)
-	_assert.Nil(err)
-	_assert.Equal(cResp.RawResponse.StatusCode, 201)
+	_require.Nil(err)
+	_require.Equal(cResp.RawResponse.StatusCode, 201)
 	return srClient
 }
 
-func delShare(_assert *assert.Assertions, srClient ShareClient, options *DeleteShareOptions) {
+func delShare(_assert *assert.Assertions, srClient ShareClient, options *ShareDeleteOptions) {
 	deleteShareResp, err := srClient.Delete(context.Background(), options)
-	_assert.Nil(err)
-	_assert.Equal(deleteShareResp.RawResponse.StatusCode, 202)
+	_require.Nil(err)
+	_require.Equal(deleteShareResp.RawResponse.StatusCode, 202)
 }
 
 // 3. DirectoryClient -----------------------------------------------------------------------------------------------------
 
 func getDirectoryClientFromShare(_assert *assert.Assertions, dirName string, srClient ShareClient) DirectoryClient {
 	dirClient, err := srClient.NewDirectoryClient(dirName)
-	_assert.Nil(err)
+	_require.Nil(err)
 	return dirClient
 }
 
 func createNewDirectoryFromShare(_assert *assert.Assertions, dirName string, srClient ShareClient) DirectoryClient {
-	dirClient := getDirectoryClientFromShare(_assert, dirName, srClient)
+	dirClient := getDirectoryClientFromShare(_require, dirName, srClient)
 
 	cResp, err := dirClient.Create(ctx, nil)
-	_assert.Nil(err)
-	_assert.Equal(cResp.RawResponse.StatusCode, 201)
+	_require.Nil(err)
+	_require.Equal(cResp.RawResponse.StatusCode, 201)
 	return dirClient
 }
 
 func delDirectory(_assert *assert.Assertions, dirClient DirectoryClient) {
 	resp, err := dirClient.Delete(context.Background(), nil)
-	_assert.Nil(err)
-	_assert.Equal(resp.RawResponse.StatusCode, 202)
+	_require.Nil(err)
+	_require.Equal(resp.RawResponse.StatusCode, 202)
 }
 
 // 4. FileClient -------------------------------------------------------------------------------------------------------
 
 func getFileClientFromDirectory(_assert *assert.Assertions, fileName string, dirClient DirectoryClient) FileClient {
 	fClient, err := dirClient.NewFileClient(fileName)
-	_assert.Nil(err)
+	_require.Nil(err)
 	return fClient
 }
 
 // This is a convenience method, No public API to create file URL from share now. This method uses share's root directory.
 func getFileClientFromShare(_assert *assert.Assertions, fileName string, srClient ShareClient) FileClient {
 	dirClient, err := srClient.NewRootDirectoryClient()
-	_assert.Nil(err)
+	_require.Nil(err)
 	fClient, err := dirClient.NewFileClient(fileName)
-	_assert.Nil(err)
+	_require.Nil(err)
 	return fClient
 }
 
 func createNewFileFromShare(_assert *assert.Assertions, fileName string, fileSize int64, srClient ShareClient) FileClient {
 	dirClient, err := srClient.NewRootDirectoryClient()
-	_assert.Nil(err)
+	_require.Nil(err)
 
-	fClient := getFileClientFromDirectory(_assert, fileName, dirClient)
+	fClient := getFileClientFromDirectory(_require, fileName, dirClient)
 
 	cResp, err := fClient.Create(ctx, &CreateFileOptions{
 		FileContentLength: to.Int64Ptr(fileSize),
 	})
-	_assert.Nil(err)
-	_assert.Equal(cResp.RawResponse.StatusCode, 201)
+	_require.Nil(err)
+	_require.Equal(cResp.RawResponse.StatusCode, 201)
 
 	return fClient
 }
 
 func createNewFileFromShareWithPermissions(_assert *assert.Assertions, fileName string, fileSize int64, srClient ShareClient) (fClient FileClient) {
-	fClient = getFileClientFromShare(_assert, fileName, srClient)
+	fClient = getFileClientFromShare(_require, fileName, srClient)
 
 	cResp, err := fClient.Create(ctx, &CreateFileOptions{
 		FileContentLength: to.Int64Ptr(fileSize),
@@ -230,15 +231,15 @@ func createNewFileFromShareWithPermissions(_assert *assert.Assertions, fileName 
 			PermissionStr: &sampleSDDL,
 		},
 	})
-	_assert.Nil(err)
-	_assert.Equal(cResp.RawResponse.StatusCode, 201)
+	_require.Nil(err)
+	_require.Equal(cResp.RawResponse.StatusCode, 201)
 
 	return fClient
 }
 
 // This is a convenience method, No public API to create file URL from share now. This method uses share's root directory.
 func createNewFileFromShareWithGivenData(_assert *assert.Assertions, fileName string, fileData string, srClient ShareClient) (fClient FileClient) {
-	fClient = getFileClientFromShare(_assert, fileName, srClient)
+	fClient = getFileClientFromShare(_require, fileName, srClient)
 
 	cResp, err := fClient.Create(ctx, &CreateFileOptions{
 		FileContentLength: to.Int64Ptr(int64(len(fileData))),
@@ -246,32 +247,32 @@ func createNewFileFromShareWithGivenData(_assert *assert.Assertions, fileName st
 			PermissionStr: &sampleSDDL,
 		},
 	})
-	_assert.Nil(err)
-	_assert.Equal(cResp.RawResponse.StatusCode, 201)
+	_require.Nil(err)
+	_require.Equal(cResp.RawResponse.StatusCode, 201)
 
-	putResp, err := fClient.UploadRange(ctx, 0, internal.NopCloser(strings.NewReader(fileDefaultData)), nil)
-	_assert.Nil(err)
-	_assert.Equal(putResp.RawResponse.StatusCode, 201)
-	_assert.Equal(putResp.LastModified.IsZero(), false)
-	_assert.NotEqual(putResp.ETag, "")
-	_assert.NotEqual(putResp.RequestID, "")
-	_assert.NotEqual(putResp.Version, "")
-	_assert.Equal(putResp.Date.IsZero(), false)
+	putResp, err := fClient.UploadRange(ctx, 0, NopCloser(strings.NewReader(fileDefaultData)), nil)
+	_require.Nil(err)
+	_require.Equal(putResp.RawResponse.StatusCode, 201)
+	_require.Equal(putResp.LastModified.IsZero(), false)
+	_require.NotEqual(putResp.ETag, "")
+	_require.NotEqual(putResp.RequestID, "")
+	_require.NotEqual(putResp.Version, "")
+	_require.Equal(putResp.Date.IsZero(), false)
 
 	return
 }
 
 func delFile(_assert *assert.Assertions, fileClient FileClient) {
 	resp, err := fileClient.Delete(context.Background(), nil)
-	_assert.Nil(err)
-	_assert.Equal(resp.RawResponse.StatusCode, 202)
+	_require.Nil(err)
+	_require.Equal(resp.RawResponse.StatusCode, 202)
 }
 
 // 5. Data Generators --------------------------------------------------------------------------------------------------
 
 func getReaderToGeneratedBytes(n int) io.ReadSeekCloser {
 	r, _ := generateData(n)
-	return internal.NopCloser(r)
+	return NopCloser(r)
 }
 
 //nolint
@@ -295,7 +296,7 @@ func generateData(sizeInBytes int) (io.ReadSeekCloser, []byte) {
 	} else {
 		copy(data[:], random64BString)
 	}
-	return internal.NopCloser(bytes.NewReader(data)), data
+	return NopCloser(bytes.NewReader(data)), data
 }
 
 // This function generates an entity name by concatenating the passed prefix,

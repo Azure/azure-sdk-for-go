@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -21,7 +21,7 @@ import (
 
 type shareClient struct {
 	endpoint string
-	pl runtime.Pipeline
+	pl       runtime.Pipeline
 }
 
 // newShareClient creates a new instance of shareClient with the specified values.
@@ -30,7 +30,7 @@ type shareClient struct {
 func newShareClient(endpoint string, pl runtime.Pipeline) *shareClient {
 	client := &shareClient{
 		endpoint: endpoint,
-		pl: pl,
+		pl:       pl,
 	}
 	return client
 }
@@ -1207,7 +1207,7 @@ func (client *shareClient) setAccessPolicyCreateRequest(ctx context.Context, sha
 	}
 	req.Raw().Header.Set("Accept", "application/xml")
 	type wrapper struct {
-		XMLName xml.Name `xml:"SignedIdentifiers"`
+		XMLName  xml.Name             `xml:"SignedIdentifiers"`
 		ShareACL *[]*SignedIdentifier `xml:"SignedIdentifier"`
 	}
 	if shareClientSetAccessPolicyOptions != nil && shareClientSetAccessPolicyOptions.ShareACL != nil {
@@ -1398,4 +1398,3 @@ func (client *shareClient) setPropertiesHandleResponse(resp *http.Response) (sha
 	}
 	return result, nil
 }
-

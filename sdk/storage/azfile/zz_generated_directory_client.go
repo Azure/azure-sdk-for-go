@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -21,7 +21,7 @@ import (
 
 type directoryClient struct {
 	endpoint string
-	pl runtime.Pipeline
+	pl       runtime.Pipeline
 }
 
 // newDirectoryClient creates a new instance of directoryClient with the specified values.
@@ -30,7 +30,7 @@ type directoryClient struct {
 func newDirectoryClient(endpoint string, pl runtime.Pipeline) *directoryClient {
 	client := &directoryClient{
 		endpoint: endpoint,
-		pl: pl,
+		pl:       pl,
 	}
 	return client
 }
@@ -419,7 +419,7 @@ func (client *directoryClient) getPropertiesHandleResponse(resp *http.Response) 
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - directoryClientListFilesAndDirectoriesSegmentOptions contains the optional parameters for the directoryClient.ListFilesAndDirectoriesSegment
 // method.
-func (client *directoryClient) ListFilesAndDirectoriesSegment(options *directoryClientListFilesAndDirectoriesSegmentOptions) (*directoryClientListFilesAndDirectoriesSegmentPager) {
+func (client *directoryClient) ListFilesAndDirectoriesSegment(options *directoryClientListFilesAndDirectoriesSegmentOptions) *directoryClientListFilesAndDirectoriesSegmentPager {
 	return &directoryClientListFilesAndDirectoriesSegmentPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
@@ -751,4 +751,3 @@ func (client *directoryClient) setPropertiesHandleResponse(resp *http.Response) 
 	}
 	return result, nil
 }
-

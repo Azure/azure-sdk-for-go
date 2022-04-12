@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -20,7 +20,7 @@ import (
 
 type serviceClient struct {
 	endpoint string
-	pl runtime.Pipeline
+	pl       runtime.Pipeline
 }
 
 // newServiceClient creates a new instance of serviceClient with the specified values.
@@ -29,7 +29,7 @@ type serviceClient struct {
 func newServiceClient(endpoint string, pl runtime.Pipeline) *serviceClient {
 	client := &serviceClient{
 		endpoint: endpoint,
-		pl: pl,
+		pl:       pl,
 	}
 	return client
 }
@@ -91,7 +91,7 @@ func (client *serviceClient) getPropertiesHandleResponse(resp *http.Response) (s
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - serviceClientListSharesSegmentOptions contains the optional parameters for the serviceClient.ListSharesSegment
 // method.
-func (client *serviceClient) ListSharesSegment(options *serviceClientListSharesSegmentOptions) (*serviceClientListSharesSegmentPager) {
+func (client *serviceClient) ListSharesSegment(options *serviceClientListSharesSegmentOptions) *serviceClientListSharesSegmentPager {
 	return &serviceClientListSharesSegmentPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
@@ -196,4 +196,3 @@ func (client *serviceClient) setPropertiesHandleResponse(resp *http.Response) (s
 	}
 	return result, nil
 }
-

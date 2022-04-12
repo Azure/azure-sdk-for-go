@@ -1,3 +1,6 @@
+//go:build go1.18
+// +build go1.18
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -5,120 +8,120 @@ package azfile
 
 import (
 	"context"
-	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	"os"
 )
 
 func (s *azfileLiveTestSuite) TestDirNewDirectoryClient() {
-	_assert := assert.New(s.T())
+	_require := require.New(s.T())
 	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
 	srClient, err := svcClient.NewShareClient(sharePrefix)
-	_assert.Nil(err)
+	_require.Nil(err)
 	dirClient, err := srClient.NewDirectoryClient(directoryPrefix)
-	_assert.Nil(err)
+	_require.Nil(err)
 	dirClient, err = dirClient.NewDirectoryClient("inner" + directoryPrefix)
-	_assert.Nil(err)
+	_require.Nil(err)
 
 	correctURL := "https://" + os.Getenv("AZURE_STORAGE_ACCOUNT_NAME") + ".file.core.windows.net/" + sharePrefix + "/" + directoryPrefix + "/inner" + directoryPrefix
-	_assert.Equal(dirClient.URL(), correctURL)
+	_require.Equal(dirClient.URL(), correctURL)
 }
 
 func (s *azfileLiveTestSuite) TestDirCreateFileURL() {
-	_assert := assert.New(s.T())
+	_require := require.New(s.T())
 	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
 	srClient, err := svcClient.NewShareClient(sharePrefix)
-	_assert.Nil(err)
+	_require.Nil(err)
 	dirClient, err := srClient.NewDirectoryClient(directoryPrefix)
-	_assert.Nil(err)
+	_require.Nil(err)
 	fClient, err := dirClient.NewFileClient(filePrefix)
-	_assert.Nil(err)
+	_require.Nil(err)
 
 	correctURL := "https://" + os.Getenv("AZURE_STORAGE_ACCOUNT_NAME") + ".file.core.windows.net/" + sharePrefix + "/" + directoryPrefix + "/" + filePrefix
-	_assert.Equal(fClient.URL(), correctURL)
+	_require.Equal(fClient.URL(), correctURL)
 }
 
 func (s *azfileLiveTestSuite) TestDirCreateDeleteDefault() {
-	_assert := assert.New(s.T())
+	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
-	srClient := createNewShare(_assert, generateShareName(testName), svcClient)
+	srClient := createNewShare(_require, generateShareName(testName), svcClient)
 
-	defer delShare(_assert, srClient, nil)
+	defer delShare(_require, srClient, nil)
 
 	directoryName := generateDirectoryName(testName)
 	dirClient, err := srClient.NewDirectoryClient(directoryName)
-	_assert.Nil(err)
+	_require.Nil(err)
 
 	cResp, err := dirClient.Create(context.Background(), nil)
-	_assert.Nil(err)
-	_assert.Equal(cResp.RawResponse.StatusCode, 201)
-	_assert.Equal(cResp.Date.IsZero(), false)
-	_assert.NotEqual(*cResp.ETag, "")
-	_assert.Equal(cResp.LastModified.IsZero(), false)
-	_assert.NotEqual(*cResp.RequestID, "")
-	_assert.NotEqual(*cResp.Version, "")
+	_require.Nil(err)
+	_require.Equal(cResp.RawResponse.StatusCode, 201)
+	_require.Equal(cResp.Date.IsZero(), false)
+	_require.NotEqual(*cResp.ETag, "")
+	_require.Equal(cResp.LastModified.IsZero(), false)
+	_require.NotEqual(*cResp.RequestID, "")
+	_require.NotEqual(*cResp.Version, "")
 
 	gResp, err := dirClient.GetProperties(context.Background(), nil)
-	_assert.Nil(err)
-	_assert.Equal(gResp.RawResponse.StatusCode, 200)
+	_require.Nil(err)
+	_require.Equal(gResp.RawResponse.StatusCode, 200)
 
-	defer delDirectory(_assert, dirClient)
+	defer delDirectory(_require, dirClient)
 }
 
 func (s *azfileLiveTestSuite) TestDirSetProperties() {
 
-	_assert := assert.New(s.T())
+	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
-	srClient := createNewShare(_assert, generateShareName(testName), svcClient)
+	srClient := createNewShare(_require, generateShareName(testName), svcClient)
 
-	defer delShare(_assert, srClient, nil)
+	defer delShare(_require, srClient, nil)
 
 	directoryName := generateDirectoryName(testName)
 	dirClient, err := srClient.NewDirectoryClient(directoryName)
 
 	cResp, err := dirClient.Create(ctx, nil)
-	_assert.Nil(err)
+	_require.Nil(err)
 	key := *cResp.FilePermissionKey
 
 	// Set the custom permissions
 	sResp, err := dirClient.SetProperties(ctx, &SetDirectoryPropertiesOptions{FilePermissions: &Permissions{PermissionStr: &sampleSDDL}})
-	_assert.Nil(err)
-	_assert.NotEqual(*sResp.FilePermissionKey, key)
+	_require.Nil(err)
+	_require.NotEqual(*sResp.FilePermissionKey, key)
 	key = *sResp.FilePermissionKey
 
 	gResp, err := dirClient.GetProperties(ctx, nil)
-	_assert.Nil(err)
+	_require.Nil(err)
 	// Ensure the new key is present when we GetProperties
-	_assert.Equal(*gResp.FilePermissionKey, key)
+	_require.Equal(*gResp.FilePermissionKey, key)
 }
 
 func (s *azfileLiveTestSuite) TestDirCreateDeleteNonDefault() {
-	_assert := assert.New(s.T())
+	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
-	srClient := createNewShare(_assert, generateShareName(testName), svcClient)
+	srClient := createNewShare(_require, generateShareName(testName), svcClient)
 
-	defer delShare(_assert, srClient, nil)
+	defer delShare(_require, srClient, nil)
 
 	directoryName := generateDirectoryName(testName)
 	dirClient, err := srClient.NewDirectoryClient(directoryName)
-	_assert.Nil(err)
+	_require.Nil(err)
 
 	md := map[string]string{
 		"Foo": "FooValuE",
@@ -126,167 +129,167 @@ func (s *azfileLiveTestSuite) TestDirCreateDeleteNonDefault() {
 	}
 
 	cResp, err := dirClient.Create(context.Background(), &CreateDirectoryOptions{Metadata: md, FilePermissions: &Permissions{PermissionStr: &sampleSDDL}})
-	_assert.Nil(err)
+	_require.Nil(err)
 	// Ensure that the file key isn't empty, but don't worry about checking the permission. We just need to know it exists.
-	_assert.NotEqual(*cResp.FilePermissionKey, "")
-	_assert.Equal(cResp.RawResponse.StatusCode, 201)
-	_assert.Equal(cResp.Date.IsZero(), false)
-	_assert.NotEqual(*cResp.ETag, "")
-	_assert.Equal(cResp.LastModified.IsZero(), false)
-	_assert.NotEqual(*cResp.RequestID, "")
-	_assert.NotEqual(*cResp.Version, "")
+	_require.NotEqual(*cResp.FilePermissionKey, "")
+	_require.Equal(cResp.RawResponse.StatusCode, 201)
+	_require.Equal(cResp.Date.IsZero(), false)
+	_require.NotEqual(*cResp.ETag, "")
+	_require.Equal(cResp.LastModified.IsZero(), false)
+	_require.NotEqual(*cResp.RequestID, "")
+	_require.NotEqual(*cResp.Version, "")
 
 	gResp, err := dirClient.GetProperties(context.Background(), nil)
-	_assert.Nil(err)
-	_assert.Equal(gResp.RawResponse.StatusCode, 200)
+	_require.Nil(err)
+	_require.Equal(gResp.RawResponse.StatusCode, 200)
 
 	// Creating again will result in 409 and ResourceAlreadyExists.
 	cResp, err = dirClient.Create(context.Background(), &CreateDirectoryOptions{Metadata: md})
-	_assert.NotNil(err)
+	_require.NotNil(err)
 	//serr := err.(*StorageError)
-	//_assert.Equal(serr.Response().StatusCode,409)
-	validateStorageError(_assert, err, StorageErrorCodeResourceAlreadyExists)
+	//_require.Equal(serr.Response().StatusCode,409)
+	validateStorageError(_require, err, StorageErrorCodeResourceAlreadyExists)
 
 	dResp, err := dirClient.Delete(context.Background(), nil)
-	_assert.Nil(err)
-	_assert.Equal(dResp.RawResponse.StatusCode, 202)
-	_assert.Equal(dResp.Date.IsZero(), false)
-	_assert.NotEqual(*dResp.RequestID, "")
-	_assert.NotEqual(*dResp.Version, "")
+	_require.Nil(err)
+	_require.Equal(dResp.RawResponse.StatusCode, 202)
+	_require.Equal(dResp.Date.IsZero(), false)
+	_require.NotEqual(*dResp.RequestID, "")
+	_require.NotEqual(*dResp.Version, "")
 
 	gResp, err = dirClient.GetProperties(context.Background(), nil)
-	_assert.NotNil(err)
-	validateStorageError(_assert, err, StorageErrorCodeResourceNotFound)
+	_require.NotNil(err)
+	validateStorageError(_require, err, StorageErrorCodeResourceNotFound)
 }
 
 func (s *azfileLiveTestSuite) TestDirCreateDeleteNegativeMultiLevelDir() {
 
-	_assert := assert.New(s.T())
+	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
-	srClient := createNewShare(_assert, generateShareName(testName), svcClient)
+	srClient := createNewShare(_require, generateShareName(testName), svcClient)
 
-	defer delShare(_assert, srClient, nil)
+	defer delShare(_require, srClient, nil)
 
 	parentDirName := "parent" + generateDirectoryName(testName)
 	subDirName := "subdir" + generateDirectoryName(testName)
 	parentDirClient, err := srClient.NewDirectoryClient(parentDirName)
-	_assert.Nil(err)
+	_require.Nil(err)
 
 	subDirClient, err := parentDirClient.NewDirectoryClient(subDirName)
 
 	// Directory create with subDirClient
 	cResp, err := subDirClient.Create(context.Background(), nil)
-	_assert.NotNil(err)
-	validateStorageError(_assert, err, StorageErrorCodeParentNotFound)
+	_require.NotNil(err)
+	validateStorageError(_require, err, StorageErrorCodeParentNotFound)
 
 	cResp, err = parentDirClient.Create(context.Background(), nil)
-	_assert.Nil(err)
-	_assert.Equal(cResp.RawResponse.StatusCode, 201)
+	_require.Nil(err)
+	_require.Equal(cResp.RawResponse.StatusCode, 201)
 
 	cResp, err = subDirClient.Create(context.Background(), nil)
-	_assert.Nil(err)
-	_assert.Equal(cResp.RawResponse.StatusCode, 201)
+	_require.Nil(err)
+	_require.Equal(cResp.RawResponse.StatusCode, 201)
 
 	gResp, err := subDirClient.GetProperties(context.Background(), nil)
-	_assert.Nil(err)
-	_assert.Equal(gResp.RawResponse.StatusCode, 200)
+	_require.Nil(err)
+	_require.Equal(gResp.RawResponse.StatusCode, 200)
 
 	// Delete level by level
 	// Delete Non-empty directory should fail
 	_, err = parentDirClient.Delete(context.Background(), nil)
-	_assert.NotNil(err)
-	validateStorageError(_assert, err, StorageErrorCodeDirectoryNotEmpty)
+	_require.NotNil(err)
+	validateStorageError(_require, err, StorageErrorCodeDirectoryNotEmpty)
 
 	dResp, err := subDirClient.Delete(context.Background(), nil)
-	_assert.Nil(err)
-	_assert.Equal(dResp.RawResponse.StatusCode, 202)
+	_require.Nil(err)
+	_require.Equal(dResp.RawResponse.StatusCode, 202)
 
 	dResp, err = parentDirClient.Delete(context.Background(), nil)
-	_assert.Nil(err)
-	_assert.Equal(dResp.RawResponse.StatusCode, 202)
+	_require.Nil(err)
+	_require.Equal(dResp.RawResponse.StatusCode, 202)
 }
 
 func (s *azfileLiveTestSuite) TestDirCreateEndWithSlash() {
-	_assert := assert.New(s.T())
+	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
-	srClient := createNewShare(_assert, generateShareName(testName), svcClient)
+	srClient := createNewShare(_require, generateShareName(testName), svcClient)
 
-	defer delShare(_assert, srClient, nil)
+	defer delShare(_require, srClient, nil)
 
 	directoryName := generateDirectoryName(testName) + "/"
 	dirClient, err := srClient.NewDirectoryClient(directoryName)
-	_assert.Nil(err)
+	_require.Nil(err)
 
-	defer delDirectory(_assert, dirClient)
+	defer delDirectory(_require, dirClient)
 
 	cResp, err := dirClient.Create(context.Background(), nil)
-	_assert.Nil(err)
-	_assert.Equal(cResp.RawResponse.StatusCode, 201)
-	_assert.Equal(cResp.Date.IsZero(), false)
-	_assert.NotEqual(*cResp.ETag, "")
-	_assert.Equal(cResp.LastModified.IsZero(), false)
-	_assert.NotEqual(*cResp.RequestID, "")
-	_assert.NotEqual(*cResp.Version, "")
+	_require.Nil(err)
+	_require.Equal(cResp.RawResponse.StatusCode, 201)
+	_require.Equal(cResp.Date.IsZero(), false)
+	_require.NotEqual(*cResp.ETag, "")
+	_require.Equal(cResp.LastModified.IsZero(), false)
+	_require.NotEqual(*cResp.RequestID, "")
+	_require.NotEqual(*cResp.Version, "")
 
 	gResp, err := dirClient.GetProperties(context.Background(), nil)
-	_assert.Nil(err)
-	_assert.Equal(gResp.RawResponse.StatusCode, 200)
+	_require.Nil(err)
+	_require.Equal(gResp.RawResponse.StatusCode, 200)
 }
 
 func (s *azfileLiveTestSuite) TestDirGetSetMetadataDefault() {
-	_assert := assert.New(s.T())
+	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
-	srClient := createNewShare(_assert, generateShareName(testName), svcClient)
-	defer delShare(_assert, srClient, nil)
+	srClient := createNewShare(_require, generateShareName(testName), svcClient)
+	defer delShare(_require, srClient, nil)
 
-	dirClient := createNewDirectoryFromShare(_assert, generateDirectoryName(testName), srClient)
-	defer delDirectory(_assert, dirClient)
+	dirClient := createNewDirectoryFromShare(_require, generateDirectoryName(testName), srClient)
+	defer delDirectory(_require, dirClient)
 
 	sResp, err := dirClient.SetMetadata(context.Background(), map[string]string{}, nil)
-	_assert.Nil(err)
-	_assert.Equal(sResp.RawResponse.StatusCode, 200)
-	_assert.Equal(sResp.Date.IsZero(), false)
-	_assert.NotEqual(*sResp.ETag, "")
-	_assert.NotEqual(*sResp.RequestID, "")
-	_assert.NotEqual(*sResp.Version, "")
-	_assert.NotNil(sResp.IsServerEncrypted)
+	_require.Nil(err)
+	_require.Equal(sResp.RawResponse.StatusCode, 200)
+	_require.Equal(sResp.Date.IsZero(), false)
+	_require.NotEqual(*sResp.ETag, "")
+	_require.NotEqual(*sResp.RequestID, "")
+	_require.NotEqual(*sResp.Version, "")
+	_require.NotNil(sResp.IsServerEncrypted)
 
 	gResp, err := dirClient.GetProperties(context.Background(), nil)
-	_assert.Nil(err)
-	_assert.Equal(gResp.RawResponse.StatusCode, 200)
-	_assert.Equal(gResp.Date.IsZero(), false)
-	_assert.NotEqual(*gResp.ETag, "")
-	_assert.Equal(gResp.LastModified.IsZero(), false)
-	_assert.NotEqual(*gResp.RequestID, "")
-	_assert.NotEqual(*gResp.Version, "")
-	_assert.NotNil(gResp.IsServerEncrypted)
-	_assert.Len(gResp.Metadata, 0)
+	_require.Nil(err)
+	_require.Equal(gResp.RawResponse.StatusCode, 200)
+	_require.Equal(gResp.Date.IsZero(), false)
+	_require.NotEqual(*gResp.ETag, "")
+	_require.Equal(gResp.LastModified.IsZero(), false)
+	_require.NotEqual(*gResp.RequestID, "")
+	_require.NotEqual(*gResp.Version, "")
+	_require.NotNil(gResp.IsServerEncrypted)
+	_requireLen(gResp.Metadata, 0)
 }
 
 func (s *azfileLiveTestSuite) TestDirGetSetMetadataNonDefault() {
-	_assert := assert.New(s.T())
+	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
-	srClient := createNewShare(_assert, generateShareName(testName), svcClient)
-	defer delShare(_assert, srClient, nil)
+	srClient := createNewShare(_require, generateShareName(testName), svcClient)
+	defer delShare(_require, srClient, nil)
 
-	dirClient := createNewDirectoryFromShare(_assert, generateDirectoryName(testName), srClient)
-	defer delDirectory(_assert, dirClient)
+	dirClient := createNewDirectoryFromShare(_require, generateDirectoryName(testName), srClient)
+	defer delDirectory(_require, dirClient)
 
 	md := map[string]string{
 		"Foo": "FooValuE",
@@ -294,171 +297,171 @@ func (s *azfileLiveTestSuite) TestDirGetSetMetadataNonDefault() {
 	}
 
 	sResp, err := dirClient.SetMetadata(context.Background(), md, nil)
-	_assert.Nil(err)
-	_assert.Equal(sResp.RawResponse.StatusCode, 200)
-	_assert.Equal(sResp.Date.IsZero(), false)
-	_assert.NotEqual(*sResp.ETag, "")
-	_assert.NotEqual(*sResp.RequestID, "")
-	_assert.NotEqual(*sResp.Version, "")
-	_assert.NotNil(sResp.IsServerEncrypted)
+	_require.Nil(err)
+	_require.Equal(sResp.RawResponse.StatusCode, 200)
+	_require.Equal(sResp.Date.IsZero(), false)
+	_require.NotEqual(*sResp.ETag, "")
+	_require.NotEqual(*sResp.RequestID, "")
+	_require.NotEqual(*sResp.Version, "")
+	_require.NotNil(sResp.IsServerEncrypted)
 
 	gResp, err := dirClient.GetProperties(context.Background(), nil)
-	_assert.Nil(err)
-	_assert.Equal(gResp.RawResponse.StatusCode, 200)
-	_assert.Equal(gResp.Date.IsZero(), false)
-	_assert.NotEqual(*gResp.ETag, "")
-	_assert.Equal(gResp.LastModified.IsZero(), false)
-	_assert.NotEqual(*gResp.RequestID, "")
-	_assert.NotEqual(*gResp.Version, "")
-	_assert.NotNil(gResp.IsServerEncrypted)
+	_require.Nil(err)
+	_require.Equal(gResp.RawResponse.StatusCode, 200)
+	_require.Equal(gResp.Date.IsZero(), false)
+	_require.NotEqual(*gResp.ETag, "")
+	_require.Equal(gResp.LastModified.IsZero(), false)
+	_require.NotEqual(*gResp.RequestID, "")
+	_require.NotEqual(*gResp.Version, "")
+	_require.NotNil(gResp.IsServerEncrypted)
 	nmd := gResp.Metadata
-	_assert.EqualValues(nmd, md)
+	_require.EqualValues(nmd, md)
 }
 
 func (s *azfileLiveTestSuite) TestDirSetMetadataNegative() {
-	_assert := assert.New(s.T())
+	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
-	srClient := createNewShare(_assert, generateShareName(testName), svcClient)
-	defer delShare(_assert, srClient, nil)
+	srClient := createNewShare(_require, generateShareName(testName), svcClient)
+	defer delShare(_require, srClient, nil)
 
-	dirClient := createNewDirectoryFromShare(_assert, generateDirectoryName(testName), srClient)
-	defer delDirectory(_assert, dirClient)
+	dirClient := createNewDirectoryFromShare(_require, generateDirectoryName(testName), srClient)
+	defer delDirectory(_require, dirClient)
 
 	md := map[string]string{
 		"!@#$%^&*()": "!@#$%^&*()",
 	}
 
 	_, err = dirClient.SetMetadata(context.Background(), md, nil)
-	_assert.NotNil(err)
+	_require.NotNil(err)
 }
 
 func (s *azfileLiveTestSuite) TestDirGetPropertiesNegative() {
-	_assert := assert.New(s.T())
+	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
-	srClient := createNewShare(_assert, generateShareName(testName), svcClient)
-	defer delShare(_assert, srClient, nil)
-	dirClient := getDirectoryClientFromShare(_assert, generateDirectoryName(testName), srClient)
+	srClient := createNewShare(_require, generateShareName(testName), svcClient)
+	defer delShare(_require, srClient, nil)
+	dirClient := getDirectoryClientFromShare(_require, generateDirectoryName(testName), srClient)
 
 	_, err = dirClient.GetProperties(ctx, nil)
-	_assert.NotNil(err)
-	validateStorageError(_assert, err, StorageErrorCodeResourceNotFound)
+	_require.NotNil(err)
+	validateStorageError(_require, err, StorageErrorCodeResourceNotFound)
 }
 
 func (s *azfileLiveTestSuite) TestDirGetPropertiesWithBaseDirectory() {
-	_assert := assert.New(s.T())
+	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
-	srClient := createNewShare(_assert, generateShareName(testName), svcClient)
-	defer delShare(_assert, srClient, nil)
+	srClient := createNewShare(_require, generateShareName(testName), svcClient)
+	defer delShare(_require, srClient, nil)
 
 	dirClient, err := srClient.NewRootDirectoryClient()
-	_assert.Nil(err)
+	_require.Nil(err)
 
 	gResp, err := dirClient.GetProperties(context.Background(), nil)
-	_assert.Nil(err)
-	_assert.Equal(gResp.RawResponse.StatusCode, 200)
-	_assert.NotEqual(*gResp.ETag, "")
-	_assert.Equal(gResp.LastModified.IsZero(), false)
-	_assert.NotEqual(*gResp.RequestID, "")
-	_assert.NotEqual(*gResp.Version, "")
-	_assert.Equal(gResp.Date.IsZero(), false)
-	_assert.NotNil(gResp.IsServerEncrypted)
+	_require.Nil(err)
+	_require.Equal(gResp.RawResponse.StatusCode, 200)
+	_require.NotEqual(*gResp.ETag, "")
+	_require.Equal(gResp.LastModified.IsZero(), false)
+	_require.NotEqual(*gResp.RequestID, "")
+	_require.NotEqual(*gResp.Version, "")
+	_require.Equal(gResp.Date.IsZero(), false)
+	_require.NotNil(gResp.IsServerEncrypted)
 }
 
 // Merge is not supported, as the key of metadata would be canonicalized
 func (s *azfileLiveTestSuite) TestDirGetSetMetadataMergeAndReplace() {
-	_assert := assert.New(s.T())
+	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
-	srClient := createNewShare(_assert, generateShareName(testName), svcClient)
-	defer delShare(_assert, srClient, nil)
+	srClient := createNewShare(_require, generateShareName(testName), svcClient)
+	defer delShare(_require, srClient, nil)
 
-	dirClient := createNewDirectoryFromShare(_assert, generateDirectoryName(testName), srClient)
-	defer delDirectory(_assert, dirClient)
+	dirClient := createNewDirectoryFromShare(_require, generateDirectoryName(testName), srClient)
+	defer delDirectory(_require, dirClient)
 
 	md := map[string]string{
 		"Color": "RED",
 	}
 
 	sResp, err := dirClient.SetMetadata(context.Background(), md, nil)
-	_assert.Nil(err)
-	_assert.Equal(sResp.RawResponse.StatusCode, 200)
-	_assert.Equal(sResp.Date.IsZero(), false)
-	_assert.NotEqual(*sResp.ETag, "")
-	_assert.NotEqual(*sResp.RequestID, "")
-	_assert.NotEqual(*sResp.Version, "")
-	_assert.NotNil(sResp.IsServerEncrypted)
+	_require.Nil(err)
+	_require.Equal(sResp.RawResponse.StatusCode, 200)
+	_require.Equal(sResp.Date.IsZero(), false)
+	_require.NotEqual(*sResp.ETag, "")
+	_require.NotEqual(*sResp.RequestID, "")
+	_require.NotEqual(*sResp.Version, "")
+	_require.NotNil(sResp.IsServerEncrypted)
 
 	gResp, err := dirClient.GetProperties(context.Background(), nil)
-	_assert.Nil(err)
-	_assert.Equal(gResp.RawResponse.StatusCode, 200)
-	_assert.Equal(gResp.Date.IsZero(), false)
-	_assert.NotEqual(*gResp.ETag, "")
-	_assert.Equal(gResp.LastModified.IsZero(), false)
-	_assert.NotEqual(*gResp.RequestID, "")
-	_assert.NotEqual(*gResp.Version, "")
-	_assert.NotNil(gResp.IsServerEncrypted)
-	_assert.EqualValues(gResp.Metadata, md)
+	_require.Nil(err)
+	_require.Equal(gResp.RawResponse.StatusCode, 200)
+	_require.Equal(gResp.Date.IsZero(), false)
+	_require.NotEqual(*gResp.ETag, "")
+	_require.Equal(gResp.LastModified.IsZero(), false)
+	_require.NotEqual(*gResp.RequestID, "")
+	_require.NotEqual(*gResp.Version, "")
+	_require.NotNil(gResp.IsServerEncrypted)
+	_require.EqualValues(gResp.Metadata, md)
 
 	md2 := map[string]string{
 		"Color": "WHITE",
 	}
 
 	sResp, err = dirClient.SetMetadata(context.Background(), md2, nil)
-	_assert.Nil(err)
-	_assert.Equal(sResp.RawResponse.StatusCode, 200)
-	_assert.Equal(sResp.Date.IsZero(), false)
-	_assert.NotEqual(*sResp.ETag, "")
-	_assert.NotEqual(*sResp.RequestID, "")
-	_assert.NotEqual(*sResp.Version, "")
-	_assert.NotNil(sResp.IsServerEncrypted)
+	_require.Nil(err)
+	_require.Equal(sResp.RawResponse.StatusCode, 200)
+	_require.Equal(sResp.Date.IsZero(), false)
+	_require.NotEqual(*sResp.ETag, "")
+	_require.NotEqual(*sResp.RequestID, "")
+	_require.NotEqual(*sResp.Version, "")
+	_require.NotNil(sResp.IsServerEncrypted)
 
 	gResp, err = dirClient.GetProperties(context.Background(), nil)
-	_assert.Nil(err)
-	_assert.Equal(gResp.RawResponse.StatusCode, 200)
-	_assert.Equal(gResp.Date.IsZero(), false)
-	_assert.NotEqual(*gResp.ETag, "")
-	_assert.Equal(gResp.LastModified.IsZero(), false)
-	_assert.NotEqual(*gResp.RequestID, "")
-	_assert.NotEqual(*gResp.Version, "")
-	_assert.NotNil(gResp.IsServerEncrypted)
+	_require.Nil(err)
+	_require.Equal(gResp.RawResponse.StatusCode, 200)
+	_require.Equal(gResp.Date.IsZero(), false)
+	_require.NotEqual(*gResp.ETag, "")
+	_require.Equal(gResp.LastModified.IsZero(), false)
+	_require.NotEqual(*gResp.RequestID, "")
+	_require.NotEqual(*gResp.Version, "")
+	_require.NotNil(gResp.IsServerEncrypted)
 	nmd2 := gResp.Metadata
-	_assert.EqualValues(nmd2, md2)
+	_require.EqualValues(nmd2, md2)
 }
 
 //func (s *azfileLiveTestSuite) TestDirListDefault() {
-//	_assert := assert.New(s.T())
+//	_require := require.New(s.T())
 //	testName := s.T().Name()
 //	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}
-//	srClient := createNewShare(_assert, generateShareName(testName), svcClient)
+//	srClient := createNewShare(_require, generateShareName(testName), svcClient)
 //
-//	defer delShare(_assert, srClient, nil)
+//	defer delShare(_require, srClient, nil)
 //
 //	dirName := generateDirectoryName(testName)
-//	dirClient := createNewDirectoryFromShare(_assert, dirName, srClient)
+//	dirClient := createNewDirectoryFromShare(_require, dirName, srClient)
 //
-//	defer delDirectory(_assert, dirClient)
+//	defer delDirectory(_require, dirClient)
 //
 //	// Empty directory
 //	lResp, err := dirClient.ListFilesAndDirectories(context.Background(), Marker{}, ListFilesAndDirectoriesOptions{})
-//	_assert.Nil(err)
+//	_require.Nil(err)
 //	_assert(lResp.Response().StatusCode, chk.Equals, 200)
 //	_assert(lResp.StatusCode(), chk.Equals, 200)
 //	_assert(lResp.Status(), chk.Not(chk.Equals), "")
@@ -483,7 +486,7 @@ func (s *azfileLiveTestSuite) TestDirGetSetMetadataMergeAndReplace() {
 //
 //	// List 1 file, 1 directory
 //	lResp2, err := dirClient.ListFilesAndDirectories(context.Background(), Marker{}, ListFilesAndDirectoriesOptions{})
-//	_assert.Nil(err)
+//	_require.Nil(err)
 //	_assert(lResp2.Response().StatusCode, chk.Equals, 200)
 //	_assert(lResp2.DirectoryItems, chk.HasLen, 1)
 //	_assert(lResp2.DirectoryItems[0].Name, chk.Equals, innerDirName)
@@ -499,7 +502,7 @@ func (s *azfileLiveTestSuite) TestDirGetSetMetadataMergeAndReplace() {
 //
 //	// List 2 files and 2 directories
 //	lResp3, err := dirClient.ListFilesAndDirectories(context.Background(), Marker{}, ListFilesAndDirectoriesOptions{})
-//	_assert.Nil(err)
+//	_require.Nil(err)
 //	_assert(lResp3.Response().StatusCode, chk.Equals, 200)
 //	_assert(lResp3.DirectoryItems, chk.HasLen, 2)
 //	_assert(lResp3.DirectoryItems[0].Name, chk.Equals, innerDirName)
@@ -512,17 +515,17 @@ func (s *azfileLiveTestSuite) TestDirGetSetMetadataMergeAndReplace() {
 //}
 
 //func (s *azfileLiveTestSuite) TestDirListNonDefault() {
-//	_assert := assert.New(s.T())
+//	_require := require.New(s.T())
 //	testName := s.T().Name()
 //	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}
-//	srClient := createNewShare(_assert, generateShareName(testName), svcClient)
+//	srClient := createNewShare(_require, generateShareName(testName), svcClient)
 //
-//	defer delShare(_assert, srClient, nil)
+//	defer delShare(_require, srClient, nil)
 //
-//	dirClient, _ := createNewDirectoryFromShare(_assert, generateDirectoryName(testName), srClient)
+//	dirClient, _ := createNewDirectoryFromShare(_require, generateDirectoryName(testName), srClient)
 //
 //	defer delDirectory(c, dirClient)
 //
@@ -544,7 +547,7 @@ func (s *azfileLiveTestSuite) TestDirGetSetMetadataMergeAndReplace() {
 //	marker := Marker{}
 //
 //	lResp, err := dirClient.ListFilesAndDirectories(context.Background(), marker, ListFilesAndDirectoriesOptions{MaxResults: maxResultsPerPage, Prefix: testPrefix})
-//	_assert.Nil(err)
+//	_require.Nil(err)
 //	_assert(lResp.FileItems, chk.HasLen, 1)
 //	_assert(lResp.FileItems[0].Name, chk.Equals, file1Name)
 //	_assert(lResp.DirectoryItems, chk.HasLen, 1)
@@ -554,7 +557,7 @@ func (s *azfileLiveTestSuite) TestDirGetSetMetadataMergeAndReplace() {
 //	marker = lResp.NextMarker
 //
 //	lResp, err = dirClient.ListFilesAndDirectories(context.Background(), marker, ListFilesAndDirectoriesOptions{MaxResults: maxResultsPerPage, Prefix: testPrefix})
-//	_assert.Nil(err)
+//	_require.Nil(err)
 //	_assert(lResp.FileItems, chk.HasLen, 1)
 //	_assert(lResp.FileItems[0].Name, chk.Equals, file2Name)
 //	_assert(lResp.DirectoryItems, chk.HasLen, 1)
@@ -564,13 +567,13 @@ func (s *azfileLiveTestSuite) TestDirGetSetMetadataMergeAndReplace() {
 //}
 
 //func (s *azfileLiveTestSuite) TestDirListNegativeNonexistantPrefix() {
-//	_assert := assert.New(s.T())
+//	_require := require.New(s.T())
 //	testName := s.T().Name()
 //	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}
-//	shareURL, _ := createNewShare(_assert, generateShareName(testName), svcClient)
+//	shareURL, _ := createNewShare(_require, generateShareName(testName), svcClient)
 //	defer delShare(c, shareURL, DeleteSnapshotsOptionNone)
 //	createNewFileFromShare(c, shareURL, 0)
 //
@@ -578,53 +581,53 @@ func (s *azfileLiveTestSuite) TestDirGetSetMetadataMergeAndReplace() {
 //
 //	resp, err := dirURL.ListFilesAndDirectories(ctx, Marker{}, ListFilesAndDirectoriesOptions{Prefix: filePrefix + filePrefix})
 //
-//	_assert.Nil(err)
+//	_require.Nil(err)
 //	_assert(resp.FileItems, chk.HasLen, 0)
 //}
 //
 //func (s *azfileLiveTestSuite) TestDirListNegativeMaxResults() {
-//	_assert := assert.New(s.T())
+//	_require := require.New(s.T())
 //	testName := s.T().Name()
 //	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}
-//	shareURL, _ := createNewShare(_assert, generateShareName(testName), svcClient)
+//	shareURL, _ := createNewShare(_require, generateShareName(testName), svcClient)
 //	defer delShare(c, shareURL, DeleteSnapshotsOptionNone)
 //	createNewFileFromShare(c, shareURL, 0)
 //	dirURL := shareURL.NewRootDirectoryClient()
 //
 //	_, err := dirURL.ListFilesAndDirectories(ctx, Marker{}, ListFilesAndDirectoriesOptions{MaxResults: -2})
-//	_assert.NotNil(err)
+//	_require.NotNil(err)
 //	_assert(strings.Contains(err.Error(), "validation failed"), chk.Equals, true)
 //}
 //
 //func (s *azfileLiveTestSuite) TestDirListNonDefaultMaxResultsZero() {
-//	_assert := assert.New(s.T())
+//	_require := require.New(s.T())
 //	testName := s.T().Name()
 //	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}
-//	shareURL, _ := createNewShare(_assert, generateShareName(testName), svcClient)
+//	shareURL, _ := createNewShare(_require, generateShareName(testName), svcClient)
 //	defer delShare(c, shareURL, DeleteSnapshotsOptionNone)
 //	createNewFileFromShare(c, shareURL, 0)
 //	dirURL := shareURL.NewRootDirectoryClient()
 //
 //	resp, err := dirURL.ListFilesAndDirectories(ctx, Marker{}, ListFilesAndDirectoriesOptions{MaxResults: 0})
 //
-//	_assert.Nil(err)
+//	_require.Nil(err)
 //	_assert(resp.FileItems, chk.HasLen, 1)
 //}
 //
 //func (s *azfileLiveTestSuite) TestDirListNonDefaultMaxResultsExact() {
-//	_assert := assert.New(s.T())
+//	_require := require.New(s.T())
 //	testName := s.T().Name()
 //	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}
-//	shareURL, _ := createNewShare(_assert, generateShareName(testName), svcClient)
+//	shareURL, _ := createNewShare(_require, generateShareName(testName), svcClient)
 //	defer delShare(c, shareURL, DeleteSnapshotsOptionNone)
 //	dirURL := shareURL.NewRootDirectoryClient()
 //
@@ -634,7 +637,7 @@ func (s *azfileLiveTestSuite) TestDirGetSetMetadataMergeAndReplace() {
 //
 //	resp, err := dirURL.ListFilesAndDirectories(ctx, Marker{}, ListFilesAndDirectoriesOptions{MaxResults: 2, Prefix: additionalPrefix})
 //
-//	_assert.Nil(err)
+//	_require.Nil(err)
 //	_assert(resp.DirectoryItems, chk.HasLen, 2)
 //	_assert(resp.DirectoryItems[0].Name, chk.Equals, dirName1)
 //	_assert(resp.DirectoryItems[1].Name, chk.Equals, dirName2)
@@ -642,18 +645,18 @@ func (s *azfileLiveTestSuite) TestDirGetSetMetadataMergeAndReplace() {
 //
 //// Test list directories with SAS
 //func (s *azfileLiveTestSuite) TestDirListWithShareSAS() {
-//	_assert := assert.New(s.T())
+//	_require := require.New(s.T())
 //	testName := s.T().Name()
 //	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}
 //	credential, accountName := getCredential()
-//	share, shareName := createNewShare(_assert, generateShareName(testName), svcClient)
+//	share, shareName := createNewShare(_require, generateShareName(testName), svcClient)
 //
-//	defer delShare(_assert, srClient, nil)
+//	defer delShare(_require, srClient, nil)
 //
-//	dirClient, dirName := createNewDirectoryFromShare(_assert, generateDirectoryName(testName), srClient)
+//	dirClient, dirName := createNewDirectoryFromShare(_require, generateDirectoryName(testName), srClient)
 //
 //	defer delDirectory(c, dirClient)
 //
@@ -664,7 +667,7 @@ func (s *azfileLiveTestSuite) TestDirGetSetMetadataMergeAndReplace() {
 //		ShareName:   shareName,
 //		Permissions: ShareSASPermissions{Read: true, Write: true, List: true}.String(),
 //	}.NewSASQueryParameters(credential)
-//	_assert.Nil(err)
+//	_require.Nil(err)
 //
 //	// Create the URL of the resource you wish to access and append the SAS query parameters.
 //	// Since this is a file SAS, the URL is to the Azure storage file.
@@ -677,6 +680,6 @@ func (s *azfileLiveTestSuite) TestDirGetSetMetadataMergeAndReplace() {
 //
 //	marker := Marker{}
 //	lResp, err := dirURL.ListFilesAndDirectories(context.Background(), marker, ListFilesAndDirectoriesOptions{})
-//	_assert.Nil(err)
+//	_require.Nil(err)
 //	_assert(lResp.NextMarker.NotDone(), chk.Equals, false)
 //}

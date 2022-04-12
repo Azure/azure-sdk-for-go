@@ -1,3 +1,6 @@
+//go:build go1.18
+// +build go1.18
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -6,31 +9,66 @@ package azfile
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"net/url"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // A DirectoryClient represents a URL to the Azure Storage directory allowing you to manipulate its directories and files.
 type DirectoryClient struct {
-	client *directoryClient
-	u      url.URL
-	cred   azcore.Credential
+	client    *directoryClient
+	sharedKey *SharedKeyCredential
 }
 
-// NewDirectoryClient creates a DirectoryClient object using the specified URL and request policy pipeline.
-// Note: p can't be nil.
-func NewDirectoryClient(directoryURL string, cred azcore.Credential, options *ClientOptions) (DirectoryClient, error) {
-	u, err := url.Parse(directoryURL)
-	if err != nil {
-		return DirectoryClient{}, err
-	}
-	return DirectoryClient{client: &directoryClient{
-		con: newConnection(directoryURL, cred, options.getConnectionOptions()),
-	}, u: *u, cred: cred}, nil
-}
-
-// URL returns the URL endpoint used by the DirectoryClient object.
+// URL returns the URL endpoint used by the ServiceClient object.
 func (d DirectoryClient) URL() string {
-	return d.u.String()
+	return d.client.endpoint
+}
+
+// NewDirectoryClient creates a DirectoryClient object using the specified URL, Azure AD credential, and options.
+// Example of serviceURL: https://<your_storage_account>.blob.core.windows.net
+func NewDirectoryClient(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (*DirectoryClient, error) {
+	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{tokenScope}, nil)
+	conOptions := getConnectionOptions(options)
+	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
+	conn := newConnection(serviceURL, conOptions)
+
+	return &DirectoryClient{
+		client: newDirectoryClient(conn.Endpoint(), conn.Pipeline()),
+	}, nil
+}
+
+// NewDirectoryClientWithNoCredential creates a DirectoryClient object using the specified URL and options.
+// Example of serviceURL: https://<your_storage_account>.blob.core.windows.net?<SAS token>
+func NewDirectoryClientWithNoCredential(serviceURL string, options *ClientOptions) (*DirectoryClient, error) {
+	conOptions := getConnectionOptions(options)
+	conn := newConnection(serviceURL, conOptions)
+
+	return &DirectoryClient{
+		client: newDirectoryClient(conn.Endpoint(), conn.Pipeline()),
+	}, nil
+}
+
+// NewDirectoryClientWithSharedKey creates a DirectoryClient object using the specified URL, shared key, and options.
+// Example of serviceURL: https://<your_storage_account>.blob.core.windows.net
+func NewDirectoryClientWithSharedKey(serviceURL string, cred *SharedKeyCredential, options *ClientOptions) (*DirectoryClient, error) {
+	authPolicy := newSharedKeyCredPolicy(cred)
+	conOptions := getConnectionOptions(options)
+	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
+	conn := newConnection(serviceURL, conOptions)
+
+	return &DirectoryClient{
+		client:    newDirectoryClient(conn.Endpoint(), conn.Pipeline()),
+		sharedKey: cred,
+	}, nil
+}
+
+// NewDirectoryClientFromConnectionString creates a DirectoryClient from the given connection string.
+//nolint
+func NewDirectoryClientFromConnectionString(connectionString string, options *ClientOptions) (*DirectoryClient, error) {
+	endpoint, credential, err := parseConnectionString(connectionString)
+	if err != nil {
+		return nil, err
+	}
+	return NewDirectoryClientWithSharedKey(endpoint, credential, options)
 }
 
 // NewFileClient creates a new FileURL object by concatenating fileName to the end of
@@ -38,32 +76,21 @@ func (d DirectoryClient) URL() string {
 // To change the pipeline, create the FileURL and then call its WithPipeline method passing in the
 // desired pipeline object. Or, call this package's NewFileURL instead of calling this object's
 // NewFileURL method.
-func (d DirectoryClient) NewFileClient(fileName string) (FileClient, error) {
+func (d *DirectoryClient) NewFileClient(fileName string) (*FileClient, error) {
 	blobURL := appendToURLPath(d.URL(), fileName)
-	u, err := url.Parse(blobURL)
-	if err != nil {
-		return FileClient{}, err
-	}
-	return FileClient{
-		client: &fileClient{con: &connection{u: blobURL, p: d.client.con.p}},
-		u:      *u,
-		cred:   d.cred,
+
+	return &FileClient{
+		client:    newFileClient(blobURL, d.client.pl),
+		sharedKey: d.sharedKey,
 	}, nil
 }
 
-func (d DirectoryClient) NewDirectoryClient(directoryName string) (DirectoryClient, error) {
+func (d *DirectoryClient) NewDirectoryClient(directoryName string) (*DirectoryClient, error) {
 	directoryURL := appendToURLPath(d.URL(), directoryName)
-	u, err := url.Parse(directoryURL)
-	if err != nil {
-		return DirectoryClient{}, err
-	}
-	conn := &connection{directoryURL, d.client.con.p}
-	return DirectoryClient{
-		client: &directoryClient{
-			con: conn,
-		},
-		u:    *u,
-		cred: d.cred,
+
+	return &DirectoryClient{
+		client:    newDirectoryClient(directoryURL, d.client.pl),
+		sharedKey: d.sharedKey,
 	}, nil
 }
 

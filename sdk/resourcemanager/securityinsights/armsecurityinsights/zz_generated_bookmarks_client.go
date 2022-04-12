@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type BookmarksClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewBookmarksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *BookmarksClient {
+func NewBookmarksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BookmarksClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &BookmarksClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates the bookmark.
@@ -96,7 +101,7 @@ func (client *BookmarksClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, bookmark)
@@ -104,7 +109,7 @@ func (client *BookmarksClient) createOrUpdateCreateRequest(ctx context.Context, 
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *BookmarksClient) createOrUpdateHandleResponse(resp *http.Response) (BookmarksClientCreateOrUpdateResponse, error) {
-	result := BookmarksClientCreateOrUpdateResponse{RawResponse: resp}
+	result := BookmarksClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Bookmark); err != nil {
 		return BookmarksClientCreateOrUpdateResponse{}, err
 	}
@@ -129,7 +134,7 @@ func (client *BookmarksClient) Delete(ctx context.Context, resourceGroupName str
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return BookmarksClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return BookmarksClientDeleteResponse{RawResponse: resp}, nil
+	return BookmarksClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -156,7 +161,7 @@ func (client *BookmarksClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -207,7 +212,7 @@ func (client *BookmarksClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -215,7 +220,7 @@ func (client *BookmarksClient) getCreateRequest(ctx context.Context, resourceGro
 
 // getHandleResponse handles the Get response.
 func (client *BookmarksClient) getHandleResponse(resp *http.Response) (BookmarksClientGetResponse, error) {
-	result := BookmarksClientGetResponse{RawResponse: resp}
+	result := BookmarksClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Bookmark); err != nil {
 		return BookmarksClientGetResponse{}, err
 	}
@@ -227,16 +232,32 @@ func (client *BookmarksClient) getHandleResponse(resp *http.Response) (Bookmarks
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - BookmarksClientListOptions contains the optional parameters for the BookmarksClient.List method.
-func (client *BookmarksClient) List(resourceGroupName string, workspaceName string, options *BookmarksClientListOptions) *BookmarksClientListPager {
-	return &BookmarksClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, workspaceName, options)
+func (client *BookmarksClient) List(resourceGroupName string, workspaceName string, options *BookmarksClientListOptions) *runtime.Pager[BookmarksClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[BookmarksClientListResponse]{
+		More: func(page BookmarksClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp BookmarksClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.BookmarkList.NextLink)
+		Fetcher: func(ctx context.Context, page *BookmarksClientListResponse) (BookmarksClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, workspaceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return BookmarksClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return BookmarksClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return BookmarksClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -259,7 +280,7 @@ func (client *BookmarksClient) listCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -267,7 +288,7 @@ func (client *BookmarksClient) listCreateRequest(ctx context.Context, resourceGr
 
 // listHandleResponse handles the List response.
 func (client *BookmarksClient) listHandleResponse(resp *http.Response) (BookmarksClientListResponse, error) {
-	result := BookmarksClientListResponse{RawResponse: resp}
+	result := BookmarksClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BookmarkList); err != nil {
 		return BookmarksClientListResponse{}, err
 	}

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armhardwaresecuritymodules
 
 const (
 	moduleName    = "armhardwaresecuritymodules"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // IdentityType - The type of identity.
@@ -31,11 +31,6 @@ func PossibleIdentityTypeValues() []IdentityType {
 		IdentityTypeManagedIdentity,
 		IdentityTypeUser,
 	}
-}
-
-// ToPtr returns a *IdentityType pointing to the current value.
-func (c IdentityType) ToPtr() *IdentityType {
-	return &c
 }
 
 // JSONWebKeyType - Provisioning state.
@@ -69,11 +64,6 @@ func PossibleJSONWebKeyTypeValues() []JSONWebKeyType {
 		JSONWebKeyTypeProvisioning,
 		JSONWebKeyTypeSucceeded,
 	}
-}
-
-// ToPtr returns a *JSONWebKeyType pointing to the current value.
-func (c JSONWebKeyType) ToPtr() *JSONWebKeyType {
-	return &c
 }
 
 // SKUName - SKU of the dedicated HSM
@@ -113,9 +103,4 @@ func PossibleSKUNameValues() []SKUName {
 		SKUNamePayShield10KLMK2CPS60,
 		SKUNameSafeNetLunaNetworkHSMA790,
 	}
-}
-
-// ToPtr returns a *SKUName pointing to the current value.
-func (c SKUName) ToPtr() *SKUName {
-	return &c
 }

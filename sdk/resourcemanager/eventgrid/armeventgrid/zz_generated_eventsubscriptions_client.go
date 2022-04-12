@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -35,20 +36,24 @@ type EventSubscriptionsClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewEventSubscriptionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *EventSubscriptionsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewEventSubscriptionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EventSubscriptionsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &EventSubscriptionsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Asynchronously creates a new event subscription or updates an existing event subscription based on
@@ -67,22 +72,16 @@ func NewEventSubscriptionsClient(subscriptionID string, credential azcore.TokenC
 // eventSubscriptionInfo - Event subscription properties containing the destination and filter information.
 // options - EventSubscriptionsClientBeginCreateOrUpdateOptions contains the optional parameters for the EventSubscriptionsClient.BeginCreateOrUpdate
 // method.
-func (client *EventSubscriptionsClient) BeginCreateOrUpdate(ctx context.Context, scope string, eventSubscriptionName string, eventSubscriptionInfo EventSubscription, options *EventSubscriptionsClientBeginCreateOrUpdateOptions) (EventSubscriptionsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, scope, eventSubscriptionName, eventSubscriptionInfo, options)
-	if err != nil {
-		return EventSubscriptionsClientCreateOrUpdatePollerResponse{}, err
+func (client *EventSubscriptionsClient) BeginCreateOrUpdate(ctx context.Context, scope string, eventSubscriptionName string, eventSubscriptionInfo EventSubscription, options *EventSubscriptionsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[EventSubscriptionsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, scope, eventSubscriptionName, eventSubscriptionInfo, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[EventSubscriptionsClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[EventSubscriptionsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := EventSubscriptionsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("EventSubscriptionsClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return EventSubscriptionsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &EventSubscriptionsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Asynchronously creates a new event subscription or updates an existing event subscription based on the
@@ -116,7 +115,7 @@ func (client *EventSubscriptionsClient) createOrUpdateCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2021-10-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, eventSubscriptionInfo)
@@ -135,22 +134,16 @@ func (client *EventSubscriptionsClient) createOrUpdateCreateRequest(ctx context.
 // eventSubscriptionName - Name of the event subscription.
 // options - EventSubscriptionsClientBeginDeleteOptions contains the optional parameters for the EventSubscriptionsClient.BeginDelete
 // method.
-func (client *EventSubscriptionsClient) BeginDelete(ctx context.Context, scope string, eventSubscriptionName string, options *EventSubscriptionsClientBeginDeleteOptions) (EventSubscriptionsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, scope, eventSubscriptionName, options)
-	if err != nil {
-		return EventSubscriptionsClientDeletePollerResponse{}, err
+func (client *EventSubscriptionsClient) BeginDelete(ctx context.Context, scope string, eventSubscriptionName string, options *EventSubscriptionsClientBeginDeleteOptions) (*armruntime.Poller[EventSubscriptionsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, scope, eventSubscriptionName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[EventSubscriptionsClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[EventSubscriptionsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := EventSubscriptionsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("EventSubscriptionsClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return EventSubscriptionsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &EventSubscriptionsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Delete an existing event subscription.
@@ -183,7 +176,7 @@ func (client *EventSubscriptionsClient) deleteCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2021-10-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -228,7 +221,7 @@ func (client *EventSubscriptionsClient) getCreateRequest(ctx context.Context, sc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2021-10-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -236,7 +229,7 @@ func (client *EventSubscriptionsClient) getCreateRequest(ctx context.Context, sc
 
 // getHandleResponse handles the Get response.
 func (client *EventSubscriptionsClient) getHandleResponse(resp *http.Response) (EventSubscriptionsClientGetResponse, error) {
-	result := EventSubscriptionsClientGetResponse{RawResponse: resp}
+	result := EventSubscriptionsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventSubscription); err != nil {
 		return EventSubscriptionsClientGetResponse{}, err
 	}
@@ -284,7 +277,7 @@ func (client *EventSubscriptionsClient) getDeliveryAttributesCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2021-10-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -292,7 +285,7 @@ func (client *EventSubscriptionsClient) getDeliveryAttributesCreateRequest(ctx c
 
 // getDeliveryAttributesHandleResponse handles the GetDeliveryAttributes response.
 func (client *EventSubscriptionsClient) getDeliveryAttributesHandleResponse(resp *http.Response) (EventSubscriptionsClientGetDeliveryAttributesResponse, error) {
-	result := EventSubscriptionsClientGetDeliveryAttributesResponse{RawResponse: resp}
+	result := EventSubscriptionsClientGetDeliveryAttributesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeliveryAttributeListResult); err != nil {
 		return EventSubscriptionsClientGetDeliveryAttributesResponse{}, err
 	}
@@ -340,7 +333,7 @@ func (client *EventSubscriptionsClient) getFullURLCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2021-10-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -348,7 +341,7 @@ func (client *EventSubscriptionsClient) getFullURLCreateRequest(ctx context.Cont
 
 // getFullURLHandleResponse handles the GetFullURL response.
 func (client *EventSubscriptionsClient) getFullURLHandleResponse(resp *http.Response) (EventSubscriptionsClientGetFullURLResponse, error) {
-	result := EventSubscriptionsClientGetFullURLResponse{RawResponse: resp}
+	result := EventSubscriptionsClientGetFullURLResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventSubscriptionFullURL); err != nil {
 		return EventSubscriptionsClientGetFullURLResponse{}, err
 	}
@@ -362,16 +355,32 @@ func (client *EventSubscriptionsClient) getFullURLHandleResponse(resp *http.Resp
 // topicName - Name of the domain topic.
 // options - EventSubscriptionsClientListByDomainTopicOptions contains the optional parameters for the EventSubscriptionsClient.ListByDomainTopic
 // method.
-func (client *EventSubscriptionsClient) ListByDomainTopic(resourceGroupName string, domainName string, topicName string, options *EventSubscriptionsClientListByDomainTopicOptions) *EventSubscriptionsClientListByDomainTopicPager {
-	return &EventSubscriptionsClientListByDomainTopicPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByDomainTopicCreateRequest(ctx, resourceGroupName, domainName, topicName, options)
+func (client *EventSubscriptionsClient) ListByDomainTopic(resourceGroupName string, domainName string, topicName string, options *EventSubscriptionsClientListByDomainTopicOptions) *runtime.Pager[EventSubscriptionsClientListByDomainTopicResponse] {
+	return runtime.NewPager(runtime.PageProcessor[EventSubscriptionsClientListByDomainTopicResponse]{
+		More: func(page EventSubscriptionsClientListByDomainTopicResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp EventSubscriptionsClientListByDomainTopicResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.EventSubscriptionsListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *EventSubscriptionsClientListByDomainTopicResponse) (EventSubscriptionsClientListByDomainTopicResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByDomainTopicCreateRequest(ctx, resourceGroupName, domainName, topicName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return EventSubscriptionsClientListByDomainTopicResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return EventSubscriptionsClientListByDomainTopicResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return EventSubscriptionsClientListByDomainTopicResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByDomainTopicHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByDomainTopicCreateRequest creates the ListByDomainTopic request.
@@ -398,7 +407,7 @@ func (client *EventSubscriptionsClient) listByDomainTopicCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2021-10-15-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -412,14 +421,14 @@ func (client *EventSubscriptionsClient) listByDomainTopicCreateRequest(ctx conte
 
 // listByDomainTopicHandleResponse handles the ListByDomainTopic response.
 func (client *EventSubscriptionsClient) listByDomainTopicHandleResponse(resp *http.Response) (EventSubscriptionsClientListByDomainTopicResponse, error) {
-	result := EventSubscriptionsClientListByDomainTopicResponse{RawResponse: resp}
+	result := EventSubscriptionsClientListByDomainTopicResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventSubscriptionsListResult); err != nil {
 		return EventSubscriptionsClientListByDomainTopicResponse{}, err
 	}
 	return result, nil
 }
 
-// ListByResource - List all event subscriptions that have been created for a specific topic.
+// ListByResource - List all event subscriptions that have been created for a specific resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the user's subscription.
 // providerNamespace - Namespace of the provider of the topic.
@@ -427,16 +436,32 @@ func (client *EventSubscriptionsClient) listByDomainTopicHandleResponse(resp *ht
 // resourceName - Name of the resource.
 // options - EventSubscriptionsClientListByResourceOptions contains the optional parameters for the EventSubscriptionsClient.ListByResource
 // method.
-func (client *EventSubscriptionsClient) ListByResource(resourceGroupName string, providerNamespace string, resourceTypeName string, resourceName string, options *EventSubscriptionsClientListByResourceOptions) *EventSubscriptionsClientListByResourcePager {
-	return &EventSubscriptionsClientListByResourcePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceCreateRequest(ctx, resourceGroupName, providerNamespace, resourceTypeName, resourceName, options)
+func (client *EventSubscriptionsClient) ListByResource(resourceGroupName string, providerNamespace string, resourceTypeName string, resourceName string, options *EventSubscriptionsClientListByResourceOptions) *runtime.Pager[EventSubscriptionsClientListByResourceResponse] {
+	return runtime.NewPager(runtime.PageProcessor[EventSubscriptionsClientListByResourceResponse]{
+		More: func(page EventSubscriptionsClientListByResourceResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp EventSubscriptionsClientListByResourceResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.EventSubscriptionsListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *EventSubscriptionsClientListByResourceResponse) (EventSubscriptionsClientListByResourceResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceCreateRequest(ctx, resourceGroupName, providerNamespace, resourceTypeName, resourceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return EventSubscriptionsClientListByResourceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return EventSubscriptionsClientListByResourceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return EventSubscriptionsClientListByResourceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceCreateRequest creates the ListByResource request.
@@ -467,7 +492,7 @@ func (client *EventSubscriptionsClient) listByResourceCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2021-10-15-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -481,7 +506,7 @@ func (client *EventSubscriptionsClient) listByResourceCreateRequest(ctx context.
 
 // listByResourceHandleResponse handles the ListByResource response.
 func (client *EventSubscriptionsClient) listByResourceHandleResponse(resp *http.Response) (EventSubscriptionsClientListByResourceResponse, error) {
-	result := EventSubscriptionsClientListByResourceResponse{RawResponse: resp}
+	result := EventSubscriptionsClientListByResourceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventSubscriptionsListResult); err != nil {
 		return EventSubscriptionsClientListByResourceResponse{}, err
 	}
@@ -493,16 +518,32 @@ func (client *EventSubscriptionsClient) listByResourceHandleResponse(resp *http.
 // resourceGroupName - The name of the resource group within the user's subscription.
 // options - EventSubscriptionsClientListGlobalByResourceGroupOptions contains the optional parameters for the EventSubscriptionsClient.ListGlobalByResourceGroup
 // method.
-func (client *EventSubscriptionsClient) ListGlobalByResourceGroup(resourceGroupName string, options *EventSubscriptionsClientListGlobalByResourceGroupOptions) *EventSubscriptionsClientListGlobalByResourceGroupPager {
-	return &EventSubscriptionsClientListGlobalByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listGlobalByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *EventSubscriptionsClient) ListGlobalByResourceGroup(resourceGroupName string, options *EventSubscriptionsClientListGlobalByResourceGroupOptions) *runtime.Pager[EventSubscriptionsClientListGlobalByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[EventSubscriptionsClientListGlobalByResourceGroupResponse]{
+		More: func(page EventSubscriptionsClientListGlobalByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp EventSubscriptionsClientListGlobalByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.EventSubscriptionsListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *EventSubscriptionsClientListGlobalByResourceGroupResponse) (EventSubscriptionsClientListGlobalByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listGlobalByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return EventSubscriptionsClientListGlobalByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return EventSubscriptionsClientListGlobalByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return EventSubscriptionsClientListGlobalByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listGlobalByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listGlobalByResourceGroupCreateRequest creates the ListGlobalByResourceGroup request.
@@ -521,7 +562,7 @@ func (client *EventSubscriptionsClient) listGlobalByResourceGroupCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2021-10-15-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -535,7 +576,7 @@ func (client *EventSubscriptionsClient) listGlobalByResourceGroupCreateRequest(c
 
 // listGlobalByResourceGroupHandleResponse handles the ListGlobalByResourceGroup response.
 func (client *EventSubscriptionsClient) listGlobalByResourceGroupHandleResponse(resp *http.Response) (EventSubscriptionsClientListGlobalByResourceGroupResponse, error) {
-	result := EventSubscriptionsClientListGlobalByResourceGroupResponse{RawResponse: resp}
+	result := EventSubscriptionsClientListGlobalByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventSubscriptionsListResult); err != nil {
 		return EventSubscriptionsClientListGlobalByResourceGroupResponse{}, err
 	}
@@ -549,16 +590,32 @@ func (client *EventSubscriptionsClient) listGlobalByResourceGroupHandleResponse(
 // topicTypeName - Name of the topic type.
 // options - EventSubscriptionsClientListGlobalByResourceGroupForTopicTypeOptions contains the optional parameters for the
 // EventSubscriptionsClient.ListGlobalByResourceGroupForTopicType method.
-func (client *EventSubscriptionsClient) ListGlobalByResourceGroupForTopicType(resourceGroupName string, topicTypeName string, options *EventSubscriptionsClientListGlobalByResourceGroupForTopicTypeOptions) *EventSubscriptionsClientListGlobalByResourceGroupForTopicTypePager {
-	return &EventSubscriptionsClientListGlobalByResourceGroupForTopicTypePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listGlobalByResourceGroupForTopicTypeCreateRequest(ctx, resourceGroupName, topicTypeName, options)
+func (client *EventSubscriptionsClient) ListGlobalByResourceGroupForTopicType(resourceGroupName string, topicTypeName string, options *EventSubscriptionsClientListGlobalByResourceGroupForTopicTypeOptions) *runtime.Pager[EventSubscriptionsClientListGlobalByResourceGroupForTopicTypeResponse] {
+	return runtime.NewPager(runtime.PageProcessor[EventSubscriptionsClientListGlobalByResourceGroupForTopicTypeResponse]{
+		More: func(page EventSubscriptionsClientListGlobalByResourceGroupForTopicTypeResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp EventSubscriptionsClientListGlobalByResourceGroupForTopicTypeResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.EventSubscriptionsListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *EventSubscriptionsClientListGlobalByResourceGroupForTopicTypeResponse) (EventSubscriptionsClientListGlobalByResourceGroupForTopicTypeResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listGlobalByResourceGroupForTopicTypeCreateRequest(ctx, resourceGroupName, topicTypeName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return EventSubscriptionsClientListGlobalByResourceGroupForTopicTypeResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return EventSubscriptionsClientListGlobalByResourceGroupForTopicTypeResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return EventSubscriptionsClientListGlobalByResourceGroupForTopicTypeResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listGlobalByResourceGroupForTopicTypeHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listGlobalByResourceGroupForTopicTypeCreateRequest creates the ListGlobalByResourceGroupForTopicType request.
@@ -581,7 +638,7 @@ func (client *EventSubscriptionsClient) listGlobalByResourceGroupForTopicTypeCre
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2021-10-15-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -595,7 +652,7 @@ func (client *EventSubscriptionsClient) listGlobalByResourceGroupForTopicTypeCre
 
 // listGlobalByResourceGroupForTopicTypeHandleResponse handles the ListGlobalByResourceGroupForTopicType response.
 func (client *EventSubscriptionsClient) listGlobalByResourceGroupForTopicTypeHandleResponse(resp *http.Response) (EventSubscriptionsClientListGlobalByResourceGroupForTopicTypeResponse, error) {
-	result := EventSubscriptionsClientListGlobalByResourceGroupForTopicTypeResponse{RawResponse: resp}
+	result := EventSubscriptionsClientListGlobalByResourceGroupForTopicTypeResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventSubscriptionsListResult); err != nil {
 		return EventSubscriptionsClientListGlobalByResourceGroupForTopicTypeResponse{}, err
 	}
@@ -606,16 +663,32 @@ func (client *EventSubscriptionsClient) listGlobalByResourceGroupForTopicTypeHan
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - EventSubscriptionsClientListGlobalBySubscriptionOptions contains the optional parameters for the EventSubscriptionsClient.ListGlobalBySubscription
 // method.
-func (client *EventSubscriptionsClient) ListGlobalBySubscription(options *EventSubscriptionsClientListGlobalBySubscriptionOptions) *EventSubscriptionsClientListGlobalBySubscriptionPager {
-	return &EventSubscriptionsClientListGlobalBySubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listGlobalBySubscriptionCreateRequest(ctx, options)
+func (client *EventSubscriptionsClient) ListGlobalBySubscription(options *EventSubscriptionsClientListGlobalBySubscriptionOptions) *runtime.Pager[EventSubscriptionsClientListGlobalBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[EventSubscriptionsClientListGlobalBySubscriptionResponse]{
+		More: func(page EventSubscriptionsClientListGlobalBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp EventSubscriptionsClientListGlobalBySubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.EventSubscriptionsListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *EventSubscriptionsClientListGlobalBySubscriptionResponse) (EventSubscriptionsClientListGlobalBySubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listGlobalBySubscriptionCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return EventSubscriptionsClientListGlobalBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return EventSubscriptionsClientListGlobalBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return EventSubscriptionsClientListGlobalBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listGlobalBySubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listGlobalBySubscriptionCreateRequest creates the ListGlobalBySubscription request.
@@ -630,7 +703,7 @@ func (client *EventSubscriptionsClient) listGlobalBySubscriptionCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2021-10-15-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -644,7 +717,7 @@ func (client *EventSubscriptionsClient) listGlobalBySubscriptionCreateRequest(ct
 
 // listGlobalBySubscriptionHandleResponse handles the ListGlobalBySubscription response.
 func (client *EventSubscriptionsClient) listGlobalBySubscriptionHandleResponse(resp *http.Response) (EventSubscriptionsClientListGlobalBySubscriptionResponse, error) {
-	result := EventSubscriptionsClientListGlobalBySubscriptionResponse{RawResponse: resp}
+	result := EventSubscriptionsClientListGlobalBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventSubscriptionsListResult); err != nil {
 		return EventSubscriptionsClientListGlobalBySubscriptionResponse{}, err
 	}
@@ -656,16 +729,32 @@ func (client *EventSubscriptionsClient) listGlobalBySubscriptionHandleResponse(r
 // topicTypeName - Name of the topic type.
 // options - EventSubscriptionsClientListGlobalBySubscriptionForTopicTypeOptions contains the optional parameters for the
 // EventSubscriptionsClient.ListGlobalBySubscriptionForTopicType method.
-func (client *EventSubscriptionsClient) ListGlobalBySubscriptionForTopicType(topicTypeName string, options *EventSubscriptionsClientListGlobalBySubscriptionForTopicTypeOptions) *EventSubscriptionsClientListGlobalBySubscriptionForTopicTypePager {
-	return &EventSubscriptionsClientListGlobalBySubscriptionForTopicTypePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listGlobalBySubscriptionForTopicTypeCreateRequest(ctx, topicTypeName, options)
+func (client *EventSubscriptionsClient) ListGlobalBySubscriptionForTopicType(topicTypeName string, options *EventSubscriptionsClientListGlobalBySubscriptionForTopicTypeOptions) *runtime.Pager[EventSubscriptionsClientListGlobalBySubscriptionForTopicTypeResponse] {
+	return runtime.NewPager(runtime.PageProcessor[EventSubscriptionsClientListGlobalBySubscriptionForTopicTypeResponse]{
+		More: func(page EventSubscriptionsClientListGlobalBySubscriptionForTopicTypeResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp EventSubscriptionsClientListGlobalBySubscriptionForTopicTypeResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.EventSubscriptionsListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *EventSubscriptionsClientListGlobalBySubscriptionForTopicTypeResponse) (EventSubscriptionsClientListGlobalBySubscriptionForTopicTypeResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listGlobalBySubscriptionForTopicTypeCreateRequest(ctx, topicTypeName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return EventSubscriptionsClientListGlobalBySubscriptionForTopicTypeResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return EventSubscriptionsClientListGlobalBySubscriptionForTopicTypeResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return EventSubscriptionsClientListGlobalBySubscriptionForTopicTypeResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listGlobalBySubscriptionForTopicTypeHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listGlobalBySubscriptionForTopicTypeCreateRequest creates the ListGlobalBySubscriptionForTopicType request.
@@ -684,7 +773,7 @@ func (client *EventSubscriptionsClient) listGlobalBySubscriptionForTopicTypeCrea
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2021-10-15-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -698,7 +787,7 @@ func (client *EventSubscriptionsClient) listGlobalBySubscriptionForTopicTypeCrea
 
 // listGlobalBySubscriptionForTopicTypeHandleResponse handles the ListGlobalBySubscriptionForTopicType response.
 func (client *EventSubscriptionsClient) listGlobalBySubscriptionForTopicTypeHandleResponse(resp *http.Response) (EventSubscriptionsClientListGlobalBySubscriptionForTopicTypeResponse, error) {
-	result := EventSubscriptionsClientListGlobalBySubscriptionForTopicTypeResponse{RawResponse: resp}
+	result := EventSubscriptionsClientListGlobalBySubscriptionForTopicTypeResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventSubscriptionsListResult); err != nil {
 		return EventSubscriptionsClientListGlobalBySubscriptionForTopicTypeResponse{}, err
 	}
@@ -712,16 +801,32 @@ func (client *EventSubscriptionsClient) listGlobalBySubscriptionForTopicTypeHand
 // location - Name of the location.
 // options - EventSubscriptionsClientListRegionalByResourceGroupOptions contains the optional parameters for the EventSubscriptionsClient.ListRegionalByResourceGroup
 // method.
-func (client *EventSubscriptionsClient) ListRegionalByResourceGroup(resourceGroupName string, location string, options *EventSubscriptionsClientListRegionalByResourceGroupOptions) *EventSubscriptionsClientListRegionalByResourceGroupPager {
-	return &EventSubscriptionsClientListRegionalByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listRegionalByResourceGroupCreateRequest(ctx, resourceGroupName, location, options)
+func (client *EventSubscriptionsClient) ListRegionalByResourceGroup(resourceGroupName string, location string, options *EventSubscriptionsClientListRegionalByResourceGroupOptions) *runtime.Pager[EventSubscriptionsClientListRegionalByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[EventSubscriptionsClientListRegionalByResourceGroupResponse]{
+		More: func(page EventSubscriptionsClientListRegionalByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp EventSubscriptionsClientListRegionalByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.EventSubscriptionsListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *EventSubscriptionsClientListRegionalByResourceGroupResponse) (EventSubscriptionsClientListRegionalByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listRegionalByResourceGroupCreateRequest(ctx, resourceGroupName, location, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return EventSubscriptionsClientListRegionalByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return EventSubscriptionsClientListRegionalByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return EventSubscriptionsClientListRegionalByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listRegionalByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listRegionalByResourceGroupCreateRequest creates the ListRegionalByResourceGroup request.
@@ -744,7 +849,7 @@ func (client *EventSubscriptionsClient) listRegionalByResourceGroupCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2021-10-15-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -758,7 +863,7 @@ func (client *EventSubscriptionsClient) listRegionalByResourceGroupCreateRequest
 
 // listRegionalByResourceGroupHandleResponse handles the ListRegionalByResourceGroup response.
 func (client *EventSubscriptionsClient) listRegionalByResourceGroupHandleResponse(resp *http.Response) (EventSubscriptionsClientListRegionalByResourceGroupResponse, error) {
-	result := EventSubscriptionsClientListRegionalByResourceGroupResponse{RawResponse: resp}
+	result := EventSubscriptionsClientListRegionalByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventSubscriptionsListResult); err != nil {
 		return EventSubscriptionsClientListRegionalByResourceGroupResponse{}, err
 	}
@@ -773,16 +878,32 @@ func (client *EventSubscriptionsClient) listRegionalByResourceGroupHandleRespons
 // topicTypeName - Name of the topic type.
 // options - EventSubscriptionsClientListRegionalByResourceGroupForTopicTypeOptions contains the optional parameters for the
 // EventSubscriptionsClient.ListRegionalByResourceGroupForTopicType method.
-func (client *EventSubscriptionsClient) ListRegionalByResourceGroupForTopicType(resourceGroupName string, location string, topicTypeName string, options *EventSubscriptionsClientListRegionalByResourceGroupForTopicTypeOptions) *EventSubscriptionsClientListRegionalByResourceGroupForTopicTypePager {
-	return &EventSubscriptionsClientListRegionalByResourceGroupForTopicTypePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listRegionalByResourceGroupForTopicTypeCreateRequest(ctx, resourceGroupName, location, topicTypeName, options)
+func (client *EventSubscriptionsClient) ListRegionalByResourceGroupForTopicType(resourceGroupName string, location string, topicTypeName string, options *EventSubscriptionsClientListRegionalByResourceGroupForTopicTypeOptions) *runtime.Pager[EventSubscriptionsClientListRegionalByResourceGroupForTopicTypeResponse] {
+	return runtime.NewPager(runtime.PageProcessor[EventSubscriptionsClientListRegionalByResourceGroupForTopicTypeResponse]{
+		More: func(page EventSubscriptionsClientListRegionalByResourceGroupForTopicTypeResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp EventSubscriptionsClientListRegionalByResourceGroupForTopicTypeResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.EventSubscriptionsListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *EventSubscriptionsClientListRegionalByResourceGroupForTopicTypeResponse) (EventSubscriptionsClientListRegionalByResourceGroupForTopicTypeResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listRegionalByResourceGroupForTopicTypeCreateRequest(ctx, resourceGroupName, location, topicTypeName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return EventSubscriptionsClientListRegionalByResourceGroupForTopicTypeResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return EventSubscriptionsClientListRegionalByResourceGroupForTopicTypeResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return EventSubscriptionsClientListRegionalByResourceGroupForTopicTypeResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listRegionalByResourceGroupForTopicTypeHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listRegionalByResourceGroupForTopicTypeCreateRequest creates the ListRegionalByResourceGroupForTopicType request.
@@ -809,7 +930,7 @@ func (client *EventSubscriptionsClient) listRegionalByResourceGroupForTopicTypeC
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2021-10-15-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -823,7 +944,7 @@ func (client *EventSubscriptionsClient) listRegionalByResourceGroupForTopicTypeC
 
 // listRegionalByResourceGroupForTopicTypeHandleResponse handles the ListRegionalByResourceGroupForTopicType response.
 func (client *EventSubscriptionsClient) listRegionalByResourceGroupForTopicTypeHandleResponse(resp *http.Response) (EventSubscriptionsClientListRegionalByResourceGroupForTopicTypeResponse, error) {
-	result := EventSubscriptionsClientListRegionalByResourceGroupForTopicTypeResponse{RawResponse: resp}
+	result := EventSubscriptionsClientListRegionalByResourceGroupForTopicTypeResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventSubscriptionsListResult); err != nil {
 		return EventSubscriptionsClientListRegionalByResourceGroupForTopicTypeResponse{}, err
 	}
@@ -835,16 +956,32 @@ func (client *EventSubscriptionsClient) listRegionalByResourceGroupForTopicTypeH
 // location - Name of the location.
 // options - EventSubscriptionsClientListRegionalBySubscriptionOptions contains the optional parameters for the EventSubscriptionsClient.ListRegionalBySubscription
 // method.
-func (client *EventSubscriptionsClient) ListRegionalBySubscription(location string, options *EventSubscriptionsClientListRegionalBySubscriptionOptions) *EventSubscriptionsClientListRegionalBySubscriptionPager {
-	return &EventSubscriptionsClientListRegionalBySubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listRegionalBySubscriptionCreateRequest(ctx, location, options)
+func (client *EventSubscriptionsClient) ListRegionalBySubscription(location string, options *EventSubscriptionsClientListRegionalBySubscriptionOptions) *runtime.Pager[EventSubscriptionsClientListRegionalBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[EventSubscriptionsClientListRegionalBySubscriptionResponse]{
+		More: func(page EventSubscriptionsClientListRegionalBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp EventSubscriptionsClientListRegionalBySubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.EventSubscriptionsListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *EventSubscriptionsClientListRegionalBySubscriptionResponse) (EventSubscriptionsClientListRegionalBySubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listRegionalBySubscriptionCreateRequest(ctx, location, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return EventSubscriptionsClientListRegionalBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return EventSubscriptionsClientListRegionalBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return EventSubscriptionsClientListRegionalBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listRegionalBySubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listRegionalBySubscriptionCreateRequest creates the ListRegionalBySubscription request.
@@ -863,7 +1000,7 @@ func (client *EventSubscriptionsClient) listRegionalBySubscriptionCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2021-10-15-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -877,7 +1014,7 @@ func (client *EventSubscriptionsClient) listRegionalBySubscriptionCreateRequest(
 
 // listRegionalBySubscriptionHandleResponse handles the ListRegionalBySubscription response.
 func (client *EventSubscriptionsClient) listRegionalBySubscriptionHandleResponse(resp *http.Response) (EventSubscriptionsClientListRegionalBySubscriptionResponse, error) {
-	result := EventSubscriptionsClientListRegionalBySubscriptionResponse{RawResponse: resp}
+	result := EventSubscriptionsClientListRegionalBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventSubscriptionsListResult); err != nil {
 		return EventSubscriptionsClientListRegionalBySubscriptionResponse{}, err
 	}
@@ -891,16 +1028,32 @@ func (client *EventSubscriptionsClient) listRegionalBySubscriptionHandleResponse
 // topicTypeName - Name of the topic type.
 // options - EventSubscriptionsClientListRegionalBySubscriptionForTopicTypeOptions contains the optional parameters for the
 // EventSubscriptionsClient.ListRegionalBySubscriptionForTopicType method.
-func (client *EventSubscriptionsClient) ListRegionalBySubscriptionForTopicType(location string, topicTypeName string, options *EventSubscriptionsClientListRegionalBySubscriptionForTopicTypeOptions) *EventSubscriptionsClientListRegionalBySubscriptionForTopicTypePager {
-	return &EventSubscriptionsClientListRegionalBySubscriptionForTopicTypePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listRegionalBySubscriptionForTopicTypeCreateRequest(ctx, location, topicTypeName, options)
+func (client *EventSubscriptionsClient) ListRegionalBySubscriptionForTopicType(location string, topicTypeName string, options *EventSubscriptionsClientListRegionalBySubscriptionForTopicTypeOptions) *runtime.Pager[EventSubscriptionsClientListRegionalBySubscriptionForTopicTypeResponse] {
+	return runtime.NewPager(runtime.PageProcessor[EventSubscriptionsClientListRegionalBySubscriptionForTopicTypeResponse]{
+		More: func(page EventSubscriptionsClientListRegionalBySubscriptionForTopicTypeResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp EventSubscriptionsClientListRegionalBySubscriptionForTopicTypeResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.EventSubscriptionsListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *EventSubscriptionsClientListRegionalBySubscriptionForTopicTypeResponse) (EventSubscriptionsClientListRegionalBySubscriptionForTopicTypeResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listRegionalBySubscriptionForTopicTypeCreateRequest(ctx, location, topicTypeName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return EventSubscriptionsClientListRegionalBySubscriptionForTopicTypeResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return EventSubscriptionsClientListRegionalBySubscriptionForTopicTypeResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return EventSubscriptionsClientListRegionalBySubscriptionForTopicTypeResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listRegionalBySubscriptionForTopicTypeHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listRegionalBySubscriptionForTopicTypeCreateRequest creates the ListRegionalBySubscriptionForTopicType request.
@@ -923,7 +1076,7 @@ func (client *EventSubscriptionsClient) listRegionalBySubscriptionForTopicTypeCr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2021-10-15-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -937,7 +1090,7 @@ func (client *EventSubscriptionsClient) listRegionalBySubscriptionForTopicTypeCr
 
 // listRegionalBySubscriptionForTopicTypeHandleResponse handles the ListRegionalBySubscriptionForTopicType response.
 func (client *EventSubscriptionsClient) listRegionalBySubscriptionForTopicTypeHandleResponse(resp *http.Response) (EventSubscriptionsClientListRegionalBySubscriptionForTopicTypeResponse, error) {
-	result := EventSubscriptionsClientListRegionalBySubscriptionForTopicTypeResponse{RawResponse: resp}
+	result := EventSubscriptionsClientListRegionalBySubscriptionForTopicTypeResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventSubscriptionsListResult); err != nil {
 		return EventSubscriptionsClientListRegionalBySubscriptionForTopicTypeResponse{}, err
 	}
@@ -958,22 +1111,16 @@ func (client *EventSubscriptionsClient) listRegionalBySubscriptionForTopicTypeHa
 // eventSubscriptionUpdateParameters - Updated event subscription information.
 // options - EventSubscriptionsClientBeginUpdateOptions contains the optional parameters for the EventSubscriptionsClient.BeginUpdate
 // method.
-func (client *EventSubscriptionsClient) BeginUpdate(ctx context.Context, scope string, eventSubscriptionName string, eventSubscriptionUpdateParameters EventSubscriptionUpdateParameters, options *EventSubscriptionsClientBeginUpdateOptions) (EventSubscriptionsClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, scope, eventSubscriptionName, eventSubscriptionUpdateParameters, options)
-	if err != nil {
-		return EventSubscriptionsClientUpdatePollerResponse{}, err
+func (client *EventSubscriptionsClient) BeginUpdate(ctx context.Context, scope string, eventSubscriptionName string, eventSubscriptionUpdateParameters EventSubscriptionUpdateParameters, options *EventSubscriptionsClientBeginUpdateOptions) (*armruntime.Poller[EventSubscriptionsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, scope, eventSubscriptionName, eventSubscriptionUpdateParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[EventSubscriptionsClientUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[EventSubscriptionsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := EventSubscriptionsClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("EventSubscriptionsClient.Update", "", resp, client.pl)
-	if err != nil {
-		return EventSubscriptionsClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &EventSubscriptionsClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Asynchronously updates an existing event subscription.
@@ -1006,7 +1153,7 @@ func (client *EventSubscriptionsClient) updateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2021-10-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, eventSubscriptionUpdateParameters)

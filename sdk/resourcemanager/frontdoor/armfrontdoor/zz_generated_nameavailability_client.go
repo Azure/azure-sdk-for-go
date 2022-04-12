@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -13,6 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -28,19 +29,23 @@ type NameAvailabilityClient struct {
 // NewNameAvailabilityClient creates a new instance of NameAvailabilityClient with the specified values.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewNameAvailabilityClient(credential azcore.TokenCredential, options *arm.ClientOptions) *NameAvailabilityClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewNameAvailabilityClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*NameAvailabilityClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &NameAvailabilityClient{
-		host: string(cp.Endpoint),
-		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host: ep,
+		pl:   pl,
 	}
-	return client
+	return client, nil
 }
 
 // Check - Check the availability of a Front Door resource name.
@@ -78,7 +83,7 @@ func (client *NameAvailabilityClient) checkCreateRequest(ctx context.Context, ch
 
 // checkHandleResponse handles the Check response.
 func (client *NameAvailabilityClient) checkHandleResponse(resp *http.Response) (NameAvailabilityClientCheckResponse, error) {
-	result := NameAvailabilityClientCheckResponse{RawResponse: resp}
+	result := NameAvailabilityClientCheckResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameAvailabilityOutput); err != nil {
 		return NameAvailabilityClientCheckResponse{}, err
 	}

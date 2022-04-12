@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,7 @@ package armelastic
 
 const (
 	moduleName    = "armelastic"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // CreatedByType - The type of identity that created the resource.
@@ -41,11 +41,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
-}
-
 // ElasticDeploymentStatus - Flag specifying if the Elastic deployment status is healthy or not.
 type ElasticDeploymentStatus string
 
@@ -60,11 +55,6 @@ func PossibleElasticDeploymentStatusValues() []ElasticDeploymentStatus {
 		ElasticDeploymentStatusHealthy,
 		ElasticDeploymentStatusUnhealthy,
 	}
-}
-
-// ToPtr returns a *ElasticDeploymentStatus pointing to the current value.
-func (c ElasticDeploymentStatus) ToPtr() *ElasticDeploymentStatus {
-	return &c
 }
 
 type LiftrResourceCategories string
@@ -82,11 +72,6 @@ func PossibleLiftrResourceCategoriesValues() []LiftrResourceCategories {
 	}
 }
 
-// ToPtr returns a *LiftrResourceCategories pointing to the current value.
-func (c LiftrResourceCategories) ToPtr() *LiftrResourceCategories {
-	return &c
-}
-
 // ManagedIdentityTypes - Managed Identity types.
 type ManagedIdentityTypes string
 
@@ -99,11 +84,6 @@ func PossibleManagedIdentityTypesValues() []ManagedIdentityTypes {
 	return []ManagedIdentityTypes{
 		ManagedIdentityTypesSystemAssigned,
 	}
-}
-
-// ToPtr returns a *ManagedIdentityTypes pointing to the current value.
-func (c ManagedIdentityTypes) ToPtr() *ManagedIdentityTypes {
-	return &c
 }
 
 // MonitoringStatus - Flag specifying if the resource monitoring is enabled or disabled.
@@ -122,11 +102,6 @@ func PossibleMonitoringStatusValues() []MonitoringStatus {
 	}
 }
 
-// ToPtr returns a *MonitoringStatus pointing to the current value.
-func (c MonitoringStatus) ToPtr() *MonitoringStatus {
-	return &c
-}
-
 // OperationName - Operation to be performed on the given vm resource id.
 type OperationName string
 
@@ -141,11 +116,6 @@ func PossibleOperationNameValues() []OperationName {
 		OperationNameAdd,
 		OperationNameDelete,
 	}
-}
-
-// ToPtr returns a *OperationName pointing to the current value.
-func (c OperationName) ToPtr() *OperationName {
-	return &c
 }
 
 // ProvisioningState - Provisioning state of Elastic resource.
@@ -178,11 +148,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	}
 }
 
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
-}
-
 // SendingLogs - Flag indicating the status of the resource for sending logs operation to Elastic.
 type SendingLogs string
 
@@ -199,11 +164,6 @@ func PossibleSendingLogsValues() []SendingLogs {
 	}
 }
 
-// ToPtr returns a *SendingLogs pointing to the current value.
-func (c SendingLogs) ToPtr() *SendingLogs {
-	return &c
-}
-
 // TagAction - Valid actions for a filtering tag. Exclusion takes priority over inclusion.
 type TagAction string
 
@@ -218,9 +178,4 @@ func PossibleTagActionValues() []TagAction {
 		TagActionExclude,
 		TagActionInclude,
 	}
-}
-
-// ToPtr returns a *TagAction pointing to the current value.
-func (c TagAction) ToPtr() *TagAction {
-	return &c
 }

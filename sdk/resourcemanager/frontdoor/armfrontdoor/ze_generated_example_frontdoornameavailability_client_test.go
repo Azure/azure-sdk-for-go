@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,22 +17,29 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor"
 )
 
-// x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2020-05-01/examples/CheckFrontdoorNameAvailability.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/frontdoor/resource-manager/Microsoft.Network/stable/2020-05-01/examples/CheckFrontdoorNameAvailability.json
 func ExampleNameAvailabilityClient_Check() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armfrontdoor.NewNameAvailabilityClient(cred, nil)
+	client, err := armfrontdoor.NewNameAvailabilityClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Check(ctx,
 		armfrontdoor.CheckNameAvailabilityInput{
-			Name: to.StringPtr("<name>"),
-			Type: armfrontdoor.ResourceTypeMicrosoftNetworkFrontDoors.ToPtr(),
+			Name: to.Ptr("<name>"),
+			Type: to.Ptr(armfrontdoor.ResourceTypeMicrosoftNetworkFrontDoors),
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.NameAvailabilityClientCheckResult)
+	// TODO: use response item
+	_ = res
 }

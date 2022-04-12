@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armhanaonazure
 
 const (
 	moduleName    = "armhanaonazure"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // HanaProvisioningStatesEnum - State of provisioning of the HanaInstance
@@ -37,9 +37,4 @@ func PossibleHanaProvisioningStatesEnumValues() []HanaProvisioningStatesEnum {
 		HanaProvisioningStatesEnumSucceeded,
 		HanaProvisioningStatesEnumUpdating,
 	}
-}
-
-// ToPtr returns a *HanaProvisioningStatesEnum pointing to the current value.
-func (c HanaProvisioningStatesEnum) ToPtr() *HanaProvisioningStatesEnum {
-	return &c
 }

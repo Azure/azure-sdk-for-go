@@ -1,5 +1,697 @@
 # Release History
 
+## 0.3.0 (2022-04-12)
+### Breaking Changes
+
+- Function `*PrivateLinkServicesForSCCPowershellClient.ListByResourceGroup` return value(s) have been changed from `(*PrivateLinkServicesForSCCPowershellClientListByResourceGroupPager)` to `(*runtime.Pager[PrivateLinkServicesForSCCPowershellClientListByResourceGroupResponse])`
+- Function `*PrivateEndpointConnectionsForEDMClient.BeginCreateOrUpdate` return value(s) have been changed from `(PrivateEndpointConnectionsForEDMClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[PrivateEndpointConnectionsForEDMClientCreateOrUpdateResponse], error)`
+- Function `NewPrivateEndpointConnectionsAdtAPIClient` return value(s) have been changed from `(*PrivateEndpointConnectionsAdtAPIClient)` to `(*PrivateEndpointConnectionsAdtAPIClient, error)`
+- Function `*PrivateEndpointConnectionsForMIPPolicySyncClient.BeginCreateOrUpdate` return value(s) have been changed from `(PrivateEndpointConnectionsForMIPPolicySyncClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[PrivateEndpointConnectionsForMIPPolicySyncClientCreateOrUpdateResponse], error)`
+- Function `*PrivateLinkServicesForM365SecurityCenterClient.BeginUpdate` return value(s) have been changed from `(PrivateLinkServicesForM365SecurityCenterClientUpdatePollerResponse, error)` to `(*armruntime.Poller[PrivateLinkServicesForM365SecurityCenterClientUpdateResponse], error)`
+- Function `*PrivateLinkServicesForO365ManagementActivityAPIClient.BeginDelete` return value(s) have been changed from `(PrivateLinkServicesForO365ManagementActivityAPIClientDeletePollerResponse, error)` to `(*armruntime.Poller[PrivateLinkServicesForO365ManagementActivityAPIClientDeleteResponse], error)`
+- Function `NewPrivateEndpointConnectionsForEDMClient` return value(s) have been changed from `(*PrivateEndpointConnectionsForEDMClient)` to `(*PrivateEndpointConnectionsForEDMClient, error)`
+- Function `*PrivateEndpointConnectionsForSCCPowershellClient.BeginDelete` return value(s) have been changed from `(PrivateEndpointConnectionsForSCCPowershellClientDeletePollerResponse, error)` to `(*armruntime.Poller[PrivateEndpointConnectionsForSCCPowershellClientDeleteResponse], error)`
+- Function `NewPrivateLinkResourcesForMIPPolicySyncClient` return value(s) have been changed from `(*PrivateLinkResourcesForMIPPolicySyncClient)` to `(*PrivateLinkResourcesForMIPPolicySyncClient, error)`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `NewPrivateEndpointConnectionsSecClient` return value(s) have been changed from `(*PrivateEndpointConnectionsSecClient)` to `(*PrivateEndpointConnectionsSecClient, error)`
+- Function `*PrivateLinkServicesForEDMUploadClient.ListByResourceGroup` return value(s) have been changed from `(*PrivateLinkServicesForEDMUploadClientListByResourceGroupPager)` to `(*runtime.Pager[PrivateLinkServicesForEDMUploadClientListByResourceGroupResponse])`
+- Function `NewPrivateEndpointConnectionsForMIPPolicySyncClient` return value(s) have been changed from `(*PrivateEndpointConnectionsForMIPPolicySyncClient)` to `(*PrivateEndpointConnectionsForMIPPolicySyncClient, error)`
+- Function `*PrivateLinkServicesForMIPPolicySyncClient.BeginCreateOrUpdate` return value(s) have been changed from `(PrivateLinkServicesForMIPPolicySyncClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[PrivateLinkServicesForMIPPolicySyncClientCreateOrUpdateResponse], error)`
+- Function `*PrivateEndpointConnectionsCompClient.ListByService` return value(s) have been changed from `(*PrivateEndpointConnectionsCompClientListByServicePager)` to `(*runtime.Pager[PrivateEndpointConnectionsCompClientListByServiceResponse])`
+- Function `*PrivateEndpointConnectionsForMIPPolicySyncClient.BeginDelete` return value(s) have been changed from `(PrivateEndpointConnectionsForMIPPolicySyncClientDeletePollerResponse, error)` to `(*armruntime.Poller[PrivateEndpointConnectionsForMIPPolicySyncClientDeleteResponse], error)`
+- Function `NewPrivateLinkResourcesCompClient` return value(s) have been changed from `(*PrivateLinkResourcesCompClient)` to `(*PrivateLinkResourcesCompClient, error)`
+- Function `NewPrivateLinkResourcesAdtAPIClient` return value(s) have been changed from `(*PrivateLinkResourcesAdtAPIClient)` to `(*PrivateLinkResourcesAdtAPIClient, error)`
+- Function `*PrivateLinkServicesForMIPPolicySyncClient.ListByResourceGroup` return value(s) have been changed from `(*PrivateLinkServicesForMIPPolicySyncClientListByResourceGroupPager)` to `(*runtime.Pager[PrivateLinkServicesForMIPPolicySyncClientListByResourceGroupResponse])`
+- Function `NewPrivateLinkResourcesClient` return value(s) have been changed from `(*PrivateLinkResourcesClient)` to `(*PrivateLinkResourcesClient, error)`
+- Function `NewPrivateLinkServicesForSCCPowershellClient` return value(s) have been changed from `(*PrivateLinkServicesForSCCPowershellClient)` to `(*PrivateLinkServicesForSCCPowershellClient, error)`
+- Function `*PrivateEndpointConnectionsForSCCPowershellClient.ListByService` return value(s) have been changed from `(*PrivateEndpointConnectionsForSCCPowershellClientListByServicePager)` to `(*runtime.Pager[PrivateEndpointConnectionsForSCCPowershellClientListByServiceResponse])`
+- Function `*PrivateLinkServicesForEDMUploadClient.BeginUpdate` return value(s) have been changed from `(PrivateLinkServicesForEDMUploadClientUpdatePollerResponse, error)` to `(*armruntime.Poller[PrivateLinkServicesForEDMUploadClientUpdateResponse], error)`
+- Function `*PrivateLinkServicesForSCCPowershellClient.BeginDelete` return value(s) have been changed from `(PrivateLinkServicesForSCCPowershellClientDeletePollerResponse, error)` to `(*armruntime.Poller[PrivateLinkServicesForSCCPowershellClientDeleteResponse], error)`
+- Function `*PrivateLinkServicesForM365SecurityCenterClient.BeginDelete` return value(s) have been changed from `(PrivateLinkServicesForM365SecurityCenterClientDeletePollerResponse, error)` to `(*armruntime.Poller[PrivateLinkServicesForM365SecurityCenterClientDeleteResponse], error)`
+- Function `*PrivateLinkServicesForMIPPolicySyncClient.BeginDelete` return value(s) have been changed from `(PrivateLinkServicesForMIPPolicySyncClientDeletePollerResponse, error)` to `(*armruntime.Poller[PrivateLinkServicesForMIPPolicySyncClientDeleteResponse], error)`
+- Function `NewServicesClient` return value(s) have been changed from `(*ServicesClient)` to `(*ServicesClient, error)`
+- Function `*PrivateEndpointConnectionsCompClient.BeginDelete` return value(s) have been changed from `(PrivateEndpointConnectionsCompClientDeletePollerResponse, error)` to `(*armruntime.Poller[PrivateEndpointConnectionsCompClientDeleteResponse], error)`
+- Function `*PrivateEndpointConnectionsSecClient.ListByService` return value(s) have been changed from `(*PrivateEndpointConnectionsSecClientListByServicePager)` to `(*runtime.Pager[PrivateEndpointConnectionsSecClientListByServiceResponse])`
+- Function `*PrivateLinkServicesForM365ComplianceCenterClient.BeginCreateOrUpdate` return value(s) have been changed from `(PrivateLinkServicesForM365ComplianceCenterClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[PrivateLinkServicesForM365ComplianceCenterClientCreateOrUpdateResponse], error)`
+- Function `NewPrivateEndpointConnectionsCompClient` return value(s) have been changed from `(*PrivateEndpointConnectionsCompClient)` to `(*PrivateEndpointConnectionsCompClient, error)`
+- Function `*PrivateLinkServicesForM365SecurityCenterClient.ListByResourceGroup` return value(s) have been changed from `(*PrivateLinkServicesForM365SecurityCenterClientListByResourceGroupPager)` to `(*runtime.Pager[PrivateLinkServicesForM365SecurityCenterClientListByResourceGroupResponse])`
+- Function `*PrivateLinkServicesForM365ComplianceCenterClient.List` return value(s) have been changed from `(*PrivateLinkServicesForM365ComplianceCenterClientListPager)` to `(*runtime.Pager[PrivateLinkServicesForM365ComplianceCenterClientListResponse])`
+- Function `NewPrivateLinkResourcesSecClient` return value(s) have been changed from `(*PrivateLinkResourcesSecClient)` to `(*PrivateLinkResourcesSecClient, error)`
+- Function `*PrivateLinkServicesForM365SecurityCenterClient.BeginCreateOrUpdate` return value(s) have been changed from `(PrivateLinkServicesForM365SecurityCenterClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[PrivateLinkServicesForM365SecurityCenterClientCreateOrUpdateResponse], error)`
+- Function `NewPrivateLinkResourcesForSCCPowershellClient` return value(s) have been changed from `(*PrivateLinkResourcesForSCCPowershellClient)` to `(*PrivateLinkResourcesForSCCPowershellClient, error)`
+- Function `*PrivateLinkServicesForO365ManagementActivityAPIClient.BeginUpdate` return value(s) have been changed from `(PrivateLinkServicesForO365ManagementActivityAPIClientUpdatePollerResponse, error)` to `(*armruntime.Poller[PrivateLinkServicesForO365ManagementActivityAPIClientUpdateResponse], error)`
+- Function `*PrivateLinkServicesForO365ManagementActivityAPIClient.BeginCreateOrUpdate` return value(s) have been changed from `(PrivateLinkServicesForO365ManagementActivityAPIClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[PrivateLinkServicesForO365ManagementActivityAPIClientCreateOrUpdateResponse], error)`
+- Function `*PrivateEndpointConnectionsForMIPPolicySyncClient.ListByService` return value(s) have been changed from `(*PrivateEndpointConnectionsForMIPPolicySyncClientListByServicePager)` to `(*runtime.Pager[PrivateEndpointConnectionsForMIPPolicySyncClientListByServiceResponse])`
+- Function `*PrivateLinkServicesForSCCPowershellClient.BeginCreateOrUpdate` return value(s) have been changed from `(PrivateLinkServicesForSCCPowershellClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[PrivateLinkServicesForSCCPowershellClientCreateOrUpdateResponse], error)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `NewPrivateLinkServicesForM365SecurityCenterClient` return value(s) have been changed from `(*PrivateLinkServicesForM365SecurityCenterClient)` to `(*PrivateLinkServicesForM365SecurityCenterClient, error)`
+- Function `*PrivateLinkServicesForEDMUploadClient.List` return value(s) have been changed from `(*PrivateLinkServicesForEDMUploadClientListPager)` to `(*runtime.Pager[PrivateLinkServicesForEDMUploadClientListResponse])`
+- Function `*PrivateEndpointConnectionsForSCCPowershellClient.BeginCreateOrUpdate` return value(s) have been changed from `(PrivateEndpointConnectionsForSCCPowershellClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[PrivateEndpointConnectionsForSCCPowershellClientCreateOrUpdateResponse], error)`
+- Function `*PrivateLinkServicesForO365ManagementActivityAPIClient.ListByResourceGroup` return value(s) have been changed from `(*PrivateLinkServicesForO365ManagementActivityAPIClientListByResourceGroupPager)` to `(*runtime.Pager[PrivateLinkServicesForO365ManagementActivityAPIClientListByResourceGroupResponse])`
+- Function `*ServicesClient.BeginDelete` return value(s) have been changed from `(ServicesClientDeletePollerResponse, error)` to `(*armruntime.Poller[ServicesClientDeleteResponse], error)`
+- Function `*PrivateEndpointConnectionsForEDMClient.BeginDelete` return value(s) have been changed from `(PrivateEndpointConnectionsForEDMClientDeletePollerResponse, error)` to `(*armruntime.Poller[PrivateEndpointConnectionsForEDMClientDeleteResponse], error)`
+- Function `*PrivateEndpointConnectionsCompClient.BeginCreateOrUpdate` return value(s) have been changed from `(PrivateEndpointConnectionsCompClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[PrivateEndpointConnectionsCompClientCreateOrUpdateResponse], error)`
+- Function `*PrivateLinkServicesForMIPPolicySyncClient.List` return value(s) have been changed from `(*PrivateLinkServicesForMIPPolicySyncClientListPager)` to `(*runtime.Pager[PrivateLinkServicesForMIPPolicySyncClientListResponse])`
+- Function `*PrivateLinkServicesForO365ManagementActivityAPIClient.List` return value(s) have been changed from `(*PrivateLinkServicesForO365ManagementActivityAPIClientListPager)` to `(*runtime.Pager[PrivateLinkServicesForO365ManagementActivityAPIClientListResponse])`
+- Function `*PrivateEndpointConnectionsSecClient.BeginDelete` return value(s) have been changed from `(PrivateEndpointConnectionsSecClientDeletePollerResponse, error)` to `(*armruntime.Poller[PrivateEndpointConnectionsSecClientDeleteResponse], error)`
+- Function `NewPrivateLinkServicesForMIPPolicySyncClient` return value(s) have been changed from `(*PrivateLinkServicesForMIPPolicySyncClient)` to `(*PrivateLinkServicesForMIPPolicySyncClient, error)`
+- Function `*PrivateLinkServicesForSCCPowershellClient.BeginUpdate` return value(s) have been changed from `(PrivateLinkServicesForSCCPowershellClientUpdatePollerResponse, error)` to `(*armruntime.Poller[PrivateLinkServicesForSCCPowershellClientUpdateResponse], error)`
+- Function `NewPrivateLinkServicesForO365ManagementActivityAPIClient` return value(s) have been changed from `(*PrivateLinkServicesForO365ManagementActivityAPIClient)` to `(*PrivateLinkServicesForO365ManagementActivityAPIClient, error)`
+- Function `*PrivateEndpointConnectionsAdtAPIClient.ListByService` return value(s) have been changed from `(*PrivateEndpointConnectionsAdtAPIClientListByServicePager)` to `(*runtime.Pager[PrivateEndpointConnectionsAdtAPIClientListByServiceResponse])`
+- Function `*PrivateEndpointConnectionsSecClient.BeginCreateOrUpdate` return value(s) have been changed from `(PrivateEndpointConnectionsSecClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[PrivateEndpointConnectionsSecClientCreateOrUpdateResponse], error)`
+- Function `*PrivateLinkServicesForMIPPolicySyncClient.BeginUpdate` return value(s) have been changed from `(PrivateLinkServicesForMIPPolicySyncClientUpdatePollerResponse, error)` to `(*armruntime.Poller[PrivateLinkServicesForMIPPolicySyncClientUpdateResponse], error)`
+- Function `*PrivateLinkServicesForM365ComplianceCenterClient.BeginDelete` return value(s) have been changed from `(PrivateLinkServicesForM365ComplianceCenterClientDeletePollerResponse, error)` to `(*armruntime.Poller[PrivateLinkServicesForM365ComplianceCenterClientDeleteResponse], error)`
+- Function `*PrivateLinkServicesForM365SecurityCenterClient.List` return value(s) have been changed from `(*PrivateLinkServicesForM365SecurityCenterClientListPager)` to `(*runtime.Pager[PrivateLinkServicesForM365SecurityCenterClientListResponse])`
+- Function `NewPrivateLinkServicesForEDMUploadClient` return value(s) have been changed from `(*PrivateLinkServicesForEDMUploadClient)` to `(*PrivateLinkServicesForEDMUploadClient, error)`
+- Function `NewPrivateEndpointConnectionsForSCCPowershellClient` return value(s) have been changed from `(*PrivateEndpointConnectionsForSCCPowershellClient)` to `(*PrivateEndpointConnectionsForSCCPowershellClient, error)`
+- Function `*PrivateLinkServicesForM365ComplianceCenterClient.BeginUpdate` return value(s) have been changed from `(PrivateLinkServicesForM365ComplianceCenterClientUpdatePollerResponse, error)` to `(*armruntime.Poller[PrivateLinkServicesForM365ComplianceCenterClientUpdateResponse], error)`
+- Function `*PrivateEndpointConnectionsAdtAPIClient.BeginCreateOrUpdate` return value(s) have been changed from `(PrivateEndpointConnectionsAdtAPIClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[PrivateEndpointConnectionsAdtAPIClientCreateOrUpdateResponse], error)`
+- Function `*PrivateLinkServicesForSCCPowershellClient.List` return value(s) have been changed from `(*PrivateLinkServicesForSCCPowershellClientListPager)` to `(*runtime.Pager[PrivateLinkServicesForSCCPowershellClientListResponse])`
+- Function `*PrivateEndpointConnectionsForEDMClient.ListByService` return value(s) have been changed from `(*PrivateEndpointConnectionsForEDMClientListByServicePager)` to `(*runtime.Pager[PrivateEndpointConnectionsForEDMClientListByServiceResponse])`
+- Function `*PrivateLinkServicesForM365ComplianceCenterClient.ListByResourceGroup` return value(s) have been changed from `(*PrivateLinkServicesForM365ComplianceCenterClientListByResourceGroupPager)` to `(*runtime.Pager[PrivateLinkServicesForM365ComplianceCenterClientListByResourceGroupResponse])`
+- Function `*PrivateLinkServicesForEDMUploadClient.BeginCreateOrUpdate` return value(s) have been changed from `(PrivateLinkServicesForEDMUploadClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[PrivateLinkServicesForEDMUploadClientCreateOrUpdateResponse], error)`
+- Function `NewOperationResultsClient` return value(s) have been changed from `(*OperationResultsClient)` to `(*OperationResultsClient, error)`
+- Function `NewPrivateLinkServicesForM365ComplianceCenterClient` return value(s) have been changed from `(*PrivateLinkServicesForM365ComplianceCenterClient)` to `(*PrivateLinkServicesForM365ComplianceCenterClient, error)`
+- Function `*PrivateEndpointConnectionsAdtAPIClient.BeginDelete` return value(s) have been changed from `(PrivateEndpointConnectionsAdtAPIClientDeletePollerResponse, error)` to `(*armruntime.Poller[PrivateEndpointConnectionsAdtAPIClientDeleteResponse], error)`
+- Function `*ServicesClientDeletePoller.Done` has been removed
+- Function `*PrivateLinkServicesForMIPPolicySyncClientDeletePoller.ResumeToken` has been removed
+- Function `*PrivateLinkServicesForM365ComplianceCenterClientCreateOrUpdatePoller.Done` has been removed
+- Function `*PrivateEndpointConnectionsForSCCPowershellClientDeletePollerResponse.Resume` has been removed
+- Function `*PrivateLinkServicesForSCCPowershellClientUpdatePoller.Done` has been removed
+- Function `*PrivateEndpointConnectionsSecClientDeletePollerResponse.Resume` has been removed
+- Function `*PrivateLinkServicesForM365SecurityCenterClientDeletePoller.ResumeToken` has been removed
+- Function `PrivateEndpointConnectionsForSCCPowershellClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateLinkServicesForM365SecurityCenterClientUpdatePollerResponse.Resume` has been removed
+- Function `*PrivateLinkServicesForO365ManagementActivityAPIClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*PrivateLinkServicesForSCCPowershellClientListByResourceGroupPager.Err` has been removed
+- Function `*PrivateLinkServicesForSCCPowershellClientDeletePollerResponse.Resume` has been removed
+- Function `PrivateLinkServicesForSCCPowershellClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateEndpointConnectionsSecClientDeletePoller.FinalResponse` has been removed
+- Function `*PrivateEndpointConnectionsAdtAPIClientDeletePoller.Done` has been removed
+- Function `PrivateEndpointConnectionsForMIPPolicySyncClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateLinkServicesForMIPPolicySyncClientListByResourceGroupPager.Err` has been removed
+- Function `*PrivateLinkServicesForEDMUploadClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*PrivateEndpointConnectionsCompClientCreateOrUpdatePoller.Done` has been removed
+- Function `*PrivateEndpointConnectionsForSCCPowershellClientDeletePoller.ResumeToken` has been removed
+- Function `PrivateEndpointServiceConnectionStatus.ToPtr` has been removed
+- Function `*PrivateEndpointConnectionsAdtAPIClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*PrivateEndpointConnectionsForMIPPolicySyncClientListByServicePager.PageResponse` has been removed
+- Function `PrivateLinkServicesForMIPPolicySyncClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateLinkServicesForO365ManagementActivityAPIClientUpdatePoller.Poll` has been removed
+- Function `*PrivateLinkServicesForO365ManagementActivityAPIClientDeletePoller.FinalResponse` has been removed
+- Function `*PrivateEndpointConnectionsForMIPPolicySyncClientDeletePoller.Poll` has been removed
+- Function `*PrivateLinkServicesForEDMUploadClientListByResourceGroupPager.Err` has been removed
+- Function `*PrivateLinkServicesForSCCPowershellClientUpdatePollerResponse.Resume` has been removed
+- Function `PrivateLinkServicesForO365ManagementActivityAPIClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `PrivateLinkServicesForSCCPowershellClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateLinkServicesForSCCPowershellClientUpdatePoller.ResumeToken` has been removed
+- Function `*PrivateEndpointConnectionsForEDMClientDeletePoller.Done` has been removed
+- Function `PrivateEndpointConnectionsForMIPPolicySyncClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateEndpointConnectionsSecClientListByServicePager.NextPage` has been removed
+- Function `*PrivateEndpointConnectionsForEDMClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*PrivateEndpointConnectionsAdtAPIClientListByServicePager.PageResponse` has been removed
+- Function `CreatedByType.ToPtr` has been removed
+- Function `*PrivateEndpointConnectionsForMIPPolicySyncClientListByServicePager.NextPage` has been removed
+- Function `*PrivateLinkServicesForEDMUploadClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*PrivateEndpointConnectionsAdtAPIClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `ProvisioningState.ToPtr` has been removed
+- Function `*PrivateLinkServicesForEDMUploadClientUpdatePoller.Poll` has been removed
+- Function `*PrivateLinkServicesForMIPPolicySyncClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*PrivateEndpointConnectionsAdtAPIClientListByServicePager.Err` has been removed
+- Function `*PrivateLinkServicesForM365SecurityCenterClientDeletePoller.FinalResponse` has been removed
+- Function `*PrivateLinkServicesForSCCPowershellClientDeletePoller.FinalResponse` has been removed
+- Function `*PrivateLinkServicesForSCCPowershellClientListPager.PageResponse` has been removed
+- Function `*PrivateEndpointConnectionsForSCCPowershellClientDeletePoller.Poll` has been removed
+- Function `*PrivateEndpointConnectionsSecClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*PrivateEndpointConnectionsForMIPPolicySyncClientCreateOrUpdatePoller.Done` has been removed
+- Function `Kind.ToPtr` has been removed
+- Function `*PrivateLinkServicesForSCCPowershellClientDeletePoller.Poll` has been removed
+- Function `*PrivateLinkServicesForMIPPolicySyncClientDeletePoller.Poll` has been removed
+- Function `*PrivateLinkServicesForM365SecurityCenterClientCreateOrUpdatePoller.Done` has been removed
+- Function `*PrivateLinkServicesForMIPPolicySyncClientDeletePollerResponse.Resume` has been removed
+- Function `*PrivateEndpointConnectionsForEDMClientListByServicePager.NextPage` has been removed
+- Function `*PrivateLinkServicesForM365SecurityCenterClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*PrivateLinkServicesForSCCPowershellClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*PrivateLinkServicesForO365ManagementActivityAPIClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*PrivateLinkServicesForM365ComplianceCenterClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*PrivateEndpointConnectionsForEDMClientDeletePoller.ResumeToken` has been removed
+- Function `*PrivateEndpointConnectionsCompClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*PrivateEndpointConnectionsSecClientDeletePoller.Done` has been removed
+- Function `*PrivateLinkServicesForO365ManagementActivityAPIClientCreateOrUpdatePoller.Done` has been removed
+- Function `*PrivateLinkServicesForM365SecurityCenterClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*PrivateLinkServicesForEDMUploadClientUpdatePollerResponse.Resume` has been removed
+- Function `PrivateLinkServicesForM365SecurityCenterClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateLinkServicesForM365SecurityCenterClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*PrivateEndpointConnectionsForSCCPowershellClientDeletePoller.FinalResponse` has been removed
+- Function `*PrivateEndpointConnectionsAdtAPIClientDeletePollerResponse.Resume` has been removed
+- Function `*PrivateLinkServicesForM365SecurityCenterClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*PrivateEndpointConnectionsSecClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*PrivateLinkServicesForMIPPolicySyncClientUpdatePollerResponse.Resume` has been removed
+- Function `*PrivateLinkServicesForM365ComplianceCenterClientListPager.Err` has been removed
+- Function `PrivateEndpointConnectionsForEDMClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateLinkServicesForMIPPolicySyncClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*PrivateLinkServicesForO365ManagementActivityAPIClientListByResourceGroupPager.NextPage` has been removed
+- Function `*PrivateLinkServicesForM365SecurityCenterClientUpdatePoller.Done` has been removed
+- Function `*PrivateLinkServicesForM365ComplianceCenterClientDeletePoller.Poll` has been removed
+- Function `PrivateEndpointConnectionProvisioningState.ToPtr` has been removed
+- Function `*PrivateLinkServicesForMIPPolicySyncClientUpdatePoller.Poll` has been removed
+- Function `PrivateLinkServicesForO365ManagementActivityAPIClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateEndpointConnectionsForMIPPolicySyncClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*PrivateEndpointConnectionsSecClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*PrivateEndpointConnectionsForMIPPolicySyncClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*PrivateEndpointConnectionsForSCCPowershellClientListByServicePager.PageResponse` has been removed
+- Function `*PrivateLinkServicesForMIPPolicySyncClientCreateOrUpdatePoller.Done` has been removed
+- Function `*PrivateEndpointConnectionsForSCCPowershellClientListByServicePager.Err` has been removed
+- Function `*PrivateLinkServicesForSCCPowershellClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*PrivateLinkServicesForMIPPolicySyncClientUpdatePoller.FinalResponse` has been removed
+- Function `*PrivateEndpointConnectionsForSCCPowershellClientCreateOrUpdatePoller.Done` has been removed
+- Function `*PrivateEndpointConnectionsCompClientDeletePollerResponse.Resume` has been removed
+- Function `*PrivateLinkServicesForM365ComplianceCenterClientUpdatePoller.Done` has been removed
+- Function `*PrivateLinkServicesForEDMUploadClientListPager.Err` has been removed
+- Function `*PrivateLinkServicesForM365ComplianceCenterClientUpdatePollerResponse.Resume` has been removed
+- Function `*PrivateLinkServicesForSCCPowershellClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*PrivateEndpointConnectionsCompClientDeletePoller.Done` has been removed
+- Function `*PrivateLinkServicesForSCCPowershellClientListPager.Err` has been removed
+- Function `*PrivateLinkServicesForM365ComplianceCenterClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*PrivateEndpointConnectionsAdtAPIClientDeletePoller.ResumeToken` has been removed
+- Function `PrivateLinkServicesForM365ComplianceCenterClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateEndpointConnectionsCompClientListByServicePager.PageResponse` has been removed
+- Function `*PrivateLinkServicesForEDMUploadClientUpdatePoller.FinalResponse` has been removed
+- Function `*PrivateLinkServicesForSCCPowershellClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*PrivateLinkServicesForM365ComplianceCenterClientUpdatePoller.ResumeToken` has been removed
+- Function `*PrivateLinkServicesForMIPPolicySyncClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*PrivateEndpointConnectionsForMIPPolicySyncClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*PrivateLinkServicesForM365ComplianceCenterClientListPager.PageResponse` has been removed
+- Function `*PrivateLinkServicesForSCCPowershellClientListPager.NextPage` has been removed
+- Function `*PrivateEndpointConnectionsAdtAPIClientListByServicePager.NextPage` has been removed
+- Function `*PrivateEndpointConnectionsForMIPPolicySyncClientListByServicePager.Err` has been removed
+- Function `PrivateEndpointConnectionsCompClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateLinkServicesForEDMUploadClientListByResourceGroupPager.NextPage` has been removed
+- Function `*PrivateLinkServicesForM365ComplianceCenterClientListByResourceGroupPager.Err` has been removed
+- Function `*PrivateEndpointConnectionsForMIPPolicySyncClientDeletePoller.ResumeToken` has been removed
+- Function `*ServicesClientDeletePoller.ResumeToken` has been removed
+- Function `*PrivateLinkServicesForMIPPolicySyncClientListPager.NextPage` has been removed
+- Function `*PrivateLinkServicesForO365ManagementActivityAPIClientListPager.Err` has been removed
+- Function `*PrivateLinkServicesForM365SecurityCenterClientListPager.Err` has been removed
+- Function `*PrivateEndpointConnectionsForEDMClientListByServicePager.PageResponse` has been removed
+- Function `*PrivateLinkServicesForMIPPolicySyncClientListPager.Err` has been removed
+- Function `*PrivateEndpointConnectionsCompClientDeletePoller.FinalResponse` has been removed
+- Function `*PrivateLinkServicesForM365ComplianceCenterClientUpdatePoller.FinalResponse` has been removed
+- Function `*PrivateEndpointConnectionsForSCCPowershellClientDeletePoller.Done` has been removed
+- Function `*PrivateLinkServicesForEDMUploadClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*ServicesClientDeletePollerResponse.Resume` has been removed
+- Function `*PrivateEndpointConnectionsCompClientDeletePoller.ResumeToken` has been removed
+- Function `*PrivateLinkServicesForM365ComplianceCenterClientListByResourceGroupPager.NextPage` has been removed
+- Function `*PrivateEndpointConnectionsAdtAPIClientDeletePoller.FinalResponse` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `*PrivateLinkServicesForSCCPowershellClientListByResourceGroupPager.NextPage` has been removed
+- Function `*PrivateLinkServicesForO365ManagementActivityAPIClientDeletePoller.Done` has been removed
+- Function `*PrivateLinkServicesForEDMUploadClientUpdatePoller.ResumeToken` has been removed
+- Function `*PrivateLinkServicesForSCCPowershellClientUpdatePoller.Poll` has been removed
+- Function `*PrivateLinkServicesForM365ComplianceCenterClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*PrivateEndpointConnectionsForSCCPowershellClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*PrivateLinkServicesForO365ManagementActivityAPIClientListPager.PageResponse` has been removed
+- Function `*PrivateLinkServicesForO365ManagementActivityAPIClientUpdatePoller.ResumeToken` has been removed
+- Function `PrivateLinkServicesForEDMUploadClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `PrivateLinkServicesForM365SecurityCenterClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ServicesClientDeletePoller.FinalResponse` has been removed
+- Function `OperationResultStatus.ToPtr` has been removed
+- Function `*PrivateLinkServicesForM365SecurityCenterClientListByResourceGroupPager.Err` has been removed
+- Function `PrivateLinkServicesForM365SecurityCenterClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `PrivateEndpointConnectionsSecClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateLinkServicesForM365ComplianceCenterClientDeletePoller.ResumeToken` has been removed
+- Function `*PrivateEndpointConnectionsCompClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*PrivateEndpointConnectionsAdtAPIClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*PrivateLinkServicesForM365ComplianceCenterClientDeletePollerResponse.Resume` has been removed
+- Function `*PrivateLinkServicesForEDMUploadClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*PrivateLinkServicesForSCCPowershellClientUpdatePoller.FinalResponse` has been removed
+- Function `*PrivateLinkServicesForO365ManagementActivityAPIClientUpdatePollerResponse.Resume` has been removed
+- Function `PrivateLinkServicesForMIPPolicySyncClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateLinkServicesForO365ManagementActivityAPIClientDeletePollerResponse.Resume` has been removed
+- Function `PrivateEndpointConnectionsForEDMClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `PrivateLinkServicesForMIPPolicySyncClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateLinkServicesForM365SecurityCenterClientDeletePoller.Poll` has been removed
+- Function `*PrivateEndpointConnectionsSecClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `PrivateLinkServicesForM365ComplianceCenterClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateLinkServicesForO365ManagementActivityAPIClientListPager.NextPage` has been removed
+- Function `*PrivateLinkServicesForM365ComplianceCenterClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*ServicesClientDeletePoller.Poll` has been removed
+- Function `*PrivateLinkServicesForO365ManagementActivityAPIClientDeletePoller.ResumeToken` has been removed
+- Function `*PrivateLinkServicesForM365ComplianceCenterClientDeletePoller.Done` has been removed
+- Function `*PrivateLinkServicesForM365ComplianceCenterClientDeletePoller.FinalResponse` has been removed
+- Function `*PrivateLinkServicesForM365SecurityCenterClientListPager.NextPage` has been removed
+- Function `*PrivateLinkServicesForO365ManagementActivityAPIClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*PrivateLinkServicesForEDMUploadClientCreateOrUpdatePoller.Done` has been removed
+- Function `*PrivateLinkServicesForEDMUploadClientListPager.NextPage` has been removed
+- Function `*PrivateLinkServicesForO365ManagementActivityAPIClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*PrivateLinkServicesForO365ManagementActivityAPIClientUpdatePoller.Done` has been removed
+- Function `PrivateEndpointConnectionsAdtAPIClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateLinkServicesForO365ManagementActivityAPIClientListByResourceGroupPager.Err` has been removed
+- Function `PrivateEndpointConnectionsAdtAPIClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateLinkServicesForM365SecurityCenterClientUpdatePoller.Poll` has been removed
+- Function `*PrivateEndpointConnectionsForSCCPowershellClientListByServicePager.NextPage` has been removed
+- Function `*PrivateEndpointConnectionsSecClientCreateOrUpdatePoller.Done` has been removed
+- Function `*PrivateLinkServicesForMIPPolicySyncClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*PrivateLinkServicesForO365ManagementActivityAPIClientCreateOrUpdatePoller.Poll` has been removed
+- Function `PrivateEndpointConnectionsSecClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateEndpointConnectionsForEDMClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*PrivateLinkServicesForMIPPolicySyncClientDeletePoller.Done` has been removed
+- Function `*PrivateEndpointConnectionsForEDMClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*PrivateLinkServicesForEDMUploadClientCreateOrUpdatePoller.Poll` has been removed
+- Function `PrivateEndpointConnectionsForSCCPowershellClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateEndpointConnectionsForMIPPolicySyncClientDeletePoller.FinalResponse` has been removed
+- Function `*PrivateLinkServicesForM365ComplianceCenterClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*PrivateLinkServicesForM365SecurityCenterClientUpdatePoller.ResumeToken` has been removed
+- Function `*PrivateEndpointConnectionsSecClientDeletePoller.ResumeToken` has been removed
+- Function `*PrivateEndpointConnectionsSecClientDeletePoller.Poll` has been removed
+- Function `*PrivateLinkServicesForM365SecurityCenterClientListPager.PageResponse` has been removed
+- Function `PrivateEndpointConnectionsCompClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateEndpointConnectionsAdtAPIClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*PrivateLinkServicesForMIPPolicySyncClientUpdatePoller.ResumeToken` has been removed
+- Function `*PrivateEndpointConnectionsForSCCPowershellClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*PrivateLinkServicesForMIPPolicySyncClientListPager.PageResponse` has been removed
+- Function `*PrivateLinkServicesForO365ManagementActivityAPIClientDeletePoller.Poll` has been removed
+- Function `*PrivateEndpointConnectionsCompClientListByServicePager.NextPage` has been removed
+- Function `*PrivateLinkServicesForO365ManagementActivityAPIClientUpdatePoller.FinalResponse` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Function `*PrivateLinkServicesForEDMUploadClientListPager.PageResponse` has been removed
+- Function `*PrivateLinkServicesForM365SecurityCenterClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `*PrivateEndpointConnectionsSecClientListByServicePager.PageResponse` has been removed
+- Function `PrivateLinkServicesForO365ManagementActivityAPIClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateEndpointConnectionsSecClientListByServicePager.Err` has been removed
+- Function `*PrivateLinkServicesForSCCPowershellClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*PrivateLinkServicesForSCCPowershellClientDeletePoller.Done` has been removed
+- Function `*PrivateEndpointConnectionsForEDMClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*PrivateLinkServicesForMIPPolicySyncClientDeletePoller.FinalResponse` has been removed
+- Function `*PrivateEndpointConnectionsForEDMClientDeletePoller.Poll` has been removed
+- Function `*PrivateLinkServicesForMIPPolicySyncClientListByResourceGroupPager.NextPage` has been removed
+- Function `*PrivateLinkServicesForSCCPowershellClientCreateOrUpdatePoller.Done` has been removed
+- Function `*PrivateLinkServicesForM365SecurityCenterClientListByResourceGroupPager.NextPage` has been removed
+- Function `*PrivateEndpointConnectionsForEDMClientDeletePollerResponse.Resume` has been removed
+- Function `*PrivateLinkServicesForMIPPolicySyncClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*PrivateLinkServicesForM365SecurityCenterClientDeletePollerResponse.Resume` has been removed
+- Function `*PrivateEndpointConnectionsForMIPPolicySyncClientDeletePoller.Done` has been removed
+- Function `*PrivateEndpointConnectionsForMIPPolicySyncClientCreateOrUpdatePoller.Poll` has been removed
+- Function `PrivateLinkServicesForSCCPowershellClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateEndpointConnectionsForSCCPowershellClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*PrivateEndpointConnectionsCompClientListByServicePager.Err` has been removed
+- Function `*PrivateEndpointConnectionsForEDMClientCreateOrUpdatePoller.Done` has been removed
+- Function `*PrivateEndpointConnectionsForEDMClientListByServicePager.Err` has been removed
+- Function `PrivateLinkServicesForEDMUploadClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateEndpointConnectionsForSCCPowershellClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*PrivateEndpointConnectionsForMIPPolicySyncClientDeletePollerResponse.Resume` has been removed
+- Function `*PrivateEndpointConnectionsCompClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `ManagedServiceIdentityType.ToPtr` has been removed
+- Function `*PrivateEndpointConnectionsCompClientDeletePoller.Poll` has been removed
+- Function `*PrivateLinkServicesForEDMUploadClientUpdatePoller.Done` has been removed
+- Function `*PrivateEndpointConnectionsCompClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*PrivateEndpointConnectionsAdtAPIClientCreateOrUpdatePoller.Done` has been removed
+- Function `*PrivateLinkServicesForSCCPowershellClientDeletePoller.ResumeToken` has been removed
+- Function `*PrivateLinkServicesForM365ComplianceCenterClientUpdatePoller.Poll` has been removed
+- Function `ServicesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateLinkServicesForMIPPolicySyncClientUpdatePoller.Done` has been removed
+- Function `*PrivateEndpointConnectionsForEDMClientDeletePoller.FinalResponse` has been removed
+- Function `*PrivateEndpointConnectionsAdtAPIClientDeletePoller.Poll` has been removed
+- Function `*PrivateLinkServicesForM365SecurityCenterClientDeletePoller.Done` has been removed
+- Function `*PrivateLinkServicesForM365SecurityCenterClientUpdatePoller.FinalResponse` has been removed
+- Function `PublicNetworkAccess.ToPtr` has been removed
+- Function `*PrivateLinkServicesForM365ComplianceCenterClientListPager.NextPage` has been removed
+- Function `PrivateLinkServicesForM365ComplianceCenterClientUpdatePollerResponse.PollUntilDone` has been removed
+- Struct `OperationResultsClientGetResult` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `PrivateEndpointConnectionsAdtAPIClientCreateOrUpdatePoller` has been removed
+- Struct `PrivateEndpointConnectionsAdtAPIClientCreateOrUpdatePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsAdtAPIClientCreateOrUpdateResult` has been removed
+- Struct `PrivateEndpointConnectionsAdtAPIClientDeletePoller` has been removed
+- Struct `PrivateEndpointConnectionsAdtAPIClientDeletePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsAdtAPIClientGetResult` has been removed
+- Struct `PrivateEndpointConnectionsAdtAPIClientListByServicePager` has been removed
+- Struct `PrivateEndpointConnectionsAdtAPIClientListByServiceResult` has been removed
+- Struct `PrivateEndpointConnectionsCompClientCreateOrUpdatePoller` has been removed
+- Struct `PrivateEndpointConnectionsCompClientCreateOrUpdatePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsCompClientCreateOrUpdateResult` has been removed
+- Struct `PrivateEndpointConnectionsCompClientDeletePoller` has been removed
+- Struct `PrivateEndpointConnectionsCompClientDeletePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsCompClientGetResult` has been removed
+- Struct `PrivateEndpointConnectionsCompClientListByServicePager` has been removed
+- Struct `PrivateEndpointConnectionsCompClientListByServiceResult` has been removed
+- Struct `PrivateEndpointConnectionsForEDMClientCreateOrUpdatePoller` has been removed
+- Struct `PrivateEndpointConnectionsForEDMClientCreateOrUpdatePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsForEDMClientCreateOrUpdateResult` has been removed
+- Struct `PrivateEndpointConnectionsForEDMClientDeletePoller` has been removed
+- Struct `PrivateEndpointConnectionsForEDMClientDeletePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsForEDMClientGetResult` has been removed
+- Struct `PrivateEndpointConnectionsForEDMClientListByServicePager` has been removed
+- Struct `PrivateEndpointConnectionsForEDMClientListByServiceResult` has been removed
+- Struct `PrivateEndpointConnectionsForMIPPolicySyncClientCreateOrUpdatePoller` has been removed
+- Struct `PrivateEndpointConnectionsForMIPPolicySyncClientCreateOrUpdatePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsForMIPPolicySyncClientCreateOrUpdateResult` has been removed
+- Struct `PrivateEndpointConnectionsForMIPPolicySyncClientDeletePoller` has been removed
+- Struct `PrivateEndpointConnectionsForMIPPolicySyncClientDeletePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsForMIPPolicySyncClientGetResult` has been removed
+- Struct `PrivateEndpointConnectionsForMIPPolicySyncClientListByServicePager` has been removed
+- Struct `PrivateEndpointConnectionsForMIPPolicySyncClientListByServiceResult` has been removed
+- Struct `PrivateEndpointConnectionsForSCCPowershellClientCreateOrUpdatePoller` has been removed
+- Struct `PrivateEndpointConnectionsForSCCPowershellClientCreateOrUpdatePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsForSCCPowershellClientCreateOrUpdateResult` has been removed
+- Struct `PrivateEndpointConnectionsForSCCPowershellClientDeletePoller` has been removed
+- Struct `PrivateEndpointConnectionsForSCCPowershellClientDeletePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsForSCCPowershellClientGetResult` has been removed
+- Struct `PrivateEndpointConnectionsForSCCPowershellClientListByServicePager` has been removed
+- Struct `PrivateEndpointConnectionsForSCCPowershellClientListByServiceResult` has been removed
+- Struct `PrivateEndpointConnectionsSecClientCreateOrUpdatePoller` has been removed
+- Struct `PrivateEndpointConnectionsSecClientCreateOrUpdatePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsSecClientCreateOrUpdateResult` has been removed
+- Struct `PrivateEndpointConnectionsSecClientDeletePoller` has been removed
+- Struct `PrivateEndpointConnectionsSecClientDeletePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsSecClientGetResult` has been removed
+- Struct `PrivateEndpointConnectionsSecClientListByServicePager` has been removed
+- Struct `PrivateEndpointConnectionsSecClientListByServiceResult` has been removed
+- Struct `PrivateLinkResourcesAdtAPIClientGetResult` has been removed
+- Struct `PrivateLinkResourcesAdtAPIClientListByServiceResult` has been removed
+- Struct `PrivateLinkResourcesClientGetResult` has been removed
+- Struct `PrivateLinkResourcesClientListByServiceResult` has been removed
+- Struct `PrivateLinkResourcesCompClientGetResult` has been removed
+- Struct `PrivateLinkResourcesCompClientListByServiceResult` has been removed
+- Struct `PrivateLinkResourcesForMIPPolicySyncClientGetResult` has been removed
+- Struct `PrivateLinkResourcesForMIPPolicySyncClientListByServiceResult` has been removed
+- Struct `PrivateLinkResourcesForSCCPowershellClientGetResult` has been removed
+- Struct `PrivateLinkResourcesForSCCPowershellClientListByServiceResult` has been removed
+- Struct `PrivateLinkResourcesSecClientGetResult` has been removed
+- Struct `PrivateLinkResourcesSecClientListByServiceResult` has been removed
+- Struct `PrivateLinkServicesForEDMUploadClientCreateOrUpdatePoller` has been removed
+- Struct `PrivateLinkServicesForEDMUploadClientCreateOrUpdatePollerResponse` has been removed
+- Struct `PrivateLinkServicesForEDMUploadClientCreateOrUpdateResult` has been removed
+- Struct `PrivateLinkServicesForEDMUploadClientGetResult` has been removed
+- Struct `PrivateLinkServicesForEDMUploadClientListByResourceGroupPager` has been removed
+- Struct `PrivateLinkServicesForEDMUploadClientListByResourceGroupResult` has been removed
+- Struct `PrivateLinkServicesForEDMUploadClientListPager` has been removed
+- Struct `PrivateLinkServicesForEDMUploadClientListResult` has been removed
+- Struct `PrivateLinkServicesForEDMUploadClientUpdatePoller` has been removed
+- Struct `PrivateLinkServicesForEDMUploadClientUpdatePollerResponse` has been removed
+- Struct `PrivateLinkServicesForEDMUploadClientUpdateResult` has been removed
+- Struct `PrivateLinkServicesForM365ComplianceCenterClientCreateOrUpdatePoller` has been removed
+- Struct `PrivateLinkServicesForM365ComplianceCenterClientCreateOrUpdatePollerResponse` has been removed
+- Struct `PrivateLinkServicesForM365ComplianceCenterClientCreateOrUpdateResult` has been removed
+- Struct `PrivateLinkServicesForM365ComplianceCenterClientDeletePoller` has been removed
+- Struct `PrivateLinkServicesForM365ComplianceCenterClientDeletePollerResponse` has been removed
+- Struct `PrivateLinkServicesForM365ComplianceCenterClientGetResult` has been removed
+- Struct `PrivateLinkServicesForM365ComplianceCenterClientListByResourceGroupPager` has been removed
+- Struct `PrivateLinkServicesForM365ComplianceCenterClientListByResourceGroupResult` has been removed
+- Struct `PrivateLinkServicesForM365ComplianceCenterClientListPager` has been removed
+- Struct `PrivateLinkServicesForM365ComplianceCenterClientListResult` has been removed
+- Struct `PrivateLinkServicesForM365ComplianceCenterClientUpdatePoller` has been removed
+- Struct `PrivateLinkServicesForM365ComplianceCenterClientUpdatePollerResponse` has been removed
+- Struct `PrivateLinkServicesForM365ComplianceCenterClientUpdateResult` has been removed
+- Struct `PrivateLinkServicesForM365SecurityCenterClientCreateOrUpdatePoller` has been removed
+- Struct `PrivateLinkServicesForM365SecurityCenterClientCreateOrUpdatePollerResponse` has been removed
+- Struct `PrivateLinkServicesForM365SecurityCenterClientCreateOrUpdateResult` has been removed
+- Struct `PrivateLinkServicesForM365SecurityCenterClientDeletePoller` has been removed
+- Struct `PrivateLinkServicesForM365SecurityCenterClientDeletePollerResponse` has been removed
+- Struct `PrivateLinkServicesForM365SecurityCenterClientGetResult` has been removed
+- Struct `PrivateLinkServicesForM365SecurityCenterClientListByResourceGroupPager` has been removed
+- Struct `PrivateLinkServicesForM365SecurityCenterClientListByResourceGroupResult` has been removed
+- Struct `PrivateLinkServicesForM365SecurityCenterClientListPager` has been removed
+- Struct `PrivateLinkServicesForM365SecurityCenterClientListResult` has been removed
+- Struct `PrivateLinkServicesForM365SecurityCenterClientUpdatePoller` has been removed
+- Struct `PrivateLinkServicesForM365SecurityCenterClientUpdatePollerResponse` has been removed
+- Struct `PrivateLinkServicesForM365SecurityCenterClientUpdateResult` has been removed
+- Struct `PrivateLinkServicesForMIPPolicySyncClientCreateOrUpdatePoller` has been removed
+- Struct `PrivateLinkServicesForMIPPolicySyncClientCreateOrUpdatePollerResponse` has been removed
+- Struct `PrivateLinkServicesForMIPPolicySyncClientCreateOrUpdateResult` has been removed
+- Struct `PrivateLinkServicesForMIPPolicySyncClientDeletePoller` has been removed
+- Struct `PrivateLinkServicesForMIPPolicySyncClientDeletePollerResponse` has been removed
+- Struct `PrivateLinkServicesForMIPPolicySyncClientGetResult` has been removed
+- Struct `PrivateLinkServicesForMIPPolicySyncClientListByResourceGroupPager` has been removed
+- Struct `PrivateLinkServicesForMIPPolicySyncClientListByResourceGroupResult` has been removed
+- Struct `PrivateLinkServicesForMIPPolicySyncClientListPager` has been removed
+- Struct `PrivateLinkServicesForMIPPolicySyncClientListResult` has been removed
+- Struct `PrivateLinkServicesForMIPPolicySyncClientUpdatePoller` has been removed
+- Struct `PrivateLinkServicesForMIPPolicySyncClientUpdatePollerResponse` has been removed
+- Struct `PrivateLinkServicesForMIPPolicySyncClientUpdateResult` has been removed
+- Struct `PrivateLinkServicesForO365ManagementActivityAPIClientCreateOrUpdatePoller` has been removed
+- Struct `PrivateLinkServicesForO365ManagementActivityAPIClientCreateOrUpdatePollerResponse` has been removed
+- Struct `PrivateLinkServicesForO365ManagementActivityAPIClientCreateOrUpdateResult` has been removed
+- Struct `PrivateLinkServicesForO365ManagementActivityAPIClientDeletePoller` has been removed
+- Struct `PrivateLinkServicesForO365ManagementActivityAPIClientDeletePollerResponse` has been removed
+- Struct `PrivateLinkServicesForO365ManagementActivityAPIClientGetResult` has been removed
+- Struct `PrivateLinkServicesForO365ManagementActivityAPIClientListByResourceGroupPager` has been removed
+- Struct `PrivateLinkServicesForO365ManagementActivityAPIClientListByResourceGroupResult` has been removed
+- Struct `PrivateLinkServicesForO365ManagementActivityAPIClientListPager` has been removed
+- Struct `PrivateLinkServicesForO365ManagementActivityAPIClientListResult` has been removed
+- Struct `PrivateLinkServicesForO365ManagementActivityAPIClientUpdatePoller` has been removed
+- Struct `PrivateLinkServicesForO365ManagementActivityAPIClientUpdatePollerResponse` has been removed
+- Struct `PrivateLinkServicesForO365ManagementActivityAPIClientUpdateResult` has been removed
+- Struct `PrivateLinkServicesForSCCPowershellClientCreateOrUpdatePoller` has been removed
+- Struct `PrivateLinkServicesForSCCPowershellClientCreateOrUpdatePollerResponse` has been removed
+- Struct `PrivateLinkServicesForSCCPowershellClientCreateOrUpdateResult` has been removed
+- Struct `PrivateLinkServicesForSCCPowershellClientDeletePoller` has been removed
+- Struct `PrivateLinkServicesForSCCPowershellClientDeletePollerResponse` has been removed
+- Struct `PrivateLinkServicesForSCCPowershellClientGetResult` has been removed
+- Struct `PrivateLinkServicesForSCCPowershellClientListByResourceGroupPager` has been removed
+- Struct `PrivateLinkServicesForSCCPowershellClientListByResourceGroupResult` has been removed
+- Struct `PrivateLinkServicesForSCCPowershellClientListPager` has been removed
+- Struct `PrivateLinkServicesForSCCPowershellClientListResult` has been removed
+- Struct `PrivateLinkServicesForSCCPowershellClientUpdatePoller` has been removed
+- Struct `PrivateLinkServicesForSCCPowershellClientUpdatePollerResponse` has been removed
+- Struct `PrivateLinkServicesForSCCPowershellClientUpdateResult` has been removed
+- Struct `ServicesClientDeletePoller` has been removed
+- Struct `ServicesClientDeletePollerResponse` has been removed
+- Field `PrivateLinkResourcesSecClientGetResult` of struct `PrivateLinkResourcesSecClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkResourcesSecClientGetResponse` has been removed
+- Field `PrivateLinkServicesForSCCPowershellClientListByResourceGroupResult` of struct `PrivateLinkServicesForSCCPowershellClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkServicesForSCCPowershellClientListByResourceGroupResponse` has been removed
+- Field `PrivateLinkResourcesAdtAPIClientListByServiceResult` of struct `PrivateLinkResourcesAdtAPIClientListByServiceResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkResourcesAdtAPIClientListByServiceResponse` has been removed
+- Field `PrivateLinkServicesForM365ComplianceCenterClientUpdateResult` of struct `PrivateLinkServicesForM365ComplianceCenterClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkServicesForM365ComplianceCenterClientUpdateResponse` has been removed
+- Field `PrivateLinkServicesForO365ManagementActivityAPIClientListByResourceGroupResult` of struct `PrivateLinkServicesForO365ManagementActivityAPIClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkServicesForO365ManagementActivityAPIClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkServicesForMIPPolicySyncClientDeleteResponse` has been removed
+- Field `PrivateLinkServicesForMIPPolicySyncClientListResult` of struct `PrivateLinkServicesForMIPPolicySyncClientListResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkServicesForMIPPolicySyncClientListResponse` has been removed
+- Field `PrivateEndpointConnectionsForSCCPowershellClientCreateOrUpdateResult` of struct `PrivateEndpointConnectionsForSCCPowershellClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsForSCCPowershellClientCreateOrUpdateResponse` has been removed
+- Field `PrivateLinkServicesForM365SecurityCenterClientListByResourceGroupResult` of struct `PrivateLinkServicesForM365SecurityCenterClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkServicesForM365SecurityCenterClientListByResourceGroupResponse` has been removed
+- Field `PrivateLinkServicesForSCCPowershellClientCreateOrUpdateResult` of struct `PrivateLinkServicesForSCCPowershellClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkServicesForSCCPowershellClientCreateOrUpdateResponse` has been removed
+- Field `PrivateLinkServicesForM365SecurityCenterClientUpdateResult` of struct `PrivateLinkServicesForM365SecurityCenterClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkServicesForM365SecurityCenterClientUpdateResponse` has been removed
+- Field `PrivateLinkServicesForEDMUploadClientUpdateResult` of struct `PrivateLinkServicesForEDMUploadClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkServicesForEDMUploadClientUpdateResponse` has been removed
+- Field `PrivateEndpointConnectionsCompClientListByServiceResult` of struct `PrivateEndpointConnectionsCompClientListByServiceResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsCompClientListByServiceResponse` has been removed
+- Field `PrivateLinkResourcesForSCCPowershellClientListByServiceResult` of struct `PrivateLinkResourcesForSCCPowershellClientListByServiceResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkResourcesForSCCPowershellClientListByServiceResponse` has been removed
+- Field `PrivateLinkServicesForO365ManagementActivityAPIClientGetResult` of struct `PrivateLinkServicesForO365ManagementActivityAPIClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkServicesForO365ManagementActivityAPIClientGetResponse` has been removed
+- Field `PrivateEndpointConnectionsForMIPPolicySyncClientGetResult` of struct `PrivateEndpointConnectionsForMIPPolicySyncClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsForMIPPolicySyncClientGetResponse` has been removed
+- Field `PrivateLinkServicesForO365ManagementActivityAPIClientCreateOrUpdateResult` of struct `PrivateLinkServicesForO365ManagementActivityAPIClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkServicesForO365ManagementActivityAPIClientCreateOrUpdateResponse` has been removed
+- Field `PrivateLinkServicesForM365ComplianceCenterClientCreateOrUpdateResult` of struct `PrivateLinkServicesForM365ComplianceCenterClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkServicesForM365ComplianceCenterClientCreateOrUpdateResponse` has been removed
+- Field `PrivateLinkServicesForO365ManagementActivityAPIClientUpdateResult` of struct `PrivateLinkServicesForO365ManagementActivityAPIClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkServicesForO365ManagementActivityAPIClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsAdtAPIClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkServicesForO365ManagementActivityAPIClientDeleteResponse` has been removed
+- Field `PrivateLinkResourcesClientGetResult` of struct `PrivateLinkResourcesClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkResourcesClientGetResponse` has been removed
+- Field `PrivateEndpointConnectionsCompClientGetResult` of struct `PrivateEndpointConnectionsCompClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsCompClientGetResponse` has been removed
+- Field `PrivateEndpointConnectionsSecClientListByServiceResult` of struct `PrivateEndpointConnectionsSecClientListByServiceResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsSecClientListByServiceResponse` has been removed
+- Field `RawResponse` of struct `ServicesClientDeleteResponse` has been removed
+- Field `PrivateEndpointConnectionsForEDMClientCreateOrUpdateResult` of struct `PrivateEndpointConnectionsForEDMClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsForEDMClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkServicesForM365SecurityCenterClientDeleteResponse` has been removed
+- Field `PrivateEndpointConnectionsForMIPPolicySyncClientCreateOrUpdateResult` of struct `PrivateEndpointConnectionsForMIPPolicySyncClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsForMIPPolicySyncClientCreateOrUpdateResponse` has been removed
+- Field `PrivateLinkResourcesClientListByServiceResult` of struct `PrivateLinkResourcesClientListByServiceResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkResourcesClientListByServiceResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsForEDMClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsForSCCPowershellClientDeleteResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `PrivateEndpointConnectionsSecClientGetResult` of struct `PrivateEndpointConnectionsSecClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsSecClientGetResponse` has been removed
+- Field `PrivateLinkServicesForEDMUploadClientCreateOrUpdateResult` of struct `PrivateLinkServicesForEDMUploadClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkServicesForEDMUploadClientCreateOrUpdateResponse` has been removed
+- Field `PrivateLinkResourcesForMIPPolicySyncClientListByServiceResult` of struct `PrivateLinkResourcesForMIPPolicySyncClientListByServiceResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkResourcesForMIPPolicySyncClientListByServiceResponse` has been removed
+- Field `PrivateLinkServicesForM365SecurityCenterClientListResult` of struct `PrivateLinkServicesForM365SecurityCenterClientListResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkServicesForM365SecurityCenterClientListResponse` has been removed
+- Field `PrivateLinkServicesForO365ManagementActivityAPIClientListResult` of struct `PrivateLinkServicesForO365ManagementActivityAPIClientListResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkServicesForO365ManagementActivityAPIClientListResponse` has been removed
+- Field `PrivateLinkResourcesSecClientListByServiceResult` of struct `PrivateLinkResourcesSecClientListByServiceResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkResourcesSecClientListByServiceResponse` has been removed
+- Field `PrivateEndpointConnectionsAdtAPIClientListByServiceResult` of struct `PrivateEndpointConnectionsAdtAPIClientListByServiceResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsAdtAPIClientListByServiceResponse` has been removed
+- Field `PrivateLinkServicesForSCCPowershellClientListResult` of struct `PrivateLinkServicesForSCCPowershellClientListResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkServicesForSCCPowershellClientListResponse` has been removed
+- Field `PrivateLinkServicesForMIPPolicySyncClientUpdateResult` of struct `PrivateLinkServicesForMIPPolicySyncClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkServicesForMIPPolicySyncClientUpdateResponse` has been removed
+- Field `PrivateLinkResourcesAdtAPIClientGetResult` of struct `PrivateLinkResourcesAdtAPIClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkResourcesAdtAPIClientGetResponse` has been removed
+- Field `PrivateLinkResourcesCompClientGetResult` of struct `PrivateLinkResourcesCompClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkResourcesCompClientGetResponse` has been removed
+- Field `PrivateEndpointConnectionsForEDMClientListByServiceResult` of struct `PrivateEndpointConnectionsForEDMClientListByServiceResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsForEDMClientListByServiceResponse` has been removed
+- Field `PrivateLinkServicesForMIPPolicySyncClientGetResult` of struct `PrivateLinkServicesForMIPPolicySyncClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkServicesForMIPPolicySyncClientGetResponse` has been removed
+- Field `PrivateLinkServicesForM365SecurityCenterClientGetResult` of struct `PrivateLinkServicesForM365SecurityCenterClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkServicesForM365SecurityCenterClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsCompClientDeleteResponse` has been removed
+- Field `PrivateEndpointConnectionsSecClientCreateOrUpdateResult` of struct `PrivateEndpointConnectionsSecClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsSecClientCreateOrUpdateResponse` has been removed
+- Field `PrivateLinkServicesForSCCPowershellClientGetResult` of struct `PrivateLinkServicesForSCCPowershellClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkServicesForSCCPowershellClientGetResponse` has been removed
+- Field `PrivateLinkServicesForM365SecurityCenterClientCreateOrUpdateResult` of struct `PrivateLinkServicesForM365SecurityCenterClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkServicesForM365SecurityCenterClientCreateOrUpdateResponse` has been removed
+- Field `PrivateLinkResourcesForSCCPowershellClientGetResult` of struct `PrivateLinkResourcesForSCCPowershellClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkResourcesForSCCPowershellClientGetResponse` has been removed
+- Field `PrivateLinkServicesForEDMUploadClientGetResult` of struct `PrivateLinkServicesForEDMUploadClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkServicesForEDMUploadClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkServicesForM365ComplianceCenterClientDeleteResponse` has been removed
+- Field `OperationResultsClientGetResult` of struct `OperationResultsClientGetResponse` has been removed
+- Field `RawResponse` of struct `OperationResultsClientGetResponse` has been removed
+- Field `PrivateEndpointConnectionsForSCCPowershellClientGetResult` of struct `PrivateEndpointConnectionsForSCCPowershellClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsForSCCPowershellClientGetResponse` has been removed
+- Field `PrivateLinkResourcesCompClientListByServiceResult` of struct `PrivateLinkResourcesCompClientListByServiceResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkResourcesCompClientListByServiceResponse` has been removed
+- Field `PrivateLinkServicesForSCCPowershellClientUpdateResult` of struct `PrivateLinkServicesForSCCPowershellClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkServicesForSCCPowershellClientUpdateResponse` has been removed
+- Field `PrivateLinkServicesForM365ComplianceCenterClientListResult` of struct `PrivateLinkServicesForM365ComplianceCenterClientListResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkServicesForM365ComplianceCenterClientListResponse` has been removed
+- Field `PrivateLinkServicesForEDMUploadClientListByResourceGroupResult` of struct `PrivateLinkServicesForEDMUploadClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkServicesForEDMUploadClientListByResourceGroupResponse` has been removed
+- Field `PrivateEndpointConnectionsAdtAPIClientCreateOrUpdateResult` of struct `PrivateEndpointConnectionsAdtAPIClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsAdtAPIClientCreateOrUpdateResponse` has been removed
+- Field `PrivateEndpointConnectionsForSCCPowershellClientListByServiceResult` of struct `PrivateEndpointConnectionsForSCCPowershellClientListByServiceResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsForSCCPowershellClientListByServiceResponse` has been removed
+- Field `PrivateEndpointConnectionsForMIPPolicySyncClientListByServiceResult` of struct `PrivateEndpointConnectionsForMIPPolicySyncClientListByServiceResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsForMIPPolicySyncClientListByServiceResponse` has been removed
+- Field `PrivateEndpointConnectionsCompClientCreateOrUpdateResult` of struct `PrivateEndpointConnectionsCompClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsCompClientCreateOrUpdateResponse` has been removed
+- Field `PrivateLinkServicesForMIPPolicySyncClientListByResourceGroupResult` of struct `PrivateLinkServicesForMIPPolicySyncClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkServicesForMIPPolicySyncClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsForMIPPolicySyncClientDeleteResponse` has been removed
+- Field `PrivateLinkServicesForEDMUploadClientListResult` of struct `PrivateLinkServicesForEDMUploadClientListResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkServicesForEDMUploadClientListResponse` has been removed
+- Field `PrivateEndpointConnectionsForEDMClientGetResult` of struct `PrivateEndpointConnectionsForEDMClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsForEDMClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsSecClientDeleteResponse` has been removed
+- Field `PrivateLinkServicesForM365ComplianceCenterClientListByResourceGroupResult` of struct `PrivateLinkServicesForM365ComplianceCenterClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkServicesForM365ComplianceCenterClientListByResourceGroupResponse` has been removed
+- Field `PrivateEndpointConnectionsAdtAPIClientGetResult` of struct `PrivateEndpointConnectionsAdtAPIClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsAdtAPIClientGetResponse` has been removed
+- Field `PrivateLinkResourcesForMIPPolicySyncClientGetResult` of struct `PrivateLinkResourcesForMIPPolicySyncClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkResourcesForMIPPolicySyncClientGetResponse` has been removed
+- Field `PrivateLinkServicesForM365ComplianceCenterClientGetResult` of struct `PrivateLinkServicesForM365ComplianceCenterClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkServicesForM365ComplianceCenterClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkServicesForSCCPowershellClientDeleteResponse` has been removed
+- Field `PrivateLinkServicesForMIPPolicySyncClientCreateOrUpdateResult` of struct `PrivateLinkServicesForMIPPolicySyncClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkServicesForMIPPolicySyncClientCreateOrUpdateResponse` has been removed
+
+### Features Added
+
+- New anonymous field `PrivateLinkServicesForEDMUploadDescriptionListResult` in struct `PrivateLinkServicesForEDMUploadClientListResponse`
+- New field `ResumeToken` in struct `PrivateLinkServicesForM365SecurityCenterClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `PrivateEndpointConnectionsForEDMClientBeginCreateOrUpdateOptions`
+- New anonymous field `PrivateEndpointConnection` in struct `PrivateEndpointConnectionsCompClientGetResponse`
+- New anonymous field `PrivateLinkResource` in struct `PrivateLinkResourcesForMIPPolicySyncClientGetResponse`
+- New anonymous field `PrivateEndpointConnectionListResult` in struct `PrivateEndpointConnectionsForEDMClientListByServiceResponse`
+- New field `ResumeToken` in struct `PrivateLinkServicesForSCCPowershellClientBeginUpdateOptions`
+- New anonymous field `PrivateEndpointConnection` in struct `PrivateEndpointConnectionsForEDMClientCreateOrUpdateResponse`
+- New anonymous field `PrivateLinkServicesForSCCPowershellDescription` in struct `PrivateLinkServicesForSCCPowershellClientCreateOrUpdateResponse`
+- New anonymous field `PrivateLinkResource` in struct `PrivateLinkResourcesForSCCPowershellClientGetResponse`
+- New anonymous field `PrivateLinkServicesForEDMUploadDescription` in struct `PrivateLinkServicesForEDMUploadClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `PrivateLinkServicesForO365ManagementActivityAPIClientBeginDeleteOptions`
+- New anonymous field `PrivateEndpointConnection` in struct `PrivateEndpointConnectionsAdtAPIClientCreateOrUpdateResponse`
+- New anonymous field `PrivateEndpointConnection` in struct `PrivateEndpointConnectionsForSCCPowershellClientGetResponse`
+- New anonymous field `PrivateLinkServicesForMIPPolicySyncDescription` in struct `PrivateLinkServicesForMIPPolicySyncClientUpdateResponse`
+- New anonymous field `PrivateLinkServicesForMIPPolicySyncDescription` in struct `PrivateLinkServicesForMIPPolicySyncClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `PrivateEndpointConnectionsAdtAPIClientBeginCreateOrUpdateOptions`
+- New anonymous field `PrivateLinkResourceListResult` in struct `PrivateLinkResourcesForMIPPolicySyncClientListByServiceResponse`
+- New field `ResumeToken` in struct `PrivateLinkServicesForO365ManagementActivityAPIClientBeginUpdateOptions`
+- New anonymous field `PrivateLinkServicesForM365SecurityCenterDescriptionListResult` in struct `PrivateLinkServicesForM365SecurityCenterClientListByResourceGroupResponse`
+- New anonymous field `PrivateLinkServicesForM365ComplianceCenterDescriptionListResult` in struct `PrivateLinkServicesForM365ComplianceCenterClientListByResourceGroupResponse`
+- New field `ResumeToken` in struct `PrivateEndpointConnectionsSecClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `PrivateLinkServicesForM365SecurityCenterClientBeginDeleteOptions`
+- New anonymous field `PrivateLinkServicesForO365ManagementActivityAPIDescriptionListResult` in struct `PrivateLinkServicesForO365ManagementActivityAPIClientListByResourceGroupResponse`
+- New anonymous field `PrivateLinkResourceListResult` in struct `PrivateLinkResourcesSecClientListByServiceResponse`
+- New anonymous field `PrivateLinkServicesForMIPPolicySyncDescriptionListResult` in struct `PrivateLinkServicesForMIPPolicySyncClientListResponse`
+- New anonymous field `PrivateEndpointConnection` in struct `PrivateEndpointConnectionsSecClientCreateOrUpdateResponse`
+- New anonymous field `PrivateLinkServicesForM365ComplianceCenterDescription` in struct `PrivateLinkServicesForM365ComplianceCenterClientUpdateResponse`
+- New anonymous field `PrivateLinkResource` in struct `PrivateLinkResourcesClientGetResponse`
+- New anonymous field `PrivateEndpointConnectionListResult` in struct `PrivateEndpointConnectionsSecClientListByServiceResponse`
+- New anonymous field `PrivateLinkResource` in struct `PrivateLinkResourcesSecClientGetResponse`
+- New anonymous field `PrivateEndpointConnectionListResult` in struct `PrivateEndpointConnectionsForMIPPolicySyncClientListByServiceResponse`
+- New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
+- New anonymous field `PrivateLinkServicesForSCCPowershellDescription` in struct `PrivateLinkServicesForSCCPowershellClientGetResponse`
+- New field `ResumeToken` in struct `PrivateEndpointConnectionsForMIPPolicySyncClientBeginCreateOrUpdateOptions`
+- New anonymous field `PrivateLinkServicesForO365ManagementActivityAPIDescription` in struct `PrivateLinkServicesForO365ManagementActivityAPIClientUpdateResponse`
+- New field `ResumeToken` in struct `PrivateEndpointConnectionsAdtAPIClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `ServicesClientBeginDeleteOptions`
+- New anonymous field `PrivateLinkServicesForMIPPolicySyncDescriptionListResult` in struct `PrivateLinkServicesForMIPPolicySyncClientListByResourceGroupResponse`
+- New anonymous field `PrivateLinkResource` in struct `PrivateLinkResourcesAdtAPIClientGetResponse`
+- New anonymous field `PrivateLinkServicesForM365SecurityCenterDescription` in struct `PrivateLinkServicesForM365SecurityCenterClientGetResponse`
+- New anonymous field `PrivateEndpointConnection` in struct `PrivateEndpointConnectionsCompClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `PrivateLinkServicesForM365ComplianceCenterClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `PrivateLinkServicesForMIPPolicySyncClientBeginUpdateOptions`
+- New anonymous field `PrivateEndpointConnection` in struct `PrivateEndpointConnectionsSecClientGetResponse`
+- New field `ResumeToken` in struct `PrivateLinkServicesForEDMUploadClientBeginUpdateOptions`
+- New anonymous field `PrivateLinkServicesForEDMUploadDescription` in struct `PrivateLinkServicesForEDMUploadClientGetResponse`
+- New field `ResumeToken` in struct `PrivateLinkServicesForO365ManagementActivityAPIClientBeginCreateOrUpdateOptions`
+- New anonymous field `PrivateLinkServicesForM365ComplianceCenterDescription` in struct `PrivateLinkServicesForM365ComplianceCenterClientCreateOrUpdateResponse`
+- New anonymous field `PrivateLinkServicesForEDMUploadDescription` in struct `PrivateLinkServicesForEDMUploadClientUpdateResponse`
+- New field `ResumeToken` in struct `PrivateEndpointConnectionsForMIPPolicySyncClientBeginDeleteOptions`
+- New anonymous field `PrivateEndpointConnectionListResult` in struct `PrivateEndpointConnectionsForSCCPowershellClientListByServiceResponse`
+- New anonymous field `PrivateLinkResource` in struct `PrivateLinkResourcesCompClientGetResponse`
+- New anonymous field `PrivateEndpointConnection` in struct `PrivateEndpointConnectionsForMIPPolicySyncClientCreateOrUpdateResponse`
+- New anonymous field `PrivateLinkServicesForEDMUploadDescriptionListResult` in struct `PrivateLinkServicesForEDMUploadClientListByResourceGroupResponse`
+- New field `ResumeToken` in struct `PrivateLinkServicesForSCCPowershellClientBeginCreateOrUpdateOptions`
+- New anonymous field `PrivateLinkResourceListResult` in struct `PrivateLinkResourcesForSCCPowershellClientListByServiceResponse`
+- New field `ResumeToken` in struct `PrivateEndpointConnectionsCompClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `PrivateEndpointConnectionsForSCCPowershellClientBeginDeleteOptions`
+- New anonymous field `PrivateEndpointConnection` in struct `PrivateEndpointConnectionsForSCCPowershellClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `PrivateLinkServicesForMIPPolicySyncClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `PrivateLinkServicesForM365ComplianceCenterClientBeginCreateOrUpdateOptions`
+- New anonymous field `PrivateLinkServicesForM365ComplianceCenterDescription` in struct `PrivateLinkServicesForM365ComplianceCenterClientGetResponse`
+- New anonymous field `PrivateEndpointConnection` in struct `PrivateEndpointConnectionsAdtAPIClientGetResponse`
+- New anonymous field `PrivateLinkResourceListResult` in struct `PrivateLinkResourcesCompClientListByServiceResponse`
+- New field `ResumeToken` in struct `PrivateEndpointConnectionsForSCCPowershellClientBeginCreateOrUpdateOptions`
+- New anonymous field `PrivateLinkServicesForM365SecurityCenterDescription` in struct `PrivateLinkServicesForM365SecurityCenterClientUpdateResponse`
+- New field `ResumeToken` in struct `PrivateLinkServicesForSCCPowershellClientBeginDeleteOptions`
+- New anonymous field `PrivateLinkServicesForM365SecurityCenterDescriptionListResult` in struct `PrivateLinkServicesForM365SecurityCenterClientListResponse`
+- New anonymous field `PrivateEndpointConnection` in struct `PrivateEndpointConnectionsForEDMClientGetResponse`
+- New anonymous field `PrivateLinkServicesForO365ManagementActivityAPIDescription` in struct `PrivateLinkServicesForO365ManagementActivityAPIClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `PrivateEndpointConnectionsSecClientBeginCreateOrUpdateOptions`
+- New anonymous field `PrivateLinkServicesForO365ManagementActivityAPIDescription` in struct `PrivateLinkServicesForO365ManagementActivityAPIClientGetResponse`
+- New field `ResumeToken` in struct `PrivateEndpointConnectionsCompClientBeginCreateOrUpdateOptions`
+- New anonymous field `PrivateEndpointConnection` in struct `PrivateEndpointConnectionsForMIPPolicySyncClientGetResponse`
+- New anonymous field `PrivateLinkServicesForM365SecurityCenterDescription` in struct `PrivateLinkServicesForM365SecurityCenterClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `PrivateLinkServicesForM365SecurityCenterClientBeginUpdateOptions`
+- New field `ResumeToken` in struct `PrivateLinkServicesForEDMUploadClientBeginCreateOrUpdateOptions`
+- New anonymous field `PrivateEndpointConnectionListResult` in struct `PrivateEndpointConnectionsCompClientListByServiceResponse`
+- New anonymous field `PrivateLinkServicesForM365ComplianceCenterDescriptionListResult` in struct `PrivateLinkServicesForM365ComplianceCenterClientListResponse`
+- New anonymous field `PrivateLinkResourceListResult` in struct `PrivateLinkResourcesClientListByServiceResponse`
+- New anonymous field `PrivateLinkServicesForMIPPolicySyncDescription` in struct `PrivateLinkServicesForMIPPolicySyncClientGetResponse`
+- New field `ResumeToken` in struct `PrivateLinkServicesForMIPPolicySyncClientBeginDeleteOptions`
+- New anonymous field `PrivateLinkServicesForSCCPowershellDescriptionListResult` in struct `PrivateLinkServicesForSCCPowershellClientListResponse`
+- New anonymous field `PrivateEndpointConnectionListResult` in struct `PrivateEndpointConnectionsAdtAPIClientListByServiceResponse`
+- New anonymous field `PrivateLinkServicesForO365ManagementActivityAPIDescriptionListResult` in struct `PrivateLinkServicesForO365ManagementActivityAPIClientListResponse`
+- New field `ResumeToken` in struct `PrivateLinkServicesForM365ComplianceCenterClientBeginUpdateOptions`
+- New anonymous field `PrivateLinkServicesForSCCPowershellDescription` in struct `PrivateLinkServicesForSCCPowershellClientUpdateResponse`
+- New anonymous field `PrivateLinkResourceListResult` in struct `PrivateLinkResourcesAdtAPIClientListByServiceResponse`
+- New anonymous field `PrivateLinkServicesForSCCPowershellDescriptionListResult` in struct `PrivateLinkServicesForSCCPowershellClientListByResourceGroupResponse`
+- New field `ResumeToken` in struct `PrivateEndpointConnectionsForEDMClientBeginDeleteOptions`
+- New anonymous field `OperationResultsDescription` in struct `OperationResultsClientGetResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

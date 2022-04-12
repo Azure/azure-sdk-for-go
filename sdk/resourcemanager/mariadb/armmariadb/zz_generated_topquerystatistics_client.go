@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type TopQueryStatisticsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewTopQueryStatisticsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *TopQueryStatisticsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewTopQueryStatisticsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TopQueryStatisticsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &TopQueryStatisticsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Retrieve the query statistic for specified identifier.
@@ -102,7 +107,7 @@ func (client *TopQueryStatisticsClient) getCreateRequest(ctx context.Context, re
 
 // getHandleResponse handles the Get response.
 func (client *TopQueryStatisticsClient) getHandleResponse(resp *http.Response) (TopQueryStatisticsClientGetResponse, error) {
-	result := TopQueryStatisticsClientGetResponse{RawResponse: resp}
+	result := TopQueryStatisticsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.QueryStatistic); err != nil {
 		return TopQueryStatisticsClientGetResponse{}, err
 	}
@@ -116,16 +121,32 @@ func (client *TopQueryStatisticsClient) getHandleResponse(resp *http.Response) (
 // parameters - The required parameters for retrieving top query statistics.
 // options - TopQueryStatisticsClientListByServerOptions contains the optional parameters for the TopQueryStatisticsClient.ListByServer
 // method.
-func (client *TopQueryStatisticsClient) ListByServer(resourceGroupName string, serverName string, parameters TopQueryStatisticsInput, options *TopQueryStatisticsClientListByServerOptions) *TopQueryStatisticsClientListByServerPager {
-	return &TopQueryStatisticsClientListByServerPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByServerCreateRequest(ctx, resourceGroupName, serverName, parameters, options)
+func (client *TopQueryStatisticsClient) ListByServer(resourceGroupName string, serverName string, parameters TopQueryStatisticsInput, options *TopQueryStatisticsClientListByServerOptions) *runtime.Pager[TopQueryStatisticsClientListByServerResponse] {
+	return runtime.NewPager(runtime.PageProcessor[TopQueryStatisticsClientListByServerResponse]{
+		More: func(page TopQueryStatisticsClientListByServerResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp TopQueryStatisticsClientListByServerResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.TopQueryStatisticsResultList.NextLink)
+		Fetcher: func(ctx context.Context, page *TopQueryStatisticsClientListByServerResponse) (TopQueryStatisticsClientListByServerResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByServerCreateRequest(ctx, resourceGroupName, serverName, parameters, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return TopQueryStatisticsClientListByServerResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return TopQueryStatisticsClientListByServerResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return TopQueryStatisticsClientListByServerResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByServerHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByServerCreateRequest creates the ListByServer request.
@@ -156,7 +177,7 @@ func (client *TopQueryStatisticsClient) listByServerCreateRequest(ctx context.Co
 
 // listByServerHandleResponse handles the ListByServer response.
 func (client *TopQueryStatisticsClient) listByServerHandleResponse(resp *http.Response) (TopQueryStatisticsClientListByServerResponse, error) {
-	result := TopQueryStatisticsClientListByServerResponse{RawResponse: resp}
+	result := TopQueryStatisticsClientListByServerResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TopQueryStatisticsResultList); err != nil {
 		return TopQueryStatisticsClientListByServerResponse{}, err
 	}

@@ -4,11 +4,16 @@
 
 ### Breaking Changes
 
-* [#17321](https://github.com/Azure/azure-sdk-for-go/pull/17321): Returns all clients by pointers
+* Returns all clients by pointers
+
+### Bugs Fixed
+
+* Fixed SAS Issue
 
 ## 0.3.0 (2022-02-09)
 
 ### Breaking Changes
+
 * Updated to latest `azcore`. Public surface area is unchanged.
 * [#16978](https://github.com/Azure/azure-sdk-for-go/pull/16978): The `DownloadResponse.Body` parameter is
   now `*RetryReaderOptions`.

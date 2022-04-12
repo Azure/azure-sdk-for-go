@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,15 +19,20 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/policyinsights/armpolicyinsights"
 )
 
-// x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyEvents_QueryManagementGroupScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyEvents_QueryManagementGroupScope.json
 func ExamplePolicyEventsClient_ListQueryResultsForManagementGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armpolicyinsights.NewPolicyEventsClient(cred, nil)
-	pager := client.ListQueryResultsForManagementGroup(armpolicyinsights.PolicyEventsResourceType("default"),
+	client, err := armpolicyinsights.NewPolicyEventsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
+	pager := client.ListQueryResultsForManagementGroup(armpolicyinsights.PolicyEventsResourceTypeDefault,
 		"<management-group-name>",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
@@ -38,64 +43,74 @@ func ExamplePolicyEventsClient_ListQueryResultsForManagementGroup() {
 			Apply:     nil,
 			SkipToken: nil,
 			Expand:    nil,
-		})
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+		},
+		nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyEvents_FilterAndAggregateOnly.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyEvents_FilterAndAggregateOnly.json
 func ExamplePolicyEventsClient_ListQueryResultsForSubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armpolicyinsights.NewPolicyEventsClient(cred, nil)
-	pager := client.ListQueryResultsForSubscription(armpolicyinsights.PolicyEventsResourceType("default"),
+	client, err := armpolicyinsights.NewPolicyEventsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
+	pager := client.ListQueryResultsForSubscription(armpolicyinsights.PolicyEventsResourceTypeDefault,
 		"<subscription-id>",
 		&armpolicyinsights.QueryOptions{Top: nil,
-			Filter:    to.StringPtr("<filter>"),
+			Filter:    to.Ptr("<filter>"),
 			OrderBy:   nil,
 			Select:    nil,
-			From:      to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-05T18:00:00Z"); return t }()),
+			From:      to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-05T18:00:00Z"); return t }()),
 			To:        nil,
-			Apply:     to.StringPtr("<apply>"),
+			Apply:     to.Ptr("<apply>"),
 			SkipToken: nil,
 			Expand:    nil,
-		})
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+		},
+		nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyEvents_QueryResourceGroupScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyEvents_QueryResourceGroupScope.json
 func ExamplePolicyEventsClient_ListQueryResultsForResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armpolicyinsights.NewPolicyEventsClient(cred, nil)
-	pager := client.ListQueryResultsForResourceGroup(armpolicyinsights.PolicyEventsResourceType("default"),
+	client, err := armpolicyinsights.NewPolicyEventsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
+	pager := client.ListQueryResultsForResourceGroup(armpolicyinsights.PolicyEventsResourceTypeDefault,
 		"<subscription-id>",
 		"<resource-group-name>",
 		&armpolicyinsights.QueryOptions{Top: nil,
@@ -107,30 +122,35 @@ func ExamplePolicyEventsClient_ListQueryResultsForResourceGroup() {
 			Apply:     nil,
 			SkipToken: nil,
 			Expand:    nil,
-		})
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+		},
+		nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyEvents_QueryNestedResourceScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyEvents_QueryNestedResourceScope.json
 func ExamplePolicyEventsClient_ListQueryResultsForResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armpolicyinsights.NewPolicyEventsClient(cred, nil)
-	pager := client.ListQueryResultsForResource(armpolicyinsights.PolicyEventsResourceType("default"),
+	client, err := armpolicyinsights.NewPolicyEventsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
+	pager := client.ListQueryResultsForResource(armpolicyinsights.PolicyEventsResourceTypeDefault,
 		"<resource-id>",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
@@ -141,30 +161,35 @@ func ExamplePolicyEventsClient_ListQueryResultsForResource() {
 			Apply:     nil,
 			SkipToken: nil,
 			Expand:    nil,
-		})
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+		},
+		nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyEvents_QuerySubscriptionLevelPolicySetDefinitionScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyEvents_QuerySubscriptionLevelPolicySetDefinitionScope.json
 func ExamplePolicyEventsClient_ListQueryResultsForPolicySetDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armpolicyinsights.NewPolicyEventsClient(cred, nil)
-	pager := client.ListQueryResultsForPolicySetDefinition(armpolicyinsights.PolicyEventsResourceType("default"),
+	client, err := armpolicyinsights.NewPolicyEventsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
+	pager := client.ListQueryResultsForPolicySetDefinition(armpolicyinsights.PolicyEventsResourceTypeDefault,
 		"<subscription-id>",
 		"<policy-set-definition-name>",
 		&armpolicyinsights.QueryOptions{Top: nil,
@@ -176,30 +201,35 @@ func ExamplePolicyEventsClient_ListQueryResultsForPolicySetDefinition() {
 			Apply:     nil,
 			SkipToken: nil,
 			Expand:    nil,
-		})
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+		},
+		nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyEvents_QuerySubscriptionLevelPolicyDefinitionScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyEvents_QuerySubscriptionLevelPolicyDefinitionScope.json
 func ExamplePolicyEventsClient_ListQueryResultsForPolicyDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armpolicyinsights.NewPolicyEventsClient(cred, nil)
-	pager := client.ListQueryResultsForPolicyDefinition(armpolicyinsights.PolicyEventsResourceType("default"),
+	client, err := armpolicyinsights.NewPolicyEventsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
+	pager := client.ListQueryResultsForPolicyDefinition(armpolicyinsights.PolicyEventsResourceTypeDefault,
 		"<subscription-id>",
 		"<policy-definition-name>",
 		&armpolicyinsights.QueryOptions{Top: nil,
@@ -211,30 +241,35 @@ func ExamplePolicyEventsClient_ListQueryResultsForPolicyDefinition() {
 			Apply:     nil,
 			SkipToken: nil,
 			Expand:    nil,
-		})
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+		},
+		nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyEvents_QuerySubscriptionLevelPolicyAssignmentScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyEvents_QuerySubscriptionLevelPolicyAssignmentScope.json
 func ExamplePolicyEventsClient_ListQueryResultsForSubscriptionLevelPolicyAssignment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armpolicyinsights.NewPolicyEventsClient(cred, nil)
-	pager := client.ListQueryResultsForSubscriptionLevelPolicyAssignment(armpolicyinsights.PolicyEventsResourceType("default"),
+	client, err := armpolicyinsights.NewPolicyEventsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
+	pager := client.ListQueryResultsForSubscriptionLevelPolicyAssignment(armpolicyinsights.PolicyEventsResourceTypeDefault,
 		"<subscription-id>",
 		"<policy-assignment-name>",
 		&armpolicyinsights.QueryOptions{Top: nil,
@@ -246,30 +281,35 @@ func ExamplePolicyEventsClient_ListQueryResultsForSubscriptionLevelPolicyAssignm
 			Apply:     nil,
 			SkipToken: nil,
 			Expand:    nil,
-		})
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+		},
+		nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyEvents_QueryResourceGroupLevelPolicyAssignmentScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyEvents_QueryResourceGroupLevelPolicyAssignmentScope.json
 func ExamplePolicyEventsClient_ListQueryResultsForResourceGroupLevelPolicyAssignment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armpolicyinsights.NewPolicyEventsClient(cred, nil)
-	pager := client.ListQueryResultsForResourceGroupLevelPolicyAssignment(armpolicyinsights.PolicyEventsResourceType("default"),
+	client, err := armpolicyinsights.NewPolicyEventsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
+	pager := client.ListQueryResultsForResourceGroupLevelPolicyAssignment(armpolicyinsights.PolicyEventsResourceTypeDefault,
 		"<subscription-id>",
 		"<resource-group-name>",
 		"<policy-assignment-name>",
@@ -282,17 +322,17 @@ func ExamplePolicyEventsClient_ListQueryResultsForResourceGroupLevelPolicyAssign
 			Apply:     nil,
 			SkipToken: nil,
 			Expand:    nil,
-		})
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+		},
+		nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armpolicyinsights
 
 const (
 	moduleName    = "armpolicyinsights"
-	moduleVersion = "v0.2.0"
+	moduleVersion = "v0.3.0"
 )
 
 // ComplianceState - The compliance state that should be set on the resource.
@@ -34,11 +34,6 @@ func PossibleComplianceStateValues() []ComplianceState {
 	}
 }
 
-// ToPtr returns a *ComplianceState pointing to the current value.
-func (c ComplianceState) ToPtr() *ComplianceState {
-	return &c
-}
-
 // CreatedByType - The type of identity that created the resource.
 type CreatedByType string
 
@@ -57,11 +52,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
 	}
-}
-
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
 }
 
 // FieldRestrictionResult - The type of restriction that is imposed on the field.
@@ -85,11 +75,6 @@ func PossibleFieldRestrictionResultValues() []FieldRestrictionResult {
 	}
 }
 
-// ToPtr returns a *FieldRestrictionResult pointing to the current value.
-func (c FieldRestrictionResult) ToPtr() *FieldRestrictionResult {
-	return &c
-}
-
 type PolicyEventsResourceType string
 
 const (
@@ -101,11 +86,6 @@ func PossiblePolicyEventsResourceTypeValues() []PolicyEventsResourceType {
 	return []PolicyEventsResourceType{
 		PolicyEventsResourceTypeDefault,
 	}
-}
-
-// ToPtr returns a *PolicyEventsResourceType pointing to the current value.
-func (c PolicyEventsResourceType) ToPtr() *PolicyEventsResourceType {
-	return &c
 }
 
 type PolicyStatesResource string
@@ -123,11 +103,6 @@ func PossiblePolicyStatesResourceValues() []PolicyStatesResource {
 	}
 }
 
-// ToPtr returns a *PolicyStatesResource pointing to the current value.
-func (c PolicyStatesResource) ToPtr() *PolicyStatesResource {
-	return &c
-}
-
 type PolicyStatesSummaryResourceType string
 
 const (
@@ -141,11 +116,6 @@ func PossiblePolicyStatesSummaryResourceTypeValues() []PolicyStatesSummaryResour
 	}
 }
 
-// ToPtr returns a *PolicyStatesSummaryResourceType pointing to the current value.
-func (c PolicyStatesSummaryResourceType) ToPtr() *PolicyStatesSummaryResourceType {
-	return &c
-}
-
 type PolicyTrackedResourcesResourceType string
 
 const (
@@ -157,11 +127,6 @@ func PossiblePolicyTrackedResourcesResourceTypeValues() []PolicyTrackedResources
 	return []PolicyTrackedResourcesResourceType{
 		PolicyTrackedResourcesResourceTypeDefault,
 	}
-}
-
-// ToPtr returns a *PolicyTrackedResourcesResourceType pointing to the current value.
-func (c PolicyTrackedResourcesResourceType) ToPtr() *PolicyTrackedResourcesResourceType {
-	return &c
 }
 
 // ResourceDiscoveryMode - The way resources to remediate are discovered. Defaults to ExistingNonCompliant if not specified.
@@ -181,9 +146,4 @@ func PossibleResourceDiscoveryModeValues() []ResourceDiscoveryMode {
 		ResourceDiscoveryModeExistingNonCompliant,
 		ResourceDiscoveryModeReEvaluateCompliance,
 	}
-}
-
-// ToPtr returns a *ResourceDiscoveryMode pointing to the current value.
-func (c ResourceDiscoveryMode) ToPtr() *ResourceDiscoveryMode {
-	return &c
 }

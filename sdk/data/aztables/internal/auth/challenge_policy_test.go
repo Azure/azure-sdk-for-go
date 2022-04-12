@@ -21,7 +21,7 @@ import (
 
 var fakeTenant = "00000000-0000-0000-0000-000000000000"
 
-var scope = "https://myaccount.table.core.windows.net/.default"
+var scope = "https://myaccountname.table.core.windows.net/.default"
 var resource = "https://table.core.windows.net"
 
 var authScope = "Bearer authorization_uri=\"https://login.microsoftonline.com/%s\", scope=\"%s\""
@@ -70,7 +70,7 @@ func TestFindScopeAndTenant(t *testing.T) {
 
 	resp.Header.Set(
 		"WWW-Authenticate",
-		"Bearer authorization_uri=\"https://login.microsoftonline.com/00000000-0000-0000-0000-000000000000\", unimportantkey=\"unimportantvalue\" resource_id=\"https://vault.azure.net/.default\"",
+		"Bearer authorization_uri=\"https://login.microsoftonline.com/00000000-0000-0000-0000-000000000000\", unimportantkey=\"unimportantvalue\" resource_id=\"https://myaccountname.table.core.windows.net/.default\"",
 	)
 	err = p.findScopeAndTenant(&resp)
 	require.NoError(t, err)
@@ -83,12 +83,12 @@ func TestFindScopeAndTenant(t *testing.T) {
 
 	resp.Header.Set(
 		"WWW-Authenticate",
-		"Bearer   authorization_uri=\"https://login.microsoftonline.com/00000000-0000-0000-0000-000000000000\",    unimportantkey=\"unimportantvalue\"   resource_id=\"https://vault.azure.net/.default\"    fakekey=\"fakevalue\"			",
+		"Bearer   authorization_uri=\"https://login.microsoftonline.com/00000000-0000-0000-0000-000000000000\",    unimportantkey=\"unimportantvalue\"   resource_id=\"https://myaccountname.table.core.windows.net/.default\"    fakekey=\"fakevalue\"			",
 	)
 	err = p.findScopeAndTenant(&resp)
 	require.NoError(t, err)
-	if *p.scope != "https://vault.azure.net/.default" {
-		t.Fatalf("scope was not properly parsed, got %s, expected %s", *p.scope, "https://vault.azure.net/.default")
+	if *p.scope != "https://myaccountname.table.core.windows.net/.default" {
+		t.Fatalf("scope was not properly parsed, got %s, expected %s", *p.scope, "https://myaccountname.table.core.windows.net/.default")
 	}
 	if *p.tenantID != fakeTenant {
 		t.Fatalf("tenant ID was not properly parsed, got %s, expected %s", *p.tenantID, fakeTenant)

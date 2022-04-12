@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armmanagementgroups
 
 const (
 	moduleName    = "armmanagementgroups"
-	moduleVersion = "v0.4.0"
+	moduleVersion = "v0.5.0"
 )
 
 type EntitySearchType string
@@ -34,11 +34,6 @@ func PossibleEntitySearchTypeValues() []EntitySearchType {
 	}
 }
 
-// ToPtr returns a *EntitySearchType pointing to the current value.
-func (c EntitySearchType) ToPtr() *EntitySearchType {
-	return &c
-}
-
 type EntityViewParameterType string
 
 const (
@@ -58,11 +53,6 @@ func PossibleEntityViewParameterTypeValues() []EntityViewParameterType {
 	}
 }
 
-// ToPtr returns a *EntityViewParameterType pointing to the current value.
-func (c EntityViewParameterType) ToPtr() *EntityViewParameterType {
-	return &c
-}
-
 // ManagementGroupChildType - The type of child resource.
 type ManagementGroupChildType string
 
@@ -77,11 +67,6 @@ func PossibleManagementGroupChildTypeValues() []ManagementGroupChildType {
 		ManagementGroupChildTypeMicrosoftManagementManagementGroups,
 		ManagementGroupChildTypeSubscriptions,
 	}
-}
-
-// ToPtr returns a *ManagementGroupChildType pointing to the current value.
-func (c ManagementGroupChildType) ToPtr() *ManagementGroupChildType {
-	return &c
 }
 
 type ManagementGroupExpandType string
@@ -99,11 +84,6 @@ func PossibleManagementGroupExpandTypeValues() []ManagementGroupExpandType {
 		ManagementGroupExpandTypeChildren,
 		ManagementGroupExpandTypePath,
 	}
-}
-
-// ToPtr returns a *ManagementGroupExpandType pointing to the current value.
-func (c ManagementGroupExpandType) ToPtr() *ManagementGroupExpandType {
-	return &c
 }
 
 // Permissions - The users specific permissions to this item.
@@ -126,11 +106,6 @@ func PossiblePermissionsValues() []Permissions {
 	}
 }
 
-// ToPtr returns a *Permissions pointing to the current value.
-func (c Permissions) ToPtr() *Permissions {
-	return &c
-}
-
 // Reason - Required if nameAvailable == false. Invalid indicates the name provided does not match the resource provider's
 // naming requirements (incorrect length, unsupported characters, etc.) AlreadyExists
 // indicates that the name is already in use and is therefore unavailable.
@@ -147,11 +122,6 @@ func PossibleReasonValues() []Reason {
 		ReasonInvalid,
 		ReasonAlreadyExists,
 	}
-}
-
-// ToPtr returns a *Reason pointing to the current value.
-func (c Reason) ToPtr() *Reason {
-	return &c
 }
 
 // Status - The status of the Tenant Backfill
@@ -176,9 +146,4 @@ func PossibleStatusValues() []Status {
 		StatusCancelled,
 		StatusCompleted,
 	}
-}
-
-// ToPtr returns a *Status pointing to the current value.
-func (c Status) ToPtr() *Status {
-	return &c
 }

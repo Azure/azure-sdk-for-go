@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type RestorableSQLContainersClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewRestorableSQLContainersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RestorableSQLContainersClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewRestorableSQLContainersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RestorableSQLContainersClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &RestorableSQLContainersClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // List - Show the event feed of all mutations done on all the Azure Cosmos DB SQL containers under a specific database. This
@@ -57,19 +62,26 @@ func NewRestorableSQLContainersClient(subscriptionID string, credential azcore.T
 // instanceID - The instanceId GUID of a restorable database account.
 // options - RestorableSQLContainersClientListOptions contains the optional parameters for the RestorableSQLContainersClient.List
 // method.
-func (client *RestorableSQLContainersClient) List(ctx context.Context, location string, instanceID string, options *RestorableSQLContainersClientListOptions) (RestorableSQLContainersClientListResponse, error) {
-	req, err := client.listCreateRequest(ctx, location, instanceID, options)
-	if err != nil {
-		return RestorableSQLContainersClientListResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return RestorableSQLContainersClientListResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return RestorableSQLContainersClientListResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listHandleResponse(resp)
+func (client *RestorableSQLContainersClient) List(location string, instanceID string, options *RestorableSQLContainersClientListOptions) *runtime.Pager[RestorableSQLContainersClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[RestorableSQLContainersClientListResponse]{
+		More: func(page RestorableSQLContainersClientListResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *RestorableSQLContainersClientListResponse) (RestorableSQLContainersClientListResponse, error) {
+			req, err := client.listCreateRequest(ctx, location, instanceID, options)
+			if err != nil {
+				return RestorableSQLContainersClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return RestorableSQLContainersClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return RestorableSQLContainersClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
+		},
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -92,7 +104,7 @@ func (client *RestorableSQLContainersClient) listCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-15-preview")
 	if options != nil && options.RestorableSQLDatabaseRid != nil {
 		reqQP.Set("restorableSqlDatabaseRid", *options.RestorableSQLDatabaseRid)
 	}
@@ -109,7 +121,7 @@ func (client *RestorableSQLContainersClient) listCreateRequest(ctx context.Conte
 
 // listHandleResponse handles the List response.
 func (client *RestorableSQLContainersClient) listHandleResponse(resp *http.Response) (RestorableSQLContainersClientListResponse, error) {
-	result := RestorableSQLContainersClientListResponse{RawResponse: resp}
+	result := RestorableSQLContainersClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RestorableSQLContainersListResult); err != nil {
 		return RestorableSQLContainersClientListResponse{}, err
 	}

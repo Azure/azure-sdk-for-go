@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,358 +19,484 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry"
 )
 
-// x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2021-09-01/examples/ImportImageByManifestDigest.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2021-12-01-preview/examples/ImportImageByManifestDigest.json
 func ExampleRegistriesClient_BeginImportImage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcontainerregistry.NewRegistriesClient("<subscription-id>", cred, nil)
+	client, err := armcontainerregistry.NewRegistriesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginImportImage(ctx,
 		"<resource-group-name>",
 		"<registry-name>",
 		armcontainerregistry.ImportImageParameters{
-			Mode: armcontainerregistry.ImportMode("Force").ToPtr(),
+			Mode: to.Ptr(armcontainerregistry.ImportModeForce),
 			Source: &armcontainerregistry.ImportSource{
-				ResourceID:  to.StringPtr("<resource-id>"),
-				SourceImage: to.StringPtr("<source-image>"),
+				ResourceID:  to.Ptr("<resource-id>"),
+				SourceImage: to.Ptr("<source-image>"),
 			},
 			TargetTags: []*string{
-				to.StringPtr("targetRepository:targetTag")},
+				to.Ptr("targetRepository:targetTag")},
 			UntaggedTargetRepositories: []*string{
-				to.StringPtr("targetRepository1")},
+				to.Ptr("targetRepository1")},
 		},
-		nil)
+		&armcontainerregistry.RegistriesClientBeginImportImageOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2021-09-01/examples/RegistryCheckNameAvailable.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2021-12-01-preview/examples/RegistryCheckNameAvailable.json
 func ExampleRegistriesClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcontainerregistry.NewRegistriesClient("<subscription-id>", cred, nil)
+	client, err := armcontainerregistry.NewRegistriesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.CheckNameAvailability(ctx,
 		armcontainerregistry.RegistryNameCheckRequest{
-			Name: to.StringPtr("<name>"),
-			Type: to.StringPtr("<type>"),
+			Name: to.Ptr("<name>"),
+			Type: to.Ptr("<type>"),
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.RegistriesClientCheckNameAvailabilityResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2021-09-01/examples/RegistryList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2021-12-01-preview/examples/RegistryList.json
 func ExampleRegistriesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcontainerregistry.NewRegistriesClient("<subscription-id>", cred, nil)
+	client, err := armcontainerregistry.NewRegistriesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.List(nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2021-09-01/examples/RegistryListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2021-12-01-preview/examples/RegistryListByResourceGroup.json
 func ExampleRegistriesClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcontainerregistry.NewRegistriesClient("<subscription-id>", cred, nil)
+	client, err := armcontainerregistry.NewRegistriesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2021-09-01/examples/RegistryGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2021-12-01-preview/examples/RegistryGet.json
 func ExampleRegistriesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcontainerregistry.NewRegistriesClient("<subscription-id>", cred, nil)
+	client, err := armcontainerregistry.NewRegistriesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<registry-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.RegistriesClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2021-09-01/examples/RegistryCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2021-12-01-preview/examples/RegistryCreate.json
 func ExampleRegistriesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcontainerregistry.NewRegistriesClient("<subscription-id>", cred, nil)
+	client, err := armcontainerregistry.NewRegistriesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreate(ctx,
 		"<resource-group-name>",
 		"<registry-name>",
 		armcontainerregistry.Registry{
-			Location: to.StringPtr("<location>"),
+			Location: to.Ptr("<location>"),
 			Tags: map[string]*string{
-				"key": to.StringPtr("value"),
+				"key": to.Ptr("value"),
 			},
 			Properties: &armcontainerregistry.RegistryProperties{
-				AdminUserEnabled: to.BoolPtr(true),
+				AdminUserEnabled: to.Ptr(true),
 			},
 			SKU: &armcontainerregistry.SKU{
-				Name: armcontainerregistry.SKUName("Standard").ToPtr(),
+				Name: to.Ptr(armcontainerregistry.SKUNameStandard),
 			},
 		},
-		nil)
+		&armcontainerregistry.RegistriesClientBeginCreateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.RegistriesClientCreateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2021-09-01/examples/RegistryDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2021-12-01-preview/examples/RegistryDelete.json
 func ExampleRegistriesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcontainerregistry.NewRegistriesClient("<subscription-id>", cred, nil)
+	client, err := armcontainerregistry.NewRegistriesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
 		"<registry-name>",
-		nil)
+		&armcontainerregistry.RegistriesClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2021-09-01/examples/RegistryUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2021-12-01-preview/examples/RegistryUpdate.json
 func ExampleRegistriesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcontainerregistry.NewRegistriesClient("<subscription-id>", cred, nil)
+	client, err := armcontainerregistry.NewRegistriesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginUpdate(ctx,
 		"<resource-group-name>",
 		"<registry-name>",
 		armcontainerregistry.RegistryUpdateParameters{
 			Properties: &armcontainerregistry.RegistryPropertiesUpdateParameters{
-				AdminUserEnabled: to.BoolPtr(true),
+				AdminUserEnabled: to.Ptr(true),
 			},
 			SKU: &armcontainerregistry.SKU{
-				Name: armcontainerregistry.SKUName("Standard").ToPtr(),
+				Name: to.Ptr(armcontainerregistry.SKUNameStandard),
 			},
 			Tags: map[string]*string{
-				"key": to.StringPtr("value"),
+				"key": to.Ptr("value"),
 			},
 		},
-		nil)
+		&armcontainerregistry.RegistriesClientBeginUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.RegistriesClientUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2021-09-01/examples/RegistryListUsages.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2021-12-01-preview/examples/RegistryListUsages.json
 func ExampleRegistriesClient_ListUsages() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcontainerregistry.NewRegistriesClient("<subscription-id>", cred, nil)
+	client, err := armcontainerregistry.NewRegistriesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.ListUsages(ctx,
 		"<resource-group-name>",
 		"<registry-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.RegistriesClientListUsagesResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2021-09-01/examples/RegistryListPrivateLinkResources.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2021-12-01-preview/examples/RegistryListPrivateLinkResources.json
 func ExampleRegistriesClient_ListPrivateLinkResources() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcontainerregistry.NewRegistriesClient("<subscription-id>", cred, nil)
+	client, err := armcontainerregistry.NewRegistriesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListPrivateLinkResources("<resource-group-name>",
 		"<registry-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2021-09-01/examples/RegistryGetPrivateLinkResource.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2021-12-01-preview/examples/RegistryGetPrivateLinkResource.json
 func ExampleRegistriesClient_GetPrivateLinkResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcontainerregistry.NewRegistriesClient("<subscription-id>", cred, nil)
+	client, err := armcontainerregistry.NewRegistriesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GetPrivateLinkResource(ctx,
 		"<resource-group-name>",
 		"<registry-name>",
 		"<group-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.RegistriesClientGetPrivateLinkResourceResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2021-09-01/examples/RegistryListCredentials.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2021-12-01-preview/examples/RegistryListCredentials.json
 func ExampleRegistriesClient_ListCredentials() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcontainerregistry.NewRegistriesClient("<subscription-id>", cred, nil)
+	client, err := armcontainerregistry.NewRegistriesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.ListCredentials(ctx,
 		"<resource-group-name>",
 		"<registry-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.RegistriesClientListCredentialsResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2021-09-01/examples/RegistryRegenerateCredential.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2021-12-01-preview/examples/RegistryRegenerateCredential.json
 func ExampleRegistriesClient_RegenerateCredential() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcontainerregistry.NewRegistriesClient("<subscription-id>", cred, nil)
+	client, err := armcontainerregistry.NewRegistriesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.RegenerateCredential(ctx,
 		"<resource-group-name>",
 		"<registry-name>",
 		armcontainerregistry.RegenerateCredentialParameters{
-			Name: armcontainerregistry.PasswordNamePassword.ToPtr(),
+			Name: to.Ptr(armcontainerregistry.PasswordNamePassword),
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.RegistriesClientRegenerateCredentialResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/RegistriesScheduleRun.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2021-12-01-preview/examples/RegistryGenerateCredentials.json
+func ExampleRegistriesClient_BeginGenerateCredentials() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+		return
+	}
+	ctx := context.Background()
+	client, err := armcontainerregistry.NewRegistriesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
+	poller, err := client.BeginGenerateCredentials(ctx,
+		"<resource-group-name>",
+		"<registry-name>",
+		armcontainerregistry.GenerateCredentialsParameters{
+			Expiry:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-31T15:59:59.0707808Z"); return t }()),
+			TokenID: to.Ptr("<token-id>"),
+		},
+		&armcontainerregistry.RegistriesClientBeginGenerateCredentialsOptions{ResumeToken: ""})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+		return
+	}
+	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+		return
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/RegistriesScheduleRun.json
 func ExampleRegistriesClient_BeginScheduleRun() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcontainerregistry.NewRegistriesClient("<subscription-id>", cred, nil)
+	client, err := armcontainerregistry.NewRegistriesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginScheduleRun(ctx,
 		"<resource-group-name>",
 		"<registry-name>",
 		&armcontainerregistry.DockerBuildRequest{
-			Type:             to.StringPtr("<type>"),
-			IsArchiveEnabled: to.BoolPtr(true),
+			Type:             to.Ptr("<type>"),
+			IsArchiveEnabled: to.Ptr(true),
 			AgentConfiguration: &armcontainerregistry.AgentProperties{
-				CPU: to.Int32Ptr(2),
+				CPU: to.Ptr[int32](2),
 			},
 			Arguments: []*armcontainerregistry.Argument{
 				{
-					Name:     to.StringPtr("<name>"),
-					IsSecret: to.BoolPtr(false),
-					Value:    to.StringPtr("<value>"),
+					Name:     to.Ptr("<name>"),
+					IsSecret: to.Ptr(false),
+					Value:    to.Ptr("<value>"),
 				},
 				{
-					Name:     to.StringPtr("<name>"),
-					IsSecret: to.BoolPtr(true),
-					Value:    to.StringPtr("<value>"),
+					Name:     to.Ptr("<name>"),
+					IsSecret: to.Ptr(true),
+					Value:    to.Ptr("<value>"),
 				}},
-			DockerFilePath: to.StringPtr("<docker-file-path>"),
+			DockerFilePath: to.Ptr("<docker-file-path>"),
 			ImageNames: []*string{
-				to.StringPtr("azurerest:testtag")},
-			IsPushEnabled: to.BoolPtr(true),
-			NoCache:       to.BoolPtr(true),
+				to.Ptr("azurerest:testtag")},
+			IsPushEnabled: to.Ptr(true),
+			NoCache:       to.Ptr(true),
 			Platform: &armcontainerregistry.PlatformProperties{
-				Architecture: armcontainerregistry.Architecture("amd64").ToPtr(),
-				OS:           armcontainerregistry.OS("Linux").ToPtr(),
+				Architecture: to.Ptr(armcontainerregistry.ArchitectureAmd64),
+				OS:           to.Ptr(armcontainerregistry.OSLinux),
 			},
-			SourceLocation: to.StringPtr("<source-location>"),
+			SourceLocation: to.Ptr("<source-location>"),
 		},
-		nil)
+		&armcontainerregistry.RegistriesClientBeginScheduleRunOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.RegistriesClientScheduleRunResult)
+	// TODO: use response item
+	_ = res
 }

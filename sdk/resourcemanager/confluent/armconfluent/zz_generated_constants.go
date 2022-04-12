@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armconfluent
 
 const (
 	moduleName    = "armconfluent"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // CreatedByType - The type of identity that created the resource.
@@ -31,11 +31,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
 	}
-}
-
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
 }
 
 // ProvisionState - Provision states for confluent RP
@@ -68,11 +63,6 @@ func PossibleProvisionStateValues() []ProvisionState {
 	}
 }
 
-// ToPtr returns a *ProvisionState pointing to the current value.
-func (c ProvisionState) ToPtr() *ProvisionState {
-	return &c
-}
-
 // SaaSOfferStatus - SaaS Offer Status for confluent RP
 type SaaSOfferStatus string
 
@@ -103,9 +93,4 @@ func PossibleSaaSOfferStatusValues() []SaaSOfferStatus {
 		SaaSOfferStatusUnsubscribed,
 		SaaSOfferStatusUpdating,
 	}
-}
-
-// ToPtr returns a *SaaSOfferStatus pointing to the current value.
-func (c SaaSOfferStatus) ToPtr() *SaaSOfferStatus {
-	return &c
 }

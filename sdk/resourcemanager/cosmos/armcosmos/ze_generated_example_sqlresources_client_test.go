@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,29 +19,141 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos"
 )
 
-// x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBSqlContainerBackupInformation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBSqlClientEncryptionKeysList.json
+func ExampleSQLResourcesClient_ListClientEncryptionKeys() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+		return
+	}
+	ctx := context.Background()
+	client, err := armcosmos.NewSQLResourcesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
+	pager := client.ListClientEncryptionKeys("<resource-group-name>",
+		"<account-name>",
+		"<database-name>",
+		nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+			return
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBSqlClientEncryptionKeyGet.json
+func ExampleSQLResourcesClient_GetClientEncryptionKey() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+		return
+	}
+	ctx := context.Background()
+	client, err := armcosmos.NewSQLResourcesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
+	res, err := client.GetClientEncryptionKey(ctx,
+		"<resource-group-name>",
+		"<account-name>",
+		"<database-name>",
+		"<client-encryption-key-name>",
+		nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+		return
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBSqlClientEncryptionKeyCreateUpdate.json
+func ExampleSQLResourcesClient_BeginCreateUpdateClientEncryptionKey() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+		return
+	}
+	ctx := context.Background()
+	client, err := armcosmos.NewSQLResourcesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
+	poller, err := client.BeginCreateUpdateClientEncryptionKey(ctx,
+		"<resource-group-name>",
+		"<account-name>",
+		"<database-name>",
+		"<client-encryption-key-name>",
+		armcosmos.ClientEncryptionKeyCreateUpdateParameters{
+			Properties: &armcosmos.ClientEncryptionKeyCreateUpdateProperties{
+				Resource: &armcosmos.ClientEncryptionKeyResource{
+					EncryptionAlgorithm: to.Ptr("<encryption-algorithm>"),
+					ID:                  to.Ptr("<id>"),
+					KeyWrapMetadata: &armcosmos.KeyWrapMetadata{
+						Name:      to.Ptr("<name>"),
+						Type:      to.Ptr("<type>"),
+						Algorithm: to.Ptr("<algorithm>"),
+						Value:     to.Ptr("<value>"),
+					},
+					WrappedDataEncryptionKey: []byte("This is actually an array of bytes. This request/response is being presented as a string for readability in the example"),
+				},
+			},
+		},
+		&armcosmos.SQLResourcesClientBeginCreateUpdateClientEncryptionKeyOptions{ResumeToken: ""})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+		return
+	}
+	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+		return
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBSqlContainerBackupInformation.json
 func ExampleSQLResourcesClient_BeginRetrieveContinuousBackupInformation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcosmos.NewSQLResourcesClient("<subscription-id>", cred, nil)
+	client, err := armcosmos.NewSQLResourcesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginRetrieveContinuousBackupInformation(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		"<database-name>",
 		"<container-name>",
 		armcosmos.ContinuousBackupRestoreLocation{
-			Location: to.StringPtr("<location>"),
+			Location: to.Ptr("<location>"),
 		},
-		nil)
+		&armcosmos.SQLResourcesClientBeginRetrieveContinuousBackupInformationOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.SQLResourcesClientRetrieveContinuousBackupInformationResult)
+	// TODO: use response item
+	_ = res
 }

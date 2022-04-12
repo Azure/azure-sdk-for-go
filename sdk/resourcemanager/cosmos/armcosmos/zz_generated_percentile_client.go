@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type PercentileClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewPercentileClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PercentileClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewPercentileClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PercentileClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &PercentileClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // ListMetrics - Retrieves the metrics determined by the given filter for the given database account. This url is only for
@@ -58,19 +63,26 @@ func NewPercentileClient(subscriptionID string, credential azcore.TokenCredentia
 // name.value (name of the metric, can have an or of multiple names), startTime, endTime,
 // and timeGrain. The supported operator is eq.
 // options - PercentileClientListMetricsOptions contains the optional parameters for the PercentileClient.ListMetrics method.
-func (client *PercentileClient) ListMetrics(ctx context.Context, resourceGroupName string, accountName string, filter string, options *PercentileClientListMetricsOptions) (PercentileClientListMetricsResponse, error) {
-	req, err := client.listMetricsCreateRequest(ctx, resourceGroupName, accountName, filter, options)
-	if err != nil {
-		return PercentileClientListMetricsResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return PercentileClientListMetricsResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PercentileClientListMetricsResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listMetricsHandleResponse(resp)
+func (client *PercentileClient) ListMetrics(resourceGroupName string, accountName string, filter string, options *PercentileClientListMetricsOptions) *runtime.Pager[PercentileClientListMetricsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PercentileClientListMetricsResponse]{
+		More: func(page PercentileClientListMetricsResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *PercentileClientListMetricsResponse) (PercentileClientListMetricsResponse, error) {
+			req, err := client.listMetricsCreateRequest(ctx, resourceGroupName, accountName, filter, options)
+			if err != nil {
+				return PercentileClientListMetricsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PercentileClientListMetricsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PercentileClientListMetricsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listMetricsHandleResponse(resp)
+		},
+	})
 }
 
 // listMetricsCreateRequest creates the ListMetrics request.
@@ -93,7 +105,7 @@ func (client *PercentileClient) listMetricsCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-15-preview")
 	reqQP.Set("$filter", filter)
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
@@ -102,7 +114,7 @@ func (client *PercentileClient) listMetricsCreateRequest(ctx context.Context, re
 
 // listMetricsHandleResponse handles the ListMetrics response.
 func (client *PercentileClient) listMetricsHandleResponse(resp *http.Response) (PercentileClientListMetricsResponse, error) {
-	result := PercentileClientListMetricsResponse{RawResponse: resp}
+	result := PercentileClientListMetricsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PercentileMetricListResult); err != nil {
 		return PercentileClientListMetricsResponse{}, err
 	}

@@ -1,5 +1,98 @@
 # Release History
 
+## 0.3.0 (2022-04-11)
+### Breaking Changes
+
+- Function `*LedgerClient.ListByResourceGroup` return value(s) have been changed from `(*LedgerClientListByResourceGroupPager)` to `(*runtime.Pager[LedgerClientListByResourceGroupResponse])`
+- Function `*LedgerClient.BeginCreate` return value(s) have been changed from `(LedgerClientCreatePollerResponse, error)` to `(*armruntime.Poller[LedgerClientCreateResponse], error)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `NewLedgerClient` return value(s) have been changed from `(*LedgerClient)` to `(*LedgerClient, error)`
+- Function `*LedgerClient.ListBySubscription` return value(s) have been changed from `(*LedgerClientListBySubscriptionPager)` to `(*runtime.Pager[LedgerClientListBySubscriptionResponse])`
+- Function `*LedgerClient.BeginDelete` return value(s) have been changed from `(LedgerClientDeletePollerResponse, error)` to `(*armruntime.Poller[LedgerClientDeleteResponse], error)`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `*LedgerClient.BeginUpdate` return value(s) have been changed from `(LedgerClientUpdatePollerResponse, error)` to `(*armruntime.Poller[LedgerClientUpdateResponse], error)`
+- Function `NewClient` return value(s) have been changed from `(*Client)` to `(*Client, error)`
+- Type of `ErrorAdditionalInfo.Info` has been changed from `map[string]interface{}` to `interface{}`
+- Function `CreatedByType.ToPtr` has been removed
+- Function `*LedgerClientCreatePoller.FinalResponse` has been removed
+- Function `*LedgerClientCreatePoller.Poll` has been removed
+- Function `*LedgerClientUpdatePoller.Poll` has been removed
+- Function `*LedgerClientDeletePoller.Poll` has been removed
+- Function `CheckNameAvailabilityReason.ToPtr` has been removed
+- Function `*LedgerClientCreatePoller.ResumeToken` has been removed
+- Function `*LedgerClientCreatePollerResponse.Resume` has been removed
+- Function `*LedgerClientListByResourceGroupPager.Err` has been removed
+- Function `*LedgerClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*LedgerClientUpdatePollerResponse.Resume` has been removed
+- Function `*LedgerClientUpdatePoller.FinalResponse` has been removed
+- Function `*LedgerClientCreatePoller.Done` has been removed
+- Function `*LedgerClientDeletePoller.ResumeToken` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `LedgerType.ToPtr` has been removed
+- Function `LedgerClientCreatePollerResponse.PollUntilDone` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Function `ProvisioningState.ToPtr` has been removed
+- Function `LedgerClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `LedgerRoleName.ToPtr` has been removed
+- Function `*LedgerClientListByResourceGroupPager.NextPage` has been removed
+- Function `*LedgerClientListBySubscriptionPager.NextPage` has been removed
+- Function `*LedgerClientUpdatePoller.Done` has been removed
+- Function `*LedgerClientListBySubscriptionPager.PageResponse` has been removed
+- Function `*LedgerClientDeletePollerResponse.Resume` has been removed
+- Function `*LedgerClientDeletePoller.Done` has been removed
+- Function `*LedgerClientDeletePoller.FinalResponse` has been removed
+- Function `*LedgerClientUpdatePoller.ResumeToken` has been removed
+- Function `LedgerClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*LedgerClientListBySubscriptionPager.Err` has been removed
+- Struct `ClientCheckNameAvailabilityResult` has been removed
+- Struct `LedgerClientCreatePoller` has been removed
+- Struct `LedgerClientCreatePollerResponse` has been removed
+- Struct `LedgerClientCreateResult` has been removed
+- Struct `LedgerClientDeletePoller` has been removed
+- Struct `LedgerClientDeletePollerResponse` has been removed
+- Struct `LedgerClientGetResult` has been removed
+- Struct `LedgerClientListByResourceGroupPager` has been removed
+- Struct `LedgerClientListByResourceGroupResult` has been removed
+- Struct `LedgerClientListBySubscriptionPager` has been removed
+- Struct `LedgerClientListBySubscriptionResult` has been removed
+- Struct `LedgerClientUpdatePoller` has been removed
+- Struct `LedgerClientUpdatePollerResponse` has been removed
+- Struct `LedgerClientUpdateResult` has been removed
+- Struct `Location` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Field `LedgerClientCreateResult` of struct `LedgerClientCreateResponse` has been removed
+- Field `RawResponse` of struct `LedgerClientCreateResponse` has been removed
+- Field `LedgerClientGetResult` of struct `LedgerClientGetResponse` has been removed
+- Field `RawResponse` of struct `LedgerClientGetResponse` has been removed
+- Field `LedgerClientUpdateResult` of struct `LedgerClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `LedgerClientUpdateResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `LedgerClientDeleteResponse` has been removed
+- Field `LedgerClientListByResourceGroupResult` of struct `LedgerClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `LedgerClientListByResourceGroupResponse` has been removed
+- Field `LedgerClientListBySubscriptionResult` of struct `LedgerClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `LedgerClientListBySubscriptionResponse` has been removed
+- Field `ClientCheckNameAvailabilityResult` of struct `ClientCheckNameAvailabilityResponse` has been removed
+- Field `RawResponse` of struct `ClientCheckNameAvailabilityResponse` has been removed
+
+### Features Added
+
+- New struct `ResourceLocation`
+- New field `ResumeToken` in struct `LedgerClientBeginCreateOptions`
+- New anonymous field `ConfidentialLedger` in struct `LedgerClientCreateResponse`
+- New field `ResumeToken` in struct `LedgerClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `LedgerClientBeginUpdateOptions`
+- New anonymous field `List` in struct `LedgerClientListBySubscriptionResponse`
+- New anonymous field `CheckNameAvailabilityResponse` in struct `ClientCheckNameAvailabilityResponse`
+- New anonymous field `ConfidentialLedger` in struct `LedgerClientGetResponse`
+- New anonymous field `ResourceProviderOperationList` in struct `OperationsClientListResponse`
+- New anonymous field `ConfidentialLedger` in struct `LedgerClientUpdateResponse`
+- New anonymous field `List` in struct `LedgerClientListByResourceGroupResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

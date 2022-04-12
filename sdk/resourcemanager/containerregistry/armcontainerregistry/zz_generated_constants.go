@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,10 +10,10 @@ package armcontainerregistry
 
 const (
 	moduleName    = "armcontainerregistry"
-	moduleVersion = "v0.3.1"
+	moduleVersion = "v0.4.0"
 )
 
-// Action - The action of IP ACL rule.
+// Action - The action of virtual network rule.
 type Action string
 
 const (
@@ -25,11 +25,6 @@ func PossibleActionValues() []Action {
 	return []Action{
 		ActionAllow,
 	}
-}
-
-// ToPtr returns a *Action pointing to the current value.
-func (c Action) ToPtr() *Action {
-	return &c
 }
 
 // ActionsRequired - A message indicating if changes on the service provider require any updates on the consumer.
@@ -48,9 +43,20 @@ func PossibleActionsRequiredValues() []ActionsRequired {
 	}
 }
 
-// ToPtr returns a *ActionsRequired pointing to the current value.
-func (c ActionsRequired) ToPtr() *ActionsRequired {
-	return &c
+// ActivationStatus - The activation status of the connected registry.
+type ActivationStatus string
+
+const (
+	ActivationStatusActive   ActivationStatus = "Active"
+	ActivationStatusInactive ActivationStatus = "Inactive"
+)
+
+// PossibleActivationStatusValues returns the possible values for the ActivationStatus const type.
+func PossibleActivationStatusValues() []ActivationStatus {
+	return []ActivationStatus{
+		ActivationStatusActive,
+		ActivationStatusInactive,
+	}
 }
 
 // Architecture - The OS architecture.
@@ -75,9 +81,20 @@ func PossibleArchitectureValues() []Architecture {
 	}
 }
 
-// ToPtr returns a *Architecture pointing to the current value.
-func (c Architecture) ToPtr() *Architecture {
-	return &c
+// AuditLogStatus - Indicates whether audit logs are enabled on the connected registry.
+type AuditLogStatus string
+
+const (
+	AuditLogStatusDisabled AuditLogStatus = "Disabled"
+	AuditLogStatusEnabled  AuditLogStatus = "Enabled"
+)
+
+// PossibleAuditLogStatusValues returns the possible values for the AuditLogStatus const type.
+func PossibleAuditLogStatusValues() []AuditLogStatus {
+	return []AuditLogStatus{
+		AuditLogStatusDisabled,
+		AuditLogStatusEnabled,
+	}
 }
 
 // BaseImageDependencyType - The type of the base image dependency.
@@ -96,11 +113,6 @@ func PossibleBaseImageDependencyTypeValues() []BaseImageDependencyType {
 	}
 }
 
-// ToPtr returns a *BaseImageDependencyType pointing to the current value.
-func (c BaseImageDependencyType) ToPtr() *BaseImageDependencyType {
-	return &c
-}
-
 // BaseImageTriggerType - The type of the auto trigger for base image dependency updates.
 type BaseImageTriggerType string
 
@@ -117,9 +129,58 @@ func PossibleBaseImageTriggerTypeValues() []BaseImageTriggerType {
 	}
 }
 
-// ToPtr returns a *BaseImageTriggerType pointing to the current value.
-func (c BaseImageTriggerType) ToPtr() *BaseImageTriggerType {
-	return &c
+// CertificateType - The type of certificate location.
+type CertificateType string
+
+const (
+	CertificateTypeLocalDirectory CertificateType = "LocalDirectory"
+)
+
+// PossibleCertificateTypeValues returns the possible values for the CertificateType const type.
+func PossibleCertificateTypeValues() []CertificateType {
+	return []CertificateType{
+		CertificateTypeLocalDirectory,
+	}
+}
+
+// ConnectedRegistryMode - The mode of the connected registry resource that indicates the permissions of the registry.
+type ConnectedRegistryMode string
+
+const (
+	ConnectedRegistryModeMirror    ConnectedRegistryMode = "Mirror"
+	ConnectedRegistryModeReadOnly  ConnectedRegistryMode = "ReadOnly"
+	ConnectedRegistryModeReadWrite ConnectedRegistryMode = "ReadWrite"
+	ConnectedRegistryModeRegistry  ConnectedRegistryMode = "Registry"
+)
+
+// PossibleConnectedRegistryModeValues returns the possible values for the ConnectedRegistryMode const type.
+func PossibleConnectedRegistryModeValues() []ConnectedRegistryMode {
+	return []ConnectedRegistryMode{
+		ConnectedRegistryModeMirror,
+		ConnectedRegistryModeReadOnly,
+		ConnectedRegistryModeReadWrite,
+		ConnectedRegistryModeRegistry,
+	}
+}
+
+// ConnectionState - The current connection state of the connected registry.
+type ConnectionState string
+
+const (
+	ConnectionStateOffline   ConnectionState = "Offline"
+	ConnectionStateOnline    ConnectionState = "Online"
+	ConnectionStateSyncing   ConnectionState = "Syncing"
+	ConnectionStateUnhealthy ConnectionState = "Unhealthy"
+)
+
+// PossibleConnectionStateValues returns the possible values for the ConnectionState const type.
+func PossibleConnectionStateValues() []ConnectionState {
+	return []ConnectionState{
+		ConnectionStateOffline,
+		ConnectionStateOnline,
+		ConnectionStateSyncing,
+		ConnectionStateUnhealthy,
+	}
 }
 
 // ConnectionStatus - The private link service connection status.
@@ -142,11 +203,6 @@ func PossibleConnectionStatusValues() []ConnectionStatus {
 	}
 }
 
-// ToPtr returns a *ConnectionStatus pointing to the current value.
-func (c ConnectionStatus) ToPtr() *ConnectionStatus {
-	return &c
-}
-
 // CreatedByType - The type of identity that created the resource.
 type CreatedByType string
 
@@ -167,11 +223,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
-}
-
 // DefaultAction - The default action of allow or deny when no other rules match.
 type DefaultAction string
 
@@ -186,11 +237,6 @@ func PossibleDefaultActionValues() []DefaultAction {
 		DefaultActionAllow,
 		DefaultActionDeny,
 	}
-}
-
-// ToPtr returns a *DefaultAction pointing to the current value.
-func (c DefaultAction) ToPtr() *DefaultAction {
-	return &c
 }
 
 // EncryptionStatus - Indicates whether or not the encryption is enabled for container registry.
@@ -209,11 +255,6 @@ func PossibleEncryptionStatusValues() []EncryptionStatus {
 	}
 }
 
-// ToPtr returns a *EncryptionStatus pointing to the current value.
-func (c EncryptionStatus) ToPtr() *EncryptionStatus {
-	return &c
-}
-
 // ExportPolicyStatus - The value that indicates whether the policy is enabled or not.
 type ExportPolicyStatus string
 
@@ -228,11 +269,6 @@ func PossibleExportPolicyStatusValues() []ExportPolicyStatus {
 		ExportPolicyStatusDisabled,
 		ExportPolicyStatusEnabled,
 	}
-}
-
-// ToPtr returns a *ExportPolicyStatus pointing to the current value.
-func (c ExportPolicyStatus) ToPtr() *ExportPolicyStatus {
-	return &c
 }
 
 // ImportMode - When Force, any existing target tags will be overwritten. When NoForce, any existing target tags will fail
@@ -250,11 +286,6 @@ func PossibleImportModeValues() []ImportMode {
 		ImportModeForce,
 		ImportModeNoForce,
 	}
-}
-
-// ToPtr returns a *ImportMode pointing to the current value.
-func (c ImportMode) ToPtr() *ImportMode {
-	return &c
 }
 
 // LastModifiedByType - The type of identity that last modified the resource.
@@ -277,9 +308,26 @@ func PossibleLastModifiedByTypeValues() []LastModifiedByType {
 	}
 }
 
-// ToPtr returns a *LastModifiedByType pointing to the current value.
-func (c LastModifiedByType) ToPtr() *LastModifiedByType {
-	return &c
+// LogLevel - The verbosity of logs persisted on the connected registry.
+type LogLevel string
+
+const (
+	LogLevelDebug       LogLevel = "Debug"
+	LogLevelError       LogLevel = "Error"
+	LogLevelInformation LogLevel = "Information"
+	LogLevelNone        LogLevel = "None"
+	LogLevelWarning     LogLevel = "Warning"
+)
+
+// PossibleLogLevelValues returns the possible values for the LogLevel const type.
+func PossibleLogLevelValues() []LogLevel {
+	return []LogLevel{
+		LogLevelDebug,
+		LogLevelError,
+		LogLevelInformation,
+		LogLevelNone,
+		LogLevelWarning,
+	}
 }
 
 // NetworkRuleBypassOptions - Whether to allow trusted Azure services to access a network restricted registry.
@@ -298,11 +346,6 @@ func PossibleNetworkRuleBypassOptionsValues() []NetworkRuleBypassOptions {
 	}
 }
 
-// ToPtr returns a *NetworkRuleBypassOptions pointing to the current value.
-func (c NetworkRuleBypassOptions) ToPtr() *NetworkRuleBypassOptions {
-	return &c
-}
-
 // OS - The OS of agent machine
 type OS string
 
@@ -317,11 +360,6 @@ func PossibleOSValues() []OS {
 		OSLinux,
 		OSWindows,
 	}
-}
-
-// ToPtr returns a *OS pointing to the current value.
-func (c OS) ToPtr() *OS {
-	return &c
 }
 
 // PasswordName - The password name.
@@ -340,9 +378,65 @@ func PossiblePasswordNameValues() []PasswordName {
 	}
 }
 
-// ToPtr returns a *PasswordName pointing to the current value.
-func (c PasswordName) ToPtr() *PasswordName {
-	return &c
+type PipelineOptions string
+
+const (
+	PipelineOptionsContinueOnErrors          PipelineOptions = "ContinueOnErrors"
+	PipelineOptionsDeleteSourceBlobOnSuccess PipelineOptions = "DeleteSourceBlobOnSuccess"
+	PipelineOptionsOverwriteBlobs            PipelineOptions = "OverwriteBlobs"
+	PipelineOptionsOverwriteTags             PipelineOptions = "OverwriteTags"
+)
+
+// PossiblePipelineOptionsValues returns the possible values for the PipelineOptions const type.
+func PossiblePipelineOptionsValues() []PipelineOptions {
+	return []PipelineOptions{
+		PipelineOptionsContinueOnErrors,
+		PipelineOptionsDeleteSourceBlobOnSuccess,
+		PipelineOptionsOverwriteBlobs,
+		PipelineOptionsOverwriteTags,
+	}
+}
+
+// PipelineRunSourceType - The type of the source.
+type PipelineRunSourceType string
+
+const (
+	PipelineRunSourceTypeAzureStorageBlob PipelineRunSourceType = "AzureStorageBlob"
+)
+
+// PossiblePipelineRunSourceTypeValues returns the possible values for the PipelineRunSourceType const type.
+func PossiblePipelineRunSourceTypeValues() []PipelineRunSourceType {
+	return []PipelineRunSourceType{
+		PipelineRunSourceTypeAzureStorageBlob,
+	}
+}
+
+// PipelineRunTargetType - The type of the target.
+type PipelineRunTargetType string
+
+const (
+	PipelineRunTargetTypeAzureStorageBlob PipelineRunTargetType = "AzureStorageBlob"
+)
+
+// PossiblePipelineRunTargetTypeValues returns the possible values for the PipelineRunTargetType const type.
+func PossiblePipelineRunTargetTypeValues() []PipelineRunTargetType {
+	return []PipelineRunTargetType{
+		PipelineRunTargetTypeAzureStorageBlob,
+	}
+}
+
+// PipelineSourceType - The type of source for the import pipeline.
+type PipelineSourceType string
+
+const (
+	PipelineSourceTypeAzureStorageBlobContainer PipelineSourceType = "AzureStorageBlobContainer"
+)
+
+// PossiblePipelineSourceTypeValues returns the possible values for the PipelineSourceType const type.
+func PossiblePipelineSourceTypeValues() []PipelineSourceType {
+	return []PipelineSourceType{
+		PipelineSourceTypeAzureStorageBlobContainer,
+	}
 }
 
 // PolicyStatus - The value that indicates whether the policy is enabled or not.
@@ -359,11 +453,6 @@ func PossiblePolicyStatusValues() []PolicyStatus {
 		PolicyStatusDisabled,
 		PolicyStatusEnabled,
 	}
-}
-
-// ToPtr returns a *PolicyStatus pointing to the current value.
-func (c PolicyStatus) ToPtr() *PolicyStatus {
-	return &c
 }
 
 // ProvisioningState - The provisioning state of this agent pool
@@ -390,11 +479,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	}
 }
 
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
-}
-
 // PublicNetworkAccess - Whether or not public network access is allowed for the container registry.
 type PublicNetworkAccess string
 
@@ -411,11 +495,6 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 	}
 }
 
-// ToPtr returns a *PublicNetworkAccess pointing to the current value.
-func (c PublicNetworkAccess) ToPtr() *PublicNetworkAccess {
-	return &c
-}
-
 // RegistryUsageUnit - The unit of measurement.
 type RegistryUsageUnit string
 
@@ -430,11 +509,6 @@ func PossibleRegistryUsageUnitValues() []RegistryUsageUnit {
 		RegistryUsageUnitBytes,
 		RegistryUsageUnitCount,
 	}
-}
-
-// ToPtr returns a *RegistryUsageUnit pointing to the current value.
-func (c RegistryUsageUnit) ToPtr() *RegistryUsageUnit {
-	return &c
 }
 
 // ResourceIdentityType - The identity type.
@@ -455,11 +529,6 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 		ResourceIdentityTypeSystemAssignedUserAssigned,
 		ResourceIdentityTypeNone,
 	}
-}
-
-// ToPtr returns a *ResourceIdentityType pointing to the current value.
-func (c ResourceIdentityType) ToPtr() *ResourceIdentityType {
-	return &c
 }
 
 // RunStatus - The current status of the run.
@@ -490,11 +559,6 @@ func PossibleRunStatusValues() []RunStatus {
 	}
 }
 
-// ToPtr returns a *RunStatus pointing to the current value.
-func (c RunStatus) ToPtr() *RunStatus {
-	return &c
-}
-
 // RunType - The type of run.
 type RunType string
 
@@ -513,11 +577,6 @@ func PossibleRunTypeValues() []RunType {
 		RunTypeQuickBuild,
 		RunTypeQuickRun,
 	}
-}
-
-// ToPtr returns a *RunType pointing to the current value.
-func (c RunType) ToPtr() *RunType {
-	return &c
 }
 
 // SKUName - The SKU name of the container registry. Required for registry creation.
@@ -540,11 +599,6 @@ func PossibleSKUNameValues() []SKUName {
 	}
 }
 
-// ToPtr returns a *SKUName pointing to the current value.
-func (c SKUName) ToPtr() *SKUName {
-	return &c
-}
-
 // SKUTier - The SKU tier based on the SKU name.
 type SKUTier string
 
@@ -565,11 +619,6 @@ func PossibleSKUTierValues() []SKUTier {
 	}
 }
 
-// ToPtr returns a *SKUTier pointing to the current value.
-func (c SKUTier) ToPtr() *SKUTier {
-	return &c
-}
-
 // SecretObjectType - The type of the secret object which determines how the value of the secret object has to be interpreted.
 type SecretObjectType string
 
@@ -586,11 +635,6 @@ func PossibleSecretObjectTypeValues() []SecretObjectType {
 	}
 }
 
-// ToPtr returns a *SecretObjectType pointing to the current value.
-func (c SecretObjectType) ToPtr() *SecretObjectType {
-	return &c
-}
-
 // SourceControlType - The type of source control service.
 type SourceControlType string
 
@@ -605,11 +649,6 @@ func PossibleSourceControlTypeValues() []SourceControlType {
 		SourceControlTypeGithub,
 		SourceControlTypeVisualStudioTeamService,
 	}
-}
-
-// ToPtr returns a *SourceControlType pointing to the current value.
-func (c SourceControlType) ToPtr() *SourceControlType {
-	return &c
 }
 
 // SourceRegistryLoginMode - The authentication mode which determines the source registry login scope. The credentials for
@@ -630,11 +669,6 @@ func PossibleSourceRegistryLoginModeValues() []SourceRegistryLoginMode {
 	}
 }
 
-// ToPtr returns a *SourceRegistryLoginMode pointing to the current value.
-func (c SourceRegistryLoginMode) ToPtr() *SourceRegistryLoginMode {
-	return &c
-}
-
 type SourceTriggerEvent string
 
 const (
@@ -648,11 +682,6 @@ func PossibleSourceTriggerEventValues() []SourceTriggerEvent {
 		SourceTriggerEventCommit,
 		SourceTriggerEventPullrequest,
 	}
-}
-
-// ToPtr returns a *SourceTriggerEvent pointing to the current value.
-func (c SourceTriggerEvent) ToPtr() *SourceTriggerEvent {
-	return &c
 }
 
 // StepType - The type of the step.
@@ -673,9 +702,20 @@ func PossibleStepTypeValues() []StepType {
 	}
 }
 
-// ToPtr returns a *StepType pointing to the current value.
-func (c StepType) ToPtr() *StepType {
-	return &c
+// TLSStatus - Indicates whether HTTPS is enabled for the login server.
+type TLSStatus string
+
+const (
+	TLSStatusDisabled TLSStatus = "Disabled"
+	TLSStatusEnabled  TLSStatus = "Enabled"
+)
+
+// PossibleTLSStatusValues returns the possible values for the TLSStatus const type.
+func PossibleTLSStatusValues() []TLSStatus {
+	return []TLSStatus{
+		TLSStatusDisabled,
+		TLSStatusEnabled,
+	}
 }
 
 // TaskStatus - The current status of task.
@@ -694,9 +734,51 @@ func PossibleTaskStatusValues() []TaskStatus {
 	}
 }
 
-// ToPtr returns a *TaskStatus pointing to the current value.
-func (c TaskStatus) ToPtr() *TaskStatus {
-	return &c
+type TokenCertificateName string
+
+const (
+	TokenCertificateNameCertificate1 TokenCertificateName = "certificate1"
+	TokenCertificateNameCertificate2 TokenCertificateName = "certificate2"
+)
+
+// PossibleTokenCertificateNameValues returns the possible values for the TokenCertificateName const type.
+func PossibleTokenCertificateNameValues() []TokenCertificateName {
+	return []TokenCertificateName{
+		TokenCertificateNameCertificate1,
+		TokenCertificateNameCertificate2,
+	}
+}
+
+// TokenPasswordName - The password name "password1" or "password2"
+type TokenPasswordName string
+
+const (
+	TokenPasswordNamePassword1 TokenPasswordName = "password1"
+	TokenPasswordNamePassword2 TokenPasswordName = "password2"
+)
+
+// PossibleTokenPasswordNameValues returns the possible values for the TokenPasswordName const type.
+func PossibleTokenPasswordNameValues() []TokenPasswordName {
+	return []TokenPasswordName{
+		TokenPasswordNamePassword1,
+		TokenPasswordNamePassword2,
+	}
+}
+
+// TokenStatus - The status of the token example enabled or disabled.
+type TokenStatus string
+
+const (
+	TokenStatusDisabled TokenStatus = "disabled"
+	TokenStatusEnabled  TokenStatus = "enabled"
+)
+
+// PossibleTokenStatusValues returns the possible values for the TokenStatus const type.
+func PossibleTokenStatusValues() []TokenStatus {
+	return []TokenStatus{
+		TokenStatusDisabled,
+		TokenStatusEnabled,
+	}
 }
 
 // TokenType - The type of Auth token.
@@ -715,11 +797,6 @@ func PossibleTokenTypeValues() []TokenType {
 	}
 }
 
-// ToPtr returns a *TokenType pointing to the current value.
-func (c TokenType) ToPtr() *TokenType {
-	return &c
-}
-
 // TriggerStatus - The current status of trigger.
 type TriggerStatus string
 
@@ -736,11 +813,6 @@ func PossibleTriggerStatusValues() []TriggerStatus {
 	}
 }
 
-// ToPtr returns a *TriggerStatus pointing to the current value.
-func (c TriggerStatus) ToPtr() *TriggerStatus {
-	return &c
-}
-
 // TrustPolicyType - The type of trust policy.
 type TrustPolicyType string
 
@@ -753,11 +825,6 @@ func PossibleTrustPolicyTypeValues() []TrustPolicyType {
 	return []TrustPolicyType{
 		TrustPolicyTypeNotary,
 	}
-}
-
-// ToPtr returns a *TrustPolicyType pointing to the current value.
-func (c TrustPolicyType) ToPtr() *TrustPolicyType {
-	return &c
 }
 
 // UpdateTriggerPayloadType - Type of Payload body for Base image update triggers.
@@ -776,11 +843,6 @@ func PossibleUpdateTriggerPayloadTypeValues() []UpdateTriggerPayloadType {
 	}
 }
 
-// ToPtr returns a *UpdateTriggerPayloadType pointing to the current value.
-func (c UpdateTriggerPayloadType) ToPtr() *UpdateTriggerPayloadType {
-	return &c
-}
-
 // Variant - Variant of the CPU.
 type Variant string
 
@@ -797,11 +859,6 @@ func PossibleVariantValues() []Variant {
 		VariantV7,
 		VariantV8,
 	}
-}
-
-// ToPtr returns a *Variant pointing to the current value.
-func (c Variant) ToPtr() *Variant {
-	return &c
 }
 
 type WebhookAction string
@@ -825,11 +882,6 @@ func PossibleWebhookActionValues() []WebhookAction {
 	}
 }
 
-// ToPtr returns a *WebhookAction pointing to the current value.
-func (c WebhookAction) ToPtr() *WebhookAction {
-	return &c
-}
-
 // WebhookStatus - The status of the webhook at the time the operation was called.
 type WebhookStatus string
 
@@ -846,11 +898,6 @@ func PossibleWebhookStatusValues() []WebhookStatus {
 	}
 }
 
-// ToPtr returns a *WebhookStatus pointing to the current value.
-func (c WebhookStatus) ToPtr() *WebhookStatus {
-	return &c
-}
-
 // ZoneRedundancy - Whether or not zone redundancy is enabled for this container registry
 type ZoneRedundancy string
 
@@ -865,9 +912,4 @@ func PossibleZoneRedundancyValues() []ZoneRedundancy {
 		ZoneRedundancyDisabled,
 		ZoneRedundancyEnabled,
 	}
-}
-
-// ToPtr returns a *ZoneRedundancy pointing to the current value.
-func (c ZoneRedundancy) ToPtr() *ZoneRedundancy {
-	return &c
 }

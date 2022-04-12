@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,123 +19,164 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos"
 )
 
-// x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBManagedCassandraDataCenterList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBManagedCassandraDataCenterList.json
 func ExampleCassandraDataCentersClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcosmos.NewCassandraDataCentersClient("<subscription-id>", cred, nil)
-	res, err := client.List(ctx,
-		"<resource-group-name>",
+	client, err := armcosmos.NewCassandraDataCentersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
+	pager := client.List("<resource-group-name>",
 		"<cluster-name>",
 		nil)
-	if err != nil {
-		log.Fatal(err)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+			return
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
 	}
-	log.Printf("Response result: %#v\n", res.CassandraDataCentersClientListResult)
 }
 
-// x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBManagedCassandraDataCenterGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBManagedCassandraDataCenterGet.json
 func ExampleCassandraDataCentersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcosmos.NewCassandraDataCentersClient("<subscription-id>", cred, nil)
+	client, err := armcosmos.NewCassandraDataCentersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
 		"<data-center-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.CassandraDataCentersClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBManagedCassandraDataCenterDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBManagedCassandraDataCenterDelete.json
 func ExampleCassandraDataCentersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcosmos.NewCassandraDataCentersClient("<subscription-id>", cred, nil)
+	client, err := armcosmos.NewCassandraDataCentersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
 		"<data-center-name>",
-		nil)
+		&armcosmos.CassandraDataCentersClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBManagedCassandraDataCenterCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBManagedCassandraDataCenterCreate.json
 func ExampleCassandraDataCentersClient_BeginCreateUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcosmos.NewCassandraDataCentersClient("<subscription-id>", cred, nil)
+	client, err := armcosmos.NewCassandraDataCentersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreateUpdate(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
 		"<data-center-name>",
 		armcosmos.DataCenterResource{
 			Properties: &armcosmos.DataCenterResourceProperties{
-				Base64EncodedCassandraYamlFragment: to.StringPtr("<base64encoded-cassandra-yaml-fragment>"),
-				DataCenterLocation:                 to.StringPtr("<data-center-location>"),
-				DelegatedSubnetID:                  to.StringPtr("<delegated-subnet-id>"),
-				NodeCount:                          to.Int32Ptr(9),
+				Base64EncodedCassandraYamlFragment: to.Ptr("<base64encoded-cassandra-yaml-fragment>"),
+				DataCenterLocation:                 to.Ptr("<data-center-location>"),
+				DelegatedSubnetID:                  to.Ptr("<delegated-subnet-id>"),
+				NodeCount:                          to.Ptr[int32](9),
 			},
 		},
-		nil)
+		&armcosmos.CassandraDataCentersClientBeginCreateUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.CassandraDataCentersClientCreateUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBManagedCassandraDataCenterPatch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBManagedCassandraDataCenterPatch.json
 func ExampleCassandraDataCentersClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcosmos.NewCassandraDataCentersClient("<subscription-id>", cred, nil)
+	client, err := armcosmos.NewCassandraDataCentersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginUpdate(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
 		"<data-center-name>",
 		armcosmos.DataCenterResource{
 			Properties: &armcosmos.DataCenterResourceProperties{
-				Base64EncodedCassandraYamlFragment: to.StringPtr("<base64encoded-cassandra-yaml-fragment>"),
-				DataCenterLocation:                 to.StringPtr("<data-center-location>"),
-				DelegatedSubnetID:                  to.StringPtr("<delegated-subnet-id>"),
-				NodeCount:                          to.Int32Ptr(9),
+				Base64EncodedCassandraYamlFragment: to.Ptr("<base64encoded-cassandra-yaml-fragment>"),
+				DataCenterLocation:                 to.Ptr("<data-center-location>"),
+				DelegatedSubnetID:                  to.Ptr("<delegated-subnet-id>"),
+				NodeCount:                          to.Ptr[int32](9),
 			},
 		},
-		nil)
+		&armcosmos.CassandraDataCentersClientBeginUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.CassandraDataCentersClientUpdateResult)
+	// TODO: use response item
+	_ = res
 }

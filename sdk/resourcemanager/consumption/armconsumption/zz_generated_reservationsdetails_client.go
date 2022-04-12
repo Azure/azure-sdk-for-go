@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -31,19 +32,23 @@ type ReservationsDetailsClient struct {
 // NewReservationsDetailsClient creates a new instance of ReservationsDetailsClient with the specified values.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewReservationsDetailsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *ReservationsDetailsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewReservationsDetailsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ReservationsDetailsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ReservationsDetailsClient{
-		host: string(cp.Endpoint),
-		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host: ep,
+		pl:   pl,
 	}
-	return client
+	return client, nil
 }
 
 // List - Lists the reservations details for the defined scope and provided date range.
@@ -54,16 +59,32 @@ func NewReservationsDetailsClient(credential azcore.TokenCredential, options *ar
 // scope (modern).
 // options - ReservationsDetailsClientListOptions contains the optional parameters for the ReservationsDetailsClient.List
 // method.
-func (client *ReservationsDetailsClient) List(scope string, options *ReservationsDetailsClientListOptions) *ReservationsDetailsClientListPager {
-	return &ReservationsDetailsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, scope, options)
+func (client *ReservationsDetailsClient) List(scope string, options *ReservationsDetailsClientListOptions) *runtime.Pager[ReservationsDetailsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ReservationsDetailsClientListResponse]{
+		More: func(page ReservationsDetailsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ReservationsDetailsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ReservationDetailsListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ReservationsDetailsClientListResponse) (ReservationsDetailsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, scope, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ReservationsDetailsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ReservationsDetailsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ReservationsDetailsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -98,7 +119,7 @@ func (client *ReservationsDetailsClient) listCreateRequest(ctx context.Context, 
 
 // listHandleResponse handles the List response.
 func (client *ReservationsDetailsClient) listHandleResponse(resp *http.Response) (ReservationsDetailsClientListResponse, error) {
-	result := ReservationsDetailsClientListResponse{RawResponse: resp}
+	result := ReservationsDetailsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReservationDetailsListResult); err != nil {
 		return ReservationsDetailsClientListResponse{}, err
 	}
@@ -112,16 +133,32 @@ func (client *ReservationsDetailsClient) listHandleResponse(resp *http.Response)
 // 'le' and 'ge'
 // options - ReservationsDetailsClientListByReservationOrderOptions contains the optional parameters for the ReservationsDetailsClient.ListByReservationOrder
 // method.
-func (client *ReservationsDetailsClient) ListByReservationOrder(reservationOrderID string, filter string, options *ReservationsDetailsClientListByReservationOrderOptions) *ReservationsDetailsClientListByReservationOrderPager {
-	return &ReservationsDetailsClientListByReservationOrderPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByReservationOrderCreateRequest(ctx, reservationOrderID, filter, options)
+func (client *ReservationsDetailsClient) ListByReservationOrder(reservationOrderID string, filter string, options *ReservationsDetailsClientListByReservationOrderOptions) *runtime.Pager[ReservationsDetailsClientListByReservationOrderResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ReservationsDetailsClientListByReservationOrderResponse]{
+		More: func(page ReservationsDetailsClientListByReservationOrderResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ReservationsDetailsClientListByReservationOrderResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ReservationDetailsListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ReservationsDetailsClientListByReservationOrderResponse) (ReservationsDetailsClientListByReservationOrderResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByReservationOrderCreateRequest(ctx, reservationOrderID, filter, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ReservationsDetailsClientListByReservationOrderResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ReservationsDetailsClientListByReservationOrderResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ReservationsDetailsClientListByReservationOrderResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByReservationOrderHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByReservationOrderCreateRequest creates the ListByReservationOrder request.
@@ -145,7 +182,7 @@ func (client *ReservationsDetailsClient) listByReservationOrderCreateRequest(ctx
 
 // listByReservationOrderHandleResponse handles the ListByReservationOrder response.
 func (client *ReservationsDetailsClient) listByReservationOrderHandleResponse(resp *http.Response) (ReservationsDetailsClientListByReservationOrderResponse, error) {
-	result := ReservationsDetailsClientListByReservationOrderResponse{RawResponse: resp}
+	result := ReservationsDetailsClientListByReservationOrderResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReservationDetailsListResult); err != nil {
 		return ReservationsDetailsClientListByReservationOrderResponse{}, err
 	}
@@ -160,16 +197,32 @@ func (client *ReservationsDetailsClient) listByReservationOrderHandleResponse(re
 // 'le' and 'ge'
 // options - ReservationsDetailsClientListByReservationOrderAndReservationOptions contains the optional parameters for the
 // ReservationsDetailsClient.ListByReservationOrderAndReservation method.
-func (client *ReservationsDetailsClient) ListByReservationOrderAndReservation(reservationOrderID string, reservationID string, filter string, options *ReservationsDetailsClientListByReservationOrderAndReservationOptions) *ReservationsDetailsClientListByReservationOrderAndReservationPager {
-	return &ReservationsDetailsClientListByReservationOrderAndReservationPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByReservationOrderAndReservationCreateRequest(ctx, reservationOrderID, reservationID, filter, options)
+func (client *ReservationsDetailsClient) ListByReservationOrderAndReservation(reservationOrderID string, reservationID string, filter string, options *ReservationsDetailsClientListByReservationOrderAndReservationOptions) *runtime.Pager[ReservationsDetailsClientListByReservationOrderAndReservationResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ReservationsDetailsClientListByReservationOrderAndReservationResponse]{
+		More: func(page ReservationsDetailsClientListByReservationOrderAndReservationResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ReservationsDetailsClientListByReservationOrderAndReservationResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ReservationDetailsListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ReservationsDetailsClientListByReservationOrderAndReservationResponse) (ReservationsDetailsClientListByReservationOrderAndReservationResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByReservationOrderAndReservationCreateRequest(ctx, reservationOrderID, reservationID, filter, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ReservationsDetailsClientListByReservationOrderAndReservationResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ReservationsDetailsClientListByReservationOrderAndReservationResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ReservationsDetailsClientListByReservationOrderAndReservationResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByReservationOrderAndReservationHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByReservationOrderAndReservationCreateRequest creates the ListByReservationOrderAndReservation request.
@@ -197,7 +250,7 @@ func (client *ReservationsDetailsClient) listByReservationOrderAndReservationCre
 
 // listByReservationOrderAndReservationHandleResponse handles the ListByReservationOrderAndReservation response.
 func (client *ReservationsDetailsClient) listByReservationOrderAndReservationHandleResponse(resp *http.Response) (ReservationsDetailsClientListByReservationOrderAndReservationResponse, error) {
-	result := ReservationsDetailsClientListByReservationOrderAndReservationResponse{RawResponse: resp}
+	result := ReservationsDetailsClientListByReservationOrderAndReservationResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReservationDetailsListResult); err != nil {
 		return ReservationsDetailsClientListByReservationOrderAndReservationResponse{}, err
 	}

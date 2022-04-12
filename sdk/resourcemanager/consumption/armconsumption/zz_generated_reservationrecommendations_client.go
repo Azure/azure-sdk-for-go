@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -13,6 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -29,19 +30,23 @@ type ReservationRecommendationsClient struct {
 // NewReservationRecommendationsClient creates a new instance of ReservationRecommendationsClient with the specified values.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewReservationRecommendationsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *ReservationRecommendationsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewReservationRecommendationsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ReservationRecommendationsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ReservationRecommendationsClient{
-		host: string(cp.Endpoint),
-		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host: ep,
+		pl:   pl,
 	}
-	return client
+	return client, nil
 }
 
 // List - List of recommendations for purchasing reserved instances.
@@ -54,16 +59,32 @@ func NewReservationRecommendationsClient(credential azcore.TokenCredential, opti
 // scope
 // options - ReservationRecommendationsClientListOptions contains the optional parameters for the ReservationRecommendationsClient.List
 // method.
-func (client *ReservationRecommendationsClient) List(scope string, options *ReservationRecommendationsClientListOptions) *ReservationRecommendationsClientListPager {
-	return &ReservationRecommendationsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, scope, options)
+func (client *ReservationRecommendationsClient) List(scope string, options *ReservationRecommendationsClientListOptions) *runtime.Pager[ReservationRecommendationsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ReservationRecommendationsClientListResponse]{
+		More: func(page ReservationRecommendationsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ReservationRecommendationsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ReservationRecommendationsListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ReservationRecommendationsClientListResponse) (ReservationRecommendationsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, scope, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ReservationRecommendationsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ReservationRecommendationsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ReservationRecommendationsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -86,7 +107,7 @@ func (client *ReservationRecommendationsClient) listCreateRequest(ctx context.Co
 
 // listHandleResponse handles the List response.
 func (client *ReservationRecommendationsClient) listHandleResponse(resp *http.Response) (ReservationRecommendationsClientListResponse, error) {
-	result := ReservationRecommendationsClientListResponse{RawResponse: resp}
+	result := ReservationRecommendationsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReservationRecommendationsListResult); err != nil {
 		return ReservationRecommendationsClientListResponse{}, err
 	}

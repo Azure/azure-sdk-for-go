@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type RestorableMongodbResourcesClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewRestorableMongodbResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RestorableMongodbResourcesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewRestorableMongodbResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RestorableMongodbResourcesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &RestorableMongodbResourcesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // List - Return a list of database and collection combo that exist on the account at the given timestamp and location. This
@@ -57,19 +62,26 @@ func NewRestorableMongodbResourcesClient(subscriptionID string, credential azcor
 // instanceID - The instanceId GUID of a restorable database account.
 // options - RestorableMongodbResourcesClientListOptions contains the optional parameters for the RestorableMongodbResourcesClient.List
 // method.
-func (client *RestorableMongodbResourcesClient) List(ctx context.Context, location string, instanceID string, options *RestorableMongodbResourcesClientListOptions) (RestorableMongodbResourcesClientListResponse, error) {
-	req, err := client.listCreateRequest(ctx, location, instanceID, options)
-	if err != nil {
-		return RestorableMongodbResourcesClientListResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return RestorableMongodbResourcesClientListResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return RestorableMongodbResourcesClientListResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listHandleResponse(resp)
+func (client *RestorableMongodbResourcesClient) List(location string, instanceID string, options *RestorableMongodbResourcesClientListOptions) *runtime.Pager[RestorableMongodbResourcesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[RestorableMongodbResourcesClientListResponse]{
+		More: func(page RestorableMongodbResourcesClientListResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *RestorableMongodbResourcesClientListResponse) (RestorableMongodbResourcesClientListResponse, error) {
+			req, err := client.listCreateRequest(ctx, location, instanceID, options)
+			if err != nil {
+				return RestorableMongodbResourcesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return RestorableMongodbResourcesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return RestorableMongodbResourcesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
+		},
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -92,7 +104,7 @@ func (client *RestorableMongodbResourcesClient) listCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-15-preview")
 	if options != nil && options.RestoreLocation != nil {
 		reqQP.Set("restoreLocation", *options.RestoreLocation)
 	}
@@ -106,7 +118,7 @@ func (client *RestorableMongodbResourcesClient) listCreateRequest(ctx context.Co
 
 // listHandleResponse handles the List response.
 func (client *RestorableMongodbResourcesClient) listHandleResponse(resp *http.Response) (RestorableMongodbResourcesClientListResponse, error) {
-	result := RestorableMongodbResourcesClientListResponse{RawResponse: resp}
+	result := RestorableMongodbResourcesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RestorableMongodbResourcesListResult); err != nil {
 		return RestorableMongodbResourcesClientListResponse{}, err
 	}

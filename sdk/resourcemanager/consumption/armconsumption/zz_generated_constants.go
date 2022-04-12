@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armconsumption
 
 const (
 	moduleName    = "armconsumption"
-	moduleVersion = "v0.3.1"
+	moduleVersion = "v0.4.0"
 )
 
 // BillingFrequency - The billing frequency.
@@ -31,11 +31,6 @@ func PossibleBillingFrequencyValues() []BillingFrequency {
 	}
 }
 
-// ToPtr returns a *BillingFrequency pointing to the current value.
-func (c BillingFrequency) ToPtr() *BillingFrequency {
-	return &c
-}
-
 // BudgetOperatorType - The operator to use for comparison.
 type BudgetOperatorType string
 
@@ -48,11 +43,6 @@ func PossibleBudgetOperatorTypeValues() []BudgetOperatorType {
 	return []BudgetOperatorType{
 		BudgetOperatorTypeIn,
 	}
-}
-
-// ToPtr returns a *BudgetOperatorType pointing to the current value.
-func (c BudgetOperatorType) ToPtr() *BudgetOperatorType {
-	return &c
 }
 
 // CategoryType - The category of the budget, whether the budget tracks cost or usage.
@@ -69,11 +59,6 @@ func PossibleCategoryTypeValues() []CategoryType {
 	}
 }
 
-// ToPtr returns a *CategoryType pointing to the current value.
-func (c CategoryType) ToPtr() *CategoryType {
-	return &c
-}
-
 // ChargeSummaryKind - Specifies the kind of charge summary.
 type ChargeSummaryKind string
 
@@ -88,11 +73,6 @@ func PossibleChargeSummaryKindValues() []ChargeSummaryKind {
 		ChargeSummaryKindLegacy,
 		ChargeSummaryKindModern,
 	}
-}
-
-// ToPtr returns a *ChargeSummaryKind pointing to the current value.
-func (c ChargeSummaryKind) ToPtr() *ChargeSummaryKind {
-	return &c
 }
 
 // CultureCode - Language in which the recipient will receive the notification
@@ -149,11 +129,6 @@ func PossibleCultureCodeValues() []CultureCode {
 	}
 }
 
-// ToPtr returns a *CultureCode pointing to the current value.
-func (c CultureCode) ToPtr() *CultureCode {
-	return &c
-}
-
 type Datagrain string
 
 const (
@@ -169,11 +144,6 @@ func PossibleDatagrainValues() []Datagrain {
 		DatagrainDailyGrain,
 		DatagrainMonthlyGrain,
 	}
-}
-
-// ToPtr returns a *Datagrain pointing to the current value.
-func (c Datagrain) ToPtr() *Datagrain {
-	return &c
 }
 
 // EventType - Identifies the type of the event.
@@ -202,11 +172,6 @@ func PossibleEventTypeValues() []EventType {
 	}
 }
 
-// ToPtr returns a *EventType pointing to the current value.
-func (c EventType) ToPtr() *EventType {
-	return &c
-}
-
 type LookBackPeriod string
 
 const (
@@ -227,11 +192,6 @@ func PossibleLookBackPeriodValues() []LookBackPeriod {
 	}
 }
 
-// ToPtr returns a *LookBackPeriod pointing to the current value.
-func (c LookBackPeriod) ToPtr() *LookBackPeriod {
-	return &c
-}
-
 // LotSource - The source of the lot.
 type LotSource string
 
@@ -248,11 +208,6 @@ func PossibleLotSourceValues() []LotSource {
 		LotSourcePromotionalCredit,
 		LotSourcePurchasedCredit,
 	}
-}
-
-// ToPtr returns a *LotSource pointing to the current value.
-func (c LotSource) ToPtr() *LotSource {
-	return &c
 }
 
 type Metrictype string
@@ -275,11 +230,6 @@ func PossibleMetrictypeValues() []Metrictype {
 	}
 }
 
-// ToPtr returns a *Metrictype pointing to the current value.
-func (c Metrictype) ToPtr() *Metrictype {
-	return &c
-}
-
 // OperatorType - The comparison operator.
 type OperatorType string
 
@@ -296,11 +246,6 @@ func PossibleOperatorTypeValues() []OperatorType {
 		OperatorTypeGreaterThan,
 		OperatorTypeGreaterThanOrEqualTo,
 	}
-}
-
-// ToPtr returns a *OperatorType pointing to the current value.
-func (c OperatorType) ToPtr() *OperatorType {
-	return &c
 }
 
 // PricingModelType - Identifier that indicates how the meter is priced.
@@ -321,11 +266,6 @@ func PossiblePricingModelTypeValues() []PricingModelType {
 	}
 }
 
-// ToPtr returns a *PricingModelType pointing to the current value.
-func (c PricingModelType) ToPtr() *PricingModelType {
-	return &c
-}
-
 // ReservationRecommendationKind - Specifies the kind of reservation recommendation.
 type ReservationRecommendationKind string
 
@@ -342,11 +282,6 @@ func PossibleReservationRecommendationKindValues() []ReservationRecommendationKi
 	}
 }
 
-// ToPtr returns a *ReservationRecommendationKind pointing to the current value.
-func (c ReservationRecommendationKind) ToPtr() *ReservationRecommendationKind {
-	return &c
-}
-
 type Scope string
 
 const (
@@ -360,11 +295,6 @@ func PossibleScopeValues() []Scope {
 		ScopeShared,
 		ScopeSingle,
 	}
-}
-
-// ToPtr returns a *Scope pointing to the current value.
-func (c Scope) ToPtr() *Scope {
-	return &c
 }
 
 // Status - The status of the lot.
@@ -391,11 +321,6 @@ func PossibleStatusValues() []Status {
 	}
 }
 
-// ToPtr returns a *Status pointing to the current value.
-func (c Status) ToPtr() *Status {
-	return &c
-}
-
 type Term string
 
 const (
@@ -413,11 +338,6 @@ func PossibleTermValues() []Term {
 	}
 }
 
-// ToPtr returns a *Term pointing to the current value.
-func (c Term) ToPtr() *Term {
-	return &c
-}
-
 // ThresholdType - The type of threshold
 type ThresholdType string
 
@@ -432,11 +352,6 @@ func PossibleThresholdTypeValues() []ThresholdType {
 		ThresholdTypeActual,
 		ThresholdTypeForecasted,
 	}
-}
-
-// ToPtr returns a *ThresholdType pointing to the current value.
-func (c ThresholdType) ToPtr() *ThresholdType {
-	return &c
 }
 
 // TimeGrainType - The time covered by a budget. Tracking of the amount will be reset based on the time grain. BillingMonth,
@@ -464,11 +379,6 @@ func PossibleTimeGrainTypeValues() []TimeGrainType {
 	}
 }
 
-// ToPtr returns a *TimeGrainType pointing to the current value.
-func (c TimeGrainType) ToPtr() *TimeGrainType {
-	return &c
-}
-
 // UsageDetailsKind - Specifies the kind of usage details.
 type UsageDetailsKind string
 
@@ -483,9 +393,4 @@ func PossibleUsageDetailsKindValues() []UsageDetailsKind {
 		UsageDetailsKindLegacy,
 		UsageDetailsKindModern,
 	}
-}
-
-// ToPtr returns a *UsageDetailsKind pointing to the current value.
-func (c UsageDetailsKind) ToPtr() *UsageDetailsKind {
-	return &c
 }

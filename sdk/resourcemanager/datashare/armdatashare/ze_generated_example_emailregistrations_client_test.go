@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,39 +17,53 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datashare/armdatashare"
 )
 
-// x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/EmailRegistrations_ActivateEmail.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/EmailRegistrations_ActivateEmail.json
 func ExampleEmailRegistrationsClient_ActivateEmail() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdatashare.NewEmailRegistrationsClient(cred, nil)
+	client, err := armdatashare.NewEmailRegistrationsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.ActivateEmail(ctx,
 		"<location>",
 		armdatashare.EmailRegistration{
-			ActivationCode: to.StringPtr("<activation-code>"),
+			ActivationCode: to.Ptr("<activation-code>"),
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.EmailRegistrationsClientActivateEmailResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/EmailRegistrations_RegisterEmail.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/EmailRegistrations_RegisterEmail.json
 func ExampleEmailRegistrationsClient_RegisterEmail() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdatashare.NewEmailRegistrationsClient(cred, nil)
+	client, err := armdatashare.NewEmailRegistrationsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.RegisterEmail(ctx,
 		"<location>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.EmailRegistrationsClientRegisterEmailResult)
+	// TODO: use response item
+	_ = res
 }

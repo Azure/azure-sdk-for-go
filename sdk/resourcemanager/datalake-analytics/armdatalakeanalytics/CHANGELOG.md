@@ -1,5 +1,203 @@
 # Release History
 
+## 0.4.0 (2022-04-11)
+### Breaking Changes
+
+- Function `*StorageAccountsClient.ListByAccount` return value(s) have been changed from `(*StorageAccountsClientListByAccountPager)` to `(*runtime.Pager[StorageAccountsClientListByAccountResponse])`
+- Function `*AccountsClient.BeginCreate` return value(s) have been changed from `(AccountsClientCreatePollerResponse, error)` to `(*armruntime.Poller[AccountsClientCreateResponse], error)`
+- Function `*AccountsClient.List` return value(s) have been changed from `(*AccountsClientListPager)` to `(*runtime.Pager[AccountsClientListResponse])`
+- Function `NewComputePoliciesClient` return value(s) have been changed from `(*ComputePoliciesClient)` to `(*ComputePoliciesClient, error)`
+- Function `NewStorageAccountsClient` return value(s) have been changed from `(*StorageAccountsClient)` to `(*StorageAccountsClient, error)`
+- Function `NewDataLakeStoreAccountsClient` return value(s) have been changed from `(*DataLakeStoreAccountsClient)` to `(*DataLakeStoreAccountsClient, error)`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `*DataLakeStoreAccountsClient.ListByAccount` return value(s) have been changed from `(*DataLakeStoreAccountsClientListByAccountPager)` to `(*runtime.Pager[DataLakeStoreAccountsClientListByAccountResponse])`
+- Function `*StorageAccountsClient.ListSasTokens` return value(s) have been changed from `(*StorageAccountsClientListSasTokensPager)` to `(*runtime.Pager[StorageAccountsClientListSasTokensResponse])`
+- Function `*AccountsClient.BeginDelete` return value(s) have been changed from `(AccountsClientDeletePollerResponse, error)` to `(*armruntime.Poller[AccountsClientDeleteResponse], error)`
+- Function `NewAccountsClient` return value(s) have been changed from `(*AccountsClient)` to `(*AccountsClient, error)`
+- Function `*FirewallRulesClient.ListByAccount` return value(s) have been changed from `(*FirewallRulesClientListByAccountPager)` to `(*runtime.Pager[FirewallRulesClientListByAccountResponse])`
+- Function `*AccountsClient.ListByResourceGroup` return value(s) have been changed from `(*AccountsClientListByResourceGroupPager)` to `(*runtime.Pager[AccountsClientListByResourceGroupResponse])`
+- Function `NewLocationsClient` return value(s) have been changed from `(*LocationsClient)` to `(*LocationsClient, error)`
+- Function `*ComputePoliciesClient.ListByAccount` return value(s) have been changed from `(*ComputePoliciesClientListByAccountPager)` to `(*runtime.Pager[ComputePoliciesClientListByAccountResponse])`
+- Function `*StorageAccountsClient.ListStorageContainers` return value(s) have been changed from `(*StorageAccountsClientListStorageContainersPager)` to `(*runtime.Pager[StorageAccountsClientListStorageContainersResponse])`
+- Function `NewFirewallRulesClient` return value(s) have been changed from `(*FirewallRulesClient)` to `(*FirewallRulesClient, error)`
+- Function `*AccountsClient.BeginUpdate` return value(s) have been changed from `(AccountsClientUpdatePollerResponse, error)` to `(*armruntime.Poller[AccountsClientUpdateResponse], error)`
+- Type of `ErrorAdditionalInfo.Info` has been changed from `map[string]interface{}` to `interface{}`
+- Function `*StorageAccountsClientListSasTokensPager.NextPage` has been removed
+- Function `NestedResourceProvisioningState.ToPtr` has been removed
+- Function `AccountsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*AccountsClientListPager.NextPage` has been removed
+- Function `FirewallState.ToPtr` has been removed
+- Function `*AccountsClientCreatePoller.FinalResponse` has been removed
+- Function `SubscriptionState.ToPtr` has been removed
+- Function `*AccountsClientCreatePoller.Poll` has been removed
+- Function `*AccountsClientListPager.PageResponse` has been removed
+- Function `*AccountsClientUpdatePoller.Poll` has been removed
+- Function `*AccountsClientUpdatePoller.FinalResponse` has been removed
+- Function `*StorageAccountsClientListByAccountPager.PageResponse` has been removed
+- Function `*StorageAccountsClientListStorageContainersPager.PageResponse` has been removed
+- Function `*StorageAccountsClientListByAccountPager.Err` has been removed
+- Function `TierType.ToPtr` has been removed
+- Function `*ComputePoliciesClientListByAccountPager.NextPage` has been removed
+- Function `*AccountsClientDeletePollerResponse.Resume` has been removed
+- Function `DataLakeAnalyticsAccountState.ToPtr` has been removed
+- Function `*AccountsClientListByResourceGroupPager.PageResponse` has been removed
+- Function `DataLakeAnalyticsAccountStatus.ToPtr` has been removed
+- Function `*AccountsClientUpdatePoller.Done` has been removed
+- Function `*AccountsClientListPager.Err` has been removed
+- Function `*DataLakeStoreAccountsClientListByAccountPager.PageResponse` has been removed
+- Function `VirtualNetworkRuleState.ToPtr` has been removed
+- Function `*FirewallRulesClientListByAccountPager.Err` has been removed
+- Function `FirewallAllowAzureIPsState.ToPtr` has been removed
+- Function `*AccountsClientUpdatePollerResponse.Resume` has been removed
+- Function `*AccountsClientDeletePoller.ResumeToken` has been removed
+- Function `*StorageAccountsClientListSasTokensPager.PageResponse` has been removed
+- Function `DebugDataAccessLevel.ToPtr` has been removed
+- Function `*FirewallRulesClientListByAccountPager.NextPage` has been removed
+- Function `*AccountsClientListByResourceGroupPager.NextPage` has been removed
+- Function `*FirewallRulesClientListByAccountPager.PageResponse` has been removed
+- Function `*StorageAccountsClientListSasTokensPager.Err` has been removed
+- Function `*AccountsClientDeletePoller.Poll` has been removed
+- Function `*AccountsClientCreatePoller.ResumeToken` has been removed
+- Function `AccountsClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*DataLakeStoreAccountsClientListByAccountPager.Err` has been removed
+- Function `*StorageAccountsClientListByAccountPager.NextPage` has been removed
+- Function `*AccountsClientCreatePollerResponse.Resume` has been removed
+- Function `*ComputePoliciesClientListByAccountPager.PageResponse` has been removed
+- Function `*AccountsClientUpdatePoller.ResumeToken` has been removed
+- Function `AADObjectType.ToPtr` has been removed
+- Function `*DataLakeStoreAccountsClientListByAccountPager.NextPage` has been removed
+- Function `*StorageAccountsClientListStorageContainersPager.NextPage` has been removed
+- Function `*AccountsClientCreatePoller.Done` has been removed
+- Function `*ComputePoliciesClientListByAccountPager.Err` has been removed
+- Function `*AccountsClientDeletePoller.FinalResponse` has been removed
+- Function `*AccountsClientListByResourceGroupPager.Err` has been removed
+- Function `*AccountsClientDeletePoller.Done` has been removed
+- Function `OperationOrigin.ToPtr` has been removed
+- Function `AccountsClientCreatePollerResponse.PollUntilDone` has been removed
+- Function `CheckNameAvailabilityParametersType.ToPtr` has been removed
+- Function `*StorageAccountsClientListStorageContainersPager.Err` has been removed
+- Struct `AccountsClientCheckNameAvailabilityResult` has been removed
+- Struct `AccountsClientCreatePoller` has been removed
+- Struct `AccountsClientCreatePollerResponse` has been removed
+- Struct `AccountsClientCreateResult` has been removed
+- Struct `AccountsClientDeletePoller` has been removed
+- Struct `AccountsClientDeletePollerResponse` has been removed
+- Struct `AccountsClientGetResult` has been removed
+- Struct `AccountsClientListByResourceGroupPager` has been removed
+- Struct `AccountsClientListByResourceGroupResult` has been removed
+- Struct `AccountsClientListPager` has been removed
+- Struct `AccountsClientListResult` has been removed
+- Struct `AccountsClientUpdatePoller` has been removed
+- Struct `AccountsClientUpdatePollerResponse` has been removed
+- Struct `AccountsClientUpdateResult` has been removed
+- Struct `ComputePoliciesClientCreateOrUpdateResult` has been removed
+- Struct `ComputePoliciesClientGetResult` has been removed
+- Struct `ComputePoliciesClientListByAccountPager` has been removed
+- Struct `ComputePoliciesClientListByAccountResult` has been removed
+- Struct `ComputePoliciesClientUpdateResult` has been removed
+- Struct `DataLakeStoreAccountsClientGetResult` has been removed
+- Struct `DataLakeStoreAccountsClientListByAccountPager` has been removed
+- Struct `DataLakeStoreAccountsClientListByAccountResult` has been removed
+- Struct `FirewallRulesClientCreateOrUpdateResult` has been removed
+- Struct `FirewallRulesClientGetResult` has been removed
+- Struct `FirewallRulesClientListByAccountPager` has been removed
+- Struct `FirewallRulesClientListByAccountResult` has been removed
+- Struct `FirewallRulesClientUpdateResult` has been removed
+- Struct `LocationsClientGetCapabilityResult` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `StorageAccountsClientGetResult` has been removed
+- Struct `StorageAccountsClientGetStorageContainerResult` has been removed
+- Struct `StorageAccountsClientListByAccountPager` has been removed
+- Struct `StorageAccountsClientListByAccountResult` has been removed
+- Struct `StorageAccountsClientListSasTokensPager` has been removed
+- Struct `StorageAccountsClientListSasTokensResult` has been removed
+- Struct `StorageAccountsClientListStorageContainersPager` has been removed
+- Struct `StorageAccountsClientListStorageContainersResult` has been removed
+- Field `ComputePoliciesClientCreateOrUpdateResult` of struct `ComputePoliciesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ComputePoliciesClientCreateOrUpdateResponse` has been removed
+- Field `FirewallRulesClientUpdateResult` of struct `FirewallRulesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `FirewallRulesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `DataLakeStoreAccountsClientAddResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `AccountsClientUpdateResult` of struct `AccountsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientUpdateResponse` has been removed
+- Field `StorageAccountsClientListStorageContainersResult` of struct `StorageAccountsClientListStorageContainersResponse` has been removed
+- Field `RawResponse` of struct `StorageAccountsClientListStorageContainersResponse` has been removed
+- Field `ComputePoliciesClientGetResult` of struct `ComputePoliciesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ComputePoliciesClientGetResponse` has been removed
+- Field `StorageAccountsClientListSasTokensResult` of struct `StorageAccountsClientListSasTokensResponse` has been removed
+- Field `RawResponse` of struct `StorageAccountsClientListSasTokensResponse` has been removed
+- Field `AccountsClientCreateResult` of struct `AccountsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientCreateResponse` has been removed
+- Field `ComputePoliciesClientListByAccountResult` of struct `ComputePoliciesClientListByAccountResponse` has been removed
+- Field `RawResponse` of struct `ComputePoliciesClientListByAccountResponse` has been removed
+- Field `FirewallRulesClientCreateOrUpdateResult` of struct `FirewallRulesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `FirewallRulesClientCreateOrUpdateResponse` has been removed
+- Field `FirewallRulesClientGetResult` of struct `FirewallRulesClientGetResponse` has been removed
+- Field `RawResponse` of struct `FirewallRulesClientGetResponse` has been removed
+- Field `DataLakeStoreAccountsClientGetResult` of struct `DataLakeStoreAccountsClientGetResponse` has been removed
+- Field `RawResponse` of struct `DataLakeStoreAccountsClientGetResponse` has been removed
+- Field `RawResponse` of struct `DataLakeStoreAccountsClientDeleteResponse` has been removed
+- Field `AccountsClientListResult` of struct `AccountsClientListResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientListResponse` has been removed
+- Field `LocationsClientGetCapabilityResult` of struct `LocationsClientGetCapabilityResponse` has been removed
+- Field `RawResponse` of struct `LocationsClientGetCapabilityResponse` has been removed
+- Field `AccountsClientCheckNameAvailabilityResult` of struct `AccountsClientCheckNameAvailabilityResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientCheckNameAvailabilityResponse` has been removed
+- Field `DataLakeStoreAccountsClientListByAccountResult` of struct `DataLakeStoreAccountsClientListByAccountResponse` has been removed
+- Field `RawResponse` of struct `DataLakeStoreAccountsClientListByAccountResponse` has been removed
+- Field `AccountsClientGetResult` of struct `AccountsClientGetResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientGetResponse` has been removed
+- Field `StorageAccountsClientGetStorageContainerResult` of struct `StorageAccountsClientGetStorageContainerResponse` has been removed
+- Field `RawResponse` of struct `StorageAccountsClientGetStorageContainerResponse` has been removed
+- Field `AccountsClientListByResourceGroupResult` of struct `AccountsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `StorageAccountsClientAddResponse` has been removed
+- Field `ComputePoliciesClientUpdateResult` of struct `ComputePoliciesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ComputePoliciesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `StorageAccountsClientUpdateResponse` has been removed
+- Field `StorageAccountsClientListByAccountResult` of struct `StorageAccountsClientListByAccountResponse` has been removed
+- Field `RawResponse` of struct `StorageAccountsClientListByAccountResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `ComputePoliciesClientDeleteResponse` has been removed
+- Field `StorageAccountsClientGetResult` of struct `StorageAccountsClientGetResponse` has been removed
+- Field `RawResponse` of struct `StorageAccountsClientGetResponse` has been removed
+- Field `RawResponse` of struct `StorageAccountsClientDeleteResponse` has been removed
+- Field `FirewallRulesClientListByAccountResult` of struct `FirewallRulesClientListByAccountResponse` has been removed
+- Field `RawResponse` of struct `FirewallRulesClientListByAccountResponse` has been removed
+- Field `RawResponse` of struct `FirewallRulesClientDeleteResponse` has been removed
+
+### Features Added
+
+- New anonymous field `ComputePolicy` in struct `ComputePoliciesClientCreateOrUpdateResponse`
+- New anonymous field `SasTokenInformationListResult` in struct `StorageAccountsClientListSasTokensResponse`
+- New anonymous field `StorageContainerListResult` in struct `StorageAccountsClientListStorageContainersResponse`
+- New anonymous field `DataLakeStoreAccountInformationListResult` in struct `DataLakeStoreAccountsClientListByAccountResponse`
+- New anonymous field `AccountListResult` in struct `AccountsClientListByResourceGroupResponse`
+- New anonymous field `FirewallRuleListResult` in struct `FirewallRulesClientListByAccountResponse`
+- New field `ResumeToken` in struct `AccountsClientBeginCreateOptions`
+- New field `ResumeToken` in struct `AccountsClientBeginUpdateOptions`
+- New anonymous field `StorageAccountInformation` in struct `StorageAccountsClientGetResponse`
+- New anonymous field `Account` in struct `AccountsClientCreateResponse`
+- New anonymous field `ComputePolicy` in struct `ComputePoliciesClientGetResponse`
+- New anonymous field `Account` in struct `AccountsClientGetResponse`
+- New anonymous field `FirewallRule` in struct `FirewallRulesClientGetResponse`
+- New anonymous field `NameAvailabilityInformation` in struct `AccountsClientCheckNameAvailabilityResponse`
+- New anonymous field `ComputePolicyListResult` in struct `ComputePoliciesClientListByAccountResponse`
+- New anonymous field `StorageContainer` in struct `StorageAccountsClientGetStorageContainerResponse`
+- New anonymous field `ComputePolicy` in struct `ComputePoliciesClientUpdateResponse`
+- New field `ResumeToken` in struct `AccountsClientBeginDeleteOptions`
+- New anonymous field `DataLakeStoreAccountInformation` in struct `DataLakeStoreAccountsClientGetResponse`
+- New anonymous field `AccountListResult` in struct `AccountsClientListResponse`
+- New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
+- New anonymous field `StorageAccountInformationListResult` in struct `StorageAccountsClientListByAccountResponse`
+- New anonymous field `Account` in struct `AccountsClientUpdateResponse`
+- New anonymous field `FirewallRule` in struct `FirewallRulesClientUpdateResponse`
+- New anonymous field `FirewallRule` in struct `FirewallRulesClientCreateOrUpdateResponse`
+- New anonymous field `CapabilityInformation` in struct `LocationsClientGetCapabilityResponse`
+
+
 ## 0.3.1 (2022-02-22)
 
 ### Other Changes

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type UsersClient struct {
 // subscriptionID - The subscription ID.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewUsersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *UsersClient {
+func NewUsersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*UsersClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &UsersClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates a new user or updates an existing user's information on a Data Box Edge/Data Box Gateway
@@ -58,22 +63,16 @@ func NewUsersClient(subscriptionID string, credential azcore.TokenCredential, op
 // userParam - The user details.
 // options - UsersClientBeginCreateOrUpdateOptions contains the optional parameters for the UsersClient.BeginCreateOrUpdate
 // method.
-func (client *UsersClient) BeginCreateOrUpdate(ctx context.Context, deviceName string, name string, resourceGroupName string, userParam User, options *UsersClientBeginCreateOrUpdateOptions) (UsersClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, deviceName, name, resourceGroupName, userParam, options)
-	if err != nil {
-		return UsersClientCreateOrUpdatePollerResponse{}, err
+func (client *UsersClient) BeginCreateOrUpdate(ctx context.Context, deviceName string, name string, resourceGroupName string, userParam User, options *UsersClientBeginCreateOrUpdateOptions) (*armruntime.Poller[UsersClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, deviceName, name, resourceGroupName, userParam, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[UsersClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[UsersClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := UsersClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("UsersClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return UsersClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &UsersClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates a new user or updates an existing user's information on a Data Box Edge/Data Box Gateway device.
@@ -117,7 +116,7 @@ func (client *UsersClient) createOrUpdateCreateRequest(ctx context.Context, devi
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, userParam)
@@ -129,22 +128,16 @@ func (client *UsersClient) createOrUpdateCreateRequest(ctx context.Context, devi
 // name - The user name.
 // resourceGroupName - The resource group name.
 // options - UsersClientBeginDeleteOptions contains the optional parameters for the UsersClient.BeginDelete method.
-func (client *UsersClient) BeginDelete(ctx context.Context, deviceName string, name string, resourceGroupName string, options *UsersClientBeginDeleteOptions) (UsersClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, deviceName, name, resourceGroupName, options)
-	if err != nil {
-		return UsersClientDeletePollerResponse{}, err
+func (client *UsersClient) BeginDelete(ctx context.Context, deviceName string, name string, resourceGroupName string, options *UsersClientBeginDeleteOptions) (*armruntime.Poller[UsersClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, deviceName, name, resourceGroupName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[UsersClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[UsersClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := UsersClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("UsersClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return UsersClientDeletePollerResponse{}, err
-	}
-	result.Poller = &UsersClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes the user on a databox edge/gateway device.
@@ -188,7 +181,7 @@ func (client *UsersClient) deleteCreateRequest(ctx context.Context, deviceName s
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -239,7 +232,7 @@ func (client *UsersClient) getCreateRequest(ctx context.Context, deviceName stri
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -247,7 +240,7 @@ func (client *UsersClient) getCreateRequest(ctx context.Context, deviceName stri
 
 // getHandleResponse handles the Get response.
 func (client *UsersClient) getHandleResponse(resp *http.Response) (UsersClientGetResponse, error) {
-	result := UsersClientGetResponse{RawResponse: resp}
+	result := UsersClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.User); err != nil {
 		return UsersClientGetResponse{}, err
 	}
@@ -260,16 +253,32 @@ func (client *UsersClient) getHandleResponse(resp *http.Response) (UsersClientGe
 // resourceGroupName - The resource group name.
 // options - UsersClientListByDataBoxEdgeDeviceOptions contains the optional parameters for the UsersClient.ListByDataBoxEdgeDevice
 // method.
-func (client *UsersClient) ListByDataBoxEdgeDevice(deviceName string, resourceGroupName string, options *UsersClientListByDataBoxEdgeDeviceOptions) *UsersClientListByDataBoxEdgeDevicePager {
-	return &UsersClientListByDataBoxEdgeDevicePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByDataBoxEdgeDeviceCreateRequest(ctx, deviceName, resourceGroupName, options)
+func (client *UsersClient) ListByDataBoxEdgeDevice(deviceName string, resourceGroupName string, options *UsersClientListByDataBoxEdgeDeviceOptions) *runtime.Pager[UsersClientListByDataBoxEdgeDeviceResponse] {
+	return runtime.NewPager(runtime.PageProcessor[UsersClientListByDataBoxEdgeDeviceResponse]{
+		More: func(page UsersClientListByDataBoxEdgeDeviceResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp UsersClientListByDataBoxEdgeDeviceResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.UserList.NextLink)
+		Fetcher: func(ctx context.Context, page *UsersClientListByDataBoxEdgeDeviceResponse) (UsersClientListByDataBoxEdgeDeviceResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByDataBoxEdgeDeviceCreateRequest(ctx, deviceName, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return UsersClientListByDataBoxEdgeDeviceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return UsersClientListByDataBoxEdgeDeviceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return UsersClientListByDataBoxEdgeDeviceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByDataBoxEdgeDeviceHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByDataBoxEdgeDeviceCreateRequest creates the ListByDataBoxEdgeDevice request.
@@ -292,7 +301,7 @@ func (client *UsersClient) listByDataBoxEdgeDeviceCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-03-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -303,7 +312,7 @@ func (client *UsersClient) listByDataBoxEdgeDeviceCreateRequest(ctx context.Cont
 
 // listByDataBoxEdgeDeviceHandleResponse handles the ListByDataBoxEdgeDevice response.
 func (client *UsersClient) listByDataBoxEdgeDeviceHandleResponse(resp *http.Response) (UsersClientListByDataBoxEdgeDeviceResponse, error) {
-	result := UsersClientListByDataBoxEdgeDeviceResponse{RawResponse: resp}
+	result := UsersClientListByDataBoxEdgeDeviceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UserList); err != nil {
 		return UsersClientListByDataBoxEdgeDeviceResponse{}, err
 	}

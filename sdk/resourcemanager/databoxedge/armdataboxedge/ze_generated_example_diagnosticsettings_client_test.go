@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,77 +19,104 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databoxedge/armdataboxedge"
 )
 
-// x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2021-06-01/examples/GetDiagnosticProactiveLogCollectionSettings.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2022-03-01/examples/GetDiagnosticProactiveLogCollectionSettings.json
 func ExampleDiagnosticSettingsClient_GetDiagnosticProactiveLogCollectionSettings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdataboxedge.NewDiagnosticSettingsClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewDiagnosticSettingsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GetDiagnosticProactiveLogCollectionSettings(ctx,
 		"<device-name>",
 		"<resource-group-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.DiagnosticSettingsClientGetDiagnosticProactiveLogCollectionSettingsResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2021-06-01/examples/UpdateDiagnosticProactiveLogCollectionSettings.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2022-03-01/examples/UpdateDiagnosticProactiveLogCollectionSettings.json
 func ExampleDiagnosticSettingsClient_BeginUpdateDiagnosticProactiveLogCollectionSettings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdataboxedge.NewDiagnosticSettingsClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewDiagnosticSettingsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginUpdateDiagnosticProactiveLogCollectionSettings(ctx,
 		"<device-name>",
 		"<resource-group-name>",
 		armdataboxedge.DiagnosticProactiveLogCollectionSettings{
 			Properties: &armdataboxedge.ProactiveLogCollectionSettingsProperties{
-				UserConsent: armdataboxedge.ProactiveDiagnosticsConsent("Enabled").ToPtr(),
+				UserConsent: to.Ptr(armdataboxedge.ProactiveDiagnosticsConsentEnabled),
 			},
 		},
-		nil)
+		&armdataboxedge.DiagnosticSettingsClientBeginUpdateDiagnosticProactiveLogCollectionSettingsOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.DiagnosticSettingsClientUpdateDiagnosticProactiveLogCollectionSettingsResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2021-06-01/examples/GetDiagnosticRemoteSupportSettings.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2022-03-01/examples/GetDiagnosticRemoteSupportSettings.json
 func ExampleDiagnosticSettingsClient_GetDiagnosticRemoteSupportSettings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdataboxedge.NewDiagnosticSettingsClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewDiagnosticSettingsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GetDiagnosticRemoteSupportSettings(ctx,
 		"<device-name>",
 		"<resource-group-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.DiagnosticSettingsClientGetDiagnosticRemoteSupportSettingsResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2021-06-01/examples/UpdateDiagnosticRemoteSupportSettings.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2022-03-01/examples/UpdateDiagnosticRemoteSupportSettings.json
 func ExampleDiagnosticSettingsClient_BeginUpdateDiagnosticRemoteSupportSettings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdataboxedge.NewDiagnosticSettingsClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewDiagnosticSettingsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginUpdateDiagnosticRemoteSupportSettings(ctx,
 		"<device-name>",
 		"<resource-group-name>",
@@ -97,19 +124,22 @@ func ExampleDiagnosticSettingsClient_BeginUpdateDiagnosticRemoteSupportSettings(
 			Properties: &armdataboxedge.DiagnosticRemoteSupportSettingsProperties{
 				RemoteSupportSettingsList: []*armdataboxedge.RemoteSupportSettings{
 					{
-						AccessLevel:              armdataboxedge.AccessLevel("ReadWrite").ToPtr(),
-						ExpirationTimeStampInUTC: to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-07T00:00:00+00:00"); return t }()),
-						RemoteApplicationType:    armdataboxedge.RemoteApplicationType("Powershell").ToPtr(),
+						AccessLevel:              to.Ptr(armdataboxedge.AccessLevelReadWrite),
+						ExpirationTimeStampInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-07T00:00:00+00:00"); return t }()),
+						RemoteApplicationType:    to.Ptr(armdataboxedge.RemoteApplicationTypePowershell),
 					}},
 			},
 		},
-		nil)
+		&armdataboxedge.DiagnosticSettingsClientBeginUpdateDiagnosticRemoteSupportSettingsOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.DiagnosticSettingsClientUpdateDiagnosticRemoteSupportSettingsResult)
+	// TODO: use response item
+	_ = res
 }

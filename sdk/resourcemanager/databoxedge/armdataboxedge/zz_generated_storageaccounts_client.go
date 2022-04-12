@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type StorageAccountsClient struct {
 // subscriptionID - The subscription ID.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewStorageAccountsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *StorageAccountsClient {
+func NewStorageAccountsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*StorageAccountsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &StorageAccountsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates a new StorageAccount or updates an existing StorageAccount on the device.
@@ -57,22 +62,16 @@ func NewStorageAccountsClient(subscriptionID string, credential azcore.TokenCred
 // storageAccount - The StorageAccount properties.
 // options - StorageAccountsClientBeginCreateOrUpdateOptions contains the optional parameters for the StorageAccountsClient.BeginCreateOrUpdate
 // method.
-func (client *StorageAccountsClient) BeginCreateOrUpdate(ctx context.Context, deviceName string, storageAccountName string, resourceGroupName string, storageAccount StorageAccount, options *StorageAccountsClientBeginCreateOrUpdateOptions) (StorageAccountsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, deviceName, storageAccountName, resourceGroupName, storageAccount, options)
-	if err != nil {
-		return StorageAccountsClientCreateOrUpdatePollerResponse{}, err
+func (client *StorageAccountsClient) BeginCreateOrUpdate(ctx context.Context, deviceName string, storageAccountName string, resourceGroupName string, storageAccount StorageAccount, options *StorageAccountsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[StorageAccountsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, deviceName, storageAccountName, resourceGroupName, storageAccount, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[StorageAccountsClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[StorageAccountsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := StorageAccountsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("StorageAccountsClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return StorageAccountsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &StorageAccountsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates a new StorageAccount or updates an existing StorageAccount on the device.
@@ -116,7 +115,7 @@ func (client *StorageAccountsClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, storageAccount)
@@ -129,22 +128,16 @@ func (client *StorageAccountsClient) createOrUpdateCreateRequest(ctx context.Con
 // resourceGroupName - The resource group name.
 // options - StorageAccountsClientBeginDeleteOptions contains the optional parameters for the StorageAccountsClient.BeginDelete
 // method.
-func (client *StorageAccountsClient) BeginDelete(ctx context.Context, deviceName string, storageAccountName string, resourceGroupName string, options *StorageAccountsClientBeginDeleteOptions) (StorageAccountsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, deviceName, storageAccountName, resourceGroupName, options)
-	if err != nil {
-		return StorageAccountsClientDeletePollerResponse{}, err
+func (client *StorageAccountsClient) BeginDelete(ctx context.Context, deviceName string, storageAccountName string, resourceGroupName string, options *StorageAccountsClientBeginDeleteOptions) (*armruntime.Poller[StorageAccountsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, deviceName, storageAccountName, resourceGroupName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[StorageAccountsClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[StorageAccountsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := StorageAccountsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("StorageAccountsClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return StorageAccountsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &StorageAccountsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes the StorageAccount on the Data Box Edge/Data Box Gateway device.
@@ -188,7 +181,7 @@ func (client *StorageAccountsClient) deleteCreateRequest(ctx context.Context, de
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -239,7 +232,7 @@ func (client *StorageAccountsClient) getCreateRequest(ctx context.Context, devic
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -247,7 +240,7 @@ func (client *StorageAccountsClient) getCreateRequest(ctx context.Context, devic
 
 // getHandleResponse handles the Get response.
 func (client *StorageAccountsClient) getHandleResponse(resp *http.Response) (StorageAccountsClientGetResponse, error) {
-	result := StorageAccountsClientGetResponse{RawResponse: resp}
+	result := StorageAccountsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StorageAccount); err != nil {
 		return StorageAccountsClientGetResponse{}, err
 	}
@@ -260,16 +253,32 @@ func (client *StorageAccountsClient) getHandleResponse(resp *http.Response) (Sto
 // resourceGroupName - The resource group name.
 // options - StorageAccountsClientListByDataBoxEdgeDeviceOptions contains the optional parameters for the StorageAccountsClient.ListByDataBoxEdgeDevice
 // method.
-func (client *StorageAccountsClient) ListByDataBoxEdgeDevice(deviceName string, resourceGroupName string, options *StorageAccountsClientListByDataBoxEdgeDeviceOptions) *StorageAccountsClientListByDataBoxEdgeDevicePager {
-	return &StorageAccountsClientListByDataBoxEdgeDevicePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByDataBoxEdgeDeviceCreateRequest(ctx, deviceName, resourceGroupName, options)
+func (client *StorageAccountsClient) ListByDataBoxEdgeDevice(deviceName string, resourceGroupName string, options *StorageAccountsClientListByDataBoxEdgeDeviceOptions) *runtime.Pager[StorageAccountsClientListByDataBoxEdgeDeviceResponse] {
+	return runtime.NewPager(runtime.PageProcessor[StorageAccountsClientListByDataBoxEdgeDeviceResponse]{
+		More: func(page StorageAccountsClientListByDataBoxEdgeDeviceResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp StorageAccountsClientListByDataBoxEdgeDeviceResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.StorageAccountList.NextLink)
+		Fetcher: func(ctx context.Context, page *StorageAccountsClientListByDataBoxEdgeDeviceResponse) (StorageAccountsClientListByDataBoxEdgeDeviceResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByDataBoxEdgeDeviceCreateRequest(ctx, deviceName, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return StorageAccountsClientListByDataBoxEdgeDeviceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return StorageAccountsClientListByDataBoxEdgeDeviceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return StorageAccountsClientListByDataBoxEdgeDeviceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByDataBoxEdgeDeviceHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByDataBoxEdgeDeviceCreateRequest creates the ListByDataBoxEdgeDevice request.
@@ -292,7 +301,7 @@ func (client *StorageAccountsClient) listByDataBoxEdgeDeviceCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -300,7 +309,7 @@ func (client *StorageAccountsClient) listByDataBoxEdgeDeviceCreateRequest(ctx co
 
 // listByDataBoxEdgeDeviceHandleResponse handles the ListByDataBoxEdgeDevice response.
 func (client *StorageAccountsClient) listByDataBoxEdgeDeviceHandleResponse(resp *http.Response) (StorageAccountsClientListByDataBoxEdgeDeviceResponse, error) {
-	result := StorageAccountsClientListByDataBoxEdgeDeviceResponse{RawResponse: resp}
+	result := StorageAccountsClientListByDataBoxEdgeDeviceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StorageAccountList); err != nil {
 		return StorageAccountsClientListByDataBoxEdgeDeviceResponse{}, err
 	}

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type SynchronizationSettingsClient struct {
 // subscriptionID - The subscription identifier
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewSynchronizationSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SynchronizationSettingsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewSynchronizationSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SynchronizationSettingsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &SynchronizationSettingsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Create - Create a synchronizationSetting
@@ -109,7 +114,7 @@ func (client *SynchronizationSettingsClient) createCreateRequest(ctx context.Con
 
 // createHandleResponse handles the Create response.
 func (client *SynchronizationSettingsClient) createHandleResponse(resp *http.Response) (SynchronizationSettingsClientCreateResponse, error) {
-	result := SynchronizationSettingsClientCreateResponse{RawResponse: resp}
+	result := SynchronizationSettingsClientCreateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
 		return SynchronizationSettingsClientCreateResponse{}, err
 	}
@@ -124,22 +129,16 @@ func (client *SynchronizationSettingsClient) createHandleResponse(resp *http.Res
 // synchronizationSettingName - The name of the synchronizationSetting .
 // options - SynchronizationSettingsClientBeginDeleteOptions contains the optional parameters for the SynchronizationSettingsClient.BeginDelete
 // method.
-func (client *SynchronizationSettingsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, shareName string, synchronizationSettingName string, options *SynchronizationSettingsClientBeginDeleteOptions) (SynchronizationSettingsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, shareName, synchronizationSettingName, options)
-	if err != nil {
-		return SynchronizationSettingsClientDeletePollerResponse{}, err
+func (client *SynchronizationSettingsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, shareName string, synchronizationSettingName string, options *SynchronizationSettingsClientBeginDeleteOptions) (*armruntime.Poller[SynchronizationSettingsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, shareName, synchronizationSettingName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[SynchronizationSettingsClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[SynchronizationSettingsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SynchronizationSettingsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SynchronizationSettingsClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return SynchronizationSettingsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &SynchronizationSettingsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Delete a synchronizationSetting in a share
@@ -252,7 +251,7 @@ func (client *SynchronizationSettingsClient) getCreateRequest(ctx context.Contex
 
 // getHandleResponse handles the Get response.
 func (client *SynchronizationSettingsClient) getHandleResponse(resp *http.Response) (SynchronizationSettingsClientGetResponse, error) {
-	result := SynchronizationSettingsClientGetResponse{RawResponse: resp}
+	result := SynchronizationSettingsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
 		return SynchronizationSettingsClientGetResponse{}, err
 	}
@@ -266,16 +265,32 @@ func (client *SynchronizationSettingsClient) getHandleResponse(resp *http.Respon
 // shareName - The name of the share.
 // options - SynchronizationSettingsClientListByShareOptions contains the optional parameters for the SynchronizationSettingsClient.ListByShare
 // method.
-func (client *SynchronizationSettingsClient) ListByShare(resourceGroupName string, accountName string, shareName string, options *SynchronizationSettingsClientListByShareOptions) *SynchronizationSettingsClientListBySharePager {
-	return &SynchronizationSettingsClientListBySharePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByShareCreateRequest(ctx, resourceGroupName, accountName, shareName, options)
+func (client *SynchronizationSettingsClient) ListByShare(resourceGroupName string, accountName string, shareName string, options *SynchronizationSettingsClientListByShareOptions) *runtime.Pager[SynchronizationSettingsClientListByShareResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SynchronizationSettingsClientListByShareResponse]{
+		More: func(page SynchronizationSettingsClientListByShareResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SynchronizationSettingsClientListByShareResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SynchronizationSettingList.NextLink)
+		Fetcher: func(ctx context.Context, page *SynchronizationSettingsClientListByShareResponse) (SynchronizationSettingsClientListByShareResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByShareCreateRequest(ctx, resourceGroupName, accountName, shareName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SynchronizationSettingsClientListByShareResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SynchronizationSettingsClientListByShareResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SynchronizationSettingsClientListByShareResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByShareHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByShareCreateRequest creates the ListByShare request.
@@ -313,7 +328,7 @@ func (client *SynchronizationSettingsClient) listByShareCreateRequest(ctx contex
 
 // listByShareHandleResponse handles the ListByShare response.
 func (client *SynchronizationSettingsClient) listByShareHandleResponse(resp *http.Response) (SynchronizationSettingsClientListByShareResponse, error) {
-	result := SynchronizationSettingsClientListByShareResponse{RawResponse: resp}
+	result := SynchronizationSettingsClientListByShareResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SynchronizationSettingList); err != nil {
 		return SynchronizationSettingsClientListByShareResponse{}, err
 	}

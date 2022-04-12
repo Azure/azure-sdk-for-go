@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,14 +19,19 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory"
 )
 
-// x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/TriggerRuns_Rerun.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/TriggerRuns_Rerun.json
 func ExampleTriggerRunsClient_Rerun() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdatafactory.NewTriggerRunsClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewTriggerRunsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Rerun(ctx,
 		"<resource-group-name>",
 		"<factory-name>",
@@ -34,18 +39,24 @@ func ExampleTriggerRunsClient_Rerun() {
 		"<run-id>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/TriggerRuns_Cancel.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/TriggerRuns_Cancel.json
 func ExampleTriggerRunsClient_Cancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdatafactory.NewTriggerRunsClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewTriggerRunsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Cancel(ctx,
 		"<resource-group-name>",
 		"<factory-name>",
@@ -53,35 +64,43 @@ func ExampleTriggerRunsClient_Cancel() {
 		"<run-id>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/TriggerRuns_QueryByFactory.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/TriggerRuns_QueryByFactory.json
 func ExampleTriggerRunsClient_QueryByFactory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdatafactory.NewTriggerRunsClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewTriggerRunsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.QueryByFactory(ctx,
 		"<resource-group-name>",
 		"<factory-name>",
 		armdatafactory.RunFilterParameters{
 			Filters: []*armdatafactory.RunQueryFilter{
 				{
-					Operand:  armdatafactory.RunQueryFilterOperand("TriggerName").ToPtr(),
-					Operator: armdatafactory.RunQueryFilterOperator("Equals").ToPtr(),
+					Operand:  to.Ptr(armdatafactory.RunQueryFilterOperandTriggerName),
+					Operator: to.Ptr(armdatafactory.RunQueryFilterOperatorEquals),
 					Values: []*string{
-						to.StringPtr("exampleTrigger")},
+						to.Ptr("exampleTrigger")},
 				}},
-			LastUpdatedAfter:  to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:36:44.3345758Z"); return t }()),
-			LastUpdatedBefore: to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:49:48.3686473Z"); return t }()),
+			LastUpdatedAfter:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:36:44.3345758Z"); return t }()),
+			LastUpdatedBefore: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:49:48.3686473Z"); return t }()),
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.TriggerRunsClientQueryByFactoryResult)
+	// TODO: use response item
+	_ = res
 }

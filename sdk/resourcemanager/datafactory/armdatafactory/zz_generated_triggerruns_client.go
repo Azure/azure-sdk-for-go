@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type TriggerRunsClient struct {
 // subscriptionID - The subscription identifier.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewTriggerRunsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *TriggerRunsClient {
+func NewTriggerRunsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TriggerRunsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &TriggerRunsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Cancel - Cancel a single trigger instance by runId.
@@ -68,7 +73,7 @@ func (client *TriggerRunsClient) Cancel(ctx context.Context, resourceGroupName s
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return TriggerRunsClientCancelResponse{}, runtime.NewResponseError(resp)
 	}
-	return TriggerRunsClientCancelResponse{RawResponse: resp}, nil
+	return TriggerRunsClientCancelResponse{}, nil
 }
 
 // cancelCreateRequest creates the Cancel request.
@@ -155,7 +160,7 @@ func (client *TriggerRunsClient) queryByFactoryCreateRequest(ctx context.Context
 
 // queryByFactoryHandleResponse handles the QueryByFactory response.
 func (client *TriggerRunsClient) queryByFactoryHandleResponse(resp *http.Response) (TriggerRunsClientQueryByFactoryResponse, error) {
-	result := TriggerRunsClientQueryByFactoryResponse{RawResponse: resp}
+	result := TriggerRunsClientQueryByFactoryResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TriggerRunsQueryResponse); err != nil {
 		return TriggerRunsClientQueryByFactoryResponse{}, err
 	}
@@ -181,7 +186,7 @@ func (client *TriggerRunsClient) Rerun(ctx context.Context, resourceGroupName st
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return TriggerRunsClientRerunResponse{}, runtime.NewResponseError(resp)
 	}
-	return TriggerRunsClientRerunResponse{RawResponse: resp}, nil
+	return TriggerRunsClientRerunResponse{}, nil
 }
 
 // rerunCreateRequest creates the Rerun request.

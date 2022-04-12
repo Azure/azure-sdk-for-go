@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type VNetPeeringClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewVNetPeeringClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VNetPeeringClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewVNetPeeringClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VNetPeeringClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &VNetPeeringClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates vNet Peering for workspace.
@@ -57,22 +62,16 @@ func NewVNetPeeringClient(subscriptionID string, credential azcore.TokenCredenti
 // virtualNetworkPeeringParameters - Parameters supplied to the create workspace vNet Peering.
 // options - VNetPeeringClientBeginCreateOrUpdateOptions contains the optional parameters for the VNetPeeringClient.BeginCreateOrUpdate
 // method.
-func (client *VNetPeeringClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, peeringName string, virtualNetworkPeeringParameters VirtualNetworkPeering, options *VNetPeeringClientBeginCreateOrUpdateOptions) (VNetPeeringClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, workspaceName, peeringName, virtualNetworkPeeringParameters, options)
-	if err != nil {
-		return VNetPeeringClientCreateOrUpdatePollerResponse{}, err
+func (client *VNetPeeringClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, peeringName string, virtualNetworkPeeringParameters VirtualNetworkPeering, options *VNetPeeringClientBeginCreateOrUpdateOptions) (*armruntime.Poller[VNetPeeringClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, workspaceName, peeringName, virtualNetworkPeeringParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[VNetPeeringClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[VNetPeeringClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := VNetPeeringClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("VNetPeeringClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return VNetPeeringClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &VNetPeeringClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates vNet Peering for workspace.
@@ -128,22 +127,16 @@ func (client *VNetPeeringClient) createOrUpdateCreateRequest(ctx context.Context
 // workspaceName - The name of the workspace.
 // peeringName - The name of the workspace vNet peering.
 // options - VNetPeeringClientBeginDeleteOptions contains the optional parameters for the VNetPeeringClient.BeginDelete method.
-func (client *VNetPeeringClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, peeringName string, options *VNetPeeringClientBeginDeleteOptions) (VNetPeeringClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, workspaceName, peeringName, options)
-	if err != nil {
-		return VNetPeeringClientDeletePollerResponse{}, err
+func (client *VNetPeeringClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, peeringName string, options *VNetPeeringClientBeginDeleteOptions) (*armruntime.Poller[VNetPeeringClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, workspaceName, peeringName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[VNetPeeringClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[VNetPeeringClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := VNetPeeringClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("VNetPeeringClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return VNetPeeringClientDeletePollerResponse{}, err
-	}
-	result.Poller = &VNetPeeringClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes the workspace vNetPeering.
@@ -246,7 +239,7 @@ func (client *VNetPeeringClient) getCreateRequest(ctx context.Context, resourceG
 
 // getHandleResponse handles the Get response.
 func (client *VNetPeeringClient) getHandleResponse(resp *http.Response) (VNetPeeringClientGetResponse, error) {
-	result := VNetPeeringClientGetResponse{RawResponse: resp}
+	result := VNetPeeringClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualNetworkPeering); err != nil {
 		return VNetPeeringClientGetResponse{}, err
 	}
@@ -259,16 +252,32 @@ func (client *VNetPeeringClient) getHandleResponse(resp *http.Response) (VNetPee
 // workspaceName - The name of the workspace.
 // options - VNetPeeringClientListByWorkspaceOptions contains the optional parameters for the VNetPeeringClient.ListByWorkspace
 // method.
-func (client *VNetPeeringClient) ListByWorkspace(resourceGroupName string, workspaceName string, options *VNetPeeringClientListByWorkspaceOptions) *VNetPeeringClientListByWorkspacePager {
-	return &VNetPeeringClientListByWorkspacePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByWorkspaceCreateRequest(ctx, resourceGroupName, workspaceName, options)
+func (client *VNetPeeringClient) ListByWorkspace(resourceGroupName string, workspaceName string, options *VNetPeeringClientListByWorkspaceOptions) *runtime.Pager[VNetPeeringClientListByWorkspaceResponse] {
+	return runtime.NewPager(runtime.PageProcessor[VNetPeeringClientListByWorkspaceResponse]{
+		More: func(page VNetPeeringClientListByWorkspaceResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp VNetPeeringClientListByWorkspaceResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.VirtualNetworkPeeringList.NextLink)
+		Fetcher: func(ctx context.Context, page *VNetPeeringClientListByWorkspaceResponse) (VNetPeeringClientListByWorkspaceResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByWorkspaceCreateRequest(ctx, resourceGroupName, workspaceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return VNetPeeringClientListByWorkspaceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return VNetPeeringClientListByWorkspaceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return VNetPeeringClientListByWorkspaceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByWorkspaceHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByWorkspaceCreateRequest creates the ListByWorkspace request.
@@ -299,7 +308,7 @@ func (client *VNetPeeringClient) listByWorkspaceCreateRequest(ctx context.Contex
 
 // listByWorkspaceHandleResponse handles the ListByWorkspace response.
 func (client *VNetPeeringClient) listByWorkspaceHandleResponse(resp *http.Response) (VNetPeeringClientListByWorkspaceResponse, error) {
-	result := VNetPeeringClientListByWorkspaceResponse{RawResponse: resp}
+	result := VNetPeeringClientListByWorkspaceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualNetworkPeeringList); err != nil {
 		return VNetPeeringClientListByWorkspaceResponse{}, err
 	}

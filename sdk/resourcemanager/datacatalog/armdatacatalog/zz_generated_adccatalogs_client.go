@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,31 +27,32 @@ import (
 type ADCCatalogsClient struct {
 	host           string
 	subscriptionID string
-	catalogName    string
 	pl             runtime.Pipeline
 }
 
 // NewADCCatalogsClient creates a new instance of ADCCatalogsClient with the specified values.
 // subscriptionID - Gets subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
 // ID forms part of the URI for every service call.
-// catalogName - The name of the data catalog in the specified subscription and resource group.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewADCCatalogsClient(subscriptionID string, catalogName string, credential azcore.TokenCredential, options *arm.ClientOptions) *ADCCatalogsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewADCCatalogsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ADCCatalogsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ADCCatalogsClient{
 		subscriptionID: subscriptionID,
-		catalogName:    catalogName,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - The Create Azure Data Catalog service operation creates a new data catalog service with the specified
@@ -58,11 +60,12 @@ func NewADCCatalogsClient(subscriptionID string, catalogName string, credential 
 // and any immutable properties will remain unchanged.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+// catalogName - The name of the data catalog in the specified subscription and resource group.
 // properties - Properties supplied to the Create or Update a data catalog.
 // options - ADCCatalogsClientCreateOrUpdateOptions contains the optional parameters for the ADCCatalogsClient.CreateOrUpdate
 // method.
-func (client *ADCCatalogsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, properties ADCCatalog, options *ADCCatalogsClientCreateOrUpdateOptions) (ADCCatalogsClientCreateOrUpdateResponse, error) {
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, properties, options)
+func (client *ADCCatalogsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, catalogName string, properties ADCCatalog, options *ADCCatalogsClientCreateOrUpdateOptions) (ADCCatalogsClientCreateOrUpdateResponse, error) {
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, catalogName, properties, options)
 	if err != nil {
 		return ADCCatalogsClientCreateOrUpdateResponse{}, err
 	}
@@ -77,7 +80,7 @@ func (client *ADCCatalogsClient) CreateOrUpdate(ctx context.Context, resourceGro
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ADCCatalogsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, properties ADCCatalog, options *ADCCatalogsClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ADCCatalogsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, catalogName string, properties ADCCatalog, options *ADCCatalogsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataCatalog/catalogs/{catalogName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -87,10 +90,10 @@ func (client *ADCCatalogsClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if client.catalogName == "" {
-		return nil, errors.New("parameter client.catalogName cannot be empty")
+	if catalogName == "" {
+		return nil, errors.New("parameter catalogName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{catalogName}", url.PathEscape(client.catalogName))
+	urlPath = strings.ReplaceAll(urlPath, "{catalogName}", url.PathEscape(catalogName))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
@@ -104,7 +107,7 @@ func (client *ADCCatalogsClient) createOrUpdateCreateRequest(ctx context.Context
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *ADCCatalogsClient) createOrUpdateHandleResponse(resp *http.Response) (ADCCatalogsClientCreateOrUpdateResponse, error) {
-	result := ADCCatalogsClientCreateOrUpdateResponse{RawResponse: resp}
+	result := ADCCatalogsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ADCCatalog); err != nil {
 		return ADCCatalogsClientCreateOrUpdateResponse{}, err
 	}
@@ -114,29 +117,24 @@ func (client *ADCCatalogsClient) createOrUpdateHandleResponse(resp *http.Respons
 // BeginDelete - The Delete Azure Data Catalog Service operation deletes an existing data catalog.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+// catalogName - The name of the data catalog in the specified subscription and resource group.
 // options - ADCCatalogsClientBeginDeleteOptions contains the optional parameters for the ADCCatalogsClient.BeginDelete method.
-func (client *ADCCatalogsClient) BeginDelete(ctx context.Context, resourceGroupName string, options *ADCCatalogsClientBeginDeleteOptions) (ADCCatalogsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, options)
-	if err != nil {
-		return ADCCatalogsClientDeletePollerResponse{}, err
+func (client *ADCCatalogsClient) BeginDelete(ctx context.Context, resourceGroupName string, catalogName string, options *ADCCatalogsClientBeginDeleteOptions) (*armruntime.Poller[ADCCatalogsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, catalogName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ADCCatalogsClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ADCCatalogsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ADCCatalogsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ADCCatalogsClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return ADCCatalogsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &ADCCatalogsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - The Delete Azure Data Catalog Service operation deletes an existing data catalog.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ADCCatalogsClient) deleteOperation(ctx context.Context, resourceGroupName string, options *ADCCatalogsClientBeginDeleteOptions) (*http.Response, error) {
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, options)
+func (client *ADCCatalogsClient) deleteOperation(ctx context.Context, resourceGroupName string, catalogName string, options *ADCCatalogsClientBeginDeleteOptions) (*http.Response, error) {
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, catalogName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -151,7 +149,7 @@ func (client *ADCCatalogsClient) deleteOperation(ctx context.Context, resourceGr
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ADCCatalogsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, options *ADCCatalogsClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *ADCCatalogsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, catalogName string, options *ADCCatalogsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataCatalog/catalogs/{catalogName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -161,10 +159,10 @@ func (client *ADCCatalogsClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if client.catalogName == "" {
-		return nil, errors.New("parameter client.catalogName cannot be empty")
+	if catalogName == "" {
+		return nil, errors.New("parameter catalogName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{catalogName}", url.PathEscape(client.catalogName))
+	urlPath = strings.ReplaceAll(urlPath, "{catalogName}", url.PathEscape(catalogName))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
@@ -178,9 +176,10 @@ func (client *ADCCatalogsClient) deleteCreateRequest(ctx context.Context, resour
 // Get - The Get Azure Data Catalog Service operation retrieves a json representation of the data catalog.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+// catalogName - The name of the data catalog in the specified subscription and resource group.
 // options - ADCCatalogsClientGetOptions contains the optional parameters for the ADCCatalogsClient.Get method.
-func (client *ADCCatalogsClient) Get(ctx context.Context, resourceGroupName string, options *ADCCatalogsClientGetOptions) (ADCCatalogsClientGetResponse, error) {
-	req, err := client.getCreateRequest(ctx, resourceGroupName, options)
+func (client *ADCCatalogsClient) Get(ctx context.Context, resourceGroupName string, catalogName string, options *ADCCatalogsClientGetOptions) (ADCCatalogsClientGetResponse, error) {
+	req, err := client.getCreateRequest(ctx, resourceGroupName, catalogName, options)
 	if err != nil {
 		return ADCCatalogsClientGetResponse{}, err
 	}
@@ -195,7 +194,7 @@ func (client *ADCCatalogsClient) Get(ctx context.Context, resourceGroupName stri
 }
 
 // getCreateRequest creates the Get request.
-func (client *ADCCatalogsClient) getCreateRequest(ctx context.Context, resourceGroupName string, options *ADCCatalogsClientGetOptions) (*policy.Request, error) {
+func (client *ADCCatalogsClient) getCreateRequest(ctx context.Context, resourceGroupName string, catalogName string, options *ADCCatalogsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataCatalog/catalogs/{catalogName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -205,10 +204,10 @@ func (client *ADCCatalogsClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if client.catalogName == "" {
-		return nil, errors.New("parameter client.catalogName cannot be empty")
+	if catalogName == "" {
+		return nil, errors.New("parameter catalogName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{catalogName}", url.PathEscape(client.catalogName))
+	urlPath = strings.ReplaceAll(urlPath, "{catalogName}", url.PathEscape(catalogName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
@@ -222,7 +221,7 @@ func (client *ADCCatalogsClient) getCreateRequest(ctx context.Context, resourceG
 
 // getHandleResponse handles the Get response.
 func (client *ADCCatalogsClient) getHandleResponse(resp *http.Response) (ADCCatalogsClientGetResponse, error) {
-	result := ADCCatalogsClientGetResponse{RawResponse: resp}
+	result := ADCCatalogsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ADCCatalog); err != nil {
 		return ADCCatalogsClientGetResponse{}, err
 	}
@@ -274,7 +273,7 @@ func (client *ADCCatalogsClient) listtByResourceGroupCreateRequest(ctx context.C
 
 // listtByResourceGroupHandleResponse handles the ListtByResourceGroup response.
 func (client *ADCCatalogsClient) listtByResourceGroupHandleResponse(resp *http.Response) (ADCCatalogsClientListtByResourceGroupResponse, error) {
-	result := ADCCatalogsClientListtByResourceGroupResponse{RawResponse: resp}
+	result := ADCCatalogsClientListtByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ADCCatalogsListResult); err != nil {
 		return ADCCatalogsClientListtByResourceGroupResponse{}, err
 	}
@@ -285,10 +284,11 @@ func (client *ADCCatalogsClient) listtByResourceGroupHandleResponse(resp *http.R
 // only supports the properties listed in the PATCH body.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+// catalogName - The name of the data catalog in the specified subscription and resource group.
 // properties - Properties supplied to the Update a data catalog.
 // options - ADCCatalogsClientUpdateOptions contains the optional parameters for the ADCCatalogsClient.Update method.
-func (client *ADCCatalogsClient) Update(ctx context.Context, resourceGroupName string, properties ADCCatalog, options *ADCCatalogsClientUpdateOptions) (ADCCatalogsClientUpdateResponse, error) {
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, properties, options)
+func (client *ADCCatalogsClient) Update(ctx context.Context, resourceGroupName string, catalogName string, properties ADCCatalog, options *ADCCatalogsClientUpdateOptions) (ADCCatalogsClientUpdateResponse, error) {
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, catalogName, properties, options)
 	if err != nil {
 		return ADCCatalogsClientUpdateResponse{}, err
 	}
@@ -303,7 +303,7 @@ func (client *ADCCatalogsClient) Update(ctx context.Context, resourceGroupName s
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ADCCatalogsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, properties ADCCatalog, options *ADCCatalogsClientUpdateOptions) (*policy.Request, error) {
+func (client *ADCCatalogsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, catalogName string, properties ADCCatalog, options *ADCCatalogsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataCatalog/catalogs/{catalogName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -313,10 +313,10 @@ func (client *ADCCatalogsClient) updateCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if client.catalogName == "" {
-		return nil, errors.New("parameter client.catalogName cannot be empty")
+	if catalogName == "" {
+		return nil, errors.New("parameter catalogName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{catalogName}", url.PathEscape(client.catalogName))
+	urlPath = strings.ReplaceAll(urlPath, "{catalogName}", url.PathEscape(catalogName))
 	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
@@ -330,7 +330,7 @@ func (client *ADCCatalogsClient) updateCreateRequest(ctx context.Context, resour
 
 // updateHandleResponse handles the Update response.
 func (client *ADCCatalogsClient) updateHandleResponse(resp *http.Response) (ADCCatalogsClientUpdateResponse, error) {
-	result := ADCCatalogsClientUpdateResponse{RawResponse: resp}
+	result := ADCCatalogsClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ADCCatalog); err != nil {
 		return ADCCatalogsClientUpdateResponse{}, err
 	}

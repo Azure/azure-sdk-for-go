@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,126 +19,159 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databoxedge/armdataboxedge"
 )
 
-// x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2021-06-01/examples/OrderGetAllInDevice.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2022-03-01/examples/OrderGetAllInDevice.json
 func ExampleOrdersClient_ListByDataBoxEdgeDevice() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdataboxedge.NewOrdersClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewOrdersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListByDataBoxEdgeDevice("<device-name>",
 		"<resource-group-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2021-06-01/examples/OrderGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2022-03-01/examples/OrderGet.json
 func ExampleOrdersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdataboxedge.NewOrdersClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewOrdersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<device-name>",
 		"<resource-group-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.OrdersClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2021-06-01/examples/OrderPut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2022-03-01/examples/OrderPut.json
 func ExampleOrdersClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdataboxedge.NewOrdersClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewOrdersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<device-name>",
 		"<resource-group-name>",
 		armdataboxedge.Order{
 			Properties: &armdataboxedge.OrderProperties{
 				ContactInformation: &armdataboxedge.ContactDetails{
-					CompanyName:   to.StringPtr("<company-name>"),
-					ContactPerson: to.StringPtr("<contact-person>"),
+					CompanyName:   to.Ptr("<company-name>"),
+					ContactPerson: to.Ptr("<contact-person>"),
 					EmailList: []*string{
-						to.StringPtr("john@microsoft.com")},
-					Phone: to.StringPtr("<phone>"),
+						to.Ptr("john@microsoft.com")},
+					Phone: to.Ptr("<phone>"),
 				},
 				ShippingAddress: &armdataboxedge.Address{
-					AddressLine1: to.StringPtr("<address-line1>"),
-					AddressLine2: to.StringPtr("<address-line2>"),
-					AddressLine3: to.StringPtr("<address-line3>"),
-					City:         to.StringPtr("<city>"),
-					Country:      to.StringPtr("<country>"),
-					PostalCode:   to.StringPtr("<postal-code>"),
-					State:        to.StringPtr("<state>"),
+					AddressLine1: to.Ptr("<address-line1>"),
+					AddressLine2: to.Ptr("<address-line2>"),
+					AddressLine3: to.Ptr("<address-line3>"),
+					City:         to.Ptr("<city>"),
+					Country:      to.Ptr("<country>"),
+					PostalCode:   to.Ptr("<postal-code>"),
+					State:        to.Ptr("<state>"),
 				},
 			},
 		},
-		nil)
+		&armdataboxedge.OrdersClientBeginCreateOrUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.OrdersClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2021-06-01/examples/OrderDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2022-03-01/examples/OrderDelete.json
 func ExampleOrdersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdataboxedge.NewOrdersClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewOrdersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginDelete(ctx,
 		"<device-name>",
 		"<resource-group-name>",
-		nil)
+		&armdataboxedge.OrdersClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2021-06-01/examples/GetDCAccessCode.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2022-03-01/examples/GetDCAccessCode.json
 func ExampleOrdersClient_ListDCAccessCode() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdataboxedge.NewOrdersClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewOrdersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.ListDCAccessCode(ctx,
 		"<device-name>",
 		"<resource-group-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.OrdersClientListDCAccessCodeResult)
+	// TODO: use response item
+	_ = res
 }

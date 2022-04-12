@@ -48,7 +48,7 @@ func newFakeBlockWriter() *fakeBlockWriter {
 }
 
 //nolint
-func (f *fakeBlockWriter) StageBlock(_ context.Context, blockID string, body io.ReadSeekCloser, _ *StageBlockOptions) (BlockBlobStageBlockResponse, error) {
+func (f *fakeBlockWriter) StageBlock(_ context.Context, blockID string, body io.ReadSeekCloser, _ *BlockBlobStageBlockOptions) (BlockBlobStageBlockResponse, error) {
 	n := atomic.AddInt32(&f.block, 1)
 	if n == f.errOnBlock {
 		return BlockBlobStageBlockResponse{}, io.ErrNoProgress
@@ -72,7 +72,7 @@ func (f *fakeBlockWriter) StageBlock(_ context.Context, blockID string, body io.
 }
 
 //nolint
-func (f *fakeBlockWriter) CommitBlockList(_ context.Context, base64BlockIDs []string, _ *CommitBlockListOptions) (BlockBlobCommitBlockListResponse, error) {
+func (f *fakeBlockWriter) CommitBlockList(_ context.Context, base64BlockIDs []string, _ *BlockBlobCommitBlockListOptions) (BlockBlobCommitBlockListResponse, error) {
 	dst, err := os.OpenFile(filepath.Join(f.path, finalFileName), os.O_CREATE+os.O_WRONLY, 0600)
 	if err != nil {
 		return BlockBlobCommitBlockListResponse{}, err

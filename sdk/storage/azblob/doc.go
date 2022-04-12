@@ -28,7 +28,7 @@ To create a client object, you will need the account's blob service endpoint URL
 Types of Credentials
 
 The clients support different forms of authentication.
-The azblob library supports any of the `azcore.TokenCredential` interfaces, authorization via a Connection String,
+The azblob library supports any of the `azcore.TokenCredential` interfaces, authorization via a connection String,
 or authorization with a Shared Access Signature token.
 
 Using a Shared Key
@@ -52,7 +52,7 @@ Use the key as the credential parameter to authenticate the client:
 	serviceClient, err := azblob.NewServiceClient("https://<my_account_name>.blob.core.windows.net/", cred, nil)
 	handle(err)
 
-Using a Connection String
+Using a connection String
 
 Depending on your use case and authorization method, you may prefer to initialize a client instance with a connection string instead of providing the account URL and credential separately.
 To do this, pass the connection string to the service client's `NewServiceClientFromConnectionString` method.
@@ -64,7 +64,7 @@ The connection string can be found in your storage account in the Azure Portal u
 Using a Shared Access Signature (SAS) Token
 
 To use a shared access signature (SAS) token, provide the token at the end of your service URL.
-You can generate a SAS token from the Azure Portal under Shared Access Signature or use the ServiceClient.GetSASToken() functions.
+You can generate a SAS token from the Azure Portal under Shared Access Signature or use the ServiceClient.GetSASURL() functions.
 
 	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
 	if !ok {
@@ -81,7 +81,7 @@ You can generate a SAS token from the Azure Portal under Shared Access Signature
 	handle(err)
 
     // Provide the convenience function with relevant info
-	accountSAS, err := serviceClient.GetSASToken(AccountSASResourceTypes{Object: true, Service: true, Container: true}, AccountSASPermissions{Read: true, List: true}, AccountSASServices{Blob: true}, time.Now(), time.Now().Add(48*time.Hour))
+	accountSAS, err := serviceClient.GetSASURL(AccountSASResourceTypes{Object: true, Service: true, Container: true}, AccountSASPermissions{Read: true, List: true}, AccountSASServices{Blob: true}, time.Now(), time.Now().Add(48*time.Hour))
 	handle(err)
 
 	urlToSend := fmt.Sprintf("https://%s.blob.core.windows.net/?%s", accountName, accountSAS)
@@ -105,13 +105,13 @@ There are three different clients provided to interact with the various componen
     * Get and set account settings.
     * Query, create, and delete containers within the account.
 
-2. **`ContainerClient`**
+2. **`containerClient`**
     * Get and set container access settings, properties, and metadata.
     * Create, delete, and query blobs within the container.
     * `ContainerLeaseClient` to support container lease management.
 
 3. **`BlobClient`**
-    * `AppendBlobClient`, `BlockBlobClient`, and `PageBlobClient`
+    * `appendBlobClient`, `BlockBlobClient`, and `PageBlobClient`
     * Get and set blob properties.
     * Perform CRUD operations on a given blob.
     * `BlobLeaseClient` to support blob lease management.

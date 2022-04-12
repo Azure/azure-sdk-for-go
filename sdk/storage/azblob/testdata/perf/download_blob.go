@@ -107,7 +107,7 @@ func (g *downloadTestGlobal) NewPerfTest(ctx context.Context, options *perf.Perf
 	}
 
 	containerClient, err := azblob.NewContainerClientFromConnectionString(connStr, d.downloadTestGlobal.containerName, &azblob.ClientOptions{
-		Transporter: d.PerfTestOptions.Transporter,
+		Transport: d.PerfTestOptions.Transporter,
 	})
 	if err != nil {
 		return nil, err

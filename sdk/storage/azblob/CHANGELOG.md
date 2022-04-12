@@ -5,6 +5,7 @@
 ### Features Added
 
 ### Breaking Changes
+
 * [#17321](https://github.com/Azure/azure-sdk-for-go/pull/17321): Returns all clients by pointers
 
 ### Bugs Fixed

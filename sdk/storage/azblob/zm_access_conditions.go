@@ -20,7 +20,7 @@ type ContainerAccessConditions struct {
 	LeaseAccessConditions    *LeaseAccessConditions
 }
 
-func (ac *ContainerAccessConditions) pointers() (*ModifiedAccessConditions, *LeaseAccessConditions) {
+func (ac *ContainerAccessConditions) format() (*ModifiedAccessConditions, *LeaseAccessConditions) {
 	if ac == nil {
 		return nil, nil
 	}
@@ -34,7 +34,7 @@ type BlobAccessConditions struct {
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
-func (ac *BlobAccessConditions) pointers() (*LeaseAccessConditions, *ModifiedAccessConditions) {
+func (ac *BlobAccessConditions) format() (*LeaseAccessConditions, *ModifiedAccessConditions) {
 	if ac == nil {
 		return nil, nil
 	}

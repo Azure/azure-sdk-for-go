@@ -1,5 +1,146 @@
 # Release History
 
+## 0.3.0 (2022-04-12)
+### Breaking Changes
+
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `*AutoScaleVCoresClient.ListBySubscription` parameter(s) have been changed from `(context.Context, *AutoScaleVCoresClientListBySubscriptionOptions)` to `(*AutoScaleVCoresClientListBySubscriptionOptions)`
+- Function `*AutoScaleVCoresClient.ListBySubscription` return value(s) have been changed from `(AutoScaleVCoresClientListBySubscriptionResponse, error)` to `(*runtime.Pager[AutoScaleVCoresClientListBySubscriptionResponse])`
+- Function `*CapacitiesClient.BeginResume` return value(s) have been changed from `(CapacitiesClientResumePollerResponse, error)` to `(*armruntime.Poller[CapacitiesClientResumeResponse], error)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `*CapacitiesClient.BeginUpdate` return value(s) have been changed from `(CapacitiesClientUpdatePollerResponse, error)` to `(*armruntime.Poller[CapacitiesClientUpdateResponse], error)`
+- Function `*CapacitiesClient.List` parameter(s) have been changed from `(context.Context, *CapacitiesClientListOptions)` to `(*CapacitiesClientListOptions)`
+- Function `*CapacitiesClient.List` return value(s) have been changed from `(CapacitiesClientListResponse, error)` to `(*runtime.Pager[CapacitiesClientListResponse])`
+- Function `NewCapacitiesClient` return value(s) have been changed from `(*CapacitiesClient)` to `(*CapacitiesClient, error)`
+- Function `*AutoScaleVCoresClient.ListByResourceGroup` parameter(s) have been changed from `(context.Context, string, *AutoScaleVCoresClientListByResourceGroupOptions)` to `(string, *AutoScaleVCoresClientListByResourceGroupOptions)`
+- Function `*AutoScaleVCoresClient.ListByResourceGroup` return value(s) have been changed from `(AutoScaleVCoresClientListByResourceGroupResponse, error)` to `(*runtime.Pager[AutoScaleVCoresClientListByResourceGroupResponse])`
+- Function `*CapacitiesClient.BeginDelete` return value(s) have been changed from `(CapacitiesClientDeletePollerResponse, error)` to `(*armruntime.Poller[CapacitiesClientDeleteResponse], error)`
+- Function `NewAutoScaleVCoresClient` return value(s) have been changed from `(*AutoScaleVCoresClient)` to `(*AutoScaleVCoresClient, error)`
+- Function `*CapacitiesClient.BeginCreate` return value(s) have been changed from `(CapacitiesClientCreatePollerResponse, error)` to `(*armruntime.Poller[CapacitiesClientCreateResponse], error)`
+- Function `*CapacitiesClient.BeginSuspend` return value(s) have been changed from `(CapacitiesClientSuspendPollerResponse, error)` to `(*armruntime.Poller[CapacitiesClientSuspendResponse], error)`
+- Function `*CapacitiesClient.ListByResourceGroup` parameter(s) have been changed from `(context.Context, string, *CapacitiesClientListByResourceGroupOptions)` to `(string, *CapacitiesClientListByResourceGroupOptions)`
+- Function `*CapacitiesClient.ListByResourceGroup` return value(s) have been changed from `(CapacitiesClientListByResourceGroupResponse, error)` to `(*runtime.Pager[CapacitiesClientListByResourceGroupResponse])`
+- Function `*CapacitiesClientSuspendPoller.Done` has been removed
+- Function `*CapacitiesClientCreatePoller.Poll` has been removed
+- Function `State.ToPtr` has been removed
+- Function `CapacitiesClientCreatePollerResponse.PollUntilDone` has been removed
+- Function `CapacitiesClientResumePollerResponse.PollUntilDone` has been removed
+- Function `*CapacitiesClientSuspendPoller.FinalResponse` has been removed
+- Function `*CapacitiesClientDeletePoller.Poll` has been removed
+- Function `*CapacitiesClientSuspendPoller.Poll` has been removed
+- Function `*CapacitiesClientUpdatePollerResponse.Resume` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Function `*CapacitiesClientCreatePoller.ResumeToken` has been removed
+- Function `CapacityProvisioningState.ToPtr` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `*CapacitiesClientResumePoller.FinalResponse` has been removed
+- Function `*CapacitiesClientCreatePoller.Done` has been removed
+- Function `VCoreSKUTier.ToPtr` has been removed
+- Function `*CapacitiesClientCreatePoller.FinalResponse` has been removed
+- Function `IdentityType.ToPtr` has been removed
+- Function `VCoreProvisioningState.ToPtr` has been removed
+- Function `*CapacitiesClientSuspendPoller.ResumeToken` has been removed
+- Function `*CapacitiesClientResumePoller.ResumeToken` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `Mode.ToPtr` has been removed
+- Function `*CapacitiesClientCreatePollerResponse.Resume` has been removed
+- Function `*CapacitiesClientDeletePollerResponse.Resume` has been removed
+- Function `CapacitiesClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `CapacitiesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*CapacitiesClientSuspendPollerResponse.Resume` has been removed
+- Function `*CapacitiesClientUpdatePoller.Done` has been removed
+- Function `*CapacitiesClientUpdatePoller.FinalResponse` has been removed
+- Function `*CapacitiesClientResumePoller.Poll` has been removed
+- Function `CapacitySKUTier.ToPtr` has been removed
+- Function `*CapacitiesClientResumePoller.Done` has been removed
+- Function `*CapacitiesClientUpdatePoller.ResumeToken` has been removed
+- Function `*CapacitiesClientDeletePoller.Done` has been removed
+- Function `*CapacitiesClientUpdatePoller.Poll` has been removed
+- Function `*CapacitiesClientResumePollerResponse.Resume` has been removed
+- Function `*CapacitiesClientDeletePoller.FinalResponse` has been removed
+- Function `*CapacitiesClientDeletePoller.ResumeToken` has been removed
+- Function `CapacitiesClientSuspendPollerResponse.PollUntilDone` has been removed
+- Struct `AutoScaleVCoresClientCreateResult` has been removed
+- Struct `AutoScaleVCoresClientGetResult` has been removed
+- Struct `AutoScaleVCoresClientListByResourceGroupResult` has been removed
+- Struct `AutoScaleVCoresClientListBySubscriptionResult` has been removed
+- Struct `AutoScaleVCoresClientUpdateResult` has been removed
+- Struct `CapacitiesClientCheckNameAvailabilityResult` has been removed
+- Struct `CapacitiesClientCreatePoller` has been removed
+- Struct `CapacitiesClientCreatePollerResponse` has been removed
+- Struct `CapacitiesClientCreateResult` has been removed
+- Struct `CapacitiesClientDeletePoller` has been removed
+- Struct `CapacitiesClientDeletePollerResponse` has been removed
+- Struct `CapacitiesClientGetDetailsResult` has been removed
+- Struct `CapacitiesClientListByResourceGroupResult` has been removed
+- Struct `CapacitiesClientListResult` has been removed
+- Struct `CapacitiesClientListSKUsForCapacityResult` has been removed
+- Struct `CapacitiesClientListSKUsResult` has been removed
+- Struct `CapacitiesClientResumePoller` has been removed
+- Struct `CapacitiesClientResumePollerResponse` has been removed
+- Struct `CapacitiesClientSuspendPoller` has been removed
+- Struct `CapacitiesClientSuspendPollerResponse` has been removed
+- Struct `CapacitiesClientUpdatePoller` has been removed
+- Struct `CapacitiesClientUpdatePollerResponse` has been removed
+- Struct `CapacitiesClientUpdateResult` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Field `CapacitiesClientUpdateResult` of struct `CapacitiesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `CapacitiesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `CapacitiesClientSuspendResponse` has been removed
+- Field `RawResponse` of struct `CapacitiesClientDeleteResponse` has been removed
+- Field `AutoScaleVCoresClientGetResult` of struct `AutoScaleVCoresClientGetResponse` has been removed
+- Field `RawResponse` of struct `AutoScaleVCoresClientGetResponse` has been removed
+- Field `CapacitiesClientListByResourceGroupResult` of struct `CapacitiesClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `CapacitiesClientListByResourceGroupResponse` has been removed
+- Field `CapacitiesClientCheckNameAvailabilityResult` of struct `CapacitiesClientCheckNameAvailabilityResponse` has been removed
+- Field `RawResponse` of struct `CapacitiesClientCheckNameAvailabilityResponse` has been removed
+- Field `CapacitiesClientListSKUsForCapacityResult` of struct `CapacitiesClientListSKUsForCapacityResponse` has been removed
+- Field `RawResponse` of struct `CapacitiesClientListSKUsForCapacityResponse` has been removed
+- Field `AutoScaleVCoresClientCreateResult` of struct `AutoScaleVCoresClientCreateResponse` has been removed
+- Field `RawResponse` of struct `AutoScaleVCoresClientCreateResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `CapacitiesClientCreateResult` of struct `CapacitiesClientCreateResponse` has been removed
+- Field `RawResponse` of struct `CapacitiesClientCreateResponse` has been removed
+- Field `CapacitiesClientGetDetailsResult` of struct `CapacitiesClientGetDetailsResponse` has been removed
+- Field `RawResponse` of struct `CapacitiesClientGetDetailsResponse` has been removed
+- Field `AutoScaleVCoresClientUpdateResult` of struct `AutoScaleVCoresClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `AutoScaleVCoresClientUpdateResponse` has been removed
+- Field `AutoScaleVCoresClientListByResourceGroupResult` of struct `AutoScaleVCoresClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `AutoScaleVCoresClientListByResourceGroupResponse` has been removed
+- Field `CapacitiesClientListSKUsResult` of struct `CapacitiesClientListSKUsResponse` has been removed
+- Field `RawResponse` of struct `CapacitiesClientListSKUsResponse` has been removed
+- Field `RawResponse` of struct `CapacitiesClientResumeResponse` has been removed
+- Field `AutoScaleVCoresClientListBySubscriptionResult` of struct `AutoScaleVCoresClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `AutoScaleVCoresClientListBySubscriptionResponse` has been removed
+- Field `CapacitiesClientListResult` of struct `CapacitiesClientListResponse` has been removed
+- Field `RawResponse` of struct `CapacitiesClientListResponse` has been removed
+- Field `RawResponse` of struct `AutoScaleVCoresClientDeleteResponse` has been removed
+
+### Features Added
+
+- New anonymous field `CheckCapacityNameAvailabilityResult` in struct `CapacitiesClientCheckNameAvailabilityResponse`
+- New field `ResumeToken` in struct `CapacitiesClientBeginResumeOptions`
+- New anonymous field `DedicatedCapacity` in struct `CapacitiesClientCreateResponse`
+- New anonymous field `AutoScaleVCore` in struct `AutoScaleVCoresClientCreateResponse`
+- New anonymous field `DedicatedCapacities` in struct `CapacitiesClientListByResourceGroupResponse`
+- New anonymous field `AutoScaleVCoreListResult` in struct `AutoScaleVCoresClientListByResourceGroupResponse`
+- New anonymous field `DedicatedCapacity` in struct `CapacitiesClientUpdateResponse`
+- New field `ResumeToken` in struct `CapacitiesClientBeginUpdateOptions`
+- New anonymous field `AutoScaleVCore` in struct `AutoScaleVCoresClientGetResponse`
+- New anonymous field `AutoScaleVCore` in struct `AutoScaleVCoresClientUpdateResponse`
+- New field `ResumeToken` in struct `CapacitiesClientBeginCreateOptions`
+- New anonymous field `SKUEnumerationForExistingResourceResult` in struct `CapacitiesClientListSKUsForCapacityResponse`
+- New field `ResumeToken` in struct `CapacitiesClientBeginSuspendOptions`
+- New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
+- New anonymous field `AutoScaleVCoreListResult` in struct `AutoScaleVCoresClientListBySubscriptionResponse`
+- New anonymous field `SKUEnumerationForNewResourceResult` in struct `CapacitiesClientListSKUsResponse`
+- New anonymous field `DedicatedCapacities` in struct `CapacitiesClientListResponse`
+- New field `ResumeToken` in struct `CapacitiesClientBeginDeleteOptions`
+- New anonymous field `DedicatedCapacity` in struct `CapacitiesClientGetDetailsResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

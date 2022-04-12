@@ -1,3 +1,6 @@
+//go:build go1.18
+// +build go1.18
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -24,7 +27,7 @@ func (b *BlobClient) NewBlobLeaseClient(leaseID *string) (*BlobLeaseClient, erro
 		if err != nil {
 			return nil, err
 		}
-		leaseID = to.StringPtr(generatedUuid.String())
+		leaseID = to.Ptr(generatedUuid.String())
 	}
 	return &BlobLeaseClient{
 		BlobClient: *b,

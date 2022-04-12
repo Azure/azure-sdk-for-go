@@ -1,3 +1,6 @@
+//go:build go1.18
+// +build go1.18
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -7,12 +10,13 @@ import (
 	"bytes"
 	"context"
 	"crypto/md5"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
-	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"strings"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
+	"github.com/stretchr/testify/assert"
 )
 
 //nolint
@@ -634,7 +638,7 @@ func (s *azblobTestSuite) TestBlobCreateAppendIfMatchFalse() {
 		Metadata:    basicMetadata,
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
-				IfMatch: to.StringPtr("garbage"),
+				IfMatch: to.Ptr("garbage"),
 			},
 		},
 	}
@@ -978,7 +982,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfMatchFalse() {
 	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlockOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
-				IfMatch: to.StringPtr("garbage"),
+				IfMatch: to.Ptr("garbage"),
 			},
 		},
 	})
@@ -1005,7 +1009,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfNoneMatchTrue() {
 	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlockOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
-				IfNoneMatch: to.StringPtr("garbage"),
+				IfNoneMatch: to.Ptr("garbage"),
 			},
 		},
 	})
@@ -1103,7 +1107,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfAppendPositionMatchTrueNonZero() 
 
 	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlockOptions{
 		AppendPositionAccessConditions: &AppendPositionAccessConditions{
-			AppendPosition: to.Int64Ptr(int64(len(blockBlobDefaultData))),
+			AppendPosition: to.Ptr(int64(len(blockBlobDefaultData))),
 		},
 	})
 	_assert.Nil(err)
@@ -1132,7 +1136,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfAppendPositionMatchFalseNegOne() 
 
 	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlockOptions{
 		AppendPositionAccessConditions: &AppendPositionAccessConditions{
-			AppendPosition: to.Int64Ptr(-1),
+			AppendPosition: to.Ptr[int64](-1),
 		},
 	})
 	_assert.NotNil(err)
@@ -1157,7 +1161,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfAppendPositionMatchFalseNonZero()
 
 	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlockOptions{
 		AppendPositionAccessConditions: &AppendPositionAccessConditions{
-			AppendPosition: to.Int64Ptr(12),
+			AppendPosition: to.Ptr[int64](12),
 		},
 	})
 	_assert.NotNil(err)
@@ -1182,7 +1186,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfMaxSizeTrue() {
 
 	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlockOptions{
 		AppendPositionAccessConditions: &AppendPositionAccessConditions{
-			MaxSize: to.Int64Ptr(int64(len(blockBlobDefaultData) + 1)),
+			MaxSize: to.Ptr(int64(len(blockBlobDefaultData) + 1)),
 		},
 	})
 	_assert.Nil(err)
@@ -1207,7 +1211,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfMaxSizeFalse() {
 
 	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlockOptions{
 		AppendPositionAccessConditions: &AppendPositionAccessConditions{
-			MaxSize: to.Int64Ptr(int64(len(blockBlobDefaultData) - 1)),
+			MaxSize: to.Ptr(int64(len(blockBlobDefaultData) - 1)),
 		},
 	})
 	_assert.NotNil(err)
@@ -1268,7 +1272,7 @@ func (s *azblobTestSuite) TestSealAppendBlob() {
 //
 //	sealResp, err := abClient.SealAppendBlob(ctx, &SealAppendBlobOptions{
 //		AppendPositionAccessConditions: &AppendPositionAccessConditions{
-//			AppendPosition: to.Int64Ptr(1),
+//			AppendPosition: to.Ptr(1),
 //		},
 //	})
 //	_assert.NotNil(err)
@@ -1276,7 +1280,7 @@ func (s *azblobTestSuite) TestSealAppendBlob() {
 //
 //	sealResp, err = abClient.SealAppendBlob(ctx, &SealAppendBlobOptions{
 //		AppendPositionAccessConditions: &AppendPositionAccessConditions{
-//			AppendPosition: to.Int64Ptr(0),
+//			AppendPosition: to.Ptr(0),
 //		},
 //	})
 //}
@@ -1315,7 +1319,7 @@ func (s *azblobTestSuite) TestCopySealedBlob() {
 
 	copiedBlob2, _ := getAppendBlobClient("copy2"+abName, containerClient)
 	_, err = copiedBlob2.StartCopyFromURL(ctx, abClient.URL(), &StartCopyBlobOptions{
-		SealBlob: to.BoolPtr(true),
+		SealBlob: to.Ptr(true),
 	})
 	_assert.Nil(err)
 
@@ -1329,7 +1333,7 @@ func (s *azblobTestSuite) TestCopySealedBlob() {
 
 	copiedBlob3, _ := getAppendBlobClient("copy3"+abName, containerClient)
 	_, err = copiedBlob3.StartCopyFromURL(ctx, abClient.URL(), &StartCopyBlobOptions{
-		SealBlob: to.BoolPtr(false),
+		SealBlob: to.Ptr(false),
 	})
 	_assert.Nil(err)
 
@@ -1362,7 +1366,7 @@ func (s *azblobTestSuite) TestCopyUnsealedBlob() {
 
 	copiedBlob, _ := getAppendBlobClient("copy"+abName, containerClient)
 	_, err = copiedBlob.StartCopyFromURL(ctx, abClient.URL(), &StartCopyBlobOptions{
-		SealBlob: to.BoolPtr(true),
+		SealBlob: to.Ptr(true),
 	})
 	_assert.Nil(err)
 

@@ -17,19 +17,20 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
+	"strings"
 )
 
-// OperationsClient contains the methods for the Operations group.
-// Don't use this type directly, use NewOperationsClient() instead.
-type OperationsClient struct {
+// OperationsWithScopeClient contains the methods for the OperationsWithScope group.
+// Don't use this type directly, use NewOperationsWithScopeClient() instead.
+type OperationsWithScopeClient struct {
 	host string
 	pl   runtime.Pipeline
 }
 
-// NewOperationsClient creates a new instance of OperationsClient with the specified values.
+// NewOperationsWithScopeClient creates a new instance of OperationsWithScopeClient with the specified values.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewOperationsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*OperationsClient, error) {
+func NewOperationsWithScopeClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*OperationsWithScopeClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
@@ -41,34 +42,37 @@ func NewOperationsClient(credential azcore.TokenCredential, options *arm.ClientO
 	if err != nil {
 		return nil, err
 	}
-	client := &OperationsClient{
+	client := &OperationsWithScopeClient{
 		host: ep,
 		pl:   pl,
 	}
 	return client, nil
 }
 
-// List - Gets a list of the operations.
+// List - Gets a list of the operations with the scope.
 // If the operation fails it returns an *azcore.ResponseError type.
-// options - OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
-func (client *OperationsClient) List(ctx context.Context, options *OperationsClientListOptions) (OperationsClientListResponse, error) {
-	req, err := client.listCreateRequest(ctx, options)
+// scope - The scope of the resource.
+// options - OperationsWithScopeClientListOptions contains the optional parameters for the OperationsWithScopeClient.List
+// method.
+func (client *OperationsWithScopeClient) List(ctx context.Context, scope string, options *OperationsWithScopeClientListOptions) (OperationsWithScopeClientListResponse, error) {
+	req, err := client.listCreateRequest(ctx, scope, options)
 	if err != nil {
-		return OperationsClientListResponse{}, err
+		return OperationsWithScopeClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return OperationsClientListResponse{}, err
+		return OperationsWithScopeClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return OperationsClientListResponse{}, runtime.NewResponseError(resp)
+		return OperationsWithScopeClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *OperationsClient) listCreateRequest(ctx context.Context, options *OperationsClientListOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.ManagedServices/operations"
+func (client *OperationsWithScopeClient) listCreateRequest(ctx context.Context, scope string, options *OperationsWithScopeClientListOptions) (*policy.Request, error) {
+	urlPath := "/{scope}/providers/Microsoft.ManagedServices/operations"
+	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
@@ -81,10 +85,10 @@ func (client *OperationsClient) listCreateRequest(ctx context.Context, options *
 }
 
 // listHandleResponse handles the List response.
-func (client *OperationsClient) listHandleResponse(resp *http.Response) (OperationsClientListResponse, error) {
-	result := OperationsClientListResponse{}
+func (client *OperationsWithScopeClient) listHandleResponse(resp *http.Response) (OperationsWithScopeClientListResponse, error) {
+	result := OperationsWithScopeClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationList); err != nil {
-		return OperationsClientListResponse{}, err
+		return OperationsWithScopeClientListResponse{}, err
 	}
 	return result, nil
 }

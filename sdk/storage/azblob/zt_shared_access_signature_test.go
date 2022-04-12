@@ -1,3 +1,6 @@
+//go:build go1.18
+// +build go1.18
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -39,7 +42,7 @@ package azblob
 //	start := time.Date(2021, time.August, 4, 1, 1, 0, 0, time.UTC)
 //	expiry := time.Date(2022, time.August, 4, 1, 1, 0, 0, time.UTC)
 //
-//	sasUrl, err := serviceClient.GetSASToken(resources, permissions, services, start, expiry)
+//	sasUrl, err := serviceClient.GetSASURL(resources, permissions, services, start, expiry)
 //	_require.Nil(err)
 //
 //	svcClient, err := getServiceClient(nil, testAccountDefault, nil)

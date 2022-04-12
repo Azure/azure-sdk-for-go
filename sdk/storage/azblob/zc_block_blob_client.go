@@ -1,3 +1,6 @@
+//go:build go1.18
+// +build go1.18
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -5,21 +8,11 @@ package azblob
 
 import (
 	"context"
+	"io"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"io"
-)
-
-const (
-	// BlockBlobMaxUploadBlobBytes indicates the maximum number of bytes that can be sent in a call to Upload.
-	BlockBlobMaxUploadBlobBytes = 256 * 1024 * 1024 // 256MB
-
-	// BlockBlobMaxStageBlockBytes indicates the maximum number of bytes that can be sent in a call to StageBlock.
-	BlockBlobMaxStageBlockBytes = 4000 * 1024 * 1024 // 4GB
-
-	// BlockBlobMaxBlocks indicates the maximum number of blocks allowed in a block blob.
-	BlockBlobMaxBlocks = 50000
 )
 
 // BlockBlobClient defines a set of operations applicable to block blobs.
@@ -177,7 +170,7 @@ func (bb *BlockBlobClient) CommitBlockList(ctx context.Context, base64BlockIDs [
 	// this is a code smell in the generated code
 	blockIds := make([]*string, len(base64BlockIDs))
 	for k, v := range base64BlockIDs {
-		blockIds[k] = to.StringPtr(v)
+		blockIds[k] = to.Ptr(v)
 	}
 
 	blockLookupList := BlockLookupList{Latest: blockIds}

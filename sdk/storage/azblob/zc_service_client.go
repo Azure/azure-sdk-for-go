@@ -1,3 +1,6 @@
+//go:build go1.18
+// +build go1.18
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -220,19 +223,19 @@ func (s *ServiceClient) CanGetAccountSASToken() bool {
 	return s.sharedKey != nil
 }
 
-// GetSASToken is a convenience method for generating a SAS token for the currently pointed at account.
+// GetSASURL is a convenience method for generating a SAS token for the currently pointed at account.
 // It can only be used if the credential supplied during creation was a SharedKeyCredential.
 // This validity can be checked with CanGetAccountSASToken().
-func (s *ServiceClient) GetSASToken(resources AccountSASResourceTypes, permissions AccountSASPermissions, services AccountSASServices, start time.Time, expiry time.Time) (string, error) {
+func (s *ServiceClient) GetSASURL(resources AccountSASResourceTypes, permissions AccountSASPermissions, start time.Time, expiry time.Time) (string, error) {
 	if s.sharedKey == nil {
-		return "", errors.New("credential is not a SharedKeyCredential. SAS can only be signed with a SharedKeyCredential")
+		return "", errors.New("SAS can only be signed with a SharedKeyCredential")
 	}
 
 	qps, err := AccountSASSignatureValues{
 		Version:       SASVersion,
 		Protocol:      SASProtocolHTTPS,
 		Permissions:   permissions.String(),
-		Services:      services.String(),
+		Services:      "b",
 		ResourceTypes: resources.String(),
 		StartTime:     start.UTC(),
 		ExpiryTime:    expiry.UTC(),
@@ -241,7 +244,7 @@ func (s *ServiceClient) GetSASToken(resources AccountSASResourceTypes, permissio
 		return "", err
 	}
 
-	endpoint := s.client.endpoint
+	endpoint := s.URL()
 	if !strings.HasSuffix(endpoint, "/") {
 		endpoint += "/"
 	}

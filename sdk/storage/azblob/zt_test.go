@@ -1,3 +1,6 @@
+//go:build go1.18
+// +build go1.18
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -498,12 +501,12 @@ func runTestRequiringServiceProperties(_require *require.Assertions, bsu *Servic
 func enableSoftDelete(_require *require.Assertions, serviceClient *ServiceClient) {
 	days := int32(1)
 	_, err := serviceClient.SetProperties(ctx, &ServiceSetPropertiesOptions{
-		DeleteRetentionPolicy: &RetentionPolicy{Enabled: to.BoolPtr(true), Days: &days}})
+		DeleteRetentionPolicy: &RetentionPolicy{Enabled: to.Ptr(true), Days: &days}})
 	_require.Nil(err)
 }
 
 func disableSoftDelete(_require *require.Assertions, bsu *ServiceClient) {
-	_, err := bsu.SetProperties(ctx, &ServiceSetPropertiesOptions{DeleteRetentionPolicy: &RetentionPolicy{Enabled: to.BoolPtr(false)}})
+	_, err := bsu.SetProperties(ctx, &ServiceSetPropertiesOptions{DeleteRetentionPolicy: &RetentionPolicy{Enabled: to.Ptr(false)}})
 	_require.Nil(err)
 }
 

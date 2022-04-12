@@ -1,5 +1,106 @@
 # Release History
 
+## 0.3.0 (2022-04-12)
+### Breaking Changes
+
+- Function `*AccountsClient.ListByResourceGroup` return value(s) have been changed from `(*AccountsClientListByResourceGroupPager)` to `(*runtime.Pager[AccountsClientListByResourceGroupResponse])`
+- Function `*Client.ListSubscriptionOperations` return value(s) have been changed from `(*ClientListSubscriptionOperationsPager)` to `(*runtime.Pager[ClientListSubscriptionOperationsResponse])`
+- Function `NewAccountsClient` return value(s) have been changed from `(*AccountsClient)` to `(*AccountsClient, error)`
+- Function `NewCreatorsClient` return value(s) have been changed from `(*CreatorsClient)` to `(*CreatorsClient, error)`
+- Function `NewClient` return value(s) have been changed from `(*Client)` to `(*Client, error)`
+- Function `*AccountsClient.ListBySubscription` return value(s) have been changed from `(*AccountsClientListBySubscriptionPager)` to `(*runtime.Pager[AccountsClientListBySubscriptionResponse])`
+- Function `*CreatorsClient.ListByAccount` return value(s) have been changed from `(*CreatorsClientListByAccountPager)` to `(*runtime.Pager[CreatorsClientListByAccountResponse])`
+- Function `*Client.ListOperations` return value(s) have been changed from `(*ClientListOperationsPager)` to `(*runtime.Pager[ClientListOperationsResponse])`
+- Type of `ErrorAdditionalInfo.Info` has been changed from `map[string]interface{}` to `interface{}`
+- Function `*CreatorsClientListByAccountPager.Err` has been removed
+- Function `*ClientListOperationsPager.NextPage` has been removed
+- Function `*ClientListOperationsPager.Err` has been removed
+- Function `SigningKey.ToPtr` has been removed
+- Function `ResourceIdentityType.ToPtr` has been removed
+- Function `*AccountsClientListBySubscriptionPager.PageResponse` has been removed
+- Function `*AccountsClientListBySubscriptionPager.NextPage` has been removed
+- Function `Name.ToPtr` has been removed
+- Function `*AccountsClientListByResourceGroupPager.Err` has been removed
+- Function `CreatedByType.ToPtr` has been removed
+- Function `*AccountsClientListBySubscriptionPager.Err` has been removed
+- Function `*AccountsClientListByResourceGroupPager.NextPage` has been removed
+- Function `KeyType.ToPtr` has been removed
+- Function `*AccountsClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*ClientListSubscriptionOperationsPager.PageResponse` has been removed
+- Function `*CreatorsClientListByAccountPager.PageResponse` has been removed
+- Function `Kind.ToPtr` has been removed
+- Function `*ClientListSubscriptionOperationsPager.Err` has been removed
+- Function `*ClientListSubscriptionOperationsPager.NextPage` has been removed
+- Function `*ClientListOperationsPager.PageResponse` has been removed
+- Function `*CreatorsClientListByAccountPager.NextPage` has been removed
+- Struct `AccountsClientCreateOrUpdateResult` has been removed
+- Struct `AccountsClientGetResult` has been removed
+- Struct `AccountsClientListByResourceGroupPager` has been removed
+- Struct `AccountsClientListByResourceGroupResult` has been removed
+- Struct `AccountsClientListBySubscriptionPager` has been removed
+- Struct `AccountsClientListBySubscriptionResult` has been removed
+- Struct `AccountsClientListKeysResult` has been removed
+- Struct `AccountsClientListSasResult` has been removed
+- Struct `AccountsClientRegenerateKeysResult` has been removed
+- Struct `AccountsClientUpdateResult` has been removed
+- Struct `ClientListOperationsPager` has been removed
+- Struct `ClientListOperationsResult` has been removed
+- Struct `ClientListSubscriptionOperationsPager` has been removed
+- Struct `ClientListSubscriptionOperationsResult` has been removed
+- Struct `CreatorsClientCreateOrUpdateResult` has been removed
+- Struct `CreatorsClientGetResult` has been removed
+- Struct `CreatorsClientListByAccountPager` has been removed
+- Struct `CreatorsClientListByAccountResult` has been removed
+- Struct `CreatorsClientUpdateResult` has been removed
+- Field `AccountsClientGetResult` of struct `AccountsClientGetResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientGetResponse` has been removed
+- Field `AccountsClientUpdateResult` of struct `AccountsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientUpdateResponse` has been removed
+- Field `AccountsClientListBySubscriptionResult` of struct `AccountsClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientListBySubscriptionResponse` has been removed
+- Field `AccountsClientRegenerateKeysResult` of struct `AccountsClientRegenerateKeysResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientRegenerateKeysResponse` has been removed
+- Field `CreatorsClientGetResult` of struct `CreatorsClientGetResponse` has been removed
+- Field `RawResponse` of struct `CreatorsClientGetResponse` has been removed
+- Field `CreatorsClientUpdateResult` of struct `CreatorsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `CreatorsClientUpdateResponse` has been removed
+- Field `AccountsClientCreateOrUpdateResult` of struct `AccountsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientCreateOrUpdateResponse` has been removed
+- Field `CreatorsClientCreateOrUpdateResult` of struct `CreatorsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `CreatorsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `CreatorsClientDeleteResponse` has been removed
+- Field `CreatorsClientListByAccountResult` of struct `CreatorsClientListByAccountResponse` has been removed
+- Field `RawResponse` of struct `CreatorsClientListByAccountResponse` has been removed
+- Field `AccountsClientListSasResult` of struct `AccountsClientListSasResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientListSasResponse` has been removed
+- Field `AccountsClientListKeysResult` of struct `AccountsClientListKeysResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientListKeysResponse` has been removed
+- Field `AccountsClientListByResourceGroupResult` of struct `AccountsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientDeleteResponse` has been removed
+- Field `ClientListSubscriptionOperationsResult` of struct `ClientListSubscriptionOperationsResponse` has been removed
+- Field `RawResponse` of struct `ClientListSubscriptionOperationsResponse` has been removed
+- Field `ClientListOperationsResult` of struct `ClientListOperationsResponse` has been removed
+- Field `RawResponse` of struct `ClientListOperationsResponse` has been removed
+
+### Features Added
+
+- New anonymous field `Accounts` in struct `AccountsClientListByResourceGroupResponse`
+- New anonymous field `Accounts` in struct `AccountsClientListBySubscriptionResponse`
+- New anonymous field `Creator` in struct `CreatorsClientUpdateResponse`
+- New anonymous field `Account` in struct `AccountsClientUpdateResponse`
+- New anonymous field `CreatorList` in struct `CreatorsClientListByAccountResponse`
+- New anonymous field `Operations` in struct `ClientListSubscriptionOperationsResponse`
+- New anonymous field `Operations` in struct `ClientListOperationsResponse`
+- New anonymous field `Creator` in struct `CreatorsClientGetResponse`
+- New anonymous field `Account` in struct `AccountsClientGetResponse`
+- New anonymous field `AccountKeys` in struct `AccountsClientRegenerateKeysResponse`
+- New anonymous field `AccountSasToken` in struct `AccountsClientListSasResponse`
+- New anonymous field `Creator` in struct `CreatorsClientCreateOrUpdateResponse`
+- New anonymous field `AccountKeys` in struct `AccountsClientListKeysResponse`
+- New anonymous field `Account` in struct `AccountsClientCreateOrUpdateResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

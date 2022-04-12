@@ -42,6 +42,21 @@ func PossibleAuthorizationTypeValues() []AuthorizationType {
 	return []AuthorizationType{AuthorizationTypeKey, AuthorizationTypeLinkedIntegrationRuntimeProperties, AuthorizationTypeRBAC}
 }
 
+// AzureSearchIndexWriteBehaviorType enumerates the values for azure search index write behavior type.
+type AzureSearchIndexWriteBehaviorType string
+
+const (
+	// Merge ...
+	Merge AzureSearchIndexWriteBehaviorType = "Merge"
+	// Upload ...
+	Upload AzureSearchIndexWriteBehaviorType = "Upload"
+)
+
+// PossibleAzureSearchIndexWriteBehaviorTypeValues returns an array of possible values for the AzureSearchIndexWriteBehaviorType const type.
+func PossibleAzureSearchIndexWriteBehaviorTypeValues() []AzureSearchIndexWriteBehaviorType {
+	return []AzureSearchIndexWriteBehaviorType{Merge, Upload}
+}
+
 // BlobEventTypes enumerates the values for blob event types.
 type BlobEventTypes string
 
@@ -55,6 +70,52 @@ const (
 // PossibleBlobEventTypesValues returns an array of possible values for the BlobEventTypes const type.
 func PossibleBlobEventTypesValues() []BlobEventTypes {
 	return []BlobEventTypes{MicrosoftStorageBlobCreated, MicrosoftStorageBlobDeleted}
+}
+
+// CassandraSourceReadConsistencyLevels enumerates the values for cassandra source read consistency levels.
+type CassandraSourceReadConsistencyLevels string
+
+const (
+	// ALL ...
+	ALL CassandraSourceReadConsistencyLevels = "ALL"
+	// EACHQUORUM ...
+	EACHQUORUM CassandraSourceReadConsistencyLevels = "EACH_QUORUM"
+	// LOCALONE ...
+	LOCALONE CassandraSourceReadConsistencyLevels = "LOCAL_ONE"
+	// LOCALQUORUM ...
+	LOCALQUORUM CassandraSourceReadConsistencyLevels = "LOCAL_QUORUM"
+	// LOCALSERIAL ...
+	LOCALSERIAL CassandraSourceReadConsistencyLevels = "LOCAL_SERIAL"
+	// ONE ...
+	ONE CassandraSourceReadConsistencyLevels = "ONE"
+	// QUORUM ...
+	QUORUM CassandraSourceReadConsistencyLevels = "QUORUM"
+	// SERIAL ...
+	SERIAL CassandraSourceReadConsistencyLevels = "SERIAL"
+	// THREE ...
+	THREE CassandraSourceReadConsistencyLevels = "THREE"
+	// TWO ...
+	TWO CassandraSourceReadConsistencyLevels = "TWO"
+)
+
+// PossibleCassandraSourceReadConsistencyLevelsValues returns an array of possible values for the CassandraSourceReadConsistencyLevels const type.
+func PossibleCassandraSourceReadConsistencyLevelsValues() []CassandraSourceReadConsistencyLevels {
+	return []CassandraSourceReadConsistencyLevels{ALL, EACHQUORUM, LOCALONE, LOCALQUORUM, LOCALSERIAL, ONE, QUORUM, SERIAL, THREE, TWO}
+}
+
+// DatasetCompressionLevel enumerates the values for dataset compression level.
+type DatasetCompressionLevel string
+
+const (
+	// Fastest ...
+	Fastest DatasetCompressionLevel = "Fastest"
+	// Optimal ...
+	Optimal DatasetCompressionLevel = "Optimal"
+)
+
+// PossibleDatasetCompressionLevelValues returns an array of possible values for the DatasetCompressionLevel const type.
+func PossibleDatasetCompressionLevelValues() []DatasetCompressionLevel {
+	return []DatasetCompressionLevel{Fastest, Optimal}
 }
 
 // DayOfWeek enumerates the values for day of week.
@@ -137,6 +198,36 @@ const (
 // PossibleDependencyConditionValues returns an array of possible values for the DependencyCondition const type.
 func PossibleDependencyConditionValues() []DependencyCondition {
 	return []DependencyCondition{Completed, Failed, Skipped, Succeeded}
+}
+
+// DynamicsAuthenticationType enumerates the values for dynamics authentication type.
+type DynamicsAuthenticationType string
+
+const (
+	// Ifd ...
+	Ifd DynamicsAuthenticationType = "Ifd"
+	// Office365 ...
+	Office365 DynamicsAuthenticationType = "Office365"
+)
+
+// PossibleDynamicsAuthenticationTypeValues returns an array of possible values for the DynamicsAuthenticationType const type.
+func PossibleDynamicsAuthenticationTypeValues() []DynamicsAuthenticationType {
+	return []DynamicsAuthenticationType{Ifd, Office365}
+}
+
+// DynamicsDeploymentType enumerates the values for dynamics deployment type.
+type DynamicsDeploymentType string
+
+const (
+	// Online ...
+	Online DynamicsDeploymentType = "Online"
+	// OnPremisesWithIfd ...
+	OnPremisesWithIfd DynamicsDeploymentType = "OnPremisesWithIfd"
+)
+
+// PossibleDynamicsDeploymentTypeValues returns an array of possible values for the DynamicsDeploymentType const type.
+func PossibleDynamicsDeploymentTypeValues() []DynamicsDeploymentType {
+	return []DynamicsDeploymentType{Online, OnPremisesWithIfd}
 }
 
 // FtpAuthenticationType enumerates the values for ftp authentication type.
@@ -389,29 +480,29 @@ func PossibleIntegrationRuntimeLicenseTypeValues() []IntegrationRuntimeLicenseTy
 type IntegrationRuntimeState string
 
 const (
-	// Initial ...
-	Initial IntegrationRuntimeState = "Initial"
-	// Limited ...
-	Limited IntegrationRuntimeState = "Limited"
-	// NeedRegistration ...
-	NeedRegistration IntegrationRuntimeState = "NeedRegistration"
-	// Offline ...
-	Offline IntegrationRuntimeState = "Offline"
-	// Online ...
-	Online IntegrationRuntimeState = "Online"
-	// Started ...
-	Started IntegrationRuntimeState = "Started"
-	// Starting ...
-	Starting IntegrationRuntimeState = "Starting"
-	// Stopped ...
-	Stopped IntegrationRuntimeState = "Stopped"
-	// Stopping ...
-	Stopping IntegrationRuntimeState = "Stopping"
+	// IntegrationRuntimeStateInitial ...
+	IntegrationRuntimeStateInitial IntegrationRuntimeState = "Initial"
+	// IntegrationRuntimeStateLimited ...
+	IntegrationRuntimeStateLimited IntegrationRuntimeState = "Limited"
+	// IntegrationRuntimeStateNeedRegistration ...
+	IntegrationRuntimeStateNeedRegistration IntegrationRuntimeState = "NeedRegistration"
+	// IntegrationRuntimeStateOffline ...
+	IntegrationRuntimeStateOffline IntegrationRuntimeState = "Offline"
+	// IntegrationRuntimeStateOnline ...
+	IntegrationRuntimeStateOnline IntegrationRuntimeState = "Online"
+	// IntegrationRuntimeStateStarted ...
+	IntegrationRuntimeStateStarted IntegrationRuntimeState = "Started"
+	// IntegrationRuntimeStateStarting ...
+	IntegrationRuntimeStateStarting IntegrationRuntimeState = "Starting"
+	// IntegrationRuntimeStateStopped ...
+	IntegrationRuntimeStateStopped IntegrationRuntimeState = "Stopped"
+	// IntegrationRuntimeStateStopping ...
+	IntegrationRuntimeStateStopping IntegrationRuntimeState = "Stopping"
 )
 
 // PossibleIntegrationRuntimeStateValues returns an array of possible values for the IntegrationRuntimeState const type.
 func PossibleIntegrationRuntimeStateValues() []IntegrationRuntimeState {
-	return []IntegrationRuntimeState{Initial, Limited, NeedRegistration, Offline, Online, Started, Starting, Stopped, Stopping}
+	return []IntegrationRuntimeState{IntegrationRuntimeStateInitial, IntegrationRuntimeStateLimited, IntegrationRuntimeStateNeedRegistration, IntegrationRuntimeStateOffline, IntegrationRuntimeStateOnline, IntegrationRuntimeStateStarted, IntegrationRuntimeStateStarting, IntegrationRuntimeStateStopped, IntegrationRuntimeStateStopping}
 }
 
 // IntegrationRuntimeType enumerates the values for integration runtime type.
@@ -463,19 +554,19 @@ func PossibleJSONFormatFilePatternValues() []JSONFormatFilePattern {
 type ManagedIntegrationRuntimeNodeStatus string
 
 const (
-	// ManagedIntegrationRuntimeNodeStatusAvailable ...
-	ManagedIntegrationRuntimeNodeStatusAvailable ManagedIntegrationRuntimeNodeStatus = "Available"
-	// ManagedIntegrationRuntimeNodeStatusRecycling ...
-	ManagedIntegrationRuntimeNodeStatusRecycling ManagedIntegrationRuntimeNodeStatus = "Recycling"
-	// ManagedIntegrationRuntimeNodeStatusStarting ...
-	ManagedIntegrationRuntimeNodeStatusStarting ManagedIntegrationRuntimeNodeStatus = "Starting"
-	// ManagedIntegrationRuntimeNodeStatusUnavailable ...
-	ManagedIntegrationRuntimeNodeStatusUnavailable ManagedIntegrationRuntimeNodeStatus = "Unavailable"
+	// Available ...
+	Available ManagedIntegrationRuntimeNodeStatus = "Available"
+	// Recycling ...
+	Recycling ManagedIntegrationRuntimeNodeStatus = "Recycling"
+	// Starting ...
+	Starting ManagedIntegrationRuntimeNodeStatus = "Starting"
+	// Unavailable ...
+	Unavailable ManagedIntegrationRuntimeNodeStatus = "Unavailable"
 )
 
 // PossibleManagedIntegrationRuntimeNodeStatusValues returns an array of possible values for the ManagedIntegrationRuntimeNodeStatus const type.
 func PossibleManagedIntegrationRuntimeNodeStatusValues() []ManagedIntegrationRuntimeNodeStatus {
-	return []ManagedIntegrationRuntimeNodeStatus{ManagedIntegrationRuntimeNodeStatusAvailable, ManagedIntegrationRuntimeNodeStatusRecycling, ManagedIntegrationRuntimeNodeStatusStarting, ManagedIntegrationRuntimeNodeStatusUnavailable}
+	return []ManagedIntegrationRuntimeNodeStatus{Available, Recycling, Starting, Unavailable}
 }
 
 // MongoDbAuthenticationType enumerates the values for mongo db authentication type.
@@ -618,6 +709,21 @@ func PossiblePipelineRunQueryOrderByFieldValues() []PipelineRunQueryOrderByField
 	return []PipelineRunQueryOrderByField{PipelineRunQueryOrderByFieldRunEnd, PipelineRunQueryOrderByFieldRunStart}
 }
 
+// PolybaseSettingsRejectType enumerates the values for polybase settings reject type.
+type PolybaseSettingsRejectType string
+
+const (
+	// Percentage ...
+	Percentage PolybaseSettingsRejectType = "percentage"
+	// Value ...
+	Value PolybaseSettingsRejectType = "value"
+)
+
+// PossiblePolybaseSettingsRejectTypeValues returns an array of possible values for the PolybaseSettingsRejectType const type.
+func PossiblePolybaseSettingsRejectTypeValues() []PolybaseSettingsRejectType {
+	return []PolybaseSettingsRejectType{Percentage, Value}
+}
+
 // PrestoAuthenticationType enumerates the values for presto authentication type.
 type PrestoAuthenticationType string
 
@@ -656,6 +762,51 @@ const (
 // PossibleRecurrenceFrequencyValues returns an array of possible values for the RecurrenceFrequency const type.
 func PossibleRecurrenceFrequencyValues() []RecurrenceFrequency {
 	return []RecurrenceFrequency{Day, Hour, Minute, Month, NotSpecified, Week, Year}
+}
+
+// SalesforceSinkWriteBehavior enumerates the values for salesforce sink write behavior.
+type SalesforceSinkWriteBehavior string
+
+const (
+	// Insert ...
+	Insert SalesforceSinkWriteBehavior = "Insert"
+	// Upsert ...
+	Upsert SalesforceSinkWriteBehavior = "Upsert"
+)
+
+// PossibleSalesforceSinkWriteBehaviorValues returns an array of possible values for the SalesforceSinkWriteBehavior const type.
+func PossibleSalesforceSinkWriteBehaviorValues() []SalesforceSinkWriteBehavior {
+	return []SalesforceSinkWriteBehavior{Insert, Upsert}
+}
+
+// SalesforceSourceReadBehavior enumerates the values for salesforce source read behavior.
+type SalesforceSourceReadBehavior string
+
+const (
+	// Query ...
+	Query SalesforceSourceReadBehavior = "Query"
+	// QueryAll ...
+	QueryAll SalesforceSourceReadBehavior = "QueryAll"
+)
+
+// PossibleSalesforceSourceReadBehaviorValues returns an array of possible values for the SalesforceSourceReadBehavior const type.
+func PossibleSalesforceSourceReadBehaviorValues() []SalesforceSourceReadBehavior {
+	return []SalesforceSourceReadBehavior{Query, QueryAll}
+}
+
+// SapCloudForCustomerSinkWriteBehavior enumerates the values for sap cloud for customer sink write behavior.
+type SapCloudForCustomerSinkWriteBehavior string
+
+const (
+	// SapCloudForCustomerSinkWriteBehaviorInsert ...
+	SapCloudForCustomerSinkWriteBehaviorInsert SapCloudForCustomerSinkWriteBehavior = "Insert"
+	// SapCloudForCustomerSinkWriteBehaviorUpdate ...
+	SapCloudForCustomerSinkWriteBehaviorUpdate SapCloudForCustomerSinkWriteBehavior = "Update"
+)
+
+// PossibleSapCloudForCustomerSinkWriteBehaviorValues returns an array of possible values for the SapCloudForCustomerSinkWriteBehavior const type.
+func PossibleSapCloudForCustomerSinkWriteBehaviorValues() []SapCloudForCustomerSinkWriteBehavior {
+	return []SapCloudForCustomerSinkWriteBehavior{SapCloudForCustomerSinkWriteBehaviorInsert, SapCloudForCustomerSinkWriteBehaviorUpdate}
 }
 
 // SapHanaAuthenticationType enumerates the values for sap hana authentication type.
@@ -797,6 +948,31 @@ func PossibleSsisPackageLocationTypeValues() []SsisPackageLocationType {
 	return []SsisPackageLocationType{File, SSISDB}
 }
 
+// StoredProcedureParameterType enumerates the values for stored procedure parameter type.
+type StoredProcedureParameterType string
+
+const (
+	// Boolean ...
+	Boolean StoredProcedureParameterType = "Boolean"
+	// Date ...
+	Date StoredProcedureParameterType = "Date"
+	// Decimal ...
+	Decimal StoredProcedureParameterType = "Decimal"
+	// GUID ...
+	GUID StoredProcedureParameterType = "Guid"
+	// Int ...
+	Int StoredProcedureParameterType = "Int"
+	// Int64 ...
+	Int64 StoredProcedureParameterType = "Int64"
+	// String ...
+	String StoredProcedureParameterType = "String"
+)
+
+// PossibleStoredProcedureParameterTypeValues returns an array of possible values for the StoredProcedureParameterType const type.
+func PossibleStoredProcedureParameterTypeValues() []StoredProcedureParameterType {
+	return []StoredProcedureParameterType{Boolean, Date, Decimal, GUID, Int, Int64, String}
+}
+
 // SybaseAuthenticationType enumerates the values for sybase authentication type.
 type SybaseAuthenticationType string
 
@@ -848,17 +1024,17 @@ func PossibleTriggerRunStatusValues() []TriggerRunStatus {
 type TriggerRuntimeState string
 
 const (
-	// TriggerRuntimeStateDisabled ...
-	TriggerRuntimeStateDisabled TriggerRuntimeState = "Disabled"
-	// TriggerRuntimeStateStarted ...
-	TriggerRuntimeStateStarted TriggerRuntimeState = "Started"
-	// TriggerRuntimeStateStopped ...
-	TriggerRuntimeStateStopped TriggerRuntimeState = "Stopped"
+	// Disabled ...
+	Disabled TriggerRuntimeState = "Disabled"
+	// Started ...
+	Started TriggerRuntimeState = "Started"
+	// Stopped ...
+	Stopped TriggerRuntimeState = "Stopped"
 )
 
 // PossibleTriggerRuntimeStateValues returns an array of possible values for the TriggerRuntimeState const type.
 func PossibleTriggerRuntimeStateValues() []TriggerRuntimeState {
-	return []TriggerRuntimeState{TriggerRuntimeStateDisabled, TriggerRuntimeStateStarted, TriggerRuntimeStateStopped}
+	return []TriggerRuntimeState{Disabled, Started, Stopped}
 }
 
 // TumblingWindowFrequency enumerates the values for tumbling window frequency.

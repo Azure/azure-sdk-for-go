@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type PacketCoreControlPlanesClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewPacketCoreControlPlanesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PacketCoreControlPlanesClient {
+func NewPacketCoreControlPlanesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PacketCoreControlPlanesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &PacketCoreControlPlanesClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates a PacketCoreControlPlane.
@@ -56,22 +61,18 @@ func NewPacketCoreControlPlanesClient(subscriptionID string, credential azcore.T
 // parameters - Parameters supplied to the create or update packet core control plane operation.
 // options - PacketCoreControlPlanesClientBeginCreateOrUpdateOptions contains the optional parameters for the PacketCoreControlPlanesClient.BeginCreateOrUpdate
 // method.
-func (client *PacketCoreControlPlanesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, packetCoreControlPlaneName string, parameters PacketCoreControlPlane, options *PacketCoreControlPlanesClientBeginCreateOrUpdateOptions) (PacketCoreControlPlanesClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, packetCoreControlPlaneName, parameters, options)
-	if err != nil {
-		return PacketCoreControlPlanesClientCreateOrUpdatePollerResponse{}, err
+func (client *PacketCoreControlPlanesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, packetCoreControlPlaneName string, parameters PacketCoreControlPlane, options *PacketCoreControlPlanesClientBeginCreateOrUpdateOptions) (*armruntime.Poller[PacketCoreControlPlanesClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, packetCoreControlPlaneName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[PacketCoreControlPlanesClientCreateOrUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[PacketCoreControlPlanesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := PacketCoreControlPlanesClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("PacketCoreControlPlanesClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return PacketCoreControlPlanesClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &PacketCoreControlPlanesClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a PacketCoreControlPlane.
@@ -123,22 +124,18 @@ func (client *PacketCoreControlPlanesClient) createOrUpdateCreateRequest(ctx con
 // packetCoreControlPlaneName - The name of the packet core control plane.
 // options - PacketCoreControlPlanesClientBeginDeleteOptions contains the optional parameters for the PacketCoreControlPlanesClient.BeginDelete
 // method.
-func (client *PacketCoreControlPlanesClient) BeginDelete(ctx context.Context, resourceGroupName string, packetCoreControlPlaneName string, options *PacketCoreControlPlanesClientBeginDeleteOptions) (PacketCoreControlPlanesClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, packetCoreControlPlaneName, options)
-	if err != nil {
-		return PacketCoreControlPlanesClientDeletePollerResponse{}, err
+func (client *PacketCoreControlPlanesClient) BeginDelete(ctx context.Context, resourceGroupName string, packetCoreControlPlaneName string, options *PacketCoreControlPlanesClientBeginDeleteOptions) (*armruntime.Poller[PacketCoreControlPlanesClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, packetCoreControlPlaneName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[PacketCoreControlPlanesClientDeleteResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[PacketCoreControlPlanesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := PacketCoreControlPlanesClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("PacketCoreControlPlanesClient.Delete", "location", resp, client.pl)
-	if err != nil {
-		return PacketCoreControlPlanesClientDeletePollerResponse{}, err
-	}
-	result.Poller = &PacketCoreControlPlanesClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes the specified packet core control plane.
@@ -233,7 +230,7 @@ func (client *PacketCoreControlPlanesClient) getCreateRequest(ctx context.Contex
 
 // getHandleResponse handles the Get response.
 func (client *PacketCoreControlPlanesClient) getHandleResponse(resp *http.Response) (PacketCoreControlPlanesClientGetResponse, error) {
-	result := PacketCoreControlPlanesClientGetResponse{RawResponse: resp}
+	result := PacketCoreControlPlanesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PacketCoreControlPlane); err != nil {
 		return PacketCoreControlPlanesClientGetResponse{}, err
 	}
@@ -245,16 +242,32 @@ func (client *PacketCoreControlPlanesClient) getHandleResponse(resp *http.Respon
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - PacketCoreControlPlanesClientListByResourceGroupOptions contains the optional parameters for the PacketCoreControlPlanesClient.ListByResourceGroup
 // method.
-func (client *PacketCoreControlPlanesClient) ListByResourceGroup(resourceGroupName string, options *PacketCoreControlPlanesClientListByResourceGroupOptions) *PacketCoreControlPlanesClientListByResourceGroupPager {
-	return &PacketCoreControlPlanesClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *PacketCoreControlPlanesClient) ListByResourceGroup(resourceGroupName string, options *PacketCoreControlPlanesClientListByResourceGroupOptions) *runtime.Pager[PacketCoreControlPlanesClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PacketCoreControlPlanesClientListByResourceGroupResponse]{
+		More: func(page PacketCoreControlPlanesClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PacketCoreControlPlanesClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PacketCoreControlPlaneListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *PacketCoreControlPlanesClientListByResourceGroupResponse) (PacketCoreControlPlanesClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return PacketCoreControlPlanesClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PacketCoreControlPlanesClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PacketCoreControlPlanesClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -281,7 +294,7 @@ func (client *PacketCoreControlPlanesClient) listByResourceGroupCreateRequest(ct
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *PacketCoreControlPlanesClient) listByResourceGroupHandleResponse(resp *http.Response) (PacketCoreControlPlanesClientListByResourceGroupResponse, error) {
-	result := PacketCoreControlPlanesClientListByResourceGroupResponse{RawResponse: resp}
+	result := PacketCoreControlPlanesClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PacketCoreControlPlaneListResult); err != nil {
 		return PacketCoreControlPlanesClientListByResourceGroupResponse{}, err
 	}
@@ -292,16 +305,32 @@ func (client *PacketCoreControlPlanesClient) listByResourceGroupHandleResponse(r
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - PacketCoreControlPlanesClientListBySubscriptionOptions contains the optional parameters for the PacketCoreControlPlanesClient.ListBySubscription
 // method.
-func (client *PacketCoreControlPlanesClient) ListBySubscription(options *PacketCoreControlPlanesClientListBySubscriptionOptions) *PacketCoreControlPlanesClientListBySubscriptionPager {
-	return &PacketCoreControlPlanesClientListBySubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySubscriptionCreateRequest(ctx, options)
+func (client *PacketCoreControlPlanesClient) ListBySubscription(options *PacketCoreControlPlanesClientListBySubscriptionOptions) *runtime.Pager[PacketCoreControlPlanesClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PacketCoreControlPlanesClientListBySubscriptionResponse]{
+		More: func(page PacketCoreControlPlanesClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PacketCoreControlPlanesClientListBySubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PacketCoreControlPlaneListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *PacketCoreControlPlanesClientListBySubscriptionResponse) (PacketCoreControlPlanesClientListBySubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySubscriptionCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return PacketCoreControlPlanesClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PacketCoreControlPlanesClientListBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PacketCoreControlPlanesClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
@@ -324,7 +353,7 @@ func (client *PacketCoreControlPlanesClient) listBySubscriptionCreateRequest(ctx
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
 func (client *PacketCoreControlPlanesClient) listBySubscriptionHandleResponse(resp *http.Response) (PacketCoreControlPlanesClientListBySubscriptionResponse, error) {
-	result := PacketCoreControlPlanesClientListBySubscriptionResponse{RawResponse: resp}
+	result := PacketCoreControlPlanesClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PacketCoreControlPlaneListResult); err != nil {
 		return PacketCoreControlPlanesClientListBySubscriptionResponse{}, err
 	}
@@ -381,7 +410,7 @@ func (client *PacketCoreControlPlanesClient) updateTagsCreateRequest(ctx context
 
 // updateTagsHandleResponse handles the UpdateTags response.
 func (client *PacketCoreControlPlanesClient) updateTagsHandleResponse(resp *http.Response) (PacketCoreControlPlanesClientUpdateTagsResponse, error) {
-	result := PacketCoreControlPlanesClientUpdateTagsResponse{RawResponse: resp}
+	result := PacketCoreControlPlanesClientUpdateTagsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PacketCoreControlPlane); err != nil {
 		return PacketCoreControlPlanesClientUpdateTagsResponse{}, err
 	}

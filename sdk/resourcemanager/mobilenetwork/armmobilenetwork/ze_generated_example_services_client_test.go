@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,158 +19,191 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mobilenetwork/armmobilenetwork"
 )
 
-// x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/ServiceDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/ServiceDelete.json
 func ExampleServicesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armmobilenetwork.NewServicesClient("<subscription-id>", cred, nil)
+	client, err := armmobilenetwork.NewServicesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
 		"<mobile-network-name>",
 		"<service-name>",
-		nil)
+		&armmobilenetwork.ServicesClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/ServiceGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/ServiceGet.json
 func ExampleServicesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armmobilenetwork.NewServicesClient("<subscription-id>", cred, nil)
+	client, err := armmobilenetwork.NewServicesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<mobile-network-name>",
 		"<service-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ServicesClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/ServiceCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/ServiceCreate.json
 func ExampleServicesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armmobilenetwork.NewServicesClient("<subscription-id>", cred, nil)
+	client, err := armmobilenetwork.NewServicesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<mobile-network-name>",
 		"<service-name>",
 		armmobilenetwork.Service{
-			Location: to.StringPtr("<location>"),
+			Location: to.Ptr("<location>"),
 			Properties: &armmobilenetwork.ServicePropertiesFormat{
 				PccRules: []*armmobilenetwork.PccRuleConfiguration{
 					{
-						RuleName:       to.StringPtr("<rule-name>"),
-						RulePrecedence: to.Int32Ptr(255),
+						RuleName:       to.Ptr("<rule-name>"),
+						RulePrecedence: to.Ptr[int32](255),
 						RuleQosPolicy: &armmobilenetwork.PccRuleQosPolicy{
-							FiveQi:                              to.Int32Ptr(9),
-							AllocationAndRetentionPriorityLevel: to.Int32Ptr(9),
+							FiveQi:                              to.Ptr[int32](9),
+							AllocationAndRetentionPriorityLevel: to.Ptr[int32](9),
 							MaximumBitRate: &armmobilenetwork.Ambr{
-								Downlink: to.StringPtr("<downlink>"),
-								Uplink:   to.StringPtr("<uplink>"),
+								Downlink: to.Ptr("<downlink>"),
+								Uplink:   to.Ptr("<uplink>"),
 							},
-							PreemptionCapability:    armmobilenetwork.PreemptionCapability("NotPreempt").ToPtr(),
-							PreemptionVulnerability: armmobilenetwork.PreemptionVulnerability("Preemptable").ToPtr(),
+							PreemptionCapability:    to.Ptr(armmobilenetwork.PreemptionCapabilityNotPreempt),
+							PreemptionVulnerability: to.Ptr(armmobilenetwork.PreemptionVulnerabilityPreemptable),
 						},
 						ServiceDataFlowTemplates: []*armmobilenetwork.ServiceDataFlowTemplate{
 							{
-								Direction: armmobilenetwork.SdfDirection("Uplink").ToPtr(),
+								Direction: to.Ptr(armmobilenetwork.SdfDirectionUplink),
 								Ports:     []*string{},
 								RemoteIPList: []*string{
-									to.StringPtr("10.3.4.0/24")},
-								TemplateName: to.StringPtr("<template-name>"),
+									to.Ptr("10.3.4.0/24")},
+								TemplateName: to.Ptr("<template-name>"),
 								Protocol: []*string{
-									to.StringPtr("ip")},
+									to.Ptr("ip")},
 							}},
-						TrafficControl: armmobilenetwork.TrafficControlPermission("Enabled").ToPtr(),
+						TrafficControl: to.Ptr(armmobilenetwork.TrafficControlPermissionEnabled),
 					}},
-				ServicePrecedence: to.Int32Ptr(255),
+				ServicePrecedence: to.Ptr[int32](255),
 				ServiceQosPolicy: &armmobilenetwork.QosPolicy{
-					FiveQi:                              to.Int32Ptr(9),
-					AllocationAndRetentionPriorityLevel: to.Int32Ptr(9),
+					FiveQi:                              to.Ptr[int32](9),
+					AllocationAndRetentionPriorityLevel: to.Ptr[int32](9),
 					MaximumBitRate: &armmobilenetwork.Ambr{
-						Downlink: to.StringPtr("<downlink>"),
-						Uplink:   to.StringPtr("<uplink>"),
+						Downlink: to.Ptr("<downlink>"),
+						Uplink:   to.Ptr("<uplink>"),
 					},
-					PreemptionCapability:    armmobilenetwork.PreemptionCapability("NotPreempt").ToPtr(),
-					PreemptionVulnerability: armmobilenetwork.PreemptionVulnerability("Preemptable").ToPtr(),
+					PreemptionCapability:    to.Ptr(armmobilenetwork.PreemptionCapabilityNotPreempt),
+					PreemptionVulnerability: to.Ptr(armmobilenetwork.PreemptionVulnerabilityPreemptable),
 				},
 			},
 		},
-		nil)
+		&armmobilenetwork.ServicesClientBeginCreateOrUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ServicesClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/ServiceUpdateTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/ServiceUpdateTags.json
 func ExampleServicesClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armmobilenetwork.NewServicesClient("<subscription-id>", cred, nil)
+	client, err := armmobilenetwork.NewServicesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.UpdateTags(ctx,
 		"<resource-group-name>",
 		"<mobile-network-name>",
 		"<service-name>",
 		armmobilenetwork.TagsObject{
 			Tags: map[string]*string{
-				"tag1": to.StringPtr("value1"),
-				"tag2": to.StringPtr("value2"),
+				"tag1": to.Ptr("value1"),
+				"tag2": to.Ptr("value2"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ServicesClientUpdateTagsResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/ServiceListByMobileNetwork.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/ServiceListByMobileNetwork.json
 func ExampleServicesClient_ListByMobileNetwork() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armmobilenetwork.NewServicesClient("<subscription-id>", cred, nil)
+	client, err := armmobilenetwork.NewServicesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListByMobileNetwork("<resource-group-name>",
 		"<mobile-network-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }

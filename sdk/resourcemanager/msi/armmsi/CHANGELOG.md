@@ -1,5 +1,66 @@
 # Release History
 
+## 0.4.0 (2022-04-12)
+### Breaking Changes
+
+- Function `*UserAssignedIdentitiesClient.ListBySubscription` return value(s) have been changed from `(*UserAssignedIdentitiesClientListBySubscriptionPager)` to `(*runtime.Pager[UserAssignedIdentitiesClientListBySubscriptionResponse])`
+- Function `*UserAssignedIdentitiesClient.ListByResourceGroup` return value(s) have been changed from `(*UserAssignedIdentitiesClientListByResourceGroupPager)` to `(*runtime.Pager[UserAssignedIdentitiesClientListByResourceGroupResponse])`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `NewSystemAssignedIdentitiesClient` return value(s) have been changed from `(*SystemAssignedIdentitiesClient)` to `(*SystemAssignedIdentitiesClient, error)`
+- Function `NewUserAssignedIdentitiesClient` return value(s) have been changed from `(*UserAssignedIdentitiesClient)` to `(*UserAssignedIdentitiesClient, error)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `*UserAssignedIdentitiesClientListBySubscriptionPager.PageResponse` has been removed
+- Function `*UserAssignedIdentitiesClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Function `*UserAssignedIdentitiesClientListByResourceGroupPager.NextPage` has been removed
+- Function `*UserAssignedIdentitiesClientListBySubscriptionPager.NextPage` has been removed
+- Function `*UserAssignedIdentitiesClientListBySubscriptionPager.Err` has been removed
+- Function `*UserAssignedIdentitiesClientListByResourceGroupPager.Err` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `SystemAssignedIdentitiesClientGetByScopeResult` has been removed
+- Struct `UserAssignedIdentitiesClientCreateOrUpdateResult` has been removed
+- Struct `UserAssignedIdentitiesClientGetResult` has been removed
+- Struct `UserAssignedIdentitiesClientListByResourceGroupPager` has been removed
+- Struct `UserAssignedIdentitiesClientListByResourceGroupResult` has been removed
+- Struct `UserAssignedIdentitiesClientListBySubscriptionPager` has been removed
+- Struct `UserAssignedIdentitiesClientListBySubscriptionResult` has been removed
+- Struct `UserAssignedIdentitiesClientUpdateResult` has been removed
+- Field `UserAssignedIdentitiesClientListBySubscriptionResult` of struct `UserAssignedIdentitiesClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `UserAssignedIdentitiesClientListBySubscriptionResponse` has been removed
+- Field `UserAssignedIdentitiesClientCreateOrUpdateResult` of struct `UserAssignedIdentitiesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `UserAssignedIdentitiesClientCreateOrUpdateResponse` has been removed
+- Field `UserAssignedIdentitiesClientUpdateResult` of struct `UserAssignedIdentitiesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `UserAssignedIdentitiesClientUpdateResponse` has been removed
+- Field `UserAssignedIdentitiesClientGetResult` of struct `UserAssignedIdentitiesClientGetResponse` has been removed
+- Field `RawResponse` of struct `UserAssignedIdentitiesClientGetResponse` has been removed
+- Field `SystemAssignedIdentitiesClientGetByScopeResult` of struct `SystemAssignedIdentitiesClientGetByScopeResponse` has been removed
+- Field `RawResponse` of struct `SystemAssignedIdentitiesClientGetByScopeResponse` has been removed
+- Field `UserAssignedIdentitiesClientListByResourceGroupResult` of struct `UserAssignedIdentitiesClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `UserAssignedIdentitiesClientListByResourceGroupResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `UserAssignedIdentitiesClientDeleteResponse` has been removed
+
+### Features Added
+
+- New function `AssociatedResourcesListResult.MarshalJSON() ([]byte, error)`
+- New function `*UserAssignedIdentitiesClient.ListAssociatedResources(string, string, *UserAssignedIdentitiesClientListAssociatedResourcesOptions) *runtime.Pager[UserAssignedIdentitiesClientListAssociatedResourcesResponse]`
+- New struct `AssociatedResourcesListResult`
+- New struct `AzureResource`
+- New struct `UserAssignedIdentitiesClientListAssociatedResourcesOptions`
+- New struct `UserAssignedIdentitiesClientListAssociatedResourcesResponse`
+- New anonymous field `Identity` in struct `UserAssignedIdentitiesClientUpdateResponse`
+- New anonymous field `Identity` in struct `UserAssignedIdentitiesClientGetResponse`
+- New anonymous field `Identity` in struct `UserAssignedIdentitiesClientCreateOrUpdateResponse`
+- New anonymous field `SystemAssignedIdentity` in struct `SystemAssignedIdentitiesClientGetByScopeResponse`
+- New anonymous field `UserAssignedIdentitiesListResult` in struct `UserAssignedIdentitiesClientListByResourceGroupResponse`
+- New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
+- New anonymous field `UserAssignedIdentitiesListResult` in struct `UserAssignedIdentitiesClientListBySubscriptionResponse`
+
+
 ## 0.3.1 (2022-02-22)
 
 ### Other Changes

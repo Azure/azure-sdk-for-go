@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,37 +19,49 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mobilenetwork/armmobilenetwork"
 )
 
-// x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/AttachedDataNetworkDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/AttachedDataNetworkDelete.json
 func ExampleAttachedDataNetworksClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armmobilenetwork.NewAttachedDataNetworksClient("<subscription-id>", cred, nil)
+	client, err := armmobilenetwork.NewAttachedDataNetworksClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
 		"<packet-core-control-plane-name>",
 		"<packet-core-data-plane-name>",
 		"<attached-data-network-name>",
-		nil)
+		&armmobilenetwork.AttachedDataNetworksClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/AttachedDataNetworkGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/AttachedDataNetworkGet.json
 func ExampleAttachedDataNetworksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armmobilenetwork.NewAttachedDataNetworksClient("<subscription-id>", cred, nil)
+	client, err := armmobilenetwork.NewAttachedDataNetworksClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<packet-core-control-plane-name>",
@@ -57,72 +69,87 @@ func ExampleAttachedDataNetworksClient_Get() {
 		"<attached-data-network-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.AttachedDataNetworksClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/AttachedDataNetworkCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/AttachedDataNetworkCreate.json
 func ExampleAttachedDataNetworksClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armmobilenetwork.NewAttachedDataNetworksClient("<subscription-id>", cred, nil)
+	client, err := armmobilenetwork.NewAttachedDataNetworksClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<packet-core-control-plane-name>",
 		"<packet-core-data-plane-name>",
 		"<attached-data-network-name>",
 		armmobilenetwork.AttachedDataNetwork{
-			Location: to.StringPtr("<location>"),
+			Location: to.Ptr("<location>"),
 			Properties: &armmobilenetwork.AttachedDataNetworkPropertiesFormat{
 				NaptConfiguration: &armmobilenetwork.NaptConfiguration{
-					Enabled:       armmobilenetwork.NaptEnabled("Enabled").ToPtr(),
-					PinholeLimits: to.Int32Ptr(65536),
+					Enabled:       to.Ptr(armmobilenetwork.NaptEnabledEnabled),
+					PinholeLimits: to.Ptr[int32](65536),
 					PinholeTimeouts: &armmobilenetwork.PinholeTimeouts{
-						Icmp: to.Int32Ptr(60),
-						TCP:  to.Int32Ptr(7440),
-						UDP:  to.Int32Ptr(300),
+						Icmp: to.Ptr[int32](60),
+						TCP:  to.Ptr[int32](7440),
+						UDP:  to.Ptr[int32](300),
 					},
 					PortRange: &armmobilenetwork.PortRange{
-						MaxPort: to.Int32Ptr(65535),
-						MinPort: to.Int32Ptr(1024),
+						MaxPort: to.Ptr[int32](65535),
+						MinPort: to.Ptr[int32](1024),
 					},
 					PortReuseHoldTime: &armmobilenetwork.PortReuseHoldTimes{
-						TCP: to.Int32Ptr(120),
-						UDP: to.Int32Ptr(60),
+						TCP: to.Ptr[int32](120),
+						UDP: to.Ptr[int32](60),
 					},
 				},
 				UserEquipmentAddressPoolPrefix: []*string{
-					to.StringPtr("2.2.0.0/16")},
+					to.Ptr("2.2.0.0/16")},
 				UserEquipmentStaticAddressPoolPrefix: []*string{
-					to.StringPtr("2.4.0.0/16")},
+					to.Ptr("2.4.0.0/16")},
 				UserPlaneDataInterface: &armmobilenetwork.InterfaceProperties{
-					Name: to.StringPtr("<name>"),
+					Name: to.Ptr("<name>"),
 				},
 			},
 		},
-		nil)
+		&armmobilenetwork.AttachedDataNetworksClientBeginCreateOrUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.AttachedDataNetworksClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/AttachedDataNetworkUpdateTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/AttachedDataNetworkUpdateTags.json
 func ExampleAttachedDataNetworksClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armmobilenetwork.NewAttachedDataNetworksClient("<subscription-id>", cred, nil)
+	client, err := armmobilenetwork.NewAttachedDataNetworksClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.UpdateTags(ctx,
 		"<resource-group-name>",
 		"<packet-core-control-plane-name>",
@@ -130,39 +157,45 @@ func ExampleAttachedDataNetworksClient_UpdateTags() {
 		"<attached-data-network-name>",
 		armmobilenetwork.TagsObject{
 			Tags: map[string]*string{
-				"tag1": to.StringPtr("value1"),
-				"tag2": to.StringPtr("value2"),
+				"tag1": to.Ptr("value1"),
+				"tag2": to.Ptr("value2"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.AttachedDataNetworksClientUpdateTagsResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/AttachedDataNetworkListByPacketCoreDataPlane.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/AttachedDataNetworkListByPacketCoreDataPlane.json
 func ExampleAttachedDataNetworksClient_ListByPacketCoreDataPlane() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armmobilenetwork.NewAttachedDataNetworksClient("<subscription-id>", cred, nil)
+	client, err := armmobilenetwork.NewAttachedDataNetworksClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListByPacketCoreDataPlane("<resource-group-name>",
 		"<packet-core-control-plane-name>",
 		"<packet-core-data-plane-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }

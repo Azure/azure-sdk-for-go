@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type AttachedDataNetworksClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewAttachedDataNetworksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AttachedDataNetworksClient {
+func NewAttachedDataNetworksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AttachedDataNetworksClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &AttachedDataNetworksClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates an attached data network.
@@ -58,22 +63,18 @@ func NewAttachedDataNetworksClient(subscriptionID string, credential azcore.Toke
 // parameters - Parameters supplied to the create or update attached data network operation.
 // options - AttachedDataNetworksClientBeginCreateOrUpdateOptions contains the optional parameters for the AttachedDataNetworksClient.BeginCreateOrUpdate
 // method.
-func (client *AttachedDataNetworksClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, packetCoreControlPlaneName string, packetCoreDataPlaneName string, attachedDataNetworkName string, parameters AttachedDataNetwork, options *AttachedDataNetworksClientBeginCreateOrUpdateOptions) (AttachedDataNetworksClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName, attachedDataNetworkName, parameters, options)
-	if err != nil {
-		return AttachedDataNetworksClientCreateOrUpdatePollerResponse{}, err
+func (client *AttachedDataNetworksClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, packetCoreControlPlaneName string, packetCoreDataPlaneName string, attachedDataNetworkName string, parameters AttachedDataNetwork, options *AttachedDataNetworksClientBeginCreateOrUpdateOptions) (*armruntime.Poller[AttachedDataNetworksClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName, attachedDataNetworkName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[AttachedDataNetworksClientCreateOrUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[AttachedDataNetworksClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := AttachedDataNetworksClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("AttachedDataNetworksClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return AttachedDataNetworksClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &AttachedDataNetworksClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates an attached data network.
@@ -135,22 +136,18 @@ func (client *AttachedDataNetworksClient) createOrUpdateCreateRequest(ctx contex
 // attachedDataNetworkName - The name of the attached data network.
 // options - AttachedDataNetworksClientBeginDeleteOptions contains the optional parameters for the AttachedDataNetworksClient.BeginDelete
 // method.
-func (client *AttachedDataNetworksClient) BeginDelete(ctx context.Context, resourceGroupName string, packetCoreControlPlaneName string, packetCoreDataPlaneName string, attachedDataNetworkName string, options *AttachedDataNetworksClientBeginDeleteOptions) (AttachedDataNetworksClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName, attachedDataNetworkName, options)
-	if err != nil {
-		return AttachedDataNetworksClientDeletePollerResponse{}, err
+func (client *AttachedDataNetworksClient) BeginDelete(ctx context.Context, resourceGroupName string, packetCoreControlPlaneName string, packetCoreDataPlaneName string, attachedDataNetworkName string, options *AttachedDataNetworksClientBeginDeleteOptions) (*armruntime.Poller[AttachedDataNetworksClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName, attachedDataNetworkName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[AttachedDataNetworksClientDeleteResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[AttachedDataNetworksClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := AttachedDataNetworksClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("AttachedDataNetworksClient.Delete", "location", resp, client.pl)
-	if err != nil {
-		return AttachedDataNetworksClientDeletePollerResponse{}, err
-	}
-	result.Poller = &AttachedDataNetworksClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes the specified attached data network.
@@ -263,7 +260,7 @@ func (client *AttachedDataNetworksClient) getCreateRequest(ctx context.Context, 
 
 // getHandleResponse handles the Get response.
 func (client *AttachedDataNetworksClient) getHandleResponse(resp *http.Response) (AttachedDataNetworksClientGetResponse, error) {
-	result := AttachedDataNetworksClientGetResponse{RawResponse: resp}
+	result := AttachedDataNetworksClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AttachedDataNetwork); err != nil {
 		return AttachedDataNetworksClientGetResponse{}, err
 	}
@@ -277,16 +274,32 @@ func (client *AttachedDataNetworksClient) getHandleResponse(resp *http.Response)
 // packetCoreDataPlaneName - The name of the packet core data plane.
 // options - AttachedDataNetworksClientListByPacketCoreDataPlaneOptions contains the optional parameters for the AttachedDataNetworksClient.ListByPacketCoreDataPlane
 // method.
-func (client *AttachedDataNetworksClient) ListByPacketCoreDataPlane(resourceGroupName string, packetCoreControlPlaneName string, packetCoreDataPlaneName string, options *AttachedDataNetworksClientListByPacketCoreDataPlaneOptions) *AttachedDataNetworksClientListByPacketCoreDataPlanePager {
-	return &AttachedDataNetworksClientListByPacketCoreDataPlanePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByPacketCoreDataPlaneCreateRequest(ctx, resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName, options)
+func (client *AttachedDataNetworksClient) ListByPacketCoreDataPlane(resourceGroupName string, packetCoreControlPlaneName string, packetCoreDataPlaneName string, options *AttachedDataNetworksClientListByPacketCoreDataPlaneOptions) *runtime.Pager[AttachedDataNetworksClientListByPacketCoreDataPlaneResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AttachedDataNetworksClientListByPacketCoreDataPlaneResponse]{
+		More: func(page AttachedDataNetworksClientListByPacketCoreDataPlaneResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AttachedDataNetworksClientListByPacketCoreDataPlaneResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AttachedDataNetworkListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *AttachedDataNetworksClientListByPacketCoreDataPlaneResponse) (AttachedDataNetworksClientListByPacketCoreDataPlaneResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByPacketCoreDataPlaneCreateRequest(ctx, resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AttachedDataNetworksClientListByPacketCoreDataPlaneResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AttachedDataNetworksClientListByPacketCoreDataPlaneResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AttachedDataNetworksClientListByPacketCoreDataPlaneResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByPacketCoreDataPlaneHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByPacketCoreDataPlaneCreateRequest creates the ListByPacketCoreDataPlane request.
@@ -321,7 +334,7 @@ func (client *AttachedDataNetworksClient) listByPacketCoreDataPlaneCreateRequest
 
 // listByPacketCoreDataPlaneHandleResponse handles the ListByPacketCoreDataPlane response.
 func (client *AttachedDataNetworksClient) listByPacketCoreDataPlaneHandleResponse(resp *http.Response) (AttachedDataNetworksClientListByPacketCoreDataPlaneResponse, error) {
-	result := AttachedDataNetworksClientListByPacketCoreDataPlaneResponse{RawResponse: resp}
+	result := AttachedDataNetworksClientListByPacketCoreDataPlaneResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AttachedDataNetworkListResult); err != nil {
 		return AttachedDataNetworksClientListByPacketCoreDataPlaneResponse{}, err
 	}
@@ -388,7 +401,7 @@ func (client *AttachedDataNetworksClient) updateTagsCreateRequest(ctx context.Co
 
 // updateTagsHandleResponse handles the UpdateTags response.
 func (client *AttachedDataNetworksClient) updateTagsHandleResponse(resp *http.Response) (AttachedDataNetworksClientUpdateTagsResponse, error) {
-	result := AttachedDataNetworksClientUpdateTagsResponse{RawResponse: resp}
+	result := AttachedDataNetworksClientUpdateTagsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AttachedDataNetwork); err != nil {
 		return AttachedDataNetworksClientUpdateTagsResponse{}, err
 	}

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armoperationalinsights
 
 const (
 	moduleName    = "armoperationalinsights"
-	moduleVersion = "v0.3.1"
+	moduleVersion = "v0.4.0"
 )
 
 // BillingType - Configures whether billing will be only on the cluster or each workspace will be billed by its proportional
@@ -31,11 +31,6 @@ func PossibleBillingTypeValues() []BillingType {
 	}
 }
 
-// ToPtr returns a *BillingType pointing to the current value.
-func (c BillingType) ToPtr() *BillingType {
-	return &c
-}
-
 // Capacity - The capacity value
 type Capacity int64
 
@@ -54,11 +49,6 @@ func PossibleCapacityValues() []Capacity {
 		CapacityTwoThousand,
 		CapacityFiveThousand,
 	}
-}
-
-// ToPtr returns a *Capacity pointing to the current value.
-func (c Capacity) ToPtr() *Capacity {
-	return &c
 }
 
 // CapacityReservationLevel - The capacity reservation level in GB for this workspace, when CapacityReservation sku is selected.
@@ -89,11 +79,6 @@ func PossibleCapacityReservationLevelValues() []CapacityReservationLevel {
 	}
 }
 
-// ToPtr returns a *CapacityReservationLevel pointing to the current value.
-func (c CapacityReservationLevel) ToPtr() *CapacityReservationLevel {
-	return &c
-}
-
 // ClusterEntityStatus - The provisioning state of the cluster.
 type ClusterEntityStatus string
 
@@ -120,11 +105,6 @@ func PossibleClusterEntityStatusValues() []ClusterEntityStatus {
 	}
 }
 
-// ToPtr returns a *ClusterEntityStatus pointing to the current value.
-func (c ClusterEntityStatus) ToPtr() *ClusterEntityStatus {
-	return &c
-}
-
 // ClusterSKUNameEnum - The name of the SKU.
 type ClusterSKUNameEnum string
 
@@ -137,11 +117,6 @@ func PossibleClusterSKUNameEnumValues() []ClusterSKUNameEnum {
 	return []ClusterSKUNameEnum{
 		ClusterSKUNameEnumCapacityReservation,
 	}
-}
-
-// ToPtr returns a *ClusterSKUNameEnum pointing to the current value.
-func (c ClusterSKUNameEnum) ToPtr() *ClusterSKUNameEnum {
-	return &c
 }
 
 // ColumnDataTypeHintEnum - Column data type logical hint.
@@ -166,11 +141,6 @@ func PossibleColumnDataTypeHintEnumValues() []ColumnDataTypeHintEnum {
 		ColumnDataTypeHintEnumIP,
 		ColumnDataTypeHintEnumURI,
 	}
-}
-
-// ToPtr returns a *ColumnDataTypeHintEnum pointing to the current value.
-func (c ColumnDataTypeHintEnum) ToPtr() *ColumnDataTypeHintEnum {
-	return &c
 }
 
 // ColumnTypeEnum - Column data type.
@@ -201,11 +171,6 @@ func PossibleColumnTypeEnumValues() []ColumnTypeEnum {
 	}
 }
 
-// ToPtr returns a *ColumnTypeEnum pointing to the current value.
-func (c ColumnTypeEnum) ToPtr() *ColumnTypeEnum {
-	return &c
-}
-
 // CreatedByType - The type of identity that created the resource.
 type CreatedByType string
 
@@ -224,11 +189,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
 	}
-}
-
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
 }
 
 // DataIngestionStatus - The status of data ingestion for this workspace.
@@ -259,11 +219,6 @@ func PossibleDataIngestionStatusValues() []DataIngestionStatus {
 		DataIngestionStatusRespectQuota,
 		DataIngestionStatusSubscriptionSuspended,
 	}
-}
-
-// ToPtr returns a *DataIngestionStatus pointing to the current value.
-func (c DataIngestionStatus) ToPtr() *DataIngestionStatus {
-	return &c
 }
 
 // DataSourceKind - The kind of the DataSource.
@@ -344,11 +299,6 @@ func PossibleDataSourceKindValues() []DataSourceKind {
 	}
 }
 
-// ToPtr returns a *DataSourceKind pointing to the current value.
-func (c DataSourceKind) ToPtr() *DataSourceKind {
-	return &c
-}
-
 // DataSourceType - Linked storage accounts type.
 type DataSourceType string
 
@@ -369,32 +319,30 @@ func PossibleDataSourceTypeValues() []DataSourceType {
 	}
 }
 
-// ToPtr returns a *DataSourceType pointing to the current value.
-func (c DataSourceType) ToPtr() *DataSourceType {
-	return &c
-}
-
-// IdentityType - Type of managed service identity.
+// IdentityType - The type of identity that creates/modifies resources
 type IdentityType string
 
 const (
-	IdentityTypeSystemAssigned IdentityType = "SystemAssigned"
-	IdentityTypeUserAssigned   IdentityType = "UserAssigned"
-	IdentityTypeNone           IdentityType = "None"
+	IdentityTypeApplication     IdentityType = "application"
+	IdentityTypeKey             IdentityType = "key"
+	IdentityTypeManagedIdentity IdentityType = "managedIdentity"
+	IdentityTypeNone            IdentityType = "None"
+	IdentityTypeSystemAssigned  IdentityType = "SystemAssigned"
+	IdentityTypeUser            IdentityType = "user"
+	IdentityTypeUserAssigned    IdentityType = "UserAssigned"
 )
 
 // PossibleIdentityTypeValues returns the possible values for the IdentityType const type.
 func PossibleIdentityTypeValues() []IdentityType {
 	return []IdentityType{
-		IdentityTypeSystemAssigned,
-		IdentityTypeUserAssigned,
+		IdentityTypeApplication,
+		IdentityTypeKey,
+		IdentityTypeManagedIdentity,
 		IdentityTypeNone,
+		IdentityTypeSystemAssigned,
+		IdentityTypeUser,
+		IdentityTypeUserAssigned,
 	}
-}
-
-// ToPtr returns a *IdentityType pointing to the current value.
-func (c IdentityType) ToPtr() *IdentityType {
-	return &c
 }
 
 // LinkedServiceEntityStatus - The provisioning state of the linked service.
@@ -415,11 +363,6 @@ func PossibleLinkedServiceEntityStatusValues() []LinkedServiceEntityStatus {
 		LinkedServiceEntityStatusSucceeded,
 		LinkedServiceEntityStatusUpdating,
 	}
-}
-
-// ToPtr returns a *LinkedServiceEntityStatus pointing to the current value.
-func (c LinkedServiceEntityStatus) ToPtr() *LinkedServiceEntityStatus {
-	return &c
 }
 
 // ProvisioningStateEnum - Table's current provisioning state. If set to 'updating', indicates a resource lock due to ongoing
@@ -445,11 +388,6 @@ func PossibleProvisioningStateEnumValues() []ProvisioningStateEnum {
 	}
 }
 
-// ToPtr returns a *ProvisioningStateEnum pointing to the current value.
-func (c ProvisioningStateEnum) ToPtr() *ProvisioningStateEnum {
-	return &c
-}
-
 // PublicNetworkAccessType - The network access type for operating on the Log Analytics Workspace. By default it is Enabled
 type PublicNetworkAccessType string
 
@@ -468,11 +406,6 @@ func PossiblePublicNetworkAccessTypeValues() []PublicNetworkAccessType {
 	}
 }
 
-// ToPtr returns a *PublicNetworkAccessType pointing to the current value.
-func (c PublicNetworkAccessType) ToPtr() *PublicNetworkAccessType {
-	return &c
-}
-
 // PurgeState - Status of the operation represented by the requested Id.
 type PurgeState string
 
@@ -487,11 +420,6 @@ func PossiblePurgeStateValues() []PurgeState {
 		PurgeStateCompleted,
 		PurgeStatePending,
 	}
-}
-
-// ToPtr returns a *PurgeState pointing to the current value.
-func (c PurgeState) ToPtr() *PurgeState {
-	return &c
 }
 
 // SKUNameEnum - The name of the Service Tier.
@@ -520,11 +448,6 @@ func PossibleSKUNameEnumValues() []SKUNameEnum {
 	}
 }
 
-// ToPtr returns a *SKUNameEnum pointing to the current value.
-func (c SKUNameEnum) ToPtr() *SKUNameEnum {
-	return &c
-}
-
 // SearchSortEnum - The sort order of the search.
 type SearchSortEnum string
 
@@ -539,11 +462,6 @@ func PossibleSearchSortEnumValues() []SearchSortEnum {
 		SearchSortEnumAsc,
 		SearchSortEnumDesc,
 	}
-}
-
-// ToPtr returns a *SearchSortEnum pointing to the current value.
-func (c SearchSortEnum) ToPtr() *SearchSortEnum {
-	return &c
 }
 
 // SourceEnum - Table's creator.
@@ -565,11 +483,6 @@ func PossibleSourceEnumValues() []SourceEnum {
 	}
 }
 
-// ToPtr returns a *SourceEnum pointing to the current value.
-func (c SourceEnum) ToPtr() *SourceEnum {
-	return &c
-}
-
 // StorageInsightState - The state of the storage insight connection to the workspace
 type StorageInsightState string
 
@@ -586,18 +499,13 @@ func PossibleStorageInsightStateValues() []StorageInsightState {
 	}
 }
 
-// ToPtr returns a *StorageInsightState pointing to the current value.
-func (c StorageInsightState) ToPtr() *StorageInsightState {
-	return &c
-}
-
-// TablePlanEnum - The table plan.
+// TablePlanEnum - Instruct the system how to handle and charge the logs ingested to this table.
 type TablePlanEnum string
 
 const (
-	// TablePlanEnumAnalytics - Analytics - logs that allow monitoring and analytics.
+	// TablePlanEnumAnalytics - Logs that allow monitoring and analytics.
 	TablePlanEnumAnalytics TablePlanEnum = "Analytics"
-	// TablePlanEnumBasic - Basic - logs that are adjusted to support high volume / low value verbose logs.
+	// TablePlanEnumBasic - Logs that are adjusted to support high volume low value verbose logs.
 	TablePlanEnumBasic TablePlanEnum = "Basic"
 )
 
@@ -607,11 +515,6 @@ func PossibleTablePlanEnumValues() []TablePlanEnum {
 		TablePlanEnumAnalytics,
 		TablePlanEnumBasic,
 	}
-}
-
-// ToPtr returns a *TablePlanEnum pointing to the current value.
-func (c TablePlanEnum) ToPtr() *TablePlanEnum {
-	return &c
 }
 
 // TableSubTypeEnum - The subtype describes what APIs can be used to interact with the table, and what features are available
@@ -639,11 +542,6 @@ func PossibleTableSubTypeEnumValues() []TableSubTypeEnum {
 	}
 }
 
-// ToPtr returns a *TableSubTypeEnum pointing to the current value.
-func (c TableSubTypeEnum) ToPtr() *TableSubTypeEnum {
-	return &c
-}
-
 // TableTypeEnum - Table's creator.
 type TableTypeEnum string
 
@@ -668,11 +566,6 @@ func PossibleTableTypeEnumValues() []TableTypeEnum {
 	}
 }
 
-// ToPtr returns a *TableTypeEnum pointing to the current value.
-func (c TableTypeEnum) ToPtr() *TableTypeEnum {
-	return &c
-}
-
 // Type - The type of the destination resource
 type Type string
 
@@ -687,11 +580,6 @@ func PossibleTypeValues() []Type {
 		TypeEventHub,
 		TypeStorageAccount,
 	}
-}
-
-// ToPtr returns a *Type pointing to the current value.
-func (c Type) ToPtr() *Type {
-	return &c
 }
 
 // WorkspaceEntityStatus - The provisioning state of the workspace.
@@ -720,11 +608,6 @@ func PossibleWorkspaceEntityStatusValues() []WorkspaceEntityStatus {
 	}
 }
 
-// ToPtr returns a *WorkspaceEntityStatus pointing to the current value.
-func (c WorkspaceEntityStatus) ToPtr() *WorkspaceEntityStatus {
-	return &c
-}
-
 // WorkspaceSKUNameEnum - The name of the SKU.
 type WorkspaceSKUNameEnum string
 
@@ -751,9 +634,4 @@ func PossibleWorkspaceSKUNameEnumValues() []WorkspaceSKUNameEnum {
 		WorkspaceSKUNameEnumStandalone,
 		WorkspaceSKUNameEnumStandard,
 	}
-}
-
-// ToPtr returns a *WorkspaceSKUNameEnum pointing to the current value.
-func (c WorkspaceSKUNameEnum) ToPtr() *WorkspaceSKUNameEnum {
-	return &c
 }

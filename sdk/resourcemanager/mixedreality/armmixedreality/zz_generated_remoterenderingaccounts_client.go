@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type RemoteRenderingAccountsClient struct {
 // subscriptionID - The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000)
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewRemoteRenderingAccountsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RemoteRenderingAccountsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewRemoteRenderingAccountsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RemoteRenderingAccountsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &RemoteRenderingAccountsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Create - Creating or Updating a Remote Rendering Account.
@@ -99,7 +104,7 @@ func (client *RemoteRenderingAccountsClient) createCreateRequest(ctx context.Con
 
 // createHandleResponse handles the Create response.
 func (client *RemoteRenderingAccountsClient) createHandleResponse(resp *http.Response) (RemoteRenderingAccountsClientCreateResponse, error) {
-	result := RemoteRenderingAccountsClientCreateResponse{RawResponse: resp}
+	result := RemoteRenderingAccountsClientCreateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RemoteRenderingAccount); err != nil {
 		return RemoteRenderingAccountsClientCreateResponse{}, err
 	}
@@ -124,7 +129,7 @@ func (client *RemoteRenderingAccountsClient) Delete(ctx context.Context, resourc
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return RemoteRenderingAccountsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return RemoteRenderingAccountsClientDeleteResponse{RawResponse: resp}, nil
+	return RemoteRenderingAccountsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -202,7 +207,7 @@ func (client *RemoteRenderingAccountsClient) getCreateRequest(ctx context.Contex
 
 // getHandleResponse handles the Get response.
 func (client *RemoteRenderingAccountsClient) getHandleResponse(resp *http.Response) (RemoteRenderingAccountsClientGetResponse, error) {
-	result := RemoteRenderingAccountsClientGetResponse{RawResponse: resp}
+	result := RemoteRenderingAccountsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RemoteRenderingAccount); err != nil {
 		return RemoteRenderingAccountsClientGetResponse{}, err
 	}
@@ -214,16 +219,32 @@ func (client *RemoteRenderingAccountsClient) getHandleResponse(resp *http.Respon
 // resourceGroupName - Name of an Azure resource group.
 // options - RemoteRenderingAccountsClientListByResourceGroupOptions contains the optional parameters for the RemoteRenderingAccountsClient.ListByResourceGroup
 // method.
-func (client *RemoteRenderingAccountsClient) ListByResourceGroup(resourceGroupName string, options *RemoteRenderingAccountsClientListByResourceGroupOptions) *RemoteRenderingAccountsClientListByResourceGroupPager {
-	return &RemoteRenderingAccountsClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *RemoteRenderingAccountsClient) ListByResourceGroup(resourceGroupName string, options *RemoteRenderingAccountsClientListByResourceGroupOptions) *runtime.Pager[RemoteRenderingAccountsClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[RemoteRenderingAccountsClientListByResourceGroupResponse]{
+		More: func(page RemoteRenderingAccountsClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp RemoteRenderingAccountsClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.RemoteRenderingAccountPage.NextLink)
+		Fetcher: func(ctx context.Context, page *RemoteRenderingAccountsClientListByResourceGroupResponse) (RemoteRenderingAccountsClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return RemoteRenderingAccountsClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return RemoteRenderingAccountsClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return RemoteRenderingAccountsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -250,7 +271,7 @@ func (client *RemoteRenderingAccountsClient) listByResourceGroupCreateRequest(ct
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *RemoteRenderingAccountsClient) listByResourceGroupHandleResponse(resp *http.Response) (RemoteRenderingAccountsClientListByResourceGroupResponse, error) {
-	result := RemoteRenderingAccountsClientListByResourceGroupResponse{RawResponse: resp}
+	result := RemoteRenderingAccountsClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RemoteRenderingAccountPage); err != nil {
 		return RemoteRenderingAccountsClientListByResourceGroupResponse{}, err
 	}
@@ -261,16 +282,32 @@ func (client *RemoteRenderingAccountsClient) listByResourceGroupHandleResponse(r
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - RemoteRenderingAccountsClientListBySubscriptionOptions contains the optional parameters for the RemoteRenderingAccountsClient.ListBySubscription
 // method.
-func (client *RemoteRenderingAccountsClient) ListBySubscription(options *RemoteRenderingAccountsClientListBySubscriptionOptions) *RemoteRenderingAccountsClientListBySubscriptionPager {
-	return &RemoteRenderingAccountsClientListBySubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySubscriptionCreateRequest(ctx, options)
+func (client *RemoteRenderingAccountsClient) ListBySubscription(options *RemoteRenderingAccountsClientListBySubscriptionOptions) *runtime.Pager[RemoteRenderingAccountsClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[RemoteRenderingAccountsClientListBySubscriptionResponse]{
+		More: func(page RemoteRenderingAccountsClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp RemoteRenderingAccountsClientListBySubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.RemoteRenderingAccountPage.NextLink)
+		Fetcher: func(ctx context.Context, page *RemoteRenderingAccountsClientListBySubscriptionResponse) (RemoteRenderingAccountsClientListBySubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySubscriptionCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return RemoteRenderingAccountsClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return RemoteRenderingAccountsClientListBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return RemoteRenderingAccountsClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
@@ -293,7 +330,7 @@ func (client *RemoteRenderingAccountsClient) listBySubscriptionCreateRequest(ctx
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
 func (client *RemoteRenderingAccountsClient) listBySubscriptionHandleResponse(resp *http.Response) (RemoteRenderingAccountsClientListBySubscriptionResponse, error) {
-	result := RemoteRenderingAccountsClientListBySubscriptionResponse{RawResponse: resp}
+	result := RemoteRenderingAccountsClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RemoteRenderingAccountPage); err != nil {
 		return RemoteRenderingAccountsClientListBySubscriptionResponse{}, err
 	}
@@ -349,7 +386,7 @@ func (client *RemoteRenderingAccountsClient) listKeysCreateRequest(ctx context.C
 
 // listKeysHandleResponse handles the ListKeys response.
 func (client *RemoteRenderingAccountsClient) listKeysHandleResponse(resp *http.Response) (RemoteRenderingAccountsClientListKeysResponse, error) {
-	result := RemoteRenderingAccountsClientListKeysResponse{RawResponse: resp}
+	result := RemoteRenderingAccountsClientListKeysResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccountKeys); err != nil {
 		return RemoteRenderingAccountsClientListKeysResponse{}, err
 	}
@@ -406,7 +443,7 @@ func (client *RemoteRenderingAccountsClient) regenerateKeysCreateRequest(ctx con
 
 // regenerateKeysHandleResponse handles the RegenerateKeys response.
 func (client *RemoteRenderingAccountsClient) regenerateKeysHandleResponse(resp *http.Response) (RemoteRenderingAccountsClientRegenerateKeysResponse, error) {
-	result := RemoteRenderingAccountsClientRegenerateKeysResponse{RawResponse: resp}
+	result := RemoteRenderingAccountsClientRegenerateKeysResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccountKeys); err != nil {
 		return RemoteRenderingAccountsClientRegenerateKeysResponse{}, err
 	}
@@ -463,7 +500,7 @@ func (client *RemoteRenderingAccountsClient) updateCreateRequest(ctx context.Con
 
 // updateHandleResponse handles the Update response.
 func (client *RemoteRenderingAccountsClient) updateHandleResponse(resp *http.Response) (RemoteRenderingAccountsClientUpdateResponse, error) {
-	result := RemoteRenderingAccountsClientUpdateResponse{RawResponse: resp}
+	result := RemoteRenderingAccountsClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RemoteRenderingAccount); err != nil {
 		return RemoteRenderingAccountsClientUpdateResponse{}, err
 	}

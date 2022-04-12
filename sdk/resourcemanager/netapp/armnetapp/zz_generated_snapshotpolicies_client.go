@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type SnapshotPoliciesClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewSnapshotPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SnapshotPoliciesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewSnapshotPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SnapshotPoliciesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &SnapshotPoliciesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Create - Create a snapshot policy
@@ -96,7 +101,7 @@ func (client *SnapshotPoliciesClient) createCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, body)
@@ -104,7 +109,7 @@ func (client *SnapshotPoliciesClient) createCreateRequest(ctx context.Context, r
 
 // createHandleResponse handles the Create response.
 func (client *SnapshotPoliciesClient) createHandleResponse(resp *http.Response) (SnapshotPoliciesClientCreateResponse, error) {
-	result := SnapshotPoliciesClientCreateResponse{RawResponse: resp}
+	result := SnapshotPoliciesClientCreateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SnapshotPolicy); err != nil {
 		return SnapshotPoliciesClientCreateResponse{}, err
 	}
@@ -118,22 +123,18 @@ func (client *SnapshotPoliciesClient) createHandleResponse(resp *http.Response) 
 // snapshotPolicyName - The name of the snapshot policy
 // options - SnapshotPoliciesClientBeginDeleteOptions contains the optional parameters for the SnapshotPoliciesClient.BeginDelete
 // method.
-func (client *SnapshotPoliciesClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, snapshotPolicyName string, options *SnapshotPoliciesClientBeginDeleteOptions) (SnapshotPoliciesClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, snapshotPolicyName, options)
-	if err != nil {
-		return SnapshotPoliciesClientDeletePollerResponse{}, err
+func (client *SnapshotPoliciesClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, snapshotPolicyName string, options *SnapshotPoliciesClientBeginDeleteOptions) (*armruntime.Poller[SnapshotPoliciesClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, snapshotPolicyName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[SnapshotPoliciesClientDeleteResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[SnapshotPoliciesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SnapshotPoliciesClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SnapshotPoliciesClient.Delete", "location", resp, client.pl)
-	if err != nil {
-		return SnapshotPoliciesClientDeletePollerResponse{}, err
-	}
-	result.Poller = &SnapshotPoliciesClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Delete snapshot policy
@@ -177,7 +178,7 @@ func (client *SnapshotPoliciesClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -227,7 +228,7 @@ func (client *SnapshotPoliciesClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -235,7 +236,7 @@ func (client *SnapshotPoliciesClient) getCreateRequest(ctx context.Context, reso
 
 // getHandleResponse handles the Get response.
 func (client *SnapshotPoliciesClient) getHandleResponse(resp *http.Response) (SnapshotPoliciesClientGetResponse, error) {
-	result := SnapshotPoliciesClientGetResponse{RawResponse: resp}
+	result := SnapshotPoliciesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SnapshotPolicy); err != nil {
 		return SnapshotPoliciesClientGetResponse{}, err
 	}
@@ -247,19 +248,26 @@ func (client *SnapshotPoliciesClient) getHandleResponse(resp *http.Response) (Sn
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // options - SnapshotPoliciesClientListOptions contains the optional parameters for the SnapshotPoliciesClient.List method.
-func (client *SnapshotPoliciesClient) List(ctx context.Context, resourceGroupName string, accountName string, options *SnapshotPoliciesClientListOptions) (SnapshotPoliciesClientListResponse, error) {
-	req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, options)
-	if err != nil {
-		return SnapshotPoliciesClientListResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return SnapshotPoliciesClientListResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SnapshotPoliciesClientListResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listHandleResponse(resp)
+func (client *SnapshotPoliciesClient) List(resourceGroupName string, accountName string, options *SnapshotPoliciesClientListOptions) *runtime.Pager[SnapshotPoliciesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SnapshotPoliciesClientListResponse]{
+		More: func(page SnapshotPoliciesClientListResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *SnapshotPoliciesClientListResponse) (SnapshotPoliciesClientListResponse, error) {
+			req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, options)
+			if err != nil {
+				return SnapshotPoliciesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SnapshotPoliciesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SnapshotPoliciesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
+		},
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -282,7 +290,7 @@ func (client *SnapshotPoliciesClient) listCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -290,7 +298,7 @@ func (client *SnapshotPoliciesClient) listCreateRequest(ctx context.Context, res
 
 // listHandleResponse handles the List response.
 func (client *SnapshotPoliciesClient) listHandleResponse(resp *http.Response) (SnapshotPoliciesClientListResponse, error) {
-	result := SnapshotPoliciesClientListResponse{RawResponse: resp}
+	result := SnapshotPoliciesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SnapshotPoliciesList); err != nil {
 		return SnapshotPoliciesClientListResponse{}, err
 	}
@@ -343,7 +351,7 @@ func (client *SnapshotPoliciesClient) listVolumesCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -351,7 +359,7 @@ func (client *SnapshotPoliciesClient) listVolumesCreateRequest(ctx context.Conte
 
 // listVolumesHandleResponse handles the ListVolumes response.
 func (client *SnapshotPoliciesClient) listVolumesHandleResponse(resp *http.Response) (SnapshotPoliciesClientListVolumesResponse, error) {
-	result := SnapshotPoliciesClientListVolumesResponse{RawResponse: resp}
+	result := SnapshotPoliciesClientListVolumesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SnapshotPolicyVolumeList); err != nil {
 		return SnapshotPoliciesClientListVolumesResponse{}, err
 	}
@@ -366,22 +374,18 @@ func (client *SnapshotPoliciesClient) listVolumesHandleResponse(resp *http.Respo
 // body - Snapshot policy object supplied in the body of the operation.
 // options - SnapshotPoliciesClientBeginUpdateOptions contains the optional parameters for the SnapshotPoliciesClient.BeginUpdate
 // method.
-func (client *SnapshotPoliciesClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, snapshotPolicyName string, body SnapshotPolicyPatch, options *SnapshotPoliciesClientBeginUpdateOptions) (SnapshotPoliciesClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, accountName, snapshotPolicyName, body, options)
-	if err != nil {
-		return SnapshotPoliciesClientUpdatePollerResponse{}, err
+func (client *SnapshotPoliciesClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, snapshotPolicyName string, body SnapshotPolicyPatch, options *SnapshotPoliciesClientBeginUpdateOptions) (*armruntime.Poller[SnapshotPoliciesClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, accountName, snapshotPolicyName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[SnapshotPoliciesClientUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[SnapshotPoliciesClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SnapshotPoliciesClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SnapshotPoliciesClient.Update", "location", resp, client.pl)
-	if err != nil {
-		return SnapshotPoliciesClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &SnapshotPoliciesClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Patch a snapshot policy
@@ -425,7 +429,7 @@ func (client *SnapshotPoliciesClient) updateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, body)

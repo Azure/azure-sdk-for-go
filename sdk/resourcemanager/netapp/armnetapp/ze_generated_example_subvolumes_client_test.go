@@ -19,47 +19,23 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-10-01/examples/Accounts_List.json
-func ExampleAccountsClient_ListBySubscription() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-10-01/examples/Subvolumes_List.json
+func ExampleSubvolumesClient_ListByVolume() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 		return
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armnetapp.NewSubvolumesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListBySubscription(nil)
-	for pager.More() {
-		nextResult, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-			return
-		}
-		for _, v := range nextResult.Value {
-			// TODO: use page item
-			_ = v
-		}
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-10-01/examples/Accounts_List.json
-func ExampleAccountsClient_List() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-		return
-	}
-	ctx := context.Background()
-	client, err := armnetapp.NewAccountsClient("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-		return
-	}
-	pager := client.List("<resource-group-name>",
+	pager := client.ListByVolume("<resource-group-name>",
+		"<account-name>",
+		"<pool-name>",
+		"<volume-name>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -74,15 +50,15 @@ func ExampleAccountsClient_List() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-10-01/examples/Accounts_Get.json
-func ExampleAccountsClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-10-01/examples/Subvolumes_Get.json
+func ExampleSubvolumesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 		return
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armnetapp.NewSubvolumesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 		return
@@ -90,6 +66,9 @@ func ExampleAccountsClient_Get() {
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<account-name>",
+		"<pool-name>",
+		"<volume-name>",
+		"<subvolume-name>",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -99,41 +78,31 @@ func ExampleAccountsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-10-01/examples/Accounts_CreateOrUpdate.json
-func ExampleAccountsClient_BeginCreateOrUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-10-01/examples/Subvolumes_Create.json
+func ExampleSubvolumesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 		return
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armnetapp.NewSubvolumesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx,
+	poller, err := client.BeginCreate(ctx,
 		"<resource-group-name>",
 		"<account-name>",
-		armnetapp.Account{
-			Location: to.Ptr("<location>"),
-			Properties: &armnetapp.AccountProperties{
-				ActiveDirectories: []*armnetapp.ActiveDirectory{
-					{
-						AesEncryption:      to.Ptr(true),
-						DNS:                to.Ptr("<dns>"),
-						Domain:             to.Ptr("<domain>"),
-						LdapOverTLS:        to.Ptr(false),
-						LdapSigning:        to.Ptr(false),
-						OrganizationalUnit: to.Ptr("<organizational-unit>"),
-						Password:           to.Ptr("<password>"),
-						Site:               to.Ptr("<site>"),
-						SmbServerName:      to.Ptr("<smb-server-name>"),
-						Username:           to.Ptr("<username>"),
-					}},
+		"<pool-name>",
+		"<volume-name>",
+		"<subvolume-name>",
+		armnetapp.SubvolumeInfo{
+			Properties: &armnetapp.SubvolumeProperties{
+				Path: to.Ptr("<path>"),
 			},
 		},
-		&armnetapp.AccountsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		&armnetapp.SubvolumesClientBeginCreateOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 		return
@@ -147,15 +116,53 @@ func ExampleAccountsClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-10-01/examples/Accounts_Delete.json
-func ExampleAccountsClient_BeginDelete() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-10-01/examples/Subvolumes_Update.json
+func ExampleSubvolumesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 		return
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armnetapp.NewSubvolumesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
+	poller, err := client.BeginUpdate(ctx,
+		"<resource-group-name>",
+		"<account-name>",
+		"<pool-name>",
+		"<volume-name>",
+		"<subvolume-name>",
+		armnetapp.SubvolumePatchRequest{
+			Properties: &armnetapp.SubvolumePatchParams{
+				Path: to.Ptr("<path>"),
+			},
+		},
+		&armnetapp.SubvolumesClientBeginUpdateOptions{ResumeToken: ""})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+		return
+	}
+	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+		return
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-10-01/examples/Subvolumes_Delete.json
+func ExampleSubvolumesClient_BeginDelete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+		return
+	}
+	ctx := context.Background()
+	client, err := armnetapp.NewSubvolumesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 		return
@@ -163,7 +170,10 @@ func ExampleAccountsClient_BeginDelete() {
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
 		"<account-name>",
-		&armnetapp.AccountsClientBeginDeleteOptions{ResumeToken: ""})
+		"<pool-name>",
+		"<volume-name>",
+		"<subvolume-name>",
+		&armnetapp.SubvolumesClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 		return
@@ -175,28 +185,26 @@ func ExampleAccountsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-10-01/examples/Accounts_Update.json
-func ExampleAccountsClient_BeginUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-10-01/examples/Subvolumes_Metadata.json
+func ExampleSubvolumesClient_BeginGetMetadata() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 		return
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armnetapp.NewSubvolumesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	poller, err := client.BeginUpdate(ctx,
+	poller, err := client.BeginGetMetadata(ctx,
 		"<resource-group-name>",
 		"<account-name>",
-		armnetapp.AccountPatch{
-			Tags: map[string]*string{
-				"Tag1": to.Ptr("Value1"),
-			},
-		},
-		&armnetapp.AccountsClientBeginUpdateOptions{ResumeToken: ""})
+		"<pool-name>",
+		"<volume-name>",
+		"<subvolume-name>",
+		&armnetapp.SubvolumesClientBeginGetMetadataOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 		return

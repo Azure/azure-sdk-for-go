@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,27 +17,38 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor"
 )
 
-// x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2019-03-01/examples/metricBaselines.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2019-03-01/examples/metricBaselines.json
 func ExampleBaselinesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armmonitor.NewBaselinesClient(cred, nil)
-	res, err := client.List(ctx,
-		"<resource-uri>",
+	client, err := armmonitor.NewBaselinesClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
+	pager := client.List("<resource-uri>",
 		&armmonitor.BaselinesClientListOptions{Metricnames: nil,
 			Metricnamespace: nil,
-			Timespan:        to.StringPtr("<timespan>"),
-			Interval:        to.StringPtr("<interval>"),
-			Aggregation:     to.StringPtr("<aggregation>"),
-			Sensitivities:   to.StringPtr("<sensitivities>"),
+			Timespan:        to.Ptr("<timespan>"),
+			Interval:        to.Ptr("<interval>"),
+			Aggregation:     to.Ptr("<aggregation>"),
+			Sensitivities:   to.Ptr("<sensitivities>"),
 			Filter:          nil,
 			ResultType:      nil,
 		})
-	if err != nil {
-		log.Fatal(err)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+			return
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
 	}
-	log.Printf("Response result: %#v\n", res.BaselinesClientListResult)
 }

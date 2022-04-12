@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -13,6 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -29,38 +30,49 @@ type BaselinesClient struct {
 // NewBaselinesClient creates a new instance of BaselinesClient with the specified values.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewBaselinesClient(credential azcore.TokenCredential, options *arm.ClientOptions) *BaselinesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewBaselinesClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*BaselinesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &BaselinesClient{
-		host: string(cp.Endpoint),
-		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host: ep,
+		pl:   pl,
 	}
-	return client
+	return client, nil
 }
 
 // List - Lists the metric baseline values for a resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceURI - The identifier of the resource.
 // options - BaselinesClientListOptions contains the optional parameters for the BaselinesClient.List method.
-func (client *BaselinesClient) List(ctx context.Context, resourceURI string, options *BaselinesClientListOptions) (BaselinesClientListResponse, error) {
-	req, err := client.listCreateRequest(ctx, resourceURI, options)
-	if err != nil {
-		return BaselinesClientListResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return BaselinesClientListResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return BaselinesClientListResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listHandleResponse(resp)
+func (client *BaselinesClient) List(resourceURI string, options *BaselinesClientListOptions) *runtime.Pager[BaselinesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[BaselinesClientListResponse]{
+		More: func(page BaselinesClientListResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *BaselinesClientListResponse) (BaselinesClientListResponse, error) {
+			req, err := client.listCreateRequest(ctx, resourceURI, options)
+			if err != nil {
+				return BaselinesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return BaselinesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return BaselinesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
+		},
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -104,7 +116,7 @@ func (client *BaselinesClient) listCreateRequest(ctx context.Context, resourceUR
 
 // listHandleResponse handles the List response.
 func (client *BaselinesClient) listHandleResponse(resp *http.Response) (BaselinesClientListResponse, error) {
-	result := BaselinesClientListResponse{RawResponse: resp}
+	result := BaselinesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetricBaselinesResponse); err != nil {
 		return BaselinesClientListResponse{}, err
 	}

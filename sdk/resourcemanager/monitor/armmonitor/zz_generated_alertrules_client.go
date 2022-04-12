@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type AlertRulesClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewAlertRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AlertRulesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewAlertRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AlertRulesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &AlertRulesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates a classic metric alert rule.
@@ -99,7 +104,7 @@ func (client *AlertRulesClient) createOrUpdateCreateRequest(ctx context.Context,
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *AlertRulesClient) createOrUpdateHandleResponse(resp *http.Response) (AlertRulesClientCreateOrUpdateResponse, error) {
-	result := AlertRulesClientCreateOrUpdateResponse{RawResponse: resp}
+	result := AlertRulesClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertRuleResource); err != nil {
 		return AlertRulesClientCreateOrUpdateResponse{}, err
 	}
@@ -123,7 +128,7 @@ func (client *AlertRulesClient) Delete(ctx context.Context, resourceGroupName st
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return AlertRulesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return AlertRulesClientDeleteResponse{RawResponse: resp}, nil
+	return AlertRulesClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -200,7 +205,7 @@ func (client *AlertRulesClient) getCreateRequest(ctx context.Context, resourceGr
 
 // getHandleResponse handles the Get response.
 func (client *AlertRulesClient) getHandleResponse(resp *http.Response) (AlertRulesClientGetResponse, error) {
-	result := AlertRulesClientGetResponse{RawResponse: resp}
+	result := AlertRulesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertRuleResource); err != nil {
 		return AlertRulesClientGetResponse{}, err
 	}
@@ -212,19 +217,26 @@ func (client *AlertRulesClient) getHandleResponse(resp *http.Response) (AlertRul
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - AlertRulesClientListByResourceGroupOptions contains the optional parameters for the AlertRulesClient.ListByResourceGroup
 // method.
-func (client *AlertRulesClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, options *AlertRulesClientListByResourceGroupOptions) (AlertRulesClientListByResourceGroupResponse, error) {
-	req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-	if err != nil {
-		return AlertRulesClientListByResourceGroupResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return AlertRulesClientListByResourceGroupResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AlertRulesClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listByResourceGroupHandleResponse(resp)
+func (client *AlertRulesClient) ListByResourceGroup(resourceGroupName string, options *AlertRulesClientListByResourceGroupOptions) *runtime.Pager[AlertRulesClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AlertRulesClientListByResourceGroupResponse]{
+		More: func(page AlertRulesClientListByResourceGroupResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *AlertRulesClientListByResourceGroupResponse) (AlertRulesClientListByResourceGroupResponse, error) {
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			if err != nil {
+				return AlertRulesClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AlertRulesClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AlertRulesClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
+		},
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -251,7 +263,7 @@ func (client *AlertRulesClient) listByResourceGroupCreateRequest(ctx context.Con
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *AlertRulesClient) listByResourceGroupHandleResponse(resp *http.Response) (AlertRulesClientListByResourceGroupResponse, error) {
-	result := AlertRulesClientListByResourceGroupResponse{RawResponse: resp}
+	result := AlertRulesClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertRuleResourceCollection); err != nil {
 		return AlertRulesClientListByResourceGroupResponse{}, err
 	}
@@ -262,19 +274,26 @@ func (client *AlertRulesClient) listByResourceGroupHandleResponse(resp *http.Res
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AlertRulesClientListBySubscriptionOptions contains the optional parameters for the AlertRulesClient.ListBySubscription
 // method.
-func (client *AlertRulesClient) ListBySubscription(ctx context.Context, options *AlertRulesClientListBySubscriptionOptions) (AlertRulesClientListBySubscriptionResponse, error) {
-	req, err := client.listBySubscriptionCreateRequest(ctx, options)
-	if err != nil {
-		return AlertRulesClientListBySubscriptionResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return AlertRulesClientListBySubscriptionResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AlertRulesClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listBySubscriptionHandleResponse(resp)
+func (client *AlertRulesClient) ListBySubscription(options *AlertRulesClientListBySubscriptionOptions) *runtime.Pager[AlertRulesClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AlertRulesClientListBySubscriptionResponse]{
+		More: func(page AlertRulesClientListBySubscriptionResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *AlertRulesClientListBySubscriptionResponse) (AlertRulesClientListBySubscriptionResponse, error) {
+			req, err := client.listBySubscriptionCreateRequest(ctx, options)
+			if err != nil {
+				return AlertRulesClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AlertRulesClientListBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AlertRulesClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionHandleResponse(resp)
+		},
+	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
@@ -297,7 +316,7 @@ func (client *AlertRulesClient) listBySubscriptionCreateRequest(ctx context.Cont
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
 func (client *AlertRulesClient) listBySubscriptionHandleResponse(resp *http.Response) (AlertRulesClientListBySubscriptionResponse, error) {
-	result := AlertRulesClientListBySubscriptionResponse{RawResponse: resp}
+	result := AlertRulesClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertRuleResourceCollection); err != nil {
 		return AlertRulesClientListBySubscriptionResponse{}, err
 	}
@@ -353,7 +372,7 @@ func (client *AlertRulesClient) updateCreateRequest(ctx context.Context, resourc
 
 // updateHandleResponse handles the Update response.
 func (client *AlertRulesClient) updateHandleResponse(resp *http.Response) (AlertRulesClientUpdateResponse, error) {
-	result := AlertRulesClientUpdateResponse{RawResponse: resp}
+	result := AlertRulesClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertRuleResource); err != nil {
 		return AlertRulesClientUpdateResponse{}, err
 	}

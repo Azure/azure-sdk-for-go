@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,147 +17,196 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor"
 )
 
-// x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-04-16/examples/createOrUpdateScheduledQueryRules.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-04-16/examples/createOrUpdateScheduledQueryRules.json
 func ExampleScheduledQueryRulesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armmonitor.NewScheduledQueryRulesClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewScheduledQueryRulesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.CreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<rule-name>",
 		armmonitor.LogSearchRuleResource{
-			Location: to.StringPtr("<location>"),
+			Location: to.Ptr("<location>"),
 			Tags:     map[string]*string{},
 			Properties: &armmonitor.LogSearchRule{
-				Description: to.StringPtr("<description>"),
+				Description: to.Ptr("<description>"),
 				Action: &armmonitor.AlertingAction{
-					ODataType: to.StringPtr("<odata-type>"),
+					ODataType: to.Ptr("<odata-type>"),
 					AznsAction: &armmonitor.AzNsActionGroup{
 						ActionGroup:          []*string{},
-						CustomWebhookPayload: to.StringPtr("<custom-webhook-payload>"),
-						EmailSubject:         to.StringPtr("<email-subject>"),
+						CustomWebhookPayload: to.Ptr("<custom-webhook-payload>"),
+						EmailSubject:         to.Ptr("<email-subject>"),
 					},
-					Severity: armmonitor.AlertSeverity("1").ToPtr(),
+					Severity: to.Ptr(armmonitor.AlertSeverityOne),
 					Trigger: &armmonitor.TriggerCondition{
 						MetricTrigger: &armmonitor.LogMetricTrigger{
-							MetricColumn:      to.StringPtr("<metric-column>"),
-							MetricTriggerType: armmonitor.MetricTriggerType("Consecutive").ToPtr(),
-							Threshold:         to.Float64Ptr(5),
-							ThresholdOperator: armmonitor.ConditionalOperator("GreaterThan").ToPtr(),
+							MetricColumn:      to.Ptr("<metric-column>"),
+							MetricTriggerType: to.Ptr(armmonitor.MetricTriggerTypeConsecutive),
+							Threshold:         to.Ptr[float64](5),
+							ThresholdOperator: to.Ptr(armmonitor.ConditionalOperatorGreaterThan),
 						},
-						Threshold:         to.Float64Ptr(3),
-						ThresholdOperator: armmonitor.ConditionalOperator("GreaterThan").ToPtr(),
+						Threshold:         to.Ptr[float64](3),
+						ThresholdOperator: to.Ptr(armmonitor.ConditionalOperatorGreaterThan),
 					},
 				},
-				Enabled: armmonitor.Enabled("true").ToPtr(),
+				Enabled: to.Ptr(armmonitor.EnabledTrue),
 				Schedule: &armmonitor.Schedule{
-					FrequencyInMinutes:  to.Int32Ptr(15),
-					TimeWindowInMinutes: to.Int32Ptr(15),
+					FrequencyInMinutes:  to.Ptr[int32](15),
+					TimeWindowInMinutes: to.Ptr[int32](15),
 				},
 				Source: &armmonitor.Source{
-					DataSourceID: to.StringPtr("<data-source-id>"),
-					Query:        to.StringPtr("<query>"),
-					QueryType:    armmonitor.QueryType("ResultCount").ToPtr(),
+					DataSourceID: to.Ptr("<data-source-id>"),
+					Query:        to.Ptr("<query>"),
+					QueryType:    to.Ptr(armmonitor.QueryTypeResultCount),
 				},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ScheduledQueryRulesClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-04-16/examples/getScheduledQueryRules.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-04-16/examples/getScheduledQueryRules.json
 func ExampleScheduledQueryRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armmonitor.NewScheduledQueryRulesClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewScheduledQueryRulesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<rule-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ScheduledQueryRulesClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-04-16/examples/patchScheduledQueryRules.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-04-16/examples/patchScheduledQueryRules.json
 func ExampleScheduledQueryRulesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armmonitor.NewScheduledQueryRulesClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewScheduledQueryRulesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Update(ctx,
 		"<resource-group-name>",
 		"<rule-name>",
 		armmonitor.LogSearchRuleResourcePatch{
 			Properties: &armmonitor.LogSearchRulePatch{
-				Enabled: armmonitor.Enabled("true").ToPtr(),
+				Enabled: to.Ptr(armmonitor.EnabledTrue),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ScheduledQueryRulesClientUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-04-16/examples/deleteScheduledQueryRules.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-04-16/examples/deleteScheduledQueryRules.json
 func ExampleScheduledQueryRulesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armmonitor.NewScheduledQueryRulesClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewScheduledQueryRulesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Delete(ctx,
 		"<resource-group-name>",
 		"<rule-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-04-16/examples/listScheduledQueryRules.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-04-16/examples/listScheduledQueryRules.json
 func ExampleScheduledQueryRulesClient_ListBySubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armmonitor.NewScheduledQueryRulesClient("<subscription-id>", cred, nil)
-	res, err := client.ListBySubscription(ctx,
-		&armmonitor.ScheduledQueryRulesClientListBySubscriptionOptions{Filter: nil})
+	client, err := armmonitor.NewScheduledQueryRulesClient("<subscription-id>", cred, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to create client: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ScheduledQueryRulesClientListBySubscriptionResult)
+	pager := client.ListBySubscription(&armmonitor.ScheduledQueryRulesClientListBySubscriptionOptions{Filter: nil})
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+			return
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
+	}
 }
 
-// x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-04-16/examples/listScheduledQueryRules.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-04-16/examples/listScheduledQueryRules.json
 func ExampleScheduledQueryRulesClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armmonitor.NewScheduledQueryRulesClient("<subscription-id>", cred, nil)
-	res, err := client.ListByResourceGroup(ctx,
-		"<resource-group-name>",
-		&armmonitor.ScheduledQueryRulesClientListByResourceGroupOptions{Filter: nil})
+	client, err := armmonitor.NewScheduledQueryRulesClient("<subscription-id>", cred, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to create client: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ScheduledQueryRulesClientListByResourceGroupResult)
+	pager := client.ListByResourceGroup("<resource-group-name>",
+		&armmonitor.ScheduledQueryRulesClientListByResourceGroupOptions{Filter: nil})
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+			return
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
+	}
 }

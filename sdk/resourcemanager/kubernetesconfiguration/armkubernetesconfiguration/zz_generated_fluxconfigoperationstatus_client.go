@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,35 +34,37 @@ type FluxConfigOperationStatusClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewFluxConfigOperationStatusClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *FluxConfigOperationStatusClient {
+func NewFluxConfigOperationStatusClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FluxConfigOperationStatusClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &FluxConfigOperationStatusClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Get Async Operation status
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
-// clusterRp - The Kubernetes cluster RP - either Microsoft.ContainerService (for AKS clusters) or Microsoft.Kubernetes (for
-// OnPrem K8S clusters).
-// clusterResourceName - The Kubernetes cluster resource name - either managedClusters (for AKS clusters) or connectedClusters
-// (for OnPrem K8S clusters).
+// clusterRp - The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes, Microsoft.HybridContainerService.
+// clusterResourceName - The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters, provisionedClusters.
 // clusterName - The name of the kubernetes cluster.
 // fluxConfigurationName - Name of the Flux Configuration.
 // operationID - operation Id
 // options - FluxConfigOperationStatusClientGetOptions contains the optional parameters for the FluxConfigOperationStatusClient.Get
 // method.
-func (client *FluxConfigOperationStatusClient) Get(ctx context.Context, resourceGroupName string, clusterRp ExtensionsClusterRp, clusterResourceName ExtensionsClusterResourceName, clusterName string, fluxConfigurationName string, operationID string, options *FluxConfigOperationStatusClientGetOptions) (FluxConfigOperationStatusClientGetResponse, error) {
+func (client *FluxConfigOperationStatusClient) Get(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, fluxConfigurationName string, operationID string, options *FluxConfigOperationStatusClientGetOptions) (FluxConfigOperationStatusClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, clusterRp, clusterResourceName, clusterName, fluxConfigurationName, operationID, options)
 	if err != nil {
 		return FluxConfigOperationStatusClientGetResponse{}, err
@@ -77,7 +80,7 @@ func (client *FluxConfigOperationStatusClient) Get(ctx context.Context, resource
 }
 
 // getCreateRequest creates the Get request.
-func (client *FluxConfigOperationStatusClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterRp ExtensionsClusterRp, clusterResourceName ExtensionsClusterResourceName, clusterName string, fluxConfigurationName string, operationID string, options *FluxConfigOperationStatusClientGetOptions) (*policy.Request, error) {
+func (client *FluxConfigOperationStatusClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, fluxConfigurationName string, operationID string, options *FluxConfigOperationStatusClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{clusterRp}/{clusterResourceName}/{clusterName}/providers/Microsoft.KubernetesConfiguration/fluxConfigurations/{fluxConfigurationName}/operations/{operationId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -90,11 +93,11 @@ func (client *FluxConfigOperationStatusClient) getCreateRequest(ctx context.Cont
 	if clusterRp == "" {
 		return nil, errors.New("parameter clusterRp cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterRp}", url.PathEscape(string(clusterRp)))
+	urlPath = strings.ReplaceAll(urlPath, "{clusterRp}", url.PathEscape(clusterRp))
 	if clusterResourceName == "" {
 		return nil, errors.New("parameter clusterResourceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterResourceName}", url.PathEscape(string(clusterResourceName)))
+	urlPath = strings.ReplaceAll(urlPath, "{clusterResourceName}", url.PathEscape(clusterResourceName))
 	if clusterName == "" {
 		return nil, errors.New("parameter clusterName cannot be empty")
 	}
@@ -112,7 +115,7 @@ func (client *FluxConfigOperationStatusClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -120,7 +123,7 @@ func (client *FluxConfigOperationStatusClient) getCreateRequest(ctx context.Cont
 
 // getHandleResponse handles the Get response.
 func (client *FluxConfigOperationStatusClient) getHandleResponse(resp *http.Response) (FluxConfigOperationStatusClientGetResponse, error) {
-	result := FluxConfigOperationStatusClientGetResponse{RawResponse: resp}
+	result := FluxConfigOperationStatusClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationStatusResult); err != nil {
 		return FluxConfigOperationStatusClientGetResponse{}, err
 	}

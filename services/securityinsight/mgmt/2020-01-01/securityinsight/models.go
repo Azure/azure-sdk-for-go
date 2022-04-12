@@ -32,7 +32,7 @@ type AADDataConnector struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindBasicDataConnectorKindDataConnector', 'KindBasicDataConnectorKindAzureActiveDirectory', 'KindBasicDataConnectorKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorKindAzureSecurityCenter', 'KindBasicDataConnectorKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorKindOffice365', 'KindBasicDataConnectorKindThreatIntelligence'
+	// Kind - Possible values include: 'KindBasicDataConnectorKindDataConnector', 'KindBasicDataConnectorKindAzureActiveDirectory', 'KindBasicDataConnectorKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorKindAzureSecurityCenter', 'KindBasicDataConnectorKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorKindThreatIntelligence', 'KindBasicDataConnectorKindOffice365'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
 }
 
@@ -82,13 +82,13 @@ func (adc AADDataConnector) AsMDATPDataConnector() (*MDATPDataConnector, bool) {
 	return nil, false
 }
 
-// AsOfficeDataConnector is the BasicDataConnector implementation for AADDataConnector.
-func (adc AADDataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool) {
+// AsTIDataConnector is the BasicDataConnector implementation for AADDataConnector.
+func (adc AADDataConnector) AsTIDataConnector() (*TIDataConnector, bool) {
 	return nil, false
 }
 
-// AsTIDataConnector is the BasicDataConnector implementation for AADDataConnector.
-func (adc AADDataConnector) AsTIDataConnector() (*TIDataConnector, bool) {
+// AsOfficeDataConnector is the BasicDataConnector implementation for AADDataConnector.
+func (adc AADDataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool) {
 	return nil, false
 }
 
@@ -183,7 +183,7 @@ type AADDataConnectorProperties struct {
 type AATPDataConnector struct {
 	// AATPDataConnectorProperties - AATP (Azure Advanced Threat Protection) data connector properties.
 	*AATPDataConnectorProperties `json:"properties,omitempty"`
-	// Kind - Possible values include: 'KindBasicDataConnectorKindDataConnector', 'KindBasicDataConnectorKindAzureActiveDirectory', 'KindBasicDataConnectorKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorKindAzureSecurityCenter', 'KindBasicDataConnectorKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorKindOffice365', 'KindBasicDataConnectorKindThreatIntelligence'
+	// Kind - Possible values include: 'KindBasicDataConnectorKindDataConnector', 'KindBasicDataConnectorKindAzureActiveDirectory', 'KindBasicDataConnectorKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorKindAzureSecurityCenter', 'KindBasicDataConnectorKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorKindThreatIntelligence', 'KindBasicDataConnectorKindOffice365'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
 	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
@@ -241,13 +241,13 @@ func (adc AATPDataConnector) AsMDATPDataConnector() (*MDATPDataConnector, bool) 
 	return nil, false
 }
 
-// AsOfficeDataConnector is the BasicDataConnector implementation for AATPDataConnector.
-func (adc AATPDataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool) {
+// AsTIDataConnector is the BasicDataConnector implementation for AATPDataConnector.
+func (adc AATPDataConnector) AsTIDataConnector() (*TIDataConnector, bool) {
 	return nil, false
 }
 
-// AsTIDataConnector is the BasicDataConnector implementation for AATPDataConnector.
-func (adc AATPDataConnector) AsTIDataConnector() (*TIDataConnector, bool) {
+// AsOfficeDataConnector is the BasicDataConnector implementation for AATPDataConnector.
+func (adc AATPDataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool) {
 	return nil, false
 }
 
@@ -1360,7 +1360,7 @@ type AlertsDataTypeOfDataConnector struct {
 type ASCDataConnector struct {
 	// ASCDataConnectorProperties - ASC (Azure Security Center) data connector properties.
 	*ASCDataConnectorProperties `json:"properties,omitempty"`
-	// Kind - Possible values include: 'KindBasicDataConnectorKindDataConnector', 'KindBasicDataConnectorKindAzureActiveDirectory', 'KindBasicDataConnectorKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorKindAzureSecurityCenter', 'KindBasicDataConnectorKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorKindOffice365', 'KindBasicDataConnectorKindThreatIntelligence'
+	// Kind - Possible values include: 'KindBasicDataConnectorKindDataConnector', 'KindBasicDataConnectorKindAzureActiveDirectory', 'KindBasicDataConnectorKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorKindAzureSecurityCenter', 'KindBasicDataConnectorKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorKindThreatIntelligence', 'KindBasicDataConnectorKindOffice365'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
 	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
@@ -1418,13 +1418,13 @@ func (adc ASCDataConnector) AsMDATPDataConnector() (*MDATPDataConnector, bool) {
 	return nil, false
 }
 
-// AsOfficeDataConnector is the BasicDataConnector implementation for ASCDataConnector.
-func (adc ASCDataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool) {
+// AsTIDataConnector is the BasicDataConnector implementation for ASCDataConnector.
+func (adc ASCDataConnector) AsTIDataConnector() (*TIDataConnector, bool) {
 	return nil, false
 }
 
-// AsTIDataConnector is the BasicDataConnector implementation for ASCDataConnector.
-func (adc ASCDataConnector) AsTIDataConnector() (*TIDataConnector, bool) {
+// AsOfficeDataConnector is the BasicDataConnector implementation for ASCDataConnector.
+func (adc ASCDataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool) {
 	return nil, false
 }
 
@@ -1519,7 +1519,7 @@ type ASCDataConnectorProperties struct {
 type AwsCloudTrailDataConnector struct {
 	// AwsCloudTrailDataConnectorProperties - Amazon Web Services CloudTrail data connector properties.
 	*AwsCloudTrailDataConnectorProperties `json:"properties,omitempty"`
-	// Kind - Possible values include: 'KindBasicDataConnectorKindDataConnector', 'KindBasicDataConnectorKindAzureActiveDirectory', 'KindBasicDataConnectorKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorKindAzureSecurityCenter', 'KindBasicDataConnectorKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorKindOffice365', 'KindBasicDataConnectorKindThreatIntelligence'
+	// Kind - Possible values include: 'KindBasicDataConnectorKindDataConnector', 'KindBasicDataConnectorKindAzureActiveDirectory', 'KindBasicDataConnectorKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorKindAzureSecurityCenter', 'KindBasicDataConnectorKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorKindThreatIntelligence', 'KindBasicDataConnectorKindOffice365'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
 	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
@@ -1577,13 +1577,13 @@ func (actdc AwsCloudTrailDataConnector) AsMDATPDataConnector() (*MDATPDataConnec
 	return nil, false
 }
 
-// AsOfficeDataConnector is the BasicDataConnector implementation for AwsCloudTrailDataConnector.
-func (actdc AwsCloudTrailDataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool) {
+// AsTIDataConnector is the BasicDataConnector implementation for AwsCloudTrailDataConnector.
+func (actdc AwsCloudTrailDataConnector) AsTIDataConnector() (*TIDataConnector, bool) {
 	return nil, false
 }
 
-// AsTIDataConnector is the BasicDataConnector implementation for AwsCloudTrailDataConnector.
-func (actdc AwsCloudTrailDataConnector) AsTIDataConnector() (*TIDataConnector, bool) {
+// AsOfficeDataConnector is the BasicDataConnector implementation for AwsCloudTrailDataConnector.
+func (actdc AwsCloudTrailDataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool) {
 	return nil, false
 }
 
@@ -1998,15 +1998,15 @@ type BasicDataConnector interface {
 	AsAwsCloudTrailDataConnector() (*AwsCloudTrailDataConnector, bool)
 	AsMCASDataConnector() (*MCASDataConnector, bool)
 	AsMDATPDataConnector() (*MDATPDataConnector, bool)
-	AsOfficeDataConnector() (*OfficeDataConnector, bool)
 	AsTIDataConnector() (*TIDataConnector, bool)
+	AsOfficeDataConnector() (*OfficeDataConnector, bool)
 	AsDataConnector() (*DataConnector, bool)
 }
 
 // DataConnector data connector.
 type DataConnector struct {
 	autorest.Response `json:"-"`
-	// Kind - Possible values include: 'KindBasicDataConnectorKindDataConnector', 'KindBasicDataConnectorKindAzureActiveDirectory', 'KindBasicDataConnectorKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorKindAzureSecurityCenter', 'KindBasicDataConnectorKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorKindOffice365', 'KindBasicDataConnectorKindThreatIntelligence'
+	// Kind - Possible values include: 'KindBasicDataConnectorKindDataConnector', 'KindBasicDataConnectorKindAzureActiveDirectory', 'KindBasicDataConnectorKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorKindAzureSecurityCenter', 'KindBasicDataConnectorKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorKindThreatIntelligence', 'KindBasicDataConnectorKindOffice365'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
 	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
@@ -2050,14 +2050,14 @@ func unmarshalBasicDataConnector(body []byte) (BasicDataConnector, error) {
 		var mdc MDATPDataConnector
 		err := json.Unmarshal(body, &mdc)
 		return mdc, err
-	case string(KindBasicDataConnectorKindOffice365):
-		var odc OfficeDataConnector
-		err := json.Unmarshal(body, &odc)
-		return odc, err
 	case string(KindBasicDataConnectorKindThreatIntelligence):
 		var tdc TIDataConnector
 		err := json.Unmarshal(body, &tdc)
 		return tdc, err
+	case string(KindBasicDataConnectorKindOffice365):
+		var odc OfficeDataConnector
+		err := json.Unmarshal(body, &odc)
+		return odc, err
 	default:
 		var dc DataConnector
 		err := json.Unmarshal(body, &dc)
@@ -2126,13 +2126,13 @@ func (dc DataConnector) AsMDATPDataConnector() (*MDATPDataConnector, bool) {
 	return nil, false
 }
 
-// AsOfficeDataConnector is the BasicDataConnector implementation for DataConnector.
-func (dc DataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool) {
+// AsTIDataConnector is the BasicDataConnector implementation for DataConnector.
+func (dc DataConnector) AsTIDataConnector() (*TIDataConnector, bool) {
 	return nil, false
 }
 
-// AsTIDataConnector is the BasicDataConnector implementation for DataConnector.
-func (dc DataConnector) AsTIDataConnector() (*TIDataConnector, bool) {
+// AsOfficeDataConnector is the BasicDataConnector implementation for DataConnector.
+func (dc DataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool) {
 	return nil, false
 }
 
@@ -2694,6 +2694,8 @@ type FusionAlertRuleTemplateProperties struct {
 	Description *string `json:"description,omitempty"`
 	// DisplayName - The display name for alert rule template.
 	DisplayName *string `json:"displayName,omitempty"`
+	// LastUpdatedDateUTC - READ-ONLY; The time that this alert rule template was last updated.
+	LastUpdatedDateUTC *date.Time `json:"lastUpdatedDateUTC,omitempty"`
 	// RequiredDataConnectors - The required data connectors for this template
 	RequiredDataConnectors *[]AlertRuleTemplateDataSource `json:"requiredDataConnectors,omitempty"`
 	// Status - The alert rule template status. Possible values include: 'TemplateStatusInstalled', 'TemplateStatusAvailable', 'TemplateStatusNotAvailable'
@@ -3102,8 +3104,8 @@ func (icp IncidentCommentProperties) MarshalJSON() ([]byte, error) {
 type IncidentInfo struct {
 	// IncidentID - Incident Id
 	IncidentID *string `json:"incidentId,omitempty"`
-	// Severity - The severity of the incident. Possible values include: 'CaseSeverityCritical', 'CaseSeverityHigh', 'CaseSeverityMedium', 'CaseSeverityLow', 'CaseSeverityInformational'
-	Severity CaseSeverity `json:"severity,omitempty"`
+	// Severity - The severity of the incident. Possible values include: 'IncidentSeverityHigh', 'IncidentSeverityMedium', 'IncidentSeverityLow', 'IncidentSeverityInformational'
+	Severity IncidentSeverity `json:"severity,omitempty"`
 	// Title - The title of the incident
 	Title *string `json:"title,omitempty"`
 	// RelationName - Relation Name
@@ -3388,7 +3390,7 @@ func (IP IncidentProperties) MarshalJSON() ([]byte, error) {
 type MCASDataConnector struct {
 	// MCASDataConnectorProperties - MCAS (Microsoft Cloud App Security) data connector properties.
 	*MCASDataConnectorProperties `json:"properties,omitempty"`
-	// Kind - Possible values include: 'KindBasicDataConnectorKindDataConnector', 'KindBasicDataConnectorKindAzureActiveDirectory', 'KindBasicDataConnectorKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorKindAzureSecurityCenter', 'KindBasicDataConnectorKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorKindOffice365', 'KindBasicDataConnectorKindThreatIntelligence'
+	// Kind - Possible values include: 'KindBasicDataConnectorKindDataConnector', 'KindBasicDataConnectorKindAzureActiveDirectory', 'KindBasicDataConnectorKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorKindAzureSecurityCenter', 'KindBasicDataConnectorKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorKindThreatIntelligence', 'KindBasicDataConnectorKindOffice365'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
 	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
@@ -3446,13 +3448,13 @@ func (mdc MCASDataConnector) AsMDATPDataConnector() (*MDATPDataConnector, bool) 
 	return nil, false
 }
 
-// AsOfficeDataConnector is the BasicDataConnector implementation for MCASDataConnector.
-func (mdc MCASDataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool) {
+// AsTIDataConnector is the BasicDataConnector implementation for MCASDataConnector.
+func (mdc MCASDataConnector) AsTIDataConnector() (*TIDataConnector, bool) {
 	return nil, false
 }
 
-// AsTIDataConnector is the BasicDataConnector implementation for MCASDataConnector.
-func (mdc MCASDataConnector) AsTIDataConnector() (*TIDataConnector, bool) {
+// AsOfficeDataConnector is the BasicDataConnector implementation for MCASDataConnector.
+func (mdc MCASDataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool) {
 	return nil, false
 }
 
@@ -3556,7 +3558,7 @@ type MCASDataConnectorProperties struct {
 type MDATPDataConnector struct {
 	// MDATPDataConnectorProperties - MDATP (Microsoft Defender Advanced Threat Protection) data connector properties.
 	*MDATPDataConnectorProperties `json:"properties,omitempty"`
-	// Kind - Possible values include: 'KindBasicDataConnectorKindDataConnector', 'KindBasicDataConnectorKindAzureActiveDirectory', 'KindBasicDataConnectorKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorKindAzureSecurityCenter', 'KindBasicDataConnectorKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorKindOffice365', 'KindBasicDataConnectorKindThreatIntelligence'
+	// Kind - Possible values include: 'KindBasicDataConnectorKindDataConnector', 'KindBasicDataConnectorKindAzureActiveDirectory', 'KindBasicDataConnectorKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorKindAzureSecurityCenter', 'KindBasicDataConnectorKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorKindThreatIntelligence', 'KindBasicDataConnectorKindOffice365'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
 	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
@@ -3614,13 +3616,13 @@ func (mdc MDATPDataConnector) AsMDATPDataConnector() (*MDATPDataConnector, bool)
 	return &mdc, true
 }
 
-// AsOfficeDataConnector is the BasicDataConnector implementation for MDATPDataConnector.
-func (mdc MDATPDataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool) {
+// AsTIDataConnector is the BasicDataConnector implementation for MDATPDataConnector.
+func (mdc MDATPDataConnector) AsTIDataConnector() (*TIDataConnector, bool) {
 	return nil, false
 }
 
-// AsTIDataConnector is the BasicDataConnector implementation for MDATPDataConnector.
-func (mdc MDATPDataConnector) AsTIDataConnector() (*TIDataConnector, bool) {
+// AsOfficeDataConnector is the BasicDataConnector implementation for MDATPDataConnector.
+func (mdc MDATPDataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool) {
 	return nil, false
 }
 
@@ -4028,6 +4030,8 @@ type MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties struct {
 	Description *string `json:"description,omitempty"`
 	// DisplayName - The display name for alert rule template.
 	DisplayName *string `json:"displayName,omitempty"`
+	// LastUpdatedDateUTC - READ-ONLY; The time that this alert rule template was last updated.
+	LastUpdatedDateUTC *date.Time `json:"lastUpdatedDateUTC,omitempty"`
 	// RequiredDataConnectors - The required data connectors for this template
 	RequiredDataConnectors *[]AlertRuleTemplateDataSource `json:"requiredDataConnectors,omitempty"`
 	// Status - The alert rule template status. Possible values include: 'TemplateStatusInstalled', 'TemplateStatusAvailable', 'TemplateStatusNotAvailable'
@@ -4185,7 +4189,7 @@ func (ocp OfficeConsentProperties) MarshalJSON() ([]byte, error) {
 type OfficeDataConnector struct {
 	// OfficeDataConnectorProperties - Office data connector properties.
 	*OfficeDataConnectorProperties `json:"properties,omitempty"`
-	// Kind - Possible values include: 'KindBasicDataConnectorKindDataConnector', 'KindBasicDataConnectorKindAzureActiveDirectory', 'KindBasicDataConnectorKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorKindAzureSecurityCenter', 'KindBasicDataConnectorKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorKindOffice365', 'KindBasicDataConnectorKindThreatIntelligence'
+	// Kind - Possible values include: 'KindBasicDataConnectorKindDataConnector', 'KindBasicDataConnectorKindAzureActiveDirectory', 'KindBasicDataConnectorKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorKindAzureSecurityCenter', 'KindBasicDataConnectorKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorKindThreatIntelligence', 'KindBasicDataConnectorKindOffice365'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
 	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
@@ -4243,14 +4247,14 @@ func (odc OfficeDataConnector) AsMDATPDataConnector() (*MDATPDataConnector, bool
 	return nil, false
 }
 
-// AsOfficeDataConnector is the BasicDataConnector implementation for OfficeDataConnector.
-func (odc OfficeDataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool) {
-	return &odc, true
-}
-
 // AsTIDataConnector is the BasicDataConnector implementation for OfficeDataConnector.
 func (odc OfficeDataConnector) AsTIDataConnector() (*TIDataConnector, bool) {
 	return nil, false
+}
+
+// AsOfficeDataConnector is the BasicDataConnector implementation for OfficeDataConnector.
+func (odc OfficeDataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool) {
+	return &odc, true
 }
 
 // AsDataConnector is the BasicDataConnector implementation for OfficeDataConnector.
@@ -4927,6 +4931,8 @@ type ScheduledAlertRuleTemplateProperties struct {
 	Description *string `json:"description,omitempty"`
 	// DisplayName - The display name for alert rule template.
 	DisplayName *string `json:"displayName,omitempty"`
+	// LastUpdatedDateUTC - READ-ONLY; The time that this alert rule template was last updated.
+	LastUpdatedDateUTC *date.Time `json:"lastUpdatedDateUTC,omitempty"`
 	// RequiredDataConnectors - The required data connectors for this template
 	RequiredDataConnectors *[]AlertRuleTemplateDataSource `json:"requiredDataConnectors,omitempty"`
 	// Status - The alert rule template status. Possible values include: 'TemplateStatusInstalled', 'TemplateStatusAvailable', 'TemplateStatusNotAvailable'
@@ -4989,101 +4995,6 @@ func (sartp ScheduledAlertRuleTemplateProperties) MarshalJSON() ([]byte, error) 
 	return json.Marshal(objectMap)
 }
 
-// BasicSettings the Settings.
-type BasicSettings interface {
-	AsToggleSettings() (*ToggleSettings, bool)
-	AsUebaSettings() (*UebaSettings, bool)
-	AsSettings() (*Settings, bool)
-}
-
-// Settings the Settings.
-type Settings struct {
-	// Kind - Possible values include: 'KindBasicSettingsKindSettings', 'KindBasicSettingsKindToggleSettings', 'KindBasicSettingsKindUebaSettings'
-	Kind KindBasicSettings `json:"kind,omitempty"`
-	// ID - READ-ONLY; Azure resource Id
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Azure resource name
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Azure resource type
-	Type *string `json:"type,omitempty"`
-	// Etag - Etag of the azure resource
-	Etag *string `json:"etag,omitempty"`
-}
-
-func unmarshalBasicSettings(body []byte) (BasicSettings, error) {
-	var m map[string]interface{}
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return nil, err
-	}
-
-	switch m["kind"] {
-	case string(KindBasicSettingsKindToggleSettings):
-		var ts ToggleSettings
-		err := json.Unmarshal(body, &ts)
-		return ts, err
-	case string(KindBasicSettingsKindUebaSettings):
-		var us UebaSettings
-		err := json.Unmarshal(body, &us)
-		return us, err
-	default:
-		var s Settings
-		err := json.Unmarshal(body, &s)
-		return s, err
-	}
-}
-func unmarshalBasicSettingsArray(body []byte) ([]BasicSettings, error) {
-	var rawMessages []*json.RawMessage
-	err := json.Unmarshal(body, &rawMessages)
-	if err != nil {
-		return nil, err
-	}
-
-	sArray := make([]BasicSettings, len(rawMessages))
-
-	for index, rawMessage := range rawMessages {
-		s, err := unmarshalBasicSettings(*rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		sArray[index] = s
-	}
-	return sArray, nil
-}
-
-// MarshalJSON is the custom marshaler for Settings.
-func (s Settings) MarshalJSON() ([]byte, error) {
-	s.Kind = KindBasicSettingsKindSettings
-	objectMap := make(map[string]interface{})
-	if s.Kind != "" {
-		objectMap["kind"] = s.Kind
-	}
-	if s.Etag != nil {
-		objectMap["etag"] = s.Etag
-	}
-	return json.Marshal(objectMap)
-}
-
-// AsToggleSettings is the BasicSettings implementation for Settings.
-func (s Settings) AsToggleSettings() (*ToggleSettings, bool) {
-	return nil, false
-}
-
-// AsUebaSettings is the BasicSettings implementation for Settings.
-func (s Settings) AsUebaSettings() (*UebaSettings, bool) {
-	return nil, false
-}
-
-// AsSettings is the BasicSettings implementation for Settings.
-func (s Settings) AsSettings() (*Settings, bool) {
-	return &s, true
-}
-
-// AsBasicSettings is the BasicSettings implementation for Settings.
-func (s Settings) AsBasicSettings() (BasicSettings, bool) {
-	return &s, true
-}
-
 // ThreatIntelligence threatIntelligence property bag.
 type ThreatIntelligence struct {
 	// Confidence - READ-ONLY; Confidence (must be between 0 and 1)
@@ -5110,7 +5021,7 @@ func (ti ThreatIntelligence) MarshalJSON() ([]byte, error) {
 type TIDataConnector struct {
 	// TIDataConnectorProperties - TI (Threat Intelligence) data connector properties.
 	*TIDataConnectorProperties `json:"properties,omitempty"`
-	// Kind - Possible values include: 'KindBasicDataConnectorKindDataConnector', 'KindBasicDataConnectorKindAzureActiveDirectory', 'KindBasicDataConnectorKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorKindAzureSecurityCenter', 'KindBasicDataConnectorKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorKindOffice365', 'KindBasicDataConnectorKindThreatIntelligence'
+	// Kind - Possible values include: 'KindBasicDataConnectorKindDataConnector', 'KindBasicDataConnectorKindAzureActiveDirectory', 'KindBasicDataConnectorKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorKindAzureSecurityCenter', 'KindBasicDataConnectorKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorKindThreatIntelligence', 'KindBasicDataConnectorKindOffice365'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
 	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
@@ -5168,14 +5079,14 @@ func (tdc TIDataConnector) AsMDATPDataConnector() (*MDATPDataConnector, bool) {
 	return nil, false
 }
 
-// AsOfficeDataConnector is the BasicDataConnector implementation for TIDataConnector.
-func (tdc TIDataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool) {
-	return nil, false
-}
-
 // AsTIDataConnector is the BasicDataConnector implementation for TIDataConnector.
 func (tdc TIDataConnector) AsTIDataConnector() (*TIDataConnector, bool) {
 	return &tdc, true
+}
+
+// AsOfficeDataConnector is the BasicDataConnector implementation for TIDataConnector.
+func (tdc TIDataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool) {
+	return nil, false
 }
 
 // AsDataConnector is the BasicDataConnector implementation for TIDataConnector.
@@ -5277,273 +5188,6 @@ type TIDataConnectorProperties struct {
 	TipLookbackPeriod *date.Time `json:"tipLookbackPeriod,omitempty"`
 	// DataTypes - The available data types for the connector.
 	DataTypes *TIDataConnectorDataTypes `json:"dataTypes,omitempty"`
-}
-
-// ToggleSettings settings with single toggle.
-type ToggleSettings struct {
-	// ToggleSettingsProperties - toggle properties
-	*ToggleSettingsProperties `json:"properties,omitempty"`
-	// Kind - Possible values include: 'KindBasicSettingsKindSettings', 'KindBasicSettingsKindToggleSettings', 'KindBasicSettingsKindUebaSettings'
-	Kind KindBasicSettings `json:"kind,omitempty"`
-	// ID - READ-ONLY; Azure resource Id
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Azure resource name
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Azure resource type
-	Type *string `json:"type,omitempty"`
-	// Etag - Etag of the azure resource
-	Etag *string `json:"etag,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for ToggleSettings.
-func (ts ToggleSettings) MarshalJSON() ([]byte, error) {
-	ts.Kind = KindBasicSettingsKindToggleSettings
-	objectMap := make(map[string]interface{})
-	if ts.ToggleSettingsProperties != nil {
-		objectMap["properties"] = ts.ToggleSettingsProperties
-	}
-	if ts.Kind != "" {
-		objectMap["kind"] = ts.Kind
-	}
-	if ts.Etag != nil {
-		objectMap["etag"] = ts.Etag
-	}
-	return json.Marshal(objectMap)
-}
-
-// AsToggleSettings is the BasicSettings implementation for ToggleSettings.
-func (ts ToggleSettings) AsToggleSettings() (*ToggleSettings, bool) {
-	return &ts, true
-}
-
-// AsUebaSettings is the BasicSettings implementation for ToggleSettings.
-func (ts ToggleSettings) AsUebaSettings() (*UebaSettings, bool) {
-	return nil, false
-}
-
-// AsSettings is the BasicSettings implementation for ToggleSettings.
-func (ts ToggleSettings) AsSettings() (*Settings, bool) {
-	return nil, false
-}
-
-// AsBasicSettings is the BasicSettings implementation for ToggleSettings.
-func (ts ToggleSettings) AsBasicSettings() (BasicSettings, bool) {
-	return &ts, true
-}
-
-// UnmarshalJSON is the custom unmarshaler for ToggleSettings struct.
-func (ts *ToggleSettings) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var toggleSettingsProperties ToggleSettingsProperties
-				err = json.Unmarshal(*v, &toggleSettingsProperties)
-				if err != nil {
-					return err
-				}
-				ts.ToggleSettingsProperties = &toggleSettingsProperties
-			}
-		case "kind":
-			if v != nil {
-				var kind KindBasicSettings
-				err = json.Unmarshal(*v, &kind)
-				if err != nil {
-					return err
-				}
-				ts.Kind = kind
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				ts.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				ts.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				ts.Type = &typeVar
-			}
-		case "etag":
-			if v != nil {
-				var etag string
-				err = json.Unmarshal(*v, &etag)
-				if err != nil {
-					return err
-				}
-				ts.Etag = &etag
-			}
-		}
-	}
-
-	return nil
-}
-
-// ToggleSettingsProperties toggle property bag.
-type ToggleSettingsProperties struct {
-	// IsEnabled - Determines whether the setting is enable or disabled.
-	IsEnabled *bool `json:"isEnabled,omitempty"`
-}
-
-// UebaSettings represents settings for User and Entity Behavior Analytics enablement.
-type UebaSettings struct {
-	// UebaSettingsProperties - User and Entity Behavior Analytics settings properties
-	*UebaSettingsProperties `json:"properties,omitempty"`
-	// Kind - Possible values include: 'KindBasicSettingsKindSettings', 'KindBasicSettingsKindToggleSettings', 'KindBasicSettingsKindUebaSettings'
-	Kind KindBasicSettings `json:"kind,omitempty"`
-	// ID - READ-ONLY; Azure resource Id
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Azure resource name
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Azure resource type
-	Type *string `json:"type,omitempty"`
-	// Etag - Etag of the azure resource
-	Etag *string `json:"etag,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for UebaSettings.
-func (us UebaSettings) MarshalJSON() ([]byte, error) {
-	us.Kind = KindBasicSettingsKindUebaSettings
-	objectMap := make(map[string]interface{})
-	if us.UebaSettingsProperties != nil {
-		objectMap["properties"] = us.UebaSettingsProperties
-	}
-	if us.Kind != "" {
-		objectMap["kind"] = us.Kind
-	}
-	if us.Etag != nil {
-		objectMap["etag"] = us.Etag
-	}
-	return json.Marshal(objectMap)
-}
-
-// AsToggleSettings is the BasicSettings implementation for UebaSettings.
-func (us UebaSettings) AsToggleSettings() (*ToggleSettings, bool) {
-	return nil, false
-}
-
-// AsUebaSettings is the BasicSettings implementation for UebaSettings.
-func (us UebaSettings) AsUebaSettings() (*UebaSettings, bool) {
-	return &us, true
-}
-
-// AsSettings is the BasicSettings implementation for UebaSettings.
-func (us UebaSettings) AsSettings() (*Settings, bool) {
-	return nil, false
-}
-
-// AsBasicSettings is the BasicSettings implementation for UebaSettings.
-func (us UebaSettings) AsBasicSettings() (BasicSettings, bool) {
-	return &us, true
-}
-
-// UnmarshalJSON is the custom unmarshaler for UebaSettings struct.
-func (us *UebaSettings) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var uebaSettingsProperties UebaSettingsProperties
-				err = json.Unmarshal(*v, &uebaSettingsProperties)
-				if err != nil {
-					return err
-				}
-				us.UebaSettingsProperties = &uebaSettingsProperties
-			}
-		case "kind":
-			if v != nil {
-				var kind KindBasicSettings
-				err = json.Unmarshal(*v, &kind)
-				if err != nil {
-					return err
-				}
-				us.Kind = kind
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				us.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				us.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				us.Type = &typeVar
-			}
-		case "etag":
-			if v != nil {
-				var etag string
-				err = json.Unmarshal(*v, &etag)
-				if err != nil {
-					return err
-				}
-				us.Etag = &etag
-			}
-		}
-	}
-
-	return nil
-}
-
-// UebaSettingsProperties user and Entity Behavior Analytics settings property bag.
-type UebaSettingsProperties struct {
-	// AtpLicenseStatus - READ-ONLY; Determines whether the tenant has ATP (Advanced Threat Protection) license. Possible values include: 'LicenseStatusEnabled', 'LicenseStatusDisabled'
-	AtpLicenseStatus LicenseStatus `json:"atpLicenseStatus,omitempty"`
-	// IsEnabled - Determines whether User and Entity Behavior Analytics is enabled for this workspace.
-	IsEnabled *bool `json:"isEnabled,omitempty"`
-	// StatusInMcas - READ-ONLY; Determines whether User and Entity Behavior Analytics is enabled from MCAS (Microsoft Cloud App Security). Possible values include: 'StatusInMcasEnabled', 'StatusInMcasDisabled'
-	StatusInMcas StatusInMcas `json:"statusInMcas,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for UebaSettingsProperties.
-func (usp UebaSettingsProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if usp.IsEnabled != nil {
-		objectMap["isEnabled"] = usp.IsEnabled
-	}
-	return json.Marshal(objectMap)
 }
 
 // UserInfo user information that made some action

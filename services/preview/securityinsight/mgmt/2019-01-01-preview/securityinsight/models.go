@@ -24,7 +24,7 @@ const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/securityinsight
 type AADCheckRequirements struct {
 	// AADCheckRequirementsProperties - AAD (Azure Active Directory) requirements check properties.
 	*AADCheckRequirementsProperties `json:"properties,omitempty"`
-	// Kind - Possible values include: 'KindBasicDataConnectorsCheckRequirementsKindDataConnectorsCheckRequirements', 'KindBasicDataConnectorsCheckRequirementsKindAzureActiveDirectory', 'KindBasicDataConnectorsCheckRequirementsKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatIntelligence', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindAzureSecurityCenter', 'KindBasicDataConnectorsCheckRequirementsKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorsCheckRequirementsKindDynamics365', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindOfficeATP', 'KindBasicDataConnectorsCheckRequirementsKindThreatIntelligence', 'KindBasicDataConnectorsCheckRequirementsKindThreatIntelligenceTaxii'
+	// Kind - Possible values include: 'KindBasicDataConnectorsCheckRequirementsKindDataConnectorsCheckRequirements', 'KindBasicDataConnectorsCheckRequirementsKindAzureActiveDirectory', 'KindBasicDataConnectorsCheckRequirementsKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindAzureSecurityCenter', 'KindBasicDataConnectorsCheckRequirementsKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorsCheckRequirementsKindDynamics365', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatIntelligence', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindOfficeATP', 'KindBasicDataConnectorsCheckRequirementsKindThreatIntelligence', 'KindBasicDataConnectorsCheckRequirementsKindThreatIntelligenceTaxii'
 	Kind KindBasicDataConnectorsCheckRequirements `json:"kind,omitempty"`
 }
 
@@ -51,16 +51,6 @@ func (acr AADCheckRequirements) AsAATPCheckRequirements() (*AATPCheckRequirement
 	return nil, false
 }
 
-// AsMSTICheckRequirements is the BasicDataConnectorsCheckRequirements implementation for AADCheckRequirements.
-func (acr AADCheckRequirements) AsMSTICheckRequirements() (*MSTICheckRequirements, bool) {
-	return nil, false
-}
-
-// AsMtpCheckRequirements is the BasicDataConnectorsCheckRequirements implementation for AADCheckRequirements.
-func (acr AADCheckRequirements) AsMtpCheckRequirements() (*MtpCheckRequirements, bool) {
-	return nil, false
-}
-
 // AsASCCheckRequirements is the BasicDataConnectorsCheckRequirements implementation for AADCheckRequirements.
 func (acr AADCheckRequirements) AsASCCheckRequirements() (*ASCCheckRequirements, bool) {
 	return nil, false
@@ -83,6 +73,16 @@ func (acr AADCheckRequirements) AsMCASCheckRequirements() (*MCASCheckRequirement
 
 // AsMDATPCheckRequirements is the BasicDataConnectorsCheckRequirements implementation for AADCheckRequirements.
 func (acr AADCheckRequirements) AsMDATPCheckRequirements() (*MDATPCheckRequirements, bool) {
+	return nil, false
+}
+
+// AsMSTICheckRequirements is the BasicDataConnectorsCheckRequirements implementation for AADCheckRequirements.
+func (acr AADCheckRequirements) AsMSTICheckRequirements() (*MSTICheckRequirements, bool) {
+	return nil, false
+}
+
+// AsMtpCheckRequirements is the BasicDataConnectorsCheckRequirements implementation for AADCheckRequirements.
+func (acr AADCheckRequirements) AsMtpCheckRequirements() (*MtpCheckRequirements, bool) {
 	return nil, false
 }
 
@@ -162,7 +162,7 @@ type AADDataConnector struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindBasicDataConnectorKindDataConnector', 'KindBasicDataConnectorKindAzureActiveDirectory', 'KindBasicDataConnectorKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorKindMicrosoftThreatIntelligence', 'KindBasicDataConnectorKindMicrosoftThreatProtection', 'KindBasicDataConnectorKindAzureSecurityCenter', 'KindBasicDataConnectorKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorKindDynamics365', 'KindBasicDataConnectorKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorKindOfficeATP', 'KindBasicDataConnectorKindOffice365', 'KindBasicDataConnectorKindThreatIntelligence', 'KindBasicDataConnectorKindThreatIntelligenceTaxii'
+	// Kind - Possible values include: 'KindBasicDataConnectorKindDataConnector', 'KindBasicDataConnectorKindThreatIntelligenceTaxii', 'KindBasicDataConnectorKindThreatIntelligence', 'KindBasicDataConnectorKindOffice365', 'KindBasicDataConnectorKindOfficeATP', 'KindBasicDataConnectorKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorKindDynamics365', 'KindBasicDataConnectorKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorKindAzureSecurityCenter', 'KindBasicDataConnectorKindMicrosoftThreatProtection', 'KindBasicDataConnectorKindMicrosoftThreatIntelligence', 'KindBasicDataConnectorKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorKindAzureActiveDirectory'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
 }
 
@@ -182,58 +182,8 @@ func (adc AADDataConnector) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsAADDataConnector is the BasicDataConnector implementation for AADDataConnector.
-func (adc AADDataConnector) AsAADDataConnector() (*AADDataConnector, bool) {
-	return &adc, true
-}
-
-// AsAATPDataConnector is the BasicDataConnector implementation for AADDataConnector.
-func (adc AADDataConnector) AsAATPDataConnector() (*AATPDataConnector, bool) {
-	return nil, false
-}
-
-// AsMSTIDataConnector is the BasicDataConnector implementation for AADDataConnector.
-func (adc AADDataConnector) AsMSTIDataConnector() (*MSTIDataConnector, bool) {
-	return nil, false
-}
-
-// AsMTPDataConnector is the BasicDataConnector implementation for AADDataConnector.
-func (adc AADDataConnector) AsMTPDataConnector() (*MTPDataConnector, bool) {
-	return nil, false
-}
-
-// AsASCDataConnector is the BasicDataConnector implementation for AADDataConnector.
-func (adc AADDataConnector) AsASCDataConnector() (*ASCDataConnector, bool) {
-	return nil, false
-}
-
-// AsAwsCloudTrailDataConnector is the BasicDataConnector implementation for AADDataConnector.
-func (adc AADDataConnector) AsAwsCloudTrailDataConnector() (*AwsCloudTrailDataConnector, bool) {
-	return nil, false
-}
-
-// AsDynamics365DataConnector is the BasicDataConnector implementation for AADDataConnector.
-func (adc AADDataConnector) AsDynamics365DataConnector() (*Dynamics365DataConnector, bool) {
-	return nil, false
-}
-
-// AsMCASDataConnector is the BasicDataConnector implementation for AADDataConnector.
-func (adc AADDataConnector) AsMCASDataConnector() (*MCASDataConnector, bool) {
-	return nil, false
-}
-
-// AsMDATPDataConnector is the BasicDataConnector implementation for AADDataConnector.
-func (adc AADDataConnector) AsMDATPDataConnector() (*MDATPDataConnector, bool) {
-	return nil, false
-}
-
-// AsOfficeATPDataConnector is the BasicDataConnector implementation for AADDataConnector.
-func (adc AADDataConnector) AsOfficeATPDataConnector() (*OfficeATPDataConnector, bool) {
-	return nil, false
-}
-
-// AsOfficeDataConnector is the BasicDataConnector implementation for AADDataConnector.
-func (adc AADDataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool) {
+// AsTiTaxiiDataConnector is the BasicDataConnector implementation for AADDataConnector.
+func (adc AADDataConnector) AsTiTaxiiDataConnector() (*TiTaxiiDataConnector, bool) {
 	return nil, false
 }
 
@@ -242,9 +192,59 @@ func (adc AADDataConnector) AsTIDataConnector() (*TIDataConnector, bool) {
 	return nil, false
 }
 
-// AsTiTaxiiDataConnector is the BasicDataConnector implementation for AADDataConnector.
-func (adc AADDataConnector) AsTiTaxiiDataConnector() (*TiTaxiiDataConnector, bool) {
+// AsOfficeDataConnector is the BasicDataConnector implementation for AADDataConnector.
+func (adc AADDataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool) {
 	return nil, false
+}
+
+// AsOfficeATPDataConnector is the BasicDataConnector implementation for AADDataConnector.
+func (adc AADDataConnector) AsOfficeATPDataConnector() (*OfficeATPDataConnector, bool) {
+	return nil, false
+}
+
+// AsMDATPDataConnector is the BasicDataConnector implementation for AADDataConnector.
+func (adc AADDataConnector) AsMDATPDataConnector() (*MDATPDataConnector, bool) {
+	return nil, false
+}
+
+// AsMCASDataConnector is the BasicDataConnector implementation for AADDataConnector.
+func (adc AADDataConnector) AsMCASDataConnector() (*MCASDataConnector, bool) {
+	return nil, false
+}
+
+// AsDynamics365DataConnector is the BasicDataConnector implementation for AADDataConnector.
+func (adc AADDataConnector) AsDynamics365DataConnector() (*Dynamics365DataConnector, bool) {
+	return nil, false
+}
+
+// AsAwsCloudTrailDataConnector is the BasicDataConnector implementation for AADDataConnector.
+func (adc AADDataConnector) AsAwsCloudTrailDataConnector() (*AwsCloudTrailDataConnector, bool) {
+	return nil, false
+}
+
+// AsASCDataConnector is the BasicDataConnector implementation for AADDataConnector.
+func (adc AADDataConnector) AsASCDataConnector() (*ASCDataConnector, bool) {
+	return nil, false
+}
+
+// AsMTPDataConnector is the BasicDataConnector implementation for AADDataConnector.
+func (adc AADDataConnector) AsMTPDataConnector() (*MTPDataConnector, bool) {
+	return nil, false
+}
+
+// AsMSTIDataConnector is the BasicDataConnector implementation for AADDataConnector.
+func (adc AADDataConnector) AsMSTIDataConnector() (*MSTIDataConnector, bool) {
+	return nil, false
+}
+
+// AsAATPDataConnector is the BasicDataConnector implementation for AADDataConnector.
+func (adc AADDataConnector) AsAATPDataConnector() (*AATPDataConnector, bool) {
+	return nil, false
+}
+
+// AsAADDataConnector is the BasicDataConnector implementation for AADDataConnector.
+func (adc AADDataConnector) AsAADDataConnector() (*AADDataConnector, bool) {
+	return &adc, true
 }
 
 // AsDataConnector is the BasicDataConnector implementation for AADDataConnector.
@@ -338,7 +338,7 @@ type AADDataConnectorProperties struct {
 type AATPCheckRequirements struct {
 	// AATPCheckRequirementsProperties - AATP (Azure Advanced Threat Protection) requirements check properties.
 	*AATPCheckRequirementsProperties `json:"properties,omitempty"`
-	// Kind - Possible values include: 'KindBasicDataConnectorsCheckRequirementsKindDataConnectorsCheckRequirements', 'KindBasicDataConnectorsCheckRequirementsKindAzureActiveDirectory', 'KindBasicDataConnectorsCheckRequirementsKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatIntelligence', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindAzureSecurityCenter', 'KindBasicDataConnectorsCheckRequirementsKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorsCheckRequirementsKindDynamics365', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindOfficeATP', 'KindBasicDataConnectorsCheckRequirementsKindThreatIntelligence', 'KindBasicDataConnectorsCheckRequirementsKindThreatIntelligenceTaxii'
+	// Kind - Possible values include: 'KindBasicDataConnectorsCheckRequirementsKindDataConnectorsCheckRequirements', 'KindBasicDataConnectorsCheckRequirementsKindAzureActiveDirectory', 'KindBasicDataConnectorsCheckRequirementsKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindAzureSecurityCenter', 'KindBasicDataConnectorsCheckRequirementsKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorsCheckRequirementsKindDynamics365', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatIntelligence', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindOfficeATP', 'KindBasicDataConnectorsCheckRequirementsKindThreatIntelligence', 'KindBasicDataConnectorsCheckRequirementsKindThreatIntelligenceTaxii'
 	Kind KindBasicDataConnectorsCheckRequirements `json:"kind,omitempty"`
 }
 
@@ -365,16 +365,6 @@ func (acr AATPCheckRequirements) AsAATPCheckRequirements() (*AATPCheckRequiremen
 	return &acr, true
 }
 
-// AsMSTICheckRequirements is the BasicDataConnectorsCheckRequirements implementation for AATPCheckRequirements.
-func (acr AATPCheckRequirements) AsMSTICheckRequirements() (*MSTICheckRequirements, bool) {
-	return nil, false
-}
-
-// AsMtpCheckRequirements is the BasicDataConnectorsCheckRequirements implementation for AATPCheckRequirements.
-func (acr AATPCheckRequirements) AsMtpCheckRequirements() (*MtpCheckRequirements, bool) {
-	return nil, false
-}
-
 // AsASCCheckRequirements is the BasicDataConnectorsCheckRequirements implementation for AATPCheckRequirements.
 func (acr AATPCheckRequirements) AsASCCheckRequirements() (*ASCCheckRequirements, bool) {
 	return nil, false
@@ -397,6 +387,16 @@ func (acr AATPCheckRequirements) AsMCASCheckRequirements() (*MCASCheckRequiremen
 
 // AsMDATPCheckRequirements is the BasicDataConnectorsCheckRequirements implementation for AATPCheckRequirements.
 func (acr AATPCheckRequirements) AsMDATPCheckRequirements() (*MDATPCheckRequirements, bool) {
+	return nil, false
+}
+
+// AsMSTICheckRequirements is the BasicDataConnectorsCheckRequirements implementation for AATPCheckRequirements.
+func (acr AATPCheckRequirements) AsMSTICheckRequirements() (*MSTICheckRequirements, bool) {
+	return nil, false
+}
+
+// AsMtpCheckRequirements is the BasicDataConnectorsCheckRequirements implementation for AATPCheckRequirements.
+func (acr AATPCheckRequirements) AsMtpCheckRequirements() (*MtpCheckRequirements, bool) {
 	return nil, false
 }
 
@@ -476,7 +476,7 @@ type AATPDataConnector struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindBasicDataConnectorKindDataConnector', 'KindBasicDataConnectorKindAzureActiveDirectory', 'KindBasicDataConnectorKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorKindMicrosoftThreatIntelligence', 'KindBasicDataConnectorKindMicrosoftThreatProtection', 'KindBasicDataConnectorKindAzureSecurityCenter', 'KindBasicDataConnectorKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorKindDynamics365', 'KindBasicDataConnectorKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorKindOfficeATP', 'KindBasicDataConnectorKindOffice365', 'KindBasicDataConnectorKindThreatIntelligence', 'KindBasicDataConnectorKindThreatIntelligenceTaxii'
+	// Kind - Possible values include: 'KindBasicDataConnectorKindDataConnector', 'KindBasicDataConnectorKindThreatIntelligenceTaxii', 'KindBasicDataConnectorKindThreatIntelligence', 'KindBasicDataConnectorKindOffice365', 'KindBasicDataConnectorKindOfficeATP', 'KindBasicDataConnectorKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorKindDynamics365', 'KindBasicDataConnectorKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorKindAzureSecurityCenter', 'KindBasicDataConnectorKindMicrosoftThreatProtection', 'KindBasicDataConnectorKindMicrosoftThreatIntelligence', 'KindBasicDataConnectorKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorKindAzureActiveDirectory'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
 }
 
@@ -496,58 +496,8 @@ func (adc AATPDataConnector) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsAADDataConnector is the BasicDataConnector implementation for AATPDataConnector.
-func (adc AATPDataConnector) AsAADDataConnector() (*AADDataConnector, bool) {
-	return nil, false
-}
-
-// AsAATPDataConnector is the BasicDataConnector implementation for AATPDataConnector.
-func (adc AATPDataConnector) AsAATPDataConnector() (*AATPDataConnector, bool) {
-	return &adc, true
-}
-
-// AsMSTIDataConnector is the BasicDataConnector implementation for AATPDataConnector.
-func (adc AATPDataConnector) AsMSTIDataConnector() (*MSTIDataConnector, bool) {
-	return nil, false
-}
-
-// AsMTPDataConnector is the BasicDataConnector implementation for AATPDataConnector.
-func (adc AATPDataConnector) AsMTPDataConnector() (*MTPDataConnector, bool) {
-	return nil, false
-}
-
-// AsASCDataConnector is the BasicDataConnector implementation for AATPDataConnector.
-func (adc AATPDataConnector) AsASCDataConnector() (*ASCDataConnector, bool) {
-	return nil, false
-}
-
-// AsAwsCloudTrailDataConnector is the BasicDataConnector implementation for AATPDataConnector.
-func (adc AATPDataConnector) AsAwsCloudTrailDataConnector() (*AwsCloudTrailDataConnector, bool) {
-	return nil, false
-}
-
-// AsDynamics365DataConnector is the BasicDataConnector implementation for AATPDataConnector.
-func (adc AATPDataConnector) AsDynamics365DataConnector() (*Dynamics365DataConnector, bool) {
-	return nil, false
-}
-
-// AsMCASDataConnector is the BasicDataConnector implementation for AATPDataConnector.
-func (adc AATPDataConnector) AsMCASDataConnector() (*MCASDataConnector, bool) {
-	return nil, false
-}
-
-// AsMDATPDataConnector is the BasicDataConnector implementation for AATPDataConnector.
-func (adc AATPDataConnector) AsMDATPDataConnector() (*MDATPDataConnector, bool) {
-	return nil, false
-}
-
-// AsOfficeATPDataConnector is the BasicDataConnector implementation for AATPDataConnector.
-func (adc AATPDataConnector) AsOfficeATPDataConnector() (*OfficeATPDataConnector, bool) {
-	return nil, false
-}
-
-// AsOfficeDataConnector is the BasicDataConnector implementation for AATPDataConnector.
-func (adc AATPDataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool) {
+// AsTiTaxiiDataConnector is the BasicDataConnector implementation for AATPDataConnector.
+func (adc AATPDataConnector) AsTiTaxiiDataConnector() (*TiTaxiiDataConnector, bool) {
 	return nil, false
 }
 
@@ -556,8 +506,58 @@ func (adc AATPDataConnector) AsTIDataConnector() (*TIDataConnector, bool) {
 	return nil, false
 }
 
-// AsTiTaxiiDataConnector is the BasicDataConnector implementation for AATPDataConnector.
-func (adc AATPDataConnector) AsTiTaxiiDataConnector() (*TiTaxiiDataConnector, bool) {
+// AsOfficeDataConnector is the BasicDataConnector implementation for AATPDataConnector.
+func (adc AATPDataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool) {
+	return nil, false
+}
+
+// AsOfficeATPDataConnector is the BasicDataConnector implementation for AATPDataConnector.
+func (adc AATPDataConnector) AsOfficeATPDataConnector() (*OfficeATPDataConnector, bool) {
+	return nil, false
+}
+
+// AsMDATPDataConnector is the BasicDataConnector implementation for AATPDataConnector.
+func (adc AATPDataConnector) AsMDATPDataConnector() (*MDATPDataConnector, bool) {
+	return nil, false
+}
+
+// AsMCASDataConnector is the BasicDataConnector implementation for AATPDataConnector.
+func (adc AATPDataConnector) AsMCASDataConnector() (*MCASDataConnector, bool) {
+	return nil, false
+}
+
+// AsDynamics365DataConnector is the BasicDataConnector implementation for AATPDataConnector.
+func (adc AATPDataConnector) AsDynamics365DataConnector() (*Dynamics365DataConnector, bool) {
+	return nil, false
+}
+
+// AsAwsCloudTrailDataConnector is the BasicDataConnector implementation for AATPDataConnector.
+func (adc AATPDataConnector) AsAwsCloudTrailDataConnector() (*AwsCloudTrailDataConnector, bool) {
+	return nil, false
+}
+
+// AsASCDataConnector is the BasicDataConnector implementation for AATPDataConnector.
+func (adc AATPDataConnector) AsASCDataConnector() (*ASCDataConnector, bool) {
+	return nil, false
+}
+
+// AsMTPDataConnector is the BasicDataConnector implementation for AATPDataConnector.
+func (adc AATPDataConnector) AsMTPDataConnector() (*MTPDataConnector, bool) {
+	return nil, false
+}
+
+// AsMSTIDataConnector is the BasicDataConnector implementation for AATPDataConnector.
+func (adc AATPDataConnector) AsMSTIDataConnector() (*MSTIDataConnector, bool) {
+	return nil, false
+}
+
+// AsAATPDataConnector is the BasicDataConnector implementation for AATPDataConnector.
+func (adc AATPDataConnector) AsAATPDataConnector() (*AATPDataConnector, bool) {
+	return &adc, true
+}
+
+// AsAADDataConnector is the BasicDataConnector implementation for AATPDataConnector.
+func (adc AATPDataConnector) AsAADDataConnector() (*AADDataConnector, bool) {
 	return nil, false
 }
 
@@ -658,13 +658,13 @@ type AccountEntity struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Kind - Possible values include: 'KindBasicEntityKindEntity', 'KindBasicEntityKindAccount', 'KindBasicEntityKindAzureResource', 'KindBasicEntityKindCloudApplication', 'KindBasicEntityKindDNSResolution', 'KindBasicEntityKindFile', 'KindBasicEntityKindFileHash', 'KindBasicEntityKindHost', 'KindBasicEntityKindBookmark', 'KindBasicEntityKindSecurityAlert', 'KindBasicEntityKindIP', 'KindBasicEntityKindMailbox', 'KindBasicEntityKindMailCluster', 'KindBasicEntityKindMailMessage', 'KindBasicEntityKindSubmissionMail', 'KindBasicEntityKindMalware', 'KindBasicEntityKindProcess', 'KindBasicEntityKindRegistryKey', 'KindBasicEntityKindRegistryValue', 'KindBasicEntityKindSecurityGroup', 'KindBasicEntityKindURL', 'KindBasicEntityKindIoTDevice'
-	Kind KindBasicEntity `json:"kind,omitempty"`
+	// Kind - Possible values include: 'KindEntity', 'KindIoTDevice', 'KindURL', 'KindSecurityGroup', 'KindSecurityAlert', 'KindRegistryValue', 'KindRegistryKey', 'KindProcess', 'KindMalware', 'KindSubmissionMail', 'KindMailMessage', 'KindMailCluster', 'KindMailbox', 'KindIP', 'KindBookmark', 'KindHost', 'KindFileHash', 'KindFile', 'KindDNSResolution', 'KindCloudApplication', 'KindAzureResource', 'KindAccount'
+	Kind Kind `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for AccountEntity.
 func (ae AccountEntity) MarshalJSON() ([]byte, error) {
-	ae.Kind = KindBasicEntityKindAccount
+	ae.Kind = KindAccount
 	objectMap := make(map[string]interface{})
 	if ae.AccountEntityProperties != nil {
 		objectMap["properties"] = ae.AccountEntityProperties
@@ -675,98 +675,8 @@ func (ae AccountEntity) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsAccountEntity is the BasicEntity implementation for AccountEntity.
-func (ae AccountEntity) AsAccountEntity() (*AccountEntity, bool) {
-	return &ae, true
-}
-
-// AsAzureResourceEntity is the BasicEntity implementation for AccountEntity.
-func (ae AccountEntity) AsAzureResourceEntity() (*AzureResourceEntity, bool) {
-	return nil, false
-}
-
-// AsCloudApplicationEntity is the BasicEntity implementation for AccountEntity.
-func (ae AccountEntity) AsCloudApplicationEntity() (*CloudApplicationEntity, bool) {
-	return nil, false
-}
-
-// AsDNSEntity is the BasicEntity implementation for AccountEntity.
-func (ae AccountEntity) AsDNSEntity() (*DNSEntity, bool) {
-	return nil, false
-}
-
-// AsFileEntity is the BasicEntity implementation for AccountEntity.
-func (ae AccountEntity) AsFileEntity() (*FileEntity, bool) {
-	return nil, false
-}
-
-// AsFileHashEntity is the BasicEntity implementation for AccountEntity.
-func (ae AccountEntity) AsFileHashEntity() (*FileHashEntity, bool) {
-	return nil, false
-}
-
-// AsHostEntity is the BasicEntity implementation for AccountEntity.
-func (ae AccountEntity) AsHostEntity() (*HostEntity, bool) {
-	return nil, false
-}
-
-// AsHuntingBookmark is the BasicEntity implementation for AccountEntity.
-func (ae AccountEntity) AsHuntingBookmark() (*HuntingBookmark, bool) {
-	return nil, false
-}
-
-// AsSecurityAlert is the BasicEntity implementation for AccountEntity.
-func (ae AccountEntity) AsSecurityAlert() (*SecurityAlert, bool) {
-	return nil, false
-}
-
-// AsIPEntity is the BasicEntity implementation for AccountEntity.
-func (ae AccountEntity) AsIPEntity() (*IPEntity, bool) {
-	return nil, false
-}
-
-// AsMailboxEntity is the BasicEntity implementation for AccountEntity.
-func (ae AccountEntity) AsMailboxEntity() (*MailboxEntity, bool) {
-	return nil, false
-}
-
-// AsMailClusterEntity is the BasicEntity implementation for AccountEntity.
-func (ae AccountEntity) AsMailClusterEntity() (*MailClusterEntity, bool) {
-	return nil, false
-}
-
-// AsMailMessageEntity is the BasicEntity implementation for AccountEntity.
-func (ae AccountEntity) AsMailMessageEntity() (*MailMessageEntity, bool) {
-	return nil, false
-}
-
-// AsSubmissionMailEntity is the BasicEntity implementation for AccountEntity.
-func (ae AccountEntity) AsSubmissionMailEntity() (*SubmissionMailEntity, bool) {
-	return nil, false
-}
-
-// AsMalwareEntity is the BasicEntity implementation for AccountEntity.
-func (ae AccountEntity) AsMalwareEntity() (*MalwareEntity, bool) {
-	return nil, false
-}
-
-// AsProcessEntity is the BasicEntity implementation for AccountEntity.
-func (ae AccountEntity) AsProcessEntity() (*ProcessEntity, bool) {
-	return nil, false
-}
-
-// AsRegistryKeyEntity is the BasicEntity implementation for AccountEntity.
-func (ae AccountEntity) AsRegistryKeyEntity() (*RegistryKeyEntity, bool) {
-	return nil, false
-}
-
-// AsRegistryValueEntity is the BasicEntity implementation for AccountEntity.
-func (ae AccountEntity) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
-	return nil, false
-}
-
-// AsSecurityGroupEntity is the BasicEntity implementation for AccountEntity.
-func (ae AccountEntity) AsSecurityGroupEntity() (*SecurityGroupEntity, bool) {
+// AsIoTDeviceEntity is the BasicEntity implementation for AccountEntity.
+func (ae AccountEntity) AsIoTDeviceEntity() (*IoTDeviceEntity, bool) {
 	return nil, false
 }
 
@@ -775,9 +685,99 @@ func (ae AccountEntity) AsURLEntity() (*URLEntity, bool) {
 	return nil, false
 }
 
-// AsIoTDeviceEntity is the BasicEntity implementation for AccountEntity.
-func (ae AccountEntity) AsIoTDeviceEntity() (*IoTDeviceEntity, bool) {
+// AsSecurityGroupEntity is the BasicEntity implementation for AccountEntity.
+func (ae AccountEntity) AsSecurityGroupEntity() (*SecurityGroupEntity, bool) {
 	return nil, false
+}
+
+// AsSecurityAlert is the BasicEntity implementation for AccountEntity.
+func (ae AccountEntity) AsSecurityAlert() (*SecurityAlert, bool) {
+	return nil, false
+}
+
+// AsRegistryValueEntity is the BasicEntity implementation for AccountEntity.
+func (ae AccountEntity) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
+	return nil, false
+}
+
+// AsRegistryKeyEntity is the BasicEntity implementation for AccountEntity.
+func (ae AccountEntity) AsRegistryKeyEntity() (*RegistryKeyEntity, bool) {
+	return nil, false
+}
+
+// AsProcessEntity is the BasicEntity implementation for AccountEntity.
+func (ae AccountEntity) AsProcessEntity() (*ProcessEntity, bool) {
+	return nil, false
+}
+
+// AsMalwareEntity is the BasicEntity implementation for AccountEntity.
+func (ae AccountEntity) AsMalwareEntity() (*MalwareEntity, bool) {
+	return nil, false
+}
+
+// AsSubmissionMailEntity is the BasicEntity implementation for AccountEntity.
+func (ae AccountEntity) AsSubmissionMailEntity() (*SubmissionMailEntity, bool) {
+	return nil, false
+}
+
+// AsMailMessageEntity is the BasicEntity implementation for AccountEntity.
+func (ae AccountEntity) AsMailMessageEntity() (*MailMessageEntity, bool) {
+	return nil, false
+}
+
+// AsMailClusterEntity is the BasicEntity implementation for AccountEntity.
+func (ae AccountEntity) AsMailClusterEntity() (*MailClusterEntity, bool) {
+	return nil, false
+}
+
+// AsMailboxEntity is the BasicEntity implementation for AccountEntity.
+func (ae AccountEntity) AsMailboxEntity() (*MailboxEntity, bool) {
+	return nil, false
+}
+
+// AsIPEntity is the BasicEntity implementation for AccountEntity.
+func (ae AccountEntity) AsIPEntity() (*IPEntity, bool) {
+	return nil, false
+}
+
+// AsHuntingBookmark is the BasicEntity implementation for AccountEntity.
+func (ae AccountEntity) AsHuntingBookmark() (*HuntingBookmark, bool) {
+	return nil, false
+}
+
+// AsHostEntity is the BasicEntity implementation for AccountEntity.
+func (ae AccountEntity) AsHostEntity() (*HostEntity, bool) {
+	return nil, false
+}
+
+// AsFileHashEntity is the BasicEntity implementation for AccountEntity.
+func (ae AccountEntity) AsFileHashEntity() (*FileHashEntity, bool) {
+	return nil, false
+}
+
+// AsFileEntity is the BasicEntity implementation for AccountEntity.
+func (ae AccountEntity) AsFileEntity() (*FileEntity, bool) {
+	return nil, false
+}
+
+// AsDNSEntity is the BasicEntity implementation for AccountEntity.
+func (ae AccountEntity) AsDNSEntity() (*DNSEntity, bool) {
+	return nil, false
+}
+
+// AsCloudApplicationEntity is the BasicEntity implementation for AccountEntity.
+func (ae AccountEntity) AsCloudApplicationEntity() (*CloudApplicationEntity, bool) {
+	return nil, false
+}
+
+// AsAzureResourceEntity is the BasicEntity implementation for AccountEntity.
+func (ae AccountEntity) AsAzureResourceEntity() (*AzureResourceEntity, bool) {
+	return nil, false
+}
+
+// AsAccountEntity is the BasicEntity implementation for AccountEntity.
+func (ae AccountEntity) AsAccountEntity() (*AccountEntity, bool) {
+	return &ae, true
 }
 
 // AsEntity is the BasicEntity implementation for AccountEntity.
@@ -837,7 +837,7 @@ func (ae *AccountEntity) UnmarshalJSON(body []byte) error {
 			}
 		case "kind":
 			if v != nil {
-				var kind KindBasicEntity
+				var kind Kind
 				err = json.Unmarshal(*v, &kind)
 				if err != nil {
 					return err
@@ -1267,7 +1267,7 @@ type ActivityTimelineItem struct {
 	Content *string `json:"content,omitempty"`
 	// Title - The activity timeline title.
 	Title *string `json:"title,omitempty"`
-	// Kind - Possible values include: 'KindBasicEntityTimelineItemKindEntityTimelineItem', 'KindBasicEntityTimelineItemKindActivity', 'KindBasicEntityTimelineItemKindSecurityAlert', 'KindBasicEntityTimelineItemKindBookmark'
+	// Kind - Possible values include: 'KindBasicEntityTimelineItemKindEntityTimelineItem', 'KindBasicEntityTimelineItemKindActivity', 'KindBasicEntityTimelineItemKindBookmark', 'KindBasicEntityTimelineItemKindSecurityAlert'
 	Kind KindBasicEntityTimelineItem `json:"kind,omitempty"`
 }
 
@@ -1307,13 +1307,13 @@ func (ati ActivityTimelineItem) AsActivityTimelineItem() (*ActivityTimelineItem,
 	return &ati, true
 }
 
-// AsSecurityAlertTimelineItem is the BasicEntityTimelineItem implementation for ActivityTimelineItem.
-func (ati ActivityTimelineItem) AsSecurityAlertTimelineItem() (*SecurityAlertTimelineItem, bool) {
+// AsBookmarkTimelineItem is the BasicEntityTimelineItem implementation for ActivityTimelineItem.
+func (ati ActivityTimelineItem) AsBookmarkTimelineItem() (*BookmarkTimelineItem, bool) {
 	return nil, false
 }
 
-// AsBookmarkTimelineItem is the BasicEntityTimelineItem implementation for ActivityTimelineItem.
-func (ati ActivityTimelineItem) AsBookmarkTimelineItem() (*BookmarkTimelineItem, bool) {
+// AsSecurityAlertTimelineItem is the BasicEntityTimelineItem implementation for ActivityTimelineItem.
+func (ati ActivityTimelineItem) AsSecurityAlertTimelineItem() (*SecurityAlertTimelineItem, bool) {
 	return nil, false
 }
 
@@ -1342,8 +1342,8 @@ type Aggregations struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Kind - Possible values include: 'KindAggregations', 'KindCasesAggregation'
-	Kind Kind `json:"kind,omitempty"`
+	// Kind - Possible values include: 'KindBasicAggregationsKindAggregations', 'KindBasicAggregationsKindCasesAggregation'
+	Kind KindBasicAggregations `json:"kind,omitempty"`
 }
 
 func unmarshalBasicAggregations(body []byte) (BasicAggregations, error) {
@@ -1354,7 +1354,7 @@ func unmarshalBasicAggregations(body []byte) (BasicAggregations, error) {
 	}
 
 	switch m["kind"] {
-	case string(KindCasesAggregation):
+	case string(KindBasicAggregationsKindCasesAggregation):
 		var ca CasesAggregation
 		err := json.Unmarshal(body, &ca)
 		return ca, err
@@ -1385,7 +1385,7 @@ func unmarshalBasicAggregationsArray(body []byte) ([]BasicAggregations, error) {
 
 // MarshalJSON is the custom marshaler for Aggregations.
 func (a Aggregations) MarshalJSON() ([]byte, error) {
-	a.Kind = KindAggregations
+	a.Kind = KindBasicAggregationsKindAggregations
 	objectMap := make(map[string]interface{})
 	if a.Kind != "" {
 		objectMap["kind"] = a.Kind
@@ -1433,11 +1433,11 @@ func (am *AggregationsModel) UnmarshalJSON(body []byte) error {
 
 // BasicAlertRule alert rule.
 type BasicAlertRule interface {
-	AsMLBehaviorAnalyticsAlertRule() (*MLBehaviorAnalyticsAlertRule, bool)
-	AsFusionAlertRule() (*FusionAlertRule, bool)
-	AsThreatIntelligenceAlertRule() (*ThreatIntelligenceAlertRule, bool)
-	AsMicrosoftSecurityIncidentCreationAlertRule() (*MicrosoftSecurityIncidentCreationAlertRule, bool)
 	AsScheduledAlertRule() (*ScheduledAlertRule, bool)
+	AsMicrosoftSecurityIncidentCreationAlertRule() (*MicrosoftSecurityIncidentCreationAlertRule, bool)
+	AsThreatIntelligenceAlertRule() (*ThreatIntelligenceAlertRule, bool)
+	AsFusionAlertRule() (*FusionAlertRule, bool)
+	AsMLBehaviorAnalyticsAlertRule() (*MLBehaviorAnalyticsAlertRule, bool)
 	AsAlertRule() (*AlertRule, bool)
 }
 
@@ -1452,7 +1452,7 @@ type AlertRule struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindBasicAlertRuleKindAlertRule', 'KindBasicAlertRuleKindMLBehaviorAnalytics', 'KindBasicAlertRuleKindFusion', 'KindBasicAlertRuleKindThreatIntelligence', 'KindBasicAlertRuleKindMicrosoftSecurityIncidentCreation', 'KindBasicAlertRuleKindScheduled'
+	// Kind - Possible values include: 'KindBasicAlertRuleKindAlertRule', 'KindBasicAlertRuleKindScheduled', 'KindBasicAlertRuleKindMicrosoftSecurityIncidentCreation', 'KindBasicAlertRuleKindThreatIntelligence', 'KindBasicAlertRuleKindFusion', 'KindBasicAlertRuleKindMLBehaviorAnalytics'
 	Kind KindBasicAlertRule `json:"kind,omitempty"`
 }
 
@@ -1464,26 +1464,26 @@ func unmarshalBasicAlertRule(body []byte) (BasicAlertRule, error) {
 	}
 
 	switch m["kind"] {
-	case string(KindBasicAlertRuleKindMLBehaviorAnalytics):
-		var mbaar MLBehaviorAnalyticsAlertRule
-		err := json.Unmarshal(body, &mbaar)
-		return mbaar, err
-	case string(KindBasicAlertRuleKindFusion):
-		var far FusionAlertRule
-		err := json.Unmarshal(body, &far)
-		return far, err
-	case string(KindBasicAlertRuleKindThreatIntelligence):
-		var tiar ThreatIntelligenceAlertRule
-		err := json.Unmarshal(body, &tiar)
-		return tiar, err
-	case string(KindBasicAlertRuleKindMicrosoftSecurityIncidentCreation):
-		var msicar MicrosoftSecurityIncidentCreationAlertRule
-		err := json.Unmarshal(body, &msicar)
-		return msicar, err
 	case string(KindBasicAlertRuleKindScheduled):
 		var sar ScheduledAlertRule
 		err := json.Unmarshal(body, &sar)
 		return sar, err
+	case string(KindBasicAlertRuleKindMicrosoftSecurityIncidentCreation):
+		var msicar MicrosoftSecurityIncidentCreationAlertRule
+		err := json.Unmarshal(body, &msicar)
+		return msicar, err
+	case string(KindBasicAlertRuleKindThreatIntelligence):
+		var tiar ThreatIntelligenceAlertRule
+		err := json.Unmarshal(body, &tiar)
+		return tiar, err
+	case string(KindBasicAlertRuleKindFusion):
+		var far FusionAlertRule
+		err := json.Unmarshal(body, &far)
+		return far, err
+	case string(KindBasicAlertRuleKindMLBehaviorAnalytics):
+		var mbaar MLBehaviorAnalyticsAlertRule
+		err := json.Unmarshal(body, &mbaar)
+		return mbaar, err
 	default:
 		var ar AlertRule
 		err := json.Unmarshal(body, &ar)
@@ -1522,18 +1522,8 @@ func (ar AlertRule) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsMLBehaviorAnalyticsAlertRule is the BasicAlertRule implementation for AlertRule.
-func (ar AlertRule) AsMLBehaviorAnalyticsAlertRule() (*MLBehaviorAnalyticsAlertRule, bool) {
-	return nil, false
-}
-
-// AsFusionAlertRule is the BasicAlertRule implementation for AlertRule.
-func (ar AlertRule) AsFusionAlertRule() (*FusionAlertRule, bool) {
-	return nil, false
-}
-
-// AsThreatIntelligenceAlertRule is the BasicAlertRule implementation for AlertRule.
-func (ar AlertRule) AsThreatIntelligenceAlertRule() (*ThreatIntelligenceAlertRule, bool) {
+// AsScheduledAlertRule is the BasicAlertRule implementation for AlertRule.
+func (ar AlertRule) AsScheduledAlertRule() (*ScheduledAlertRule, bool) {
 	return nil, false
 }
 
@@ -1542,8 +1532,18 @@ func (ar AlertRule) AsMicrosoftSecurityIncidentCreationAlertRule() (*MicrosoftSe
 	return nil, false
 }
 
-// AsScheduledAlertRule is the BasicAlertRule implementation for AlertRule.
-func (ar AlertRule) AsScheduledAlertRule() (*ScheduledAlertRule, bool) {
+// AsThreatIntelligenceAlertRule is the BasicAlertRule implementation for AlertRule.
+func (ar AlertRule) AsThreatIntelligenceAlertRule() (*ThreatIntelligenceAlertRule, bool) {
+	return nil, false
+}
+
+// AsFusionAlertRule is the BasicAlertRule implementation for AlertRule.
+func (ar AlertRule) AsFusionAlertRule() (*FusionAlertRule, bool) {
+	return nil, false
+}
+
+// AsMLBehaviorAnalyticsAlertRule is the BasicAlertRule implementation for AlertRule.
+func (ar AlertRule) AsMLBehaviorAnalyticsAlertRule() (*MLBehaviorAnalyticsAlertRule, bool) {
 	return nil, false
 }
 
@@ -1782,11 +1782,11 @@ func NewAlertRulesListPage(cur AlertRulesList, getNextPage func(context.Context,
 
 // BasicAlertRuleTemplate alert rule template.
 type BasicAlertRuleTemplate interface {
-	AsMLBehaviorAnalyticsAlertRuleTemplate() (*MLBehaviorAnalyticsAlertRuleTemplate, bool)
-	AsFusionAlertRuleTemplate() (*FusionAlertRuleTemplate, bool)
-	AsThreatIntelligenceAlertRuleTemplate() (*ThreatIntelligenceAlertRuleTemplate, bool)
-	AsMicrosoftSecurityIncidentCreationAlertRuleTemplate() (*MicrosoftSecurityIncidentCreationAlertRuleTemplate, bool)
 	AsScheduledAlertRuleTemplate() (*ScheduledAlertRuleTemplate, bool)
+	AsMicrosoftSecurityIncidentCreationAlertRuleTemplate() (*MicrosoftSecurityIncidentCreationAlertRuleTemplate, bool)
+	AsThreatIntelligenceAlertRuleTemplate() (*ThreatIntelligenceAlertRuleTemplate, bool)
+	AsFusionAlertRuleTemplate() (*FusionAlertRuleTemplate, bool)
+	AsMLBehaviorAnalyticsAlertRuleTemplate() (*MLBehaviorAnalyticsAlertRuleTemplate, bool)
 	AsAlertRuleTemplate() (*AlertRuleTemplate, bool)
 }
 
@@ -1799,7 +1799,7 @@ type AlertRuleTemplate struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Kind - Possible values include: 'KindBasicAlertRuleTemplateKindAlertRuleTemplate', 'KindBasicAlertRuleTemplateKindMLBehaviorAnalytics', 'KindBasicAlertRuleTemplateKindFusion', 'KindBasicAlertRuleTemplateKindThreatIntelligence', 'KindBasicAlertRuleTemplateKindMicrosoftSecurityIncidentCreation', 'KindBasicAlertRuleTemplateKindScheduled'
+	// Kind - Possible values include: 'KindBasicAlertRuleTemplateKindAlertRuleTemplate', 'KindBasicAlertRuleTemplateKindScheduled', 'KindBasicAlertRuleTemplateKindMicrosoftSecurityIncidentCreation', 'KindBasicAlertRuleTemplateKindThreatIntelligence', 'KindBasicAlertRuleTemplateKindFusion', 'KindBasicAlertRuleTemplateKindMLBehaviorAnalytics'
 	Kind KindBasicAlertRuleTemplate `json:"kind,omitempty"`
 }
 
@@ -1811,26 +1811,26 @@ func unmarshalBasicAlertRuleTemplate(body []byte) (BasicAlertRuleTemplate, error
 	}
 
 	switch m["kind"] {
-	case string(KindBasicAlertRuleTemplateKindMLBehaviorAnalytics):
-		var mbaart MLBehaviorAnalyticsAlertRuleTemplate
-		err := json.Unmarshal(body, &mbaart)
-		return mbaart, err
-	case string(KindBasicAlertRuleTemplateKindFusion):
-		var fart FusionAlertRuleTemplate
-		err := json.Unmarshal(body, &fart)
-		return fart, err
-	case string(KindBasicAlertRuleTemplateKindThreatIntelligence):
-		var tiart ThreatIntelligenceAlertRuleTemplate
-		err := json.Unmarshal(body, &tiart)
-		return tiart, err
-	case string(KindBasicAlertRuleTemplateKindMicrosoftSecurityIncidentCreation):
-		var msicart MicrosoftSecurityIncidentCreationAlertRuleTemplate
-		err := json.Unmarshal(body, &msicart)
-		return msicart, err
 	case string(KindBasicAlertRuleTemplateKindScheduled):
 		var sart ScheduledAlertRuleTemplate
 		err := json.Unmarshal(body, &sart)
 		return sart, err
+	case string(KindBasicAlertRuleTemplateKindMicrosoftSecurityIncidentCreation):
+		var msicart MicrosoftSecurityIncidentCreationAlertRuleTemplate
+		err := json.Unmarshal(body, &msicart)
+		return msicart, err
+	case string(KindBasicAlertRuleTemplateKindThreatIntelligence):
+		var tiart ThreatIntelligenceAlertRuleTemplate
+		err := json.Unmarshal(body, &tiart)
+		return tiart, err
+	case string(KindBasicAlertRuleTemplateKindFusion):
+		var fart FusionAlertRuleTemplate
+		err := json.Unmarshal(body, &fart)
+		return fart, err
+	case string(KindBasicAlertRuleTemplateKindMLBehaviorAnalytics):
+		var mbaart MLBehaviorAnalyticsAlertRuleTemplate
+		err := json.Unmarshal(body, &mbaart)
+		return mbaart, err
 	default:
 		var art AlertRuleTemplate
 		err := json.Unmarshal(body, &art)
@@ -1866,18 +1866,8 @@ func (art AlertRuleTemplate) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsMLBehaviorAnalyticsAlertRuleTemplate is the BasicAlertRuleTemplate implementation for AlertRuleTemplate.
-func (art AlertRuleTemplate) AsMLBehaviorAnalyticsAlertRuleTemplate() (*MLBehaviorAnalyticsAlertRuleTemplate, bool) {
-	return nil, false
-}
-
-// AsFusionAlertRuleTemplate is the BasicAlertRuleTemplate implementation for AlertRuleTemplate.
-func (art AlertRuleTemplate) AsFusionAlertRuleTemplate() (*FusionAlertRuleTemplate, bool) {
-	return nil, false
-}
-
-// AsThreatIntelligenceAlertRuleTemplate is the BasicAlertRuleTemplate implementation for AlertRuleTemplate.
-func (art AlertRuleTemplate) AsThreatIntelligenceAlertRuleTemplate() (*ThreatIntelligenceAlertRuleTemplate, bool) {
+// AsScheduledAlertRuleTemplate is the BasicAlertRuleTemplate implementation for AlertRuleTemplate.
+func (art AlertRuleTemplate) AsScheduledAlertRuleTemplate() (*ScheduledAlertRuleTemplate, bool) {
 	return nil, false
 }
 
@@ -1886,8 +1876,18 @@ func (art AlertRuleTemplate) AsMicrosoftSecurityIncidentCreationAlertRuleTemplat
 	return nil, false
 }
 
-// AsScheduledAlertRuleTemplate is the BasicAlertRuleTemplate implementation for AlertRuleTemplate.
-func (art AlertRuleTemplate) AsScheduledAlertRuleTemplate() (*ScheduledAlertRuleTemplate, bool) {
+// AsThreatIntelligenceAlertRuleTemplate is the BasicAlertRuleTemplate implementation for AlertRuleTemplate.
+func (art AlertRuleTemplate) AsThreatIntelligenceAlertRuleTemplate() (*ThreatIntelligenceAlertRuleTemplate, bool) {
+	return nil, false
+}
+
+// AsFusionAlertRuleTemplate is the BasicAlertRuleTemplate implementation for AlertRuleTemplate.
+func (art AlertRuleTemplate) AsFusionAlertRuleTemplate() (*FusionAlertRuleTemplate, bool) {
+	return nil, false
+}
+
+// AsMLBehaviorAnalyticsAlertRuleTemplate is the BasicAlertRuleTemplate implementation for AlertRuleTemplate.
+func (art AlertRuleTemplate) AsMLBehaviorAnalyticsAlertRuleTemplate() (*MLBehaviorAnalyticsAlertRuleTemplate, bool) {
 	return nil, false
 }
 
@@ -2177,11 +2177,159 @@ type AlertsDataTypeOfDataConnectorAlerts struct {
 	State DataTypeState `json:"state,omitempty"`
 }
 
+// Anomalies settings with single toggle.
+type Anomalies struct {
+	// AnomaliesProperties - Anomalies properties
+	*AnomaliesProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Azure resource type
+	Type *string `json:"type,omitempty"`
+	// Etag - Etag of the azure resource
+	Etag *string `json:"etag,omitempty"`
+	// Kind - Possible values include: 'KindBasicSettingsKindSettings', 'KindBasicSettingsKindUeba', 'KindBasicSettingsKindEntityAnalytics', 'KindBasicSettingsKindEyesOn', 'KindBasicSettingsKindIPSyncer', 'KindBasicSettingsKindAnomalies'
+	Kind KindBasicSettings `json:"kind,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Anomalies.
+func (a Anomalies) MarshalJSON() ([]byte, error) {
+	a.Kind = KindBasicSettingsKindAnomalies
+	objectMap := make(map[string]interface{})
+	if a.AnomaliesProperties != nil {
+		objectMap["properties"] = a.AnomaliesProperties
+	}
+	if a.Etag != nil {
+		objectMap["etag"] = a.Etag
+	}
+	if a.Kind != "" {
+		objectMap["kind"] = a.Kind
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsUeba is the BasicSettings implementation for Anomalies.
+func (a Anomalies) AsUeba() (*Ueba, bool) {
+	return nil, false
+}
+
+// AsEntityAnalytics is the BasicSettings implementation for Anomalies.
+func (a Anomalies) AsEntityAnalytics() (*EntityAnalytics, bool) {
+	return nil, false
+}
+
+// AsEyesOn is the BasicSettings implementation for Anomalies.
+func (a Anomalies) AsEyesOn() (*EyesOn, bool) {
+	return nil, false
+}
+
+// AsIPSyncer is the BasicSettings implementation for Anomalies.
+func (a Anomalies) AsIPSyncer() (*IPSyncer, bool) {
+	return nil, false
+}
+
+// AsAnomalies is the BasicSettings implementation for Anomalies.
+func (a Anomalies) AsAnomalies() (*Anomalies, bool) {
+	return &a, true
+}
+
+// AsSettings is the BasicSettings implementation for Anomalies.
+func (a Anomalies) AsSettings() (*Settings, bool) {
+	return nil, false
+}
+
+// AsBasicSettings is the BasicSettings implementation for Anomalies.
+func (a Anomalies) AsBasicSettings() (BasicSettings, bool) {
+	return &a, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for Anomalies struct.
+func (a *Anomalies) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var anomaliesProperties AnomaliesProperties
+				err = json.Unmarshal(*v, &anomaliesProperties)
+				if err != nil {
+					return err
+				}
+				a.AnomaliesProperties = &anomaliesProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				a.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				a.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				a.Type = &typeVar
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				a.Etag = &etag
+			}
+		case "kind":
+			if v != nil {
+				var kind KindBasicSettings
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				a.Kind = kind
+			}
+		}
+	}
+
+	return nil
+}
+
+// AnomaliesProperties anomalies property bag.
+type AnomaliesProperties struct {
+	// IsEnabled - READ-ONLY; Determines whether the setting is enable or disabled.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AnomaliesProperties.
+func (ap AnomaliesProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ASCCheckRequirements represents ASC (Azure Security Center) requirements check request.
 type ASCCheckRequirements struct {
 	// ASCCheckRequirementsProperties - ASC (Azure Security Center) requirements check properties.
 	*ASCCheckRequirementsProperties `json:"properties,omitempty"`
-	// Kind - Possible values include: 'KindBasicDataConnectorsCheckRequirementsKindDataConnectorsCheckRequirements', 'KindBasicDataConnectorsCheckRequirementsKindAzureActiveDirectory', 'KindBasicDataConnectorsCheckRequirementsKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatIntelligence', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindAzureSecurityCenter', 'KindBasicDataConnectorsCheckRequirementsKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorsCheckRequirementsKindDynamics365', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindOfficeATP', 'KindBasicDataConnectorsCheckRequirementsKindThreatIntelligence', 'KindBasicDataConnectorsCheckRequirementsKindThreatIntelligenceTaxii'
+	// Kind - Possible values include: 'KindBasicDataConnectorsCheckRequirementsKindDataConnectorsCheckRequirements', 'KindBasicDataConnectorsCheckRequirementsKindAzureActiveDirectory', 'KindBasicDataConnectorsCheckRequirementsKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindAzureSecurityCenter', 'KindBasicDataConnectorsCheckRequirementsKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorsCheckRequirementsKindDynamics365', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatIntelligence', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindOfficeATP', 'KindBasicDataConnectorsCheckRequirementsKindThreatIntelligence', 'KindBasicDataConnectorsCheckRequirementsKindThreatIntelligenceTaxii'
 	Kind KindBasicDataConnectorsCheckRequirements `json:"kind,omitempty"`
 }
 
@@ -2208,16 +2356,6 @@ func (acr ASCCheckRequirements) AsAATPCheckRequirements() (*AATPCheckRequirement
 	return nil, false
 }
 
-// AsMSTICheckRequirements is the BasicDataConnectorsCheckRequirements implementation for ASCCheckRequirements.
-func (acr ASCCheckRequirements) AsMSTICheckRequirements() (*MSTICheckRequirements, bool) {
-	return nil, false
-}
-
-// AsMtpCheckRequirements is the BasicDataConnectorsCheckRequirements implementation for ASCCheckRequirements.
-func (acr ASCCheckRequirements) AsMtpCheckRequirements() (*MtpCheckRequirements, bool) {
-	return nil, false
-}
-
 // AsASCCheckRequirements is the BasicDataConnectorsCheckRequirements implementation for ASCCheckRequirements.
 func (acr ASCCheckRequirements) AsASCCheckRequirements() (*ASCCheckRequirements, bool) {
 	return &acr, true
@@ -2240,6 +2378,16 @@ func (acr ASCCheckRequirements) AsMCASCheckRequirements() (*MCASCheckRequirement
 
 // AsMDATPCheckRequirements is the BasicDataConnectorsCheckRequirements implementation for ASCCheckRequirements.
 func (acr ASCCheckRequirements) AsMDATPCheckRequirements() (*MDATPCheckRequirements, bool) {
+	return nil, false
+}
+
+// AsMSTICheckRequirements is the BasicDataConnectorsCheckRequirements implementation for ASCCheckRequirements.
+func (acr ASCCheckRequirements) AsMSTICheckRequirements() (*MSTICheckRequirements, bool) {
+	return nil, false
+}
+
+// AsMtpCheckRequirements is the BasicDataConnectorsCheckRequirements implementation for ASCCheckRequirements.
+func (acr ASCCheckRequirements) AsMtpCheckRequirements() (*MtpCheckRequirements, bool) {
 	return nil, false
 }
 
@@ -2319,7 +2467,7 @@ type ASCDataConnector struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindBasicDataConnectorKindDataConnector', 'KindBasicDataConnectorKindAzureActiveDirectory', 'KindBasicDataConnectorKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorKindMicrosoftThreatIntelligence', 'KindBasicDataConnectorKindMicrosoftThreatProtection', 'KindBasicDataConnectorKindAzureSecurityCenter', 'KindBasicDataConnectorKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorKindDynamics365', 'KindBasicDataConnectorKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorKindOfficeATP', 'KindBasicDataConnectorKindOffice365', 'KindBasicDataConnectorKindThreatIntelligence', 'KindBasicDataConnectorKindThreatIntelligenceTaxii'
+	// Kind - Possible values include: 'KindBasicDataConnectorKindDataConnector', 'KindBasicDataConnectorKindThreatIntelligenceTaxii', 'KindBasicDataConnectorKindThreatIntelligence', 'KindBasicDataConnectorKindOffice365', 'KindBasicDataConnectorKindOfficeATP', 'KindBasicDataConnectorKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorKindDynamics365', 'KindBasicDataConnectorKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorKindAzureSecurityCenter', 'KindBasicDataConnectorKindMicrosoftThreatProtection', 'KindBasicDataConnectorKindMicrosoftThreatIntelligence', 'KindBasicDataConnectorKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorKindAzureActiveDirectory'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
 }
 
@@ -2339,58 +2487,8 @@ func (adc ASCDataConnector) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsAADDataConnector is the BasicDataConnector implementation for ASCDataConnector.
-func (adc ASCDataConnector) AsAADDataConnector() (*AADDataConnector, bool) {
-	return nil, false
-}
-
-// AsAATPDataConnector is the BasicDataConnector implementation for ASCDataConnector.
-func (adc ASCDataConnector) AsAATPDataConnector() (*AATPDataConnector, bool) {
-	return nil, false
-}
-
-// AsMSTIDataConnector is the BasicDataConnector implementation for ASCDataConnector.
-func (adc ASCDataConnector) AsMSTIDataConnector() (*MSTIDataConnector, bool) {
-	return nil, false
-}
-
-// AsMTPDataConnector is the BasicDataConnector implementation for ASCDataConnector.
-func (adc ASCDataConnector) AsMTPDataConnector() (*MTPDataConnector, bool) {
-	return nil, false
-}
-
-// AsASCDataConnector is the BasicDataConnector implementation for ASCDataConnector.
-func (adc ASCDataConnector) AsASCDataConnector() (*ASCDataConnector, bool) {
-	return &adc, true
-}
-
-// AsAwsCloudTrailDataConnector is the BasicDataConnector implementation for ASCDataConnector.
-func (adc ASCDataConnector) AsAwsCloudTrailDataConnector() (*AwsCloudTrailDataConnector, bool) {
-	return nil, false
-}
-
-// AsDynamics365DataConnector is the BasicDataConnector implementation for ASCDataConnector.
-func (adc ASCDataConnector) AsDynamics365DataConnector() (*Dynamics365DataConnector, bool) {
-	return nil, false
-}
-
-// AsMCASDataConnector is the BasicDataConnector implementation for ASCDataConnector.
-func (adc ASCDataConnector) AsMCASDataConnector() (*MCASDataConnector, bool) {
-	return nil, false
-}
-
-// AsMDATPDataConnector is the BasicDataConnector implementation for ASCDataConnector.
-func (adc ASCDataConnector) AsMDATPDataConnector() (*MDATPDataConnector, bool) {
-	return nil, false
-}
-
-// AsOfficeATPDataConnector is the BasicDataConnector implementation for ASCDataConnector.
-func (adc ASCDataConnector) AsOfficeATPDataConnector() (*OfficeATPDataConnector, bool) {
-	return nil, false
-}
-
-// AsOfficeDataConnector is the BasicDataConnector implementation for ASCDataConnector.
-func (adc ASCDataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool) {
+// AsTiTaxiiDataConnector is the BasicDataConnector implementation for ASCDataConnector.
+func (adc ASCDataConnector) AsTiTaxiiDataConnector() (*TiTaxiiDataConnector, bool) {
 	return nil, false
 }
 
@@ -2399,8 +2497,58 @@ func (adc ASCDataConnector) AsTIDataConnector() (*TIDataConnector, bool) {
 	return nil, false
 }
 
-// AsTiTaxiiDataConnector is the BasicDataConnector implementation for ASCDataConnector.
-func (adc ASCDataConnector) AsTiTaxiiDataConnector() (*TiTaxiiDataConnector, bool) {
+// AsOfficeDataConnector is the BasicDataConnector implementation for ASCDataConnector.
+func (adc ASCDataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool) {
+	return nil, false
+}
+
+// AsOfficeATPDataConnector is the BasicDataConnector implementation for ASCDataConnector.
+func (adc ASCDataConnector) AsOfficeATPDataConnector() (*OfficeATPDataConnector, bool) {
+	return nil, false
+}
+
+// AsMDATPDataConnector is the BasicDataConnector implementation for ASCDataConnector.
+func (adc ASCDataConnector) AsMDATPDataConnector() (*MDATPDataConnector, bool) {
+	return nil, false
+}
+
+// AsMCASDataConnector is the BasicDataConnector implementation for ASCDataConnector.
+func (adc ASCDataConnector) AsMCASDataConnector() (*MCASDataConnector, bool) {
+	return nil, false
+}
+
+// AsDynamics365DataConnector is the BasicDataConnector implementation for ASCDataConnector.
+func (adc ASCDataConnector) AsDynamics365DataConnector() (*Dynamics365DataConnector, bool) {
+	return nil, false
+}
+
+// AsAwsCloudTrailDataConnector is the BasicDataConnector implementation for ASCDataConnector.
+func (adc ASCDataConnector) AsAwsCloudTrailDataConnector() (*AwsCloudTrailDataConnector, bool) {
+	return nil, false
+}
+
+// AsASCDataConnector is the BasicDataConnector implementation for ASCDataConnector.
+func (adc ASCDataConnector) AsASCDataConnector() (*ASCDataConnector, bool) {
+	return &adc, true
+}
+
+// AsMTPDataConnector is the BasicDataConnector implementation for ASCDataConnector.
+func (adc ASCDataConnector) AsMTPDataConnector() (*MTPDataConnector, bool) {
+	return nil, false
+}
+
+// AsMSTIDataConnector is the BasicDataConnector implementation for ASCDataConnector.
+func (adc ASCDataConnector) AsMSTIDataConnector() (*MSTIDataConnector, bool) {
+	return nil, false
+}
+
+// AsAATPDataConnector is the BasicDataConnector implementation for ASCDataConnector.
+func (adc ASCDataConnector) AsAATPDataConnector() (*AATPDataConnector, bool) {
+	return nil, false
+}
+
+// AsAADDataConnector is the BasicDataConnector implementation for ASCDataConnector.
+func (adc ASCDataConnector) AsAADDataConnector() (*AADDataConnector, bool) {
 	return nil, false
 }
 
@@ -3277,7 +3425,7 @@ func (artl *AutomationRuleTriggeringLogic) UnmarshalJSON(body []byte) error {
 
 // AwsCloudTrailCheckRequirements amazon Web Services CloudTrail requirements check request.
 type AwsCloudTrailCheckRequirements struct {
-	// Kind - Possible values include: 'KindBasicDataConnectorsCheckRequirementsKindDataConnectorsCheckRequirements', 'KindBasicDataConnectorsCheckRequirementsKindAzureActiveDirectory', 'KindBasicDataConnectorsCheckRequirementsKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatIntelligence', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindAzureSecurityCenter', 'KindBasicDataConnectorsCheckRequirementsKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorsCheckRequirementsKindDynamics365', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindOfficeATP', 'KindBasicDataConnectorsCheckRequirementsKindThreatIntelligence', 'KindBasicDataConnectorsCheckRequirementsKindThreatIntelligenceTaxii'
+	// Kind - Possible values include: 'KindBasicDataConnectorsCheckRequirementsKindDataConnectorsCheckRequirements', 'KindBasicDataConnectorsCheckRequirementsKindAzureActiveDirectory', 'KindBasicDataConnectorsCheckRequirementsKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindAzureSecurityCenter', 'KindBasicDataConnectorsCheckRequirementsKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorsCheckRequirementsKindDynamics365', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatIntelligence', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindOfficeATP', 'KindBasicDataConnectorsCheckRequirementsKindThreatIntelligence', 'KindBasicDataConnectorsCheckRequirementsKindThreatIntelligenceTaxii'
 	Kind KindBasicDataConnectorsCheckRequirements `json:"kind,omitempty"`
 }
 
@@ -3298,16 +3446,6 @@ func (actcr AwsCloudTrailCheckRequirements) AsAADCheckRequirements() (*AADCheckR
 
 // AsAATPCheckRequirements is the BasicDataConnectorsCheckRequirements implementation for AwsCloudTrailCheckRequirements.
 func (actcr AwsCloudTrailCheckRequirements) AsAATPCheckRequirements() (*AATPCheckRequirements, bool) {
-	return nil, false
-}
-
-// AsMSTICheckRequirements is the BasicDataConnectorsCheckRequirements implementation for AwsCloudTrailCheckRequirements.
-func (actcr AwsCloudTrailCheckRequirements) AsMSTICheckRequirements() (*MSTICheckRequirements, bool) {
-	return nil, false
-}
-
-// AsMtpCheckRequirements is the BasicDataConnectorsCheckRequirements implementation for AwsCloudTrailCheckRequirements.
-func (actcr AwsCloudTrailCheckRequirements) AsMtpCheckRequirements() (*MtpCheckRequirements, bool) {
 	return nil, false
 }
 
@@ -3333,6 +3471,16 @@ func (actcr AwsCloudTrailCheckRequirements) AsMCASCheckRequirements() (*MCASChec
 
 // AsMDATPCheckRequirements is the BasicDataConnectorsCheckRequirements implementation for AwsCloudTrailCheckRequirements.
 func (actcr AwsCloudTrailCheckRequirements) AsMDATPCheckRequirements() (*MDATPCheckRequirements, bool) {
+	return nil, false
+}
+
+// AsMSTICheckRequirements is the BasicDataConnectorsCheckRequirements implementation for AwsCloudTrailCheckRequirements.
+func (actcr AwsCloudTrailCheckRequirements) AsMSTICheckRequirements() (*MSTICheckRequirements, bool) {
+	return nil, false
+}
+
+// AsMtpCheckRequirements is the BasicDataConnectorsCheckRequirements implementation for AwsCloudTrailCheckRequirements.
+func (actcr AwsCloudTrailCheckRequirements) AsMtpCheckRequirements() (*MtpCheckRequirements, bool) {
 	return nil, false
 }
 
@@ -3373,7 +3521,7 @@ type AwsCloudTrailDataConnector struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindBasicDataConnectorKindDataConnector', 'KindBasicDataConnectorKindAzureActiveDirectory', 'KindBasicDataConnectorKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorKindMicrosoftThreatIntelligence', 'KindBasicDataConnectorKindMicrosoftThreatProtection', 'KindBasicDataConnectorKindAzureSecurityCenter', 'KindBasicDataConnectorKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorKindDynamics365', 'KindBasicDataConnectorKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorKindOfficeATP', 'KindBasicDataConnectorKindOffice365', 'KindBasicDataConnectorKindThreatIntelligence', 'KindBasicDataConnectorKindThreatIntelligenceTaxii'
+	// Kind - Possible values include: 'KindBasicDataConnectorKindDataConnector', 'KindBasicDataConnectorKindThreatIntelligenceTaxii', 'KindBasicDataConnectorKindThreatIntelligence', 'KindBasicDataConnectorKindOffice365', 'KindBasicDataConnectorKindOfficeATP', 'KindBasicDataConnectorKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorKindDynamics365', 'KindBasicDataConnectorKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorKindAzureSecurityCenter', 'KindBasicDataConnectorKindMicrosoftThreatProtection', 'KindBasicDataConnectorKindMicrosoftThreatIntelligence', 'KindBasicDataConnectorKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorKindAzureActiveDirectory'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
 }
 
@@ -3393,58 +3541,8 @@ func (actdc AwsCloudTrailDataConnector) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsAADDataConnector is the BasicDataConnector implementation for AwsCloudTrailDataConnector.
-func (actdc AwsCloudTrailDataConnector) AsAADDataConnector() (*AADDataConnector, bool) {
-	return nil, false
-}
-
-// AsAATPDataConnector is the BasicDataConnector implementation for AwsCloudTrailDataConnector.
-func (actdc AwsCloudTrailDataConnector) AsAATPDataConnector() (*AATPDataConnector, bool) {
-	return nil, false
-}
-
-// AsMSTIDataConnector is the BasicDataConnector implementation for AwsCloudTrailDataConnector.
-func (actdc AwsCloudTrailDataConnector) AsMSTIDataConnector() (*MSTIDataConnector, bool) {
-	return nil, false
-}
-
-// AsMTPDataConnector is the BasicDataConnector implementation for AwsCloudTrailDataConnector.
-func (actdc AwsCloudTrailDataConnector) AsMTPDataConnector() (*MTPDataConnector, bool) {
-	return nil, false
-}
-
-// AsASCDataConnector is the BasicDataConnector implementation for AwsCloudTrailDataConnector.
-func (actdc AwsCloudTrailDataConnector) AsASCDataConnector() (*ASCDataConnector, bool) {
-	return nil, false
-}
-
-// AsAwsCloudTrailDataConnector is the BasicDataConnector implementation for AwsCloudTrailDataConnector.
-func (actdc AwsCloudTrailDataConnector) AsAwsCloudTrailDataConnector() (*AwsCloudTrailDataConnector, bool) {
-	return &actdc, true
-}
-
-// AsDynamics365DataConnector is the BasicDataConnector implementation for AwsCloudTrailDataConnector.
-func (actdc AwsCloudTrailDataConnector) AsDynamics365DataConnector() (*Dynamics365DataConnector, bool) {
-	return nil, false
-}
-
-// AsMCASDataConnector is the BasicDataConnector implementation for AwsCloudTrailDataConnector.
-func (actdc AwsCloudTrailDataConnector) AsMCASDataConnector() (*MCASDataConnector, bool) {
-	return nil, false
-}
-
-// AsMDATPDataConnector is the BasicDataConnector implementation for AwsCloudTrailDataConnector.
-func (actdc AwsCloudTrailDataConnector) AsMDATPDataConnector() (*MDATPDataConnector, bool) {
-	return nil, false
-}
-
-// AsOfficeATPDataConnector is the BasicDataConnector implementation for AwsCloudTrailDataConnector.
-func (actdc AwsCloudTrailDataConnector) AsOfficeATPDataConnector() (*OfficeATPDataConnector, bool) {
-	return nil, false
-}
-
-// AsOfficeDataConnector is the BasicDataConnector implementation for AwsCloudTrailDataConnector.
-func (actdc AwsCloudTrailDataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool) {
+// AsTiTaxiiDataConnector is the BasicDataConnector implementation for AwsCloudTrailDataConnector.
+func (actdc AwsCloudTrailDataConnector) AsTiTaxiiDataConnector() (*TiTaxiiDataConnector, bool) {
 	return nil, false
 }
 
@@ -3453,8 +3551,58 @@ func (actdc AwsCloudTrailDataConnector) AsTIDataConnector() (*TIDataConnector, b
 	return nil, false
 }
 
-// AsTiTaxiiDataConnector is the BasicDataConnector implementation for AwsCloudTrailDataConnector.
-func (actdc AwsCloudTrailDataConnector) AsTiTaxiiDataConnector() (*TiTaxiiDataConnector, bool) {
+// AsOfficeDataConnector is the BasicDataConnector implementation for AwsCloudTrailDataConnector.
+func (actdc AwsCloudTrailDataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool) {
+	return nil, false
+}
+
+// AsOfficeATPDataConnector is the BasicDataConnector implementation for AwsCloudTrailDataConnector.
+func (actdc AwsCloudTrailDataConnector) AsOfficeATPDataConnector() (*OfficeATPDataConnector, bool) {
+	return nil, false
+}
+
+// AsMDATPDataConnector is the BasicDataConnector implementation for AwsCloudTrailDataConnector.
+func (actdc AwsCloudTrailDataConnector) AsMDATPDataConnector() (*MDATPDataConnector, bool) {
+	return nil, false
+}
+
+// AsMCASDataConnector is the BasicDataConnector implementation for AwsCloudTrailDataConnector.
+func (actdc AwsCloudTrailDataConnector) AsMCASDataConnector() (*MCASDataConnector, bool) {
+	return nil, false
+}
+
+// AsDynamics365DataConnector is the BasicDataConnector implementation for AwsCloudTrailDataConnector.
+func (actdc AwsCloudTrailDataConnector) AsDynamics365DataConnector() (*Dynamics365DataConnector, bool) {
+	return nil, false
+}
+
+// AsAwsCloudTrailDataConnector is the BasicDataConnector implementation for AwsCloudTrailDataConnector.
+func (actdc AwsCloudTrailDataConnector) AsAwsCloudTrailDataConnector() (*AwsCloudTrailDataConnector, bool) {
+	return &actdc, true
+}
+
+// AsASCDataConnector is the BasicDataConnector implementation for AwsCloudTrailDataConnector.
+func (actdc AwsCloudTrailDataConnector) AsASCDataConnector() (*ASCDataConnector, bool) {
+	return nil, false
+}
+
+// AsMTPDataConnector is the BasicDataConnector implementation for AwsCloudTrailDataConnector.
+func (actdc AwsCloudTrailDataConnector) AsMTPDataConnector() (*MTPDataConnector, bool) {
+	return nil, false
+}
+
+// AsMSTIDataConnector is the BasicDataConnector implementation for AwsCloudTrailDataConnector.
+func (actdc AwsCloudTrailDataConnector) AsMSTIDataConnector() (*MSTIDataConnector, bool) {
+	return nil, false
+}
+
+// AsAATPDataConnector is the BasicDataConnector implementation for AwsCloudTrailDataConnector.
+func (actdc AwsCloudTrailDataConnector) AsAATPDataConnector() (*AATPDataConnector, bool) {
+	return nil, false
+}
+
+// AsAADDataConnector is the BasicDataConnector implementation for AwsCloudTrailDataConnector.
+func (actdc AwsCloudTrailDataConnector) AsAADDataConnector() (*AADDataConnector, bool) {
 	return nil, false
 }
 
@@ -3568,13 +3716,13 @@ type AzureResourceEntity struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Kind - Possible values include: 'KindBasicEntityKindEntity', 'KindBasicEntityKindAccount', 'KindBasicEntityKindAzureResource', 'KindBasicEntityKindCloudApplication', 'KindBasicEntityKindDNSResolution', 'KindBasicEntityKindFile', 'KindBasicEntityKindFileHash', 'KindBasicEntityKindHost', 'KindBasicEntityKindBookmark', 'KindBasicEntityKindSecurityAlert', 'KindBasicEntityKindIP', 'KindBasicEntityKindMailbox', 'KindBasicEntityKindMailCluster', 'KindBasicEntityKindMailMessage', 'KindBasicEntityKindSubmissionMail', 'KindBasicEntityKindMalware', 'KindBasicEntityKindProcess', 'KindBasicEntityKindRegistryKey', 'KindBasicEntityKindRegistryValue', 'KindBasicEntityKindSecurityGroup', 'KindBasicEntityKindURL', 'KindBasicEntityKindIoTDevice'
-	Kind KindBasicEntity `json:"kind,omitempty"`
+	// Kind - Possible values include: 'KindEntity', 'KindIoTDevice', 'KindURL', 'KindSecurityGroup', 'KindSecurityAlert', 'KindRegistryValue', 'KindRegistryKey', 'KindProcess', 'KindMalware', 'KindSubmissionMail', 'KindMailMessage', 'KindMailCluster', 'KindMailbox', 'KindIP', 'KindBookmark', 'KindHost', 'KindFileHash', 'KindFile', 'KindDNSResolution', 'KindCloudApplication', 'KindAzureResource', 'KindAccount'
+	Kind Kind `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for AzureResourceEntity.
 func (are AzureResourceEntity) MarshalJSON() ([]byte, error) {
-	are.Kind = KindBasicEntityKindAzureResource
+	are.Kind = KindAzureResource
 	objectMap := make(map[string]interface{})
 	if are.AzureResourceEntityProperties != nil {
 		objectMap["properties"] = are.AzureResourceEntityProperties
@@ -3585,98 +3733,8 @@ func (are AzureResourceEntity) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsAccountEntity is the BasicEntity implementation for AzureResourceEntity.
-func (are AzureResourceEntity) AsAccountEntity() (*AccountEntity, bool) {
-	return nil, false
-}
-
-// AsAzureResourceEntity is the BasicEntity implementation for AzureResourceEntity.
-func (are AzureResourceEntity) AsAzureResourceEntity() (*AzureResourceEntity, bool) {
-	return &are, true
-}
-
-// AsCloudApplicationEntity is the BasicEntity implementation for AzureResourceEntity.
-func (are AzureResourceEntity) AsCloudApplicationEntity() (*CloudApplicationEntity, bool) {
-	return nil, false
-}
-
-// AsDNSEntity is the BasicEntity implementation for AzureResourceEntity.
-func (are AzureResourceEntity) AsDNSEntity() (*DNSEntity, bool) {
-	return nil, false
-}
-
-// AsFileEntity is the BasicEntity implementation for AzureResourceEntity.
-func (are AzureResourceEntity) AsFileEntity() (*FileEntity, bool) {
-	return nil, false
-}
-
-// AsFileHashEntity is the BasicEntity implementation for AzureResourceEntity.
-func (are AzureResourceEntity) AsFileHashEntity() (*FileHashEntity, bool) {
-	return nil, false
-}
-
-// AsHostEntity is the BasicEntity implementation for AzureResourceEntity.
-func (are AzureResourceEntity) AsHostEntity() (*HostEntity, bool) {
-	return nil, false
-}
-
-// AsHuntingBookmark is the BasicEntity implementation for AzureResourceEntity.
-func (are AzureResourceEntity) AsHuntingBookmark() (*HuntingBookmark, bool) {
-	return nil, false
-}
-
-// AsSecurityAlert is the BasicEntity implementation for AzureResourceEntity.
-func (are AzureResourceEntity) AsSecurityAlert() (*SecurityAlert, bool) {
-	return nil, false
-}
-
-// AsIPEntity is the BasicEntity implementation for AzureResourceEntity.
-func (are AzureResourceEntity) AsIPEntity() (*IPEntity, bool) {
-	return nil, false
-}
-
-// AsMailboxEntity is the BasicEntity implementation for AzureResourceEntity.
-func (are AzureResourceEntity) AsMailboxEntity() (*MailboxEntity, bool) {
-	return nil, false
-}
-
-// AsMailClusterEntity is the BasicEntity implementation for AzureResourceEntity.
-func (are AzureResourceEntity) AsMailClusterEntity() (*MailClusterEntity, bool) {
-	return nil, false
-}
-
-// AsMailMessageEntity is the BasicEntity implementation for AzureResourceEntity.
-func (are AzureResourceEntity) AsMailMessageEntity() (*MailMessageEntity, bool) {
-	return nil, false
-}
-
-// AsSubmissionMailEntity is the BasicEntity implementation for AzureResourceEntity.
-func (are AzureResourceEntity) AsSubmissionMailEntity() (*SubmissionMailEntity, bool) {
-	return nil, false
-}
-
-// AsMalwareEntity is the BasicEntity implementation for AzureResourceEntity.
-func (are AzureResourceEntity) AsMalwareEntity() (*MalwareEntity, bool) {
-	return nil, false
-}
-
-// AsProcessEntity is the BasicEntity implementation for AzureResourceEntity.
-func (are AzureResourceEntity) AsProcessEntity() (*ProcessEntity, bool) {
-	return nil, false
-}
-
-// AsRegistryKeyEntity is the BasicEntity implementation for AzureResourceEntity.
-func (are AzureResourceEntity) AsRegistryKeyEntity() (*RegistryKeyEntity, bool) {
-	return nil, false
-}
-
-// AsRegistryValueEntity is the BasicEntity implementation for AzureResourceEntity.
-func (are AzureResourceEntity) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
-	return nil, false
-}
-
-// AsSecurityGroupEntity is the BasicEntity implementation for AzureResourceEntity.
-func (are AzureResourceEntity) AsSecurityGroupEntity() (*SecurityGroupEntity, bool) {
+// AsIoTDeviceEntity is the BasicEntity implementation for AzureResourceEntity.
+func (are AzureResourceEntity) AsIoTDeviceEntity() (*IoTDeviceEntity, bool) {
 	return nil, false
 }
 
@@ -3685,8 +3743,98 @@ func (are AzureResourceEntity) AsURLEntity() (*URLEntity, bool) {
 	return nil, false
 }
 
-// AsIoTDeviceEntity is the BasicEntity implementation for AzureResourceEntity.
-func (are AzureResourceEntity) AsIoTDeviceEntity() (*IoTDeviceEntity, bool) {
+// AsSecurityGroupEntity is the BasicEntity implementation for AzureResourceEntity.
+func (are AzureResourceEntity) AsSecurityGroupEntity() (*SecurityGroupEntity, bool) {
+	return nil, false
+}
+
+// AsSecurityAlert is the BasicEntity implementation for AzureResourceEntity.
+func (are AzureResourceEntity) AsSecurityAlert() (*SecurityAlert, bool) {
+	return nil, false
+}
+
+// AsRegistryValueEntity is the BasicEntity implementation for AzureResourceEntity.
+func (are AzureResourceEntity) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
+	return nil, false
+}
+
+// AsRegistryKeyEntity is the BasicEntity implementation for AzureResourceEntity.
+func (are AzureResourceEntity) AsRegistryKeyEntity() (*RegistryKeyEntity, bool) {
+	return nil, false
+}
+
+// AsProcessEntity is the BasicEntity implementation for AzureResourceEntity.
+func (are AzureResourceEntity) AsProcessEntity() (*ProcessEntity, bool) {
+	return nil, false
+}
+
+// AsMalwareEntity is the BasicEntity implementation for AzureResourceEntity.
+func (are AzureResourceEntity) AsMalwareEntity() (*MalwareEntity, bool) {
+	return nil, false
+}
+
+// AsSubmissionMailEntity is the BasicEntity implementation for AzureResourceEntity.
+func (are AzureResourceEntity) AsSubmissionMailEntity() (*SubmissionMailEntity, bool) {
+	return nil, false
+}
+
+// AsMailMessageEntity is the BasicEntity implementation for AzureResourceEntity.
+func (are AzureResourceEntity) AsMailMessageEntity() (*MailMessageEntity, bool) {
+	return nil, false
+}
+
+// AsMailClusterEntity is the BasicEntity implementation for AzureResourceEntity.
+func (are AzureResourceEntity) AsMailClusterEntity() (*MailClusterEntity, bool) {
+	return nil, false
+}
+
+// AsMailboxEntity is the BasicEntity implementation for AzureResourceEntity.
+func (are AzureResourceEntity) AsMailboxEntity() (*MailboxEntity, bool) {
+	return nil, false
+}
+
+// AsIPEntity is the BasicEntity implementation for AzureResourceEntity.
+func (are AzureResourceEntity) AsIPEntity() (*IPEntity, bool) {
+	return nil, false
+}
+
+// AsHuntingBookmark is the BasicEntity implementation for AzureResourceEntity.
+func (are AzureResourceEntity) AsHuntingBookmark() (*HuntingBookmark, bool) {
+	return nil, false
+}
+
+// AsHostEntity is the BasicEntity implementation for AzureResourceEntity.
+func (are AzureResourceEntity) AsHostEntity() (*HostEntity, bool) {
+	return nil, false
+}
+
+// AsFileHashEntity is the BasicEntity implementation for AzureResourceEntity.
+func (are AzureResourceEntity) AsFileHashEntity() (*FileHashEntity, bool) {
+	return nil, false
+}
+
+// AsFileEntity is the BasicEntity implementation for AzureResourceEntity.
+func (are AzureResourceEntity) AsFileEntity() (*FileEntity, bool) {
+	return nil, false
+}
+
+// AsDNSEntity is the BasicEntity implementation for AzureResourceEntity.
+func (are AzureResourceEntity) AsDNSEntity() (*DNSEntity, bool) {
+	return nil, false
+}
+
+// AsCloudApplicationEntity is the BasicEntity implementation for AzureResourceEntity.
+func (are AzureResourceEntity) AsCloudApplicationEntity() (*CloudApplicationEntity, bool) {
+	return nil, false
+}
+
+// AsAzureResourceEntity is the BasicEntity implementation for AzureResourceEntity.
+func (are AzureResourceEntity) AsAzureResourceEntity() (*AzureResourceEntity, bool) {
+	return &are, true
+}
+
+// AsAccountEntity is the BasicEntity implementation for AzureResourceEntity.
+func (are AzureResourceEntity) AsAccountEntity() (*AccountEntity, bool) {
 	return nil, false
 }
 
@@ -3747,7 +3895,7 @@ func (are *AzureResourceEntity) UnmarshalJSON(body []byte) error {
 			}
 		case "kind":
 			if v != nil {
-				var kind KindBasicEntity
+				var kind Kind
 				err = json.Unmarshal(*v, &kind)
 				if err != nil {
 					return err
@@ -4132,7 +4280,7 @@ type BookmarkTimelineItem struct {
 	Notes *string `json:"notes,omitempty"`
 	// EndTimeUtc - The bookmark end time.
 	EndTimeUtc *date.Time `json:"endTimeUtc,omitempty"`
-	// StartTimeUtc - TThe bookmark start time.
+	// StartTimeUtc - The bookmark start time.
 	StartTimeUtc *date.Time `json:"startTimeUtc,omitempty"`
 	// EventTime - The bookmark event time.
 	EventTime *date.Time `json:"eventTime,omitempty"`
@@ -4140,7 +4288,7 @@ type BookmarkTimelineItem struct {
 	CreatedBy *UserInfo `json:"createdBy,omitempty"`
 	// Labels - List of labels relevant to this bookmark
 	Labels *[]string `json:"labels,omitempty"`
-	// Kind - Possible values include: 'KindBasicEntityTimelineItemKindEntityTimelineItem', 'KindBasicEntityTimelineItemKindActivity', 'KindBasicEntityTimelineItemKindSecurityAlert', 'KindBasicEntityTimelineItemKindBookmark'
+	// Kind - Possible values include: 'KindBasicEntityTimelineItemKindEntityTimelineItem', 'KindBasicEntityTimelineItemKindActivity', 'KindBasicEntityTimelineItemKindBookmark', 'KindBasicEntityTimelineItemKindSecurityAlert'
 	Kind KindBasicEntityTimelineItem `json:"kind,omitempty"`
 }
 
@@ -4183,14 +4331,14 @@ func (bti BookmarkTimelineItem) AsActivityTimelineItem() (*ActivityTimelineItem,
 	return nil, false
 }
 
-// AsSecurityAlertTimelineItem is the BasicEntityTimelineItem implementation for BookmarkTimelineItem.
-func (bti BookmarkTimelineItem) AsSecurityAlertTimelineItem() (*SecurityAlertTimelineItem, bool) {
-	return nil, false
-}
-
 // AsBookmarkTimelineItem is the BasicEntityTimelineItem implementation for BookmarkTimelineItem.
 func (bti BookmarkTimelineItem) AsBookmarkTimelineItem() (*BookmarkTimelineItem, bool) {
 	return &bti, true
+}
+
+// AsSecurityAlertTimelineItem is the BasicEntityTimelineItem implementation for BookmarkTimelineItem.
+func (bti BookmarkTimelineItem) AsSecurityAlertTimelineItem() (*SecurityAlertTimelineItem, bool) {
+	return nil, false
 }
 
 // AsEntityTimelineItem is the BasicEntityTimelineItem implementation for BookmarkTimelineItem.
@@ -5084,13 +5232,13 @@ type CasesAggregation struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Kind - Possible values include: 'KindAggregations', 'KindCasesAggregation'
-	Kind Kind `json:"kind,omitempty"`
+	// Kind - Possible values include: 'KindBasicAggregationsKindAggregations', 'KindBasicAggregationsKindCasesAggregation'
+	Kind KindBasicAggregations `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for CasesAggregation.
 func (ca CasesAggregation) MarshalJSON() ([]byte, error) {
-	ca.Kind = KindCasesAggregation
+	ca.Kind = KindBasicAggregationsKindCasesAggregation
 	objectMap := make(map[string]interface{})
 	if ca.CasesAggregationProperties != nil {
 		objectMap["properties"] = ca.CasesAggregationProperties
@@ -5163,7 +5311,7 @@ func (ca *CasesAggregation) UnmarshalJSON(body []byte) error {
 			}
 		case "kind":
 			if v != nil {
-				var kind Kind
+				var kind KindBasicAggregations
 				err = json.Unmarshal(*v, &kind)
 				if err != nil {
 					return err
@@ -5248,13 +5396,13 @@ type CloudApplicationEntity struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Kind - Possible values include: 'KindBasicEntityKindEntity', 'KindBasicEntityKindAccount', 'KindBasicEntityKindAzureResource', 'KindBasicEntityKindCloudApplication', 'KindBasicEntityKindDNSResolution', 'KindBasicEntityKindFile', 'KindBasicEntityKindFileHash', 'KindBasicEntityKindHost', 'KindBasicEntityKindBookmark', 'KindBasicEntityKindSecurityAlert', 'KindBasicEntityKindIP', 'KindBasicEntityKindMailbox', 'KindBasicEntityKindMailCluster', 'KindBasicEntityKindMailMessage', 'KindBasicEntityKindSubmissionMail', 'KindBasicEntityKindMalware', 'KindBasicEntityKindProcess', 'KindBasicEntityKindRegistryKey', 'KindBasicEntityKindRegistryValue', 'KindBasicEntityKindSecurityGroup', 'KindBasicEntityKindURL', 'KindBasicEntityKindIoTDevice'
-	Kind KindBasicEntity `json:"kind,omitempty"`
+	// Kind - Possible values include: 'KindEntity', 'KindIoTDevice', 'KindURL', 'KindSecurityGroup', 'KindSecurityAlert', 'KindRegistryValue', 'KindRegistryKey', 'KindProcess', 'KindMalware', 'KindSubmissionMail', 'KindMailMessage', 'KindMailCluster', 'KindMailbox', 'KindIP', 'KindBookmark', 'KindHost', 'KindFileHash', 'KindFile', 'KindDNSResolution', 'KindCloudApplication', 'KindAzureResource', 'KindAccount'
+	Kind Kind `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for CloudApplicationEntity.
 func (cae CloudApplicationEntity) MarshalJSON() ([]byte, error) {
-	cae.Kind = KindBasicEntityKindCloudApplication
+	cae.Kind = KindCloudApplication
 	objectMap := make(map[string]interface{})
 	if cae.CloudApplicationEntityProperties != nil {
 		objectMap["properties"] = cae.CloudApplicationEntityProperties
@@ -5265,98 +5413,8 @@ func (cae CloudApplicationEntity) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsAccountEntity is the BasicEntity implementation for CloudApplicationEntity.
-func (cae CloudApplicationEntity) AsAccountEntity() (*AccountEntity, bool) {
-	return nil, false
-}
-
-// AsAzureResourceEntity is the BasicEntity implementation for CloudApplicationEntity.
-func (cae CloudApplicationEntity) AsAzureResourceEntity() (*AzureResourceEntity, bool) {
-	return nil, false
-}
-
-// AsCloudApplicationEntity is the BasicEntity implementation for CloudApplicationEntity.
-func (cae CloudApplicationEntity) AsCloudApplicationEntity() (*CloudApplicationEntity, bool) {
-	return &cae, true
-}
-
-// AsDNSEntity is the BasicEntity implementation for CloudApplicationEntity.
-func (cae CloudApplicationEntity) AsDNSEntity() (*DNSEntity, bool) {
-	return nil, false
-}
-
-// AsFileEntity is the BasicEntity implementation for CloudApplicationEntity.
-func (cae CloudApplicationEntity) AsFileEntity() (*FileEntity, bool) {
-	return nil, false
-}
-
-// AsFileHashEntity is the BasicEntity implementation for CloudApplicationEntity.
-func (cae CloudApplicationEntity) AsFileHashEntity() (*FileHashEntity, bool) {
-	return nil, false
-}
-
-// AsHostEntity is the BasicEntity implementation for CloudApplicationEntity.
-func (cae CloudApplicationEntity) AsHostEntity() (*HostEntity, bool) {
-	return nil, false
-}
-
-// AsHuntingBookmark is the BasicEntity implementation for CloudApplicationEntity.
-func (cae CloudApplicationEntity) AsHuntingBookmark() (*HuntingBookmark, bool) {
-	return nil, false
-}
-
-// AsSecurityAlert is the BasicEntity implementation for CloudApplicationEntity.
-func (cae CloudApplicationEntity) AsSecurityAlert() (*SecurityAlert, bool) {
-	return nil, false
-}
-
-// AsIPEntity is the BasicEntity implementation for CloudApplicationEntity.
-func (cae CloudApplicationEntity) AsIPEntity() (*IPEntity, bool) {
-	return nil, false
-}
-
-// AsMailboxEntity is the BasicEntity implementation for CloudApplicationEntity.
-func (cae CloudApplicationEntity) AsMailboxEntity() (*MailboxEntity, bool) {
-	return nil, false
-}
-
-// AsMailClusterEntity is the BasicEntity implementation for CloudApplicationEntity.
-func (cae CloudApplicationEntity) AsMailClusterEntity() (*MailClusterEntity, bool) {
-	return nil, false
-}
-
-// AsMailMessageEntity is the BasicEntity implementation for CloudApplicationEntity.
-func (cae CloudApplicationEntity) AsMailMessageEntity() (*MailMessageEntity, bool) {
-	return nil, false
-}
-
-// AsSubmissionMailEntity is the BasicEntity implementation for CloudApplicationEntity.
-func (cae CloudApplicationEntity) AsSubmissionMailEntity() (*SubmissionMailEntity, bool) {
-	return nil, false
-}
-
-// AsMalwareEntity is the BasicEntity implementation for CloudApplicationEntity.
-func (cae CloudApplicationEntity) AsMalwareEntity() (*MalwareEntity, bool) {
-	return nil, false
-}
-
-// AsProcessEntity is the BasicEntity implementation for CloudApplicationEntity.
-func (cae CloudApplicationEntity) AsProcessEntity() (*ProcessEntity, bool) {
-	return nil, false
-}
-
-// AsRegistryKeyEntity is the BasicEntity implementation for CloudApplicationEntity.
-func (cae CloudApplicationEntity) AsRegistryKeyEntity() (*RegistryKeyEntity, bool) {
-	return nil, false
-}
-
-// AsRegistryValueEntity is the BasicEntity implementation for CloudApplicationEntity.
-func (cae CloudApplicationEntity) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
-	return nil, false
-}
-
-// AsSecurityGroupEntity is the BasicEntity implementation for CloudApplicationEntity.
-func (cae CloudApplicationEntity) AsSecurityGroupEntity() (*SecurityGroupEntity, bool) {
+// AsIoTDeviceEntity is the BasicEntity implementation for CloudApplicationEntity.
+func (cae CloudApplicationEntity) AsIoTDeviceEntity() (*IoTDeviceEntity, bool) {
 	return nil, false
 }
 
@@ -5365,8 +5423,98 @@ func (cae CloudApplicationEntity) AsURLEntity() (*URLEntity, bool) {
 	return nil, false
 }
 
-// AsIoTDeviceEntity is the BasicEntity implementation for CloudApplicationEntity.
-func (cae CloudApplicationEntity) AsIoTDeviceEntity() (*IoTDeviceEntity, bool) {
+// AsSecurityGroupEntity is the BasicEntity implementation for CloudApplicationEntity.
+func (cae CloudApplicationEntity) AsSecurityGroupEntity() (*SecurityGroupEntity, bool) {
+	return nil, false
+}
+
+// AsSecurityAlert is the BasicEntity implementation for CloudApplicationEntity.
+func (cae CloudApplicationEntity) AsSecurityAlert() (*SecurityAlert, bool) {
+	return nil, false
+}
+
+// AsRegistryValueEntity is the BasicEntity implementation for CloudApplicationEntity.
+func (cae CloudApplicationEntity) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
+	return nil, false
+}
+
+// AsRegistryKeyEntity is the BasicEntity implementation for CloudApplicationEntity.
+func (cae CloudApplicationEntity) AsRegistryKeyEntity() (*RegistryKeyEntity, bool) {
+	return nil, false
+}
+
+// AsProcessEntity is the BasicEntity implementation for CloudApplicationEntity.
+func (cae CloudApplicationEntity) AsProcessEntity() (*ProcessEntity, bool) {
+	return nil, false
+}
+
+// AsMalwareEntity is the BasicEntity implementation for CloudApplicationEntity.
+func (cae CloudApplicationEntity) AsMalwareEntity() (*MalwareEntity, bool) {
+	return nil, false
+}
+
+// AsSubmissionMailEntity is the BasicEntity implementation for CloudApplicationEntity.
+func (cae CloudApplicationEntity) AsSubmissionMailEntity() (*SubmissionMailEntity, bool) {
+	return nil, false
+}
+
+// AsMailMessageEntity is the BasicEntity implementation for CloudApplicationEntity.
+func (cae CloudApplicationEntity) AsMailMessageEntity() (*MailMessageEntity, bool) {
+	return nil, false
+}
+
+// AsMailClusterEntity is the BasicEntity implementation for CloudApplicationEntity.
+func (cae CloudApplicationEntity) AsMailClusterEntity() (*MailClusterEntity, bool) {
+	return nil, false
+}
+
+// AsMailboxEntity is the BasicEntity implementation for CloudApplicationEntity.
+func (cae CloudApplicationEntity) AsMailboxEntity() (*MailboxEntity, bool) {
+	return nil, false
+}
+
+// AsIPEntity is the BasicEntity implementation for CloudApplicationEntity.
+func (cae CloudApplicationEntity) AsIPEntity() (*IPEntity, bool) {
+	return nil, false
+}
+
+// AsHuntingBookmark is the BasicEntity implementation for CloudApplicationEntity.
+func (cae CloudApplicationEntity) AsHuntingBookmark() (*HuntingBookmark, bool) {
+	return nil, false
+}
+
+// AsHostEntity is the BasicEntity implementation for CloudApplicationEntity.
+func (cae CloudApplicationEntity) AsHostEntity() (*HostEntity, bool) {
+	return nil, false
+}
+
+// AsFileHashEntity is the BasicEntity implementation for CloudApplicationEntity.
+func (cae CloudApplicationEntity) AsFileHashEntity() (*FileHashEntity, bool) {
+	return nil, false
+}
+
+// AsFileEntity is the BasicEntity implementation for CloudApplicationEntity.
+func (cae CloudApplicationEntity) AsFileEntity() (*FileEntity, bool) {
+	return nil, false
+}
+
+// AsDNSEntity is the BasicEntity implementation for CloudApplicationEntity.
+func (cae CloudApplicationEntity) AsDNSEntity() (*DNSEntity, bool) {
+	return nil, false
+}
+
+// AsCloudApplicationEntity is the BasicEntity implementation for CloudApplicationEntity.
+func (cae CloudApplicationEntity) AsCloudApplicationEntity() (*CloudApplicationEntity, bool) {
+	return &cae, true
+}
+
+// AsAzureResourceEntity is the BasicEntity implementation for CloudApplicationEntity.
+func (cae CloudApplicationEntity) AsAzureResourceEntity() (*AzureResourceEntity, bool) {
+	return nil, false
+}
+
+// AsAccountEntity is the BasicEntity implementation for CloudApplicationEntity.
+func (cae CloudApplicationEntity) AsAccountEntity() (*AccountEntity, bool) {
 	return nil, false
 }
 
@@ -5427,7 +5575,7 @@ func (cae *CloudApplicationEntity) UnmarshalJSON(body []byte) error {
 			}
 		case "kind":
 			if v != nil {
-				var kind KindBasicEntity
+				var kind Kind
 				err = json.Unmarshal(*v, &kind)
 				if err != nil {
 					return err
@@ -5523,19 +5671,19 @@ type ConnectedEntity struct {
 
 // BasicDataConnector data connector.
 type BasicDataConnector interface {
-	AsAADDataConnector() (*AADDataConnector, bool)
-	AsAATPDataConnector() (*AATPDataConnector, bool)
-	AsMSTIDataConnector() (*MSTIDataConnector, bool)
-	AsMTPDataConnector() (*MTPDataConnector, bool)
-	AsASCDataConnector() (*ASCDataConnector, bool)
-	AsAwsCloudTrailDataConnector() (*AwsCloudTrailDataConnector, bool)
-	AsDynamics365DataConnector() (*Dynamics365DataConnector, bool)
-	AsMCASDataConnector() (*MCASDataConnector, bool)
-	AsMDATPDataConnector() (*MDATPDataConnector, bool)
-	AsOfficeATPDataConnector() (*OfficeATPDataConnector, bool)
-	AsOfficeDataConnector() (*OfficeDataConnector, bool)
-	AsTIDataConnector() (*TIDataConnector, bool)
 	AsTiTaxiiDataConnector() (*TiTaxiiDataConnector, bool)
+	AsTIDataConnector() (*TIDataConnector, bool)
+	AsOfficeDataConnector() (*OfficeDataConnector, bool)
+	AsOfficeATPDataConnector() (*OfficeATPDataConnector, bool)
+	AsMDATPDataConnector() (*MDATPDataConnector, bool)
+	AsMCASDataConnector() (*MCASDataConnector, bool)
+	AsDynamics365DataConnector() (*Dynamics365DataConnector, bool)
+	AsAwsCloudTrailDataConnector() (*AwsCloudTrailDataConnector, bool)
+	AsASCDataConnector() (*ASCDataConnector, bool)
+	AsMTPDataConnector() (*MTPDataConnector, bool)
+	AsMSTIDataConnector() (*MSTIDataConnector, bool)
+	AsAATPDataConnector() (*AATPDataConnector, bool)
+	AsAADDataConnector() (*AADDataConnector, bool)
 	AsDataConnector() (*DataConnector, bool)
 }
 
@@ -5550,7 +5698,7 @@ type DataConnector struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindBasicDataConnectorKindDataConnector', 'KindBasicDataConnectorKindAzureActiveDirectory', 'KindBasicDataConnectorKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorKindMicrosoftThreatIntelligence', 'KindBasicDataConnectorKindMicrosoftThreatProtection', 'KindBasicDataConnectorKindAzureSecurityCenter', 'KindBasicDataConnectorKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorKindDynamics365', 'KindBasicDataConnectorKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorKindOfficeATP', 'KindBasicDataConnectorKindOffice365', 'KindBasicDataConnectorKindThreatIntelligence', 'KindBasicDataConnectorKindThreatIntelligenceTaxii'
+	// Kind - Possible values include: 'KindBasicDataConnectorKindDataConnector', 'KindBasicDataConnectorKindThreatIntelligenceTaxii', 'KindBasicDataConnectorKindThreatIntelligence', 'KindBasicDataConnectorKindOffice365', 'KindBasicDataConnectorKindOfficeATP', 'KindBasicDataConnectorKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorKindDynamics365', 'KindBasicDataConnectorKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorKindAzureSecurityCenter', 'KindBasicDataConnectorKindMicrosoftThreatProtection', 'KindBasicDataConnectorKindMicrosoftThreatIntelligence', 'KindBasicDataConnectorKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorKindAzureActiveDirectory'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
 }
 
@@ -5562,58 +5710,58 @@ func unmarshalBasicDataConnector(body []byte) (BasicDataConnector, error) {
 	}
 
 	switch m["kind"] {
-	case string(KindBasicDataConnectorKindAzureActiveDirectory):
-		var adc AADDataConnector
-		err := json.Unmarshal(body, &adc)
-		return adc, err
-	case string(KindBasicDataConnectorKindAzureAdvancedThreatProtection):
-		var adc AATPDataConnector
-		err := json.Unmarshal(body, &adc)
-		return adc, err
-	case string(KindBasicDataConnectorKindMicrosoftThreatIntelligence):
-		var mdc MSTIDataConnector
-		err := json.Unmarshal(body, &mdc)
-		return mdc, err
-	case string(KindBasicDataConnectorKindMicrosoftThreatProtection):
-		var mdc MTPDataConnector
-		err := json.Unmarshal(body, &mdc)
-		return mdc, err
-	case string(KindBasicDataConnectorKindAzureSecurityCenter):
-		var adc ASCDataConnector
-		err := json.Unmarshal(body, &adc)
-		return adc, err
-	case string(KindBasicDataConnectorKindAmazonWebServicesCloudTrail):
-		var actdc AwsCloudTrailDataConnector
-		err := json.Unmarshal(body, &actdc)
-		return actdc, err
-	case string(KindBasicDataConnectorKindDynamics365):
-		var d3dc Dynamics365DataConnector
-		err := json.Unmarshal(body, &d3dc)
-		return d3dc, err
-	case string(KindBasicDataConnectorKindMicrosoftCloudAppSecurity):
-		var mdc MCASDataConnector
-		err := json.Unmarshal(body, &mdc)
-		return mdc, err
-	case string(KindBasicDataConnectorKindMicrosoftDefenderAdvancedThreatProtection):
-		var mdc MDATPDataConnector
-		err := json.Unmarshal(body, &mdc)
-		return mdc, err
-	case string(KindBasicDataConnectorKindOfficeATP):
-		var oadc OfficeATPDataConnector
-		err := json.Unmarshal(body, &oadc)
-		return oadc, err
-	case string(KindBasicDataConnectorKindOffice365):
-		var odc OfficeDataConnector
-		err := json.Unmarshal(body, &odc)
-		return odc, err
-	case string(KindBasicDataConnectorKindThreatIntelligence):
-		var tdc TIDataConnector
-		err := json.Unmarshal(body, &tdc)
-		return tdc, err
 	case string(KindBasicDataConnectorKindThreatIntelligenceTaxii):
 		var ttdc TiTaxiiDataConnector
 		err := json.Unmarshal(body, &ttdc)
 		return ttdc, err
+	case string(KindBasicDataConnectorKindThreatIntelligence):
+		var tdc TIDataConnector
+		err := json.Unmarshal(body, &tdc)
+		return tdc, err
+	case string(KindBasicDataConnectorKindOffice365):
+		var odc OfficeDataConnector
+		err := json.Unmarshal(body, &odc)
+		return odc, err
+	case string(KindBasicDataConnectorKindOfficeATP):
+		var oadc OfficeATPDataConnector
+		err := json.Unmarshal(body, &oadc)
+		return oadc, err
+	case string(KindBasicDataConnectorKindMicrosoftDefenderAdvancedThreatProtection):
+		var mdc MDATPDataConnector
+		err := json.Unmarshal(body, &mdc)
+		return mdc, err
+	case string(KindBasicDataConnectorKindMicrosoftCloudAppSecurity):
+		var mdc MCASDataConnector
+		err := json.Unmarshal(body, &mdc)
+		return mdc, err
+	case string(KindBasicDataConnectorKindDynamics365):
+		var d3dc Dynamics365DataConnector
+		err := json.Unmarshal(body, &d3dc)
+		return d3dc, err
+	case string(KindBasicDataConnectorKindAmazonWebServicesCloudTrail):
+		var actdc AwsCloudTrailDataConnector
+		err := json.Unmarshal(body, &actdc)
+		return actdc, err
+	case string(KindBasicDataConnectorKindAzureSecurityCenter):
+		var adc ASCDataConnector
+		err := json.Unmarshal(body, &adc)
+		return adc, err
+	case string(KindBasicDataConnectorKindMicrosoftThreatProtection):
+		var mdc MTPDataConnector
+		err := json.Unmarshal(body, &mdc)
+		return mdc, err
+	case string(KindBasicDataConnectorKindMicrosoftThreatIntelligence):
+		var mdc MSTIDataConnector
+		err := json.Unmarshal(body, &mdc)
+		return mdc, err
+	case string(KindBasicDataConnectorKindAzureAdvancedThreatProtection):
+		var adc AATPDataConnector
+		err := json.Unmarshal(body, &adc)
+		return adc, err
+	case string(KindBasicDataConnectorKindAzureActiveDirectory):
+		var adc AADDataConnector
+		err := json.Unmarshal(body, &adc)
+		return adc, err
 	default:
 		var dc DataConnector
 		err := json.Unmarshal(body, &dc)
@@ -5652,58 +5800,8 @@ func (dc DataConnector) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsAADDataConnector is the BasicDataConnector implementation for DataConnector.
-func (dc DataConnector) AsAADDataConnector() (*AADDataConnector, bool) {
-	return nil, false
-}
-
-// AsAATPDataConnector is the BasicDataConnector implementation for DataConnector.
-func (dc DataConnector) AsAATPDataConnector() (*AATPDataConnector, bool) {
-	return nil, false
-}
-
-// AsMSTIDataConnector is the BasicDataConnector implementation for DataConnector.
-func (dc DataConnector) AsMSTIDataConnector() (*MSTIDataConnector, bool) {
-	return nil, false
-}
-
-// AsMTPDataConnector is the BasicDataConnector implementation for DataConnector.
-func (dc DataConnector) AsMTPDataConnector() (*MTPDataConnector, bool) {
-	return nil, false
-}
-
-// AsASCDataConnector is the BasicDataConnector implementation for DataConnector.
-func (dc DataConnector) AsASCDataConnector() (*ASCDataConnector, bool) {
-	return nil, false
-}
-
-// AsAwsCloudTrailDataConnector is the BasicDataConnector implementation for DataConnector.
-func (dc DataConnector) AsAwsCloudTrailDataConnector() (*AwsCloudTrailDataConnector, bool) {
-	return nil, false
-}
-
-// AsDynamics365DataConnector is the BasicDataConnector implementation for DataConnector.
-func (dc DataConnector) AsDynamics365DataConnector() (*Dynamics365DataConnector, bool) {
-	return nil, false
-}
-
-// AsMCASDataConnector is the BasicDataConnector implementation for DataConnector.
-func (dc DataConnector) AsMCASDataConnector() (*MCASDataConnector, bool) {
-	return nil, false
-}
-
-// AsMDATPDataConnector is the BasicDataConnector implementation for DataConnector.
-func (dc DataConnector) AsMDATPDataConnector() (*MDATPDataConnector, bool) {
-	return nil, false
-}
-
-// AsOfficeATPDataConnector is the BasicDataConnector implementation for DataConnector.
-func (dc DataConnector) AsOfficeATPDataConnector() (*OfficeATPDataConnector, bool) {
-	return nil, false
-}
-
-// AsOfficeDataConnector is the BasicDataConnector implementation for DataConnector.
-func (dc DataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool) {
+// AsTiTaxiiDataConnector is the BasicDataConnector implementation for DataConnector.
+func (dc DataConnector) AsTiTaxiiDataConnector() (*TiTaxiiDataConnector, bool) {
 	return nil, false
 }
 
@@ -5712,8 +5810,58 @@ func (dc DataConnector) AsTIDataConnector() (*TIDataConnector, bool) {
 	return nil, false
 }
 
-// AsTiTaxiiDataConnector is the BasicDataConnector implementation for DataConnector.
-func (dc DataConnector) AsTiTaxiiDataConnector() (*TiTaxiiDataConnector, bool) {
+// AsOfficeDataConnector is the BasicDataConnector implementation for DataConnector.
+func (dc DataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool) {
+	return nil, false
+}
+
+// AsOfficeATPDataConnector is the BasicDataConnector implementation for DataConnector.
+func (dc DataConnector) AsOfficeATPDataConnector() (*OfficeATPDataConnector, bool) {
+	return nil, false
+}
+
+// AsMDATPDataConnector is the BasicDataConnector implementation for DataConnector.
+func (dc DataConnector) AsMDATPDataConnector() (*MDATPDataConnector, bool) {
+	return nil, false
+}
+
+// AsMCASDataConnector is the BasicDataConnector implementation for DataConnector.
+func (dc DataConnector) AsMCASDataConnector() (*MCASDataConnector, bool) {
+	return nil, false
+}
+
+// AsDynamics365DataConnector is the BasicDataConnector implementation for DataConnector.
+func (dc DataConnector) AsDynamics365DataConnector() (*Dynamics365DataConnector, bool) {
+	return nil, false
+}
+
+// AsAwsCloudTrailDataConnector is the BasicDataConnector implementation for DataConnector.
+func (dc DataConnector) AsAwsCloudTrailDataConnector() (*AwsCloudTrailDataConnector, bool) {
+	return nil, false
+}
+
+// AsASCDataConnector is the BasicDataConnector implementation for DataConnector.
+func (dc DataConnector) AsASCDataConnector() (*ASCDataConnector, bool) {
+	return nil, false
+}
+
+// AsMTPDataConnector is the BasicDataConnector implementation for DataConnector.
+func (dc DataConnector) AsMTPDataConnector() (*MTPDataConnector, bool) {
+	return nil, false
+}
+
+// AsMSTIDataConnector is the BasicDataConnector implementation for DataConnector.
+func (dc DataConnector) AsMSTIDataConnector() (*MSTIDataConnector, bool) {
+	return nil, false
+}
+
+// AsAATPDataConnector is the BasicDataConnector implementation for DataConnector.
+func (dc DataConnector) AsAATPDataConnector() (*AATPDataConnector, bool) {
+	return nil, false
+}
+
+// AsAADDataConnector is the BasicDataConnector implementation for DataConnector.
+func (dc DataConnector) AsAADDataConnector() (*AADDataConnector, bool) {
 	return nil, false
 }
 
@@ -5969,13 +6117,13 @@ type DataConnectorRequirementsState struct {
 type BasicDataConnectorsCheckRequirements interface {
 	AsAADCheckRequirements() (*AADCheckRequirements, bool)
 	AsAATPCheckRequirements() (*AATPCheckRequirements, bool)
-	AsMSTICheckRequirements() (*MSTICheckRequirements, bool)
-	AsMtpCheckRequirements() (*MtpCheckRequirements, bool)
 	AsASCCheckRequirements() (*ASCCheckRequirements, bool)
 	AsAwsCloudTrailCheckRequirements() (*AwsCloudTrailCheckRequirements, bool)
 	AsDynamics365CheckRequirements() (*Dynamics365CheckRequirements, bool)
 	AsMCASCheckRequirements() (*MCASCheckRequirements, bool)
 	AsMDATPCheckRequirements() (*MDATPCheckRequirements, bool)
+	AsMSTICheckRequirements() (*MSTICheckRequirements, bool)
+	AsMtpCheckRequirements() (*MtpCheckRequirements, bool)
 	AsOfficeATPCheckRequirements() (*OfficeATPCheckRequirements, bool)
 	AsTICheckRequirements() (*TICheckRequirements, bool)
 	AsTiTaxiiCheckRequirements() (*TiTaxiiCheckRequirements, bool)
@@ -5984,7 +6132,7 @@ type BasicDataConnectorsCheckRequirements interface {
 
 // DataConnectorsCheckRequirements data connector requirements properties.
 type DataConnectorsCheckRequirements struct {
-	// Kind - Possible values include: 'KindBasicDataConnectorsCheckRequirementsKindDataConnectorsCheckRequirements', 'KindBasicDataConnectorsCheckRequirementsKindAzureActiveDirectory', 'KindBasicDataConnectorsCheckRequirementsKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatIntelligence', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindAzureSecurityCenter', 'KindBasicDataConnectorsCheckRequirementsKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorsCheckRequirementsKindDynamics365', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindOfficeATP', 'KindBasicDataConnectorsCheckRequirementsKindThreatIntelligence', 'KindBasicDataConnectorsCheckRequirementsKindThreatIntelligenceTaxii'
+	// Kind - Possible values include: 'KindBasicDataConnectorsCheckRequirementsKindDataConnectorsCheckRequirements', 'KindBasicDataConnectorsCheckRequirementsKindAzureActiveDirectory', 'KindBasicDataConnectorsCheckRequirementsKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindAzureSecurityCenter', 'KindBasicDataConnectorsCheckRequirementsKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorsCheckRequirementsKindDynamics365', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatIntelligence', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindOfficeATP', 'KindBasicDataConnectorsCheckRequirementsKindThreatIntelligence', 'KindBasicDataConnectorsCheckRequirementsKindThreatIntelligenceTaxii'
 	Kind KindBasicDataConnectorsCheckRequirements `json:"kind,omitempty"`
 }
 
@@ -6004,14 +6152,6 @@ func unmarshalBasicDataConnectorsCheckRequirements(body []byte) (BasicDataConnec
 		var acr AATPCheckRequirements
 		err := json.Unmarshal(body, &acr)
 		return acr, err
-	case string(KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatIntelligence):
-		var mcr MSTICheckRequirements
-		err := json.Unmarshal(body, &mcr)
-		return mcr, err
-	case string(KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatProtection):
-		var mcr MtpCheckRequirements
-		err := json.Unmarshal(body, &mcr)
-		return mcr, err
 	case string(KindBasicDataConnectorsCheckRequirementsKindAzureSecurityCenter):
 		var acr ASCCheckRequirements
 		err := json.Unmarshal(body, &acr)
@@ -6030,6 +6170,14 @@ func unmarshalBasicDataConnectorsCheckRequirements(body []byte) (BasicDataConnec
 		return mcr, err
 	case string(KindBasicDataConnectorsCheckRequirementsKindMicrosoftDefenderAdvancedThreatProtection):
 		var mcr MDATPCheckRequirements
+		err := json.Unmarshal(body, &mcr)
+		return mcr, err
+	case string(KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatIntelligence):
+		var mcr MSTICheckRequirements
+		err := json.Unmarshal(body, &mcr)
+		return mcr, err
+	case string(KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatProtection):
+		var mcr MtpCheckRequirements
 		err := json.Unmarshal(body, &mcr)
 		return mcr, err
 	case string(KindBasicDataConnectorsCheckRequirementsKindOfficeATP):
@@ -6089,16 +6237,6 @@ func (dccr DataConnectorsCheckRequirements) AsAATPCheckRequirements() (*AATPChec
 	return nil, false
 }
 
-// AsMSTICheckRequirements is the BasicDataConnectorsCheckRequirements implementation for DataConnectorsCheckRequirements.
-func (dccr DataConnectorsCheckRequirements) AsMSTICheckRequirements() (*MSTICheckRequirements, bool) {
-	return nil, false
-}
-
-// AsMtpCheckRequirements is the BasicDataConnectorsCheckRequirements implementation for DataConnectorsCheckRequirements.
-func (dccr DataConnectorsCheckRequirements) AsMtpCheckRequirements() (*MtpCheckRequirements, bool) {
-	return nil, false
-}
-
 // AsASCCheckRequirements is the BasicDataConnectorsCheckRequirements implementation for DataConnectorsCheckRequirements.
 func (dccr DataConnectorsCheckRequirements) AsASCCheckRequirements() (*ASCCheckRequirements, bool) {
 	return nil, false
@@ -6121,6 +6259,16 @@ func (dccr DataConnectorsCheckRequirements) AsMCASCheckRequirements() (*MCASChec
 
 // AsMDATPCheckRequirements is the BasicDataConnectorsCheckRequirements implementation for DataConnectorsCheckRequirements.
 func (dccr DataConnectorsCheckRequirements) AsMDATPCheckRequirements() (*MDATPCheckRequirements, bool) {
+	return nil, false
+}
+
+// AsMSTICheckRequirements is the BasicDataConnectorsCheckRequirements implementation for DataConnectorsCheckRequirements.
+func (dccr DataConnectorsCheckRequirements) AsMSTICheckRequirements() (*MSTICheckRequirements, bool) {
+	return nil, false
+}
+
+// AsMtpCheckRequirements is the BasicDataConnectorsCheckRequirements implementation for DataConnectorsCheckRequirements.
+func (dccr DataConnectorsCheckRequirements) AsMtpCheckRequirements() (*MtpCheckRequirements, bool) {
 	return nil, false
 }
 
@@ -6171,13 +6319,13 @@ type DNSEntity struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Kind - Possible values include: 'KindBasicEntityKindEntity', 'KindBasicEntityKindAccount', 'KindBasicEntityKindAzureResource', 'KindBasicEntityKindCloudApplication', 'KindBasicEntityKindDNSResolution', 'KindBasicEntityKindFile', 'KindBasicEntityKindFileHash', 'KindBasicEntityKindHost', 'KindBasicEntityKindBookmark', 'KindBasicEntityKindSecurityAlert', 'KindBasicEntityKindIP', 'KindBasicEntityKindMailbox', 'KindBasicEntityKindMailCluster', 'KindBasicEntityKindMailMessage', 'KindBasicEntityKindSubmissionMail', 'KindBasicEntityKindMalware', 'KindBasicEntityKindProcess', 'KindBasicEntityKindRegistryKey', 'KindBasicEntityKindRegistryValue', 'KindBasicEntityKindSecurityGroup', 'KindBasicEntityKindURL', 'KindBasicEntityKindIoTDevice'
-	Kind KindBasicEntity `json:"kind,omitempty"`
+	// Kind - Possible values include: 'KindEntity', 'KindIoTDevice', 'KindURL', 'KindSecurityGroup', 'KindSecurityAlert', 'KindRegistryValue', 'KindRegistryKey', 'KindProcess', 'KindMalware', 'KindSubmissionMail', 'KindMailMessage', 'KindMailCluster', 'KindMailbox', 'KindIP', 'KindBookmark', 'KindHost', 'KindFileHash', 'KindFile', 'KindDNSResolution', 'KindCloudApplication', 'KindAzureResource', 'KindAccount'
+	Kind Kind `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for DNSEntity.
 func (de DNSEntity) MarshalJSON() ([]byte, error) {
-	de.Kind = KindBasicEntityKindDNSResolution
+	de.Kind = KindDNSResolution
 	objectMap := make(map[string]interface{})
 	if de.DNSEntityProperties != nil {
 		objectMap["properties"] = de.DNSEntityProperties
@@ -6188,98 +6336,8 @@ func (de DNSEntity) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsAccountEntity is the BasicEntity implementation for DNSEntity.
-func (de DNSEntity) AsAccountEntity() (*AccountEntity, bool) {
-	return nil, false
-}
-
-// AsAzureResourceEntity is the BasicEntity implementation for DNSEntity.
-func (de DNSEntity) AsAzureResourceEntity() (*AzureResourceEntity, bool) {
-	return nil, false
-}
-
-// AsCloudApplicationEntity is the BasicEntity implementation for DNSEntity.
-func (de DNSEntity) AsCloudApplicationEntity() (*CloudApplicationEntity, bool) {
-	return nil, false
-}
-
-// AsDNSEntity is the BasicEntity implementation for DNSEntity.
-func (de DNSEntity) AsDNSEntity() (*DNSEntity, bool) {
-	return &de, true
-}
-
-// AsFileEntity is the BasicEntity implementation for DNSEntity.
-func (de DNSEntity) AsFileEntity() (*FileEntity, bool) {
-	return nil, false
-}
-
-// AsFileHashEntity is the BasicEntity implementation for DNSEntity.
-func (de DNSEntity) AsFileHashEntity() (*FileHashEntity, bool) {
-	return nil, false
-}
-
-// AsHostEntity is the BasicEntity implementation for DNSEntity.
-func (de DNSEntity) AsHostEntity() (*HostEntity, bool) {
-	return nil, false
-}
-
-// AsHuntingBookmark is the BasicEntity implementation for DNSEntity.
-func (de DNSEntity) AsHuntingBookmark() (*HuntingBookmark, bool) {
-	return nil, false
-}
-
-// AsSecurityAlert is the BasicEntity implementation for DNSEntity.
-func (de DNSEntity) AsSecurityAlert() (*SecurityAlert, bool) {
-	return nil, false
-}
-
-// AsIPEntity is the BasicEntity implementation for DNSEntity.
-func (de DNSEntity) AsIPEntity() (*IPEntity, bool) {
-	return nil, false
-}
-
-// AsMailboxEntity is the BasicEntity implementation for DNSEntity.
-func (de DNSEntity) AsMailboxEntity() (*MailboxEntity, bool) {
-	return nil, false
-}
-
-// AsMailClusterEntity is the BasicEntity implementation for DNSEntity.
-func (de DNSEntity) AsMailClusterEntity() (*MailClusterEntity, bool) {
-	return nil, false
-}
-
-// AsMailMessageEntity is the BasicEntity implementation for DNSEntity.
-func (de DNSEntity) AsMailMessageEntity() (*MailMessageEntity, bool) {
-	return nil, false
-}
-
-// AsSubmissionMailEntity is the BasicEntity implementation for DNSEntity.
-func (de DNSEntity) AsSubmissionMailEntity() (*SubmissionMailEntity, bool) {
-	return nil, false
-}
-
-// AsMalwareEntity is the BasicEntity implementation for DNSEntity.
-func (de DNSEntity) AsMalwareEntity() (*MalwareEntity, bool) {
-	return nil, false
-}
-
-// AsProcessEntity is the BasicEntity implementation for DNSEntity.
-func (de DNSEntity) AsProcessEntity() (*ProcessEntity, bool) {
-	return nil, false
-}
-
-// AsRegistryKeyEntity is the BasicEntity implementation for DNSEntity.
-func (de DNSEntity) AsRegistryKeyEntity() (*RegistryKeyEntity, bool) {
-	return nil, false
-}
-
-// AsRegistryValueEntity is the BasicEntity implementation for DNSEntity.
-func (de DNSEntity) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
-	return nil, false
-}
-
-// AsSecurityGroupEntity is the BasicEntity implementation for DNSEntity.
-func (de DNSEntity) AsSecurityGroupEntity() (*SecurityGroupEntity, bool) {
+// AsIoTDeviceEntity is the BasicEntity implementation for DNSEntity.
+func (de DNSEntity) AsIoTDeviceEntity() (*IoTDeviceEntity, bool) {
 	return nil, false
 }
 
@@ -6288,8 +6346,98 @@ func (de DNSEntity) AsURLEntity() (*URLEntity, bool) {
 	return nil, false
 }
 
-// AsIoTDeviceEntity is the BasicEntity implementation for DNSEntity.
-func (de DNSEntity) AsIoTDeviceEntity() (*IoTDeviceEntity, bool) {
+// AsSecurityGroupEntity is the BasicEntity implementation for DNSEntity.
+func (de DNSEntity) AsSecurityGroupEntity() (*SecurityGroupEntity, bool) {
+	return nil, false
+}
+
+// AsSecurityAlert is the BasicEntity implementation for DNSEntity.
+func (de DNSEntity) AsSecurityAlert() (*SecurityAlert, bool) {
+	return nil, false
+}
+
+// AsRegistryValueEntity is the BasicEntity implementation for DNSEntity.
+func (de DNSEntity) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
+	return nil, false
+}
+
+// AsRegistryKeyEntity is the BasicEntity implementation for DNSEntity.
+func (de DNSEntity) AsRegistryKeyEntity() (*RegistryKeyEntity, bool) {
+	return nil, false
+}
+
+// AsProcessEntity is the BasicEntity implementation for DNSEntity.
+func (de DNSEntity) AsProcessEntity() (*ProcessEntity, bool) {
+	return nil, false
+}
+
+// AsMalwareEntity is the BasicEntity implementation for DNSEntity.
+func (de DNSEntity) AsMalwareEntity() (*MalwareEntity, bool) {
+	return nil, false
+}
+
+// AsSubmissionMailEntity is the BasicEntity implementation for DNSEntity.
+func (de DNSEntity) AsSubmissionMailEntity() (*SubmissionMailEntity, bool) {
+	return nil, false
+}
+
+// AsMailMessageEntity is the BasicEntity implementation for DNSEntity.
+func (de DNSEntity) AsMailMessageEntity() (*MailMessageEntity, bool) {
+	return nil, false
+}
+
+// AsMailClusterEntity is the BasicEntity implementation for DNSEntity.
+func (de DNSEntity) AsMailClusterEntity() (*MailClusterEntity, bool) {
+	return nil, false
+}
+
+// AsMailboxEntity is the BasicEntity implementation for DNSEntity.
+func (de DNSEntity) AsMailboxEntity() (*MailboxEntity, bool) {
+	return nil, false
+}
+
+// AsIPEntity is the BasicEntity implementation for DNSEntity.
+func (de DNSEntity) AsIPEntity() (*IPEntity, bool) {
+	return nil, false
+}
+
+// AsHuntingBookmark is the BasicEntity implementation for DNSEntity.
+func (de DNSEntity) AsHuntingBookmark() (*HuntingBookmark, bool) {
+	return nil, false
+}
+
+// AsHostEntity is the BasicEntity implementation for DNSEntity.
+func (de DNSEntity) AsHostEntity() (*HostEntity, bool) {
+	return nil, false
+}
+
+// AsFileHashEntity is the BasicEntity implementation for DNSEntity.
+func (de DNSEntity) AsFileHashEntity() (*FileHashEntity, bool) {
+	return nil, false
+}
+
+// AsFileEntity is the BasicEntity implementation for DNSEntity.
+func (de DNSEntity) AsFileEntity() (*FileEntity, bool) {
+	return nil, false
+}
+
+// AsDNSEntity is the BasicEntity implementation for DNSEntity.
+func (de DNSEntity) AsDNSEntity() (*DNSEntity, bool) {
+	return &de, true
+}
+
+// AsCloudApplicationEntity is the BasicEntity implementation for DNSEntity.
+func (de DNSEntity) AsCloudApplicationEntity() (*CloudApplicationEntity, bool) {
+	return nil, false
+}
+
+// AsAzureResourceEntity is the BasicEntity implementation for DNSEntity.
+func (de DNSEntity) AsAzureResourceEntity() (*AzureResourceEntity, bool) {
+	return nil, false
+}
+
+// AsAccountEntity is the BasicEntity implementation for DNSEntity.
+func (de DNSEntity) AsAccountEntity() (*AccountEntity, bool) {
 	return nil, false
 }
 
@@ -6350,7 +6498,7 @@ func (de *DNSEntity) UnmarshalJSON(body []byte) error {
 			}
 		case "kind":
 			if v != nil {
-				var kind KindBasicEntity
+				var kind Kind
 				err = json.Unmarshal(*v, &kind)
 				if err != nil {
 					return err
@@ -6389,7 +6537,7 @@ func (dep DNSEntityProperties) MarshalJSON() ([]byte, error) {
 type Dynamics365CheckRequirements struct {
 	// Dynamics365CheckRequirementsProperties - Dynamics365 requirements check properties.
 	*Dynamics365CheckRequirementsProperties `json:"properties,omitempty"`
-	// Kind - Possible values include: 'KindBasicDataConnectorsCheckRequirementsKindDataConnectorsCheckRequirements', 'KindBasicDataConnectorsCheckRequirementsKindAzureActiveDirectory', 'KindBasicDataConnectorsCheckRequirementsKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatIntelligence', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindAzureSecurityCenter', 'KindBasicDataConnectorsCheckRequirementsKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorsCheckRequirementsKindDynamics365', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindOfficeATP', 'KindBasicDataConnectorsCheckRequirementsKindThreatIntelligence', 'KindBasicDataConnectorsCheckRequirementsKindThreatIntelligenceTaxii'
+	// Kind - Possible values include: 'KindBasicDataConnectorsCheckRequirementsKindDataConnectorsCheckRequirements', 'KindBasicDataConnectorsCheckRequirementsKindAzureActiveDirectory', 'KindBasicDataConnectorsCheckRequirementsKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindAzureSecurityCenter', 'KindBasicDataConnectorsCheckRequirementsKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorsCheckRequirementsKindDynamics365', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatIntelligence', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindOfficeATP', 'KindBasicDataConnectorsCheckRequirementsKindThreatIntelligence', 'KindBasicDataConnectorsCheckRequirementsKindThreatIntelligenceTaxii'
 	Kind KindBasicDataConnectorsCheckRequirements `json:"kind,omitempty"`
 }
 
@@ -6416,16 +6564,6 @@ func (d3cr Dynamics365CheckRequirements) AsAATPCheckRequirements() (*AATPCheckRe
 	return nil, false
 }
 
-// AsMSTICheckRequirements is the BasicDataConnectorsCheckRequirements implementation for Dynamics365CheckRequirements.
-func (d3cr Dynamics365CheckRequirements) AsMSTICheckRequirements() (*MSTICheckRequirements, bool) {
-	return nil, false
-}
-
-// AsMtpCheckRequirements is the BasicDataConnectorsCheckRequirements implementation for Dynamics365CheckRequirements.
-func (d3cr Dynamics365CheckRequirements) AsMtpCheckRequirements() (*MtpCheckRequirements, bool) {
-	return nil, false
-}
-
 // AsASCCheckRequirements is the BasicDataConnectorsCheckRequirements implementation for Dynamics365CheckRequirements.
 func (d3cr Dynamics365CheckRequirements) AsASCCheckRequirements() (*ASCCheckRequirements, bool) {
 	return nil, false
@@ -6448,6 +6586,16 @@ func (d3cr Dynamics365CheckRequirements) AsMCASCheckRequirements() (*MCASCheckRe
 
 // AsMDATPCheckRequirements is the BasicDataConnectorsCheckRequirements implementation for Dynamics365CheckRequirements.
 func (d3cr Dynamics365CheckRequirements) AsMDATPCheckRequirements() (*MDATPCheckRequirements, bool) {
+	return nil, false
+}
+
+// AsMSTICheckRequirements is the BasicDataConnectorsCheckRequirements implementation for Dynamics365CheckRequirements.
+func (d3cr Dynamics365CheckRequirements) AsMSTICheckRequirements() (*MSTICheckRequirements, bool) {
+	return nil, false
+}
+
+// AsMtpCheckRequirements is the BasicDataConnectorsCheckRequirements implementation for Dynamics365CheckRequirements.
+func (d3cr Dynamics365CheckRequirements) AsMtpCheckRequirements() (*MtpCheckRequirements, bool) {
 	return nil, false
 }
 
@@ -6527,7 +6675,7 @@ type Dynamics365DataConnector struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindBasicDataConnectorKindDataConnector', 'KindBasicDataConnectorKindAzureActiveDirectory', 'KindBasicDataConnectorKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorKindMicrosoftThreatIntelligence', 'KindBasicDataConnectorKindMicrosoftThreatProtection', 'KindBasicDataConnectorKindAzureSecurityCenter', 'KindBasicDataConnectorKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorKindDynamics365', 'KindBasicDataConnectorKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorKindOfficeATP', 'KindBasicDataConnectorKindOffice365', 'KindBasicDataConnectorKindThreatIntelligence', 'KindBasicDataConnectorKindThreatIntelligenceTaxii'
+	// Kind - Possible values include: 'KindBasicDataConnectorKindDataConnector', 'KindBasicDataConnectorKindThreatIntelligenceTaxii', 'KindBasicDataConnectorKindThreatIntelligence', 'KindBasicDataConnectorKindOffice365', 'KindBasicDataConnectorKindOfficeATP', 'KindBasicDataConnectorKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorKindDynamics365', 'KindBasicDataConnectorKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorKindAzureSecurityCenter', 'KindBasicDataConnectorKindMicrosoftThreatProtection', 'KindBasicDataConnectorKindMicrosoftThreatIntelligence', 'KindBasicDataConnectorKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorKindAzureActiveDirectory'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
 }
 
@@ -6547,58 +6695,8 @@ func (d3dc Dynamics365DataConnector) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsAADDataConnector is the BasicDataConnector implementation for Dynamics365DataConnector.
-func (d3dc Dynamics365DataConnector) AsAADDataConnector() (*AADDataConnector, bool) {
-	return nil, false
-}
-
-// AsAATPDataConnector is the BasicDataConnector implementation for Dynamics365DataConnector.
-func (d3dc Dynamics365DataConnector) AsAATPDataConnector() (*AATPDataConnector, bool) {
-	return nil, false
-}
-
-// AsMSTIDataConnector is the BasicDataConnector implementation for Dynamics365DataConnector.
-func (d3dc Dynamics365DataConnector) AsMSTIDataConnector() (*MSTIDataConnector, bool) {
-	return nil, false
-}
-
-// AsMTPDataConnector is the BasicDataConnector implementation for Dynamics365DataConnector.
-func (d3dc Dynamics365DataConnector) AsMTPDataConnector() (*MTPDataConnector, bool) {
-	return nil, false
-}
-
-// AsASCDataConnector is the BasicDataConnector implementation for Dynamics365DataConnector.
-func (d3dc Dynamics365DataConnector) AsASCDataConnector() (*ASCDataConnector, bool) {
-	return nil, false
-}
-
-// AsAwsCloudTrailDataConnector is the BasicDataConnector implementation for Dynamics365DataConnector.
-func (d3dc Dynamics365DataConnector) AsAwsCloudTrailDataConnector() (*AwsCloudTrailDataConnector, bool) {
-	return nil, false
-}
-
-// AsDynamics365DataConnector is the BasicDataConnector implementation for Dynamics365DataConnector.
-func (d3dc Dynamics365DataConnector) AsDynamics365DataConnector() (*Dynamics365DataConnector, bool) {
-	return &d3dc, true
-}
-
-// AsMCASDataConnector is the BasicDataConnector implementation for Dynamics365DataConnector.
-func (d3dc Dynamics365DataConnector) AsMCASDataConnector() (*MCASDataConnector, bool) {
-	return nil, false
-}
-
-// AsMDATPDataConnector is the BasicDataConnector implementation for Dynamics365DataConnector.
-func (d3dc Dynamics365DataConnector) AsMDATPDataConnector() (*MDATPDataConnector, bool) {
-	return nil, false
-}
-
-// AsOfficeATPDataConnector is the BasicDataConnector implementation for Dynamics365DataConnector.
-func (d3dc Dynamics365DataConnector) AsOfficeATPDataConnector() (*OfficeATPDataConnector, bool) {
-	return nil, false
-}
-
-// AsOfficeDataConnector is the BasicDataConnector implementation for Dynamics365DataConnector.
-func (d3dc Dynamics365DataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool) {
+// AsTiTaxiiDataConnector is the BasicDataConnector implementation for Dynamics365DataConnector.
+func (d3dc Dynamics365DataConnector) AsTiTaxiiDataConnector() (*TiTaxiiDataConnector, bool) {
 	return nil, false
 }
 
@@ -6607,8 +6705,58 @@ func (d3dc Dynamics365DataConnector) AsTIDataConnector() (*TIDataConnector, bool
 	return nil, false
 }
 
-// AsTiTaxiiDataConnector is the BasicDataConnector implementation for Dynamics365DataConnector.
-func (d3dc Dynamics365DataConnector) AsTiTaxiiDataConnector() (*TiTaxiiDataConnector, bool) {
+// AsOfficeDataConnector is the BasicDataConnector implementation for Dynamics365DataConnector.
+func (d3dc Dynamics365DataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool) {
+	return nil, false
+}
+
+// AsOfficeATPDataConnector is the BasicDataConnector implementation for Dynamics365DataConnector.
+func (d3dc Dynamics365DataConnector) AsOfficeATPDataConnector() (*OfficeATPDataConnector, bool) {
+	return nil, false
+}
+
+// AsMDATPDataConnector is the BasicDataConnector implementation for Dynamics365DataConnector.
+func (d3dc Dynamics365DataConnector) AsMDATPDataConnector() (*MDATPDataConnector, bool) {
+	return nil, false
+}
+
+// AsMCASDataConnector is the BasicDataConnector implementation for Dynamics365DataConnector.
+func (d3dc Dynamics365DataConnector) AsMCASDataConnector() (*MCASDataConnector, bool) {
+	return nil, false
+}
+
+// AsDynamics365DataConnector is the BasicDataConnector implementation for Dynamics365DataConnector.
+func (d3dc Dynamics365DataConnector) AsDynamics365DataConnector() (*Dynamics365DataConnector, bool) {
+	return &d3dc, true
+}
+
+// AsAwsCloudTrailDataConnector is the BasicDataConnector implementation for Dynamics365DataConnector.
+func (d3dc Dynamics365DataConnector) AsAwsCloudTrailDataConnector() (*AwsCloudTrailDataConnector, bool) {
+	return nil, false
+}
+
+// AsASCDataConnector is the BasicDataConnector implementation for Dynamics365DataConnector.
+func (d3dc Dynamics365DataConnector) AsASCDataConnector() (*ASCDataConnector, bool) {
+	return nil, false
+}
+
+// AsMTPDataConnector is the BasicDataConnector implementation for Dynamics365DataConnector.
+func (d3dc Dynamics365DataConnector) AsMTPDataConnector() (*MTPDataConnector, bool) {
+	return nil, false
+}
+
+// AsMSTIDataConnector is the BasicDataConnector implementation for Dynamics365DataConnector.
+func (d3dc Dynamics365DataConnector) AsMSTIDataConnector() (*MSTIDataConnector, bool) {
+	return nil, false
+}
+
+// AsAATPDataConnector is the BasicDataConnector implementation for Dynamics365DataConnector.
+func (d3dc Dynamics365DataConnector) AsAATPDataConnector() (*AATPDataConnector, bool) {
+	return nil, false
+}
+
+// AsAADDataConnector is the BasicDataConnector implementation for Dynamics365DataConnector.
+func (d3dc Dynamics365DataConnector) AsAADDataConnector() (*AADDataConnector, bool) {
 	return nil, false
 }
 
@@ -6711,29 +6859,149 @@ type Dynamics365DataConnectorProperties struct {
 	TenantID *string `json:"tenantId,omitempty"`
 }
 
+// EnrichmentDomainWhois whois information for a given domain and associated metadata
+type EnrichmentDomainWhois struct {
+	autorest.Response `json:"-"`
+	// Domain - The domain for this whois record
+	Domain *string `json:"domain,omitempty"`
+	// Server - The hostname of this registrar's whois server
+	Server *string `json:"server,omitempty"`
+	// Created - The timestamp at which this record was created
+	Created *date.Time `json:"created,omitempty"`
+	// Updated - The timestamp at which this record was last updated
+	Updated *date.Time `json:"updated,omitempty"`
+	// Expires - The timestamp at which this record will expire
+	Expires *date.Time `json:"expires,omitempty"`
+	// ParsedWhois - The whois record for a given domain
+	ParsedWhois *EnrichmentDomainWhoisDetails `json:"parsedWhois,omitempty"`
+}
+
+// EnrichmentDomainWhoisContact an individual contact associated with this domain
+type EnrichmentDomainWhoisContact struct {
+	// Name - The name of this contact
+	Name *string `json:"name,omitempty"`
+	// Org - The organization for this contact
+	Org *string `json:"org,omitempty"`
+	// Street - A list describing the street address for this contact
+	Street *[]string `json:"street,omitempty"`
+	// City - The city for this contact
+	City *string `json:"city,omitempty"`
+	// State - The state for this contact
+	State *string `json:"state,omitempty"`
+	// Postal - The postal code for this contact
+	Postal *string `json:"postal,omitempty"`
+	// Country - The country for this contact
+	Country *string `json:"country,omitempty"`
+	// Phone - The phone number for this contact
+	Phone *string `json:"phone,omitempty"`
+	// Fax - The fax number for this contact
+	Fax *string `json:"fax,omitempty"`
+	// Email - The email address for this contact
+	Email *string `json:"email,omitempty"`
+}
+
+// EnrichmentDomainWhoisContacts the set of contacts associated with this domain
+type EnrichmentDomainWhoisContacts struct {
+	// Admin - The admin contact for this whois record
+	Admin *EnrichmentDomainWhoisContact `json:"admin,omitempty"`
+	// Billing - The billing contact for this whois record
+	Billing *EnrichmentDomainWhoisContact `json:"billing,omitempty"`
+	// Registrant - The registrant contact for this whois record
+	Registrant *EnrichmentDomainWhoisContact `json:"registrant,omitempty"`
+	// Tech - The technical contact for this whois record
+	Tech *EnrichmentDomainWhoisContact `json:"tech,omitempty"`
+}
+
+// EnrichmentDomainWhoisDetails the whois record for a given domain
+type EnrichmentDomainWhoisDetails struct {
+	// Registrar - The registrar associated with this domain
+	Registrar *EnrichmentDomainWhoisRegistrarDetails `json:"registrar,omitempty"`
+	// Contacts - The set of contacts associated with this domain
+	Contacts *EnrichmentDomainWhoisContacts `json:"contacts,omitempty"`
+	// NameServers - A list of name servers associated with this domain
+	NameServers *[]string `json:"nameServers,omitempty"`
+	// Statuses - The set of status flags for this whois record
+	Statuses *[]string `json:"statuses,omitempty"`
+}
+
+// EnrichmentDomainWhoisRegistrarDetails the registrar associated with this domain
+type EnrichmentDomainWhoisRegistrarDetails struct {
+	// Name - The name of this registrar
+	Name *string `json:"name,omitempty"`
+	// AbuseContactEmail - This registrar's abuse contact email
+	AbuseContactEmail *string `json:"abuseContactEmail,omitempty"`
+	// AbuseContactPhone - This registrar's abuse contact phone number
+	AbuseContactPhone *string `json:"abuseContactPhone,omitempty"`
+	// IanaID - This registrar's Internet Assigned Numbers Authority id
+	IanaID *string `json:"ianaId,omitempty"`
+	// URL - This registrar's URL
+	URL *string `json:"url,omitempty"`
+	// WhoisServer - The hostname of this registrar's whois server
+	WhoisServer *string `json:"whoisServer,omitempty"`
+}
+
+// EnrichmentIPGeodata geodata information for a given IP address
+type EnrichmentIPGeodata struct {
+	autorest.Response `json:"-"`
+	// Asn - The autonomous system number associated with this IP address
+	Asn *string `json:"asn,omitempty"`
+	// Carrier - The name of the carrier for this IP address
+	Carrier *string `json:"carrier,omitempty"`
+	// City - The city this IP address is located in
+	City *string `json:"city,omitempty"`
+	// CityCf - A numeric rating of confidence that the value in the 'city' field is correct, on a scale of 0-100
+	CityCf *int32 `json:"cityCf,omitempty"`
+	// Continent - The continent this IP address is located on
+	Continent *string `json:"continent,omitempty"`
+	// Country - The county this IP address is located in
+	Country *string `json:"country,omitempty"`
+	// CountryCf - A numeric rating of confidence that the value in the 'country' field is correct on a scale of 0-100
+	CountryCf *int32 `json:"countryCf,omitempty"`
+	// IPAddr - The dotted-decimal or colon-separated string representation of the IP address
+	IPAddr *string `json:"ipAddr,omitempty"`
+	// IPRoutingType - A description of the connection type of this IP address
+	IPRoutingType *string `json:"ipRoutingType,omitempty"`
+	// Latitude - The latitude of this IP address
+	Latitude *string `json:"latitude,omitempty"`
+	// Longitude - The longitude of this IP address
+	Longitude *string `json:"longitude,omitempty"`
+	// Organization - The name of the organization for this IP address
+	Organization *string `json:"organization,omitempty"`
+	// OrganizationType - The type of the organization for this IP address
+	OrganizationType *string `json:"organizationType,omitempty"`
+	// Region - The geographic region this IP address is located in
+	Region *string `json:"region,omitempty"`
+	// State - The state this IP address is located in
+	State *string `json:"state,omitempty"`
+	// StateCf - A numeric rating of confidence that the value in the 'state' field is correct on a scale of 0-100
+	StateCf *int32 `json:"stateCf,omitempty"`
+	// StateCode - The abbreviated name for the state this IP address is located in
+	StateCode *string `json:"stateCode,omitempty"`
+}
+
 // BasicEntity specific entity.
 type BasicEntity interface {
-	AsAccountEntity() (*AccountEntity, bool)
-	AsAzureResourceEntity() (*AzureResourceEntity, bool)
-	AsCloudApplicationEntity() (*CloudApplicationEntity, bool)
-	AsDNSEntity() (*DNSEntity, bool)
-	AsFileEntity() (*FileEntity, bool)
-	AsFileHashEntity() (*FileHashEntity, bool)
-	AsHostEntity() (*HostEntity, bool)
-	AsHuntingBookmark() (*HuntingBookmark, bool)
-	AsSecurityAlert() (*SecurityAlert, bool)
-	AsIPEntity() (*IPEntity, bool)
-	AsMailboxEntity() (*MailboxEntity, bool)
-	AsMailClusterEntity() (*MailClusterEntity, bool)
-	AsMailMessageEntity() (*MailMessageEntity, bool)
-	AsSubmissionMailEntity() (*SubmissionMailEntity, bool)
-	AsMalwareEntity() (*MalwareEntity, bool)
-	AsProcessEntity() (*ProcessEntity, bool)
-	AsRegistryKeyEntity() (*RegistryKeyEntity, bool)
-	AsRegistryValueEntity() (*RegistryValueEntity, bool)
-	AsSecurityGroupEntity() (*SecurityGroupEntity, bool)
-	AsURLEntity() (*URLEntity, bool)
 	AsIoTDeviceEntity() (*IoTDeviceEntity, bool)
+	AsURLEntity() (*URLEntity, bool)
+	AsSecurityGroupEntity() (*SecurityGroupEntity, bool)
+	AsSecurityAlert() (*SecurityAlert, bool)
+	AsRegistryValueEntity() (*RegistryValueEntity, bool)
+	AsRegistryKeyEntity() (*RegistryKeyEntity, bool)
+	AsProcessEntity() (*ProcessEntity, bool)
+	AsMalwareEntity() (*MalwareEntity, bool)
+	AsSubmissionMailEntity() (*SubmissionMailEntity, bool)
+	AsMailMessageEntity() (*MailMessageEntity, bool)
+	AsMailClusterEntity() (*MailClusterEntity, bool)
+	AsMailboxEntity() (*MailboxEntity, bool)
+	AsIPEntity() (*IPEntity, bool)
+	AsHuntingBookmark() (*HuntingBookmark, bool)
+	AsHostEntity() (*HostEntity, bool)
+	AsFileHashEntity() (*FileHashEntity, bool)
+	AsFileEntity() (*FileEntity, bool)
+	AsDNSEntity() (*DNSEntity, bool)
+	AsCloudApplicationEntity() (*CloudApplicationEntity, bool)
+	AsAzureResourceEntity() (*AzureResourceEntity, bool)
+	AsAccountEntity() (*AccountEntity, bool)
 	AsEntity() (*Entity, bool)
 }
 
@@ -6746,8 +7014,8 @@ type Entity struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Kind - Possible values include: 'KindBasicEntityKindEntity', 'KindBasicEntityKindAccount', 'KindBasicEntityKindAzureResource', 'KindBasicEntityKindCloudApplication', 'KindBasicEntityKindDNSResolution', 'KindBasicEntityKindFile', 'KindBasicEntityKindFileHash', 'KindBasicEntityKindHost', 'KindBasicEntityKindBookmark', 'KindBasicEntityKindSecurityAlert', 'KindBasicEntityKindIP', 'KindBasicEntityKindMailbox', 'KindBasicEntityKindMailCluster', 'KindBasicEntityKindMailMessage', 'KindBasicEntityKindSubmissionMail', 'KindBasicEntityKindMalware', 'KindBasicEntityKindProcess', 'KindBasicEntityKindRegistryKey', 'KindBasicEntityKindRegistryValue', 'KindBasicEntityKindSecurityGroup', 'KindBasicEntityKindURL', 'KindBasicEntityKindIoTDevice'
-	Kind KindBasicEntity `json:"kind,omitempty"`
+	// Kind - Possible values include: 'KindEntity', 'KindIoTDevice', 'KindURL', 'KindSecurityGroup', 'KindSecurityAlert', 'KindRegistryValue', 'KindRegistryKey', 'KindProcess', 'KindMalware', 'KindSubmissionMail', 'KindMailMessage', 'KindMailCluster', 'KindMailbox', 'KindIP', 'KindBookmark', 'KindHost', 'KindFileHash', 'KindFile', 'KindDNSResolution', 'KindCloudApplication', 'KindAzureResource', 'KindAccount'
+	Kind Kind `json:"kind,omitempty"`
 }
 
 func unmarshalBasicEntity(body []byte) (BasicEntity, error) {
@@ -6758,90 +7026,90 @@ func unmarshalBasicEntity(body []byte) (BasicEntity, error) {
 	}
 
 	switch m["kind"] {
-	case string(KindBasicEntityKindAccount):
-		var ae AccountEntity
-		err := json.Unmarshal(body, &ae)
-		return ae, err
-	case string(KindBasicEntityKindAzureResource):
-		var are AzureResourceEntity
-		err := json.Unmarshal(body, &are)
-		return are, err
-	case string(KindBasicEntityKindCloudApplication):
-		var cae CloudApplicationEntity
-		err := json.Unmarshal(body, &cae)
-		return cae, err
-	case string(KindBasicEntityKindDNSResolution):
-		var de DNSEntity
-		err := json.Unmarshal(body, &de)
-		return de, err
-	case string(KindBasicEntityKindFile):
-		var fe FileEntity
-		err := json.Unmarshal(body, &fe)
-		return fe, err
-	case string(KindBasicEntityKindFileHash):
-		var fhe FileHashEntity
-		err := json.Unmarshal(body, &fhe)
-		return fhe, err
-	case string(KindBasicEntityKindHost):
-		var he HostEntity
-		err := json.Unmarshal(body, &he)
-		return he, err
-	case string(KindBasicEntityKindBookmark):
-		var hb HuntingBookmark
-		err := json.Unmarshal(body, &hb)
-		return hb, err
-	case string(KindBasicEntityKindSecurityAlert):
-		var sa SecurityAlert
-		err := json.Unmarshal(body, &sa)
-		return sa, err
-	case string(KindBasicEntityKindIP):
-		var ie IPEntity
-		err := json.Unmarshal(body, &ie)
-		return ie, err
-	case string(KindBasicEntityKindMailbox):
-		var me MailboxEntity
-		err := json.Unmarshal(body, &me)
-		return me, err
-	case string(KindBasicEntityKindMailCluster):
-		var mce MailClusterEntity
-		err := json.Unmarshal(body, &mce)
-		return mce, err
-	case string(KindBasicEntityKindMailMessage):
-		var mme MailMessageEntity
-		err := json.Unmarshal(body, &mme)
-		return mme, err
-	case string(KindBasicEntityKindSubmissionMail):
-		var sme SubmissionMailEntity
-		err := json.Unmarshal(body, &sme)
-		return sme, err
-	case string(KindBasicEntityKindMalware):
-		var me MalwareEntity
-		err := json.Unmarshal(body, &me)
-		return me, err
-	case string(KindBasicEntityKindProcess):
-		var peVar ProcessEntity
-		err := json.Unmarshal(body, &peVar)
-		return peVar, err
-	case string(KindBasicEntityKindRegistryKey):
-		var rke RegistryKeyEntity
-		err := json.Unmarshal(body, &rke)
-		return rke, err
-	case string(KindBasicEntityKindRegistryValue):
-		var rve RegistryValueEntity
-		err := json.Unmarshal(body, &rve)
-		return rve, err
-	case string(KindBasicEntityKindSecurityGroup):
-		var sge SecurityGroupEntity
-		err := json.Unmarshal(body, &sge)
-		return sge, err
-	case string(KindBasicEntityKindURL):
-		var ue URLEntity
-		err := json.Unmarshal(body, &ue)
-		return ue, err
-	case string(KindBasicEntityKindIoTDevice):
+	case string(KindIoTDevice):
 		var itde IoTDeviceEntity
 		err := json.Unmarshal(body, &itde)
 		return itde, err
+	case string(KindURL):
+		var ue URLEntity
+		err := json.Unmarshal(body, &ue)
+		return ue, err
+	case string(KindSecurityGroup):
+		var sge SecurityGroupEntity
+		err := json.Unmarshal(body, &sge)
+		return sge, err
+	case string(KindSecurityAlert):
+		var sa SecurityAlert
+		err := json.Unmarshal(body, &sa)
+		return sa, err
+	case string(KindRegistryValue):
+		var rve RegistryValueEntity
+		err := json.Unmarshal(body, &rve)
+		return rve, err
+	case string(KindRegistryKey):
+		var rke RegistryKeyEntity
+		err := json.Unmarshal(body, &rke)
+		return rke, err
+	case string(KindProcess):
+		var peVar ProcessEntity
+		err := json.Unmarshal(body, &peVar)
+		return peVar, err
+	case string(KindMalware):
+		var me MalwareEntity
+		err := json.Unmarshal(body, &me)
+		return me, err
+	case string(KindSubmissionMail):
+		var sme SubmissionMailEntity
+		err := json.Unmarshal(body, &sme)
+		return sme, err
+	case string(KindMailMessage):
+		var mme MailMessageEntity
+		err := json.Unmarshal(body, &mme)
+		return mme, err
+	case string(KindMailCluster):
+		var mce MailClusterEntity
+		err := json.Unmarshal(body, &mce)
+		return mce, err
+	case string(KindMailbox):
+		var me MailboxEntity
+		err := json.Unmarshal(body, &me)
+		return me, err
+	case string(KindIP):
+		var ie IPEntity
+		err := json.Unmarshal(body, &ie)
+		return ie, err
+	case string(KindBookmark):
+		var hb HuntingBookmark
+		err := json.Unmarshal(body, &hb)
+		return hb, err
+	case string(KindHost):
+		var he HostEntity
+		err := json.Unmarshal(body, &he)
+		return he, err
+	case string(KindFileHash):
+		var fhe FileHashEntity
+		err := json.Unmarshal(body, &fhe)
+		return fhe, err
+	case string(KindFile):
+		var fe FileEntity
+		err := json.Unmarshal(body, &fe)
+		return fe, err
+	case string(KindDNSResolution):
+		var de DNSEntity
+		err := json.Unmarshal(body, &de)
+		return de, err
+	case string(KindCloudApplication):
+		var cae CloudApplicationEntity
+		err := json.Unmarshal(body, &cae)
+		return cae, err
+	case string(KindAzureResource):
+		var are AzureResourceEntity
+		err := json.Unmarshal(body, &are)
+		return are, err
+	case string(KindAccount):
+		var ae AccountEntity
+		err := json.Unmarshal(body, &ae)
+		return ae, err
 	default:
 		var e Entity
 		err := json.Unmarshal(body, &e)
@@ -6869,7 +7137,7 @@ func unmarshalBasicEntityArray(body []byte) ([]BasicEntity, error) {
 
 // MarshalJSON is the custom marshaler for Entity.
 func (e Entity) MarshalJSON() ([]byte, error) {
-	e.Kind = KindBasicEntityKindEntity
+	e.Kind = KindEntity
 	objectMap := make(map[string]interface{})
 	if e.Kind != "" {
 		objectMap["kind"] = e.Kind
@@ -6877,98 +7145,8 @@ func (e Entity) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsAccountEntity is the BasicEntity implementation for Entity.
-func (e Entity) AsAccountEntity() (*AccountEntity, bool) {
-	return nil, false
-}
-
-// AsAzureResourceEntity is the BasicEntity implementation for Entity.
-func (e Entity) AsAzureResourceEntity() (*AzureResourceEntity, bool) {
-	return nil, false
-}
-
-// AsCloudApplicationEntity is the BasicEntity implementation for Entity.
-func (e Entity) AsCloudApplicationEntity() (*CloudApplicationEntity, bool) {
-	return nil, false
-}
-
-// AsDNSEntity is the BasicEntity implementation for Entity.
-func (e Entity) AsDNSEntity() (*DNSEntity, bool) {
-	return nil, false
-}
-
-// AsFileEntity is the BasicEntity implementation for Entity.
-func (e Entity) AsFileEntity() (*FileEntity, bool) {
-	return nil, false
-}
-
-// AsFileHashEntity is the BasicEntity implementation for Entity.
-func (e Entity) AsFileHashEntity() (*FileHashEntity, bool) {
-	return nil, false
-}
-
-// AsHostEntity is the BasicEntity implementation for Entity.
-func (e Entity) AsHostEntity() (*HostEntity, bool) {
-	return nil, false
-}
-
-// AsHuntingBookmark is the BasicEntity implementation for Entity.
-func (e Entity) AsHuntingBookmark() (*HuntingBookmark, bool) {
-	return nil, false
-}
-
-// AsSecurityAlert is the BasicEntity implementation for Entity.
-func (e Entity) AsSecurityAlert() (*SecurityAlert, bool) {
-	return nil, false
-}
-
-// AsIPEntity is the BasicEntity implementation for Entity.
-func (e Entity) AsIPEntity() (*IPEntity, bool) {
-	return nil, false
-}
-
-// AsMailboxEntity is the BasicEntity implementation for Entity.
-func (e Entity) AsMailboxEntity() (*MailboxEntity, bool) {
-	return nil, false
-}
-
-// AsMailClusterEntity is the BasicEntity implementation for Entity.
-func (e Entity) AsMailClusterEntity() (*MailClusterEntity, bool) {
-	return nil, false
-}
-
-// AsMailMessageEntity is the BasicEntity implementation for Entity.
-func (e Entity) AsMailMessageEntity() (*MailMessageEntity, bool) {
-	return nil, false
-}
-
-// AsSubmissionMailEntity is the BasicEntity implementation for Entity.
-func (e Entity) AsSubmissionMailEntity() (*SubmissionMailEntity, bool) {
-	return nil, false
-}
-
-// AsMalwareEntity is the BasicEntity implementation for Entity.
-func (e Entity) AsMalwareEntity() (*MalwareEntity, bool) {
-	return nil, false
-}
-
-// AsProcessEntity is the BasicEntity implementation for Entity.
-func (e Entity) AsProcessEntity() (*ProcessEntity, bool) {
-	return nil, false
-}
-
-// AsRegistryKeyEntity is the BasicEntity implementation for Entity.
-func (e Entity) AsRegistryKeyEntity() (*RegistryKeyEntity, bool) {
-	return nil, false
-}
-
-// AsRegistryValueEntity is the BasicEntity implementation for Entity.
-func (e Entity) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
-	return nil, false
-}
-
-// AsSecurityGroupEntity is the BasicEntity implementation for Entity.
-func (e Entity) AsSecurityGroupEntity() (*SecurityGroupEntity, bool) {
+// AsIoTDeviceEntity is the BasicEntity implementation for Entity.
+func (e Entity) AsIoTDeviceEntity() (*IoTDeviceEntity, bool) {
 	return nil, false
 }
 
@@ -6977,8 +7155,98 @@ func (e Entity) AsURLEntity() (*URLEntity, bool) {
 	return nil, false
 }
 
-// AsIoTDeviceEntity is the BasicEntity implementation for Entity.
-func (e Entity) AsIoTDeviceEntity() (*IoTDeviceEntity, bool) {
+// AsSecurityGroupEntity is the BasicEntity implementation for Entity.
+func (e Entity) AsSecurityGroupEntity() (*SecurityGroupEntity, bool) {
+	return nil, false
+}
+
+// AsSecurityAlert is the BasicEntity implementation for Entity.
+func (e Entity) AsSecurityAlert() (*SecurityAlert, bool) {
+	return nil, false
+}
+
+// AsRegistryValueEntity is the BasicEntity implementation for Entity.
+func (e Entity) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
+	return nil, false
+}
+
+// AsRegistryKeyEntity is the BasicEntity implementation for Entity.
+func (e Entity) AsRegistryKeyEntity() (*RegistryKeyEntity, bool) {
+	return nil, false
+}
+
+// AsProcessEntity is the BasicEntity implementation for Entity.
+func (e Entity) AsProcessEntity() (*ProcessEntity, bool) {
+	return nil, false
+}
+
+// AsMalwareEntity is the BasicEntity implementation for Entity.
+func (e Entity) AsMalwareEntity() (*MalwareEntity, bool) {
+	return nil, false
+}
+
+// AsSubmissionMailEntity is the BasicEntity implementation for Entity.
+func (e Entity) AsSubmissionMailEntity() (*SubmissionMailEntity, bool) {
+	return nil, false
+}
+
+// AsMailMessageEntity is the BasicEntity implementation for Entity.
+func (e Entity) AsMailMessageEntity() (*MailMessageEntity, bool) {
+	return nil, false
+}
+
+// AsMailClusterEntity is the BasicEntity implementation for Entity.
+func (e Entity) AsMailClusterEntity() (*MailClusterEntity, bool) {
+	return nil, false
+}
+
+// AsMailboxEntity is the BasicEntity implementation for Entity.
+func (e Entity) AsMailboxEntity() (*MailboxEntity, bool) {
+	return nil, false
+}
+
+// AsIPEntity is the BasicEntity implementation for Entity.
+func (e Entity) AsIPEntity() (*IPEntity, bool) {
+	return nil, false
+}
+
+// AsHuntingBookmark is the BasicEntity implementation for Entity.
+func (e Entity) AsHuntingBookmark() (*HuntingBookmark, bool) {
+	return nil, false
+}
+
+// AsHostEntity is the BasicEntity implementation for Entity.
+func (e Entity) AsHostEntity() (*HostEntity, bool) {
+	return nil, false
+}
+
+// AsFileHashEntity is the BasicEntity implementation for Entity.
+func (e Entity) AsFileHashEntity() (*FileHashEntity, bool) {
+	return nil, false
+}
+
+// AsFileEntity is the BasicEntity implementation for Entity.
+func (e Entity) AsFileEntity() (*FileEntity, bool) {
+	return nil, false
+}
+
+// AsDNSEntity is the BasicEntity implementation for Entity.
+func (e Entity) AsDNSEntity() (*DNSEntity, bool) {
+	return nil, false
+}
+
+// AsCloudApplicationEntity is the BasicEntity implementation for Entity.
+func (e Entity) AsCloudApplicationEntity() (*CloudApplicationEntity, bool) {
+	return nil, false
+}
+
+// AsAzureResourceEntity is the BasicEntity implementation for Entity.
+func (e Entity) AsAzureResourceEntity() (*AzureResourceEntity, bool) {
+	return nil, false
+}
+
+// AsAccountEntity is the BasicEntity implementation for Entity.
+func (e Entity) AsAccountEntity() (*AccountEntity, bool) {
 	return nil, false
 }
 
@@ -7004,7 +7272,7 @@ type EntityAnalytics struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindBasicSettingsKindSettings', 'KindBasicSettingsKindIPSyncer', 'KindBasicSettingsKindEyesOn', 'KindBasicSettingsKindEntityAnalytics', 'KindBasicSettingsKindUeba'
+	// Kind - Possible values include: 'KindBasicSettingsKindSettings', 'KindBasicSettingsKindUeba', 'KindBasicSettingsKindEntityAnalytics', 'KindBasicSettingsKindEyesOn', 'KindBasicSettingsKindIPSyncer', 'KindBasicSettingsKindAnomalies'
 	Kind KindBasicSettings `json:"kind,omitempty"`
 }
 
@@ -7024,13 +7292,8 @@ func (ea EntityAnalytics) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsIPSyncer is the BasicSettings implementation for EntityAnalytics.
-func (ea EntityAnalytics) AsIPSyncer() (*IPSyncer, bool) {
-	return nil, false
-}
-
-// AsEyesOn is the BasicSettings implementation for EntityAnalytics.
-func (ea EntityAnalytics) AsEyesOn() (*EyesOn, bool) {
+// AsUeba is the BasicSettings implementation for EntityAnalytics.
+func (ea EntityAnalytics) AsUeba() (*Ueba, bool) {
 	return nil, false
 }
 
@@ -7039,8 +7302,18 @@ func (ea EntityAnalytics) AsEntityAnalytics() (*EntityAnalytics, bool) {
 	return &ea, true
 }
 
-// AsUeba is the BasicSettings implementation for EntityAnalytics.
-func (ea EntityAnalytics) AsUeba() (*Ueba, bool) {
+// AsEyesOn is the BasicSettings implementation for EntityAnalytics.
+func (ea EntityAnalytics) AsEyesOn() (*EyesOn, bool) {
+	return nil, false
+}
+
+// AsIPSyncer is the BasicSettings implementation for EntityAnalytics.
+func (ea EntityAnalytics) AsIPSyncer() (*IPSyncer, bool) {
+	return nil, false
+}
+
+// AsAnomalies is the BasicSettings implementation for EntityAnalytics.
+func (ea EntityAnalytics) AsAnomalies() (*Anomalies, bool) {
 	return nil, false
 }
 
@@ -7849,14 +8122,14 @@ func (eqm *EntityQueryModel) UnmarshalJSON(body []byte) error {
 // BasicEntityTimelineItem entity timeline Item.
 type BasicEntityTimelineItem interface {
 	AsActivityTimelineItem() (*ActivityTimelineItem, bool)
-	AsSecurityAlertTimelineItem() (*SecurityAlertTimelineItem, bool)
 	AsBookmarkTimelineItem() (*BookmarkTimelineItem, bool)
+	AsSecurityAlertTimelineItem() (*SecurityAlertTimelineItem, bool)
 	AsEntityTimelineItem() (*EntityTimelineItem, bool)
 }
 
 // EntityTimelineItem entity timeline Item.
 type EntityTimelineItem struct {
-	// Kind - Possible values include: 'KindBasicEntityTimelineItemKindEntityTimelineItem', 'KindBasicEntityTimelineItemKindActivity', 'KindBasicEntityTimelineItemKindSecurityAlert', 'KindBasicEntityTimelineItemKindBookmark'
+	// Kind - Possible values include: 'KindBasicEntityTimelineItemKindEntityTimelineItem', 'KindBasicEntityTimelineItemKindActivity', 'KindBasicEntityTimelineItemKindBookmark', 'KindBasicEntityTimelineItemKindSecurityAlert'
 	Kind KindBasicEntityTimelineItem `json:"kind,omitempty"`
 }
 
@@ -7872,14 +8145,14 @@ func unmarshalBasicEntityTimelineItem(body []byte) (BasicEntityTimelineItem, err
 		var ati ActivityTimelineItem
 		err := json.Unmarshal(body, &ati)
 		return ati, err
-	case string(KindBasicEntityTimelineItemKindSecurityAlert):
-		var sati SecurityAlertTimelineItem
-		err := json.Unmarshal(body, &sati)
-		return sati, err
 	case string(KindBasicEntityTimelineItemKindBookmark):
 		var bti BookmarkTimelineItem
 		err := json.Unmarshal(body, &bti)
 		return bti, err
+	case string(KindBasicEntityTimelineItemKindSecurityAlert):
+		var sati SecurityAlertTimelineItem
+		err := json.Unmarshal(body, &sati)
+		return sati, err
 	default:
 		var eti EntityTimelineItem
 		err := json.Unmarshal(body, &eti)
@@ -7920,13 +8193,13 @@ func (eti EntityTimelineItem) AsActivityTimelineItem() (*ActivityTimelineItem, b
 	return nil, false
 }
 
-// AsSecurityAlertTimelineItem is the BasicEntityTimelineItem implementation for EntityTimelineItem.
-func (eti EntityTimelineItem) AsSecurityAlertTimelineItem() (*SecurityAlertTimelineItem, bool) {
+// AsBookmarkTimelineItem is the BasicEntityTimelineItem implementation for EntityTimelineItem.
+func (eti EntityTimelineItem) AsBookmarkTimelineItem() (*BookmarkTimelineItem, bool) {
 	return nil, false
 }
 
-// AsBookmarkTimelineItem is the BasicEntityTimelineItem implementation for EntityTimelineItem.
-func (eti EntityTimelineItem) AsBookmarkTimelineItem() (*BookmarkTimelineItem, bool) {
+// AsSecurityAlertTimelineItem is the BasicEntityTimelineItem implementation for EntityTimelineItem.
+func (eti EntityTimelineItem) AsSecurityAlertTimelineItem() (*SecurityAlertTimelineItem, bool) {
 	return nil, false
 }
 
@@ -8161,7 +8434,7 @@ type EyesOn struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindBasicSettingsKindSettings', 'KindBasicSettingsKindIPSyncer', 'KindBasicSettingsKindEyesOn', 'KindBasicSettingsKindEntityAnalytics', 'KindBasicSettingsKindUeba'
+	// Kind - Possible values include: 'KindBasicSettingsKindSettings', 'KindBasicSettingsKindUeba', 'KindBasicSettingsKindEntityAnalytics', 'KindBasicSettingsKindEyesOn', 'KindBasicSettingsKindIPSyncer', 'KindBasicSettingsKindAnomalies'
 	Kind KindBasicSettings `json:"kind,omitempty"`
 }
 
@@ -8181,8 +8454,13 @@ func (eo EyesOn) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsIPSyncer is the BasicSettings implementation for EyesOn.
-func (eo EyesOn) AsIPSyncer() (*IPSyncer, bool) {
+// AsUeba is the BasicSettings implementation for EyesOn.
+func (eo EyesOn) AsUeba() (*Ueba, bool) {
+	return nil, false
+}
+
+// AsEntityAnalytics is the BasicSettings implementation for EyesOn.
+func (eo EyesOn) AsEntityAnalytics() (*EntityAnalytics, bool) {
 	return nil, false
 }
 
@@ -8191,13 +8469,13 @@ func (eo EyesOn) AsEyesOn() (*EyesOn, bool) {
 	return &eo, true
 }
 
-// AsEntityAnalytics is the BasicSettings implementation for EyesOn.
-func (eo EyesOn) AsEntityAnalytics() (*EntityAnalytics, bool) {
+// AsIPSyncer is the BasicSettings implementation for EyesOn.
+func (eo EyesOn) AsIPSyncer() (*IPSyncer, bool) {
 	return nil, false
 }
 
-// AsUeba is the BasicSettings implementation for EyesOn.
-func (eo EyesOn) AsUeba() (*Ueba, bool) {
+// AsAnomalies is the BasicSettings implementation for EyesOn.
+func (eo EyesOn) AsAnomalies() (*Anomalies, bool) {
 	return nil, false
 }
 
@@ -8302,13 +8580,13 @@ type FileEntity struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Kind - Possible values include: 'KindBasicEntityKindEntity', 'KindBasicEntityKindAccount', 'KindBasicEntityKindAzureResource', 'KindBasicEntityKindCloudApplication', 'KindBasicEntityKindDNSResolution', 'KindBasicEntityKindFile', 'KindBasicEntityKindFileHash', 'KindBasicEntityKindHost', 'KindBasicEntityKindBookmark', 'KindBasicEntityKindSecurityAlert', 'KindBasicEntityKindIP', 'KindBasicEntityKindMailbox', 'KindBasicEntityKindMailCluster', 'KindBasicEntityKindMailMessage', 'KindBasicEntityKindSubmissionMail', 'KindBasicEntityKindMalware', 'KindBasicEntityKindProcess', 'KindBasicEntityKindRegistryKey', 'KindBasicEntityKindRegistryValue', 'KindBasicEntityKindSecurityGroup', 'KindBasicEntityKindURL', 'KindBasicEntityKindIoTDevice'
-	Kind KindBasicEntity `json:"kind,omitempty"`
+	// Kind - Possible values include: 'KindEntity', 'KindIoTDevice', 'KindURL', 'KindSecurityGroup', 'KindSecurityAlert', 'KindRegistryValue', 'KindRegistryKey', 'KindProcess', 'KindMalware', 'KindSubmissionMail', 'KindMailMessage', 'KindMailCluster', 'KindMailbox', 'KindIP', 'KindBookmark', 'KindHost', 'KindFileHash', 'KindFile', 'KindDNSResolution', 'KindCloudApplication', 'KindAzureResource', 'KindAccount'
+	Kind Kind `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for FileEntity.
 func (fe FileEntity) MarshalJSON() ([]byte, error) {
-	fe.Kind = KindBasicEntityKindFile
+	fe.Kind = KindFile
 	objectMap := make(map[string]interface{})
 	if fe.FileEntityProperties != nil {
 		objectMap["properties"] = fe.FileEntityProperties
@@ -8319,98 +8597,8 @@ func (fe FileEntity) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsAccountEntity is the BasicEntity implementation for FileEntity.
-func (fe FileEntity) AsAccountEntity() (*AccountEntity, bool) {
-	return nil, false
-}
-
-// AsAzureResourceEntity is the BasicEntity implementation for FileEntity.
-func (fe FileEntity) AsAzureResourceEntity() (*AzureResourceEntity, bool) {
-	return nil, false
-}
-
-// AsCloudApplicationEntity is the BasicEntity implementation for FileEntity.
-func (fe FileEntity) AsCloudApplicationEntity() (*CloudApplicationEntity, bool) {
-	return nil, false
-}
-
-// AsDNSEntity is the BasicEntity implementation for FileEntity.
-func (fe FileEntity) AsDNSEntity() (*DNSEntity, bool) {
-	return nil, false
-}
-
-// AsFileEntity is the BasicEntity implementation for FileEntity.
-func (fe FileEntity) AsFileEntity() (*FileEntity, bool) {
-	return &fe, true
-}
-
-// AsFileHashEntity is the BasicEntity implementation for FileEntity.
-func (fe FileEntity) AsFileHashEntity() (*FileHashEntity, bool) {
-	return nil, false
-}
-
-// AsHostEntity is the BasicEntity implementation for FileEntity.
-func (fe FileEntity) AsHostEntity() (*HostEntity, bool) {
-	return nil, false
-}
-
-// AsHuntingBookmark is the BasicEntity implementation for FileEntity.
-func (fe FileEntity) AsHuntingBookmark() (*HuntingBookmark, bool) {
-	return nil, false
-}
-
-// AsSecurityAlert is the BasicEntity implementation for FileEntity.
-func (fe FileEntity) AsSecurityAlert() (*SecurityAlert, bool) {
-	return nil, false
-}
-
-// AsIPEntity is the BasicEntity implementation for FileEntity.
-func (fe FileEntity) AsIPEntity() (*IPEntity, bool) {
-	return nil, false
-}
-
-// AsMailboxEntity is the BasicEntity implementation for FileEntity.
-func (fe FileEntity) AsMailboxEntity() (*MailboxEntity, bool) {
-	return nil, false
-}
-
-// AsMailClusterEntity is the BasicEntity implementation for FileEntity.
-func (fe FileEntity) AsMailClusterEntity() (*MailClusterEntity, bool) {
-	return nil, false
-}
-
-// AsMailMessageEntity is the BasicEntity implementation for FileEntity.
-func (fe FileEntity) AsMailMessageEntity() (*MailMessageEntity, bool) {
-	return nil, false
-}
-
-// AsSubmissionMailEntity is the BasicEntity implementation for FileEntity.
-func (fe FileEntity) AsSubmissionMailEntity() (*SubmissionMailEntity, bool) {
-	return nil, false
-}
-
-// AsMalwareEntity is the BasicEntity implementation for FileEntity.
-func (fe FileEntity) AsMalwareEntity() (*MalwareEntity, bool) {
-	return nil, false
-}
-
-// AsProcessEntity is the BasicEntity implementation for FileEntity.
-func (fe FileEntity) AsProcessEntity() (*ProcessEntity, bool) {
-	return nil, false
-}
-
-// AsRegistryKeyEntity is the BasicEntity implementation for FileEntity.
-func (fe FileEntity) AsRegistryKeyEntity() (*RegistryKeyEntity, bool) {
-	return nil, false
-}
-
-// AsRegistryValueEntity is the BasicEntity implementation for FileEntity.
-func (fe FileEntity) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
-	return nil, false
-}
-
-// AsSecurityGroupEntity is the BasicEntity implementation for FileEntity.
-func (fe FileEntity) AsSecurityGroupEntity() (*SecurityGroupEntity, bool) {
+// AsIoTDeviceEntity is the BasicEntity implementation for FileEntity.
+func (fe FileEntity) AsIoTDeviceEntity() (*IoTDeviceEntity, bool) {
 	return nil, false
 }
 
@@ -8419,8 +8607,98 @@ func (fe FileEntity) AsURLEntity() (*URLEntity, bool) {
 	return nil, false
 }
 
-// AsIoTDeviceEntity is the BasicEntity implementation for FileEntity.
-func (fe FileEntity) AsIoTDeviceEntity() (*IoTDeviceEntity, bool) {
+// AsSecurityGroupEntity is the BasicEntity implementation for FileEntity.
+func (fe FileEntity) AsSecurityGroupEntity() (*SecurityGroupEntity, bool) {
+	return nil, false
+}
+
+// AsSecurityAlert is the BasicEntity implementation for FileEntity.
+func (fe FileEntity) AsSecurityAlert() (*SecurityAlert, bool) {
+	return nil, false
+}
+
+// AsRegistryValueEntity is the BasicEntity implementation for FileEntity.
+func (fe FileEntity) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
+	return nil, false
+}
+
+// AsRegistryKeyEntity is the BasicEntity implementation for FileEntity.
+func (fe FileEntity) AsRegistryKeyEntity() (*RegistryKeyEntity, bool) {
+	return nil, false
+}
+
+// AsProcessEntity is the BasicEntity implementation for FileEntity.
+func (fe FileEntity) AsProcessEntity() (*ProcessEntity, bool) {
+	return nil, false
+}
+
+// AsMalwareEntity is the BasicEntity implementation for FileEntity.
+func (fe FileEntity) AsMalwareEntity() (*MalwareEntity, bool) {
+	return nil, false
+}
+
+// AsSubmissionMailEntity is the BasicEntity implementation for FileEntity.
+func (fe FileEntity) AsSubmissionMailEntity() (*SubmissionMailEntity, bool) {
+	return nil, false
+}
+
+// AsMailMessageEntity is the BasicEntity implementation for FileEntity.
+func (fe FileEntity) AsMailMessageEntity() (*MailMessageEntity, bool) {
+	return nil, false
+}
+
+// AsMailClusterEntity is the BasicEntity implementation for FileEntity.
+func (fe FileEntity) AsMailClusterEntity() (*MailClusterEntity, bool) {
+	return nil, false
+}
+
+// AsMailboxEntity is the BasicEntity implementation for FileEntity.
+func (fe FileEntity) AsMailboxEntity() (*MailboxEntity, bool) {
+	return nil, false
+}
+
+// AsIPEntity is the BasicEntity implementation for FileEntity.
+func (fe FileEntity) AsIPEntity() (*IPEntity, bool) {
+	return nil, false
+}
+
+// AsHuntingBookmark is the BasicEntity implementation for FileEntity.
+func (fe FileEntity) AsHuntingBookmark() (*HuntingBookmark, bool) {
+	return nil, false
+}
+
+// AsHostEntity is the BasicEntity implementation for FileEntity.
+func (fe FileEntity) AsHostEntity() (*HostEntity, bool) {
+	return nil, false
+}
+
+// AsFileHashEntity is the BasicEntity implementation for FileEntity.
+func (fe FileEntity) AsFileHashEntity() (*FileHashEntity, bool) {
+	return nil, false
+}
+
+// AsFileEntity is the BasicEntity implementation for FileEntity.
+func (fe FileEntity) AsFileEntity() (*FileEntity, bool) {
+	return &fe, true
+}
+
+// AsDNSEntity is the BasicEntity implementation for FileEntity.
+func (fe FileEntity) AsDNSEntity() (*DNSEntity, bool) {
+	return nil, false
+}
+
+// AsCloudApplicationEntity is the BasicEntity implementation for FileEntity.
+func (fe FileEntity) AsCloudApplicationEntity() (*CloudApplicationEntity, bool) {
+	return nil, false
+}
+
+// AsAzureResourceEntity is the BasicEntity implementation for FileEntity.
+func (fe FileEntity) AsAzureResourceEntity() (*AzureResourceEntity, bool) {
+	return nil, false
+}
+
+// AsAccountEntity is the BasicEntity implementation for FileEntity.
+func (fe FileEntity) AsAccountEntity() (*AccountEntity, bool) {
 	return nil, false
 }
 
@@ -8481,7 +8759,7 @@ func (fe *FileEntity) UnmarshalJSON(body []byte) error {
 			}
 		case "kind":
 			if v != nil {
-				var kind KindBasicEntity
+				var kind Kind
 				err = json.Unmarshal(*v, &kind)
 				if err != nil {
 					return err
@@ -8526,13 +8804,13 @@ type FileHashEntity struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Kind - Possible values include: 'KindBasicEntityKindEntity', 'KindBasicEntityKindAccount', 'KindBasicEntityKindAzureResource', 'KindBasicEntityKindCloudApplication', 'KindBasicEntityKindDNSResolution', 'KindBasicEntityKindFile', 'KindBasicEntityKindFileHash', 'KindBasicEntityKindHost', 'KindBasicEntityKindBookmark', 'KindBasicEntityKindSecurityAlert', 'KindBasicEntityKindIP', 'KindBasicEntityKindMailbox', 'KindBasicEntityKindMailCluster', 'KindBasicEntityKindMailMessage', 'KindBasicEntityKindSubmissionMail', 'KindBasicEntityKindMalware', 'KindBasicEntityKindProcess', 'KindBasicEntityKindRegistryKey', 'KindBasicEntityKindRegistryValue', 'KindBasicEntityKindSecurityGroup', 'KindBasicEntityKindURL', 'KindBasicEntityKindIoTDevice'
-	Kind KindBasicEntity `json:"kind,omitempty"`
+	// Kind - Possible values include: 'KindEntity', 'KindIoTDevice', 'KindURL', 'KindSecurityGroup', 'KindSecurityAlert', 'KindRegistryValue', 'KindRegistryKey', 'KindProcess', 'KindMalware', 'KindSubmissionMail', 'KindMailMessage', 'KindMailCluster', 'KindMailbox', 'KindIP', 'KindBookmark', 'KindHost', 'KindFileHash', 'KindFile', 'KindDNSResolution', 'KindCloudApplication', 'KindAzureResource', 'KindAccount'
+	Kind Kind `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for FileHashEntity.
 func (fhe FileHashEntity) MarshalJSON() ([]byte, error) {
-	fhe.Kind = KindBasicEntityKindFileHash
+	fhe.Kind = KindFileHash
 	objectMap := make(map[string]interface{})
 	if fhe.FileHashEntityProperties != nil {
 		objectMap["properties"] = fhe.FileHashEntityProperties
@@ -8543,98 +8821,8 @@ func (fhe FileHashEntity) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsAccountEntity is the BasicEntity implementation for FileHashEntity.
-func (fhe FileHashEntity) AsAccountEntity() (*AccountEntity, bool) {
-	return nil, false
-}
-
-// AsAzureResourceEntity is the BasicEntity implementation for FileHashEntity.
-func (fhe FileHashEntity) AsAzureResourceEntity() (*AzureResourceEntity, bool) {
-	return nil, false
-}
-
-// AsCloudApplicationEntity is the BasicEntity implementation for FileHashEntity.
-func (fhe FileHashEntity) AsCloudApplicationEntity() (*CloudApplicationEntity, bool) {
-	return nil, false
-}
-
-// AsDNSEntity is the BasicEntity implementation for FileHashEntity.
-func (fhe FileHashEntity) AsDNSEntity() (*DNSEntity, bool) {
-	return nil, false
-}
-
-// AsFileEntity is the BasicEntity implementation for FileHashEntity.
-func (fhe FileHashEntity) AsFileEntity() (*FileEntity, bool) {
-	return nil, false
-}
-
-// AsFileHashEntity is the BasicEntity implementation for FileHashEntity.
-func (fhe FileHashEntity) AsFileHashEntity() (*FileHashEntity, bool) {
-	return &fhe, true
-}
-
-// AsHostEntity is the BasicEntity implementation for FileHashEntity.
-func (fhe FileHashEntity) AsHostEntity() (*HostEntity, bool) {
-	return nil, false
-}
-
-// AsHuntingBookmark is the BasicEntity implementation for FileHashEntity.
-func (fhe FileHashEntity) AsHuntingBookmark() (*HuntingBookmark, bool) {
-	return nil, false
-}
-
-// AsSecurityAlert is the BasicEntity implementation for FileHashEntity.
-func (fhe FileHashEntity) AsSecurityAlert() (*SecurityAlert, bool) {
-	return nil, false
-}
-
-// AsIPEntity is the BasicEntity implementation for FileHashEntity.
-func (fhe FileHashEntity) AsIPEntity() (*IPEntity, bool) {
-	return nil, false
-}
-
-// AsMailboxEntity is the BasicEntity implementation for FileHashEntity.
-func (fhe FileHashEntity) AsMailboxEntity() (*MailboxEntity, bool) {
-	return nil, false
-}
-
-// AsMailClusterEntity is the BasicEntity implementation for FileHashEntity.
-func (fhe FileHashEntity) AsMailClusterEntity() (*MailClusterEntity, bool) {
-	return nil, false
-}
-
-// AsMailMessageEntity is the BasicEntity implementation for FileHashEntity.
-func (fhe FileHashEntity) AsMailMessageEntity() (*MailMessageEntity, bool) {
-	return nil, false
-}
-
-// AsSubmissionMailEntity is the BasicEntity implementation for FileHashEntity.
-func (fhe FileHashEntity) AsSubmissionMailEntity() (*SubmissionMailEntity, bool) {
-	return nil, false
-}
-
-// AsMalwareEntity is the BasicEntity implementation for FileHashEntity.
-func (fhe FileHashEntity) AsMalwareEntity() (*MalwareEntity, bool) {
-	return nil, false
-}
-
-// AsProcessEntity is the BasicEntity implementation for FileHashEntity.
-func (fhe FileHashEntity) AsProcessEntity() (*ProcessEntity, bool) {
-	return nil, false
-}
-
-// AsRegistryKeyEntity is the BasicEntity implementation for FileHashEntity.
-func (fhe FileHashEntity) AsRegistryKeyEntity() (*RegistryKeyEntity, bool) {
-	return nil, false
-}
-
-// AsRegistryValueEntity is the BasicEntity implementation for FileHashEntity.
-func (fhe FileHashEntity) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
-	return nil, false
-}
-
-// AsSecurityGroupEntity is the BasicEntity implementation for FileHashEntity.
-func (fhe FileHashEntity) AsSecurityGroupEntity() (*SecurityGroupEntity, bool) {
+// AsIoTDeviceEntity is the BasicEntity implementation for FileHashEntity.
+func (fhe FileHashEntity) AsIoTDeviceEntity() (*IoTDeviceEntity, bool) {
 	return nil, false
 }
 
@@ -8643,8 +8831,98 @@ func (fhe FileHashEntity) AsURLEntity() (*URLEntity, bool) {
 	return nil, false
 }
 
-// AsIoTDeviceEntity is the BasicEntity implementation for FileHashEntity.
-func (fhe FileHashEntity) AsIoTDeviceEntity() (*IoTDeviceEntity, bool) {
+// AsSecurityGroupEntity is the BasicEntity implementation for FileHashEntity.
+func (fhe FileHashEntity) AsSecurityGroupEntity() (*SecurityGroupEntity, bool) {
+	return nil, false
+}
+
+// AsSecurityAlert is the BasicEntity implementation for FileHashEntity.
+func (fhe FileHashEntity) AsSecurityAlert() (*SecurityAlert, bool) {
+	return nil, false
+}
+
+// AsRegistryValueEntity is the BasicEntity implementation for FileHashEntity.
+func (fhe FileHashEntity) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
+	return nil, false
+}
+
+// AsRegistryKeyEntity is the BasicEntity implementation for FileHashEntity.
+func (fhe FileHashEntity) AsRegistryKeyEntity() (*RegistryKeyEntity, bool) {
+	return nil, false
+}
+
+// AsProcessEntity is the BasicEntity implementation for FileHashEntity.
+func (fhe FileHashEntity) AsProcessEntity() (*ProcessEntity, bool) {
+	return nil, false
+}
+
+// AsMalwareEntity is the BasicEntity implementation for FileHashEntity.
+func (fhe FileHashEntity) AsMalwareEntity() (*MalwareEntity, bool) {
+	return nil, false
+}
+
+// AsSubmissionMailEntity is the BasicEntity implementation for FileHashEntity.
+func (fhe FileHashEntity) AsSubmissionMailEntity() (*SubmissionMailEntity, bool) {
+	return nil, false
+}
+
+// AsMailMessageEntity is the BasicEntity implementation for FileHashEntity.
+func (fhe FileHashEntity) AsMailMessageEntity() (*MailMessageEntity, bool) {
+	return nil, false
+}
+
+// AsMailClusterEntity is the BasicEntity implementation for FileHashEntity.
+func (fhe FileHashEntity) AsMailClusterEntity() (*MailClusterEntity, bool) {
+	return nil, false
+}
+
+// AsMailboxEntity is the BasicEntity implementation for FileHashEntity.
+func (fhe FileHashEntity) AsMailboxEntity() (*MailboxEntity, bool) {
+	return nil, false
+}
+
+// AsIPEntity is the BasicEntity implementation for FileHashEntity.
+func (fhe FileHashEntity) AsIPEntity() (*IPEntity, bool) {
+	return nil, false
+}
+
+// AsHuntingBookmark is the BasicEntity implementation for FileHashEntity.
+func (fhe FileHashEntity) AsHuntingBookmark() (*HuntingBookmark, bool) {
+	return nil, false
+}
+
+// AsHostEntity is the BasicEntity implementation for FileHashEntity.
+func (fhe FileHashEntity) AsHostEntity() (*HostEntity, bool) {
+	return nil, false
+}
+
+// AsFileHashEntity is the BasicEntity implementation for FileHashEntity.
+func (fhe FileHashEntity) AsFileHashEntity() (*FileHashEntity, bool) {
+	return &fhe, true
+}
+
+// AsFileEntity is the BasicEntity implementation for FileHashEntity.
+func (fhe FileHashEntity) AsFileEntity() (*FileEntity, bool) {
+	return nil, false
+}
+
+// AsDNSEntity is the BasicEntity implementation for FileHashEntity.
+func (fhe FileHashEntity) AsDNSEntity() (*DNSEntity, bool) {
+	return nil, false
+}
+
+// AsCloudApplicationEntity is the BasicEntity implementation for FileHashEntity.
+func (fhe FileHashEntity) AsCloudApplicationEntity() (*CloudApplicationEntity, bool) {
+	return nil, false
+}
+
+// AsAzureResourceEntity is the BasicEntity implementation for FileHashEntity.
+func (fhe FileHashEntity) AsAzureResourceEntity() (*AzureResourceEntity, bool) {
+	return nil, false
+}
+
+// AsAccountEntity is the BasicEntity implementation for FileHashEntity.
+func (fhe FileHashEntity) AsAccountEntity() (*AccountEntity, bool) {
 	return nil, false
 }
 
@@ -8705,7 +8983,7 @@ func (fhe *FileHashEntity) UnmarshalJSON(body []byte) error {
 			}
 		case "kind":
 			if v != nil {
-				var kind KindBasicEntity
+				var kind Kind
 				err = json.Unmarshal(*v, &kind)
 				if err != nil {
 					return err
@@ -8748,7 +9026,7 @@ type FusionAlertRule struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindBasicAlertRuleKindAlertRule', 'KindBasicAlertRuleKindMLBehaviorAnalytics', 'KindBasicAlertRuleKindFusion', 'KindBasicAlertRuleKindThreatIntelligence', 'KindBasicAlertRuleKindMicrosoftSecurityIncidentCreation', 'KindBasicAlertRuleKindScheduled'
+	// Kind - Possible values include: 'KindBasicAlertRuleKindAlertRule', 'KindBasicAlertRuleKindScheduled', 'KindBasicAlertRuleKindMicrosoftSecurityIncidentCreation', 'KindBasicAlertRuleKindThreatIntelligence', 'KindBasicAlertRuleKindFusion', 'KindBasicAlertRuleKindMLBehaviorAnalytics'
 	Kind KindBasicAlertRule `json:"kind,omitempty"`
 }
 
@@ -8768,18 +9046,8 @@ func (far FusionAlertRule) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsMLBehaviorAnalyticsAlertRule is the BasicAlertRule implementation for FusionAlertRule.
-func (far FusionAlertRule) AsMLBehaviorAnalyticsAlertRule() (*MLBehaviorAnalyticsAlertRule, bool) {
-	return nil, false
-}
-
-// AsFusionAlertRule is the BasicAlertRule implementation for FusionAlertRule.
-func (far FusionAlertRule) AsFusionAlertRule() (*FusionAlertRule, bool) {
-	return &far, true
-}
-
-// AsThreatIntelligenceAlertRule is the BasicAlertRule implementation for FusionAlertRule.
-func (far FusionAlertRule) AsThreatIntelligenceAlertRule() (*ThreatIntelligenceAlertRule, bool) {
+// AsScheduledAlertRule is the BasicAlertRule implementation for FusionAlertRule.
+func (far FusionAlertRule) AsScheduledAlertRule() (*ScheduledAlertRule, bool) {
 	return nil, false
 }
 
@@ -8788,8 +9056,18 @@ func (far FusionAlertRule) AsMicrosoftSecurityIncidentCreationAlertRule() (*Micr
 	return nil, false
 }
 
-// AsScheduledAlertRule is the BasicAlertRule implementation for FusionAlertRule.
-func (far FusionAlertRule) AsScheduledAlertRule() (*ScheduledAlertRule, bool) {
+// AsThreatIntelligenceAlertRule is the BasicAlertRule implementation for FusionAlertRule.
+func (far FusionAlertRule) AsThreatIntelligenceAlertRule() (*ThreatIntelligenceAlertRule, bool) {
+	return nil, false
+}
+
+// AsFusionAlertRule is the BasicAlertRule implementation for FusionAlertRule.
+func (far FusionAlertRule) AsFusionAlertRule() (*FusionAlertRule, bool) {
+	return &far, true
+}
+
+// AsMLBehaviorAnalyticsAlertRule is the BasicAlertRule implementation for FusionAlertRule.
+func (far FusionAlertRule) AsMLBehaviorAnalyticsAlertRule() (*MLBehaviorAnalyticsAlertRule, bool) {
 	return nil, false
 }
 
@@ -8912,7 +9190,7 @@ type FusionAlertRuleTemplate struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Kind - Possible values include: 'KindBasicAlertRuleTemplateKindAlertRuleTemplate', 'KindBasicAlertRuleTemplateKindMLBehaviorAnalytics', 'KindBasicAlertRuleTemplateKindFusion', 'KindBasicAlertRuleTemplateKindThreatIntelligence', 'KindBasicAlertRuleTemplateKindMicrosoftSecurityIncidentCreation', 'KindBasicAlertRuleTemplateKindScheduled'
+	// Kind - Possible values include: 'KindBasicAlertRuleTemplateKindAlertRuleTemplate', 'KindBasicAlertRuleTemplateKindScheduled', 'KindBasicAlertRuleTemplateKindMicrosoftSecurityIncidentCreation', 'KindBasicAlertRuleTemplateKindThreatIntelligence', 'KindBasicAlertRuleTemplateKindFusion', 'KindBasicAlertRuleTemplateKindMLBehaviorAnalytics'
 	Kind KindBasicAlertRuleTemplate `json:"kind,omitempty"`
 }
 
@@ -8929,18 +9207,8 @@ func (fart FusionAlertRuleTemplate) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsMLBehaviorAnalyticsAlertRuleTemplate is the BasicAlertRuleTemplate implementation for FusionAlertRuleTemplate.
-func (fart FusionAlertRuleTemplate) AsMLBehaviorAnalyticsAlertRuleTemplate() (*MLBehaviorAnalyticsAlertRuleTemplate, bool) {
-	return nil, false
-}
-
-// AsFusionAlertRuleTemplate is the BasicAlertRuleTemplate implementation for FusionAlertRuleTemplate.
-func (fart FusionAlertRuleTemplate) AsFusionAlertRuleTemplate() (*FusionAlertRuleTemplate, bool) {
-	return &fart, true
-}
-
-// AsThreatIntelligenceAlertRuleTemplate is the BasicAlertRuleTemplate implementation for FusionAlertRuleTemplate.
-func (fart FusionAlertRuleTemplate) AsThreatIntelligenceAlertRuleTemplate() (*ThreatIntelligenceAlertRuleTemplate, bool) {
+// AsScheduledAlertRuleTemplate is the BasicAlertRuleTemplate implementation for FusionAlertRuleTemplate.
+func (fart FusionAlertRuleTemplate) AsScheduledAlertRuleTemplate() (*ScheduledAlertRuleTemplate, bool) {
 	return nil, false
 }
 
@@ -8949,8 +9217,18 @@ func (fart FusionAlertRuleTemplate) AsMicrosoftSecurityIncidentCreationAlertRule
 	return nil, false
 }
 
-// AsScheduledAlertRuleTemplate is the BasicAlertRuleTemplate implementation for FusionAlertRuleTemplate.
-func (fart FusionAlertRuleTemplate) AsScheduledAlertRuleTemplate() (*ScheduledAlertRuleTemplate, bool) {
+// AsThreatIntelligenceAlertRuleTemplate is the BasicAlertRuleTemplate implementation for FusionAlertRuleTemplate.
+func (fart FusionAlertRuleTemplate) AsThreatIntelligenceAlertRuleTemplate() (*ThreatIntelligenceAlertRuleTemplate, bool) {
+	return nil, false
+}
+
+// AsFusionAlertRuleTemplate is the BasicAlertRuleTemplate implementation for FusionAlertRuleTemplate.
+func (fart FusionAlertRuleTemplate) AsFusionAlertRuleTemplate() (*FusionAlertRuleTemplate, bool) {
+	return &fart, true
+}
+
+// AsMLBehaviorAnalyticsAlertRuleTemplate is the BasicAlertRuleTemplate implementation for FusionAlertRuleTemplate.
+func (fart FusionAlertRuleTemplate) AsMLBehaviorAnalyticsAlertRuleTemplate() (*MLBehaviorAnalyticsAlertRuleTemplate, bool) {
 	return nil, false
 }
 
@@ -9146,13 +9424,13 @@ type HostEntity struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Kind - Possible values include: 'KindBasicEntityKindEntity', 'KindBasicEntityKindAccount', 'KindBasicEntityKindAzureResource', 'KindBasicEntityKindCloudApplication', 'KindBasicEntityKindDNSResolution', 'KindBasicEntityKindFile', 'KindBasicEntityKindFileHash', 'KindBasicEntityKindHost', 'KindBasicEntityKindBookmark', 'KindBasicEntityKindSecurityAlert', 'KindBasicEntityKindIP', 'KindBasicEntityKindMailbox', 'KindBasicEntityKindMailCluster', 'KindBasicEntityKindMailMessage', 'KindBasicEntityKindSubmissionMail', 'KindBasicEntityKindMalware', 'KindBasicEntityKindProcess', 'KindBasicEntityKindRegistryKey', 'KindBasicEntityKindRegistryValue', 'KindBasicEntityKindSecurityGroup', 'KindBasicEntityKindURL', 'KindBasicEntityKindIoTDevice'
-	Kind KindBasicEntity `json:"kind,omitempty"`
+	// Kind - Possible values include: 'KindEntity', 'KindIoTDevice', 'KindURL', 'KindSecurityGroup', 'KindSecurityAlert', 'KindRegistryValue', 'KindRegistryKey', 'KindProcess', 'KindMalware', 'KindSubmissionMail', 'KindMailMessage', 'KindMailCluster', 'KindMailbox', 'KindIP', 'KindBookmark', 'KindHost', 'KindFileHash', 'KindFile', 'KindDNSResolution', 'KindCloudApplication', 'KindAzureResource', 'KindAccount'
+	Kind Kind `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for HostEntity.
 func (he HostEntity) MarshalJSON() ([]byte, error) {
-	he.Kind = KindBasicEntityKindHost
+	he.Kind = KindHost
 	objectMap := make(map[string]interface{})
 	if he.HostEntityProperties != nil {
 		objectMap["properties"] = he.HostEntityProperties
@@ -9163,98 +9441,8 @@ func (he HostEntity) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsAccountEntity is the BasicEntity implementation for HostEntity.
-func (he HostEntity) AsAccountEntity() (*AccountEntity, bool) {
-	return nil, false
-}
-
-// AsAzureResourceEntity is the BasicEntity implementation for HostEntity.
-func (he HostEntity) AsAzureResourceEntity() (*AzureResourceEntity, bool) {
-	return nil, false
-}
-
-// AsCloudApplicationEntity is the BasicEntity implementation for HostEntity.
-func (he HostEntity) AsCloudApplicationEntity() (*CloudApplicationEntity, bool) {
-	return nil, false
-}
-
-// AsDNSEntity is the BasicEntity implementation for HostEntity.
-func (he HostEntity) AsDNSEntity() (*DNSEntity, bool) {
-	return nil, false
-}
-
-// AsFileEntity is the BasicEntity implementation for HostEntity.
-func (he HostEntity) AsFileEntity() (*FileEntity, bool) {
-	return nil, false
-}
-
-// AsFileHashEntity is the BasicEntity implementation for HostEntity.
-func (he HostEntity) AsFileHashEntity() (*FileHashEntity, bool) {
-	return nil, false
-}
-
-// AsHostEntity is the BasicEntity implementation for HostEntity.
-func (he HostEntity) AsHostEntity() (*HostEntity, bool) {
-	return &he, true
-}
-
-// AsHuntingBookmark is the BasicEntity implementation for HostEntity.
-func (he HostEntity) AsHuntingBookmark() (*HuntingBookmark, bool) {
-	return nil, false
-}
-
-// AsSecurityAlert is the BasicEntity implementation for HostEntity.
-func (he HostEntity) AsSecurityAlert() (*SecurityAlert, bool) {
-	return nil, false
-}
-
-// AsIPEntity is the BasicEntity implementation for HostEntity.
-func (he HostEntity) AsIPEntity() (*IPEntity, bool) {
-	return nil, false
-}
-
-// AsMailboxEntity is the BasicEntity implementation for HostEntity.
-func (he HostEntity) AsMailboxEntity() (*MailboxEntity, bool) {
-	return nil, false
-}
-
-// AsMailClusterEntity is the BasicEntity implementation for HostEntity.
-func (he HostEntity) AsMailClusterEntity() (*MailClusterEntity, bool) {
-	return nil, false
-}
-
-// AsMailMessageEntity is the BasicEntity implementation for HostEntity.
-func (he HostEntity) AsMailMessageEntity() (*MailMessageEntity, bool) {
-	return nil, false
-}
-
-// AsSubmissionMailEntity is the BasicEntity implementation for HostEntity.
-func (he HostEntity) AsSubmissionMailEntity() (*SubmissionMailEntity, bool) {
-	return nil, false
-}
-
-// AsMalwareEntity is the BasicEntity implementation for HostEntity.
-func (he HostEntity) AsMalwareEntity() (*MalwareEntity, bool) {
-	return nil, false
-}
-
-// AsProcessEntity is the BasicEntity implementation for HostEntity.
-func (he HostEntity) AsProcessEntity() (*ProcessEntity, bool) {
-	return nil, false
-}
-
-// AsRegistryKeyEntity is the BasicEntity implementation for HostEntity.
-func (he HostEntity) AsRegistryKeyEntity() (*RegistryKeyEntity, bool) {
-	return nil, false
-}
-
-// AsRegistryValueEntity is the BasicEntity implementation for HostEntity.
-func (he HostEntity) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
-	return nil, false
-}
-
-// AsSecurityGroupEntity is the BasicEntity implementation for HostEntity.
-func (he HostEntity) AsSecurityGroupEntity() (*SecurityGroupEntity, bool) {
+// AsIoTDeviceEntity is the BasicEntity implementation for HostEntity.
+func (he HostEntity) AsIoTDeviceEntity() (*IoTDeviceEntity, bool) {
 	return nil, false
 }
 
@@ -9263,8 +9451,98 @@ func (he HostEntity) AsURLEntity() (*URLEntity, bool) {
 	return nil, false
 }
 
-// AsIoTDeviceEntity is the BasicEntity implementation for HostEntity.
-func (he HostEntity) AsIoTDeviceEntity() (*IoTDeviceEntity, bool) {
+// AsSecurityGroupEntity is the BasicEntity implementation for HostEntity.
+func (he HostEntity) AsSecurityGroupEntity() (*SecurityGroupEntity, bool) {
+	return nil, false
+}
+
+// AsSecurityAlert is the BasicEntity implementation for HostEntity.
+func (he HostEntity) AsSecurityAlert() (*SecurityAlert, bool) {
+	return nil, false
+}
+
+// AsRegistryValueEntity is the BasicEntity implementation for HostEntity.
+func (he HostEntity) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
+	return nil, false
+}
+
+// AsRegistryKeyEntity is the BasicEntity implementation for HostEntity.
+func (he HostEntity) AsRegistryKeyEntity() (*RegistryKeyEntity, bool) {
+	return nil, false
+}
+
+// AsProcessEntity is the BasicEntity implementation for HostEntity.
+func (he HostEntity) AsProcessEntity() (*ProcessEntity, bool) {
+	return nil, false
+}
+
+// AsMalwareEntity is the BasicEntity implementation for HostEntity.
+func (he HostEntity) AsMalwareEntity() (*MalwareEntity, bool) {
+	return nil, false
+}
+
+// AsSubmissionMailEntity is the BasicEntity implementation for HostEntity.
+func (he HostEntity) AsSubmissionMailEntity() (*SubmissionMailEntity, bool) {
+	return nil, false
+}
+
+// AsMailMessageEntity is the BasicEntity implementation for HostEntity.
+func (he HostEntity) AsMailMessageEntity() (*MailMessageEntity, bool) {
+	return nil, false
+}
+
+// AsMailClusterEntity is the BasicEntity implementation for HostEntity.
+func (he HostEntity) AsMailClusterEntity() (*MailClusterEntity, bool) {
+	return nil, false
+}
+
+// AsMailboxEntity is the BasicEntity implementation for HostEntity.
+func (he HostEntity) AsMailboxEntity() (*MailboxEntity, bool) {
+	return nil, false
+}
+
+// AsIPEntity is the BasicEntity implementation for HostEntity.
+func (he HostEntity) AsIPEntity() (*IPEntity, bool) {
+	return nil, false
+}
+
+// AsHuntingBookmark is the BasicEntity implementation for HostEntity.
+func (he HostEntity) AsHuntingBookmark() (*HuntingBookmark, bool) {
+	return nil, false
+}
+
+// AsHostEntity is the BasicEntity implementation for HostEntity.
+func (he HostEntity) AsHostEntity() (*HostEntity, bool) {
+	return &he, true
+}
+
+// AsFileHashEntity is the BasicEntity implementation for HostEntity.
+func (he HostEntity) AsFileHashEntity() (*FileHashEntity, bool) {
+	return nil, false
+}
+
+// AsFileEntity is the BasicEntity implementation for HostEntity.
+func (he HostEntity) AsFileEntity() (*FileEntity, bool) {
+	return nil, false
+}
+
+// AsDNSEntity is the BasicEntity implementation for HostEntity.
+func (he HostEntity) AsDNSEntity() (*DNSEntity, bool) {
+	return nil, false
+}
+
+// AsCloudApplicationEntity is the BasicEntity implementation for HostEntity.
+func (he HostEntity) AsCloudApplicationEntity() (*CloudApplicationEntity, bool) {
+	return nil, false
+}
+
+// AsAzureResourceEntity is the BasicEntity implementation for HostEntity.
+func (he HostEntity) AsAzureResourceEntity() (*AzureResourceEntity, bool) {
+	return nil, false
+}
+
+// AsAccountEntity is the BasicEntity implementation for HostEntity.
+func (he HostEntity) AsAccountEntity() (*AccountEntity, bool) {
 	return nil, false
 }
 
@@ -9325,7 +9603,7 @@ func (he *HostEntity) UnmarshalJSON(body []byte) error {
 			}
 		case "kind":
 			if v != nil {
-				var kind KindBasicEntity
+				var kind Kind
 				err = json.Unmarshal(*v, &kind)
 				if err != nil {
 					return err
@@ -9383,13 +9661,13 @@ type HuntingBookmark struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Kind - Possible values include: 'KindBasicEntityKindEntity', 'KindBasicEntityKindAccount', 'KindBasicEntityKindAzureResource', 'KindBasicEntityKindCloudApplication', 'KindBasicEntityKindDNSResolution', 'KindBasicEntityKindFile', 'KindBasicEntityKindFileHash', 'KindBasicEntityKindHost', 'KindBasicEntityKindBookmark', 'KindBasicEntityKindSecurityAlert', 'KindBasicEntityKindIP', 'KindBasicEntityKindMailbox', 'KindBasicEntityKindMailCluster', 'KindBasicEntityKindMailMessage', 'KindBasicEntityKindSubmissionMail', 'KindBasicEntityKindMalware', 'KindBasicEntityKindProcess', 'KindBasicEntityKindRegistryKey', 'KindBasicEntityKindRegistryValue', 'KindBasicEntityKindSecurityGroup', 'KindBasicEntityKindURL', 'KindBasicEntityKindIoTDevice'
-	Kind KindBasicEntity `json:"kind,omitempty"`
+	// Kind - Possible values include: 'KindEntity', 'KindIoTDevice', 'KindURL', 'KindSecurityGroup', 'KindSecurityAlert', 'KindRegistryValue', 'KindRegistryKey', 'KindProcess', 'KindMalware', 'KindSubmissionMail', 'KindMailMessage', 'KindMailCluster', 'KindMailbox', 'KindIP', 'KindBookmark', 'KindHost', 'KindFileHash', 'KindFile', 'KindDNSResolution', 'KindCloudApplication', 'KindAzureResource', 'KindAccount'
+	Kind Kind `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for HuntingBookmark.
 func (hb HuntingBookmark) MarshalJSON() ([]byte, error) {
-	hb.Kind = KindBasicEntityKindBookmark
+	hb.Kind = KindBookmark
 	objectMap := make(map[string]interface{})
 	if hb.HuntingBookmarkProperties != nil {
 		objectMap["properties"] = hb.HuntingBookmarkProperties
@@ -9400,98 +9678,8 @@ func (hb HuntingBookmark) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsAccountEntity is the BasicEntity implementation for HuntingBookmark.
-func (hb HuntingBookmark) AsAccountEntity() (*AccountEntity, bool) {
-	return nil, false
-}
-
-// AsAzureResourceEntity is the BasicEntity implementation for HuntingBookmark.
-func (hb HuntingBookmark) AsAzureResourceEntity() (*AzureResourceEntity, bool) {
-	return nil, false
-}
-
-// AsCloudApplicationEntity is the BasicEntity implementation for HuntingBookmark.
-func (hb HuntingBookmark) AsCloudApplicationEntity() (*CloudApplicationEntity, bool) {
-	return nil, false
-}
-
-// AsDNSEntity is the BasicEntity implementation for HuntingBookmark.
-func (hb HuntingBookmark) AsDNSEntity() (*DNSEntity, bool) {
-	return nil, false
-}
-
-// AsFileEntity is the BasicEntity implementation for HuntingBookmark.
-func (hb HuntingBookmark) AsFileEntity() (*FileEntity, bool) {
-	return nil, false
-}
-
-// AsFileHashEntity is the BasicEntity implementation for HuntingBookmark.
-func (hb HuntingBookmark) AsFileHashEntity() (*FileHashEntity, bool) {
-	return nil, false
-}
-
-// AsHostEntity is the BasicEntity implementation for HuntingBookmark.
-func (hb HuntingBookmark) AsHostEntity() (*HostEntity, bool) {
-	return nil, false
-}
-
-// AsHuntingBookmark is the BasicEntity implementation for HuntingBookmark.
-func (hb HuntingBookmark) AsHuntingBookmark() (*HuntingBookmark, bool) {
-	return &hb, true
-}
-
-// AsSecurityAlert is the BasicEntity implementation for HuntingBookmark.
-func (hb HuntingBookmark) AsSecurityAlert() (*SecurityAlert, bool) {
-	return nil, false
-}
-
-// AsIPEntity is the BasicEntity implementation for HuntingBookmark.
-func (hb HuntingBookmark) AsIPEntity() (*IPEntity, bool) {
-	return nil, false
-}
-
-// AsMailboxEntity is the BasicEntity implementation for HuntingBookmark.
-func (hb HuntingBookmark) AsMailboxEntity() (*MailboxEntity, bool) {
-	return nil, false
-}
-
-// AsMailClusterEntity is the BasicEntity implementation for HuntingBookmark.
-func (hb HuntingBookmark) AsMailClusterEntity() (*MailClusterEntity, bool) {
-	return nil, false
-}
-
-// AsMailMessageEntity is the BasicEntity implementation for HuntingBookmark.
-func (hb HuntingBookmark) AsMailMessageEntity() (*MailMessageEntity, bool) {
-	return nil, false
-}
-
-// AsSubmissionMailEntity is the BasicEntity implementation for HuntingBookmark.
-func (hb HuntingBookmark) AsSubmissionMailEntity() (*SubmissionMailEntity, bool) {
-	return nil, false
-}
-
-// AsMalwareEntity is the BasicEntity implementation for HuntingBookmark.
-func (hb HuntingBookmark) AsMalwareEntity() (*MalwareEntity, bool) {
-	return nil, false
-}
-
-// AsProcessEntity is the BasicEntity implementation for HuntingBookmark.
-func (hb HuntingBookmark) AsProcessEntity() (*ProcessEntity, bool) {
-	return nil, false
-}
-
-// AsRegistryKeyEntity is the BasicEntity implementation for HuntingBookmark.
-func (hb HuntingBookmark) AsRegistryKeyEntity() (*RegistryKeyEntity, bool) {
-	return nil, false
-}
-
-// AsRegistryValueEntity is the BasicEntity implementation for HuntingBookmark.
-func (hb HuntingBookmark) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
-	return nil, false
-}
-
-// AsSecurityGroupEntity is the BasicEntity implementation for HuntingBookmark.
-func (hb HuntingBookmark) AsSecurityGroupEntity() (*SecurityGroupEntity, bool) {
+// AsIoTDeviceEntity is the BasicEntity implementation for HuntingBookmark.
+func (hb HuntingBookmark) AsIoTDeviceEntity() (*IoTDeviceEntity, bool) {
 	return nil, false
 }
 
@@ -9500,8 +9688,98 @@ func (hb HuntingBookmark) AsURLEntity() (*URLEntity, bool) {
 	return nil, false
 }
 
-// AsIoTDeviceEntity is the BasicEntity implementation for HuntingBookmark.
-func (hb HuntingBookmark) AsIoTDeviceEntity() (*IoTDeviceEntity, bool) {
+// AsSecurityGroupEntity is the BasicEntity implementation for HuntingBookmark.
+func (hb HuntingBookmark) AsSecurityGroupEntity() (*SecurityGroupEntity, bool) {
+	return nil, false
+}
+
+// AsSecurityAlert is the BasicEntity implementation for HuntingBookmark.
+func (hb HuntingBookmark) AsSecurityAlert() (*SecurityAlert, bool) {
+	return nil, false
+}
+
+// AsRegistryValueEntity is the BasicEntity implementation for HuntingBookmark.
+func (hb HuntingBookmark) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
+	return nil, false
+}
+
+// AsRegistryKeyEntity is the BasicEntity implementation for HuntingBookmark.
+func (hb HuntingBookmark) AsRegistryKeyEntity() (*RegistryKeyEntity, bool) {
+	return nil, false
+}
+
+// AsProcessEntity is the BasicEntity implementation for HuntingBookmark.
+func (hb HuntingBookmark) AsProcessEntity() (*ProcessEntity, bool) {
+	return nil, false
+}
+
+// AsMalwareEntity is the BasicEntity implementation for HuntingBookmark.
+func (hb HuntingBookmark) AsMalwareEntity() (*MalwareEntity, bool) {
+	return nil, false
+}
+
+// AsSubmissionMailEntity is the BasicEntity implementation for HuntingBookmark.
+func (hb HuntingBookmark) AsSubmissionMailEntity() (*SubmissionMailEntity, bool) {
+	return nil, false
+}
+
+// AsMailMessageEntity is the BasicEntity implementation for HuntingBookmark.
+func (hb HuntingBookmark) AsMailMessageEntity() (*MailMessageEntity, bool) {
+	return nil, false
+}
+
+// AsMailClusterEntity is the BasicEntity implementation for HuntingBookmark.
+func (hb HuntingBookmark) AsMailClusterEntity() (*MailClusterEntity, bool) {
+	return nil, false
+}
+
+// AsMailboxEntity is the BasicEntity implementation for HuntingBookmark.
+func (hb HuntingBookmark) AsMailboxEntity() (*MailboxEntity, bool) {
+	return nil, false
+}
+
+// AsIPEntity is the BasicEntity implementation for HuntingBookmark.
+func (hb HuntingBookmark) AsIPEntity() (*IPEntity, bool) {
+	return nil, false
+}
+
+// AsHuntingBookmark is the BasicEntity implementation for HuntingBookmark.
+func (hb HuntingBookmark) AsHuntingBookmark() (*HuntingBookmark, bool) {
+	return &hb, true
+}
+
+// AsHostEntity is the BasicEntity implementation for HuntingBookmark.
+func (hb HuntingBookmark) AsHostEntity() (*HostEntity, bool) {
+	return nil, false
+}
+
+// AsFileHashEntity is the BasicEntity implementation for HuntingBookmark.
+func (hb HuntingBookmark) AsFileHashEntity() (*FileHashEntity, bool) {
+	return nil, false
+}
+
+// AsFileEntity is the BasicEntity implementation for HuntingBookmark.
+func (hb HuntingBookmark) AsFileEntity() (*FileEntity, bool) {
+	return nil, false
+}
+
+// AsDNSEntity is the BasicEntity implementation for HuntingBookmark.
+func (hb HuntingBookmark) AsDNSEntity() (*DNSEntity, bool) {
+	return nil, false
+}
+
+// AsCloudApplicationEntity is the BasicEntity implementation for HuntingBookmark.
+func (hb HuntingBookmark) AsCloudApplicationEntity() (*CloudApplicationEntity, bool) {
+	return nil, false
+}
+
+// AsAzureResourceEntity is the BasicEntity implementation for HuntingBookmark.
+func (hb HuntingBookmark) AsAzureResourceEntity() (*AzureResourceEntity, bool) {
+	return nil, false
+}
+
+// AsAccountEntity is the BasicEntity implementation for HuntingBookmark.
+func (hb HuntingBookmark) AsAccountEntity() (*AccountEntity, bool) {
 	return nil, false
 }
 
@@ -9562,7 +9840,7 @@ func (hb *HuntingBookmark) UnmarshalJSON(body []byte) error {
 			}
 		case "kind":
 			if v != nil {
-				var kind KindBasicEntity
+				var kind Kind
 				err = json.Unmarshal(*v, &kind)
 				if err != nil {
 					return err
@@ -10103,8 +10381,8 @@ type IncidentEntitiesResultsMetadata struct {
 type IncidentInfo struct {
 	// IncidentID - Incident Id
 	IncidentID *string `json:"incidentId,omitempty"`
-	// Severity - The severity of the incident. Possible values include: 'CaseSeverityCritical', 'CaseSeverityHigh', 'CaseSeverityMedium', 'CaseSeverityLow', 'CaseSeverityInformational'
-	Severity CaseSeverity `json:"severity,omitempty"`
+	// Severity - The severity of the incident. Possible values include: 'IncidentSeverityHigh', 'IncidentSeverityMedium', 'IncidentSeverityLow', 'IncidentSeverityInformational'
+	Severity IncidentSeverity `json:"severity,omitempty"`
 	// Title - The title of the incident
 	Title *string `json:"title,omitempty"`
 	// RelationName - Relation Name
@@ -10541,13 +10819,13 @@ type IoTDeviceEntity struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Kind - Possible values include: 'KindBasicEntityKindEntity', 'KindBasicEntityKindAccount', 'KindBasicEntityKindAzureResource', 'KindBasicEntityKindCloudApplication', 'KindBasicEntityKindDNSResolution', 'KindBasicEntityKindFile', 'KindBasicEntityKindFileHash', 'KindBasicEntityKindHost', 'KindBasicEntityKindBookmark', 'KindBasicEntityKindSecurityAlert', 'KindBasicEntityKindIP', 'KindBasicEntityKindMailbox', 'KindBasicEntityKindMailCluster', 'KindBasicEntityKindMailMessage', 'KindBasicEntityKindSubmissionMail', 'KindBasicEntityKindMalware', 'KindBasicEntityKindProcess', 'KindBasicEntityKindRegistryKey', 'KindBasicEntityKindRegistryValue', 'KindBasicEntityKindSecurityGroup', 'KindBasicEntityKindURL', 'KindBasicEntityKindIoTDevice'
-	Kind KindBasicEntity `json:"kind,omitempty"`
+	// Kind - Possible values include: 'KindEntity', 'KindIoTDevice', 'KindURL', 'KindSecurityGroup', 'KindSecurityAlert', 'KindRegistryValue', 'KindRegistryKey', 'KindProcess', 'KindMalware', 'KindSubmissionMail', 'KindMailMessage', 'KindMailCluster', 'KindMailbox', 'KindIP', 'KindBookmark', 'KindHost', 'KindFileHash', 'KindFile', 'KindDNSResolution', 'KindCloudApplication', 'KindAzureResource', 'KindAccount'
+	Kind Kind `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for IoTDeviceEntity.
 func (itde IoTDeviceEntity) MarshalJSON() ([]byte, error) {
-	itde.Kind = KindBasicEntityKindIoTDevice
+	itde.Kind = KindIoTDevice
 	objectMap := make(map[string]interface{})
 	if itde.IoTDeviceEntityProperties != nil {
 		objectMap["properties"] = itde.IoTDeviceEntityProperties
@@ -10558,93 +10836,13 @@ func (itde IoTDeviceEntity) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsAccountEntity is the BasicEntity implementation for IoTDeviceEntity.
-func (itde IoTDeviceEntity) AsAccountEntity() (*AccountEntity, bool) {
-	return nil, false
+// AsIoTDeviceEntity is the BasicEntity implementation for IoTDeviceEntity.
+func (itde IoTDeviceEntity) AsIoTDeviceEntity() (*IoTDeviceEntity, bool) {
+	return &itde, true
 }
 
-// AsAzureResourceEntity is the BasicEntity implementation for IoTDeviceEntity.
-func (itde IoTDeviceEntity) AsAzureResourceEntity() (*AzureResourceEntity, bool) {
-	return nil, false
-}
-
-// AsCloudApplicationEntity is the BasicEntity implementation for IoTDeviceEntity.
-func (itde IoTDeviceEntity) AsCloudApplicationEntity() (*CloudApplicationEntity, bool) {
-	return nil, false
-}
-
-// AsDNSEntity is the BasicEntity implementation for IoTDeviceEntity.
-func (itde IoTDeviceEntity) AsDNSEntity() (*DNSEntity, bool) {
-	return nil, false
-}
-
-// AsFileEntity is the BasicEntity implementation for IoTDeviceEntity.
-func (itde IoTDeviceEntity) AsFileEntity() (*FileEntity, bool) {
-	return nil, false
-}
-
-// AsFileHashEntity is the BasicEntity implementation for IoTDeviceEntity.
-func (itde IoTDeviceEntity) AsFileHashEntity() (*FileHashEntity, bool) {
-	return nil, false
-}
-
-// AsHostEntity is the BasicEntity implementation for IoTDeviceEntity.
-func (itde IoTDeviceEntity) AsHostEntity() (*HostEntity, bool) {
-	return nil, false
-}
-
-// AsHuntingBookmark is the BasicEntity implementation for IoTDeviceEntity.
-func (itde IoTDeviceEntity) AsHuntingBookmark() (*HuntingBookmark, bool) {
-	return nil, false
-}
-
-// AsSecurityAlert is the BasicEntity implementation for IoTDeviceEntity.
-func (itde IoTDeviceEntity) AsSecurityAlert() (*SecurityAlert, bool) {
-	return nil, false
-}
-
-// AsIPEntity is the BasicEntity implementation for IoTDeviceEntity.
-func (itde IoTDeviceEntity) AsIPEntity() (*IPEntity, bool) {
-	return nil, false
-}
-
-// AsMailboxEntity is the BasicEntity implementation for IoTDeviceEntity.
-func (itde IoTDeviceEntity) AsMailboxEntity() (*MailboxEntity, bool) {
-	return nil, false
-}
-
-// AsMailClusterEntity is the BasicEntity implementation for IoTDeviceEntity.
-func (itde IoTDeviceEntity) AsMailClusterEntity() (*MailClusterEntity, bool) {
-	return nil, false
-}
-
-// AsMailMessageEntity is the BasicEntity implementation for IoTDeviceEntity.
-func (itde IoTDeviceEntity) AsMailMessageEntity() (*MailMessageEntity, bool) {
-	return nil, false
-}
-
-// AsSubmissionMailEntity is the BasicEntity implementation for IoTDeviceEntity.
-func (itde IoTDeviceEntity) AsSubmissionMailEntity() (*SubmissionMailEntity, bool) {
-	return nil, false
-}
-
-// AsMalwareEntity is the BasicEntity implementation for IoTDeviceEntity.
-func (itde IoTDeviceEntity) AsMalwareEntity() (*MalwareEntity, bool) {
-	return nil, false
-}
-
-// AsProcessEntity is the BasicEntity implementation for IoTDeviceEntity.
-func (itde IoTDeviceEntity) AsProcessEntity() (*ProcessEntity, bool) {
-	return nil, false
-}
-
-// AsRegistryKeyEntity is the BasicEntity implementation for IoTDeviceEntity.
-func (itde IoTDeviceEntity) AsRegistryKeyEntity() (*RegistryKeyEntity, bool) {
-	return nil, false
-}
-
-// AsRegistryValueEntity is the BasicEntity implementation for IoTDeviceEntity.
-func (itde IoTDeviceEntity) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
+// AsURLEntity is the BasicEntity implementation for IoTDeviceEntity.
+func (itde IoTDeviceEntity) AsURLEntity() (*URLEntity, bool) {
 	return nil, false
 }
 
@@ -10653,14 +10851,94 @@ func (itde IoTDeviceEntity) AsSecurityGroupEntity() (*SecurityGroupEntity, bool)
 	return nil, false
 }
 
-// AsURLEntity is the BasicEntity implementation for IoTDeviceEntity.
-func (itde IoTDeviceEntity) AsURLEntity() (*URLEntity, bool) {
+// AsSecurityAlert is the BasicEntity implementation for IoTDeviceEntity.
+func (itde IoTDeviceEntity) AsSecurityAlert() (*SecurityAlert, bool) {
 	return nil, false
 }
 
-// AsIoTDeviceEntity is the BasicEntity implementation for IoTDeviceEntity.
-func (itde IoTDeviceEntity) AsIoTDeviceEntity() (*IoTDeviceEntity, bool) {
-	return &itde, true
+// AsRegistryValueEntity is the BasicEntity implementation for IoTDeviceEntity.
+func (itde IoTDeviceEntity) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
+	return nil, false
+}
+
+// AsRegistryKeyEntity is the BasicEntity implementation for IoTDeviceEntity.
+func (itde IoTDeviceEntity) AsRegistryKeyEntity() (*RegistryKeyEntity, bool) {
+	return nil, false
+}
+
+// AsProcessEntity is the BasicEntity implementation for IoTDeviceEntity.
+func (itde IoTDeviceEntity) AsProcessEntity() (*ProcessEntity, bool) {
+	return nil, false
+}
+
+// AsMalwareEntity is the BasicEntity implementation for IoTDeviceEntity.
+func (itde IoTDeviceEntity) AsMalwareEntity() (*MalwareEntity, bool) {
+	return nil, false
+}
+
+// AsSubmissionMailEntity is the BasicEntity implementation for IoTDeviceEntity.
+func (itde IoTDeviceEntity) AsSubmissionMailEntity() (*SubmissionMailEntity, bool) {
+	return nil, false
+}
+
+// AsMailMessageEntity is the BasicEntity implementation for IoTDeviceEntity.
+func (itde IoTDeviceEntity) AsMailMessageEntity() (*MailMessageEntity, bool) {
+	return nil, false
+}
+
+// AsMailClusterEntity is the BasicEntity implementation for IoTDeviceEntity.
+func (itde IoTDeviceEntity) AsMailClusterEntity() (*MailClusterEntity, bool) {
+	return nil, false
+}
+
+// AsMailboxEntity is the BasicEntity implementation for IoTDeviceEntity.
+func (itde IoTDeviceEntity) AsMailboxEntity() (*MailboxEntity, bool) {
+	return nil, false
+}
+
+// AsIPEntity is the BasicEntity implementation for IoTDeviceEntity.
+func (itde IoTDeviceEntity) AsIPEntity() (*IPEntity, bool) {
+	return nil, false
+}
+
+// AsHuntingBookmark is the BasicEntity implementation for IoTDeviceEntity.
+func (itde IoTDeviceEntity) AsHuntingBookmark() (*HuntingBookmark, bool) {
+	return nil, false
+}
+
+// AsHostEntity is the BasicEntity implementation for IoTDeviceEntity.
+func (itde IoTDeviceEntity) AsHostEntity() (*HostEntity, bool) {
+	return nil, false
+}
+
+// AsFileHashEntity is the BasicEntity implementation for IoTDeviceEntity.
+func (itde IoTDeviceEntity) AsFileHashEntity() (*FileHashEntity, bool) {
+	return nil, false
+}
+
+// AsFileEntity is the BasicEntity implementation for IoTDeviceEntity.
+func (itde IoTDeviceEntity) AsFileEntity() (*FileEntity, bool) {
+	return nil, false
+}
+
+// AsDNSEntity is the BasicEntity implementation for IoTDeviceEntity.
+func (itde IoTDeviceEntity) AsDNSEntity() (*DNSEntity, bool) {
+	return nil, false
+}
+
+// AsCloudApplicationEntity is the BasicEntity implementation for IoTDeviceEntity.
+func (itde IoTDeviceEntity) AsCloudApplicationEntity() (*CloudApplicationEntity, bool) {
+	return nil, false
+}
+
+// AsAzureResourceEntity is the BasicEntity implementation for IoTDeviceEntity.
+func (itde IoTDeviceEntity) AsAzureResourceEntity() (*AzureResourceEntity, bool) {
+	return nil, false
+}
+
+// AsAccountEntity is the BasicEntity implementation for IoTDeviceEntity.
+func (itde IoTDeviceEntity) AsAccountEntity() (*AccountEntity, bool) {
+	return nil, false
 }
 
 // AsEntity is the BasicEntity implementation for IoTDeviceEntity.
@@ -10720,7 +10998,7 @@ func (itde *IoTDeviceEntity) UnmarshalJSON(body []byte) error {
 			}
 		case "kind":
 			if v != nil {
-				var kind KindBasicEntity
+				var kind Kind
 				err = json.Unmarshal(*v, &kind)
 				if err != nil {
 					return err
@@ -10791,13 +11069,13 @@ type IPEntity struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Kind - Possible values include: 'KindBasicEntityKindEntity', 'KindBasicEntityKindAccount', 'KindBasicEntityKindAzureResource', 'KindBasicEntityKindCloudApplication', 'KindBasicEntityKindDNSResolution', 'KindBasicEntityKindFile', 'KindBasicEntityKindFileHash', 'KindBasicEntityKindHost', 'KindBasicEntityKindBookmark', 'KindBasicEntityKindSecurityAlert', 'KindBasicEntityKindIP', 'KindBasicEntityKindMailbox', 'KindBasicEntityKindMailCluster', 'KindBasicEntityKindMailMessage', 'KindBasicEntityKindSubmissionMail', 'KindBasicEntityKindMalware', 'KindBasicEntityKindProcess', 'KindBasicEntityKindRegistryKey', 'KindBasicEntityKindRegistryValue', 'KindBasicEntityKindSecurityGroup', 'KindBasicEntityKindURL', 'KindBasicEntityKindIoTDevice'
-	Kind KindBasicEntity `json:"kind,omitempty"`
+	// Kind - Possible values include: 'KindEntity', 'KindIoTDevice', 'KindURL', 'KindSecurityGroup', 'KindSecurityAlert', 'KindRegistryValue', 'KindRegistryKey', 'KindProcess', 'KindMalware', 'KindSubmissionMail', 'KindMailMessage', 'KindMailCluster', 'KindMailbox', 'KindIP', 'KindBookmark', 'KindHost', 'KindFileHash', 'KindFile', 'KindDNSResolution', 'KindCloudApplication', 'KindAzureResource', 'KindAccount'
+	Kind Kind `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for IPEntity.
 func (ie IPEntity) MarshalJSON() ([]byte, error) {
-	ie.Kind = KindBasicEntityKindIP
+	ie.Kind = KindIP
 	objectMap := make(map[string]interface{})
 	if ie.IPEntityProperties != nil {
 		objectMap["properties"] = ie.IPEntityProperties
@@ -10808,98 +11086,8 @@ func (ie IPEntity) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsAccountEntity is the BasicEntity implementation for IPEntity.
-func (ie IPEntity) AsAccountEntity() (*AccountEntity, bool) {
-	return nil, false
-}
-
-// AsAzureResourceEntity is the BasicEntity implementation for IPEntity.
-func (ie IPEntity) AsAzureResourceEntity() (*AzureResourceEntity, bool) {
-	return nil, false
-}
-
-// AsCloudApplicationEntity is the BasicEntity implementation for IPEntity.
-func (ie IPEntity) AsCloudApplicationEntity() (*CloudApplicationEntity, bool) {
-	return nil, false
-}
-
-// AsDNSEntity is the BasicEntity implementation for IPEntity.
-func (ie IPEntity) AsDNSEntity() (*DNSEntity, bool) {
-	return nil, false
-}
-
-// AsFileEntity is the BasicEntity implementation for IPEntity.
-func (ie IPEntity) AsFileEntity() (*FileEntity, bool) {
-	return nil, false
-}
-
-// AsFileHashEntity is the BasicEntity implementation for IPEntity.
-func (ie IPEntity) AsFileHashEntity() (*FileHashEntity, bool) {
-	return nil, false
-}
-
-// AsHostEntity is the BasicEntity implementation for IPEntity.
-func (ie IPEntity) AsHostEntity() (*HostEntity, bool) {
-	return nil, false
-}
-
-// AsHuntingBookmark is the BasicEntity implementation for IPEntity.
-func (ie IPEntity) AsHuntingBookmark() (*HuntingBookmark, bool) {
-	return nil, false
-}
-
-// AsSecurityAlert is the BasicEntity implementation for IPEntity.
-func (ie IPEntity) AsSecurityAlert() (*SecurityAlert, bool) {
-	return nil, false
-}
-
-// AsIPEntity is the BasicEntity implementation for IPEntity.
-func (ie IPEntity) AsIPEntity() (*IPEntity, bool) {
-	return &ie, true
-}
-
-// AsMailboxEntity is the BasicEntity implementation for IPEntity.
-func (ie IPEntity) AsMailboxEntity() (*MailboxEntity, bool) {
-	return nil, false
-}
-
-// AsMailClusterEntity is the BasicEntity implementation for IPEntity.
-func (ie IPEntity) AsMailClusterEntity() (*MailClusterEntity, bool) {
-	return nil, false
-}
-
-// AsMailMessageEntity is the BasicEntity implementation for IPEntity.
-func (ie IPEntity) AsMailMessageEntity() (*MailMessageEntity, bool) {
-	return nil, false
-}
-
-// AsSubmissionMailEntity is the BasicEntity implementation for IPEntity.
-func (ie IPEntity) AsSubmissionMailEntity() (*SubmissionMailEntity, bool) {
-	return nil, false
-}
-
-// AsMalwareEntity is the BasicEntity implementation for IPEntity.
-func (ie IPEntity) AsMalwareEntity() (*MalwareEntity, bool) {
-	return nil, false
-}
-
-// AsProcessEntity is the BasicEntity implementation for IPEntity.
-func (ie IPEntity) AsProcessEntity() (*ProcessEntity, bool) {
-	return nil, false
-}
-
-// AsRegistryKeyEntity is the BasicEntity implementation for IPEntity.
-func (ie IPEntity) AsRegistryKeyEntity() (*RegistryKeyEntity, bool) {
-	return nil, false
-}
-
-// AsRegistryValueEntity is the BasicEntity implementation for IPEntity.
-func (ie IPEntity) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
-	return nil, false
-}
-
-// AsSecurityGroupEntity is the BasicEntity implementation for IPEntity.
-func (ie IPEntity) AsSecurityGroupEntity() (*SecurityGroupEntity, bool) {
+// AsIoTDeviceEntity is the BasicEntity implementation for IPEntity.
+func (ie IPEntity) AsIoTDeviceEntity() (*IoTDeviceEntity, bool) {
 	return nil, false
 }
 
@@ -10908,8 +11096,98 @@ func (ie IPEntity) AsURLEntity() (*URLEntity, bool) {
 	return nil, false
 }
 
-// AsIoTDeviceEntity is the BasicEntity implementation for IPEntity.
-func (ie IPEntity) AsIoTDeviceEntity() (*IoTDeviceEntity, bool) {
+// AsSecurityGroupEntity is the BasicEntity implementation for IPEntity.
+func (ie IPEntity) AsSecurityGroupEntity() (*SecurityGroupEntity, bool) {
+	return nil, false
+}
+
+// AsSecurityAlert is the BasicEntity implementation for IPEntity.
+func (ie IPEntity) AsSecurityAlert() (*SecurityAlert, bool) {
+	return nil, false
+}
+
+// AsRegistryValueEntity is the BasicEntity implementation for IPEntity.
+func (ie IPEntity) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
+	return nil, false
+}
+
+// AsRegistryKeyEntity is the BasicEntity implementation for IPEntity.
+func (ie IPEntity) AsRegistryKeyEntity() (*RegistryKeyEntity, bool) {
+	return nil, false
+}
+
+// AsProcessEntity is the BasicEntity implementation for IPEntity.
+func (ie IPEntity) AsProcessEntity() (*ProcessEntity, bool) {
+	return nil, false
+}
+
+// AsMalwareEntity is the BasicEntity implementation for IPEntity.
+func (ie IPEntity) AsMalwareEntity() (*MalwareEntity, bool) {
+	return nil, false
+}
+
+// AsSubmissionMailEntity is the BasicEntity implementation for IPEntity.
+func (ie IPEntity) AsSubmissionMailEntity() (*SubmissionMailEntity, bool) {
+	return nil, false
+}
+
+// AsMailMessageEntity is the BasicEntity implementation for IPEntity.
+func (ie IPEntity) AsMailMessageEntity() (*MailMessageEntity, bool) {
+	return nil, false
+}
+
+// AsMailClusterEntity is the BasicEntity implementation for IPEntity.
+func (ie IPEntity) AsMailClusterEntity() (*MailClusterEntity, bool) {
+	return nil, false
+}
+
+// AsMailboxEntity is the BasicEntity implementation for IPEntity.
+func (ie IPEntity) AsMailboxEntity() (*MailboxEntity, bool) {
+	return nil, false
+}
+
+// AsIPEntity is the BasicEntity implementation for IPEntity.
+func (ie IPEntity) AsIPEntity() (*IPEntity, bool) {
+	return &ie, true
+}
+
+// AsHuntingBookmark is the BasicEntity implementation for IPEntity.
+func (ie IPEntity) AsHuntingBookmark() (*HuntingBookmark, bool) {
+	return nil, false
+}
+
+// AsHostEntity is the BasicEntity implementation for IPEntity.
+func (ie IPEntity) AsHostEntity() (*HostEntity, bool) {
+	return nil, false
+}
+
+// AsFileHashEntity is the BasicEntity implementation for IPEntity.
+func (ie IPEntity) AsFileHashEntity() (*FileHashEntity, bool) {
+	return nil, false
+}
+
+// AsFileEntity is the BasicEntity implementation for IPEntity.
+func (ie IPEntity) AsFileEntity() (*FileEntity, bool) {
+	return nil, false
+}
+
+// AsDNSEntity is the BasicEntity implementation for IPEntity.
+func (ie IPEntity) AsDNSEntity() (*DNSEntity, bool) {
+	return nil, false
+}
+
+// AsCloudApplicationEntity is the BasicEntity implementation for IPEntity.
+func (ie IPEntity) AsCloudApplicationEntity() (*CloudApplicationEntity, bool) {
+	return nil, false
+}
+
+// AsAzureResourceEntity is the BasicEntity implementation for IPEntity.
+func (ie IPEntity) AsAzureResourceEntity() (*AzureResourceEntity, bool) {
+	return nil, false
+}
+
+// AsAccountEntity is the BasicEntity implementation for IPEntity.
+func (ie IPEntity) AsAccountEntity() (*AccountEntity, bool) {
 	return nil, false
 }
 
@@ -10970,7 +11248,7 @@ func (ie *IPEntity) UnmarshalJSON(body []byte) error {
 			}
 		case "kind":
 			if v != nil {
-				var kind KindBasicEntity
+				var kind Kind
 				err = json.Unmarshal(*v, &kind)
 				if err != nil {
 					return err
@@ -11018,7 +11296,7 @@ type IPSyncer struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindBasicSettingsKindSettings', 'KindBasicSettingsKindIPSyncer', 'KindBasicSettingsKindEyesOn', 'KindBasicSettingsKindEntityAnalytics', 'KindBasicSettingsKindUeba'
+	// Kind - Possible values include: 'KindBasicSettingsKindSettings', 'KindBasicSettingsKindUeba', 'KindBasicSettingsKindEntityAnalytics', 'KindBasicSettingsKindEyesOn', 'KindBasicSettingsKindIPSyncer', 'KindBasicSettingsKindAnomalies'
 	Kind KindBasicSettings `json:"kind,omitempty"`
 }
 
@@ -11038,13 +11316,8 @@ func (is IPSyncer) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsIPSyncer is the BasicSettings implementation for IPSyncer.
-func (is IPSyncer) AsIPSyncer() (*IPSyncer, bool) {
-	return &is, true
-}
-
-// AsEyesOn is the BasicSettings implementation for IPSyncer.
-func (is IPSyncer) AsEyesOn() (*EyesOn, bool) {
+// AsUeba is the BasicSettings implementation for IPSyncer.
+func (is IPSyncer) AsUeba() (*Ueba, bool) {
 	return nil, false
 }
 
@@ -11053,8 +11326,18 @@ func (is IPSyncer) AsEntityAnalytics() (*EntityAnalytics, bool) {
 	return nil, false
 }
 
-// AsUeba is the BasicSettings implementation for IPSyncer.
-func (is IPSyncer) AsUeba() (*Ueba, bool) {
+// AsEyesOn is the BasicSettings implementation for IPSyncer.
+func (is IPSyncer) AsEyesOn() (*EyesOn, bool) {
+	return nil, false
+}
+
+// AsIPSyncer is the BasicSettings implementation for IPSyncer.
+func (is IPSyncer) AsIPSyncer() (*IPSyncer, bool) {
+	return &is, true
+}
+
+// AsAnomalies is the BasicSettings implementation for IPSyncer.
+func (is IPSyncer) AsAnomalies() (*Anomalies, bool) {
 	return nil, false
 }
 
@@ -11159,13 +11442,13 @@ type MailboxEntity struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Kind - Possible values include: 'KindBasicEntityKindEntity', 'KindBasicEntityKindAccount', 'KindBasicEntityKindAzureResource', 'KindBasicEntityKindCloudApplication', 'KindBasicEntityKindDNSResolution', 'KindBasicEntityKindFile', 'KindBasicEntityKindFileHash', 'KindBasicEntityKindHost', 'KindBasicEntityKindBookmark', 'KindBasicEntityKindSecurityAlert', 'KindBasicEntityKindIP', 'KindBasicEntityKindMailbox', 'KindBasicEntityKindMailCluster', 'KindBasicEntityKindMailMessage', 'KindBasicEntityKindSubmissionMail', 'KindBasicEntityKindMalware', 'KindBasicEntityKindProcess', 'KindBasicEntityKindRegistryKey', 'KindBasicEntityKindRegistryValue', 'KindBasicEntityKindSecurityGroup', 'KindBasicEntityKindURL', 'KindBasicEntityKindIoTDevice'
-	Kind KindBasicEntity `json:"kind,omitempty"`
+	// Kind - Possible values include: 'KindEntity', 'KindIoTDevice', 'KindURL', 'KindSecurityGroup', 'KindSecurityAlert', 'KindRegistryValue', 'KindRegistryKey', 'KindProcess', 'KindMalware', 'KindSubmissionMail', 'KindMailMessage', 'KindMailCluster', 'KindMailbox', 'KindIP', 'KindBookmark', 'KindHost', 'KindFileHash', 'KindFile', 'KindDNSResolution', 'KindCloudApplication', 'KindAzureResource', 'KindAccount'
+	Kind Kind `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for MailboxEntity.
 func (me MailboxEntity) MarshalJSON() ([]byte, error) {
-	me.Kind = KindBasicEntityKindMailbox
+	me.Kind = KindMailbox
 	objectMap := make(map[string]interface{})
 	if me.MailboxEntityProperties != nil {
 		objectMap["properties"] = me.MailboxEntityProperties
@@ -11176,98 +11459,8 @@ func (me MailboxEntity) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsAccountEntity is the BasicEntity implementation for MailboxEntity.
-func (me MailboxEntity) AsAccountEntity() (*AccountEntity, bool) {
-	return nil, false
-}
-
-// AsAzureResourceEntity is the BasicEntity implementation for MailboxEntity.
-func (me MailboxEntity) AsAzureResourceEntity() (*AzureResourceEntity, bool) {
-	return nil, false
-}
-
-// AsCloudApplicationEntity is the BasicEntity implementation for MailboxEntity.
-func (me MailboxEntity) AsCloudApplicationEntity() (*CloudApplicationEntity, bool) {
-	return nil, false
-}
-
-// AsDNSEntity is the BasicEntity implementation for MailboxEntity.
-func (me MailboxEntity) AsDNSEntity() (*DNSEntity, bool) {
-	return nil, false
-}
-
-// AsFileEntity is the BasicEntity implementation for MailboxEntity.
-func (me MailboxEntity) AsFileEntity() (*FileEntity, bool) {
-	return nil, false
-}
-
-// AsFileHashEntity is the BasicEntity implementation for MailboxEntity.
-func (me MailboxEntity) AsFileHashEntity() (*FileHashEntity, bool) {
-	return nil, false
-}
-
-// AsHostEntity is the BasicEntity implementation for MailboxEntity.
-func (me MailboxEntity) AsHostEntity() (*HostEntity, bool) {
-	return nil, false
-}
-
-// AsHuntingBookmark is the BasicEntity implementation for MailboxEntity.
-func (me MailboxEntity) AsHuntingBookmark() (*HuntingBookmark, bool) {
-	return nil, false
-}
-
-// AsSecurityAlert is the BasicEntity implementation for MailboxEntity.
-func (me MailboxEntity) AsSecurityAlert() (*SecurityAlert, bool) {
-	return nil, false
-}
-
-// AsIPEntity is the BasicEntity implementation for MailboxEntity.
-func (me MailboxEntity) AsIPEntity() (*IPEntity, bool) {
-	return nil, false
-}
-
-// AsMailboxEntity is the BasicEntity implementation for MailboxEntity.
-func (me MailboxEntity) AsMailboxEntity() (*MailboxEntity, bool) {
-	return &me, true
-}
-
-// AsMailClusterEntity is the BasicEntity implementation for MailboxEntity.
-func (me MailboxEntity) AsMailClusterEntity() (*MailClusterEntity, bool) {
-	return nil, false
-}
-
-// AsMailMessageEntity is the BasicEntity implementation for MailboxEntity.
-func (me MailboxEntity) AsMailMessageEntity() (*MailMessageEntity, bool) {
-	return nil, false
-}
-
-// AsSubmissionMailEntity is the BasicEntity implementation for MailboxEntity.
-func (me MailboxEntity) AsSubmissionMailEntity() (*SubmissionMailEntity, bool) {
-	return nil, false
-}
-
-// AsMalwareEntity is the BasicEntity implementation for MailboxEntity.
-func (me MailboxEntity) AsMalwareEntity() (*MalwareEntity, bool) {
-	return nil, false
-}
-
-// AsProcessEntity is the BasicEntity implementation for MailboxEntity.
-func (me MailboxEntity) AsProcessEntity() (*ProcessEntity, bool) {
-	return nil, false
-}
-
-// AsRegistryKeyEntity is the BasicEntity implementation for MailboxEntity.
-func (me MailboxEntity) AsRegistryKeyEntity() (*RegistryKeyEntity, bool) {
-	return nil, false
-}
-
-// AsRegistryValueEntity is the BasicEntity implementation for MailboxEntity.
-func (me MailboxEntity) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
-	return nil, false
-}
-
-// AsSecurityGroupEntity is the BasicEntity implementation for MailboxEntity.
-func (me MailboxEntity) AsSecurityGroupEntity() (*SecurityGroupEntity, bool) {
+// AsIoTDeviceEntity is the BasicEntity implementation for MailboxEntity.
+func (me MailboxEntity) AsIoTDeviceEntity() (*IoTDeviceEntity, bool) {
 	return nil, false
 }
 
@@ -11276,8 +11469,98 @@ func (me MailboxEntity) AsURLEntity() (*URLEntity, bool) {
 	return nil, false
 }
 
-// AsIoTDeviceEntity is the BasicEntity implementation for MailboxEntity.
-func (me MailboxEntity) AsIoTDeviceEntity() (*IoTDeviceEntity, bool) {
+// AsSecurityGroupEntity is the BasicEntity implementation for MailboxEntity.
+func (me MailboxEntity) AsSecurityGroupEntity() (*SecurityGroupEntity, bool) {
+	return nil, false
+}
+
+// AsSecurityAlert is the BasicEntity implementation for MailboxEntity.
+func (me MailboxEntity) AsSecurityAlert() (*SecurityAlert, bool) {
+	return nil, false
+}
+
+// AsRegistryValueEntity is the BasicEntity implementation for MailboxEntity.
+func (me MailboxEntity) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
+	return nil, false
+}
+
+// AsRegistryKeyEntity is the BasicEntity implementation for MailboxEntity.
+func (me MailboxEntity) AsRegistryKeyEntity() (*RegistryKeyEntity, bool) {
+	return nil, false
+}
+
+// AsProcessEntity is the BasicEntity implementation for MailboxEntity.
+func (me MailboxEntity) AsProcessEntity() (*ProcessEntity, bool) {
+	return nil, false
+}
+
+// AsMalwareEntity is the BasicEntity implementation for MailboxEntity.
+func (me MailboxEntity) AsMalwareEntity() (*MalwareEntity, bool) {
+	return nil, false
+}
+
+// AsSubmissionMailEntity is the BasicEntity implementation for MailboxEntity.
+func (me MailboxEntity) AsSubmissionMailEntity() (*SubmissionMailEntity, bool) {
+	return nil, false
+}
+
+// AsMailMessageEntity is the BasicEntity implementation for MailboxEntity.
+func (me MailboxEntity) AsMailMessageEntity() (*MailMessageEntity, bool) {
+	return nil, false
+}
+
+// AsMailClusterEntity is the BasicEntity implementation for MailboxEntity.
+func (me MailboxEntity) AsMailClusterEntity() (*MailClusterEntity, bool) {
+	return nil, false
+}
+
+// AsMailboxEntity is the BasicEntity implementation for MailboxEntity.
+func (me MailboxEntity) AsMailboxEntity() (*MailboxEntity, bool) {
+	return &me, true
+}
+
+// AsIPEntity is the BasicEntity implementation for MailboxEntity.
+func (me MailboxEntity) AsIPEntity() (*IPEntity, bool) {
+	return nil, false
+}
+
+// AsHuntingBookmark is the BasicEntity implementation for MailboxEntity.
+func (me MailboxEntity) AsHuntingBookmark() (*HuntingBookmark, bool) {
+	return nil, false
+}
+
+// AsHostEntity is the BasicEntity implementation for MailboxEntity.
+func (me MailboxEntity) AsHostEntity() (*HostEntity, bool) {
+	return nil, false
+}
+
+// AsFileHashEntity is the BasicEntity implementation for MailboxEntity.
+func (me MailboxEntity) AsFileHashEntity() (*FileHashEntity, bool) {
+	return nil, false
+}
+
+// AsFileEntity is the BasicEntity implementation for MailboxEntity.
+func (me MailboxEntity) AsFileEntity() (*FileEntity, bool) {
+	return nil, false
+}
+
+// AsDNSEntity is the BasicEntity implementation for MailboxEntity.
+func (me MailboxEntity) AsDNSEntity() (*DNSEntity, bool) {
+	return nil, false
+}
+
+// AsCloudApplicationEntity is the BasicEntity implementation for MailboxEntity.
+func (me MailboxEntity) AsCloudApplicationEntity() (*CloudApplicationEntity, bool) {
+	return nil, false
+}
+
+// AsAzureResourceEntity is the BasicEntity implementation for MailboxEntity.
+func (me MailboxEntity) AsAzureResourceEntity() (*AzureResourceEntity, bool) {
+	return nil, false
+}
+
+// AsAccountEntity is the BasicEntity implementation for MailboxEntity.
+func (me MailboxEntity) AsAccountEntity() (*AccountEntity, bool) {
 	return nil, false
 }
 
@@ -11338,7 +11621,7 @@ func (me *MailboxEntity) UnmarshalJSON(body []byte) error {
 			}
 		case "kind":
 			if v != nil {
-				var kind KindBasicEntity
+				var kind Kind
 				err = json.Unmarshal(*v, &kind)
 				if err != nil {
 					return err
@@ -11383,13 +11666,13 @@ type MailClusterEntity struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Kind - Possible values include: 'KindBasicEntityKindEntity', 'KindBasicEntityKindAccount', 'KindBasicEntityKindAzureResource', 'KindBasicEntityKindCloudApplication', 'KindBasicEntityKindDNSResolution', 'KindBasicEntityKindFile', 'KindBasicEntityKindFileHash', 'KindBasicEntityKindHost', 'KindBasicEntityKindBookmark', 'KindBasicEntityKindSecurityAlert', 'KindBasicEntityKindIP', 'KindBasicEntityKindMailbox', 'KindBasicEntityKindMailCluster', 'KindBasicEntityKindMailMessage', 'KindBasicEntityKindSubmissionMail', 'KindBasicEntityKindMalware', 'KindBasicEntityKindProcess', 'KindBasicEntityKindRegistryKey', 'KindBasicEntityKindRegistryValue', 'KindBasicEntityKindSecurityGroup', 'KindBasicEntityKindURL', 'KindBasicEntityKindIoTDevice'
-	Kind KindBasicEntity `json:"kind,omitempty"`
+	// Kind - Possible values include: 'KindEntity', 'KindIoTDevice', 'KindURL', 'KindSecurityGroup', 'KindSecurityAlert', 'KindRegistryValue', 'KindRegistryKey', 'KindProcess', 'KindMalware', 'KindSubmissionMail', 'KindMailMessage', 'KindMailCluster', 'KindMailbox', 'KindIP', 'KindBookmark', 'KindHost', 'KindFileHash', 'KindFile', 'KindDNSResolution', 'KindCloudApplication', 'KindAzureResource', 'KindAccount'
+	Kind Kind `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for MailClusterEntity.
 func (mce MailClusterEntity) MarshalJSON() ([]byte, error) {
-	mce.Kind = KindBasicEntityKindMailCluster
+	mce.Kind = KindMailCluster
 	objectMap := make(map[string]interface{})
 	if mce.MailClusterEntityProperties != nil {
 		objectMap["properties"] = mce.MailClusterEntityProperties
@@ -11400,98 +11683,8 @@ func (mce MailClusterEntity) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsAccountEntity is the BasicEntity implementation for MailClusterEntity.
-func (mce MailClusterEntity) AsAccountEntity() (*AccountEntity, bool) {
-	return nil, false
-}
-
-// AsAzureResourceEntity is the BasicEntity implementation for MailClusterEntity.
-func (mce MailClusterEntity) AsAzureResourceEntity() (*AzureResourceEntity, bool) {
-	return nil, false
-}
-
-// AsCloudApplicationEntity is the BasicEntity implementation for MailClusterEntity.
-func (mce MailClusterEntity) AsCloudApplicationEntity() (*CloudApplicationEntity, bool) {
-	return nil, false
-}
-
-// AsDNSEntity is the BasicEntity implementation for MailClusterEntity.
-func (mce MailClusterEntity) AsDNSEntity() (*DNSEntity, bool) {
-	return nil, false
-}
-
-// AsFileEntity is the BasicEntity implementation for MailClusterEntity.
-func (mce MailClusterEntity) AsFileEntity() (*FileEntity, bool) {
-	return nil, false
-}
-
-// AsFileHashEntity is the BasicEntity implementation for MailClusterEntity.
-func (mce MailClusterEntity) AsFileHashEntity() (*FileHashEntity, bool) {
-	return nil, false
-}
-
-// AsHostEntity is the BasicEntity implementation for MailClusterEntity.
-func (mce MailClusterEntity) AsHostEntity() (*HostEntity, bool) {
-	return nil, false
-}
-
-// AsHuntingBookmark is the BasicEntity implementation for MailClusterEntity.
-func (mce MailClusterEntity) AsHuntingBookmark() (*HuntingBookmark, bool) {
-	return nil, false
-}
-
-// AsSecurityAlert is the BasicEntity implementation for MailClusterEntity.
-func (mce MailClusterEntity) AsSecurityAlert() (*SecurityAlert, bool) {
-	return nil, false
-}
-
-// AsIPEntity is the BasicEntity implementation for MailClusterEntity.
-func (mce MailClusterEntity) AsIPEntity() (*IPEntity, bool) {
-	return nil, false
-}
-
-// AsMailboxEntity is the BasicEntity implementation for MailClusterEntity.
-func (mce MailClusterEntity) AsMailboxEntity() (*MailboxEntity, bool) {
-	return nil, false
-}
-
-// AsMailClusterEntity is the BasicEntity implementation for MailClusterEntity.
-func (mce MailClusterEntity) AsMailClusterEntity() (*MailClusterEntity, bool) {
-	return &mce, true
-}
-
-// AsMailMessageEntity is the BasicEntity implementation for MailClusterEntity.
-func (mce MailClusterEntity) AsMailMessageEntity() (*MailMessageEntity, bool) {
-	return nil, false
-}
-
-// AsSubmissionMailEntity is the BasicEntity implementation for MailClusterEntity.
-func (mce MailClusterEntity) AsSubmissionMailEntity() (*SubmissionMailEntity, bool) {
-	return nil, false
-}
-
-// AsMalwareEntity is the BasicEntity implementation for MailClusterEntity.
-func (mce MailClusterEntity) AsMalwareEntity() (*MalwareEntity, bool) {
-	return nil, false
-}
-
-// AsProcessEntity is the BasicEntity implementation for MailClusterEntity.
-func (mce MailClusterEntity) AsProcessEntity() (*ProcessEntity, bool) {
-	return nil, false
-}
-
-// AsRegistryKeyEntity is the BasicEntity implementation for MailClusterEntity.
-func (mce MailClusterEntity) AsRegistryKeyEntity() (*RegistryKeyEntity, bool) {
-	return nil, false
-}
-
-// AsRegistryValueEntity is the BasicEntity implementation for MailClusterEntity.
-func (mce MailClusterEntity) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
-	return nil, false
-}
-
-// AsSecurityGroupEntity is the BasicEntity implementation for MailClusterEntity.
-func (mce MailClusterEntity) AsSecurityGroupEntity() (*SecurityGroupEntity, bool) {
+// AsIoTDeviceEntity is the BasicEntity implementation for MailClusterEntity.
+func (mce MailClusterEntity) AsIoTDeviceEntity() (*IoTDeviceEntity, bool) {
 	return nil, false
 }
 
@@ -11500,8 +11693,98 @@ func (mce MailClusterEntity) AsURLEntity() (*URLEntity, bool) {
 	return nil, false
 }
 
-// AsIoTDeviceEntity is the BasicEntity implementation for MailClusterEntity.
-func (mce MailClusterEntity) AsIoTDeviceEntity() (*IoTDeviceEntity, bool) {
+// AsSecurityGroupEntity is the BasicEntity implementation for MailClusterEntity.
+func (mce MailClusterEntity) AsSecurityGroupEntity() (*SecurityGroupEntity, bool) {
+	return nil, false
+}
+
+// AsSecurityAlert is the BasicEntity implementation for MailClusterEntity.
+func (mce MailClusterEntity) AsSecurityAlert() (*SecurityAlert, bool) {
+	return nil, false
+}
+
+// AsRegistryValueEntity is the BasicEntity implementation for MailClusterEntity.
+func (mce MailClusterEntity) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
+	return nil, false
+}
+
+// AsRegistryKeyEntity is the BasicEntity implementation for MailClusterEntity.
+func (mce MailClusterEntity) AsRegistryKeyEntity() (*RegistryKeyEntity, bool) {
+	return nil, false
+}
+
+// AsProcessEntity is the BasicEntity implementation for MailClusterEntity.
+func (mce MailClusterEntity) AsProcessEntity() (*ProcessEntity, bool) {
+	return nil, false
+}
+
+// AsMalwareEntity is the BasicEntity implementation for MailClusterEntity.
+func (mce MailClusterEntity) AsMalwareEntity() (*MalwareEntity, bool) {
+	return nil, false
+}
+
+// AsSubmissionMailEntity is the BasicEntity implementation for MailClusterEntity.
+func (mce MailClusterEntity) AsSubmissionMailEntity() (*SubmissionMailEntity, bool) {
+	return nil, false
+}
+
+// AsMailMessageEntity is the BasicEntity implementation for MailClusterEntity.
+func (mce MailClusterEntity) AsMailMessageEntity() (*MailMessageEntity, bool) {
+	return nil, false
+}
+
+// AsMailClusterEntity is the BasicEntity implementation for MailClusterEntity.
+func (mce MailClusterEntity) AsMailClusterEntity() (*MailClusterEntity, bool) {
+	return &mce, true
+}
+
+// AsMailboxEntity is the BasicEntity implementation for MailClusterEntity.
+func (mce MailClusterEntity) AsMailboxEntity() (*MailboxEntity, bool) {
+	return nil, false
+}
+
+// AsIPEntity is the BasicEntity implementation for MailClusterEntity.
+func (mce MailClusterEntity) AsIPEntity() (*IPEntity, bool) {
+	return nil, false
+}
+
+// AsHuntingBookmark is the BasicEntity implementation for MailClusterEntity.
+func (mce MailClusterEntity) AsHuntingBookmark() (*HuntingBookmark, bool) {
+	return nil, false
+}
+
+// AsHostEntity is the BasicEntity implementation for MailClusterEntity.
+func (mce MailClusterEntity) AsHostEntity() (*HostEntity, bool) {
+	return nil, false
+}
+
+// AsFileHashEntity is the BasicEntity implementation for MailClusterEntity.
+func (mce MailClusterEntity) AsFileHashEntity() (*FileHashEntity, bool) {
+	return nil, false
+}
+
+// AsFileEntity is the BasicEntity implementation for MailClusterEntity.
+func (mce MailClusterEntity) AsFileEntity() (*FileEntity, bool) {
+	return nil, false
+}
+
+// AsDNSEntity is the BasicEntity implementation for MailClusterEntity.
+func (mce MailClusterEntity) AsDNSEntity() (*DNSEntity, bool) {
+	return nil, false
+}
+
+// AsCloudApplicationEntity is the BasicEntity implementation for MailClusterEntity.
+func (mce MailClusterEntity) AsCloudApplicationEntity() (*CloudApplicationEntity, bool) {
+	return nil, false
+}
+
+// AsAzureResourceEntity is the BasicEntity implementation for MailClusterEntity.
+func (mce MailClusterEntity) AsAzureResourceEntity() (*AzureResourceEntity, bool) {
+	return nil, false
+}
+
+// AsAccountEntity is the BasicEntity implementation for MailClusterEntity.
+func (mce MailClusterEntity) AsAccountEntity() (*AccountEntity, bool) {
 	return nil, false
 }
 
@@ -11562,7 +11845,7 @@ func (mce *MailClusterEntity) UnmarshalJSON(body []byte) error {
 			}
 		case "kind":
 			if v != nil {
-				var kind KindBasicEntity
+				var kind Kind
 				err = json.Unmarshal(*v, &kind)
 				if err != nil {
 					return err
@@ -11629,13 +11912,13 @@ type MailMessageEntity struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Kind - Possible values include: 'KindBasicEntityKindEntity', 'KindBasicEntityKindAccount', 'KindBasicEntityKindAzureResource', 'KindBasicEntityKindCloudApplication', 'KindBasicEntityKindDNSResolution', 'KindBasicEntityKindFile', 'KindBasicEntityKindFileHash', 'KindBasicEntityKindHost', 'KindBasicEntityKindBookmark', 'KindBasicEntityKindSecurityAlert', 'KindBasicEntityKindIP', 'KindBasicEntityKindMailbox', 'KindBasicEntityKindMailCluster', 'KindBasicEntityKindMailMessage', 'KindBasicEntityKindSubmissionMail', 'KindBasicEntityKindMalware', 'KindBasicEntityKindProcess', 'KindBasicEntityKindRegistryKey', 'KindBasicEntityKindRegistryValue', 'KindBasicEntityKindSecurityGroup', 'KindBasicEntityKindURL', 'KindBasicEntityKindIoTDevice'
-	Kind KindBasicEntity `json:"kind,omitempty"`
+	// Kind - Possible values include: 'KindEntity', 'KindIoTDevice', 'KindURL', 'KindSecurityGroup', 'KindSecurityAlert', 'KindRegistryValue', 'KindRegistryKey', 'KindProcess', 'KindMalware', 'KindSubmissionMail', 'KindMailMessage', 'KindMailCluster', 'KindMailbox', 'KindIP', 'KindBookmark', 'KindHost', 'KindFileHash', 'KindFile', 'KindDNSResolution', 'KindCloudApplication', 'KindAzureResource', 'KindAccount'
+	Kind Kind `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for MailMessageEntity.
 func (mme MailMessageEntity) MarshalJSON() ([]byte, error) {
-	mme.Kind = KindBasicEntityKindMailMessage
+	mme.Kind = KindMailMessage
 	objectMap := make(map[string]interface{})
 	if mme.MailMessageEntityProperties != nil {
 		objectMap["properties"] = mme.MailMessageEntityProperties
@@ -11646,98 +11929,8 @@ func (mme MailMessageEntity) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsAccountEntity is the BasicEntity implementation for MailMessageEntity.
-func (mme MailMessageEntity) AsAccountEntity() (*AccountEntity, bool) {
-	return nil, false
-}
-
-// AsAzureResourceEntity is the BasicEntity implementation for MailMessageEntity.
-func (mme MailMessageEntity) AsAzureResourceEntity() (*AzureResourceEntity, bool) {
-	return nil, false
-}
-
-// AsCloudApplicationEntity is the BasicEntity implementation for MailMessageEntity.
-func (mme MailMessageEntity) AsCloudApplicationEntity() (*CloudApplicationEntity, bool) {
-	return nil, false
-}
-
-// AsDNSEntity is the BasicEntity implementation for MailMessageEntity.
-func (mme MailMessageEntity) AsDNSEntity() (*DNSEntity, bool) {
-	return nil, false
-}
-
-// AsFileEntity is the BasicEntity implementation for MailMessageEntity.
-func (mme MailMessageEntity) AsFileEntity() (*FileEntity, bool) {
-	return nil, false
-}
-
-// AsFileHashEntity is the BasicEntity implementation for MailMessageEntity.
-func (mme MailMessageEntity) AsFileHashEntity() (*FileHashEntity, bool) {
-	return nil, false
-}
-
-// AsHostEntity is the BasicEntity implementation for MailMessageEntity.
-func (mme MailMessageEntity) AsHostEntity() (*HostEntity, bool) {
-	return nil, false
-}
-
-// AsHuntingBookmark is the BasicEntity implementation for MailMessageEntity.
-func (mme MailMessageEntity) AsHuntingBookmark() (*HuntingBookmark, bool) {
-	return nil, false
-}
-
-// AsSecurityAlert is the BasicEntity implementation for MailMessageEntity.
-func (mme MailMessageEntity) AsSecurityAlert() (*SecurityAlert, bool) {
-	return nil, false
-}
-
-// AsIPEntity is the BasicEntity implementation for MailMessageEntity.
-func (mme MailMessageEntity) AsIPEntity() (*IPEntity, bool) {
-	return nil, false
-}
-
-// AsMailboxEntity is the BasicEntity implementation for MailMessageEntity.
-func (mme MailMessageEntity) AsMailboxEntity() (*MailboxEntity, bool) {
-	return nil, false
-}
-
-// AsMailClusterEntity is the BasicEntity implementation for MailMessageEntity.
-func (mme MailMessageEntity) AsMailClusterEntity() (*MailClusterEntity, bool) {
-	return nil, false
-}
-
-// AsMailMessageEntity is the BasicEntity implementation for MailMessageEntity.
-func (mme MailMessageEntity) AsMailMessageEntity() (*MailMessageEntity, bool) {
-	return &mme, true
-}
-
-// AsSubmissionMailEntity is the BasicEntity implementation for MailMessageEntity.
-func (mme MailMessageEntity) AsSubmissionMailEntity() (*SubmissionMailEntity, bool) {
-	return nil, false
-}
-
-// AsMalwareEntity is the BasicEntity implementation for MailMessageEntity.
-func (mme MailMessageEntity) AsMalwareEntity() (*MalwareEntity, bool) {
-	return nil, false
-}
-
-// AsProcessEntity is the BasicEntity implementation for MailMessageEntity.
-func (mme MailMessageEntity) AsProcessEntity() (*ProcessEntity, bool) {
-	return nil, false
-}
-
-// AsRegistryKeyEntity is the BasicEntity implementation for MailMessageEntity.
-func (mme MailMessageEntity) AsRegistryKeyEntity() (*RegistryKeyEntity, bool) {
-	return nil, false
-}
-
-// AsRegistryValueEntity is the BasicEntity implementation for MailMessageEntity.
-func (mme MailMessageEntity) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
-	return nil, false
-}
-
-// AsSecurityGroupEntity is the BasicEntity implementation for MailMessageEntity.
-func (mme MailMessageEntity) AsSecurityGroupEntity() (*SecurityGroupEntity, bool) {
+// AsIoTDeviceEntity is the BasicEntity implementation for MailMessageEntity.
+func (mme MailMessageEntity) AsIoTDeviceEntity() (*IoTDeviceEntity, bool) {
 	return nil, false
 }
 
@@ -11746,8 +11939,98 @@ func (mme MailMessageEntity) AsURLEntity() (*URLEntity, bool) {
 	return nil, false
 }
 
-// AsIoTDeviceEntity is the BasicEntity implementation for MailMessageEntity.
-func (mme MailMessageEntity) AsIoTDeviceEntity() (*IoTDeviceEntity, bool) {
+// AsSecurityGroupEntity is the BasicEntity implementation for MailMessageEntity.
+func (mme MailMessageEntity) AsSecurityGroupEntity() (*SecurityGroupEntity, bool) {
+	return nil, false
+}
+
+// AsSecurityAlert is the BasicEntity implementation for MailMessageEntity.
+func (mme MailMessageEntity) AsSecurityAlert() (*SecurityAlert, bool) {
+	return nil, false
+}
+
+// AsRegistryValueEntity is the BasicEntity implementation for MailMessageEntity.
+func (mme MailMessageEntity) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
+	return nil, false
+}
+
+// AsRegistryKeyEntity is the BasicEntity implementation for MailMessageEntity.
+func (mme MailMessageEntity) AsRegistryKeyEntity() (*RegistryKeyEntity, bool) {
+	return nil, false
+}
+
+// AsProcessEntity is the BasicEntity implementation for MailMessageEntity.
+func (mme MailMessageEntity) AsProcessEntity() (*ProcessEntity, bool) {
+	return nil, false
+}
+
+// AsMalwareEntity is the BasicEntity implementation for MailMessageEntity.
+func (mme MailMessageEntity) AsMalwareEntity() (*MalwareEntity, bool) {
+	return nil, false
+}
+
+// AsSubmissionMailEntity is the BasicEntity implementation for MailMessageEntity.
+func (mme MailMessageEntity) AsSubmissionMailEntity() (*SubmissionMailEntity, bool) {
+	return nil, false
+}
+
+// AsMailMessageEntity is the BasicEntity implementation for MailMessageEntity.
+func (mme MailMessageEntity) AsMailMessageEntity() (*MailMessageEntity, bool) {
+	return &mme, true
+}
+
+// AsMailClusterEntity is the BasicEntity implementation for MailMessageEntity.
+func (mme MailMessageEntity) AsMailClusterEntity() (*MailClusterEntity, bool) {
+	return nil, false
+}
+
+// AsMailboxEntity is the BasicEntity implementation for MailMessageEntity.
+func (mme MailMessageEntity) AsMailboxEntity() (*MailboxEntity, bool) {
+	return nil, false
+}
+
+// AsIPEntity is the BasicEntity implementation for MailMessageEntity.
+func (mme MailMessageEntity) AsIPEntity() (*IPEntity, bool) {
+	return nil, false
+}
+
+// AsHuntingBookmark is the BasicEntity implementation for MailMessageEntity.
+func (mme MailMessageEntity) AsHuntingBookmark() (*HuntingBookmark, bool) {
+	return nil, false
+}
+
+// AsHostEntity is the BasicEntity implementation for MailMessageEntity.
+func (mme MailMessageEntity) AsHostEntity() (*HostEntity, bool) {
+	return nil, false
+}
+
+// AsFileHashEntity is the BasicEntity implementation for MailMessageEntity.
+func (mme MailMessageEntity) AsFileHashEntity() (*FileHashEntity, bool) {
+	return nil, false
+}
+
+// AsFileEntity is the BasicEntity implementation for MailMessageEntity.
+func (mme MailMessageEntity) AsFileEntity() (*FileEntity, bool) {
+	return nil, false
+}
+
+// AsDNSEntity is the BasicEntity implementation for MailMessageEntity.
+func (mme MailMessageEntity) AsDNSEntity() (*DNSEntity, bool) {
+	return nil, false
+}
+
+// AsCloudApplicationEntity is the BasicEntity implementation for MailMessageEntity.
+func (mme MailMessageEntity) AsCloudApplicationEntity() (*CloudApplicationEntity, bool) {
+	return nil, false
+}
+
+// AsAzureResourceEntity is the BasicEntity implementation for MailMessageEntity.
+func (mme MailMessageEntity) AsAzureResourceEntity() (*AzureResourceEntity, bool) {
+	return nil, false
+}
+
+// AsAccountEntity is the BasicEntity implementation for MailMessageEntity.
+func (mme MailMessageEntity) AsAccountEntity() (*AccountEntity, bool) {
 	return nil, false
 }
 
@@ -11808,7 +12091,7 @@ func (mme *MailMessageEntity) UnmarshalJSON(body []byte) error {
 			}
 		case "kind":
 			if v != nil {
-				var kind KindBasicEntity
+				var kind Kind
 				err = json.Unmarshal(*v, &kind)
 				if err != nil {
 					return err
@@ -11919,13 +12202,13 @@ type MalwareEntity struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Kind - Possible values include: 'KindBasicEntityKindEntity', 'KindBasicEntityKindAccount', 'KindBasicEntityKindAzureResource', 'KindBasicEntityKindCloudApplication', 'KindBasicEntityKindDNSResolution', 'KindBasicEntityKindFile', 'KindBasicEntityKindFileHash', 'KindBasicEntityKindHost', 'KindBasicEntityKindBookmark', 'KindBasicEntityKindSecurityAlert', 'KindBasicEntityKindIP', 'KindBasicEntityKindMailbox', 'KindBasicEntityKindMailCluster', 'KindBasicEntityKindMailMessage', 'KindBasicEntityKindSubmissionMail', 'KindBasicEntityKindMalware', 'KindBasicEntityKindProcess', 'KindBasicEntityKindRegistryKey', 'KindBasicEntityKindRegistryValue', 'KindBasicEntityKindSecurityGroup', 'KindBasicEntityKindURL', 'KindBasicEntityKindIoTDevice'
-	Kind KindBasicEntity `json:"kind,omitempty"`
+	// Kind - Possible values include: 'KindEntity', 'KindIoTDevice', 'KindURL', 'KindSecurityGroup', 'KindSecurityAlert', 'KindRegistryValue', 'KindRegistryKey', 'KindProcess', 'KindMalware', 'KindSubmissionMail', 'KindMailMessage', 'KindMailCluster', 'KindMailbox', 'KindIP', 'KindBookmark', 'KindHost', 'KindFileHash', 'KindFile', 'KindDNSResolution', 'KindCloudApplication', 'KindAzureResource', 'KindAccount'
+	Kind Kind `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for MalwareEntity.
 func (me MalwareEntity) MarshalJSON() ([]byte, error) {
-	me.Kind = KindBasicEntityKindMalware
+	me.Kind = KindMalware
 	objectMap := make(map[string]interface{})
 	if me.MalwareEntityProperties != nil {
 		objectMap["properties"] = me.MalwareEntityProperties
@@ -11936,98 +12219,8 @@ func (me MalwareEntity) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsAccountEntity is the BasicEntity implementation for MalwareEntity.
-func (me MalwareEntity) AsAccountEntity() (*AccountEntity, bool) {
-	return nil, false
-}
-
-// AsAzureResourceEntity is the BasicEntity implementation for MalwareEntity.
-func (me MalwareEntity) AsAzureResourceEntity() (*AzureResourceEntity, bool) {
-	return nil, false
-}
-
-// AsCloudApplicationEntity is the BasicEntity implementation for MalwareEntity.
-func (me MalwareEntity) AsCloudApplicationEntity() (*CloudApplicationEntity, bool) {
-	return nil, false
-}
-
-// AsDNSEntity is the BasicEntity implementation for MalwareEntity.
-func (me MalwareEntity) AsDNSEntity() (*DNSEntity, bool) {
-	return nil, false
-}
-
-// AsFileEntity is the BasicEntity implementation for MalwareEntity.
-func (me MalwareEntity) AsFileEntity() (*FileEntity, bool) {
-	return nil, false
-}
-
-// AsFileHashEntity is the BasicEntity implementation for MalwareEntity.
-func (me MalwareEntity) AsFileHashEntity() (*FileHashEntity, bool) {
-	return nil, false
-}
-
-// AsHostEntity is the BasicEntity implementation for MalwareEntity.
-func (me MalwareEntity) AsHostEntity() (*HostEntity, bool) {
-	return nil, false
-}
-
-// AsHuntingBookmark is the BasicEntity implementation for MalwareEntity.
-func (me MalwareEntity) AsHuntingBookmark() (*HuntingBookmark, bool) {
-	return nil, false
-}
-
-// AsSecurityAlert is the BasicEntity implementation for MalwareEntity.
-func (me MalwareEntity) AsSecurityAlert() (*SecurityAlert, bool) {
-	return nil, false
-}
-
-// AsIPEntity is the BasicEntity implementation for MalwareEntity.
-func (me MalwareEntity) AsIPEntity() (*IPEntity, bool) {
-	return nil, false
-}
-
-// AsMailboxEntity is the BasicEntity implementation for MalwareEntity.
-func (me MalwareEntity) AsMailboxEntity() (*MailboxEntity, bool) {
-	return nil, false
-}
-
-// AsMailClusterEntity is the BasicEntity implementation for MalwareEntity.
-func (me MalwareEntity) AsMailClusterEntity() (*MailClusterEntity, bool) {
-	return nil, false
-}
-
-// AsMailMessageEntity is the BasicEntity implementation for MalwareEntity.
-func (me MalwareEntity) AsMailMessageEntity() (*MailMessageEntity, bool) {
-	return nil, false
-}
-
-// AsSubmissionMailEntity is the BasicEntity implementation for MalwareEntity.
-func (me MalwareEntity) AsSubmissionMailEntity() (*SubmissionMailEntity, bool) {
-	return nil, false
-}
-
-// AsMalwareEntity is the BasicEntity implementation for MalwareEntity.
-func (me MalwareEntity) AsMalwareEntity() (*MalwareEntity, bool) {
-	return &me, true
-}
-
-// AsProcessEntity is the BasicEntity implementation for MalwareEntity.
-func (me MalwareEntity) AsProcessEntity() (*ProcessEntity, bool) {
-	return nil, false
-}
-
-// AsRegistryKeyEntity is the BasicEntity implementation for MalwareEntity.
-func (me MalwareEntity) AsRegistryKeyEntity() (*RegistryKeyEntity, bool) {
-	return nil, false
-}
-
-// AsRegistryValueEntity is the BasicEntity implementation for MalwareEntity.
-func (me MalwareEntity) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
-	return nil, false
-}
-
-// AsSecurityGroupEntity is the BasicEntity implementation for MalwareEntity.
-func (me MalwareEntity) AsSecurityGroupEntity() (*SecurityGroupEntity, bool) {
+// AsIoTDeviceEntity is the BasicEntity implementation for MalwareEntity.
+func (me MalwareEntity) AsIoTDeviceEntity() (*IoTDeviceEntity, bool) {
 	return nil, false
 }
 
@@ -12036,8 +12229,98 @@ func (me MalwareEntity) AsURLEntity() (*URLEntity, bool) {
 	return nil, false
 }
 
-// AsIoTDeviceEntity is the BasicEntity implementation for MalwareEntity.
-func (me MalwareEntity) AsIoTDeviceEntity() (*IoTDeviceEntity, bool) {
+// AsSecurityGroupEntity is the BasicEntity implementation for MalwareEntity.
+func (me MalwareEntity) AsSecurityGroupEntity() (*SecurityGroupEntity, bool) {
+	return nil, false
+}
+
+// AsSecurityAlert is the BasicEntity implementation for MalwareEntity.
+func (me MalwareEntity) AsSecurityAlert() (*SecurityAlert, bool) {
+	return nil, false
+}
+
+// AsRegistryValueEntity is the BasicEntity implementation for MalwareEntity.
+func (me MalwareEntity) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
+	return nil, false
+}
+
+// AsRegistryKeyEntity is the BasicEntity implementation for MalwareEntity.
+func (me MalwareEntity) AsRegistryKeyEntity() (*RegistryKeyEntity, bool) {
+	return nil, false
+}
+
+// AsProcessEntity is the BasicEntity implementation for MalwareEntity.
+func (me MalwareEntity) AsProcessEntity() (*ProcessEntity, bool) {
+	return nil, false
+}
+
+// AsMalwareEntity is the BasicEntity implementation for MalwareEntity.
+func (me MalwareEntity) AsMalwareEntity() (*MalwareEntity, bool) {
+	return &me, true
+}
+
+// AsSubmissionMailEntity is the BasicEntity implementation for MalwareEntity.
+func (me MalwareEntity) AsSubmissionMailEntity() (*SubmissionMailEntity, bool) {
+	return nil, false
+}
+
+// AsMailMessageEntity is the BasicEntity implementation for MalwareEntity.
+func (me MalwareEntity) AsMailMessageEntity() (*MailMessageEntity, bool) {
+	return nil, false
+}
+
+// AsMailClusterEntity is the BasicEntity implementation for MalwareEntity.
+func (me MalwareEntity) AsMailClusterEntity() (*MailClusterEntity, bool) {
+	return nil, false
+}
+
+// AsMailboxEntity is the BasicEntity implementation for MalwareEntity.
+func (me MalwareEntity) AsMailboxEntity() (*MailboxEntity, bool) {
+	return nil, false
+}
+
+// AsIPEntity is the BasicEntity implementation for MalwareEntity.
+func (me MalwareEntity) AsIPEntity() (*IPEntity, bool) {
+	return nil, false
+}
+
+// AsHuntingBookmark is the BasicEntity implementation for MalwareEntity.
+func (me MalwareEntity) AsHuntingBookmark() (*HuntingBookmark, bool) {
+	return nil, false
+}
+
+// AsHostEntity is the BasicEntity implementation for MalwareEntity.
+func (me MalwareEntity) AsHostEntity() (*HostEntity, bool) {
+	return nil, false
+}
+
+// AsFileHashEntity is the BasicEntity implementation for MalwareEntity.
+func (me MalwareEntity) AsFileHashEntity() (*FileHashEntity, bool) {
+	return nil, false
+}
+
+// AsFileEntity is the BasicEntity implementation for MalwareEntity.
+func (me MalwareEntity) AsFileEntity() (*FileEntity, bool) {
+	return nil, false
+}
+
+// AsDNSEntity is the BasicEntity implementation for MalwareEntity.
+func (me MalwareEntity) AsDNSEntity() (*DNSEntity, bool) {
+	return nil, false
+}
+
+// AsCloudApplicationEntity is the BasicEntity implementation for MalwareEntity.
+func (me MalwareEntity) AsCloudApplicationEntity() (*CloudApplicationEntity, bool) {
+	return nil, false
+}
+
+// AsAzureResourceEntity is the BasicEntity implementation for MalwareEntity.
+func (me MalwareEntity) AsAzureResourceEntity() (*AzureResourceEntity, bool) {
+	return nil, false
+}
+
+// AsAccountEntity is the BasicEntity implementation for MalwareEntity.
+func (me MalwareEntity) AsAccountEntity() (*AccountEntity, bool) {
 	return nil, false
 }
 
@@ -12098,7 +12381,7 @@ func (me *MalwareEntity) UnmarshalJSON(body []byte) error {
 			}
 		case "kind":
 			if v != nil {
-				var kind KindBasicEntity
+				var kind Kind
 				err = json.Unmarshal(*v, &kind)
 				if err != nil {
 					return err
@@ -12137,7 +12420,7 @@ func (mep MalwareEntityProperties) MarshalJSON() ([]byte, error) {
 type MCASCheckRequirements struct {
 	// MCASCheckRequirementsProperties - MCAS (Microsoft Cloud App Security) requirements check properties.
 	*MCASCheckRequirementsProperties `json:"properties,omitempty"`
-	// Kind - Possible values include: 'KindBasicDataConnectorsCheckRequirementsKindDataConnectorsCheckRequirements', 'KindBasicDataConnectorsCheckRequirementsKindAzureActiveDirectory', 'KindBasicDataConnectorsCheckRequirementsKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatIntelligence', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindAzureSecurityCenter', 'KindBasicDataConnectorsCheckRequirementsKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorsCheckRequirementsKindDynamics365', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindOfficeATP', 'KindBasicDataConnectorsCheckRequirementsKindThreatIntelligence', 'KindBasicDataConnectorsCheckRequirementsKindThreatIntelligenceTaxii'
+	// Kind - Possible values include: 'KindBasicDataConnectorsCheckRequirementsKindDataConnectorsCheckRequirements', 'KindBasicDataConnectorsCheckRequirementsKindAzureActiveDirectory', 'KindBasicDataConnectorsCheckRequirementsKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindAzureSecurityCenter', 'KindBasicDataConnectorsCheckRequirementsKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorsCheckRequirementsKindDynamics365', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatIntelligence', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindOfficeATP', 'KindBasicDataConnectorsCheckRequirementsKindThreatIntelligence', 'KindBasicDataConnectorsCheckRequirementsKindThreatIntelligenceTaxii'
 	Kind KindBasicDataConnectorsCheckRequirements `json:"kind,omitempty"`
 }
 
@@ -12164,16 +12447,6 @@ func (mcr MCASCheckRequirements) AsAATPCheckRequirements() (*AATPCheckRequiremen
 	return nil, false
 }
 
-// AsMSTICheckRequirements is the BasicDataConnectorsCheckRequirements implementation for MCASCheckRequirements.
-func (mcr MCASCheckRequirements) AsMSTICheckRequirements() (*MSTICheckRequirements, bool) {
-	return nil, false
-}
-
-// AsMtpCheckRequirements is the BasicDataConnectorsCheckRequirements implementation for MCASCheckRequirements.
-func (mcr MCASCheckRequirements) AsMtpCheckRequirements() (*MtpCheckRequirements, bool) {
-	return nil, false
-}
-
 // AsASCCheckRequirements is the BasicDataConnectorsCheckRequirements implementation for MCASCheckRequirements.
 func (mcr MCASCheckRequirements) AsASCCheckRequirements() (*ASCCheckRequirements, bool) {
 	return nil, false
@@ -12196,6 +12469,16 @@ func (mcr MCASCheckRequirements) AsMCASCheckRequirements() (*MCASCheckRequiremen
 
 // AsMDATPCheckRequirements is the BasicDataConnectorsCheckRequirements implementation for MCASCheckRequirements.
 func (mcr MCASCheckRequirements) AsMDATPCheckRequirements() (*MDATPCheckRequirements, bool) {
+	return nil, false
+}
+
+// AsMSTICheckRequirements is the BasicDataConnectorsCheckRequirements implementation for MCASCheckRequirements.
+func (mcr MCASCheckRequirements) AsMSTICheckRequirements() (*MSTICheckRequirements, bool) {
+	return nil, false
+}
+
+// AsMtpCheckRequirements is the BasicDataConnectorsCheckRequirements implementation for MCASCheckRequirements.
+func (mcr MCASCheckRequirements) AsMtpCheckRequirements() (*MtpCheckRequirements, bool) {
 	return nil, false
 }
 
@@ -12275,7 +12558,7 @@ type MCASDataConnector struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindBasicDataConnectorKindDataConnector', 'KindBasicDataConnectorKindAzureActiveDirectory', 'KindBasicDataConnectorKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorKindMicrosoftThreatIntelligence', 'KindBasicDataConnectorKindMicrosoftThreatProtection', 'KindBasicDataConnectorKindAzureSecurityCenter', 'KindBasicDataConnectorKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorKindDynamics365', 'KindBasicDataConnectorKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorKindOfficeATP', 'KindBasicDataConnectorKindOffice365', 'KindBasicDataConnectorKindThreatIntelligence', 'KindBasicDataConnectorKindThreatIntelligenceTaxii'
+	// Kind - Possible values include: 'KindBasicDataConnectorKindDataConnector', 'KindBasicDataConnectorKindThreatIntelligenceTaxii', 'KindBasicDataConnectorKindThreatIntelligence', 'KindBasicDataConnectorKindOffice365', 'KindBasicDataConnectorKindOfficeATP', 'KindBasicDataConnectorKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorKindDynamics365', 'KindBasicDataConnectorKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorKindAzureSecurityCenter', 'KindBasicDataConnectorKindMicrosoftThreatProtection', 'KindBasicDataConnectorKindMicrosoftThreatIntelligence', 'KindBasicDataConnectorKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorKindAzureActiveDirectory'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
 }
 
@@ -12295,58 +12578,8 @@ func (mdc MCASDataConnector) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsAADDataConnector is the BasicDataConnector implementation for MCASDataConnector.
-func (mdc MCASDataConnector) AsAADDataConnector() (*AADDataConnector, bool) {
-	return nil, false
-}
-
-// AsAATPDataConnector is the BasicDataConnector implementation for MCASDataConnector.
-func (mdc MCASDataConnector) AsAATPDataConnector() (*AATPDataConnector, bool) {
-	return nil, false
-}
-
-// AsMSTIDataConnector is the BasicDataConnector implementation for MCASDataConnector.
-func (mdc MCASDataConnector) AsMSTIDataConnector() (*MSTIDataConnector, bool) {
-	return nil, false
-}
-
-// AsMTPDataConnector is the BasicDataConnector implementation for MCASDataConnector.
-func (mdc MCASDataConnector) AsMTPDataConnector() (*MTPDataConnector, bool) {
-	return nil, false
-}
-
-// AsASCDataConnector is the BasicDataConnector implementation for MCASDataConnector.
-func (mdc MCASDataConnector) AsASCDataConnector() (*ASCDataConnector, bool) {
-	return nil, false
-}
-
-// AsAwsCloudTrailDataConnector is the BasicDataConnector implementation for MCASDataConnector.
-func (mdc MCASDataConnector) AsAwsCloudTrailDataConnector() (*AwsCloudTrailDataConnector, bool) {
-	return nil, false
-}
-
-// AsDynamics365DataConnector is the BasicDataConnector implementation for MCASDataConnector.
-func (mdc MCASDataConnector) AsDynamics365DataConnector() (*Dynamics365DataConnector, bool) {
-	return nil, false
-}
-
-// AsMCASDataConnector is the BasicDataConnector implementation for MCASDataConnector.
-func (mdc MCASDataConnector) AsMCASDataConnector() (*MCASDataConnector, bool) {
-	return &mdc, true
-}
-
-// AsMDATPDataConnector is the BasicDataConnector implementation for MCASDataConnector.
-func (mdc MCASDataConnector) AsMDATPDataConnector() (*MDATPDataConnector, bool) {
-	return nil, false
-}
-
-// AsOfficeATPDataConnector is the BasicDataConnector implementation for MCASDataConnector.
-func (mdc MCASDataConnector) AsOfficeATPDataConnector() (*OfficeATPDataConnector, bool) {
-	return nil, false
-}
-
-// AsOfficeDataConnector is the BasicDataConnector implementation for MCASDataConnector.
-func (mdc MCASDataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool) {
+// AsTiTaxiiDataConnector is the BasicDataConnector implementation for MCASDataConnector.
+func (mdc MCASDataConnector) AsTiTaxiiDataConnector() (*TiTaxiiDataConnector, bool) {
 	return nil, false
 }
 
@@ -12355,8 +12588,58 @@ func (mdc MCASDataConnector) AsTIDataConnector() (*TIDataConnector, bool) {
 	return nil, false
 }
 
-// AsTiTaxiiDataConnector is the BasicDataConnector implementation for MCASDataConnector.
-func (mdc MCASDataConnector) AsTiTaxiiDataConnector() (*TiTaxiiDataConnector, bool) {
+// AsOfficeDataConnector is the BasicDataConnector implementation for MCASDataConnector.
+func (mdc MCASDataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool) {
+	return nil, false
+}
+
+// AsOfficeATPDataConnector is the BasicDataConnector implementation for MCASDataConnector.
+func (mdc MCASDataConnector) AsOfficeATPDataConnector() (*OfficeATPDataConnector, bool) {
+	return nil, false
+}
+
+// AsMDATPDataConnector is the BasicDataConnector implementation for MCASDataConnector.
+func (mdc MCASDataConnector) AsMDATPDataConnector() (*MDATPDataConnector, bool) {
+	return nil, false
+}
+
+// AsMCASDataConnector is the BasicDataConnector implementation for MCASDataConnector.
+func (mdc MCASDataConnector) AsMCASDataConnector() (*MCASDataConnector, bool) {
+	return &mdc, true
+}
+
+// AsDynamics365DataConnector is the BasicDataConnector implementation for MCASDataConnector.
+func (mdc MCASDataConnector) AsDynamics365DataConnector() (*Dynamics365DataConnector, bool) {
+	return nil, false
+}
+
+// AsAwsCloudTrailDataConnector is the BasicDataConnector implementation for MCASDataConnector.
+func (mdc MCASDataConnector) AsAwsCloudTrailDataConnector() (*AwsCloudTrailDataConnector, bool) {
+	return nil, false
+}
+
+// AsASCDataConnector is the BasicDataConnector implementation for MCASDataConnector.
+func (mdc MCASDataConnector) AsASCDataConnector() (*ASCDataConnector, bool) {
+	return nil, false
+}
+
+// AsMTPDataConnector is the BasicDataConnector implementation for MCASDataConnector.
+func (mdc MCASDataConnector) AsMTPDataConnector() (*MTPDataConnector, bool) {
+	return nil, false
+}
+
+// AsMSTIDataConnector is the BasicDataConnector implementation for MCASDataConnector.
+func (mdc MCASDataConnector) AsMSTIDataConnector() (*MSTIDataConnector, bool) {
+	return nil, false
+}
+
+// AsAATPDataConnector is the BasicDataConnector implementation for MCASDataConnector.
+func (mdc MCASDataConnector) AsAATPDataConnector() (*AATPDataConnector, bool) {
+	return nil, false
+}
+
+// AsAADDataConnector is the BasicDataConnector implementation for MCASDataConnector.
+func (mdc MCASDataConnector) AsAADDataConnector() (*AADDataConnector, bool) {
 	return nil, false
 }
 
@@ -12467,7 +12750,7 @@ type MCASDataConnectorProperties struct {
 type MDATPCheckRequirements struct {
 	// MDATPCheckRequirementsProperties - MDATP (Microsoft Defender Advanced Threat Protection) requirements check properties.
 	*MDATPCheckRequirementsProperties `json:"properties,omitempty"`
-	// Kind - Possible values include: 'KindBasicDataConnectorsCheckRequirementsKindDataConnectorsCheckRequirements', 'KindBasicDataConnectorsCheckRequirementsKindAzureActiveDirectory', 'KindBasicDataConnectorsCheckRequirementsKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatIntelligence', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindAzureSecurityCenter', 'KindBasicDataConnectorsCheckRequirementsKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorsCheckRequirementsKindDynamics365', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindOfficeATP', 'KindBasicDataConnectorsCheckRequirementsKindThreatIntelligence', 'KindBasicDataConnectorsCheckRequirementsKindThreatIntelligenceTaxii'
+	// Kind - Possible values include: 'KindBasicDataConnectorsCheckRequirementsKindDataConnectorsCheckRequirements', 'KindBasicDataConnectorsCheckRequirementsKindAzureActiveDirectory', 'KindBasicDataConnectorsCheckRequirementsKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindAzureSecurityCenter', 'KindBasicDataConnectorsCheckRequirementsKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorsCheckRequirementsKindDynamics365', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatIntelligence', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindOfficeATP', 'KindBasicDataConnectorsCheckRequirementsKindThreatIntelligence', 'KindBasicDataConnectorsCheckRequirementsKindThreatIntelligenceTaxii'
 	Kind KindBasicDataConnectorsCheckRequirements `json:"kind,omitempty"`
 }
 
@@ -12494,16 +12777,6 @@ func (mcr MDATPCheckRequirements) AsAATPCheckRequirements() (*AATPCheckRequireme
 	return nil, false
 }
 
-// AsMSTICheckRequirements is the BasicDataConnectorsCheckRequirements implementation for MDATPCheckRequirements.
-func (mcr MDATPCheckRequirements) AsMSTICheckRequirements() (*MSTICheckRequirements, bool) {
-	return nil, false
-}
-
-// AsMtpCheckRequirements is the BasicDataConnectorsCheckRequirements implementation for MDATPCheckRequirements.
-func (mcr MDATPCheckRequirements) AsMtpCheckRequirements() (*MtpCheckRequirements, bool) {
-	return nil, false
-}
-
 // AsASCCheckRequirements is the BasicDataConnectorsCheckRequirements implementation for MDATPCheckRequirements.
 func (mcr MDATPCheckRequirements) AsASCCheckRequirements() (*ASCCheckRequirements, bool) {
 	return nil, false
@@ -12527,6 +12800,16 @@ func (mcr MDATPCheckRequirements) AsMCASCheckRequirements() (*MCASCheckRequireme
 // AsMDATPCheckRequirements is the BasicDataConnectorsCheckRequirements implementation for MDATPCheckRequirements.
 func (mcr MDATPCheckRequirements) AsMDATPCheckRequirements() (*MDATPCheckRequirements, bool) {
 	return &mcr, true
+}
+
+// AsMSTICheckRequirements is the BasicDataConnectorsCheckRequirements implementation for MDATPCheckRequirements.
+func (mcr MDATPCheckRequirements) AsMSTICheckRequirements() (*MSTICheckRequirements, bool) {
+	return nil, false
+}
+
+// AsMtpCheckRequirements is the BasicDataConnectorsCheckRequirements implementation for MDATPCheckRequirements.
+func (mcr MDATPCheckRequirements) AsMtpCheckRequirements() (*MtpCheckRequirements, bool) {
+	return nil, false
 }
 
 // AsOfficeATPCheckRequirements is the BasicDataConnectorsCheckRequirements implementation for MDATPCheckRequirements.
@@ -12606,7 +12889,7 @@ type MDATPDataConnector struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindBasicDataConnectorKindDataConnector', 'KindBasicDataConnectorKindAzureActiveDirectory', 'KindBasicDataConnectorKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorKindMicrosoftThreatIntelligence', 'KindBasicDataConnectorKindMicrosoftThreatProtection', 'KindBasicDataConnectorKindAzureSecurityCenter', 'KindBasicDataConnectorKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorKindDynamics365', 'KindBasicDataConnectorKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorKindOfficeATP', 'KindBasicDataConnectorKindOffice365', 'KindBasicDataConnectorKindThreatIntelligence', 'KindBasicDataConnectorKindThreatIntelligenceTaxii'
+	// Kind - Possible values include: 'KindBasicDataConnectorKindDataConnector', 'KindBasicDataConnectorKindThreatIntelligenceTaxii', 'KindBasicDataConnectorKindThreatIntelligence', 'KindBasicDataConnectorKindOffice365', 'KindBasicDataConnectorKindOfficeATP', 'KindBasicDataConnectorKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorKindDynamics365', 'KindBasicDataConnectorKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorKindAzureSecurityCenter', 'KindBasicDataConnectorKindMicrosoftThreatProtection', 'KindBasicDataConnectorKindMicrosoftThreatIntelligence', 'KindBasicDataConnectorKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorKindAzureActiveDirectory'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
 }
 
@@ -12626,58 +12909,8 @@ func (mdc MDATPDataConnector) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsAADDataConnector is the BasicDataConnector implementation for MDATPDataConnector.
-func (mdc MDATPDataConnector) AsAADDataConnector() (*AADDataConnector, bool) {
-	return nil, false
-}
-
-// AsAATPDataConnector is the BasicDataConnector implementation for MDATPDataConnector.
-func (mdc MDATPDataConnector) AsAATPDataConnector() (*AATPDataConnector, bool) {
-	return nil, false
-}
-
-// AsMSTIDataConnector is the BasicDataConnector implementation for MDATPDataConnector.
-func (mdc MDATPDataConnector) AsMSTIDataConnector() (*MSTIDataConnector, bool) {
-	return nil, false
-}
-
-// AsMTPDataConnector is the BasicDataConnector implementation for MDATPDataConnector.
-func (mdc MDATPDataConnector) AsMTPDataConnector() (*MTPDataConnector, bool) {
-	return nil, false
-}
-
-// AsASCDataConnector is the BasicDataConnector implementation for MDATPDataConnector.
-func (mdc MDATPDataConnector) AsASCDataConnector() (*ASCDataConnector, bool) {
-	return nil, false
-}
-
-// AsAwsCloudTrailDataConnector is the BasicDataConnector implementation for MDATPDataConnector.
-func (mdc MDATPDataConnector) AsAwsCloudTrailDataConnector() (*AwsCloudTrailDataConnector, bool) {
-	return nil, false
-}
-
-// AsDynamics365DataConnector is the BasicDataConnector implementation for MDATPDataConnector.
-func (mdc MDATPDataConnector) AsDynamics365DataConnector() (*Dynamics365DataConnector, bool) {
-	return nil, false
-}
-
-// AsMCASDataConnector is the BasicDataConnector implementation for MDATPDataConnector.
-func (mdc MDATPDataConnector) AsMCASDataConnector() (*MCASDataConnector, bool) {
-	return nil, false
-}
-
-// AsMDATPDataConnector is the BasicDataConnector implementation for MDATPDataConnector.
-func (mdc MDATPDataConnector) AsMDATPDataConnector() (*MDATPDataConnector, bool) {
-	return &mdc, true
-}
-
-// AsOfficeATPDataConnector is the BasicDataConnector implementation for MDATPDataConnector.
-func (mdc MDATPDataConnector) AsOfficeATPDataConnector() (*OfficeATPDataConnector, bool) {
-	return nil, false
-}
-
-// AsOfficeDataConnector is the BasicDataConnector implementation for MDATPDataConnector.
-func (mdc MDATPDataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool) {
+// AsTiTaxiiDataConnector is the BasicDataConnector implementation for MDATPDataConnector.
+func (mdc MDATPDataConnector) AsTiTaxiiDataConnector() (*TiTaxiiDataConnector, bool) {
 	return nil, false
 }
 
@@ -12686,8 +12919,58 @@ func (mdc MDATPDataConnector) AsTIDataConnector() (*TIDataConnector, bool) {
 	return nil, false
 }
 
-// AsTiTaxiiDataConnector is the BasicDataConnector implementation for MDATPDataConnector.
-func (mdc MDATPDataConnector) AsTiTaxiiDataConnector() (*TiTaxiiDataConnector, bool) {
+// AsOfficeDataConnector is the BasicDataConnector implementation for MDATPDataConnector.
+func (mdc MDATPDataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool) {
+	return nil, false
+}
+
+// AsOfficeATPDataConnector is the BasicDataConnector implementation for MDATPDataConnector.
+func (mdc MDATPDataConnector) AsOfficeATPDataConnector() (*OfficeATPDataConnector, bool) {
+	return nil, false
+}
+
+// AsMDATPDataConnector is the BasicDataConnector implementation for MDATPDataConnector.
+func (mdc MDATPDataConnector) AsMDATPDataConnector() (*MDATPDataConnector, bool) {
+	return &mdc, true
+}
+
+// AsMCASDataConnector is the BasicDataConnector implementation for MDATPDataConnector.
+func (mdc MDATPDataConnector) AsMCASDataConnector() (*MCASDataConnector, bool) {
+	return nil, false
+}
+
+// AsDynamics365DataConnector is the BasicDataConnector implementation for MDATPDataConnector.
+func (mdc MDATPDataConnector) AsDynamics365DataConnector() (*Dynamics365DataConnector, bool) {
+	return nil, false
+}
+
+// AsAwsCloudTrailDataConnector is the BasicDataConnector implementation for MDATPDataConnector.
+func (mdc MDATPDataConnector) AsAwsCloudTrailDataConnector() (*AwsCloudTrailDataConnector, bool) {
+	return nil, false
+}
+
+// AsASCDataConnector is the BasicDataConnector implementation for MDATPDataConnector.
+func (mdc MDATPDataConnector) AsASCDataConnector() (*ASCDataConnector, bool) {
+	return nil, false
+}
+
+// AsMTPDataConnector is the BasicDataConnector implementation for MDATPDataConnector.
+func (mdc MDATPDataConnector) AsMTPDataConnector() (*MTPDataConnector, bool) {
+	return nil, false
+}
+
+// AsMSTIDataConnector is the BasicDataConnector implementation for MDATPDataConnector.
+func (mdc MDATPDataConnector) AsMSTIDataConnector() (*MSTIDataConnector, bool) {
+	return nil, false
+}
+
+// AsAATPDataConnector is the BasicDataConnector implementation for MDATPDataConnector.
+func (mdc MDATPDataConnector) AsAATPDataConnector() (*AATPDataConnector, bool) {
+	return nil, false
+}
+
+// AsAADDataConnector is the BasicDataConnector implementation for MDATPDataConnector.
+func (mdc MDATPDataConnector) AsAADDataConnector() (*AADDataConnector, bool) {
 	return nil, false
 }
 
@@ -12791,7 +13074,7 @@ type MicrosoftSecurityIncidentCreationAlertRule struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindBasicAlertRuleKindAlertRule', 'KindBasicAlertRuleKindMLBehaviorAnalytics', 'KindBasicAlertRuleKindFusion', 'KindBasicAlertRuleKindThreatIntelligence', 'KindBasicAlertRuleKindMicrosoftSecurityIncidentCreation', 'KindBasicAlertRuleKindScheduled'
+	// Kind - Possible values include: 'KindBasicAlertRuleKindAlertRule', 'KindBasicAlertRuleKindScheduled', 'KindBasicAlertRuleKindMicrosoftSecurityIncidentCreation', 'KindBasicAlertRuleKindThreatIntelligence', 'KindBasicAlertRuleKindFusion', 'KindBasicAlertRuleKindMLBehaviorAnalytics'
 	Kind KindBasicAlertRule `json:"kind,omitempty"`
 }
 
@@ -12811,18 +13094,8 @@ func (msicar MicrosoftSecurityIncidentCreationAlertRule) MarshalJSON() ([]byte, 
 	return json.Marshal(objectMap)
 }
 
-// AsMLBehaviorAnalyticsAlertRule is the BasicAlertRule implementation for MicrosoftSecurityIncidentCreationAlertRule.
-func (msicar MicrosoftSecurityIncidentCreationAlertRule) AsMLBehaviorAnalyticsAlertRule() (*MLBehaviorAnalyticsAlertRule, bool) {
-	return nil, false
-}
-
-// AsFusionAlertRule is the BasicAlertRule implementation for MicrosoftSecurityIncidentCreationAlertRule.
-func (msicar MicrosoftSecurityIncidentCreationAlertRule) AsFusionAlertRule() (*FusionAlertRule, bool) {
-	return nil, false
-}
-
-// AsThreatIntelligenceAlertRule is the BasicAlertRule implementation for MicrosoftSecurityIncidentCreationAlertRule.
-func (msicar MicrosoftSecurityIncidentCreationAlertRule) AsThreatIntelligenceAlertRule() (*ThreatIntelligenceAlertRule, bool) {
+// AsScheduledAlertRule is the BasicAlertRule implementation for MicrosoftSecurityIncidentCreationAlertRule.
+func (msicar MicrosoftSecurityIncidentCreationAlertRule) AsScheduledAlertRule() (*ScheduledAlertRule, bool) {
 	return nil, false
 }
 
@@ -12831,8 +13104,18 @@ func (msicar MicrosoftSecurityIncidentCreationAlertRule) AsMicrosoftSecurityInci
 	return &msicar, true
 }
 
-// AsScheduledAlertRule is the BasicAlertRule implementation for MicrosoftSecurityIncidentCreationAlertRule.
-func (msicar MicrosoftSecurityIncidentCreationAlertRule) AsScheduledAlertRule() (*ScheduledAlertRule, bool) {
+// AsThreatIntelligenceAlertRule is the BasicAlertRule implementation for MicrosoftSecurityIncidentCreationAlertRule.
+func (msicar MicrosoftSecurityIncidentCreationAlertRule) AsThreatIntelligenceAlertRule() (*ThreatIntelligenceAlertRule, bool) {
+	return nil, false
+}
+
+// AsFusionAlertRule is the BasicAlertRule implementation for MicrosoftSecurityIncidentCreationAlertRule.
+func (msicar MicrosoftSecurityIncidentCreationAlertRule) AsFusionAlertRule() (*FusionAlertRule, bool) {
+	return nil, false
+}
+
+// AsMLBehaviorAnalyticsAlertRule is the BasicAlertRule implementation for MicrosoftSecurityIncidentCreationAlertRule.
+func (msicar MicrosoftSecurityIncidentCreationAlertRule) AsMLBehaviorAnalyticsAlertRule() (*MLBehaviorAnalyticsAlertRule, bool) {
 	return nil, false
 }
 
@@ -12992,7 +13275,7 @@ type MicrosoftSecurityIncidentCreationAlertRuleTemplate struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Kind - Possible values include: 'KindBasicAlertRuleTemplateKindAlertRuleTemplate', 'KindBasicAlertRuleTemplateKindMLBehaviorAnalytics', 'KindBasicAlertRuleTemplateKindFusion', 'KindBasicAlertRuleTemplateKindThreatIntelligence', 'KindBasicAlertRuleTemplateKindMicrosoftSecurityIncidentCreation', 'KindBasicAlertRuleTemplateKindScheduled'
+	// Kind - Possible values include: 'KindBasicAlertRuleTemplateKindAlertRuleTemplate', 'KindBasicAlertRuleTemplateKindScheduled', 'KindBasicAlertRuleTemplateKindMicrosoftSecurityIncidentCreation', 'KindBasicAlertRuleTemplateKindThreatIntelligence', 'KindBasicAlertRuleTemplateKindFusion', 'KindBasicAlertRuleTemplateKindMLBehaviorAnalytics'
 	Kind KindBasicAlertRuleTemplate `json:"kind,omitempty"`
 }
 
@@ -13009,18 +13292,8 @@ func (msicart MicrosoftSecurityIncidentCreationAlertRuleTemplate) MarshalJSON() 
 	return json.Marshal(objectMap)
 }
 
-// AsMLBehaviorAnalyticsAlertRuleTemplate is the BasicAlertRuleTemplate implementation for MicrosoftSecurityIncidentCreationAlertRuleTemplate.
-func (msicart MicrosoftSecurityIncidentCreationAlertRuleTemplate) AsMLBehaviorAnalyticsAlertRuleTemplate() (*MLBehaviorAnalyticsAlertRuleTemplate, bool) {
-	return nil, false
-}
-
-// AsFusionAlertRuleTemplate is the BasicAlertRuleTemplate implementation for MicrosoftSecurityIncidentCreationAlertRuleTemplate.
-func (msicart MicrosoftSecurityIncidentCreationAlertRuleTemplate) AsFusionAlertRuleTemplate() (*FusionAlertRuleTemplate, bool) {
-	return nil, false
-}
-
-// AsThreatIntelligenceAlertRuleTemplate is the BasicAlertRuleTemplate implementation for MicrosoftSecurityIncidentCreationAlertRuleTemplate.
-func (msicart MicrosoftSecurityIncidentCreationAlertRuleTemplate) AsThreatIntelligenceAlertRuleTemplate() (*ThreatIntelligenceAlertRuleTemplate, bool) {
+// AsScheduledAlertRuleTemplate is the BasicAlertRuleTemplate implementation for MicrosoftSecurityIncidentCreationAlertRuleTemplate.
+func (msicart MicrosoftSecurityIncidentCreationAlertRuleTemplate) AsScheduledAlertRuleTemplate() (*ScheduledAlertRuleTemplate, bool) {
 	return nil, false
 }
 
@@ -13029,8 +13302,18 @@ func (msicart MicrosoftSecurityIncidentCreationAlertRuleTemplate) AsMicrosoftSec
 	return &msicart, true
 }
 
-// AsScheduledAlertRuleTemplate is the BasicAlertRuleTemplate implementation for MicrosoftSecurityIncidentCreationAlertRuleTemplate.
-func (msicart MicrosoftSecurityIncidentCreationAlertRuleTemplate) AsScheduledAlertRuleTemplate() (*ScheduledAlertRuleTemplate, bool) {
+// AsThreatIntelligenceAlertRuleTemplate is the BasicAlertRuleTemplate implementation for MicrosoftSecurityIncidentCreationAlertRuleTemplate.
+func (msicart MicrosoftSecurityIncidentCreationAlertRuleTemplate) AsThreatIntelligenceAlertRuleTemplate() (*ThreatIntelligenceAlertRuleTemplate, bool) {
+	return nil, false
+}
+
+// AsFusionAlertRuleTemplate is the BasicAlertRuleTemplate implementation for MicrosoftSecurityIncidentCreationAlertRuleTemplate.
+func (msicart MicrosoftSecurityIncidentCreationAlertRuleTemplate) AsFusionAlertRuleTemplate() (*FusionAlertRuleTemplate, bool) {
+	return nil, false
+}
+
+// AsMLBehaviorAnalyticsAlertRuleTemplate is the BasicAlertRuleTemplate implementation for MicrosoftSecurityIncidentCreationAlertRuleTemplate.
+func (msicart MicrosoftSecurityIncidentCreationAlertRuleTemplate) AsMLBehaviorAnalyticsAlertRuleTemplate() (*MLBehaviorAnalyticsAlertRuleTemplate, bool) {
 	return nil, false
 }
 
@@ -13176,7 +13459,7 @@ type MLBehaviorAnalyticsAlertRule struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindBasicAlertRuleKindAlertRule', 'KindBasicAlertRuleKindMLBehaviorAnalytics', 'KindBasicAlertRuleKindFusion', 'KindBasicAlertRuleKindThreatIntelligence', 'KindBasicAlertRuleKindMicrosoftSecurityIncidentCreation', 'KindBasicAlertRuleKindScheduled'
+	// Kind - Possible values include: 'KindBasicAlertRuleKindAlertRule', 'KindBasicAlertRuleKindScheduled', 'KindBasicAlertRuleKindMicrosoftSecurityIncidentCreation', 'KindBasicAlertRuleKindThreatIntelligence', 'KindBasicAlertRuleKindFusion', 'KindBasicAlertRuleKindMLBehaviorAnalytics'
 	Kind KindBasicAlertRule `json:"kind,omitempty"`
 }
 
@@ -13196,18 +13479,8 @@ func (mbaar MLBehaviorAnalyticsAlertRule) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsMLBehaviorAnalyticsAlertRule is the BasicAlertRule implementation for MLBehaviorAnalyticsAlertRule.
-func (mbaar MLBehaviorAnalyticsAlertRule) AsMLBehaviorAnalyticsAlertRule() (*MLBehaviorAnalyticsAlertRule, bool) {
-	return &mbaar, true
-}
-
-// AsFusionAlertRule is the BasicAlertRule implementation for MLBehaviorAnalyticsAlertRule.
-func (mbaar MLBehaviorAnalyticsAlertRule) AsFusionAlertRule() (*FusionAlertRule, bool) {
-	return nil, false
-}
-
-// AsThreatIntelligenceAlertRule is the BasicAlertRule implementation for MLBehaviorAnalyticsAlertRule.
-func (mbaar MLBehaviorAnalyticsAlertRule) AsThreatIntelligenceAlertRule() (*ThreatIntelligenceAlertRule, bool) {
+// AsScheduledAlertRule is the BasicAlertRule implementation for MLBehaviorAnalyticsAlertRule.
+func (mbaar MLBehaviorAnalyticsAlertRule) AsScheduledAlertRule() (*ScheduledAlertRule, bool) {
 	return nil, false
 }
 
@@ -13216,9 +13489,19 @@ func (mbaar MLBehaviorAnalyticsAlertRule) AsMicrosoftSecurityIncidentCreationAle
 	return nil, false
 }
 
-// AsScheduledAlertRule is the BasicAlertRule implementation for MLBehaviorAnalyticsAlertRule.
-func (mbaar MLBehaviorAnalyticsAlertRule) AsScheduledAlertRule() (*ScheduledAlertRule, bool) {
+// AsThreatIntelligenceAlertRule is the BasicAlertRule implementation for MLBehaviorAnalyticsAlertRule.
+func (mbaar MLBehaviorAnalyticsAlertRule) AsThreatIntelligenceAlertRule() (*ThreatIntelligenceAlertRule, bool) {
 	return nil, false
+}
+
+// AsFusionAlertRule is the BasicAlertRule implementation for MLBehaviorAnalyticsAlertRule.
+func (mbaar MLBehaviorAnalyticsAlertRule) AsFusionAlertRule() (*FusionAlertRule, bool) {
+	return nil, false
+}
+
+// AsMLBehaviorAnalyticsAlertRule is the BasicAlertRule implementation for MLBehaviorAnalyticsAlertRule.
+func (mbaar MLBehaviorAnalyticsAlertRule) AsMLBehaviorAnalyticsAlertRule() (*MLBehaviorAnalyticsAlertRule, bool) {
+	return &mbaar, true
 }
 
 // AsAlertRule is the BasicAlertRule implementation for MLBehaviorAnalyticsAlertRule.
@@ -13340,7 +13623,7 @@ type MLBehaviorAnalyticsAlertRuleTemplate struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Kind - Possible values include: 'KindBasicAlertRuleTemplateKindAlertRuleTemplate', 'KindBasicAlertRuleTemplateKindMLBehaviorAnalytics', 'KindBasicAlertRuleTemplateKindFusion', 'KindBasicAlertRuleTemplateKindThreatIntelligence', 'KindBasicAlertRuleTemplateKindMicrosoftSecurityIncidentCreation', 'KindBasicAlertRuleTemplateKindScheduled'
+	// Kind - Possible values include: 'KindBasicAlertRuleTemplateKindAlertRuleTemplate', 'KindBasicAlertRuleTemplateKindScheduled', 'KindBasicAlertRuleTemplateKindMicrosoftSecurityIncidentCreation', 'KindBasicAlertRuleTemplateKindThreatIntelligence', 'KindBasicAlertRuleTemplateKindFusion', 'KindBasicAlertRuleTemplateKindMLBehaviorAnalytics'
 	Kind KindBasicAlertRuleTemplate `json:"kind,omitempty"`
 }
 
@@ -13357,18 +13640,8 @@ func (mbaart MLBehaviorAnalyticsAlertRuleTemplate) MarshalJSON() ([]byte, error)
 	return json.Marshal(objectMap)
 }
 
-// AsMLBehaviorAnalyticsAlertRuleTemplate is the BasicAlertRuleTemplate implementation for MLBehaviorAnalyticsAlertRuleTemplate.
-func (mbaart MLBehaviorAnalyticsAlertRuleTemplate) AsMLBehaviorAnalyticsAlertRuleTemplate() (*MLBehaviorAnalyticsAlertRuleTemplate, bool) {
-	return &mbaart, true
-}
-
-// AsFusionAlertRuleTemplate is the BasicAlertRuleTemplate implementation for MLBehaviorAnalyticsAlertRuleTemplate.
-func (mbaart MLBehaviorAnalyticsAlertRuleTemplate) AsFusionAlertRuleTemplate() (*FusionAlertRuleTemplate, bool) {
-	return nil, false
-}
-
-// AsThreatIntelligenceAlertRuleTemplate is the BasicAlertRuleTemplate implementation for MLBehaviorAnalyticsAlertRuleTemplate.
-func (mbaart MLBehaviorAnalyticsAlertRuleTemplate) AsThreatIntelligenceAlertRuleTemplate() (*ThreatIntelligenceAlertRuleTemplate, bool) {
+// AsScheduledAlertRuleTemplate is the BasicAlertRuleTemplate implementation for MLBehaviorAnalyticsAlertRuleTemplate.
+func (mbaart MLBehaviorAnalyticsAlertRuleTemplate) AsScheduledAlertRuleTemplate() (*ScheduledAlertRuleTemplate, bool) {
 	return nil, false
 }
 
@@ -13377,9 +13650,19 @@ func (mbaart MLBehaviorAnalyticsAlertRuleTemplate) AsMicrosoftSecurityIncidentCr
 	return nil, false
 }
 
-// AsScheduledAlertRuleTemplate is the BasicAlertRuleTemplate implementation for MLBehaviorAnalyticsAlertRuleTemplate.
-func (mbaart MLBehaviorAnalyticsAlertRuleTemplate) AsScheduledAlertRuleTemplate() (*ScheduledAlertRuleTemplate, bool) {
+// AsThreatIntelligenceAlertRuleTemplate is the BasicAlertRuleTemplate implementation for MLBehaviorAnalyticsAlertRuleTemplate.
+func (mbaart MLBehaviorAnalyticsAlertRuleTemplate) AsThreatIntelligenceAlertRuleTemplate() (*ThreatIntelligenceAlertRuleTemplate, bool) {
 	return nil, false
+}
+
+// AsFusionAlertRuleTemplate is the BasicAlertRuleTemplate implementation for MLBehaviorAnalyticsAlertRuleTemplate.
+func (mbaart MLBehaviorAnalyticsAlertRuleTemplate) AsFusionAlertRuleTemplate() (*FusionAlertRuleTemplate, bool) {
+	return nil, false
+}
+
+// AsMLBehaviorAnalyticsAlertRuleTemplate is the BasicAlertRuleTemplate implementation for MLBehaviorAnalyticsAlertRuleTemplate.
+func (mbaart MLBehaviorAnalyticsAlertRuleTemplate) AsMLBehaviorAnalyticsAlertRuleTemplate() (*MLBehaviorAnalyticsAlertRuleTemplate, bool) {
+	return &mbaart, true
 }
 
 // AsAlertRuleTemplate is the BasicAlertRuleTemplate implementation for MLBehaviorAnalyticsAlertRuleTemplate.
@@ -13505,7 +13788,7 @@ func (mbaart MLBehaviorAnalyticsAlertRuleTemplateProperties) MarshalJSON() ([]by
 type MSTICheckRequirements struct {
 	// MSTICheckRequirementsProperties - Microsoft Threat Intelligence requirements check properties.
 	*MSTICheckRequirementsProperties `json:"properties,omitempty"`
-	// Kind - Possible values include: 'KindBasicDataConnectorsCheckRequirementsKindDataConnectorsCheckRequirements', 'KindBasicDataConnectorsCheckRequirementsKindAzureActiveDirectory', 'KindBasicDataConnectorsCheckRequirementsKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatIntelligence', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindAzureSecurityCenter', 'KindBasicDataConnectorsCheckRequirementsKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorsCheckRequirementsKindDynamics365', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindOfficeATP', 'KindBasicDataConnectorsCheckRequirementsKindThreatIntelligence', 'KindBasicDataConnectorsCheckRequirementsKindThreatIntelligenceTaxii'
+	// Kind - Possible values include: 'KindBasicDataConnectorsCheckRequirementsKindDataConnectorsCheckRequirements', 'KindBasicDataConnectorsCheckRequirementsKindAzureActiveDirectory', 'KindBasicDataConnectorsCheckRequirementsKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindAzureSecurityCenter', 'KindBasicDataConnectorsCheckRequirementsKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorsCheckRequirementsKindDynamics365', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatIntelligence', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindOfficeATP', 'KindBasicDataConnectorsCheckRequirementsKindThreatIntelligence', 'KindBasicDataConnectorsCheckRequirementsKindThreatIntelligenceTaxii'
 	Kind KindBasicDataConnectorsCheckRequirements `json:"kind,omitempty"`
 }
 
@@ -13532,16 +13815,6 @@ func (mcr MSTICheckRequirements) AsAATPCheckRequirements() (*AATPCheckRequiremen
 	return nil, false
 }
 
-// AsMSTICheckRequirements is the BasicDataConnectorsCheckRequirements implementation for MSTICheckRequirements.
-func (mcr MSTICheckRequirements) AsMSTICheckRequirements() (*MSTICheckRequirements, bool) {
-	return &mcr, true
-}
-
-// AsMtpCheckRequirements is the BasicDataConnectorsCheckRequirements implementation for MSTICheckRequirements.
-func (mcr MSTICheckRequirements) AsMtpCheckRequirements() (*MtpCheckRequirements, bool) {
-	return nil, false
-}
-
 // AsASCCheckRequirements is the BasicDataConnectorsCheckRequirements implementation for MSTICheckRequirements.
 func (mcr MSTICheckRequirements) AsASCCheckRequirements() (*ASCCheckRequirements, bool) {
 	return nil, false
@@ -13564,6 +13837,16 @@ func (mcr MSTICheckRequirements) AsMCASCheckRequirements() (*MCASCheckRequiremen
 
 // AsMDATPCheckRequirements is the BasicDataConnectorsCheckRequirements implementation for MSTICheckRequirements.
 func (mcr MSTICheckRequirements) AsMDATPCheckRequirements() (*MDATPCheckRequirements, bool) {
+	return nil, false
+}
+
+// AsMSTICheckRequirements is the BasicDataConnectorsCheckRequirements implementation for MSTICheckRequirements.
+func (mcr MSTICheckRequirements) AsMSTICheckRequirements() (*MSTICheckRequirements, bool) {
+	return &mcr, true
+}
+
+// AsMtpCheckRequirements is the BasicDataConnectorsCheckRequirements implementation for MSTICheckRequirements.
+func (mcr MSTICheckRequirements) AsMtpCheckRequirements() (*MtpCheckRequirements, bool) {
 	return nil, false
 }
 
@@ -13643,7 +13926,7 @@ type MSTIDataConnector struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindBasicDataConnectorKindDataConnector', 'KindBasicDataConnectorKindAzureActiveDirectory', 'KindBasicDataConnectorKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorKindMicrosoftThreatIntelligence', 'KindBasicDataConnectorKindMicrosoftThreatProtection', 'KindBasicDataConnectorKindAzureSecurityCenter', 'KindBasicDataConnectorKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorKindDynamics365', 'KindBasicDataConnectorKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorKindOfficeATP', 'KindBasicDataConnectorKindOffice365', 'KindBasicDataConnectorKindThreatIntelligence', 'KindBasicDataConnectorKindThreatIntelligenceTaxii'
+	// Kind - Possible values include: 'KindBasicDataConnectorKindDataConnector', 'KindBasicDataConnectorKindThreatIntelligenceTaxii', 'KindBasicDataConnectorKindThreatIntelligence', 'KindBasicDataConnectorKindOffice365', 'KindBasicDataConnectorKindOfficeATP', 'KindBasicDataConnectorKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorKindDynamics365', 'KindBasicDataConnectorKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorKindAzureSecurityCenter', 'KindBasicDataConnectorKindMicrosoftThreatProtection', 'KindBasicDataConnectorKindMicrosoftThreatIntelligence', 'KindBasicDataConnectorKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorKindAzureActiveDirectory'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
 }
 
@@ -13663,58 +13946,8 @@ func (mdc MSTIDataConnector) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsAADDataConnector is the BasicDataConnector implementation for MSTIDataConnector.
-func (mdc MSTIDataConnector) AsAADDataConnector() (*AADDataConnector, bool) {
-	return nil, false
-}
-
-// AsAATPDataConnector is the BasicDataConnector implementation for MSTIDataConnector.
-func (mdc MSTIDataConnector) AsAATPDataConnector() (*AATPDataConnector, bool) {
-	return nil, false
-}
-
-// AsMSTIDataConnector is the BasicDataConnector implementation for MSTIDataConnector.
-func (mdc MSTIDataConnector) AsMSTIDataConnector() (*MSTIDataConnector, bool) {
-	return &mdc, true
-}
-
-// AsMTPDataConnector is the BasicDataConnector implementation for MSTIDataConnector.
-func (mdc MSTIDataConnector) AsMTPDataConnector() (*MTPDataConnector, bool) {
-	return nil, false
-}
-
-// AsASCDataConnector is the BasicDataConnector implementation for MSTIDataConnector.
-func (mdc MSTIDataConnector) AsASCDataConnector() (*ASCDataConnector, bool) {
-	return nil, false
-}
-
-// AsAwsCloudTrailDataConnector is the BasicDataConnector implementation for MSTIDataConnector.
-func (mdc MSTIDataConnector) AsAwsCloudTrailDataConnector() (*AwsCloudTrailDataConnector, bool) {
-	return nil, false
-}
-
-// AsDynamics365DataConnector is the BasicDataConnector implementation for MSTIDataConnector.
-func (mdc MSTIDataConnector) AsDynamics365DataConnector() (*Dynamics365DataConnector, bool) {
-	return nil, false
-}
-
-// AsMCASDataConnector is the BasicDataConnector implementation for MSTIDataConnector.
-func (mdc MSTIDataConnector) AsMCASDataConnector() (*MCASDataConnector, bool) {
-	return nil, false
-}
-
-// AsMDATPDataConnector is the BasicDataConnector implementation for MSTIDataConnector.
-func (mdc MSTIDataConnector) AsMDATPDataConnector() (*MDATPDataConnector, bool) {
-	return nil, false
-}
-
-// AsOfficeATPDataConnector is the BasicDataConnector implementation for MSTIDataConnector.
-func (mdc MSTIDataConnector) AsOfficeATPDataConnector() (*OfficeATPDataConnector, bool) {
-	return nil, false
-}
-
-// AsOfficeDataConnector is the BasicDataConnector implementation for MSTIDataConnector.
-func (mdc MSTIDataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool) {
+// AsTiTaxiiDataConnector is the BasicDataConnector implementation for MSTIDataConnector.
+func (mdc MSTIDataConnector) AsTiTaxiiDataConnector() (*TiTaxiiDataConnector, bool) {
 	return nil, false
 }
 
@@ -13723,8 +13956,58 @@ func (mdc MSTIDataConnector) AsTIDataConnector() (*TIDataConnector, bool) {
 	return nil, false
 }
 
-// AsTiTaxiiDataConnector is the BasicDataConnector implementation for MSTIDataConnector.
-func (mdc MSTIDataConnector) AsTiTaxiiDataConnector() (*TiTaxiiDataConnector, bool) {
+// AsOfficeDataConnector is the BasicDataConnector implementation for MSTIDataConnector.
+func (mdc MSTIDataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool) {
+	return nil, false
+}
+
+// AsOfficeATPDataConnector is the BasicDataConnector implementation for MSTIDataConnector.
+func (mdc MSTIDataConnector) AsOfficeATPDataConnector() (*OfficeATPDataConnector, bool) {
+	return nil, false
+}
+
+// AsMDATPDataConnector is the BasicDataConnector implementation for MSTIDataConnector.
+func (mdc MSTIDataConnector) AsMDATPDataConnector() (*MDATPDataConnector, bool) {
+	return nil, false
+}
+
+// AsMCASDataConnector is the BasicDataConnector implementation for MSTIDataConnector.
+func (mdc MSTIDataConnector) AsMCASDataConnector() (*MCASDataConnector, bool) {
+	return nil, false
+}
+
+// AsDynamics365DataConnector is the BasicDataConnector implementation for MSTIDataConnector.
+func (mdc MSTIDataConnector) AsDynamics365DataConnector() (*Dynamics365DataConnector, bool) {
+	return nil, false
+}
+
+// AsAwsCloudTrailDataConnector is the BasicDataConnector implementation for MSTIDataConnector.
+func (mdc MSTIDataConnector) AsAwsCloudTrailDataConnector() (*AwsCloudTrailDataConnector, bool) {
+	return nil, false
+}
+
+// AsASCDataConnector is the BasicDataConnector implementation for MSTIDataConnector.
+func (mdc MSTIDataConnector) AsASCDataConnector() (*ASCDataConnector, bool) {
+	return nil, false
+}
+
+// AsMTPDataConnector is the BasicDataConnector implementation for MSTIDataConnector.
+func (mdc MSTIDataConnector) AsMTPDataConnector() (*MTPDataConnector, bool) {
+	return nil, false
+}
+
+// AsMSTIDataConnector is the BasicDataConnector implementation for MSTIDataConnector.
+func (mdc MSTIDataConnector) AsMSTIDataConnector() (*MSTIDataConnector, bool) {
+	return &mdc, true
+}
+
+// AsAATPDataConnector is the BasicDataConnector implementation for MSTIDataConnector.
+func (mdc MSTIDataConnector) AsAATPDataConnector() (*AATPDataConnector, bool) {
+	return nil, false
+}
+
+// AsAADDataConnector is the BasicDataConnector implementation for MSTIDataConnector.
+func (mdc MSTIDataConnector) AsAADDataConnector() (*AADDataConnector, bool) {
 	return nil, false
 }
 
@@ -13846,7 +14129,7 @@ type MSTIDataConnectorProperties struct {
 type MtpCheckRequirements struct {
 	// MTPCheckRequirementsProperties - MTP (Microsoft Threat Protection) requirements check properties.
 	*MTPCheckRequirementsProperties `json:"properties,omitempty"`
-	// Kind - Possible values include: 'KindBasicDataConnectorsCheckRequirementsKindDataConnectorsCheckRequirements', 'KindBasicDataConnectorsCheckRequirementsKindAzureActiveDirectory', 'KindBasicDataConnectorsCheckRequirementsKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatIntelligence', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindAzureSecurityCenter', 'KindBasicDataConnectorsCheckRequirementsKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorsCheckRequirementsKindDynamics365', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindOfficeATP', 'KindBasicDataConnectorsCheckRequirementsKindThreatIntelligence', 'KindBasicDataConnectorsCheckRequirementsKindThreatIntelligenceTaxii'
+	// Kind - Possible values include: 'KindBasicDataConnectorsCheckRequirementsKindDataConnectorsCheckRequirements', 'KindBasicDataConnectorsCheckRequirementsKindAzureActiveDirectory', 'KindBasicDataConnectorsCheckRequirementsKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindAzureSecurityCenter', 'KindBasicDataConnectorsCheckRequirementsKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorsCheckRequirementsKindDynamics365', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatIntelligence', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindOfficeATP', 'KindBasicDataConnectorsCheckRequirementsKindThreatIntelligence', 'KindBasicDataConnectorsCheckRequirementsKindThreatIntelligenceTaxii'
 	Kind KindBasicDataConnectorsCheckRequirements `json:"kind,omitempty"`
 }
 
@@ -13873,16 +14156,6 @@ func (mcr MtpCheckRequirements) AsAATPCheckRequirements() (*AATPCheckRequirement
 	return nil, false
 }
 
-// AsMSTICheckRequirements is the BasicDataConnectorsCheckRequirements implementation for MtpCheckRequirements.
-func (mcr MtpCheckRequirements) AsMSTICheckRequirements() (*MSTICheckRequirements, bool) {
-	return nil, false
-}
-
-// AsMtpCheckRequirements is the BasicDataConnectorsCheckRequirements implementation for MtpCheckRequirements.
-func (mcr MtpCheckRequirements) AsMtpCheckRequirements() (*MtpCheckRequirements, bool) {
-	return &mcr, true
-}
-
 // AsASCCheckRequirements is the BasicDataConnectorsCheckRequirements implementation for MtpCheckRequirements.
 func (mcr MtpCheckRequirements) AsASCCheckRequirements() (*ASCCheckRequirements, bool) {
 	return nil, false
@@ -13906,6 +14179,16 @@ func (mcr MtpCheckRequirements) AsMCASCheckRequirements() (*MCASCheckRequirement
 // AsMDATPCheckRequirements is the BasicDataConnectorsCheckRequirements implementation for MtpCheckRequirements.
 func (mcr MtpCheckRequirements) AsMDATPCheckRequirements() (*MDATPCheckRequirements, bool) {
 	return nil, false
+}
+
+// AsMSTICheckRequirements is the BasicDataConnectorsCheckRequirements implementation for MtpCheckRequirements.
+func (mcr MtpCheckRequirements) AsMSTICheckRequirements() (*MSTICheckRequirements, bool) {
+	return nil, false
+}
+
+// AsMtpCheckRequirements is the BasicDataConnectorsCheckRequirements implementation for MtpCheckRequirements.
+func (mcr MtpCheckRequirements) AsMtpCheckRequirements() (*MtpCheckRequirements, bool) {
+	return &mcr, true
 }
 
 // AsOfficeATPCheckRequirements is the BasicDataConnectorsCheckRequirements implementation for MtpCheckRequirements.
@@ -13984,7 +14267,7 @@ type MTPDataConnector struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindBasicDataConnectorKindDataConnector', 'KindBasicDataConnectorKindAzureActiveDirectory', 'KindBasicDataConnectorKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorKindMicrosoftThreatIntelligence', 'KindBasicDataConnectorKindMicrosoftThreatProtection', 'KindBasicDataConnectorKindAzureSecurityCenter', 'KindBasicDataConnectorKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorKindDynamics365', 'KindBasicDataConnectorKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorKindOfficeATP', 'KindBasicDataConnectorKindOffice365', 'KindBasicDataConnectorKindThreatIntelligence', 'KindBasicDataConnectorKindThreatIntelligenceTaxii'
+	// Kind - Possible values include: 'KindBasicDataConnectorKindDataConnector', 'KindBasicDataConnectorKindThreatIntelligenceTaxii', 'KindBasicDataConnectorKindThreatIntelligence', 'KindBasicDataConnectorKindOffice365', 'KindBasicDataConnectorKindOfficeATP', 'KindBasicDataConnectorKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorKindDynamics365', 'KindBasicDataConnectorKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorKindAzureSecurityCenter', 'KindBasicDataConnectorKindMicrosoftThreatProtection', 'KindBasicDataConnectorKindMicrosoftThreatIntelligence', 'KindBasicDataConnectorKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorKindAzureActiveDirectory'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
 }
 
@@ -14004,58 +14287,8 @@ func (mdc MTPDataConnector) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsAADDataConnector is the BasicDataConnector implementation for MTPDataConnector.
-func (mdc MTPDataConnector) AsAADDataConnector() (*AADDataConnector, bool) {
-	return nil, false
-}
-
-// AsAATPDataConnector is the BasicDataConnector implementation for MTPDataConnector.
-func (mdc MTPDataConnector) AsAATPDataConnector() (*AATPDataConnector, bool) {
-	return nil, false
-}
-
-// AsMSTIDataConnector is the BasicDataConnector implementation for MTPDataConnector.
-func (mdc MTPDataConnector) AsMSTIDataConnector() (*MSTIDataConnector, bool) {
-	return nil, false
-}
-
-// AsMTPDataConnector is the BasicDataConnector implementation for MTPDataConnector.
-func (mdc MTPDataConnector) AsMTPDataConnector() (*MTPDataConnector, bool) {
-	return &mdc, true
-}
-
-// AsASCDataConnector is the BasicDataConnector implementation for MTPDataConnector.
-func (mdc MTPDataConnector) AsASCDataConnector() (*ASCDataConnector, bool) {
-	return nil, false
-}
-
-// AsAwsCloudTrailDataConnector is the BasicDataConnector implementation for MTPDataConnector.
-func (mdc MTPDataConnector) AsAwsCloudTrailDataConnector() (*AwsCloudTrailDataConnector, bool) {
-	return nil, false
-}
-
-// AsDynamics365DataConnector is the BasicDataConnector implementation for MTPDataConnector.
-func (mdc MTPDataConnector) AsDynamics365DataConnector() (*Dynamics365DataConnector, bool) {
-	return nil, false
-}
-
-// AsMCASDataConnector is the BasicDataConnector implementation for MTPDataConnector.
-func (mdc MTPDataConnector) AsMCASDataConnector() (*MCASDataConnector, bool) {
-	return nil, false
-}
-
-// AsMDATPDataConnector is the BasicDataConnector implementation for MTPDataConnector.
-func (mdc MTPDataConnector) AsMDATPDataConnector() (*MDATPDataConnector, bool) {
-	return nil, false
-}
-
-// AsOfficeATPDataConnector is the BasicDataConnector implementation for MTPDataConnector.
-func (mdc MTPDataConnector) AsOfficeATPDataConnector() (*OfficeATPDataConnector, bool) {
-	return nil, false
-}
-
-// AsOfficeDataConnector is the BasicDataConnector implementation for MTPDataConnector.
-func (mdc MTPDataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool) {
+// AsTiTaxiiDataConnector is the BasicDataConnector implementation for MTPDataConnector.
+func (mdc MTPDataConnector) AsTiTaxiiDataConnector() (*TiTaxiiDataConnector, bool) {
 	return nil, false
 }
 
@@ -14064,8 +14297,58 @@ func (mdc MTPDataConnector) AsTIDataConnector() (*TIDataConnector, bool) {
 	return nil, false
 }
 
-// AsTiTaxiiDataConnector is the BasicDataConnector implementation for MTPDataConnector.
-func (mdc MTPDataConnector) AsTiTaxiiDataConnector() (*TiTaxiiDataConnector, bool) {
+// AsOfficeDataConnector is the BasicDataConnector implementation for MTPDataConnector.
+func (mdc MTPDataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool) {
+	return nil, false
+}
+
+// AsOfficeATPDataConnector is the BasicDataConnector implementation for MTPDataConnector.
+func (mdc MTPDataConnector) AsOfficeATPDataConnector() (*OfficeATPDataConnector, bool) {
+	return nil, false
+}
+
+// AsMDATPDataConnector is the BasicDataConnector implementation for MTPDataConnector.
+func (mdc MTPDataConnector) AsMDATPDataConnector() (*MDATPDataConnector, bool) {
+	return nil, false
+}
+
+// AsMCASDataConnector is the BasicDataConnector implementation for MTPDataConnector.
+func (mdc MTPDataConnector) AsMCASDataConnector() (*MCASDataConnector, bool) {
+	return nil, false
+}
+
+// AsDynamics365DataConnector is the BasicDataConnector implementation for MTPDataConnector.
+func (mdc MTPDataConnector) AsDynamics365DataConnector() (*Dynamics365DataConnector, bool) {
+	return nil, false
+}
+
+// AsAwsCloudTrailDataConnector is the BasicDataConnector implementation for MTPDataConnector.
+func (mdc MTPDataConnector) AsAwsCloudTrailDataConnector() (*AwsCloudTrailDataConnector, bool) {
+	return nil, false
+}
+
+// AsASCDataConnector is the BasicDataConnector implementation for MTPDataConnector.
+func (mdc MTPDataConnector) AsASCDataConnector() (*ASCDataConnector, bool) {
+	return nil, false
+}
+
+// AsMTPDataConnector is the BasicDataConnector implementation for MTPDataConnector.
+func (mdc MTPDataConnector) AsMTPDataConnector() (*MTPDataConnector, bool) {
+	return &mdc, true
+}
+
+// AsMSTIDataConnector is the BasicDataConnector implementation for MTPDataConnector.
+func (mdc MTPDataConnector) AsMSTIDataConnector() (*MSTIDataConnector, bool) {
+	return nil, false
+}
+
+// AsAATPDataConnector is the BasicDataConnector implementation for MTPDataConnector.
+func (mdc MTPDataConnector) AsAATPDataConnector() (*AATPDataConnector, bool) {
+	return nil, false
+}
+
+// AsAADDataConnector is the BasicDataConnector implementation for MTPDataConnector.
+func (mdc MTPDataConnector) AsAADDataConnector() (*AADDataConnector, bool) {
 	return nil, false
 }
 
@@ -14174,7 +14457,7 @@ type MTPDataConnectorProperties struct {
 type OfficeATPCheckRequirements struct {
 	// OfficeATPCheckRequirementsProperties - OfficeATP (Office 365 Advanced Threat Protection) requirements check properties.
 	*OfficeATPCheckRequirementsProperties `json:"properties,omitempty"`
-	// Kind - Possible values include: 'KindBasicDataConnectorsCheckRequirementsKindDataConnectorsCheckRequirements', 'KindBasicDataConnectorsCheckRequirementsKindAzureActiveDirectory', 'KindBasicDataConnectorsCheckRequirementsKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatIntelligence', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindAzureSecurityCenter', 'KindBasicDataConnectorsCheckRequirementsKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorsCheckRequirementsKindDynamics365', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindOfficeATP', 'KindBasicDataConnectorsCheckRequirementsKindThreatIntelligence', 'KindBasicDataConnectorsCheckRequirementsKindThreatIntelligenceTaxii'
+	// Kind - Possible values include: 'KindBasicDataConnectorsCheckRequirementsKindDataConnectorsCheckRequirements', 'KindBasicDataConnectorsCheckRequirementsKindAzureActiveDirectory', 'KindBasicDataConnectorsCheckRequirementsKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindAzureSecurityCenter', 'KindBasicDataConnectorsCheckRequirementsKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorsCheckRequirementsKindDynamics365', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatIntelligence', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindOfficeATP', 'KindBasicDataConnectorsCheckRequirementsKindThreatIntelligence', 'KindBasicDataConnectorsCheckRequirementsKindThreatIntelligenceTaxii'
 	Kind KindBasicDataConnectorsCheckRequirements `json:"kind,omitempty"`
 }
 
@@ -14201,16 +14484,6 @@ func (oacr OfficeATPCheckRequirements) AsAATPCheckRequirements() (*AATPCheckRequ
 	return nil, false
 }
 
-// AsMSTICheckRequirements is the BasicDataConnectorsCheckRequirements implementation for OfficeATPCheckRequirements.
-func (oacr OfficeATPCheckRequirements) AsMSTICheckRequirements() (*MSTICheckRequirements, bool) {
-	return nil, false
-}
-
-// AsMtpCheckRequirements is the BasicDataConnectorsCheckRequirements implementation for OfficeATPCheckRequirements.
-func (oacr OfficeATPCheckRequirements) AsMtpCheckRequirements() (*MtpCheckRequirements, bool) {
-	return nil, false
-}
-
 // AsASCCheckRequirements is the BasicDataConnectorsCheckRequirements implementation for OfficeATPCheckRequirements.
 func (oacr OfficeATPCheckRequirements) AsASCCheckRequirements() (*ASCCheckRequirements, bool) {
 	return nil, false
@@ -14233,6 +14506,16 @@ func (oacr OfficeATPCheckRequirements) AsMCASCheckRequirements() (*MCASCheckRequ
 
 // AsMDATPCheckRequirements is the BasicDataConnectorsCheckRequirements implementation for OfficeATPCheckRequirements.
 func (oacr OfficeATPCheckRequirements) AsMDATPCheckRequirements() (*MDATPCheckRequirements, bool) {
+	return nil, false
+}
+
+// AsMSTICheckRequirements is the BasicDataConnectorsCheckRequirements implementation for OfficeATPCheckRequirements.
+func (oacr OfficeATPCheckRequirements) AsMSTICheckRequirements() (*MSTICheckRequirements, bool) {
+	return nil, false
+}
+
+// AsMtpCheckRequirements is the BasicDataConnectorsCheckRequirements implementation for OfficeATPCheckRequirements.
+func (oacr OfficeATPCheckRequirements) AsMtpCheckRequirements() (*MtpCheckRequirements, bool) {
 	return nil, false
 }
 
@@ -14313,7 +14596,7 @@ type OfficeATPDataConnector struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindBasicDataConnectorKindDataConnector', 'KindBasicDataConnectorKindAzureActiveDirectory', 'KindBasicDataConnectorKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorKindMicrosoftThreatIntelligence', 'KindBasicDataConnectorKindMicrosoftThreatProtection', 'KindBasicDataConnectorKindAzureSecurityCenter', 'KindBasicDataConnectorKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorKindDynamics365', 'KindBasicDataConnectorKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorKindOfficeATP', 'KindBasicDataConnectorKindOffice365', 'KindBasicDataConnectorKindThreatIntelligence', 'KindBasicDataConnectorKindThreatIntelligenceTaxii'
+	// Kind - Possible values include: 'KindBasicDataConnectorKindDataConnector', 'KindBasicDataConnectorKindThreatIntelligenceTaxii', 'KindBasicDataConnectorKindThreatIntelligence', 'KindBasicDataConnectorKindOffice365', 'KindBasicDataConnectorKindOfficeATP', 'KindBasicDataConnectorKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorKindDynamics365', 'KindBasicDataConnectorKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorKindAzureSecurityCenter', 'KindBasicDataConnectorKindMicrosoftThreatProtection', 'KindBasicDataConnectorKindMicrosoftThreatIntelligence', 'KindBasicDataConnectorKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorKindAzureActiveDirectory'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
 }
 
@@ -14333,58 +14616,8 @@ func (oadc OfficeATPDataConnector) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsAADDataConnector is the BasicDataConnector implementation for OfficeATPDataConnector.
-func (oadc OfficeATPDataConnector) AsAADDataConnector() (*AADDataConnector, bool) {
-	return nil, false
-}
-
-// AsAATPDataConnector is the BasicDataConnector implementation for OfficeATPDataConnector.
-func (oadc OfficeATPDataConnector) AsAATPDataConnector() (*AATPDataConnector, bool) {
-	return nil, false
-}
-
-// AsMSTIDataConnector is the BasicDataConnector implementation for OfficeATPDataConnector.
-func (oadc OfficeATPDataConnector) AsMSTIDataConnector() (*MSTIDataConnector, bool) {
-	return nil, false
-}
-
-// AsMTPDataConnector is the BasicDataConnector implementation for OfficeATPDataConnector.
-func (oadc OfficeATPDataConnector) AsMTPDataConnector() (*MTPDataConnector, bool) {
-	return nil, false
-}
-
-// AsASCDataConnector is the BasicDataConnector implementation for OfficeATPDataConnector.
-func (oadc OfficeATPDataConnector) AsASCDataConnector() (*ASCDataConnector, bool) {
-	return nil, false
-}
-
-// AsAwsCloudTrailDataConnector is the BasicDataConnector implementation for OfficeATPDataConnector.
-func (oadc OfficeATPDataConnector) AsAwsCloudTrailDataConnector() (*AwsCloudTrailDataConnector, bool) {
-	return nil, false
-}
-
-// AsDynamics365DataConnector is the BasicDataConnector implementation for OfficeATPDataConnector.
-func (oadc OfficeATPDataConnector) AsDynamics365DataConnector() (*Dynamics365DataConnector, bool) {
-	return nil, false
-}
-
-// AsMCASDataConnector is the BasicDataConnector implementation for OfficeATPDataConnector.
-func (oadc OfficeATPDataConnector) AsMCASDataConnector() (*MCASDataConnector, bool) {
-	return nil, false
-}
-
-// AsMDATPDataConnector is the BasicDataConnector implementation for OfficeATPDataConnector.
-func (oadc OfficeATPDataConnector) AsMDATPDataConnector() (*MDATPDataConnector, bool) {
-	return nil, false
-}
-
-// AsOfficeATPDataConnector is the BasicDataConnector implementation for OfficeATPDataConnector.
-func (oadc OfficeATPDataConnector) AsOfficeATPDataConnector() (*OfficeATPDataConnector, bool) {
-	return &oadc, true
-}
-
-// AsOfficeDataConnector is the BasicDataConnector implementation for OfficeATPDataConnector.
-func (oadc OfficeATPDataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool) {
+// AsTiTaxiiDataConnector is the BasicDataConnector implementation for OfficeATPDataConnector.
+func (oadc OfficeATPDataConnector) AsTiTaxiiDataConnector() (*TiTaxiiDataConnector, bool) {
 	return nil, false
 }
 
@@ -14393,8 +14626,58 @@ func (oadc OfficeATPDataConnector) AsTIDataConnector() (*TIDataConnector, bool) 
 	return nil, false
 }
 
-// AsTiTaxiiDataConnector is the BasicDataConnector implementation for OfficeATPDataConnector.
-func (oadc OfficeATPDataConnector) AsTiTaxiiDataConnector() (*TiTaxiiDataConnector, bool) {
+// AsOfficeDataConnector is the BasicDataConnector implementation for OfficeATPDataConnector.
+func (oadc OfficeATPDataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool) {
+	return nil, false
+}
+
+// AsOfficeATPDataConnector is the BasicDataConnector implementation for OfficeATPDataConnector.
+func (oadc OfficeATPDataConnector) AsOfficeATPDataConnector() (*OfficeATPDataConnector, bool) {
+	return &oadc, true
+}
+
+// AsMDATPDataConnector is the BasicDataConnector implementation for OfficeATPDataConnector.
+func (oadc OfficeATPDataConnector) AsMDATPDataConnector() (*MDATPDataConnector, bool) {
+	return nil, false
+}
+
+// AsMCASDataConnector is the BasicDataConnector implementation for OfficeATPDataConnector.
+func (oadc OfficeATPDataConnector) AsMCASDataConnector() (*MCASDataConnector, bool) {
+	return nil, false
+}
+
+// AsDynamics365DataConnector is the BasicDataConnector implementation for OfficeATPDataConnector.
+func (oadc OfficeATPDataConnector) AsDynamics365DataConnector() (*Dynamics365DataConnector, bool) {
+	return nil, false
+}
+
+// AsAwsCloudTrailDataConnector is the BasicDataConnector implementation for OfficeATPDataConnector.
+func (oadc OfficeATPDataConnector) AsAwsCloudTrailDataConnector() (*AwsCloudTrailDataConnector, bool) {
+	return nil, false
+}
+
+// AsASCDataConnector is the BasicDataConnector implementation for OfficeATPDataConnector.
+func (oadc OfficeATPDataConnector) AsASCDataConnector() (*ASCDataConnector, bool) {
+	return nil, false
+}
+
+// AsMTPDataConnector is the BasicDataConnector implementation for OfficeATPDataConnector.
+func (oadc OfficeATPDataConnector) AsMTPDataConnector() (*MTPDataConnector, bool) {
+	return nil, false
+}
+
+// AsMSTIDataConnector is the BasicDataConnector implementation for OfficeATPDataConnector.
+func (oadc OfficeATPDataConnector) AsMSTIDataConnector() (*MSTIDataConnector, bool) {
+	return nil, false
+}
+
+// AsAATPDataConnector is the BasicDataConnector implementation for OfficeATPDataConnector.
+func (oadc OfficeATPDataConnector) AsAATPDataConnector() (*AATPDataConnector, bool) {
+	return nil, false
+}
+
+// AsAADDataConnector is the BasicDataConnector implementation for OfficeATPDataConnector.
+func (oadc OfficeATPDataConnector) AsAADDataConnector() (*AADDataConnector, bool) {
 	return nil, false
 }
 
@@ -14747,7 +15030,7 @@ type OfficeDataConnector struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindBasicDataConnectorKindDataConnector', 'KindBasicDataConnectorKindAzureActiveDirectory', 'KindBasicDataConnectorKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorKindMicrosoftThreatIntelligence', 'KindBasicDataConnectorKindMicrosoftThreatProtection', 'KindBasicDataConnectorKindAzureSecurityCenter', 'KindBasicDataConnectorKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorKindDynamics365', 'KindBasicDataConnectorKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorKindOfficeATP', 'KindBasicDataConnectorKindOffice365', 'KindBasicDataConnectorKindThreatIntelligence', 'KindBasicDataConnectorKindThreatIntelligenceTaxii'
+	// Kind - Possible values include: 'KindBasicDataConnectorKindDataConnector', 'KindBasicDataConnectorKindThreatIntelligenceTaxii', 'KindBasicDataConnectorKindThreatIntelligence', 'KindBasicDataConnectorKindOffice365', 'KindBasicDataConnectorKindOfficeATP', 'KindBasicDataConnectorKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorKindDynamics365', 'KindBasicDataConnectorKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorKindAzureSecurityCenter', 'KindBasicDataConnectorKindMicrosoftThreatProtection', 'KindBasicDataConnectorKindMicrosoftThreatIntelligence', 'KindBasicDataConnectorKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorKindAzureActiveDirectory'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
 }
 
@@ -14767,53 +15050,13 @@ func (odc OfficeDataConnector) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsAADDataConnector is the BasicDataConnector implementation for OfficeDataConnector.
-func (odc OfficeDataConnector) AsAADDataConnector() (*AADDataConnector, bool) {
+// AsTiTaxiiDataConnector is the BasicDataConnector implementation for OfficeDataConnector.
+func (odc OfficeDataConnector) AsTiTaxiiDataConnector() (*TiTaxiiDataConnector, bool) {
 	return nil, false
 }
 
-// AsAATPDataConnector is the BasicDataConnector implementation for OfficeDataConnector.
-func (odc OfficeDataConnector) AsAATPDataConnector() (*AATPDataConnector, bool) {
-	return nil, false
-}
-
-// AsMSTIDataConnector is the BasicDataConnector implementation for OfficeDataConnector.
-func (odc OfficeDataConnector) AsMSTIDataConnector() (*MSTIDataConnector, bool) {
-	return nil, false
-}
-
-// AsMTPDataConnector is the BasicDataConnector implementation for OfficeDataConnector.
-func (odc OfficeDataConnector) AsMTPDataConnector() (*MTPDataConnector, bool) {
-	return nil, false
-}
-
-// AsASCDataConnector is the BasicDataConnector implementation for OfficeDataConnector.
-func (odc OfficeDataConnector) AsASCDataConnector() (*ASCDataConnector, bool) {
-	return nil, false
-}
-
-// AsAwsCloudTrailDataConnector is the BasicDataConnector implementation for OfficeDataConnector.
-func (odc OfficeDataConnector) AsAwsCloudTrailDataConnector() (*AwsCloudTrailDataConnector, bool) {
-	return nil, false
-}
-
-// AsDynamics365DataConnector is the BasicDataConnector implementation for OfficeDataConnector.
-func (odc OfficeDataConnector) AsDynamics365DataConnector() (*Dynamics365DataConnector, bool) {
-	return nil, false
-}
-
-// AsMCASDataConnector is the BasicDataConnector implementation for OfficeDataConnector.
-func (odc OfficeDataConnector) AsMCASDataConnector() (*MCASDataConnector, bool) {
-	return nil, false
-}
-
-// AsMDATPDataConnector is the BasicDataConnector implementation for OfficeDataConnector.
-func (odc OfficeDataConnector) AsMDATPDataConnector() (*MDATPDataConnector, bool) {
-	return nil, false
-}
-
-// AsOfficeATPDataConnector is the BasicDataConnector implementation for OfficeDataConnector.
-func (odc OfficeDataConnector) AsOfficeATPDataConnector() (*OfficeATPDataConnector, bool) {
+// AsTIDataConnector is the BasicDataConnector implementation for OfficeDataConnector.
+func (odc OfficeDataConnector) AsTIDataConnector() (*TIDataConnector, bool) {
 	return nil, false
 }
 
@@ -14822,13 +15065,53 @@ func (odc OfficeDataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bo
 	return &odc, true
 }
 
-// AsTIDataConnector is the BasicDataConnector implementation for OfficeDataConnector.
-func (odc OfficeDataConnector) AsTIDataConnector() (*TIDataConnector, bool) {
+// AsOfficeATPDataConnector is the BasicDataConnector implementation for OfficeDataConnector.
+func (odc OfficeDataConnector) AsOfficeATPDataConnector() (*OfficeATPDataConnector, bool) {
 	return nil, false
 }
 
-// AsTiTaxiiDataConnector is the BasicDataConnector implementation for OfficeDataConnector.
-func (odc OfficeDataConnector) AsTiTaxiiDataConnector() (*TiTaxiiDataConnector, bool) {
+// AsMDATPDataConnector is the BasicDataConnector implementation for OfficeDataConnector.
+func (odc OfficeDataConnector) AsMDATPDataConnector() (*MDATPDataConnector, bool) {
+	return nil, false
+}
+
+// AsMCASDataConnector is the BasicDataConnector implementation for OfficeDataConnector.
+func (odc OfficeDataConnector) AsMCASDataConnector() (*MCASDataConnector, bool) {
+	return nil, false
+}
+
+// AsDynamics365DataConnector is the BasicDataConnector implementation for OfficeDataConnector.
+func (odc OfficeDataConnector) AsDynamics365DataConnector() (*Dynamics365DataConnector, bool) {
+	return nil, false
+}
+
+// AsAwsCloudTrailDataConnector is the BasicDataConnector implementation for OfficeDataConnector.
+func (odc OfficeDataConnector) AsAwsCloudTrailDataConnector() (*AwsCloudTrailDataConnector, bool) {
+	return nil, false
+}
+
+// AsASCDataConnector is the BasicDataConnector implementation for OfficeDataConnector.
+func (odc OfficeDataConnector) AsASCDataConnector() (*ASCDataConnector, bool) {
+	return nil, false
+}
+
+// AsMTPDataConnector is the BasicDataConnector implementation for OfficeDataConnector.
+func (odc OfficeDataConnector) AsMTPDataConnector() (*MTPDataConnector, bool) {
+	return nil, false
+}
+
+// AsMSTIDataConnector is the BasicDataConnector implementation for OfficeDataConnector.
+func (odc OfficeDataConnector) AsMSTIDataConnector() (*MSTIDataConnector, bool) {
+	return nil, false
+}
+
+// AsAATPDataConnector is the BasicDataConnector implementation for OfficeDataConnector.
+func (odc OfficeDataConnector) AsAATPDataConnector() (*AATPDataConnector, bool) {
+	return nil, false
+}
+
+// AsAADDataConnector is the BasicDataConnector implementation for OfficeDataConnector.
+func (odc OfficeDataConnector) AsAADDataConnector() (*AADDataConnector, bool) {
 	return nil, false
 }
 
@@ -15138,13 +15421,13 @@ type ProcessEntity struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Kind - Possible values include: 'KindBasicEntityKindEntity', 'KindBasicEntityKindAccount', 'KindBasicEntityKindAzureResource', 'KindBasicEntityKindCloudApplication', 'KindBasicEntityKindDNSResolution', 'KindBasicEntityKindFile', 'KindBasicEntityKindFileHash', 'KindBasicEntityKindHost', 'KindBasicEntityKindBookmark', 'KindBasicEntityKindSecurityAlert', 'KindBasicEntityKindIP', 'KindBasicEntityKindMailbox', 'KindBasicEntityKindMailCluster', 'KindBasicEntityKindMailMessage', 'KindBasicEntityKindSubmissionMail', 'KindBasicEntityKindMalware', 'KindBasicEntityKindProcess', 'KindBasicEntityKindRegistryKey', 'KindBasicEntityKindRegistryValue', 'KindBasicEntityKindSecurityGroup', 'KindBasicEntityKindURL', 'KindBasicEntityKindIoTDevice'
-	Kind KindBasicEntity `json:"kind,omitempty"`
+	// Kind - Possible values include: 'KindEntity', 'KindIoTDevice', 'KindURL', 'KindSecurityGroup', 'KindSecurityAlert', 'KindRegistryValue', 'KindRegistryKey', 'KindProcess', 'KindMalware', 'KindSubmissionMail', 'KindMailMessage', 'KindMailCluster', 'KindMailbox', 'KindIP', 'KindBookmark', 'KindHost', 'KindFileHash', 'KindFile', 'KindDNSResolution', 'KindCloudApplication', 'KindAzureResource', 'KindAccount'
+	Kind Kind `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ProcessEntity.
 func (peVar ProcessEntity) MarshalJSON() ([]byte, error) {
-	peVar.Kind = KindBasicEntityKindProcess
+	peVar.Kind = KindProcess
 	objectMap := make(map[string]interface{})
 	if peVar.ProcessEntityProperties != nil {
 		objectMap["properties"] = peVar.ProcessEntityProperties
@@ -15155,98 +15438,8 @@ func (peVar ProcessEntity) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsAccountEntity is the BasicEntity implementation for ProcessEntity.
-func (peVar ProcessEntity) AsAccountEntity() (*AccountEntity, bool) {
-	return nil, false
-}
-
-// AsAzureResourceEntity is the BasicEntity implementation for ProcessEntity.
-func (peVar ProcessEntity) AsAzureResourceEntity() (*AzureResourceEntity, bool) {
-	return nil, false
-}
-
-// AsCloudApplicationEntity is the BasicEntity implementation for ProcessEntity.
-func (peVar ProcessEntity) AsCloudApplicationEntity() (*CloudApplicationEntity, bool) {
-	return nil, false
-}
-
-// AsDNSEntity is the BasicEntity implementation for ProcessEntity.
-func (peVar ProcessEntity) AsDNSEntity() (*DNSEntity, bool) {
-	return nil, false
-}
-
-// AsFileEntity is the BasicEntity implementation for ProcessEntity.
-func (peVar ProcessEntity) AsFileEntity() (*FileEntity, bool) {
-	return nil, false
-}
-
-// AsFileHashEntity is the BasicEntity implementation for ProcessEntity.
-func (peVar ProcessEntity) AsFileHashEntity() (*FileHashEntity, bool) {
-	return nil, false
-}
-
-// AsHostEntity is the BasicEntity implementation for ProcessEntity.
-func (peVar ProcessEntity) AsHostEntity() (*HostEntity, bool) {
-	return nil, false
-}
-
-// AsHuntingBookmark is the BasicEntity implementation for ProcessEntity.
-func (peVar ProcessEntity) AsHuntingBookmark() (*HuntingBookmark, bool) {
-	return nil, false
-}
-
-// AsSecurityAlert is the BasicEntity implementation for ProcessEntity.
-func (peVar ProcessEntity) AsSecurityAlert() (*SecurityAlert, bool) {
-	return nil, false
-}
-
-// AsIPEntity is the BasicEntity implementation for ProcessEntity.
-func (peVar ProcessEntity) AsIPEntity() (*IPEntity, bool) {
-	return nil, false
-}
-
-// AsMailboxEntity is the BasicEntity implementation for ProcessEntity.
-func (peVar ProcessEntity) AsMailboxEntity() (*MailboxEntity, bool) {
-	return nil, false
-}
-
-// AsMailClusterEntity is the BasicEntity implementation for ProcessEntity.
-func (peVar ProcessEntity) AsMailClusterEntity() (*MailClusterEntity, bool) {
-	return nil, false
-}
-
-// AsMailMessageEntity is the BasicEntity implementation for ProcessEntity.
-func (peVar ProcessEntity) AsMailMessageEntity() (*MailMessageEntity, bool) {
-	return nil, false
-}
-
-// AsSubmissionMailEntity is the BasicEntity implementation for ProcessEntity.
-func (peVar ProcessEntity) AsSubmissionMailEntity() (*SubmissionMailEntity, bool) {
-	return nil, false
-}
-
-// AsMalwareEntity is the BasicEntity implementation for ProcessEntity.
-func (peVar ProcessEntity) AsMalwareEntity() (*MalwareEntity, bool) {
-	return nil, false
-}
-
-// AsProcessEntity is the BasicEntity implementation for ProcessEntity.
-func (peVar ProcessEntity) AsProcessEntity() (*ProcessEntity, bool) {
-	return &peVar, true
-}
-
-// AsRegistryKeyEntity is the BasicEntity implementation for ProcessEntity.
-func (peVar ProcessEntity) AsRegistryKeyEntity() (*RegistryKeyEntity, bool) {
-	return nil, false
-}
-
-// AsRegistryValueEntity is the BasicEntity implementation for ProcessEntity.
-func (peVar ProcessEntity) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
-	return nil, false
-}
-
-// AsSecurityGroupEntity is the BasicEntity implementation for ProcessEntity.
-func (peVar ProcessEntity) AsSecurityGroupEntity() (*SecurityGroupEntity, bool) {
+// AsIoTDeviceEntity is the BasicEntity implementation for ProcessEntity.
+func (peVar ProcessEntity) AsIoTDeviceEntity() (*IoTDeviceEntity, bool) {
 	return nil, false
 }
 
@@ -15255,8 +15448,98 @@ func (peVar ProcessEntity) AsURLEntity() (*URLEntity, bool) {
 	return nil, false
 }
 
-// AsIoTDeviceEntity is the BasicEntity implementation for ProcessEntity.
-func (peVar ProcessEntity) AsIoTDeviceEntity() (*IoTDeviceEntity, bool) {
+// AsSecurityGroupEntity is the BasicEntity implementation for ProcessEntity.
+func (peVar ProcessEntity) AsSecurityGroupEntity() (*SecurityGroupEntity, bool) {
+	return nil, false
+}
+
+// AsSecurityAlert is the BasicEntity implementation for ProcessEntity.
+func (peVar ProcessEntity) AsSecurityAlert() (*SecurityAlert, bool) {
+	return nil, false
+}
+
+// AsRegistryValueEntity is the BasicEntity implementation for ProcessEntity.
+func (peVar ProcessEntity) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
+	return nil, false
+}
+
+// AsRegistryKeyEntity is the BasicEntity implementation for ProcessEntity.
+func (peVar ProcessEntity) AsRegistryKeyEntity() (*RegistryKeyEntity, bool) {
+	return nil, false
+}
+
+// AsProcessEntity is the BasicEntity implementation for ProcessEntity.
+func (peVar ProcessEntity) AsProcessEntity() (*ProcessEntity, bool) {
+	return &peVar, true
+}
+
+// AsMalwareEntity is the BasicEntity implementation for ProcessEntity.
+func (peVar ProcessEntity) AsMalwareEntity() (*MalwareEntity, bool) {
+	return nil, false
+}
+
+// AsSubmissionMailEntity is the BasicEntity implementation for ProcessEntity.
+func (peVar ProcessEntity) AsSubmissionMailEntity() (*SubmissionMailEntity, bool) {
+	return nil, false
+}
+
+// AsMailMessageEntity is the BasicEntity implementation for ProcessEntity.
+func (peVar ProcessEntity) AsMailMessageEntity() (*MailMessageEntity, bool) {
+	return nil, false
+}
+
+// AsMailClusterEntity is the BasicEntity implementation for ProcessEntity.
+func (peVar ProcessEntity) AsMailClusterEntity() (*MailClusterEntity, bool) {
+	return nil, false
+}
+
+// AsMailboxEntity is the BasicEntity implementation for ProcessEntity.
+func (peVar ProcessEntity) AsMailboxEntity() (*MailboxEntity, bool) {
+	return nil, false
+}
+
+// AsIPEntity is the BasicEntity implementation for ProcessEntity.
+func (peVar ProcessEntity) AsIPEntity() (*IPEntity, bool) {
+	return nil, false
+}
+
+// AsHuntingBookmark is the BasicEntity implementation for ProcessEntity.
+func (peVar ProcessEntity) AsHuntingBookmark() (*HuntingBookmark, bool) {
+	return nil, false
+}
+
+// AsHostEntity is the BasicEntity implementation for ProcessEntity.
+func (peVar ProcessEntity) AsHostEntity() (*HostEntity, bool) {
+	return nil, false
+}
+
+// AsFileHashEntity is the BasicEntity implementation for ProcessEntity.
+func (peVar ProcessEntity) AsFileHashEntity() (*FileHashEntity, bool) {
+	return nil, false
+}
+
+// AsFileEntity is the BasicEntity implementation for ProcessEntity.
+func (peVar ProcessEntity) AsFileEntity() (*FileEntity, bool) {
+	return nil, false
+}
+
+// AsDNSEntity is the BasicEntity implementation for ProcessEntity.
+func (peVar ProcessEntity) AsDNSEntity() (*DNSEntity, bool) {
+	return nil, false
+}
+
+// AsCloudApplicationEntity is the BasicEntity implementation for ProcessEntity.
+func (peVar ProcessEntity) AsCloudApplicationEntity() (*CloudApplicationEntity, bool) {
+	return nil, false
+}
+
+// AsAzureResourceEntity is the BasicEntity implementation for ProcessEntity.
+func (peVar ProcessEntity) AsAzureResourceEntity() (*AzureResourceEntity, bool) {
+	return nil, false
+}
+
+// AsAccountEntity is the BasicEntity implementation for ProcessEntity.
+func (peVar ProcessEntity) AsAccountEntity() (*AccountEntity, bool) {
 	return nil, false
 }
 
@@ -15317,7 +15600,7 @@ func (peVar *ProcessEntity) UnmarshalJSON(body []byte) error {
 			}
 		case "kind":
 			if v != nil {
-				var kind KindBasicEntity
+				var kind Kind
 				err = json.Unmarshal(*v, &kind)
 				if err != nil {
 					return err
@@ -15375,13 +15658,13 @@ type RegistryKeyEntity struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Kind - Possible values include: 'KindBasicEntityKindEntity', 'KindBasicEntityKindAccount', 'KindBasicEntityKindAzureResource', 'KindBasicEntityKindCloudApplication', 'KindBasicEntityKindDNSResolution', 'KindBasicEntityKindFile', 'KindBasicEntityKindFileHash', 'KindBasicEntityKindHost', 'KindBasicEntityKindBookmark', 'KindBasicEntityKindSecurityAlert', 'KindBasicEntityKindIP', 'KindBasicEntityKindMailbox', 'KindBasicEntityKindMailCluster', 'KindBasicEntityKindMailMessage', 'KindBasicEntityKindSubmissionMail', 'KindBasicEntityKindMalware', 'KindBasicEntityKindProcess', 'KindBasicEntityKindRegistryKey', 'KindBasicEntityKindRegistryValue', 'KindBasicEntityKindSecurityGroup', 'KindBasicEntityKindURL', 'KindBasicEntityKindIoTDevice'
-	Kind KindBasicEntity `json:"kind,omitempty"`
+	// Kind - Possible values include: 'KindEntity', 'KindIoTDevice', 'KindURL', 'KindSecurityGroup', 'KindSecurityAlert', 'KindRegistryValue', 'KindRegistryKey', 'KindProcess', 'KindMalware', 'KindSubmissionMail', 'KindMailMessage', 'KindMailCluster', 'KindMailbox', 'KindIP', 'KindBookmark', 'KindHost', 'KindFileHash', 'KindFile', 'KindDNSResolution', 'KindCloudApplication', 'KindAzureResource', 'KindAccount'
+	Kind Kind `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for RegistryKeyEntity.
 func (rke RegistryKeyEntity) MarshalJSON() ([]byte, error) {
-	rke.Kind = KindBasicEntityKindRegistryKey
+	rke.Kind = KindRegistryKey
 	objectMap := make(map[string]interface{})
 	if rke.RegistryKeyEntityProperties != nil {
 		objectMap["properties"] = rke.RegistryKeyEntityProperties
@@ -15392,98 +15675,8 @@ func (rke RegistryKeyEntity) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsAccountEntity is the BasicEntity implementation for RegistryKeyEntity.
-func (rke RegistryKeyEntity) AsAccountEntity() (*AccountEntity, bool) {
-	return nil, false
-}
-
-// AsAzureResourceEntity is the BasicEntity implementation for RegistryKeyEntity.
-func (rke RegistryKeyEntity) AsAzureResourceEntity() (*AzureResourceEntity, bool) {
-	return nil, false
-}
-
-// AsCloudApplicationEntity is the BasicEntity implementation for RegistryKeyEntity.
-func (rke RegistryKeyEntity) AsCloudApplicationEntity() (*CloudApplicationEntity, bool) {
-	return nil, false
-}
-
-// AsDNSEntity is the BasicEntity implementation for RegistryKeyEntity.
-func (rke RegistryKeyEntity) AsDNSEntity() (*DNSEntity, bool) {
-	return nil, false
-}
-
-// AsFileEntity is the BasicEntity implementation for RegistryKeyEntity.
-func (rke RegistryKeyEntity) AsFileEntity() (*FileEntity, bool) {
-	return nil, false
-}
-
-// AsFileHashEntity is the BasicEntity implementation for RegistryKeyEntity.
-func (rke RegistryKeyEntity) AsFileHashEntity() (*FileHashEntity, bool) {
-	return nil, false
-}
-
-// AsHostEntity is the BasicEntity implementation for RegistryKeyEntity.
-func (rke RegistryKeyEntity) AsHostEntity() (*HostEntity, bool) {
-	return nil, false
-}
-
-// AsHuntingBookmark is the BasicEntity implementation for RegistryKeyEntity.
-func (rke RegistryKeyEntity) AsHuntingBookmark() (*HuntingBookmark, bool) {
-	return nil, false
-}
-
-// AsSecurityAlert is the BasicEntity implementation for RegistryKeyEntity.
-func (rke RegistryKeyEntity) AsSecurityAlert() (*SecurityAlert, bool) {
-	return nil, false
-}
-
-// AsIPEntity is the BasicEntity implementation for RegistryKeyEntity.
-func (rke RegistryKeyEntity) AsIPEntity() (*IPEntity, bool) {
-	return nil, false
-}
-
-// AsMailboxEntity is the BasicEntity implementation for RegistryKeyEntity.
-func (rke RegistryKeyEntity) AsMailboxEntity() (*MailboxEntity, bool) {
-	return nil, false
-}
-
-// AsMailClusterEntity is the BasicEntity implementation for RegistryKeyEntity.
-func (rke RegistryKeyEntity) AsMailClusterEntity() (*MailClusterEntity, bool) {
-	return nil, false
-}
-
-// AsMailMessageEntity is the BasicEntity implementation for RegistryKeyEntity.
-func (rke RegistryKeyEntity) AsMailMessageEntity() (*MailMessageEntity, bool) {
-	return nil, false
-}
-
-// AsSubmissionMailEntity is the BasicEntity implementation for RegistryKeyEntity.
-func (rke RegistryKeyEntity) AsSubmissionMailEntity() (*SubmissionMailEntity, bool) {
-	return nil, false
-}
-
-// AsMalwareEntity is the BasicEntity implementation for RegistryKeyEntity.
-func (rke RegistryKeyEntity) AsMalwareEntity() (*MalwareEntity, bool) {
-	return nil, false
-}
-
-// AsProcessEntity is the BasicEntity implementation for RegistryKeyEntity.
-func (rke RegistryKeyEntity) AsProcessEntity() (*ProcessEntity, bool) {
-	return nil, false
-}
-
-// AsRegistryKeyEntity is the BasicEntity implementation for RegistryKeyEntity.
-func (rke RegistryKeyEntity) AsRegistryKeyEntity() (*RegistryKeyEntity, bool) {
-	return &rke, true
-}
-
-// AsRegistryValueEntity is the BasicEntity implementation for RegistryKeyEntity.
-func (rke RegistryKeyEntity) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
-	return nil, false
-}
-
-// AsSecurityGroupEntity is the BasicEntity implementation for RegistryKeyEntity.
-func (rke RegistryKeyEntity) AsSecurityGroupEntity() (*SecurityGroupEntity, bool) {
+// AsIoTDeviceEntity is the BasicEntity implementation for RegistryKeyEntity.
+func (rke RegistryKeyEntity) AsIoTDeviceEntity() (*IoTDeviceEntity, bool) {
 	return nil, false
 }
 
@@ -15492,8 +15685,98 @@ func (rke RegistryKeyEntity) AsURLEntity() (*URLEntity, bool) {
 	return nil, false
 }
 
-// AsIoTDeviceEntity is the BasicEntity implementation for RegistryKeyEntity.
-func (rke RegistryKeyEntity) AsIoTDeviceEntity() (*IoTDeviceEntity, bool) {
+// AsSecurityGroupEntity is the BasicEntity implementation for RegistryKeyEntity.
+func (rke RegistryKeyEntity) AsSecurityGroupEntity() (*SecurityGroupEntity, bool) {
+	return nil, false
+}
+
+// AsSecurityAlert is the BasicEntity implementation for RegistryKeyEntity.
+func (rke RegistryKeyEntity) AsSecurityAlert() (*SecurityAlert, bool) {
+	return nil, false
+}
+
+// AsRegistryValueEntity is the BasicEntity implementation for RegistryKeyEntity.
+func (rke RegistryKeyEntity) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
+	return nil, false
+}
+
+// AsRegistryKeyEntity is the BasicEntity implementation for RegistryKeyEntity.
+func (rke RegistryKeyEntity) AsRegistryKeyEntity() (*RegistryKeyEntity, bool) {
+	return &rke, true
+}
+
+// AsProcessEntity is the BasicEntity implementation for RegistryKeyEntity.
+func (rke RegistryKeyEntity) AsProcessEntity() (*ProcessEntity, bool) {
+	return nil, false
+}
+
+// AsMalwareEntity is the BasicEntity implementation for RegistryKeyEntity.
+func (rke RegistryKeyEntity) AsMalwareEntity() (*MalwareEntity, bool) {
+	return nil, false
+}
+
+// AsSubmissionMailEntity is the BasicEntity implementation for RegistryKeyEntity.
+func (rke RegistryKeyEntity) AsSubmissionMailEntity() (*SubmissionMailEntity, bool) {
+	return nil, false
+}
+
+// AsMailMessageEntity is the BasicEntity implementation for RegistryKeyEntity.
+func (rke RegistryKeyEntity) AsMailMessageEntity() (*MailMessageEntity, bool) {
+	return nil, false
+}
+
+// AsMailClusterEntity is the BasicEntity implementation for RegistryKeyEntity.
+func (rke RegistryKeyEntity) AsMailClusterEntity() (*MailClusterEntity, bool) {
+	return nil, false
+}
+
+// AsMailboxEntity is the BasicEntity implementation for RegistryKeyEntity.
+func (rke RegistryKeyEntity) AsMailboxEntity() (*MailboxEntity, bool) {
+	return nil, false
+}
+
+// AsIPEntity is the BasicEntity implementation for RegistryKeyEntity.
+func (rke RegistryKeyEntity) AsIPEntity() (*IPEntity, bool) {
+	return nil, false
+}
+
+// AsHuntingBookmark is the BasicEntity implementation for RegistryKeyEntity.
+func (rke RegistryKeyEntity) AsHuntingBookmark() (*HuntingBookmark, bool) {
+	return nil, false
+}
+
+// AsHostEntity is the BasicEntity implementation for RegistryKeyEntity.
+func (rke RegistryKeyEntity) AsHostEntity() (*HostEntity, bool) {
+	return nil, false
+}
+
+// AsFileHashEntity is the BasicEntity implementation for RegistryKeyEntity.
+func (rke RegistryKeyEntity) AsFileHashEntity() (*FileHashEntity, bool) {
+	return nil, false
+}
+
+// AsFileEntity is the BasicEntity implementation for RegistryKeyEntity.
+func (rke RegistryKeyEntity) AsFileEntity() (*FileEntity, bool) {
+	return nil, false
+}
+
+// AsDNSEntity is the BasicEntity implementation for RegistryKeyEntity.
+func (rke RegistryKeyEntity) AsDNSEntity() (*DNSEntity, bool) {
+	return nil, false
+}
+
+// AsCloudApplicationEntity is the BasicEntity implementation for RegistryKeyEntity.
+func (rke RegistryKeyEntity) AsCloudApplicationEntity() (*CloudApplicationEntity, bool) {
+	return nil, false
+}
+
+// AsAzureResourceEntity is the BasicEntity implementation for RegistryKeyEntity.
+func (rke RegistryKeyEntity) AsAzureResourceEntity() (*AzureResourceEntity, bool) {
+	return nil, false
+}
+
+// AsAccountEntity is the BasicEntity implementation for RegistryKeyEntity.
+func (rke RegistryKeyEntity) AsAccountEntity() (*AccountEntity, bool) {
 	return nil, false
 }
 
@@ -15554,7 +15837,7 @@ func (rke *RegistryKeyEntity) UnmarshalJSON(body []byte) error {
 			}
 		case "kind":
 			if v != nil {
-				var kind KindBasicEntity
+				var kind Kind
 				err = json.Unmarshal(*v, &kind)
 				if err != nil {
 					return err
@@ -15595,13 +15878,13 @@ type RegistryValueEntity struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Kind - Possible values include: 'KindBasicEntityKindEntity', 'KindBasicEntityKindAccount', 'KindBasicEntityKindAzureResource', 'KindBasicEntityKindCloudApplication', 'KindBasicEntityKindDNSResolution', 'KindBasicEntityKindFile', 'KindBasicEntityKindFileHash', 'KindBasicEntityKindHost', 'KindBasicEntityKindBookmark', 'KindBasicEntityKindSecurityAlert', 'KindBasicEntityKindIP', 'KindBasicEntityKindMailbox', 'KindBasicEntityKindMailCluster', 'KindBasicEntityKindMailMessage', 'KindBasicEntityKindSubmissionMail', 'KindBasicEntityKindMalware', 'KindBasicEntityKindProcess', 'KindBasicEntityKindRegistryKey', 'KindBasicEntityKindRegistryValue', 'KindBasicEntityKindSecurityGroup', 'KindBasicEntityKindURL', 'KindBasicEntityKindIoTDevice'
-	Kind KindBasicEntity `json:"kind,omitempty"`
+	// Kind - Possible values include: 'KindEntity', 'KindIoTDevice', 'KindURL', 'KindSecurityGroup', 'KindSecurityAlert', 'KindRegistryValue', 'KindRegistryKey', 'KindProcess', 'KindMalware', 'KindSubmissionMail', 'KindMailMessage', 'KindMailCluster', 'KindMailbox', 'KindIP', 'KindBookmark', 'KindHost', 'KindFileHash', 'KindFile', 'KindDNSResolution', 'KindCloudApplication', 'KindAzureResource', 'KindAccount'
+	Kind Kind `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for RegistryValueEntity.
 func (rve RegistryValueEntity) MarshalJSON() ([]byte, error) {
-	rve.Kind = KindBasicEntityKindRegistryValue
+	rve.Kind = KindRegistryValue
 	objectMap := make(map[string]interface{})
 	if rve.RegistryValueEntityProperties != nil {
 		objectMap["properties"] = rve.RegistryValueEntityProperties
@@ -15612,98 +15895,8 @@ func (rve RegistryValueEntity) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsAccountEntity is the BasicEntity implementation for RegistryValueEntity.
-func (rve RegistryValueEntity) AsAccountEntity() (*AccountEntity, bool) {
-	return nil, false
-}
-
-// AsAzureResourceEntity is the BasicEntity implementation for RegistryValueEntity.
-func (rve RegistryValueEntity) AsAzureResourceEntity() (*AzureResourceEntity, bool) {
-	return nil, false
-}
-
-// AsCloudApplicationEntity is the BasicEntity implementation for RegistryValueEntity.
-func (rve RegistryValueEntity) AsCloudApplicationEntity() (*CloudApplicationEntity, bool) {
-	return nil, false
-}
-
-// AsDNSEntity is the BasicEntity implementation for RegistryValueEntity.
-func (rve RegistryValueEntity) AsDNSEntity() (*DNSEntity, bool) {
-	return nil, false
-}
-
-// AsFileEntity is the BasicEntity implementation for RegistryValueEntity.
-func (rve RegistryValueEntity) AsFileEntity() (*FileEntity, bool) {
-	return nil, false
-}
-
-// AsFileHashEntity is the BasicEntity implementation for RegistryValueEntity.
-func (rve RegistryValueEntity) AsFileHashEntity() (*FileHashEntity, bool) {
-	return nil, false
-}
-
-// AsHostEntity is the BasicEntity implementation for RegistryValueEntity.
-func (rve RegistryValueEntity) AsHostEntity() (*HostEntity, bool) {
-	return nil, false
-}
-
-// AsHuntingBookmark is the BasicEntity implementation for RegistryValueEntity.
-func (rve RegistryValueEntity) AsHuntingBookmark() (*HuntingBookmark, bool) {
-	return nil, false
-}
-
-// AsSecurityAlert is the BasicEntity implementation for RegistryValueEntity.
-func (rve RegistryValueEntity) AsSecurityAlert() (*SecurityAlert, bool) {
-	return nil, false
-}
-
-// AsIPEntity is the BasicEntity implementation for RegistryValueEntity.
-func (rve RegistryValueEntity) AsIPEntity() (*IPEntity, bool) {
-	return nil, false
-}
-
-// AsMailboxEntity is the BasicEntity implementation for RegistryValueEntity.
-func (rve RegistryValueEntity) AsMailboxEntity() (*MailboxEntity, bool) {
-	return nil, false
-}
-
-// AsMailClusterEntity is the BasicEntity implementation for RegistryValueEntity.
-func (rve RegistryValueEntity) AsMailClusterEntity() (*MailClusterEntity, bool) {
-	return nil, false
-}
-
-// AsMailMessageEntity is the BasicEntity implementation for RegistryValueEntity.
-func (rve RegistryValueEntity) AsMailMessageEntity() (*MailMessageEntity, bool) {
-	return nil, false
-}
-
-// AsSubmissionMailEntity is the BasicEntity implementation for RegistryValueEntity.
-func (rve RegistryValueEntity) AsSubmissionMailEntity() (*SubmissionMailEntity, bool) {
-	return nil, false
-}
-
-// AsMalwareEntity is the BasicEntity implementation for RegistryValueEntity.
-func (rve RegistryValueEntity) AsMalwareEntity() (*MalwareEntity, bool) {
-	return nil, false
-}
-
-// AsProcessEntity is the BasicEntity implementation for RegistryValueEntity.
-func (rve RegistryValueEntity) AsProcessEntity() (*ProcessEntity, bool) {
-	return nil, false
-}
-
-// AsRegistryKeyEntity is the BasicEntity implementation for RegistryValueEntity.
-func (rve RegistryValueEntity) AsRegistryKeyEntity() (*RegistryKeyEntity, bool) {
-	return nil, false
-}
-
-// AsRegistryValueEntity is the BasicEntity implementation for RegistryValueEntity.
-func (rve RegistryValueEntity) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
-	return &rve, true
-}
-
-// AsSecurityGroupEntity is the BasicEntity implementation for RegistryValueEntity.
-func (rve RegistryValueEntity) AsSecurityGroupEntity() (*SecurityGroupEntity, bool) {
+// AsIoTDeviceEntity is the BasicEntity implementation for RegistryValueEntity.
+func (rve RegistryValueEntity) AsIoTDeviceEntity() (*IoTDeviceEntity, bool) {
 	return nil, false
 }
 
@@ -15712,8 +15905,98 @@ func (rve RegistryValueEntity) AsURLEntity() (*URLEntity, bool) {
 	return nil, false
 }
 
-// AsIoTDeviceEntity is the BasicEntity implementation for RegistryValueEntity.
-func (rve RegistryValueEntity) AsIoTDeviceEntity() (*IoTDeviceEntity, bool) {
+// AsSecurityGroupEntity is the BasicEntity implementation for RegistryValueEntity.
+func (rve RegistryValueEntity) AsSecurityGroupEntity() (*SecurityGroupEntity, bool) {
+	return nil, false
+}
+
+// AsSecurityAlert is the BasicEntity implementation for RegistryValueEntity.
+func (rve RegistryValueEntity) AsSecurityAlert() (*SecurityAlert, bool) {
+	return nil, false
+}
+
+// AsRegistryValueEntity is the BasicEntity implementation for RegistryValueEntity.
+func (rve RegistryValueEntity) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
+	return &rve, true
+}
+
+// AsRegistryKeyEntity is the BasicEntity implementation for RegistryValueEntity.
+func (rve RegistryValueEntity) AsRegistryKeyEntity() (*RegistryKeyEntity, bool) {
+	return nil, false
+}
+
+// AsProcessEntity is the BasicEntity implementation for RegistryValueEntity.
+func (rve RegistryValueEntity) AsProcessEntity() (*ProcessEntity, bool) {
+	return nil, false
+}
+
+// AsMalwareEntity is the BasicEntity implementation for RegistryValueEntity.
+func (rve RegistryValueEntity) AsMalwareEntity() (*MalwareEntity, bool) {
+	return nil, false
+}
+
+// AsSubmissionMailEntity is the BasicEntity implementation for RegistryValueEntity.
+func (rve RegistryValueEntity) AsSubmissionMailEntity() (*SubmissionMailEntity, bool) {
+	return nil, false
+}
+
+// AsMailMessageEntity is the BasicEntity implementation for RegistryValueEntity.
+func (rve RegistryValueEntity) AsMailMessageEntity() (*MailMessageEntity, bool) {
+	return nil, false
+}
+
+// AsMailClusterEntity is the BasicEntity implementation for RegistryValueEntity.
+func (rve RegistryValueEntity) AsMailClusterEntity() (*MailClusterEntity, bool) {
+	return nil, false
+}
+
+// AsMailboxEntity is the BasicEntity implementation for RegistryValueEntity.
+func (rve RegistryValueEntity) AsMailboxEntity() (*MailboxEntity, bool) {
+	return nil, false
+}
+
+// AsIPEntity is the BasicEntity implementation for RegistryValueEntity.
+func (rve RegistryValueEntity) AsIPEntity() (*IPEntity, bool) {
+	return nil, false
+}
+
+// AsHuntingBookmark is the BasicEntity implementation for RegistryValueEntity.
+func (rve RegistryValueEntity) AsHuntingBookmark() (*HuntingBookmark, bool) {
+	return nil, false
+}
+
+// AsHostEntity is the BasicEntity implementation for RegistryValueEntity.
+func (rve RegistryValueEntity) AsHostEntity() (*HostEntity, bool) {
+	return nil, false
+}
+
+// AsFileHashEntity is the BasicEntity implementation for RegistryValueEntity.
+func (rve RegistryValueEntity) AsFileHashEntity() (*FileHashEntity, bool) {
+	return nil, false
+}
+
+// AsFileEntity is the BasicEntity implementation for RegistryValueEntity.
+func (rve RegistryValueEntity) AsFileEntity() (*FileEntity, bool) {
+	return nil, false
+}
+
+// AsDNSEntity is the BasicEntity implementation for RegistryValueEntity.
+func (rve RegistryValueEntity) AsDNSEntity() (*DNSEntity, bool) {
+	return nil, false
+}
+
+// AsCloudApplicationEntity is the BasicEntity implementation for RegistryValueEntity.
+func (rve RegistryValueEntity) AsCloudApplicationEntity() (*CloudApplicationEntity, bool) {
+	return nil, false
+}
+
+// AsAzureResourceEntity is the BasicEntity implementation for RegistryValueEntity.
+func (rve RegistryValueEntity) AsAzureResourceEntity() (*AzureResourceEntity, bool) {
+	return nil, false
+}
+
+// AsAccountEntity is the BasicEntity implementation for RegistryValueEntity.
+func (rve RegistryValueEntity) AsAccountEntity() (*AccountEntity, bool) {
 	return nil, false
 }
 
@@ -15774,7 +16057,7 @@ func (rve *RegistryValueEntity) UnmarshalJSON(body []byte) error {
 			}
 		case "kind":
 			if v != nil {
-				var kind KindBasicEntity
+				var kind Kind
 				err = json.Unmarshal(*v, &kind)
 				if err != nil {
 					return err
@@ -16291,7 +16574,7 @@ type ScheduledAlertRule struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindBasicAlertRuleKindAlertRule', 'KindBasicAlertRuleKindMLBehaviorAnalytics', 'KindBasicAlertRuleKindFusion', 'KindBasicAlertRuleKindThreatIntelligence', 'KindBasicAlertRuleKindMicrosoftSecurityIncidentCreation', 'KindBasicAlertRuleKindScheduled'
+	// Kind - Possible values include: 'KindBasicAlertRuleKindAlertRule', 'KindBasicAlertRuleKindScheduled', 'KindBasicAlertRuleKindMicrosoftSecurityIncidentCreation', 'KindBasicAlertRuleKindThreatIntelligence', 'KindBasicAlertRuleKindFusion', 'KindBasicAlertRuleKindMLBehaviorAnalytics'
 	Kind KindBasicAlertRule `json:"kind,omitempty"`
 }
 
@@ -16311,13 +16594,13 @@ func (sar ScheduledAlertRule) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsMLBehaviorAnalyticsAlertRule is the BasicAlertRule implementation for ScheduledAlertRule.
-func (sar ScheduledAlertRule) AsMLBehaviorAnalyticsAlertRule() (*MLBehaviorAnalyticsAlertRule, bool) {
-	return nil, false
+// AsScheduledAlertRule is the BasicAlertRule implementation for ScheduledAlertRule.
+func (sar ScheduledAlertRule) AsScheduledAlertRule() (*ScheduledAlertRule, bool) {
+	return &sar, true
 }
 
-// AsFusionAlertRule is the BasicAlertRule implementation for ScheduledAlertRule.
-func (sar ScheduledAlertRule) AsFusionAlertRule() (*FusionAlertRule, bool) {
+// AsMicrosoftSecurityIncidentCreationAlertRule is the BasicAlertRule implementation for ScheduledAlertRule.
+func (sar ScheduledAlertRule) AsMicrosoftSecurityIncidentCreationAlertRule() (*MicrosoftSecurityIncidentCreationAlertRule, bool) {
 	return nil, false
 }
 
@@ -16326,14 +16609,14 @@ func (sar ScheduledAlertRule) AsThreatIntelligenceAlertRule() (*ThreatIntelligen
 	return nil, false
 }
 
-// AsMicrosoftSecurityIncidentCreationAlertRule is the BasicAlertRule implementation for ScheduledAlertRule.
-func (sar ScheduledAlertRule) AsMicrosoftSecurityIncidentCreationAlertRule() (*MicrosoftSecurityIncidentCreationAlertRule, bool) {
+// AsFusionAlertRule is the BasicAlertRule implementation for ScheduledAlertRule.
+func (sar ScheduledAlertRule) AsFusionAlertRule() (*FusionAlertRule, bool) {
 	return nil, false
 }
 
-// AsScheduledAlertRule is the BasicAlertRule implementation for ScheduledAlertRule.
-func (sar ScheduledAlertRule) AsScheduledAlertRule() (*ScheduledAlertRule, bool) {
-	return &sar, true
+// AsMLBehaviorAnalyticsAlertRule is the BasicAlertRule implementation for ScheduledAlertRule.
+func (sar ScheduledAlertRule) AsMLBehaviorAnalyticsAlertRule() (*MLBehaviorAnalyticsAlertRule, bool) {
+	return nil, false
 }
 
 // AsAlertRule is the BasicAlertRule implementation for ScheduledAlertRule.
@@ -16530,7 +16813,7 @@ type ScheduledAlertRuleTemplate struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Kind - Possible values include: 'KindBasicAlertRuleTemplateKindAlertRuleTemplate', 'KindBasicAlertRuleTemplateKindMLBehaviorAnalytics', 'KindBasicAlertRuleTemplateKindFusion', 'KindBasicAlertRuleTemplateKindThreatIntelligence', 'KindBasicAlertRuleTemplateKindMicrosoftSecurityIncidentCreation', 'KindBasicAlertRuleTemplateKindScheduled'
+	// Kind - Possible values include: 'KindBasicAlertRuleTemplateKindAlertRuleTemplate', 'KindBasicAlertRuleTemplateKindScheduled', 'KindBasicAlertRuleTemplateKindMicrosoftSecurityIncidentCreation', 'KindBasicAlertRuleTemplateKindThreatIntelligence', 'KindBasicAlertRuleTemplateKindFusion', 'KindBasicAlertRuleTemplateKindMLBehaviorAnalytics'
 	Kind KindBasicAlertRuleTemplate `json:"kind,omitempty"`
 }
 
@@ -16547,13 +16830,13 @@ func (sart ScheduledAlertRuleTemplate) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsMLBehaviorAnalyticsAlertRuleTemplate is the BasicAlertRuleTemplate implementation for ScheduledAlertRuleTemplate.
-func (sart ScheduledAlertRuleTemplate) AsMLBehaviorAnalyticsAlertRuleTemplate() (*MLBehaviorAnalyticsAlertRuleTemplate, bool) {
-	return nil, false
+// AsScheduledAlertRuleTemplate is the BasicAlertRuleTemplate implementation for ScheduledAlertRuleTemplate.
+func (sart ScheduledAlertRuleTemplate) AsScheduledAlertRuleTemplate() (*ScheduledAlertRuleTemplate, bool) {
+	return &sart, true
 }
 
-// AsFusionAlertRuleTemplate is the BasicAlertRuleTemplate implementation for ScheduledAlertRuleTemplate.
-func (sart ScheduledAlertRuleTemplate) AsFusionAlertRuleTemplate() (*FusionAlertRuleTemplate, bool) {
+// AsMicrosoftSecurityIncidentCreationAlertRuleTemplate is the BasicAlertRuleTemplate implementation for ScheduledAlertRuleTemplate.
+func (sart ScheduledAlertRuleTemplate) AsMicrosoftSecurityIncidentCreationAlertRuleTemplate() (*MicrosoftSecurityIncidentCreationAlertRuleTemplate, bool) {
 	return nil, false
 }
 
@@ -16562,14 +16845,14 @@ func (sart ScheduledAlertRuleTemplate) AsThreatIntelligenceAlertRuleTemplate() (
 	return nil, false
 }
 
-// AsMicrosoftSecurityIncidentCreationAlertRuleTemplate is the BasicAlertRuleTemplate implementation for ScheduledAlertRuleTemplate.
-func (sart ScheduledAlertRuleTemplate) AsMicrosoftSecurityIncidentCreationAlertRuleTemplate() (*MicrosoftSecurityIncidentCreationAlertRuleTemplate, bool) {
+// AsFusionAlertRuleTemplate is the BasicAlertRuleTemplate implementation for ScheduledAlertRuleTemplate.
+func (sart ScheduledAlertRuleTemplate) AsFusionAlertRuleTemplate() (*FusionAlertRuleTemplate, bool) {
 	return nil, false
 }
 
-// AsScheduledAlertRuleTemplate is the BasicAlertRuleTemplate implementation for ScheduledAlertRuleTemplate.
-func (sart ScheduledAlertRuleTemplate) AsScheduledAlertRuleTemplate() (*ScheduledAlertRuleTemplate, bool) {
-	return &sart, true
+// AsMLBehaviorAnalyticsAlertRuleTemplate is the BasicAlertRuleTemplate implementation for ScheduledAlertRuleTemplate.
+func (sart ScheduledAlertRuleTemplate) AsMLBehaviorAnalyticsAlertRuleTemplate() (*MLBehaviorAnalyticsAlertRuleTemplate, bool) {
+	return nil, false
 }
 
 // AsAlertRuleTemplate is the BasicAlertRuleTemplate implementation for ScheduledAlertRuleTemplate.
@@ -16731,13 +17014,13 @@ type SecurityAlert struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Kind - Possible values include: 'KindBasicEntityKindEntity', 'KindBasicEntityKindAccount', 'KindBasicEntityKindAzureResource', 'KindBasicEntityKindCloudApplication', 'KindBasicEntityKindDNSResolution', 'KindBasicEntityKindFile', 'KindBasicEntityKindFileHash', 'KindBasicEntityKindHost', 'KindBasicEntityKindBookmark', 'KindBasicEntityKindSecurityAlert', 'KindBasicEntityKindIP', 'KindBasicEntityKindMailbox', 'KindBasicEntityKindMailCluster', 'KindBasicEntityKindMailMessage', 'KindBasicEntityKindSubmissionMail', 'KindBasicEntityKindMalware', 'KindBasicEntityKindProcess', 'KindBasicEntityKindRegistryKey', 'KindBasicEntityKindRegistryValue', 'KindBasicEntityKindSecurityGroup', 'KindBasicEntityKindURL', 'KindBasicEntityKindIoTDevice'
-	Kind KindBasicEntity `json:"kind,omitempty"`
+	// Kind - Possible values include: 'KindEntity', 'KindIoTDevice', 'KindURL', 'KindSecurityGroup', 'KindSecurityAlert', 'KindRegistryValue', 'KindRegistryKey', 'KindProcess', 'KindMalware', 'KindSubmissionMail', 'KindMailMessage', 'KindMailCluster', 'KindMailbox', 'KindIP', 'KindBookmark', 'KindHost', 'KindFileHash', 'KindFile', 'KindDNSResolution', 'KindCloudApplication', 'KindAzureResource', 'KindAccount'
+	Kind Kind `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for SecurityAlert.
 func (sa SecurityAlert) MarshalJSON() ([]byte, error) {
-	sa.Kind = KindBasicEntityKindSecurityAlert
+	sa.Kind = KindSecurityAlert
 	objectMap := make(map[string]interface{})
 	if sa.SecurityAlertProperties != nil {
 		objectMap["properties"] = sa.SecurityAlertProperties
@@ -16748,98 +17031,8 @@ func (sa SecurityAlert) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsAccountEntity is the BasicEntity implementation for SecurityAlert.
-func (sa SecurityAlert) AsAccountEntity() (*AccountEntity, bool) {
-	return nil, false
-}
-
-// AsAzureResourceEntity is the BasicEntity implementation for SecurityAlert.
-func (sa SecurityAlert) AsAzureResourceEntity() (*AzureResourceEntity, bool) {
-	return nil, false
-}
-
-// AsCloudApplicationEntity is the BasicEntity implementation for SecurityAlert.
-func (sa SecurityAlert) AsCloudApplicationEntity() (*CloudApplicationEntity, bool) {
-	return nil, false
-}
-
-// AsDNSEntity is the BasicEntity implementation for SecurityAlert.
-func (sa SecurityAlert) AsDNSEntity() (*DNSEntity, bool) {
-	return nil, false
-}
-
-// AsFileEntity is the BasicEntity implementation for SecurityAlert.
-func (sa SecurityAlert) AsFileEntity() (*FileEntity, bool) {
-	return nil, false
-}
-
-// AsFileHashEntity is the BasicEntity implementation for SecurityAlert.
-func (sa SecurityAlert) AsFileHashEntity() (*FileHashEntity, bool) {
-	return nil, false
-}
-
-// AsHostEntity is the BasicEntity implementation for SecurityAlert.
-func (sa SecurityAlert) AsHostEntity() (*HostEntity, bool) {
-	return nil, false
-}
-
-// AsHuntingBookmark is the BasicEntity implementation for SecurityAlert.
-func (sa SecurityAlert) AsHuntingBookmark() (*HuntingBookmark, bool) {
-	return nil, false
-}
-
-// AsSecurityAlert is the BasicEntity implementation for SecurityAlert.
-func (sa SecurityAlert) AsSecurityAlert() (*SecurityAlert, bool) {
-	return &sa, true
-}
-
-// AsIPEntity is the BasicEntity implementation for SecurityAlert.
-func (sa SecurityAlert) AsIPEntity() (*IPEntity, bool) {
-	return nil, false
-}
-
-// AsMailboxEntity is the BasicEntity implementation for SecurityAlert.
-func (sa SecurityAlert) AsMailboxEntity() (*MailboxEntity, bool) {
-	return nil, false
-}
-
-// AsMailClusterEntity is the BasicEntity implementation for SecurityAlert.
-func (sa SecurityAlert) AsMailClusterEntity() (*MailClusterEntity, bool) {
-	return nil, false
-}
-
-// AsMailMessageEntity is the BasicEntity implementation for SecurityAlert.
-func (sa SecurityAlert) AsMailMessageEntity() (*MailMessageEntity, bool) {
-	return nil, false
-}
-
-// AsSubmissionMailEntity is the BasicEntity implementation for SecurityAlert.
-func (sa SecurityAlert) AsSubmissionMailEntity() (*SubmissionMailEntity, bool) {
-	return nil, false
-}
-
-// AsMalwareEntity is the BasicEntity implementation for SecurityAlert.
-func (sa SecurityAlert) AsMalwareEntity() (*MalwareEntity, bool) {
-	return nil, false
-}
-
-// AsProcessEntity is the BasicEntity implementation for SecurityAlert.
-func (sa SecurityAlert) AsProcessEntity() (*ProcessEntity, bool) {
-	return nil, false
-}
-
-// AsRegistryKeyEntity is the BasicEntity implementation for SecurityAlert.
-func (sa SecurityAlert) AsRegistryKeyEntity() (*RegistryKeyEntity, bool) {
-	return nil, false
-}
-
-// AsRegistryValueEntity is the BasicEntity implementation for SecurityAlert.
-func (sa SecurityAlert) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
-	return nil, false
-}
-
-// AsSecurityGroupEntity is the BasicEntity implementation for SecurityAlert.
-func (sa SecurityAlert) AsSecurityGroupEntity() (*SecurityGroupEntity, bool) {
+// AsIoTDeviceEntity is the BasicEntity implementation for SecurityAlert.
+func (sa SecurityAlert) AsIoTDeviceEntity() (*IoTDeviceEntity, bool) {
 	return nil, false
 }
 
@@ -16848,8 +17041,98 @@ func (sa SecurityAlert) AsURLEntity() (*URLEntity, bool) {
 	return nil, false
 }
 
-// AsIoTDeviceEntity is the BasicEntity implementation for SecurityAlert.
-func (sa SecurityAlert) AsIoTDeviceEntity() (*IoTDeviceEntity, bool) {
+// AsSecurityGroupEntity is the BasicEntity implementation for SecurityAlert.
+func (sa SecurityAlert) AsSecurityGroupEntity() (*SecurityGroupEntity, bool) {
+	return nil, false
+}
+
+// AsSecurityAlert is the BasicEntity implementation for SecurityAlert.
+func (sa SecurityAlert) AsSecurityAlert() (*SecurityAlert, bool) {
+	return &sa, true
+}
+
+// AsRegistryValueEntity is the BasicEntity implementation for SecurityAlert.
+func (sa SecurityAlert) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
+	return nil, false
+}
+
+// AsRegistryKeyEntity is the BasicEntity implementation for SecurityAlert.
+func (sa SecurityAlert) AsRegistryKeyEntity() (*RegistryKeyEntity, bool) {
+	return nil, false
+}
+
+// AsProcessEntity is the BasicEntity implementation for SecurityAlert.
+func (sa SecurityAlert) AsProcessEntity() (*ProcessEntity, bool) {
+	return nil, false
+}
+
+// AsMalwareEntity is the BasicEntity implementation for SecurityAlert.
+func (sa SecurityAlert) AsMalwareEntity() (*MalwareEntity, bool) {
+	return nil, false
+}
+
+// AsSubmissionMailEntity is the BasicEntity implementation for SecurityAlert.
+func (sa SecurityAlert) AsSubmissionMailEntity() (*SubmissionMailEntity, bool) {
+	return nil, false
+}
+
+// AsMailMessageEntity is the BasicEntity implementation for SecurityAlert.
+func (sa SecurityAlert) AsMailMessageEntity() (*MailMessageEntity, bool) {
+	return nil, false
+}
+
+// AsMailClusterEntity is the BasicEntity implementation for SecurityAlert.
+func (sa SecurityAlert) AsMailClusterEntity() (*MailClusterEntity, bool) {
+	return nil, false
+}
+
+// AsMailboxEntity is the BasicEntity implementation for SecurityAlert.
+func (sa SecurityAlert) AsMailboxEntity() (*MailboxEntity, bool) {
+	return nil, false
+}
+
+// AsIPEntity is the BasicEntity implementation for SecurityAlert.
+func (sa SecurityAlert) AsIPEntity() (*IPEntity, bool) {
+	return nil, false
+}
+
+// AsHuntingBookmark is the BasicEntity implementation for SecurityAlert.
+func (sa SecurityAlert) AsHuntingBookmark() (*HuntingBookmark, bool) {
+	return nil, false
+}
+
+// AsHostEntity is the BasicEntity implementation for SecurityAlert.
+func (sa SecurityAlert) AsHostEntity() (*HostEntity, bool) {
+	return nil, false
+}
+
+// AsFileHashEntity is the BasicEntity implementation for SecurityAlert.
+func (sa SecurityAlert) AsFileHashEntity() (*FileHashEntity, bool) {
+	return nil, false
+}
+
+// AsFileEntity is the BasicEntity implementation for SecurityAlert.
+func (sa SecurityAlert) AsFileEntity() (*FileEntity, bool) {
+	return nil, false
+}
+
+// AsDNSEntity is the BasicEntity implementation for SecurityAlert.
+func (sa SecurityAlert) AsDNSEntity() (*DNSEntity, bool) {
+	return nil, false
+}
+
+// AsCloudApplicationEntity is the BasicEntity implementation for SecurityAlert.
+func (sa SecurityAlert) AsCloudApplicationEntity() (*CloudApplicationEntity, bool) {
+	return nil, false
+}
+
+// AsAzureResourceEntity is the BasicEntity implementation for SecurityAlert.
+func (sa SecurityAlert) AsAzureResourceEntity() (*AzureResourceEntity, bool) {
+	return nil, false
+}
+
+// AsAccountEntity is the BasicEntity implementation for SecurityAlert.
+func (sa SecurityAlert) AsAccountEntity() (*AccountEntity, bool) {
 	return nil, false
 }
 
@@ -16910,7 +17193,7 @@ func (sa *SecurityAlert) UnmarshalJSON(body []byte) error {
 			}
 		case "kind":
 			if v != nil {
-				var kind KindBasicEntity
+				var kind Kind
 				err = json.Unmarshal(*v, &kind)
 				if err != nil {
 					return err
@@ -17024,7 +17307,7 @@ type SecurityAlertTimelineItem struct {
 	TimeGenerated *date.Time `json:"timeGenerated,omitempty"`
 	// AlertType - The name of the alert type.
 	AlertType *string `json:"alertType,omitempty"`
-	// Kind - Possible values include: 'KindBasicEntityTimelineItemKindEntityTimelineItem', 'KindBasicEntityTimelineItemKindActivity', 'KindBasicEntityTimelineItemKindSecurityAlert', 'KindBasicEntityTimelineItemKindBookmark'
+	// Kind - Possible values include: 'KindBasicEntityTimelineItemKindEntityTimelineItem', 'KindBasicEntityTimelineItemKindActivity', 'KindBasicEntityTimelineItemKindBookmark', 'KindBasicEntityTimelineItemKindSecurityAlert'
 	Kind KindBasicEntityTimelineItem `json:"kind,omitempty"`
 }
 
@@ -17070,14 +17353,14 @@ func (sati SecurityAlertTimelineItem) AsActivityTimelineItem() (*ActivityTimelin
 	return nil, false
 }
 
-// AsSecurityAlertTimelineItem is the BasicEntityTimelineItem implementation for SecurityAlertTimelineItem.
-func (sati SecurityAlertTimelineItem) AsSecurityAlertTimelineItem() (*SecurityAlertTimelineItem, bool) {
-	return &sati, true
-}
-
 // AsBookmarkTimelineItem is the BasicEntityTimelineItem implementation for SecurityAlertTimelineItem.
 func (sati SecurityAlertTimelineItem) AsBookmarkTimelineItem() (*BookmarkTimelineItem, bool) {
 	return nil, false
+}
+
+// AsSecurityAlertTimelineItem is the BasicEntityTimelineItem implementation for SecurityAlertTimelineItem.
+func (sati SecurityAlertTimelineItem) AsSecurityAlertTimelineItem() (*SecurityAlertTimelineItem, bool) {
+	return &sati, true
 }
 
 // AsEntityTimelineItem is the BasicEntityTimelineItem implementation for SecurityAlertTimelineItem.
@@ -17100,13 +17383,13 @@ type SecurityGroupEntity struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Kind - Possible values include: 'KindBasicEntityKindEntity', 'KindBasicEntityKindAccount', 'KindBasicEntityKindAzureResource', 'KindBasicEntityKindCloudApplication', 'KindBasicEntityKindDNSResolution', 'KindBasicEntityKindFile', 'KindBasicEntityKindFileHash', 'KindBasicEntityKindHost', 'KindBasicEntityKindBookmark', 'KindBasicEntityKindSecurityAlert', 'KindBasicEntityKindIP', 'KindBasicEntityKindMailbox', 'KindBasicEntityKindMailCluster', 'KindBasicEntityKindMailMessage', 'KindBasicEntityKindSubmissionMail', 'KindBasicEntityKindMalware', 'KindBasicEntityKindProcess', 'KindBasicEntityKindRegistryKey', 'KindBasicEntityKindRegistryValue', 'KindBasicEntityKindSecurityGroup', 'KindBasicEntityKindURL', 'KindBasicEntityKindIoTDevice'
-	Kind KindBasicEntity `json:"kind,omitempty"`
+	// Kind - Possible values include: 'KindEntity', 'KindIoTDevice', 'KindURL', 'KindSecurityGroup', 'KindSecurityAlert', 'KindRegistryValue', 'KindRegistryKey', 'KindProcess', 'KindMalware', 'KindSubmissionMail', 'KindMailMessage', 'KindMailCluster', 'KindMailbox', 'KindIP', 'KindBookmark', 'KindHost', 'KindFileHash', 'KindFile', 'KindDNSResolution', 'KindCloudApplication', 'KindAzureResource', 'KindAccount'
+	Kind Kind `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for SecurityGroupEntity.
 func (sge SecurityGroupEntity) MarshalJSON() ([]byte, error) {
-	sge.Kind = KindBasicEntityKindSecurityGroup
+	sge.Kind = KindSecurityGroup
 	objectMap := make(map[string]interface{})
 	if sge.SecurityGroupEntityProperties != nil {
 		objectMap["properties"] = sge.SecurityGroupEntityProperties
@@ -17117,93 +17400,13 @@ func (sge SecurityGroupEntity) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsAccountEntity is the BasicEntity implementation for SecurityGroupEntity.
-func (sge SecurityGroupEntity) AsAccountEntity() (*AccountEntity, bool) {
+// AsIoTDeviceEntity is the BasicEntity implementation for SecurityGroupEntity.
+func (sge SecurityGroupEntity) AsIoTDeviceEntity() (*IoTDeviceEntity, bool) {
 	return nil, false
 }
 
-// AsAzureResourceEntity is the BasicEntity implementation for SecurityGroupEntity.
-func (sge SecurityGroupEntity) AsAzureResourceEntity() (*AzureResourceEntity, bool) {
-	return nil, false
-}
-
-// AsCloudApplicationEntity is the BasicEntity implementation for SecurityGroupEntity.
-func (sge SecurityGroupEntity) AsCloudApplicationEntity() (*CloudApplicationEntity, bool) {
-	return nil, false
-}
-
-// AsDNSEntity is the BasicEntity implementation for SecurityGroupEntity.
-func (sge SecurityGroupEntity) AsDNSEntity() (*DNSEntity, bool) {
-	return nil, false
-}
-
-// AsFileEntity is the BasicEntity implementation for SecurityGroupEntity.
-func (sge SecurityGroupEntity) AsFileEntity() (*FileEntity, bool) {
-	return nil, false
-}
-
-// AsFileHashEntity is the BasicEntity implementation for SecurityGroupEntity.
-func (sge SecurityGroupEntity) AsFileHashEntity() (*FileHashEntity, bool) {
-	return nil, false
-}
-
-// AsHostEntity is the BasicEntity implementation for SecurityGroupEntity.
-func (sge SecurityGroupEntity) AsHostEntity() (*HostEntity, bool) {
-	return nil, false
-}
-
-// AsHuntingBookmark is the BasicEntity implementation for SecurityGroupEntity.
-func (sge SecurityGroupEntity) AsHuntingBookmark() (*HuntingBookmark, bool) {
-	return nil, false
-}
-
-// AsSecurityAlert is the BasicEntity implementation for SecurityGroupEntity.
-func (sge SecurityGroupEntity) AsSecurityAlert() (*SecurityAlert, bool) {
-	return nil, false
-}
-
-// AsIPEntity is the BasicEntity implementation for SecurityGroupEntity.
-func (sge SecurityGroupEntity) AsIPEntity() (*IPEntity, bool) {
-	return nil, false
-}
-
-// AsMailboxEntity is the BasicEntity implementation for SecurityGroupEntity.
-func (sge SecurityGroupEntity) AsMailboxEntity() (*MailboxEntity, bool) {
-	return nil, false
-}
-
-// AsMailClusterEntity is the BasicEntity implementation for SecurityGroupEntity.
-func (sge SecurityGroupEntity) AsMailClusterEntity() (*MailClusterEntity, bool) {
-	return nil, false
-}
-
-// AsMailMessageEntity is the BasicEntity implementation for SecurityGroupEntity.
-func (sge SecurityGroupEntity) AsMailMessageEntity() (*MailMessageEntity, bool) {
-	return nil, false
-}
-
-// AsSubmissionMailEntity is the BasicEntity implementation for SecurityGroupEntity.
-func (sge SecurityGroupEntity) AsSubmissionMailEntity() (*SubmissionMailEntity, bool) {
-	return nil, false
-}
-
-// AsMalwareEntity is the BasicEntity implementation for SecurityGroupEntity.
-func (sge SecurityGroupEntity) AsMalwareEntity() (*MalwareEntity, bool) {
-	return nil, false
-}
-
-// AsProcessEntity is the BasicEntity implementation for SecurityGroupEntity.
-func (sge SecurityGroupEntity) AsProcessEntity() (*ProcessEntity, bool) {
-	return nil, false
-}
-
-// AsRegistryKeyEntity is the BasicEntity implementation for SecurityGroupEntity.
-func (sge SecurityGroupEntity) AsRegistryKeyEntity() (*RegistryKeyEntity, bool) {
-	return nil, false
-}
-
-// AsRegistryValueEntity is the BasicEntity implementation for SecurityGroupEntity.
-func (sge SecurityGroupEntity) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
+// AsURLEntity is the BasicEntity implementation for SecurityGroupEntity.
+func (sge SecurityGroupEntity) AsURLEntity() (*URLEntity, bool) {
 	return nil, false
 }
 
@@ -17212,13 +17415,93 @@ func (sge SecurityGroupEntity) AsSecurityGroupEntity() (*SecurityGroupEntity, bo
 	return &sge, true
 }
 
-// AsURLEntity is the BasicEntity implementation for SecurityGroupEntity.
-func (sge SecurityGroupEntity) AsURLEntity() (*URLEntity, bool) {
+// AsSecurityAlert is the BasicEntity implementation for SecurityGroupEntity.
+func (sge SecurityGroupEntity) AsSecurityAlert() (*SecurityAlert, bool) {
 	return nil, false
 }
 
-// AsIoTDeviceEntity is the BasicEntity implementation for SecurityGroupEntity.
-func (sge SecurityGroupEntity) AsIoTDeviceEntity() (*IoTDeviceEntity, bool) {
+// AsRegistryValueEntity is the BasicEntity implementation for SecurityGroupEntity.
+func (sge SecurityGroupEntity) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
+	return nil, false
+}
+
+// AsRegistryKeyEntity is the BasicEntity implementation for SecurityGroupEntity.
+func (sge SecurityGroupEntity) AsRegistryKeyEntity() (*RegistryKeyEntity, bool) {
+	return nil, false
+}
+
+// AsProcessEntity is the BasicEntity implementation for SecurityGroupEntity.
+func (sge SecurityGroupEntity) AsProcessEntity() (*ProcessEntity, bool) {
+	return nil, false
+}
+
+// AsMalwareEntity is the BasicEntity implementation for SecurityGroupEntity.
+func (sge SecurityGroupEntity) AsMalwareEntity() (*MalwareEntity, bool) {
+	return nil, false
+}
+
+// AsSubmissionMailEntity is the BasicEntity implementation for SecurityGroupEntity.
+func (sge SecurityGroupEntity) AsSubmissionMailEntity() (*SubmissionMailEntity, bool) {
+	return nil, false
+}
+
+// AsMailMessageEntity is the BasicEntity implementation for SecurityGroupEntity.
+func (sge SecurityGroupEntity) AsMailMessageEntity() (*MailMessageEntity, bool) {
+	return nil, false
+}
+
+// AsMailClusterEntity is the BasicEntity implementation for SecurityGroupEntity.
+func (sge SecurityGroupEntity) AsMailClusterEntity() (*MailClusterEntity, bool) {
+	return nil, false
+}
+
+// AsMailboxEntity is the BasicEntity implementation for SecurityGroupEntity.
+func (sge SecurityGroupEntity) AsMailboxEntity() (*MailboxEntity, bool) {
+	return nil, false
+}
+
+// AsIPEntity is the BasicEntity implementation for SecurityGroupEntity.
+func (sge SecurityGroupEntity) AsIPEntity() (*IPEntity, bool) {
+	return nil, false
+}
+
+// AsHuntingBookmark is the BasicEntity implementation for SecurityGroupEntity.
+func (sge SecurityGroupEntity) AsHuntingBookmark() (*HuntingBookmark, bool) {
+	return nil, false
+}
+
+// AsHostEntity is the BasicEntity implementation for SecurityGroupEntity.
+func (sge SecurityGroupEntity) AsHostEntity() (*HostEntity, bool) {
+	return nil, false
+}
+
+// AsFileHashEntity is the BasicEntity implementation for SecurityGroupEntity.
+func (sge SecurityGroupEntity) AsFileHashEntity() (*FileHashEntity, bool) {
+	return nil, false
+}
+
+// AsFileEntity is the BasicEntity implementation for SecurityGroupEntity.
+func (sge SecurityGroupEntity) AsFileEntity() (*FileEntity, bool) {
+	return nil, false
+}
+
+// AsDNSEntity is the BasicEntity implementation for SecurityGroupEntity.
+func (sge SecurityGroupEntity) AsDNSEntity() (*DNSEntity, bool) {
+	return nil, false
+}
+
+// AsCloudApplicationEntity is the BasicEntity implementation for SecurityGroupEntity.
+func (sge SecurityGroupEntity) AsCloudApplicationEntity() (*CloudApplicationEntity, bool) {
+	return nil, false
+}
+
+// AsAzureResourceEntity is the BasicEntity implementation for SecurityGroupEntity.
+func (sge SecurityGroupEntity) AsAzureResourceEntity() (*AzureResourceEntity, bool) {
+	return nil, false
+}
+
+// AsAccountEntity is the BasicEntity implementation for SecurityGroupEntity.
+func (sge SecurityGroupEntity) AsAccountEntity() (*AccountEntity, bool) {
 	return nil, false
 }
 
@@ -17279,7 +17562,7 @@ func (sge *SecurityGroupEntity) UnmarshalJSON(body []byte) error {
 			}
 		case "kind":
 			if v != nil {
-				var kind KindBasicEntity
+				var kind Kind
 				err = json.Unmarshal(*v, &kind)
 				if err != nil {
 					return err
@@ -17344,10 +17627,11 @@ func (sl *SettingList) UnmarshalJSON(body []byte) error {
 
 // BasicSettings the Setting.
 type BasicSettings interface {
-	AsIPSyncer() (*IPSyncer, bool)
-	AsEyesOn() (*EyesOn, bool)
-	AsEntityAnalytics() (*EntityAnalytics, bool)
 	AsUeba() (*Ueba, bool)
+	AsEntityAnalytics() (*EntityAnalytics, bool)
+	AsEyesOn() (*EyesOn, bool)
+	AsIPSyncer() (*IPSyncer, bool)
+	AsAnomalies() (*Anomalies, bool)
 	AsSettings() (*Settings, bool)
 }
 
@@ -17362,7 +17646,7 @@ type Settings struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindBasicSettingsKindSettings', 'KindBasicSettingsKindIPSyncer', 'KindBasicSettingsKindEyesOn', 'KindBasicSettingsKindEntityAnalytics', 'KindBasicSettingsKindUeba'
+	// Kind - Possible values include: 'KindBasicSettingsKindSettings', 'KindBasicSettingsKindUeba', 'KindBasicSettingsKindEntityAnalytics', 'KindBasicSettingsKindEyesOn', 'KindBasicSettingsKindIPSyncer', 'KindBasicSettingsKindAnomalies'
 	Kind KindBasicSettings `json:"kind,omitempty"`
 }
 
@@ -17374,22 +17658,26 @@ func unmarshalBasicSettings(body []byte) (BasicSettings, error) {
 	}
 
 	switch m["kind"] {
-	case string(KindBasicSettingsKindIPSyncer):
-		var is IPSyncer
-		err := json.Unmarshal(body, &is)
-		return is, err
-	case string(KindBasicSettingsKindEyesOn):
-		var eo EyesOn
-		err := json.Unmarshal(body, &eo)
-		return eo, err
-	case string(KindBasicSettingsKindEntityAnalytics):
-		var ea EntityAnalytics
-		err := json.Unmarshal(body, &ea)
-		return ea, err
 	case string(KindBasicSettingsKindUeba):
 		var u Ueba
 		err := json.Unmarshal(body, &u)
 		return u, err
+	case string(KindBasicSettingsKindEntityAnalytics):
+		var ea EntityAnalytics
+		err := json.Unmarshal(body, &ea)
+		return ea, err
+	case string(KindBasicSettingsKindEyesOn):
+		var eo EyesOn
+		err := json.Unmarshal(body, &eo)
+		return eo, err
+	case string(KindBasicSettingsKindIPSyncer):
+		var is IPSyncer
+		err := json.Unmarshal(body, &is)
+		return is, err
+	case string(KindBasicSettingsKindAnomalies):
+		var a Anomalies
+		err := json.Unmarshal(body, &a)
+		return a, err
 	default:
 		var s Settings
 		err := json.Unmarshal(body, &s)
@@ -17428,13 +17716,8 @@ func (s Settings) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsIPSyncer is the BasicSettings implementation for Settings.
-func (s Settings) AsIPSyncer() (*IPSyncer, bool) {
-	return nil, false
-}
-
-// AsEyesOn is the BasicSettings implementation for Settings.
-func (s Settings) AsEyesOn() (*EyesOn, bool) {
+// AsUeba is the BasicSettings implementation for Settings.
+func (s Settings) AsUeba() (*Ueba, bool) {
 	return nil, false
 }
 
@@ -17443,8 +17726,18 @@ func (s Settings) AsEntityAnalytics() (*EntityAnalytics, bool) {
 	return nil, false
 }
 
-// AsUeba is the BasicSettings implementation for Settings.
-func (s Settings) AsUeba() (*Ueba, bool) {
+// AsEyesOn is the BasicSettings implementation for Settings.
+func (s Settings) AsEyesOn() (*EyesOn, bool) {
+	return nil, false
+}
+
+// AsIPSyncer is the BasicSettings implementation for Settings.
+func (s Settings) AsIPSyncer() (*IPSyncer, bool) {
+	return nil, false
+}
+
+// AsAnomalies is the BasicSettings implementation for Settings.
+func (s Settings) AsAnomalies() (*Anomalies, bool) {
 	return nil, false
 }
 
@@ -17460,7 +17753,7 @@ func (s Settings) AsBasicSettings() (BasicSettings, bool) {
 
 // SettingsKind describes an Azure resource with kind.
 type SettingsKind struct {
-	// Kind - The kind of the setting. Possible values include: 'SettingKindEyesOn', 'SettingKindEntityAnalytics', 'SettingKindUeba'
+	// Kind - The kind of the setting. Possible values include: 'SettingKindAnomalies', 'SettingKindEyesOn', 'SettingKindEntityAnalytics', 'SettingKindUeba'
 	Kind SettingKind `json:"kind,omitempty"`
 }
 
@@ -17491,13 +17784,13 @@ type SubmissionMailEntity struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Kind - Possible values include: 'KindBasicEntityKindEntity', 'KindBasicEntityKindAccount', 'KindBasicEntityKindAzureResource', 'KindBasicEntityKindCloudApplication', 'KindBasicEntityKindDNSResolution', 'KindBasicEntityKindFile', 'KindBasicEntityKindFileHash', 'KindBasicEntityKindHost', 'KindBasicEntityKindBookmark', 'KindBasicEntityKindSecurityAlert', 'KindBasicEntityKindIP', 'KindBasicEntityKindMailbox', 'KindBasicEntityKindMailCluster', 'KindBasicEntityKindMailMessage', 'KindBasicEntityKindSubmissionMail', 'KindBasicEntityKindMalware', 'KindBasicEntityKindProcess', 'KindBasicEntityKindRegistryKey', 'KindBasicEntityKindRegistryValue', 'KindBasicEntityKindSecurityGroup', 'KindBasicEntityKindURL', 'KindBasicEntityKindIoTDevice'
-	Kind KindBasicEntity `json:"kind,omitempty"`
+	// Kind - Possible values include: 'KindEntity', 'KindIoTDevice', 'KindURL', 'KindSecurityGroup', 'KindSecurityAlert', 'KindRegistryValue', 'KindRegistryKey', 'KindProcess', 'KindMalware', 'KindSubmissionMail', 'KindMailMessage', 'KindMailCluster', 'KindMailbox', 'KindIP', 'KindBookmark', 'KindHost', 'KindFileHash', 'KindFile', 'KindDNSResolution', 'KindCloudApplication', 'KindAzureResource', 'KindAccount'
+	Kind Kind `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for SubmissionMailEntity.
 func (sme SubmissionMailEntity) MarshalJSON() ([]byte, error) {
-	sme.Kind = KindBasicEntityKindSubmissionMail
+	sme.Kind = KindSubmissionMail
 	objectMap := make(map[string]interface{})
 	if sme.SubmissionMailEntityProperties != nil {
 		objectMap["properties"] = sme.SubmissionMailEntityProperties
@@ -17508,98 +17801,8 @@ func (sme SubmissionMailEntity) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsAccountEntity is the BasicEntity implementation for SubmissionMailEntity.
-func (sme SubmissionMailEntity) AsAccountEntity() (*AccountEntity, bool) {
-	return nil, false
-}
-
-// AsAzureResourceEntity is the BasicEntity implementation for SubmissionMailEntity.
-func (sme SubmissionMailEntity) AsAzureResourceEntity() (*AzureResourceEntity, bool) {
-	return nil, false
-}
-
-// AsCloudApplicationEntity is the BasicEntity implementation for SubmissionMailEntity.
-func (sme SubmissionMailEntity) AsCloudApplicationEntity() (*CloudApplicationEntity, bool) {
-	return nil, false
-}
-
-// AsDNSEntity is the BasicEntity implementation for SubmissionMailEntity.
-func (sme SubmissionMailEntity) AsDNSEntity() (*DNSEntity, bool) {
-	return nil, false
-}
-
-// AsFileEntity is the BasicEntity implementation for SubmissionMailEntity.
-func (sme SubmissionMailEntity) AsFileEntity() (*FileEntity, bool) {
-	return nil, false
-}
-
-// AsFileHashEntity is the BasicEntity implementation for SubmissionMailEntity.
-func (sme SubmissionMailEntity) AsFileHashEntity() (*FileHashEntity, bool) {
-	return nil, false
-}
-
-// AsHostEntity is the BasicEntity implementation for SubmissionMailEntity.
-func (sme SubmissionMailEntity) AsHostEntity() (*HostEntity, bool) {
-	return nil, false
-}
-
-// AsHuntingBookmark is the BasicEntity implementation for SubmissionMailEntity.
-func (sme SubmissionMailEntity) AsHuntingBookmark() (*HuntingBookmark, bool) {
-	return nil, false
-}
-
-// AsSecurityAlert is the BasicEntity implementation for SubmissionMailEntity.
-func (sme SubmissionMailEntity) AsSecurityAlert() (*SecurityAlert, bool) {
-	return nil, false
-}
-
-// AsIPEntity is the BasicEntity implementation for SubmissionMailEntity.
-func (sme SubmissionMailEntity) AsIPEntity() (*IPEntity, bool) {
-	return nil, false
-}
-
-// AsMailboxEntity is the BasicEntity implementation for SubmissionMailEntity.
-func (sme SubmissionMailEntity) AsMailboxEntity() (*MailboxEntity, bool) {
-	return nil, false
-}
-
-// AsMailClusterEntity is the BasicEntity implementation for SubmissionMailEntity.
-func (sme SubmissionMailEntity) AsMailClusterEntity() (*MailClusterEntity, bool) {
-	return nil, false
-}
-
-// AsMailMessageEntity is the BasicEntity implementation for SubmissionMailEntity.
-func (sme SubmissionMailEntity) AsMailMessageEntity() (*MailMessageEntity, bool) {
-	return nil, false
-}
-
-// AsSubmissionMailEntity is the BasicEntity implementation for SubmissionMailEntity.
-func (sme SubmissionMailEntity) AsSubmissionMailEntity() (*SubmissionMailEntity, bool) {
-	return &sme, true
-}
-
-// AsMalwareEntity is the BasicEntity implementation for SubmissionMailEntity.
-func (sme SubmissionMailEntity) AsMalwareEntity() (*MalwareEntity, bool) {
-	return nil, false
-}
-
-// AsProcessEntity is the BasicEntity implementation for SubmissionMailEntity.
-func (sme SubmissionMailEntity) AsProcessEntity() (*ProcessEntity, bool) {
-	return nil, false
-}
-
-// AsRegistryKeyEntity is the BasicEntity implementation for SubmissionMailEntity.
-func (sme SubmissionMailEntity) AsRegistryKeyEntity() (*RegistryKeyEntity, bool) {
-	return nil, false
-}
-
-// AsRegistryValueEntity is the BasicEntity implementation for SubmissionMailEntity.
-func (sme SubmissionMailEntity) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
-	return nil, false
-}
-
-// AsSecurityGroupEntity is the BasicEntity implementation for SubmissionMailEntity.
-func (sme SubmissionMailEntity) AsSecurityGroupEntity() (*SecurityGroupEntity, bool) {
+// AsIoTDeviceEntity is the BasicEntity implementation for SubmissionMailEntity.
+func (sme SubmissionMailEntity) AsIoTDeviceEntity() (*IoTDeviceEntity, bool) {
 	return nil, false
 }
 
@@ -17608,8 +17811,98 @@ func (sme SubmissionMailEntity) AsURLEntity() (*URLEntity, bool) {
 	return nil, false
 }
 
-// AsIoTDeviceEntity is the BasicEntity implementation for SubmissionMailEntity.
-func (sme SubmissionMailEntity) AsIoTDeviceEntity() (*IoTDeviceEntity, bool) {
+// AsSecurityGroupEntity is the BasicEntity implementation for SubmissionMailEntity.
+func (sme SubmissionMailEntity) AsSecurityGroupEntity() (*SecurityGroupEntity, bool) {
+	return nil, false
+}
+
+// AsSecurityAlert is the BasicEntity implementation for SubmissionMailEntity.
+func (sme SubmissionMailEntity) AsSecurityAlert() (*SecurityAlert, bool) {
+	return nil, false
+}
+
+// AsRegistryValueEntity is the BasicEntity implementation for SubmissionMailEntity.
+func (sme SubmissionMailEntity) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
+	return nil, false
+}
+
+// AsRegistryKeyEntity is the BasicEntity implementation for SubmissionMailEntity.
+func (sme SubmissionMailEntity) AsRegistryKeyEntity() (*RegistryKeyEntity, bool) {
+	return nil, false
+}
+
+// AsProcessEntity is the BasicEntity implementation for SubmissionMailEntity.
+func (sme SubmissionMailEntity) AsProcessEntity() (*ProcessEntity, bool) {
+	return nil, false
+}
+
+// AsMalwareEntity is the BasicEntity implementation for SubmissionMailEntity.
+func (sme SubmissionMailEntity) AsMalwareEntity() (*MalwareEntity, bool) {
+	return nil, false
+}
+
+// AsSubmissionMailEntity is the BasicEntity implementation for SubmissionMailEntity.
+func (sme SubmissionMailEntity) AsSubmissionMailEntity() (*SubmissionMailEntity, bool) {
+	return &sme, true
+}
+
+// AsMailMessageEntity is the BasicEntity implementation for SubmissionMailEntity.
+func (sme SubmissionMailEntity) AsMailMessageEntity() (*MailMessageEntity, bool) {
+	return nil, false
+}
+
+// AsMailClusterEntity is the BasicEntity implementation for SubmissionMailEntity.
+func (sme SubmissionMailEntity) AsMailClusterEntity() (*MailClusterEntity, bool) {
+	return nil, false
+}
+
+// AsMailboxEntity is the BasicEntity implementation for SubmissionMailEntity.
+func (sme SubmissionMailEntity) AsMailboxEntity() (*MailboxEntity, bool) {
+	return nil, false
+}
+
+// AsIPEntity is the BasicEntity implementation for SubmissionMailEntity.
+func (sme SubmissionMailEntity) AsIPEntity() (*IPEntity, bool) {
+	return nil, false
+}
+
+// AsHuntingBookmark is the BasicEntity implementation for SubmissionMailEntity.
+func (sme SubmissionMailEntity) AsHuntingBookmark() (*HuntingBookmark, bool) {
+	return nil, false
+}
+
+// AsHostEntity is the BasicEntity implementation for SubmissionMailEntity.
+func (sme SubmissionMailEntity) AsHostEntity() (*HostEntity, bool) {
+	return nil, false
+}
+
+// AsFileHashEntity is the BasicEntity implementation for SubmissionMailEntity.
+func (sme SubmissionMailEntity) AsFileHashEntity() (*FileHashEntity, bool) {
+	return nil, false
+}
+
+// AsFileEntity is the BasicEntity implementation for SubmissionMailEntity.
+func (sme SubmissionMailEntity) AsFileEntity() (*FileEntity, bool) {
+	return nil, false
+}
+
+// AsDNSEntity is the BasicEntity implementation for SubmissionMailEntity.
+func (sme SubmissionMailEntity) AsDNSEntity() (*DNSEntity, bool) {
+	return nil, false
+}
+
+// AsCloudApplicationEntity is the BasicEntity implementation for SubmissionMailEntity.
+func (sme SubmissionMailEntity) AsCloudApplicationEntity() (*CloudApplicationEntity, bool) {
+	return nil, false
+}
+
+// AsAzureResourceEntity is the BasicEntity implementation for SubmissionMailEntity.
+func (sme SubmissionMailEntity) AsAzureResourceEntity() (*AzureResourceEntity, bool) {
+	return nil, false
+}
+
+// AsAccountEntity is the BasicEntity implementation for SubmissionMailEntity.
+func (sme SubmissionMailEntity) AsAccountEntity() (*AccountEntity, bool) {
 	return nil, false
 }
 
@@ -17670,7 +17963,7 @@ func (sme *SubmissionMailEntity) UnmarshalJSON(body []byte) error {
 			}
 		case "kind":
 			if v != nil {
-				var kind KindBasicEntity
+				var kind Kind
 				err = json.Unmarshal(*v, &kind)
 				if err != nil {
 					return err
@@ -17751,7 +18044,7 @@ type ThreatIntelligenceAlertRule struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindBasicAlertRuleKindAlertRule', 'KindBasicAlertRuleKindMLBehaviorAnalytics', 'KindBasicAlertRuleKindFusion', 'KindBasicAlertRuleKindThreatIntelligence', 'KindBasicAlertRuleKindMicrosoftSecurityIncidentCreation', 'KindBasicAlertRuleKindScheduled'
+	// Kind - Possible values include: 'KindBasicAlertRuleKindAlertRule', 'KindBasicAlertRuleKindScheduled', 'KindBasicAlertRuleKindMicrosoftSecurityIncidentCreation', 'KindBasicAlertRuleKindThreatIntelligence', 'KindBasicAlertRuleKindFusion', 'KindBasicAlertRuleKindMLBehaviorAnalytics'
 	Kind KindBasicAlertRule `json:"kind,omitempty"`
 }
 
@@ -17771,13 +18064,13 @@ func (tiar ThreatIntelligenceAlertRule) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsMLBehaviorAnalyticsAlertRule is the BasicAlertRule implementation for ThreatIntelligenceAlertRule.
-func (tiar ThreatIntelligenceAlertRule) AsMLBehaviorAnalyticsAlertRule() (*MLBehaviorAnalyticsAlertRule, bool) {
+// AsScheduledAlertRule is the BasicAlertRule implementation for ThreatIntelligenceAlertRule.
+func (tiar ThreatIntelligenceAlertRule) AsScheduledAlertRule() (*ScheduledAlertRule, bool) {
 	return nil, false
 }
 
-// AsFusionAlertRule is the BasicAlertRule implementation for ThreatIntelligenceAlertRule.
-func (tiar ThreatIntelligenceAlertRule) AsFusionAlertRule() (*FusionAlertRule, bool) {
+// AsMicrosoftSecurityIncidentCreationAlertRule is the BasicAlertRule implementation for ThreatIntelligenceAlertRule.
+func (tiar ThreatIntelligenceAlertRule) AsMicrosoftSecurityIncidentCreationAlertRule() (*MicrosoftSecurityIncidentCreationAlertRule, bool) {
 	return nil, false
 }
 
@@ -17786,13 +18079,13 @@ func (tiar ThreatIntelligenceAlertRule) AsThreatIntelligenceAlertRule() (*Threat
 	return &tiar, true
 }
 
-// AsMicrosoftSecurityIncidentCreationAlertRule is the BasicAlertRule implementation for ThreatIntelligenceAlertRule.
-func (tiar ThreatIntelligenceAlertRule) AsMicrosoftSecurityIncidentCreationAlertRule() (*MicrosoftSecurityIncidentCreationAlertRule, bool) {
+// AsFusionAlertRule is the BasicAlertRule implementation for ThreatIntelligenceAlertRule.
+func (tiar ThreatIntelligenceAlertRule) AsFusionAlertRule() (*FusionAlertRule, bool) {
 	return nil, false
 }
 
-// AsScheduledAlertRule is the BasicAlertRule implementation for ThreatIntelligenceAlertRule.
-func (tiar ThreatIntelligenceAlertRule) AsScheduledAlertRule() (*ScheduledAlertRule, bool) {
+// AsMLBehaviorAnalyticsAlertRule is the BasicAlertRule implementation for ThreatIntelligenceAlertRule.
+func (tiar ThreatIntelligenceAlertRule) AsMLBehaviorAnalyticsAlertRule() (*MLBehaviorAnalyticsAlertRule, bool) {
 	return nil, false
 }
 
@@ -17915,7 +18208,7 @@ type ThreatIntelligenceAlertRuleTemplate struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Kind - Possible values include: 'KindBasicAlertRuleTemplateKindAlertRuleTemplate', 'KindBasicAlertRuleTemplateKindMLBehaviorAnalytics', 'KindBasicAlertRuleTemplateKindFusion', 'KindBasicAlertRuleTemplateKindThreatIntelligence', 'KindBasicAlertRuleTemplateKindMicrosoftSecurityIncidentCreation', 'KindBasicAlertRuleTemplateKindScheduled'
+	// Kind - Possible values include: 'KindBasicAlertRuleTemplateKindAlertRuleTemplate', 'KindBasicAlertRuleTemplateKindScheduled', 'KindBasicAlertRuleTemplateKindMicrosoftSecurityIncidentCreation', 'KindBasicAlertRuleTemplateKindThreatIntelligence', 'KindBasicAlertRuleTemplateKindFusion', 'KindBasicAlertRuleTemplateKindMLBehaviorAnalytics'
 	Kind KindBasicAlertRuleTemplate `json:"kind,omitempty"`
 }
 
@@ -17932,13 +18225,13 @@ func (tiart ThreatIntelligenceAlertRuleTemplate) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsMLBehaviorAnalyticsAlertRuleTemplate is the BasicAlertRuleTemplate implementation for ThreatIntelligenceAlertRuleTemplate.
-func (tiart ThreatIntelligenceAlertRuleTemplate) AsMLBehaviorAnalyticsAlertRuleTemplate() (*MLBehaviorAnalyticsAlertRuleTemplate, bool) {
+// AsScheduledAlertRuleTemplate is the BasicAlertRuleTemplate implementation for ThreatIntelligenceAlertRuleTemplate.
+func (tiart ThreatIntelligenceAlertRuleTemplate) AsScheduledAlertRuleTemplate() (*ScheduledAlertRuleTemplate, bool) {
 	return nil, false
 }
 
-// AsFusionAlertRuleTemplate is the BasicAlertRuleTemplate implementation for ThreatIntelligenceAlertRuleTemplate.
-func (tiart ThreatIntelligenceAlertRuleTemplate) AsFusionAlertRuleTemplate() (*FusionAlertRuleTemplate, bool) {
+// AsMicrosoftSecurityIncidentCreationAlertRuleTemplate is the BasicAlertRuleTemplate implementation for ThreatIntelligenceAlertRuleTemplate.
+func (tiart ThreatIntelligenceAlertRuleTemplate) AsMicrosoftSecurityIncidentCreationAlertRuleTemplate() (*MicrosoftSecurityIncidentCreationAlertRuleTemplate, bool) {
 	return nil, false
 }
 
@@ -17947,13 +18240,13 @@ func (tiart ThreatIntelligenceAlertRuleTemplate) AsThreatIntelligenceAlertRuleTe
 	return &tiart, true
 }
 
-// AsMicrosoftSecurityIncidentCreationAlertRuleTemplate is the BasicAlertRuleTemplate implementation for ThreatIntelligenceAlertRuleTemplate.
-func (tiart ThreatIntelligenceAlertRuleTemplate) AsMicrosoftSecurityIncidentCreationAlertRuleTemplate() (*MicrosoftSecurityIncidentCreationAlertRuleTemplate, bool) {
+// AsFusionAlertRuleTemplate is the BasicAlertRuleTemplate implementation for ThreatIntelligenceAlertRuleTemplate.
+func (tiart ThreatIntelligenceAlertRuleTemplate) AsFusionAlertRuleTemplate() (*FusionAlertRuleTemplate, bool) {
 	return nil, false
 }
 
-// AsScheduledAlertRuleTemplate is the BasicAlertRuleTemplate implementation for ThreatIntelligenceAlertRuleTemplate.
-func (tiart ThreatIntelligenceAlertRuleTemplate) AsScheduledAlertRuleTemplate() (*ScheduledAlertRuleTemplate, bool) {
+// AsMLBehaviorAnalyticsAlertRuleTemplate is the BasicAlertRuleTemplate implementation for ThreatIntelligenceAlertRuleTemplate.
+func (tiart ThreatIntelligenceAlertRuleTemplate) AsMLBehaviorAnalyticsAlertRuleTemplate() (*MLBehaviorAnalyticsAlertRuleTemplate, bool) {
 	return nil, false
 }
 
@@ -18875,7 +19168,7 @@ type ThreatIntelligenceSortingCriteria1 struct {
 type TICheckRequirements struct {
 	// TICheckRequirementsProperties - Threat Intelligence Platforms data connector check required properties
 	*TICheckRequirementsProperties `json:"properties,omitempty"`
-	// Kind - Possible values include: 'KindBasicDataConnectorsCheckRequirementsKindDataConnectorsCheckRequirements', 'KindBasicDataConnectorsCheckRequirementsKindAzureActiveDirectory', 'KindBasicDataConnectorsCheckRequirementsKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatIntelligence', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindAzureSecurityCenter', 'KindBasicDataConnectorsCheckRequirementsKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorsCheckRequirementsKindDynamics365', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindOfficeATP', 'KindBasicDataConnectorsCheckRequirementsKindThreatIntelligence', 'KindBasicDataConnectorsCheckRequirementsKindThreatIntelligenceTaxii'
+	// Kind - Possible values include: 'KindBasicDataConnectorsCheckRequirementsKindDataConnectorsCheckRequirements', 'KindBasicDataConnectorsCheckRequirementsKindAzureActiveDirectory', 'KindBasicDataConnectorsCheckRequirementsKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindAzureSecurityCenter', 'KindBasicDataConnectorsCheckRequirementsKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorsCheckRequirementsKindDynamics365', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatIntelligence', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindOfficeATP', 'KindBasicDataConnectorsCheckRequirementsKindThreatIntelligence', 'KindBasicDataConnectorsCheckRequirementsKindThreatIntelligenceTaxii'
 	Kind KindBasicDataConnectorsCheckRequirements `json:"kind,omitempty"`
 }
 
@@ -18902,16 +19195,6 @@ func (tcr TICheckRequirements) AsAATPCheckRequirements() (*AATPCheckRequirements
 	return nil, false
 }
 
-// AsMSTICheckRequirements is the BasicDataConnectorsCheckRequirements implementation for TICheckRequirements.
-func (tcr TICheckRequirements) AsMSTICheckRequirements() (*MSTICheckRequirements, bool) {
-	return nil, false
-}
-
-// AsMtpCheckRequirements is the BasicDataConnectorsCheckRequirements implementation for TICheckRequirements.
-func (tcr TICheckRequirements) AsMtpCheckRequirements() (*MtpCheckRequirements, bool) {
-	return nil, false
-}
-
 // AsASCCheckRequirements is the BasicDataConnectorsCheckRequirements implementation for TICheckRequirements.
 func (tcr TICheckRequirements) AsASCCheckRequirements() (*ASCCheckRequirements, bool) {
 	return nil, false
@@ -18934,6 +19217,16 @@ func (tcr TICheckRequirements) AsMCASCheckRequirements() (*MCASCheckRequirements
 
 // AsMDATPCheckRequirements is the BasicDataConnectorsCheckRequirements implementation for TICheckRequirements.
 func (tcr TICheckRequirements) AsMDATPCheckRequirements() (*MDATPCheckRequirements, bool) {
+	return nil, false
+}
+
+// AsMSTICheckRequirements is the BasicDataConnectorsCheckRequirements implementation for TICheckRequirements.
+func (tcr TICheckRequirements) AsMSTICheckRequirements() (*MSTICheckRequirements, bool) {
+	return nil, false
+}
+
+// AsMtpCheckRequirements is the BasicDataConnectorsCheckRequirements implementation for TICheckRequirements.
+func (tcr TICheckRequirements) AsMtpCheckRequirements() (*MtpCheckRequirements, bool) {
 	return nil, false
 }
 
@@ -19013,7 +19306,7 @@ type TIDataConnector struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindBasicDataConnectorKindDataConnector', 'KindBasicDataConnectorKindAzureActiveDirectory', 'KindBasicDataConnectorKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorKindMicrosoftThreatIntelligence', 'KindBasicDataConnectorKindMicrosoftThreatProtection', 'KindBasicDataConnectorKindAzureSecurityCenter', 'KindBasicDataConnectorKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorKindDynamics365', 'KindBasicDataConnectorKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorKindOfficeATP', 'KindBasicDataConnectorKindOffice365', 'KindBasicDataConnectorKindThreatIntelligence', 'KindBasicDataConnectorKindThreatIntelligenceTaxii'
+	// Kind - Possible values include: 'KindBasicDataConnectorKindDataConnector', 'KindBasicDataConnectorKindThreatIntelligenceTaxii', 'KindBasicDataConnectorKindThreatIntelligence', 'KindBasicDataConnectorKindOffice365', 'KindBasicDataConnectorKindOfficeATP', 'KindBasicDataConnectorKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorKindDynamics365', 'KindBasicDataConnectorKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorKindAzureSecurityCenter', 'KindBasicDataConnectorKindMicrosoftThreatProtection', 'KindBasicDataConnectorKindMicrosoftThreatIntelligence', 'KindBasicDataConnectorKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorKindAzureActiveDirectory'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
 }
 
@@ -19033,58 +19326,8 @@ func (tdc TIDataConnector) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsAADDataConnector is the BasicDataConnector implementation for TIDataConnector.
-func (tdc TIDataConnector) AsAADDataConnector() (*AADDataConnector, bool) {
-	return nil, false
-}
-
-// AsAATPDataConnector is the BasicDataConnector implementation for TIDataConnector.
-func (tdc TIDataConnector) AsAATPDataConnector() (*AATPDataConnector, bool) {
-	return nil, false
-}
-
-// AsMSTIDataConnector is the BasicDataConnector implementation for TIDataConnector.
-func (tdc TIDataConnector) AsMSTIDataConnector() (*MSTIDataConnector, bool) {
-	return nil, false
-}
-
-// AsMTPDataConnector is the BasicDataConnector implementation for TIDataConnector.
-func (tdc TIDataConnector) AsMTPDataConnector() (*MTPDataConnector, bool) {
-	return nil, false
-}
-
-// AsASCDataConnector is the BasicDataConnector implementation for TIDataConnector.
-func (tdc TIDataConnector) AsASCDataConnector() (*ASCDataConnector, bool) {
-	return nil, false
-}
-
-// AsAwsCloudTrailDataConnector is the BasicDataConnector implementation for TIDataConnector.
-func (tdc TIDataConnector) AsAwsCloudTrailDataConnector() (*AwsCloudTrailDataConnector, bool) {
-	return nil, false
-}
-
-// AsDynamics365DataConnector is the BasicDataConnector implementation for TIDataConnector.
-func (tdc TIDataConnector) AsDynamics365DataConnector() (*Dynamics365DataConnector, bool) {
-	return nil, false
-}
-
-// AsMCASDataConnector is the BasicDataConnector implementation for TIDataConnector.
-func (tdc TIDataConnector) AsMCASDataConnector() (*MCASDataConnector, bool) {
-	return nil, false
-}
-
-// AsMDATPDataConnector is the BasicDataConnector implementation for TIDataConnector.
-func (tdc TIDataConnector) AsMDATPDataConnector() (*MDATPDataConnector, bool) {
-	return nil, false
-}
-
-// AsOfficeATPDataConnector is the BasicDataConnector implementation for TIDataConnector.
-func (tdc TIDataConnector) AsOfficeATPDataConnector() (*OfficeATPDataConnector, bool) {
-	return nil, false
-}
-
-// AsOfficeDataConnector is the BasicDataConnector implementation for TIDataConnector.
-func (tdc TIDataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool) {
+// AsTiTaxiiDataConnector is the BasicDataConnector implementation for TIDataConnector.
+func (tdc TIDataConnector) AsTiTaxiiDataConnector() (*TiTaxiiDataConnector, bool) {
 	return nil, false
 }
 
@@ -19093,8 +19336,58 @@ func (tdc TIDataConnector) AsTIDataConnector() (*TIDataConnector, bool) {
 	return &tdc, true
 }
 
-// AsTiTaxiiDataConnector is the BasicDataConnector implementation for TIDataConnector.
-func (tdc TIDataConnector) AsTiTaxiiDataConnector() (*TiTaxiiDataConnector, bool) {
+// AsOfficeDataConnector is the BasicDataConnector implementation for TIDataConnector.
+func (tdc TIDataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool) {
+	return nil, false
+}
+
+// AsOfficeATPDataConnector is the BasicDataConnector implementation for TIDataConnector.
+func (tdc TIDataConnector) AsOfficeATPDataConnector() (*OfficeATPDataConnector, bool) {
+	return nil, false
+}
+
+// AsMDATPDataConnector is the BasicDataConnector implementation for TIDataConnector.
+func (tdc TIDataConnector) AsMDATPDataConnector() (*MDATPDataConnector, bool) {
+	return nil, false
+}
+
+// AsMCASDataConnector is the BasicDataConnector implementation for TIDataConnector.
+func (tdc TIDataConnector) AsMCASDataConnector() (*MCASDataConnector, bool) {
+	return nil, false
+}
+
+// AsDynamics365DataConnector is the BasicDataConnector implementation for TIDataConnector.
+func (tdc TIDataConnector) AsDynamics365DataConnector() (*Dynamics365DataConnector, bool) {
+	return nil, false
+}
+
+// AsAwsCloudTrailDataConnector is the BasicDataConnector implementation for TIDataConnector.
+func (tdc TIDataConnector) AsAwsCloudTrailDataConnector() (*AwsCloudTrailDataConnector, bool) {
+	return nil, false
+}
+
+// AsASCDataConnector is the BasicDataConnector implementation for TIDataConnector.
+func (tdc TIDataConnector) AsASCDataConnector() (*ASCDataConnector, bool) {
+	return nil, false
+}
+
+// AsMTPDataConnector is the BasicDataConnector implementation for TIDataConnector.
+func (tdc TIDataConnector) AsMTPDataConnector() (*MTPDataConnector, bool) {
+	return nil, false
+}
+
+// AsMSTIDataConnector is the BasicDataConnector implementation for TIDataConnector.
+func (tdc TIDataConnector) AsMSTIDataConnector() (*MSTIDataConnector, bool) {
+	return nil, false
+}
+
+// AsAATPDataConnector is the BasicDataConnector implementation for TIDataConnector.
+func (tdc TIDataConnector) AsAATPDataConnector() (*AATPDataConnector, bool) {
+	return nil, false
+}
+
+// AsAADDataConnector is the BasicDataConnector implementation for TIDataConnector.
+func (tdc TIDataConnector) AsAADDataConnector() (*AADDataConnector, bool) {
 	return nil, false
 }
 
@@ -19231,7 +19524,7 @@ type TimelineResultsMetadata struct {
 type TiTaxiiCheckRequirements struct {
 	// TiTaxiiCheckRequirementsProperties - Threat Intelligence TAXII check required properties.
 	*TiTaxiiCheckRequirementsProperties `json:"properties,omitempty"`
-	// Kind - Possible values include: 'KindBasicDataConnectorsCheckRequirementsKindDataConnectorsCheckRequirements', 'KindBasicDataConnectorsCheckRequirementsKindAzureActiveDirectory', 'KindBasicDataConnectorsCheckRequirementsKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatIntelligence', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindAzureSecurityCenter', 'KindBasicDataConnectorsCheckRequirementsKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorsCheckRequirementsKindDynamics365', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindOfficeATP', 'KindBasicDataConnectorsCheckRequirementsKindThreatIntelligence', 'KindBasicDataConnectorsCheckRequirementsKindThreatIntelligenceTaxii'
+	// Kind - Possible values include: 'KindBasicDataConnectorsCheckRequirementsKindDataConnectorsCheckRequirements', 'KindBasicDataConnectorsCheckRequirementsKindAzureActiveDirectory', 'KindBasicDataConnectorsCheckRequirementsKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindAzureSecurityCenter', 'KindBasicDataConnectorsCheckRequirementsKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorsCheckRequirementsKindDynamics365', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatIntelligence', 'KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatProtection', 'KindBasicDataConnectorsCheckRequirementsKindOfficeATP', 'KindBasicDataConnectorsCheckRequirementsKindThreatIntelligence', 'KindBasicDataConnectorsCheckRequirementsKindThreatIntelligenceTaxii'
 	Kind KindBasicDataConnectorsCheckRequirements `json:"kind,omitempty"`
 }
 
@@ -19258,16 +19551,6 @@ func (ttcr TiTaxiiCheckRequirements) AsAATPCheckRequirements() (*AATPCheckRequir
 	return nil, false
 }
 
-// AsMSTICheckRequirements is the BasicDataConnectorsCheckRequirements implementation for TiTaxiiCheckRequirements.
-func (ttcr TiTaxiiCheckRequirements) AsMSTICheckRequirements() (*MSTICheckRequirements, bool) {
-	return nil, false
-}
-
-// AsMtpCheckRequirements is the BasicDataConnectorsCheckRequirements implementation for TiTaxiiCheckRequirements.
-func (ttcr TiTaxiiCheckRequirements) AsMtpCheckRequirements() (*MtpCheckRequirements, bool) {
-	return nil, false
-}
-
 // AsASCCheckRequirements is the BasicDataConnectorsCheckRequirements implementation for TiTaxiiCheckRequirements.
 func (ttcr TiTaxiiCheckRequirements) AsASCCheckRequirements() (*ASCCheckRequirements, bool) {
 	return nil, false
@@ -19290,6 +19573,16 @@ func (ttcr TiTaxiiCheckRequirements) AsMCASCheckRequirements() (*MCASCheckRequir
 
 // AsMDATPCheckRequirements is the BasicDataConnectorsCheckRequirements implementation for TiTaxiiCheckRequirements.
 func (ttcr TiTaxiiCheckRequirements) AsMDATPCheckRequirements() (*MDATPCheckRequirements, bool) {
+	return nil, false
+}
+
+// AsMSTICheckRequirements is the BasicDataConnectorsCheckRequirements implementation for TiTaxiiCheckRequirements.
+func (ttcr TiTaxiiCheckRequirements) AsMSTICheckRequirements() (*MSTICheckRequirements, bool) {
+	return nil, false
+}
+
+// AsMtpCheckRequirements is the BasicDataConnectorsCheckRequirements implementation for TiTaxiiCheckRequirements.
+func (ttcr TiTaxiiCheckRequirements) AsMtpCheckRequirements() (*MtpCheckRequirements, bool) {
 	return nil, false
 }
 
@@ -19369,7 +19662,7 @@ type TiTaxiiDataConnector struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindBasicDataConnectorKindDataConnector', 'KindBasicDataConnectorKindAzureActiveDirectory', 'KindBasicDataConnectorKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorKindMicrosoftThreatIntelligence', 'KindBasicDataConnectorKindMicrosoftThreatProtection', 'KindBasicDataConnectorKindAzureSecurityCenter', 'KindBasicDataConnectorKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorKindDynamics365', 'KindBasicDataConnectorKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorKindOfficeATP', 'KindBasicDataConnectorKindOffice365', 'KindBasicDataConnectorKindThreatIntelligence', 'KindBasicDataConnectorKindThreatIntelligenceTaxii'
+	// Kind - Possible values include: 'KindBasicDataConnectorKindDataConnector', 'KindBasicDataConnectorKindThreatIntelligenceTaxii', 'KindBasicDataConnectorKindThreatIntelligence', 'KindBasicDataConnectorKindOffice365', 'KindBasicDataConnectorKindOfficeATP', 'KindBasicDataConnectorKindMicrosoftDefenderAdvancedThreatProtection', 'KindBasicDataConnectorKindMicrosoftCloudAppSecurity', 'KindBasicDataConnectorKindDynamics365', 'KindBasicDataConnectorKindAmazonWebServicesCloudTrail', 'KindBasicDataConnectorKindAzureSecurityCenter', 'KindBasicDataConnectorKindMicrosoftThreatProtection', 'KindBasicDataConnectorKindMicrosoftThreatIntelligence', 'KindBasicDataConnectorKindAzureAdvancedThreatProtection', 'KindBasicDataConnectorKindAzureActiveDirectory'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
 }
 
@@ -19389,53 +19682,13 @@ func (ttdc TiTaxiiDataConnector) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsAADDataConnector is the BasicDataConnector implementation for TiTaxiiDataConnector.
-func (ttdc TiTaxiiDataConnector) AsAADDataConnector() (*AADDataConnector, bool) {
-	return nil, false
+// AsTiTaxiiDataConnector is the BasicDataConnector implementation for TiTaxiiDataConnector.
+func (ttdc TiTaxiiDataConnector) AsTiTaxiiDataConnector() (*TiTaxiiDataConnector, bool) {
+	return &ttdc, true
 }
 
-// AsAATPDataConnector is the BasicDataConnector implementation for TiTaxiiDataConnector.
-func (ttdc TiTaxiiDataConnector) AsAATPDataConnector() (*AATPDataConnector, bool) {
-	return nil, false
-}
-
-// AsMSTIDataConnector is the BasicDataConnector implementation for TiTaxiiDataConnector.
-func (ttdc TiTaxiiDataConnector) AsMSTIDataConnector() (*MSTIDataConnector, bool) {
-	return nil, false
-}
-
-// AsMTPDataConnector is the BasicDataConnector implementation for TiTaxiiDataConnector.
-func (ttdc TiTaxiiDataConnector) AsMTPDataConnector() (*MTPDataConnector, bool) {
-	return nil, false
-}
-
-// AsASCDataConnector is the BasicDataConnector implementation for TiTaxiiDataConnector.
-func (ttdc TiTaxiiDataConnector) AsASCDataConnector() (*ASCDataConnector, bool) {
-	return nil, false
-}
-
-// AsAwsCloudTrailDataConnector is the BasicDataConnector implementation for TiTaxiiDataConnector.
-func (ttdc TiTaxiiDataConnector) AsAwsCloudTrailDataConnector() (*AwsCloudTrailDataConnector, bool) {
-	return nil, false
-}
-
-// AsDynamics365DataConnector is the BasicDataConnector implementation for TiTaxiiDataConnector.
-func (ttdc TiTaxiiDataConnector) AsDynamics365DataConnector() (*Dynamics365DataConnector, bool) {
-	return nil, false
-}
-
-// AsMCASDataConnector is the BasicDataConnector implementation for TiTaxiiDataConnector.
-func (ttdc TiTaxiiDataConnector) AsMCASDataConnector() (*MCASDataConnector, bool) {
-	return nil, false
-}
-
-// AsMDATPDataConnector is the BasicDataConnector implementation for TiTaxiiDataConnector.
-func (ttdc TiTaxiiDataConnector) AsMDATPDataConnector() (*MDATPDataConnector, bool) {
-	return nil, false
-}
-
-// AsOfficeATPDataConnector is the BasicDataConnector implementation for TiTaxiiDataConnector.
-func (ttdc TiTaxiiDataConnector) AsOfficeATPDataConnector() (*OfficeATPDataConnector, bool) {
+// AsTIDataConnector is the BasicDataConnector implementation for TiTaxiiDataConnector.
+func (ttdc TiTaxiiDataConnector) AsTIDataConnector() (*TIDataConnector, bool) {
 	return nil, false
 }
 
@@ -19444,14 +19697,54 @@ func (ttdc TiTaxiiDataConnector) AsOfficeDataConnector() (*OfficeDataConnector, 
 	return nil, false
 }
 
-// AsTIDataConnector is the BasicDataConnector implementation for TiTaxiiDataConnector.
-func (ttdc TiTaxiiDataConnector) AsTIDataConnector() (*TIDataConnector, bool) {
+// AsOfficeATPDataConnector is the BasicDataConnector implementation for TiTaxiiDataConnector.
+func (ttdc TiTaxiiDataConnector) AsOfficeATPDataConnector() (*OfficeATPDataConnector, bool) {
 	return nil, false
 }
 
-// AsTiTaxiiDataConnector is the BasicDataConnector implementation for TiTaxiiDataConnector.
-func (ttdc TiTaxiiDataConnector) AsTiTaxiiDataConnector() (*TiTaxiiDataConnector, bool) {
-	return &ttdc, true
+// AsMDATPDataConnector is the BasicDataConnector implementation for TiTaxiiDataConnector.
+func (ttdc TiTaxiiDataConnector) AsMDATPDataConnector() (*MDATPDataConnector, bool) {
+	return nil, false
+}
+
+// AsMCASDataConnector is the BasicDataConnector implementation for TiTaxiiDataConnector.
+func (ttdc TiTaxiiDataConnector) AsMCASDataConnector() (*MCASDataConnector, bool) {
+	return nil, false
+}
+
+// AsDynamics365DataConnector is the BasicDataConnector implementation for TiTaxiiDataConnector.
+func (ttdc TiTaxiiDataConnector) AsDynamics365DataConnector() (*Dynamics365DataConnector, bool) {
+	return nil, false
+}
+
+// AsAwsCloudTrailDataConnector is the BasicDataConnector implementation for TiTaxiiDataConnector.
+func (ttdc TiTaxiiDataConnector) AsAwsCloudTrailDataConnector() (*AwsCloudTrailDataConnector, bool) {
+	return nil, false
+}
+
+// AsASCDataConnector is the BasicDataConnector implementation for TiTaxiiDataConnector.
+func (ttdc TiTaxiiDataConnector) AsASCDataConnector() (*ASCDataConnector, bool) {
+	return nil, false
+}
+
+// AsMTPDataConnector is the BasicDataConnector implementation for TiTaxiiDataConnector.
+func (ttdc TiTaxiiDataConnector) AsMTPDataConnector() (*MTPDataConnector, bool) {
+	return nil, false
+}
+
+// AsMSTIDataConnector is the BasicDataConnector implementation for TiTaxiiDataConnector.
+func (ttdc TiTaxiiDataConnector) AsMSTIDataConnector() (*MSTIDataConnector, bool) {
+	return nil, false
+}
+
+// AsAATPDataConnector is the BasicDataConnector implementation for TiTaxiiDataConnector.
+func (ttdc TiTaxiiDataConnector) AsAATPDataConnector() (*AATPDataConnector, bool) {
+	return nil, false
+}
+
+// AsAADDataConnector is the BasicDataConnector implementation for TiTaxiiDataConnector.
+func (ttdc TiTaxiiDataConnector) AsAADDataConnector() (*AADDataConnector, bool) {
+	return nil, false
 }
 
 // AsDataConnector is the BasicDataConnector implementation for TiTaxiiDataConnector.
@@ -19581,7 +19874,7 @@ type Ueba struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindBasicSettingsKindSettings', 'KindBasicSettingsKindIPSyncer', 'KindBasicSettingsKindEyesOn', 'KindBasicSettingsKindEntityAnalytics', 'KindBasicSettingsKindUeba'
+	// Kind - Possible values include: 'KindBasicSettingsKindSettings', 'KindBasicSettingsKindUeba', 'KindBasicSettingsKindEntityAnalytics', 'KindBasicSettingsKindEyesOn', 'KindBasicSettingsKindIPSyncer', 'KindBasicSettingsKindAnomalies'
 	Kind KindBasicSettings `json:"kind,omitempty"`
 }
 
@@ -19601,8 +19894,13 @@ func (u Ueba) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsIPSyncer is the BasicSettings implementation for Ueba.
-func (u Ueba) AsIPSyncer() (*IPSyncer, bool) {
+// AsUeba is the BasicSettings implementation for Ueba.
+func (u Ueba) AsUeba() (*Ueba, bool) {
+	return &u, true
+}
+
+// AsEntityAnalytics is the BasicSettings implementation for Ueba.
+func (u Ueba) AsEntityAnalytics() (*EntityAnalytics, bool) {
 	return nil, false
 }
 
@@ -19611,14 +19909,14 @@ func (u Ueba) AsEyesOn() (*EyesOn, bool) {
 	return nil, false
 }
 
-// AsEntityAnalytics is the BasicSettings implementation for Ueba.
-func (u Ueba) AsEntityAnalytics() (*EntityAnalytics, bool) {
+// AsIPSyncer is the BasicSettings implementation for Ueba.
+func (u Ueba) AsIPSyncer() (*IPSyncer, bool) {
 	return nil, false
 }
 
-// AsUeba is the BasicSettings implementation for Ueba.
-func (u Ueba) AsUeba() (*Ueba, bool) {
-	return &u, true
+// AsAnomalies is the BasicSettings implementation for Ueba.
+func (u Ueba) AsAnomalies() (*Anomalies, bool) {
+	return nil, false
 }
 
 // AsSettings is the BasicSettings implementation for Ueba.
@@ -19716,13 +20014,13 @@ type URLEntity struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Kind - Possible values include: 'KindBasicEntityKindEntity', 'KindBasicEntityKindAccount', 'KindBasicEntityKindAzureResource', 'KindBasicEntityKindCloudApplication', 'KindBasicEntityKindDNSResolution', 'KindBasicEntityKindFile', 'KindBasicEntityKindFileHash', 'KindBasicEntityKindHost', 'KindBasicEntityKindBookmark', 'KindBasicEntityKindSecurityAlert', 'KindBasicEntityKindIP', 'KindBasicEntityKindMailbox', 'KindBasicEntityKindMailCluster', 'KindBasicEntityKindMailMessage', 'KindBasicEntityKindSubmissionMail', 'KindBasicEntityKindMalware', 'KindBasicEntityKindProcess', 'KindBasicEntityKindRegistryKey', 'KindBasicEntityKindRegistryValue', 'KindBasicEntityKindSecurityGroup', 'KindBasicEntityKindURL', 'KindBasicEntityKindIoTDevice'
-	Kind KindBasicEntity `json:"kind,omitempty"`
+	// Kind - Possible values include: 'KindEntity', 'KindIoTDevice', 'KindURL', 'KindSecurityGroup', 'KindSecurityAlert', 'KindRegistryValue', 'KindRegistryKey', 'KindProcess', 'KindMalware', 'KindSubmissionMail', 'KindMailMessage', 'KindMailCluster', 'KindMailbox', 'KindIP', 'KindBookmark', 'KindHost', 'KindFileHash', 'KindFile', 'KindDNSResolution', 'KindCloudApplication', 'KindAzureResource', 'KindAccount'
+	Kind Kind `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for URLEntity.
 func (ue URLEntity) MarshalJSON() ([]byte, error) {
-	ue.Kind = KindBasicEntityKindURL
+	ue.Kind = KindURL
 	objectMap := make(map[string]interface{})
 	if ue.URLEntityProperties != nil {
 		objectMap["properties"] = ue.URLEntityProperties
@@ -19733,98 +20031,8 @@ func (ue URLEntity) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsAccountEntity is the BasicEntity implementation for URLEntity.
-func (ue URLEntity) AsAccountEntity() (*AccountEntity, bool) {
-	return nil, false
-}
-
-// AsAzureResourceEntity is the BasicEntity implementation for URLEntity.
-func (ue URLEntity) AsAzureResourceEntity() (*AzureResourceEntity, bool) {
-	return nil, false
-}
-
-// AsCloudApplicationEntity is the BasicEntity implementation for URLEntity.
-func (ue URLEntity) AsCloudApplicationEntity() (*CloudApplicationEntity, bool) {
-	return nil, false
-}
-
-// AsDNSEntity is the BasicEntity implementation for URLEntity.
-func (ue URLEntity) AsDNSEntity() (*DNSEntity, bool) {
-	return nil, false
-}
-
-// AsFileEntity is the BasicEntity implementation for URLEntity.
-func (ue URLEntity) AsFileEntity() (*FileEntity, bool) {
-	return nil, false
-}
-
-// AsFileHashEntity is the BasicEntity implementation for URLEntity.
-func (ue URLEntity) AsFileHashEntity() (*FileHashEntity, bool) {
-	return nil, false
-}
-
-// AsHostEntity is the BasicEntity implementation for URLEntity.
-func (ue URLEntity) AsHostEntity() (*HostEntity, bool) {
-	return nil, false
-}
-
-// AsHuntingBookmark is the BasicEntity implementation for URLEntity.
-func (ue URLEntity) AsHuntingBookmark() (*HuntingBookmark, bool) {
-	return nil, false
-}
-
-// AsSecurityAlert is the BasicEntity implementation for URLEntity.
-func (ue URLEntity) AsSecurityAlert() (*SecurityAlert, bool) {
-	return nil, false
-}
-
-// AsIPEntity is the BasicEntity implementation for URLEntity.
-func (ue URLEntity) AsIPEntity() (*IPEntity, bool) {
-	return nil, false
-}
-
-// AsMailboxEntity is the BasicEntity implementation for URLEntity.
-func (ue URLEntity) AsMailboxEntity() (*MailboxEntity, bool) {
-	return nil, false
-}
-
-// AsMailClusterEntity is the BasicEntity implementation for URLEntity.
-func (ue URLEntity) AsMailClusterEntity() (*MailClusterEntity, bool) {
-	return nil, false
-}
-
-// AsMailMessageEntity is the BasicEntity implementation for URLEntity.
-func (ue URLEntity) AsMailMessageEntity() (*MailMessageEntity, bool) {
-	return nil, false
-}
-
-// AsSubmissionMailEntity is the BasicEntity implementation for URLEntity.
-func (ue URLEntity) AsSubmissionMailEntity() (*SubmissionMailEntity, bool) {
-	return nil, false
-}
-
-// AsMalwareEntity is the BasicEntity implementation for URLEntity.
-func (ue URLEntity) AsMalwareEntity() (*MalwareEntity, bool) {
-	return nil, false
-}
-
-// AsProcessEntity is the BasicEntity implementation for URLEntity.
-func (ue URLEntity) AsProcessEntity() (*ProcessEntity, bool) {
-	return nil, false
-}
-
-// AsRegistryKeyEntity is the BasicEntity implementation for URLEntity.
-func (ue URLEntity) AsRegistryKeyEntity() (*RegistryKeyEntity, bool) {
-	return nil, false
-}
-
-// AsRegistryValueEntity is the BasicEntity implementation for URLEntity.
-func (ue URLEntity) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
-	return nil, false
-}
-
-// AsSecurityGroupEntity is the BasicEntity implementation for URLEntity.
-func (ue URLEntity) AsSecurityGroupEntity() (*SecurityGroupEntity, bool) {
+// AsIoTDeviceEntity is the BasicEntity implementation for URLEntity.
+func (ue URLEntity) AsIoTDeviceEntity() (*IoTDeviceEntity, bool) {
 	return nil, false
 }
 
@@ -19833,8 +20041,98 @@ func (ue URLEntity) AsURLEntity() (*URLEntity, bool) {
 	return &ue, true
 }
 
-// AsIoTDeviceEntity is the BasicEntity implementation for URLEntity.
-func (ue URLEntity) AsIoTDeviceEntity() (*IoTDeviceEntity, bool) {
+// AsSecurityGroupEntity is the BasicEntity implementation for URLEntity.
+func (ue URLEntity) AsSecurityGroupEntity() (*SecurityGroupEntity, bool) {
+	return nil, false
+}
+
+// AsSecurityAlert is the BasicEntity implementation for URLEntity.
+func (ue URLEntity) AsSecurityAlert() (*SecurityAlert, bool) {
+	return nil, false
+}
+
+// AsRegistryValueEntity is the BasicEntity implementation for URLEntity.
+func (ue URLEntity) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
+	return nil, false
+}
+
+// AsRegistryKeyEntity is the BasicEntity implementation for URLEntity.
+func (ue URLEntity) AsRegistryKeyEntity() (*RegistryKeyEntity, bool) {
+	return nil, false
+}
+
+// AsProcessEntity is the BasicEntity implementation for URLEntity.
+func (ue URLEntity) AsProcessEntity() (*ProcessEntity, bool) {
+	return nil, false
+}
+
+// AsMalwareEntity is the BasicEntity implementation for URLEntity.
+func (ue URLEntity) AsMalwareEntity() (*MalwareEntity, bool) {
+	return nil, false
+}
+
+// AsSubmissionMailEntity is the BasicEntity implementation for URLEntity.
+func (ue URLEntity) AsSubmissionMailEntity() (*SubmissionMailEntity, bool) {
+	return nil, false
+}
+
+// AsMailMessageEntity is the BasicEntity implementation for URLEntity.
+func (ue URLEntity) AsMailMessageEntity() (*MailMessageEntity, bool) {
+	return nil, false
+}
+
+// AsMailClusterEntity is the BasicEntity implementation for URLEntity.
+func (ue URLEntity) AsMailClusterEntity() (*MailClusterEntity, bool) {
+	return nil, false
+}
+
+// AsMailboxEntity is the BasicEntity implementation for URLEntity.
+func (ue URLEntity) AsMailboxEntity() (*MailboxEntity, bool) {
+	return nil, false
+}
+
+// AsIPEntity is the BasicEntity implementation for URLEntity.
+func (ue URLEntity) AsIPEntity() (*IPEntity, bool) {
+	return nil, false
+}
+
+// AsHuntingBookmark is the BasicEntity implementation for URLEntity.
+func (ue URLEntity) AsHuntingBookmark() (*HuntingBookmark, bool) {
+	return nil, false
+}
+
+// AsHostEntity is the BasicEntity implementation for URLEntity.
+func (ue URLEntity) AsHostEntity() (*HostEntity, bool) {
+	return nil, false
+}
+
+// AsFileHashEntity is the BasicEntity implementation for URLEntity.
+func (ue URLEntity) AsFileHashEntity() (*FileHashEntity, bool) {
+	return nil, false
+}
+
+// AsFileEntity is the BasicEntity implementation for URLEntity.
+func (ue URLEntity) AsFileEntity() (*FileEntity, bool) {
+	return nil, false
+}
+
+// AsDNSEntity is the BasicEntity implementation for URLEntity.
+func (ue URLEntity) AsDNSEntity() (*DNSEntity, bool) {
+	return nil, false
+}
+
+// AsCloudApplicationEntity is the BasicEntity implementation for URLEntity.
+func (ue URLEntity) AsCloudApplicationEntity() (*CloudApplicationEntity, bool) {
+	return nil, false
+}
+
+// AsAzureResourceEntity is the BasicEntity implementation for URLEntity.
+func (ue URLEntity) AsAzureResourceEntity() (*AzureResourceEntity, bool) {
+	return nil, false
+}
+
+// AsAccountEntity is the BasicEntity implementation for URLEntity.
+func (ue URLEntity) AsAccountEntity() (*AccountEntity, bool) {
 	return nil, false
 }
 
@@ -19895,7 +20193,7 @@ func (ue *URLEntity) UnmarshalJSON(body []byte) error {
 			}
 		case "kind":
 			if v != nil {
-				var kind KindBasicEntity
+				var kind Kind
 				err = json.Unmarshal(*v, &kind)
 				if err != nil {
 					return err

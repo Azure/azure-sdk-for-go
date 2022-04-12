@@ -26441,9 +26441,45 @@ type WatchlistItemProperties struct {
 	// UpdatedBy - Describes a user that updated the watchlist item
 	UpdatedBy *UserInfo `json:"updatedBy,omitempty"`
 	// ItemsKeyValue - key-value pairs for a watchlist item
-	ItemsKeyValue interface{} `json:"itemsKeyValue,omitempty"`
+	ItemsKeyValue map[string]interface{} `json:"itemsKeyValue"`
 	// EntityMapping - key-value pairs for a watchlist item entity mapping
-	EntityMapping interface{} `json:"entityMapping,omitempty"`
+	EntityMapping map[string]interface{} `json:"entityMapping"`
+}
+
+// MarshalJSON is the custom marshaler for WatchlistItemProperties.
+func (wip WatchlistItemProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if wip.WatchlistItemType != nil {
+		objectMap["watchlistItemType"] = wip.WatchlistItemType
+	}
+	if wip.WatchlistItemID != nil {
+		objectMap["watchlistItemId"] = wip.WatchlistItemID
+	}
+	if wip.TenantID != nil {
+		objectMap["tenantId"] = wip.TenantID
+	}
+	if wip.IsDeleted != nil {
+		objectMap["isDeleted"] = wip.IsDeleted
+	}
+	if wip.Created != nil {
+		objectMap["created"] = wip.Created
+	}
+	if wip.Updated != nil {
+		objectMap["updated"] = wip.Updated
+	}
+	if wip.CreatedBy != nil {
+		objectMap["createdBy"] = wip.CreatedBy
+	}
+	if wip.UpdatedBy != nil {
+		objectMap["updatedBy"] = wip.UpdatedBy
+	}
+	if wip.ItemsKeyValue != nil {
+		objectMap["itemsKeyValue"] = wip.ItemsKeyValue
+	}
+	if wip.EntityMapping != nil {
+		objectMap["entityMapping"] = wip.EntityMapping
+	}
+	return json.Marshal(objectMap)
 }
 
 // WatchlistList list all the watchlists.
@@ -26652,12 +26688,88 @@ type WatchlistProperties struct {
 	NumberOfLinesToSkip *int32 `json:"numberOfLinesToSkip,omitempty"`
 	// RawContent - The raw content that represents to watchlist items to create. In case of csv/tsv content type, it's the content of the file that will parsed by the endpoint
 	RawContent *string `json:"rawContent,omitempty"`
+	// SasURI - The Shared Access Signature (SAS) URI under which the large csv watchlist file is located and from which the watchlist and its items will be created
+	SasURI *string `json:"sasUri,omitempty"`
 	// ItemsSearchKey - The search key is used to optimize query performance when using watchlists for joins with other data. For example, enable a column with IP addresses to be the designated SearchKey field, then use this field as the key field when joining to other event data by IP address.
 	ItemsSearchKey *string `json:"itemsSearchKey,omitempty"`
 	// ContentType - The content type of the raw content. Example : text/csv or text/tsv
 	ContentType *string `json:"contentType,omitempty"`
 	// UploadStatus - The status of the Watchlist upload : New, InProgress or Complete. Pls note : When a Watchlist upload status is equal to InProgress, the Watchlist cannot be deleted
 	UploadStatus *string `json:"uploadStatus,omitempty"`
+	// ProvisioningState - READ-ONLY; The provisioning state of the watchlist resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled', 'ProvisioningStateInProgress'
+	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for WatchlistProperties.
+func (wp WatchlistProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if wp.WatchlistID != nil {
+		objectMap["watchlistId"] = wp.WatchlistID
+	}
+	if wp.DisplayName != nil {
+		objectMap["displayName"] = wp.DisplayName
+	}
+	if wp.Provider != nil {
+		objectMap["provider"] = wp.Provider
+	}
+	if wp.Source != nil {
+		objectMap["source"] = wp.Source
+	}
+	if wp.SourceType != "" {
+		objectMap["sourceType"] = wp.SourceType
+	}
+	if wp.Created != nil {
+		objectMap["created"] = wp.Created
+	}
+	if wp.Updated != nil {
+		objectMap["updated"] = wp.Updated
+	}
+	if wp.CreatedBy != nil {
+		objectMap["createdBy"] = wp.CreatedBy
+	}
+	if wp.UpdatedBy != nil {
+		objectMap["updatedBy"] = wp.UpdatedBy
+	}
+	if wp.Description != nil {
+		objectMap["description"] = wp.Description
+	}
+	if wp.WatchlistType != nil {
+		objectMap["watchlistType"] = wp.WatchlistType
+	}
+	if wp.WatchlistAlias != nil {
+		objectMap["watchlistAlias"] = wp.WatchlistAlias
+	}
+	if wp.IsDeleted != nil {
+		objectMap["isDeleted"] = wp.IsDeleted
+	}
+	if wp.Labels != nil {
+		objectMap["labels"] = wp.Labels
+	}
+	if wp.DefaultDuration != nil {
+		objectMap["defaultDuration"] = wp.DefaultDuration
+	}
+	if wp.TenantID != nil {
+		objectMap["tenantId"] = wp.TenantID
+	}
+	if wp.NumberOfLinesToSkip != nil {
+		objectMap["numberOfLinesToSkip"] = wp.NumberOfLinesToSkip
+	}
+	if wp.RawContent != nil {
+		objectMap["rawContent"] = wp.RawContent
+	}
+	if wp.SasURI != nil {
+		objectMap["sasUri"] = wp.SasURI
+	}
+	if wp.ItemsSearchKey != nil {
+		objectMap["itemsSearchKey"] = wp.ItemsSearchKey
+	}
+	if wp.ContentType != nil {
+		objectMap["contentType"] = wp.ContentType
+	}
+	if wp.UploadStatus != nil {
+		objectMap["uploadStatus"] = wp.UploadStatus
+	}
+	return json.Marshal(objectMap)
 }
 
 // Webhook detail about the webhook object.

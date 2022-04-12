@@ -1650,6 +1650,25 @@ func PossibleProviderNameValues() []ProviderName {
 	return []ProviderName{ProviderNameMicrosoftaadiamdiagnosticSettings, ProviderNameMicrosoftAuthorizationpolicyAssignments, ProviderNameMicrosoftOperationalInsightssolutions, ProviderNameMicrosoftOperationalInsightsworkspaces, ProviderNameMicrosoftOperationalInsightsworkspacesdatasources, ProviderNameMicrosoftOperationalInsightsworkspacessharedKeys}
 }
 
+// ProvisioningState enumerates the values for provisioning state.
+type ProvisioningState string
+
+const (
+	// ProvisioningStateCanceled ...
+	ProvisioningStateCanceled ProvisioningState = "Canceled"
+	// ProvisioningStateFailed ...
+	ProvisioningStateFailed ProvisioningState = "Failed"
+	// ProvisioningStateInProgress ...
+	ProvisioningStateInProgress ProvisioningState = "InProgress"
+	// ProvisioningStateSucceeded ...
+	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
+)
+
+// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return []ProvisioningState{ProvisioningStateCanceled, ProvisioningStateFailed, ProvisioningStateInProgress, ProvisioningStateSucceeded}
+}
+
 // RegistryHive enumerates the values for registry hive.
 type RegistryHive string
 

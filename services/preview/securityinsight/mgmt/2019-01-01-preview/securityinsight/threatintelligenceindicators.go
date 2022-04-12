@@ -41,12 +41,12 @@ func NewThreatIntelligenceIndicatorsClientWithBaseURI(baseURI string, subscripti
 // Microsoft.OperationalInsights.
 // workspaceName - the name of the workspace.
 // filter - filters the results, based on a Boolean condition. Optional.
+// orderby - sorts the results. Optional.
 // top - returns only the first n results. Optional.
 // skipToken - skiptoken is only used if a previous operation returned a partial result. If a previous response
 // contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
 // specifies a starting point to use for subsequent calls. Optional.
-// orderby - sorts the results. Optional.
-func (client ThreatIntelligenceIndicatorsClient) List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, filter string, top *int32, skipToken string, orderby string) (result ThreatIntelligenceInformationListPage, err error) {
+func (client ThreatIntelligenceIndicatorsClient) List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, filter string, orderby string, top *int32, skipToken string) (result ThreatIntelligenceInformationListPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ThreatIntelligenceIndicatorsClient.List")
 		defer func() {
@@ -71,7 +71,7 @@ func (client ThreatIntelligenceIndicatorsClient) List(ctx context.Context, resou
 	}
 
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, resourceGroupName, operationalInsightsResourceProvider, workspaceName, filter, top, skipToken, orderby)
+	req, err := client.ListPreparer(ctx, resourceGroupName, operationalInsightsResourceProvider, workspaceName, filter, orderby, top, skipToken)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "securityinsight.ThreatIntelligenceIndicatorsClient", "List", nil, "Failure preparing request")
 		return
@@ -98,7 +98,7 @@ func (client ThreatIntelligenceIndicatorsClient) List(ctx context.Context, resou
 }
 
 // ListPreparer prepares the List request.
-func (client ThreatIntelligenceIndicatorsClient) ListPreparer(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, filter string, top *int32, skipToken string, orderby string) (*http.Request, error) {
+func (client ThreatIntelligenceIndicatorsClient) ListPreparer(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, filter string, orderby string, top *int32, skipToken string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"operationalInsightsResourceProvider": autorest.Encode("path", operationalInsightsResourceProvider),
 		"resourceGroupName":                   autorest.Encode("path", resourceGroupName),
@@ -113,14 +113,14 @@ func (client ThreatIntelligenceIndicatorsClient) ListPreparer(ctx context.Contex
 	if len(filter) > 0 {
 		queryParameters["$filter"] = autorest.Encode("query", filter)
 	}
+	if len(orderby) > 0 {
+		queryParameters["$orderby"] = autorest.Encode("query", orderby)
+	}
 	if top != nil {
 		queryParameters["$top"] = autorest.Encode("query", *top)
 	}
 	if len(skipToken) > 0 {
 		queryParameters["$skipToken"] = autorest.Encode("query", skipToken)
-	}
-	if len(orderby) > 0 {
-		queryParameters["$orderby"] = autorest.Encode("query", orderby)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -171,7 +171,7 @@ func (client ThreatIntelligenceIndicatorsClient) listNextResults(ctx context.Con
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ThreatIntelligenceIndicatorsClient) ListComplete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, filter string, top *int32, skipToken string, orderby string) (result ThreatIntelligenceInformationListIterator, err error) {
+func (client ThreatIntelligenceIndicatorsClient) ListComplete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, filter string, orderby string, top *int32, skipToken string) (result ThreatIntelligenceInformationListIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ThreatIntelligenceIndicatorsClient.List")
 		defer func() {
@@ -182,6 +182,6 @@ func (client ThreatIntelligenceIndicatorsClient) ListComplete(ctx context.Contex
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.List(ctx, resourceGroupName, operationalInsightsResourceProvider, workspaceName, filter, top, skipToken, orderby)
+	result.page, err = client.List(ctx, resourceGroupName, operationalInsightsResourceProvider, workspaceName, filter, orderby, top, skipToken)
 	return
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armmixedreality
 
 const (
 	moduleName    = "armmixedreality"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // CreatedByType - The type of identity that created the resource.
@@ -33,11 +33,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
-}
-
 // NameUnavailableReason - reason of name unavailable.
 type NameUnavailableReason string
 
@@ -52,11 +47,6 @@ func PossibleNameUnavailableReasonValues() []NameUnavailableReason {
 		NameUnavailableReasonAlreadyExists,
 		NameUnavailableReasonInvalid,
 	}
-}
-
-// ToPtr returns a *NameUnavailableReason pointing to the current value.
-func (c NameUnavailableReason) ToPtr() *NameUnavailableReason {
-	return &c
 }
 
 // SKUTier - This field is required to be implemented by the Resource Provider if the service has more than one tier, but
@@ -80,11 +70,6 @@ func PossibleSKUTierValues() []SKUTier {
 	}
 }
 
-// ToPtr returns a *SKUTier pointing to the current value.
-func (c SKUTier) ToPtr() *SKUTier {
-	return &c
-}
-
 // Serial - Serial of key to be regenerated
 type Serial int32
 
@@ -101,9 +86,4 @@ func PossibleSerialValues() []Serial {
 		SerialPrimary,
 		SerialSecondary,
 	}
-}
-
-// ToPtr returns a *Serial pointing to the current value.
-func (c Serial) ToPtr() *Serial {
-	return &c
 }

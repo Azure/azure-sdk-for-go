@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armapimanagement
 
 const (
 	moduleName    = "armapimanagement"
-	moduleVersion = "v0.3.1"
+	moduleVersion = "v0.4.0"
 )
 
 // APIManagementSKUCapacityScaleType - The scale type applicable to the sku.
@@ -31,11 +31,6 @@ func PossibleAPIManagementSKUCapacityScaleTypeValues() []APIManagementSKUCapacit
 	}
 }
 
-// ToPtr returns a *APIManagementSKUCapacityScaleType pointing to the current value.
-func (c APIManagementSKUCapacityScaleType) ToPtr() *APIManagementSKUCapacityScaleType {
-	return &c
-}
-
 // APIManagementSKURestrictionsReasonCode - The reason for restriction.
 type APIManagementSKURestrictionsReasonCode string
 
@@ -52,11 +47,6 @@ func PossibleAPIManagementSKURestrictionsReasonCodeValues() []APIManagementSKURe
 	}
 }
 
-// ToPtr returns a *APIManagementSKURestrictionsReasonCode pointing to the current value.
-func (c APIManagementSKURestrictionsReasonCode) ToPtr() *APIManagementSKURestrictionsReasonCode {
-	return &c
-}
-
 // APIManagementSKURestrictionsType - The type of restrictions.
 type APIManagementSKURestrictionsType string
 
@@ -71,11 +61,6 @@ func PossibleAPIManagementSKURestrictionsTypeValues() []APIManagementSKURestrict
 		APIManagementSKURestrictionsTypeLocation,
 		APIManagementSKURestrictionsTypeZone,
 	}
-}
-
-// ToPtr returns a *APIManagementSKURestrictionsType pointing to the current value.
-func (c APIManagementSKURestrictionsType) ToPtr() *APIManagementSKURestrictionsType {
-	return &c
 }
 
 // APIType - Type of API.
@@ -98,11 +83,6 @@ func PossibleAPITypeValues() []APIType {
 	}
 }
 
-// ToPtr returns a *APIType pointing to the current value.
-func (c APIType) ToPtr() *APIType {
-	return &c
-}
-
 // APIVersionSetContractDetailsVersioningScheme - An value that determines where the API Version identifier will be located
 // in a HTTP request.
 type APIVersionSetContractDetailsVersioningScheme string
@@ -122,11 +102,6 @@ func PossibleAPIVersionSetContractDetailsVersioningSchemeValues() []APIVersionSe
 	}
 }
 
-// ToPtr returns a *APIVersionSetContractDetailsVersioningScheme pointing to the current value.
-func (c APIVersionSetContractDetailsVersioningScheme) ToPtr() *APIVersionSetContractDetailsVersioningScheme {
-	return &c
-}
-
 type AccessIDName string
 
 const (
@@ -140,11 +115,6 @@ func PossibleAccessIDNameValues() []AccessIDName {
 		AccessIDNameAccess,
 		AccessIDNameGitAccess,
 	}
-}
-
-// ToPtr returns a *AccessIDName pointing to the current value.
-func (c AccessIDName) ToPtr() *AccessIDName {
-	return &c
 }
 
 // AccessType - The type of access to be used for the storage account.
@@ -168,11 +138,6 @@ func PossibleAccessTypeValues() []AccessType {
 	}
 }
 
-// ToPtr returns a *AccessType pointing to the current value.
-func (c AccessType) ToPtr() *AccessType {
-	return &c
-}
-
 // AlwaysLog - Specifies for what type of messages sampling settings should not apply.
 type AlwaysLog string
 
@@ -186,11 +151,6 @@ func PossibleAlwaysLogValues() []AlwaysLog {
 	return []AlwaysLog{
 		AlwaysLogAllErrors,
 	}
-}
-
-// ToPtr returns a *AlwaysLog pointing to the current value.
-func (c AlwaysLog) ToPtr() *AlwaysLog {
-	return &c
 }
 
 // ApimIdentityType - The type of identity used for the resource. The type 'SystemAssigned, UserAssigned' includes both an
@@ -215,11 +175,6 @@ func PossibleApimIdentityTypeValues() []ApimIdentityType {
 	}
 }
 
-// ToPtr returns a *ApimIdentityType pointing to the current value.
-func (c ApimIdentityType) ToPtr() *ApimIdentityType {
-	return &c
-}
-
 type AppType string
 
 const (
@@ -235,11 +190,6 @@ func PossibleAppTypeValues() []AppType {
 		AppTypeDeveloperPortal,
 		AppTypePortal,
 	}
-}
-
-// ToPtr returns a *AppType pointing to the current value.
-func (c AppType) ToPtr() *AppType {
-	return &c
 }
 
 // AsyncOperationStatus - Status of an async operation.
@@ -260,11 +210,6 @@ func PossibleAsyncOperationStatusValues() []AsyncOperationStatus {
 		AsyncOperationStatusSucceeded,
 		AsyncOperationStatusFailed,
 	}
-}
-
-// ToPtr returns a *AsyncOperationStatus pointing to the current value.
-func (c AsyncOperationStatus) ToPtr() *AsyncOperationStatus {
-	return &c
 }
 
 type AuthorizationMethod string
@@ -294,11 +239,6 @@ func PossibleAuthorizationMethodValues() []AuthorizationMethod {
 	}
 }
 
-// ToPtr returns a *AuthorizationMethod pointing to the current value.
-func (c AuthorizationMethod) ToPtr() *AuthorizationMethod {
-	return &c
-}
-
 // BackendProtocol - Backend communication protocol.
 type BackendProtocol string
 
@@ -317,11 +257,6 @@ func PossibleBackendProtocolValues() []BackendProtocol {
 	}
 }
 
-// ToPtr returns a *BackendProtocol pointing to the current value.
-func (c BackendProtocol) ToPtr() *BackendProtocol {
-	return &c
-}
-
 type BearerTokenSendingMethod string
 
 const (
@@ -335,11 +270,6 @@ func PossibleBearerTokenSendingMethodValues() []BearerTokenSendingMethod {
 		BearerTokenSendingMethodAuthorizationHeader,
 		BearerTokenSendingMethodQuery,
 	}
-}
-
-// ToPtr returns a *BearerTokenSendingMethod pointing to the current value.
-func (c BearerTokenSendingMethod) ToPtr() *BearerTokenSendingMethod {
-	return &c
 }
 
 // BearerTokenSendingMethods - Form of an authorization grant, which the client uses to request the access token.
@@ -361,11 +291,6 @@ func PossibleBearerTokenSendingMethodsValues() []BearerTokenSendingMethods {
 	}
 }
 
-// ToPtr returns a *BearerTokenSendingMethods pointing to the current value.
-func (c BearerTokenSendingMethods) ToPtr() *BearerTokenSendingMethods {
-	return &c
-}
-
 // CertificateConfigurationStoreName - The System.Security.Cryptography.x509certificates.StoreName certificate store location.
 // Only Root and CertificateAuthority are valid locations.
 type CertificateConfigurationStoreName string
@@ -381,11 +306,6 @@ func PossibleCertificateConfigurationStoreNameValues() []CertificateConfiguratio
 		CertificateConfigurationStoreNameCertificateAuthority,
 		CertificateConfigurationStoreNameRoot,
 	}
-}
-
-// ToPtr returns a *CertificateConfigurationStoreName pointing to the current value.
-func (c CertificateConfigurationStoreName) ToPtr() *CertificateConfigurationStoreName {
-	return &c
 }
 
 // CertificateSource - Certificate Source.
@@ -408,11 +328,6 @@ func PossibleCertificateSourceValues() []CertificateSource {
 	}
 }
 
-// ToPtr returns a *CertificateSource pointing to the current value.
-func (c CertificateSource) ToPtr() *CertificateSource {
-	return &c
-}
-
 // CertificateStatus - Certificate Status.
 type CertificateStatus string
 
@@ -429,11 +344,6 @@ func PossibleCertificateStatusValues() []CertificateStatus {
 		CertificateStatusFailed,
 		CertificateStatusInProgress,
 	}
-}
-
-// ToPtr returns a *CertificateStatus pointing to the current value.
-func (c CertificateStatus) ToPtr() *CertificateStatus {
-	return &c
 }
 
 type ClientAuthenticationMethod string
@@ -453,11 +363,6 @@ func PossibleClientAuthenticationMethodValues() []ClientAuthenticationMethod {
 	}
 }
 
-// ToPtr returns a *ClientAuthenticationMethod pointing to the current value.
-func (c ClientAuthenticationMethod) ToPtr() *ClientAuthenticationMethod {
-	return &c
-}
-
 type ConfigurationIDName string
 
 const (
@@ -469,11 +374,6 @@ func PossibleConfigurationIDNameValues() []ConfigurationIDName {
 	return []ConfigurationIDName{
 		ConfigurationIDNameConfiguration,
 	}
-}
-
-// ToPtr returns a *ConfigurationIDName pointing to the current value.
-func (c ConfigurationIDName) ToPtr() *ConfigurationIDName {
-	return &c
 }
 
 // Confirmation - Determines the type of confirmation e-mail that will be sent to the newly created user.
@@ -492,11 +392,6 @@ func PossibleConfirmationValues() []Confirmation {
 		ConfirmationInvite,
 		ConfirmationSignup,
 	}
-}
-
-// ToPtr returns a *Confirmation pointing to the current value.
-func (c Confirmation) ToPtr() *Confirmation {
-	return &c
 }
 
 // ConnectionStatus - The connection status.
@@ -519,11 +414,6 @@ func PossibleConnectionStatusValues() []ConnectionStatus {
 	}
 }
 
-// ToPtr returns a *ConnectionStatus pointing to the current value.
-func (c ConnectionStatus) ToPtr() *ConnectionStatus {
-	return &c
-}
-
 // ConnectivityCheckProtocol - The request's protocol. Specific protocol configuration can be available based on this selection.
 // The specified destination address must be coherent with this value.
 type ConnectivityCheckProtocol string
@@ -543,11 +433,6 @@ func PossibleConnectivityCheckProtocolValues() []ConnectivityCheckProtocol {
 	}
 }
 
-// ToPtr returns a *ConnectivityCheckProtocol pointing to the current value.
-func (c ConnectivityCheckProtocol) ToPtr() *ConnectivityCheckProtocol {
-	return &c
-}
-
 // ConnectivityStatusType - Resource Connectivity Status Type identifier.
 type ConnectivityStatusType string
 
@@ -564,11 +449,6 @@ func PossibleConnectivityStatusTypeValues() []ConnectivityStatusType {
 		ConnectivityStatusTypeInitializing,
 		ConnectivityStatusTypeSuccess,
 	}
-}
-
-// ToPtr returns a *ConnectivityStatusType pointing to the current value.
-func (c ConnectivityStatusType) ToPtr() *ConnectivityStatusType {
-	return &c
 }
 
 // ContentFormat - Format of the Content in which the API is getting imported.
@@ -616,11 +496,6 @@ func PossibleContentFormatValues() []ContentFormat {
 	}
 }
 
-// ToPtr returns a *ContentFormat pointing to the current value.
-func (c ContentFormat) ToPtr() *ContentFormat {
-	return &c
-}
-
 // CreatedByType - The type of identity that created the resource.
 type CreatedByType string
 
@@ -641,11 +516,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
-}
-
 // DataMaskingMode - Data masking mode.
 type DataMaskingMode string
 
@@ -664,11 +534,6 @@ func PossibleDataMaskingModeValues() []DataMaskingMode {
 	}
 }
 
-// ToPtr returns a *DataMaskingMode pointing to the current value.
-func (c DataMaskingMode) ToPtr() *DataMaskingMode {
-	return &c
-}
-
 type ExportAPI string
 
 const (
@@ -680,11 +545,6 @@ func PossibleExportAPIValues() []ExportAPI {
 	return []ExportAPI{
 		ExportAPITrue,
 	}
-}
-
-// ToPtr returns a *ExportAPI pointing to the current value.
-func (c ExportAPI) ToPtr() *ExportAPI {
-	return &c
 }
 
 type ExportFormat string
@@ -713,11 +573,6 @@ func PossibleExportFormatValues() []ExportFormat {
 	}
 }
 
-// ToPtr returns a *ExportFormat pointing to the current value.
-func (c ExportFormat) ToPtr() *ExportFormat {
-	return &c
-}
-
 // ExportResultFormat - Format in which the API Details are exported to the Storage Blob with Sas Key valid for 5 minutes.
 type ExportResultFormat string
 
@@ -743,11 +598,6 @@ func PossibleExportResultFormatValues() []ExportResultFormat {
 	}
 }
 
-// ToPtr returns a *ExportResultFormat pointing to the current value.
-func (c ExportResultFormat) ToPtr() *ExportResultFormat {
-	return &c
-}
-
 type GrantType string
 
 const (
@@ -771,11 +621,6 @@ func PossibleGrantTypeValues() []GrantType {
 	}
 }
 
-// ToPtr returns a *GrantType pointing to the current value.
-func (c GrantType) ToPtr() *GrantType {
-	return &c
-}
-
 // GroupType - Group type.
 type GroupType string
 
@@ -792,11 +637,6 @@ func PossibleGroupTypeValues() []GroupType {
 		GroupTypeSystem,
 		GroupTypeExternal,
 	}
-}
-
-// ToPtr returns a *GroupType pointing to the current value.
-func (c GroupType) ToPtr() *GroupType {
-	return &c
 }
 
 // HTTPCorrelationProtocol - Sets correlation protocol to use for Application Insights diagnostics.
@@ -820,11 +660,6 @@ func PossibleHTTPCorrelationProtocolValues() []HTTPCorrelationProtocol {
 	}
 }
 
-// ToPtr returns a *HTTPCorrelationProtocol pointing to the current value.
-func (c HTTPCorrelationProtocol) ToPtr() *HTTPCorrelationProtocol {
-	return &c
-}
-
 // HostnameType - Hostname type.
 type HostnameType string
 
@@ -845,11 +680,6 @@ func PossibleHostnameTypeValues() []HostnameType {
 		HostnameTypeProxy,
 		HostnameTypeScm,
 	}
-}
-
-// ToPtr returns a *HostnameType pointing to the current value.
-func (c HostnameType) ToPtr() *HostnameType {
-	return &c
 }
 
 type IdentityProviderType string
@@ -879,11 +709,6 @@ func PossibleIdentityProviderTypeValues() []IdentityProviderType {
 		IdentityProviderTypeMicrosoft,
 		IdentityProviderTypeTwitter,
 	}
-}
-
-// ToPtr returns a *IdentityProviderType pointing to the current value.
-func (c IdentityProviderType) ToPtr() *IdentityProviderType {
-	return &c
 }
 
 // IssueType - The type of issue.
@@ -916,11 +741,6 @@ func PossibleIssueTypeValues() []IssueType {
 	}
 }
 
-// ToPtr returns a *IssueType pointing to the current value.
-func (c IssueType) ToPtr() *IssueType {
-	return &c
-}
-
 // KeyType - The Key to be used to generate token for user.
 type KeyType string
 
@@ -935,11 +755,6 @@ func PossibleKeyTypeValues() []KeyType {
 		KeyTypePrimary,
 		KeyTypeSecondary,
 	}
-}
-
-// ToPtr returns a *KeyType pointing to the current value.
-func (c KeyType) ToPtr() *KeyType {
-	return &c
 }
 
 // LoggerType - Logger type.
@@ -963,11 +778,6 @@ func PossibleLoggerTypeValues() []LoggerType {
 	}
 }
 
-// ToPtr returns a *LoggerType pointing to the current value.
-func (c LoggerType) ToPtr() *LoggerType {
-	return &c
-}
-
 // Method - The HTTP method to be used.
 type Method string
 
@@ -982,11 +792,6 @@ func PossibleMethodValues() []Method {
 		MethodGET,
 		MethodPOST,
 	}
-}
-
-// ToPtr returns a *Method pointing to the current value.
-func (c Method) ToPtr() *Method {
-	return &c
 }
 
 // NameAvailabilityReason - Invalid indicates the name provided does not match the resource provider’s naming requirements
@@ -1007,11 +812,6 @@ func PossibleNameAvailabilityReasonValues() []NameAvailabilityReason {
 		NameAvailabilityReasonInvalid,
 		NameAvailabilityReasonAlreadyExists,
 	}
-}
-
-// ToPtr returns a *NameAvailabilityReason pointing to the current value.
-func (c NameAvailabilityReason) ToPtr() *NameAvailabilityReason {
-	return &c
 }
 
 type NotificationName string
@@ -1052,11 +852,6 @@ func PossibleNotificationNameValues() []NotificationName {
 	}
 }
 
-// ToPtr returns a *NotificationName pointing to the current value.
-func (c NotificationName) ToPtr() *NotificationName {
-	return &c
-}
-
 // OperationNameFormat - The format of the Operation Name for Application Insights telemetries. Default is Name.
 type OperationNameFormat string
 
@@ -1075,11 +870,6 @@ func PossibleOperationNameFormatValues() []OperationNameFormat {
 	}
 }
 
-// ToPtr returns a *OperationNameFormat pointing to the current value.
-func (c OperationNameFormat) ToPtr() *OperationNameFormat {
-	return &c
-}
-
 // Origin - The origin of the issue.
 type Origin string
 
@@ -1096,11 +886,6 @@ func PossibleOriginValues() []Origin {
 		OriginLocal,
 		OriginOutbound,
 	}
-}
-
-// ToPtr returns a *Origin pointing to the current value.
-func (c Origin) ToPtr() *Origin {
-	return &c
 }
 
 // PlatformVersion - Compute Platform Version running the service.
@@ -1125,11 +910,6 @@ func PossiblePlatformVersionValues() []PlatformVersion {
 		PlatformVersionStv2,
 		PlatformVersionUndetermined,
 	}
-}
-
-// ToPtr returns a *PlatformVersion pointing to the current value.
-func (c PlatformVersion) ToPtr() *PlatformVersion {
-	return &c
 }
 
 // PolicyContentFormat - Format of the policyContent.
@@ -1157,11 +937,6 @@ func PossiblePolicyContentFormatValues() []PolicyContentFormat {
 	}
 }
 
-// ToPtr returns a *PolicyContentFormat pointing to the current value.
-func (c PolicyContentFormat) ToPtr() *PolicyContentFormat {
-	return &c
-}
-
 type PolicyExportFormat string
 
 const (
@@ -1179,11 +954,6 @@ func PossiblePolicyExportFormatValues() []PolicyExportFormat {
 	}
 }
 
-// ToPtr returns a *PolicyExportFormat pointing to the current value.
-func (c PolicyExportFormat) ToPtr() *PolicyExportFormat {
-	return &c
-}
-
 type PolicyIDName string
 
 const (
@@ -1195,11 +965,6 @@ func PossiblePolicyIDNameValues() []PolicyIDName {
 	return []PolicyIDName{
 		PolicyIDNamePolicy,
 	}
-}
-
-// ToPtr returns a *PolicyIDName pointing to the current value.
-func (c PolicyIDName) ToPtr() *PolicyIDName {
-	return &c
 }
 
 type PolicyScopeContract string
@@ -1221,11 +986,6 @@ func PossiblePolicyScopeContractValues() []PolicyScopeContract {
 		PolicyScopeContractOperation,
 		PolicyScopeContractAll,
 	}
-}
-
-// ToPtr returns a *PolicyScopeContract pointing to the current value.
-func (c PolicyScopeContract) ToPtr() *PolicyScopeContract {
-	return &c
 }
 
 // PortalRevisionStatus - Status of the portal's revision.
@@ -1252,11 +1012,6 @@ func PossiblePortalRevisionStatusValues() []PortalRevisionStatus {
 	}
 }
 
-// ToPtr returns a *PortalRevisionStatus pointing to the current value.
-func (c PortalRevisionStatus) ToPtr() *PortalRevisionStatus {
-	return &c
-}
-
 // PreferredIPVersion - The IP version to be used. Only IPv4 is supported for now.
 type PreferredIPVersion string
 
@@ -1269,11 +1024,6 @@ func PossiblePreferredIPVersionValues() []PreferredIPVersion {
 	return []PreferredIPVersion{
 		PreferredIPVersionIPv4,
 	}
-}
-
-// ToPtr returns a *PreferredIPVersion pointing to the current value.
-func (c PreferredIPVersion) ToPtr() *PreferredIPVersion {
-	return &c
 }
 
 // PrivateEndpointConnectionProvisioningState - The current provisioning state.
@@ -1296,11 +1046,6 @@ func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpoin
 	}
 }
 
-// ToPtr returns a *PrivateEndpointConnectionProvisioningState pointing to the current value.
-func (c PrivateEndpointConnectionProvisioningState) ToPtr() *PrivateEndpointConnectionProvisioningState {
-	return &c
-}
-
 // PrivateEndpointServiceConnectionStatus - The private endpoint connection status.
 type PrivateEndpointServiceConnectionStatus string
 
@@ -1319,11 +1064,6 @@ func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointSer
 	}
 }
 
-// ToPtr returns a *PrivateEndpointServiceConnectionStatus pointing to the current value.
-func (c PrivateEndpointServiceConnectionStatus) ToPtr() *PrivateEndpointServiceConnectionStatus {
-	return &c
-}
-
 // ProductState - whether product is published or not. Published products are discoverable by users of developer portal. Non
 // published products are visible only to administrators. Default state of Product is
 // notPublished.
@@ -1340,11 +1080,6 @@ func PossibleProductStateValues() []ProductState {
 		ProductStateNotPublished,
 		ProductStatePublished,
 	}
-}
-
-// ToPtr returns a *ProductState pointing to the current value.
-func (c ProductState) ToPtr() *ProductState {
-	return &c
 }
 
 type Protocol string
@@ -1366,11 +1101,6 @@ func PossibleProtocolValues() []Protocol {
 	}
 }
 
-// ToPtr returns a *Protocol pointing to the current value.
-func (c Protocol) ToPtr() *Protocol {
-	return &c
-}
-
 // PublicNetworkAccess - Whether or not public endpoint access is allowed for this API Management service. Value is optional
 // but if passed in, must be 'Enabled' or 'Disabled'. If 'Disabled', private endpoints are the
 // exclusive access method. Default value is 'Enabled'
@@ -1387,11 +1117,6 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 		PublicNetworkAccessDisabled,
 		PublicNetworkAccessEnabled,
 	}
-}
-
-// ToPtr returns a *PublicNetworkAccess pointing to the current value.
-func (c PublicNetworkAccess) ToPtr() *PublicNetworkAccess {
-	return &c
 }
 
 // ResourceSKUCapacityScaleType - The scale type applicable to the sku.
@@ -1413,11 +1138,6 @@ func PossibleResourceSKUCapacityScaleTypeValues() []ResourceSKUCapacityScaleType
 		ResourceSKUCapacityScaleTypeManual,
 		ResourceSKUCapacityScaleTypeNone,
 	}
-}
-
-// ToPtr returns a *ResourceSKUCapacityScaleType pointing to the current value.
-func (c ResourceSKUCapacityScaleType) ToPtr() *ResourceSKUCapacityScaleType {
-	return &c
 }
 
 // SKUType - Name of the Sku.
@@ -1450,11 +1170,6 @@ func PossibleSKUTypeValues() []SKUType {
 	}
 }
 
-// ToPtr returns a *SKUType pointing to the current value.
-func (c SKUType) ToPtr() *SKUType {
-	return &c
-}
-
 // SamplingType - Sampling type.
 type SamplingType string
 
@@ -1468,11 +1183,6 @@ func PossibleSamplingTypeValues() []SamplingType {
 	return []SamplingType{
 		SamplingTypeFixed,
 	}
-}
-
-// ToPtr returns a *SamplingType pointing to the current value.
-func (c SamplingType) ToPtr() *SamplingType {
-	return &c
 }
 
 // SchemaType - Schema Type. Immutable.
@@ -1493,11 +1203,6 @@ func PossibleSchemaTypeValues() []SchemaType {
 	}
 }
 
-// ToPtr returns a *SchemaType pointing to the current value.
-func (c SchemaType) ToPtr() *SchemaType {
-	return &c
-}
-
 type SettingsTypeName string
 
 const (
@@ -1509,11 +1214,6 @@ func PossibleSettingsTypeNameValues() []SettingsTypeName {
 	return []SettingsTypeName{
 		SettingsTypeNamePublic,
 	}
-}
-
-// ToPtr returns a *SettingsTypeName pointing to the current value.
-func (c SettingsTypeName) ToPtr() *SettingsTypeName {
-	return &c
 }
 
 // Severity - The severity of the issue.
@@ -1530,11 +1230,6 @@ func PossibleSeverityValues() []Severity {
 		SeverityError,
 		SeverityWarning,
 	}
-}
-
-// ToPtr returns a *Severity pointing to the current value.
-func (c Severity) ToPtr() *Severity {
-	return &c
 }
 
 // SoapAPIType - Type of API to create.
@@ -1565,11 +1260,6 @@ func PossibleSoapAPITypeValues() []SoapAPIType {
 	}
 }
 
-// ToPtr returns a *SoapAPIType pointing to the current value.
-func (c SoapAPIType) ToPtr() *SoapAPIType {
-	return &c
-}
-
 // State - Status of the issue.
 type State string
 
@@ -1595,11 +1285,6 @@ func PossibleStateValues() []State {
 		StateRemoved,
 		StateResolved,
 	}
-}
-
-// ToPtr returns a *State pointing to the current value.
-func (c State) ToPtr() *State {
-	return &c
 }
 
 // SubscriptionState - Subscription state. Possible states are * active – the subscription is active, * suspended – the subscription
@@ -1629,11 +1314,6 @@ func PossibleSubscriptionStateValues() []SubscriptionState {
 		SubscriptionStateRejected,
 		SubscriptionStateCancelled,
 	}
-}
-
-// ToPtr returns a *SubscriptionState pointing to the current value.
-func (c SubscriptionState) ToPtr() *SubscriptionState {
-	return &c
 }
 
 type TemplateName string
@@ -1675,11 +1355,6 @@ func PossibleTemplateNameValues() []TemplateName {
 	}
 }
 
-// ToPtr returns a *TemplateName pointing to the current value.
-func (c TemplateName) ToPtr() *TemplateName {
-	return &c
-}
-
 // UserState - Account state. Specifies whether the user is active or not. Blocked users are unable to sign into the developer
 // portal or call any APIs of subscribed products. Default state is Active.
 type UserState string
@@ -1705,11 +1380,6 @@ func PossibleUserStateValues() []UserState {
 	}
 }
 
-// ToPtr returns a *UserState pointing to the current value.
-func (c UserState) ToPtr() *UserState {
-	return &c
-}
-
 // Verbosity - The verbosity level applied to traces emitted by trace policies.
 type Verbosity string
 
@@ -1732,11 +1402,6 @@ func PossibleVerbosityValues() []Verbosity {
 	}
 }
 
-// ToPtr returns a *Verbosity pointing to the current value.
-func (c Verbosity) ToPtr() *Verbosity {
-	return &c
-}
-
 // VersioningScheme - An value that determines where the API Version identifier will be located in a HTTP request.
 type VersioningScheme string
 
@@ -1756,11 +1421,6 @@ func PossibleVersioningSchemeValues() []VersioningScheme {
 		VersioningSchemeQuery,
 		VersioningSchemeSegment,
 	}
-}
-
-// ToPtr returns a *VersioningScheme pointing to the current value.
-func (c VersioningScheme) ToPtr() *VersioningScheme {
-	return &c
 }
 
 // VirtualNetworkType - The type of VPN in which API Management service needs to be configured in. None (Default Value) means
@@ -1786,9 +1446,4 @@ func PossibleVirtualNetworkTypeValues() []VirtualNetworkType {
 		VirtualNetworkTypeInternal,
 		VirtualNetworkTypeNone,
 	}
-}
-
-// ToPtr returns a *VirtualNetworkType pointing to the current value.
-func (c VirtualNetworkType) ToPtr() *VirtualNetworkType {
-	return &c
 }

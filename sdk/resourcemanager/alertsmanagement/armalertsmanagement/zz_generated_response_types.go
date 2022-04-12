@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,17 +8,8 @@
 
 package armalertsmanagement
 
-import "net/http"
-
 // AlertProcessingRulesClientCreateOrUpdateResponse contains the response from method AlertProcessingRulesClient.CreateOrUpdate.
 type AlertProcessingRulesClientCreateOrUpdateResponse struct {
-	AlertProcessingRulesClientCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AlertProcessingRulesClientCreateOrUpdateResult contains the result from method AlertProcessingRulesClient.CreateOrUpdate.
-type AlertProcessingRulesClientCreateOrUpdateResult struct {
 	AlertProcessingRule
 	// XMSRequestID contains the information returned from the x-ms-request-id header response.
 	XMSRequestID *string
@@ -26,26 +17,12 @@ type AlertProcessingRulesClientCreateOrUpdateResult struct {
 
 // AlertProcessingRulesClientDeleteResponse contains the response from method AlertProcessingRulesClient.Delete.
 type AlertProcessingRulesClientDeleteResponse struct {
-	AlertProcessingRulesClientDeleteResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AlertProcessingRulesClientDeleteResult contains the result from method AlertProcessingRulesClient.Delete.
-type AlertProcessingRulesClientDeleteResult struct {
 	// XMSRequestID contains the information returned from the x-ms-request-id header response.
 	XMSRequestID *string
 }
 
 // AlertProcessingRulesClientGetByNameResponse contains the response from method AlertProcessingRulesClient.GetByName.
 type AlertProcessingRulesClientGetByNameResponse struct {
-	AlertProcessingRulesClientGetByNameResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AlertProcessingRulesClientGetByNameResult contains the result from method AlertProcessingRulesClient.GetByName.
-type AlertProcessingRulesClientGetByNameResult struct {
 	AlertProcessingRule
 	// XMSRequestID contains the information returned from the x-ms-request-id header response.
 	XMSRequestID *string
@@ -53,13 +30,6 @@ type AlertProcessingRulesClientGetByNameResult struct {
 
 // AlertProcessingRulesClientListByResourceGroupResponse contains the response from method AlertProcessingRulesClient.ListByResourceGroup.
 type AlertProcessingRulesClientListByResourceGroupResponse struct {
-	AlertProcessingRulesClientListByResourceGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AlertProcessingRulesClientListByResourceGroupResult contains the result from method AlertProcessingRulesClient.ListByResourceGroup.
-type AlertProcessingRulesClientListByResourceGroupResult struct {
 	AlertProcessingRulesList
 	// XMSRequestID contains the information returned from the x-ms-request-id header response.
 	XMSRequestID *string
@@ -67,13 +37,6 @@ type AlertProcessingRulesClientListByResourceGroupResult struct {
 
 // AlertProcessingRulesClientListBySubscriptionResponse contains the response from method AlertProcessingRulesClient.ListBySubscription.
 type AlertProcessingRulesClientListBySubscriptionResponse struct {
-	AlertProcessingRulesClientListBySubscriptionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AlertProcessingRulesClientListBySubscriptionResult contains the result from method AlertProcessingRulesClient.ListBySubscription.
-type AlertProcessingRulesClientListBySubscriptionResult struct {
 	AlertProcessingRulesList
 	// XMSRequestID contains the information returned from the x-ms-request-id header response.
 	XMSRequestID *string
@@ -81,13 +44,6 @@ type AlertProcessingRulesClientListBySubscriptionResult struct {
 
 // AlertProcessingRulesClientUpdateResponse contains the response from method AlertProcessingRulesClient.Update.
 type AlertProcessingRulesClientUpdateResponse struct {
-	AlertProcessingRulesClientUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AlertProcessingRulesClientUpdateResult contains the result from method AlertProcessingRulesClient.Update.
-type AlertProcessingRulesClientUpdateResult struct {
 	AlertProcessingRule
 	// XMSRequestID contains the information returned from the x-ms-request-id header response.
 	XMSRequestID *string
@@ -95,97 +51,41 @@ type AlertProcessingRulesClientUpdateResult struct {
 
 // AlertsClientChangeStateResponse contains the response from method AlertsClient.ChangeState.
 type AlertsClientChangeStateResponse struct {
-	AlertsClientChangeStateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AlertsClientChangeStateResult contains the result from method AlertsClient.ChangeState.
-type AlertsClientChangeStateResult struct {
 	Alert
 }
 
 // AlertsClientGetAllResponse contains the response from method AlertsClient.GetAll.
 type AlertsClientGetAllResponse struct {
-	AlertsClientGetAllResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AlertsClientGetAllResult contains the result from method AlertsClient.GetAll.
-type AlertsClientGetAllResult struct {
 	AlertsList
 }
 
 // AlertsClientGetByIDResponse contains the response from method AlertsClient.GetByID.
 type AlertsClientGetByIDResponse struct {
-	AlertsClientGetByIDResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AlertsClientGetByIDResult contains the result from method AlertsClient.GetByID.
-type AlertsClientGetByIDResult struct {
 	Alert
 }
 
 // AlertsClientGetHistoryResponse contains the response from method AlertsClient.GetHistory.
 type AlertsClientGetHistoryResponse struct {
-	AlertsClientGetHistoryResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AlertsClientGetHistoryResult contains the result from method AlertsClient.GetHistory.
-type AlertsClientGetHistoryResult struct {
 	AlertModification
 }
 
 // AlertsClientGetSummaryResponse contains the response from method AlertsClient.GetSummary.
 type AlertsClientGetSummaryResponse struct {
-	AlertsClientGetSummaryResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AlertsClientGetSummaryResult contains the result from method AlertsClient.GetSummary.
-type AlertsClientGetSummaryResult struct {
 	AlertsSummary
 }
 
 // AlertsClientMetaDataResponse contains the response from method AlertsClient.MetaData.
 type AlertsClientMetaDataResponse struct {
-	AlertsClientMetaDataResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AlertsClientMetaDataResult contains the result from method AlertsClient.MetaData.
-type AlertsClientMetaDataResult struct {
 	AlertsMetaData
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.List.
 type OperationsClientListResponse struct {
-	OperationsClientListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// OperationsClientListResult contains the result from method OperationsClient.List.
-type OperationsClientListResult struct {
 	OperationsList
 }
 
 // SmartGroupsClientChangeStateResponse contains the response from method SmartGroupsClient.ChangeState.
 type SmartGroupsClientChangeStateResponse struct {
-	SmartGroupsClientChangeStateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SmartGroupsClientChangeStateResult contains the result from method SmartGroupsClient.ChangeState.
-type SmartGroupsClientChangeStateResult struct {
 	SmartGroup
 	// XMSRequestID contains the information returned from the x-ms-request-id header response.
 	XMSRequestID *string
@@ -193,25 +93,11 @@ type SmartGroupsClientChangeStateResult struct {
 
 // SmartGroupsClientGetAllResponse contains the response from method SmartGroupsClient.GetAll.
 type SmartGroupsClientGetAllResponse struct {
-	SmartGroupsClientGetAllResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SmartGroupsClientGetAllResult contains the result from method SmartGroupsClient.GetAll.
-type SmartGroupsClientGetAllResult struct {
 	SmartGroupsList
 }
 
 // SmartGroupsClientGetByIDResponse contains the response from method SmartGroupsClient.GetByID.
 type SmartGroupsClientGetByIDResponse struct {
-	SmartGroupsClientGetByIDResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SmartGroupsClientGetByIDResult contains the result from method SmartGroupsClient.GetByID.
-type SmartGroupsClientGetByIDResult struct {
 	SmartGroup
 	// XMSRequestID contains the information returned from the x-ms-request-id header response.
 	XMSRequestID *string
@@ -219,12 +105,5 @@ type SmartGroupsClientGetByIDResult struct {
 
 // SmartGroupsClientGetHistoryResponse contains the response from method SmartGroupsClient.GetHistory.
 type SmartGroupsClientGetHistoryResponse struct {
-	SmartGroupsClientGetHistoryResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SmartGroupsClientGetHistoryResult contains the result from method SmartGroupsClient.GetHistory.
-type SmartGroupsClientGetHistoryResult struct {
 	SmartGroupModification
 }

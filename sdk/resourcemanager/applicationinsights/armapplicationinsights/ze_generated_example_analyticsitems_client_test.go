@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,90 +17,117 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsights/armapplicationinsights"
 )
 
-// x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/AnalyticsItemList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/AnalyticsItemList.json
 func ExampleAnalyticsItemsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armapplicationinsights.NewAnalyticsItemsClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewAnalyticsItemsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.List(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
-		armapplicationinsights.ItemScopePath("analyticsItems"),
+		armapplicationinsights.ItemScopePathAnalyticsItems,
 		&armapplicationinsights.AnalyticsItemsClientListOptions{Scope: nil,
 			Type:           nil,
 			IncludeContent: nil,
 		})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.AnalyticsItemsClientListResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/AnalyticsItemGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/AnalyticsItemGet.json
 func ExampleAnalyticsItemsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armapplicationinsights.NewAnalyticsItemsClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewAnalyticsItemsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
-		armapplicationinsights.ItemScopePath("analyticsItems"),
-		&armapplicationinsights.AnalyticsItemsClientGetOptions{ID: to.StringPtr("<id>"),
+		armapplicationinsights.ItemScopePathAnalyticsItems,
+		&armapplicationinsights.AnalyticsItemsClientGetOptions{ID: to.Ptr("<id>"),
 			Name: nil,
 		})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.AnalyticsItemsClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/AnalyticsItemPut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/AnalyticsItemPut.json
 func ExampleAnalyticsItemsClient_Put() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armapplicationinsights.NewAnalyticsItemsClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewAnalyticsItemsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Put(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
-		armapplicationinsights.ItemScopePath("analyticsItems"),
+		armapplicationinsights.ItemScopePathAnalyticsItems,
 		armapplicationinsights.ComponentAnalyticsItem{
-			Content: to.StringPtr("<content>"),
-			Name:    to.StringPtr("<name>"),
-			Scope:   armapplicationinsights.ItemScope("shared").ToPtr(),
-			Type:    armapplicationinsights.ItemType("query").ToPtr(),
+			Content: to.Ptr("<content>"),
+			Name:    to.Ptr("<name>"),
+			Scope:   to.Ptr(armapplicationinsights.ItemScopeShared),
+			Type:    to.Ptr(armapplicationinsights.ItemTypeQuery),
 		},
 		&armapplicationinsights.AnalyticsItemsClientPutOptions{OverrideItem: nil})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.AnalyticsItemsClientPutResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/AnalyticsItemDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/AnalyticsItemDelete.json
 func ExampleAnalyticsItemsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armapplicationinsights.NewAnalyticsItemsClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewAnalyticsItemsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Delete(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
-		armapplicationinsights.ItemScopePath("analyticsItems"),
-		&armapplicationinsights.AnalyticsItemsClientDeleteOptions{ID: to.StringPtr("<id>"),
+		armapplicationinsights.ItemScopePathAnalyticsItems,
+		&armapplicationinsights.AnalyticsItemsClientDeleteOptions{ID: to.Ptr("<id>"),
 			Name: nil,
 		})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }

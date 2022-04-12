@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type PlansClient struct {
 // subscriptionID - Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewPlansClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PlansClient {
+func NewPlansClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PlansClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &PlansClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Description for Creates or updates an App Service Plan.
@@ -57,22 +62,16 @@ func NewPlansClient(subscriptionID string, credential azcore.TokenCredential, op
 // appServicePlan - Details of the App Service plan.
 // options - PlansClientBeginCreateOrUpdateOptions contains the optional parameters for the PlansClient.BeginCreateOrUpdate
 // method.
-func (client *PlansClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, name string, appServicePlan Plan, options *PlansClientBeginCreateOrUpdateOptions) (PlansClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, name, appServicePlan, options)
-	if err != nil {
-		return PlansClientCreateOrUpdatePollerResponse{}, err
+func (client *PlansClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, name string, appServicePlan Plan, options *PlansClientBeginCreateOrUpdateOptions) (*armruntime.Poller[PlansClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, name, appServicePlan, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[PlansClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[PlansClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := PlansClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("PlansClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return PlansClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &PlansClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Description for Creates or updates an App Service Plan.
@@ -178,7 +177,7 @@ func (client *PlansClient) createOrUpdateVnetRouteCreateRequest(ctx context.Cont
 
 // createOrUpdateVnetRouteHandleResponse handles the CreateOrUpdateVnetRoute response.
 func (client *PlansClient) createOrUpdateVnetRouteHandleResponse(resp *http.Response) (PlansClientCreateOrUpdateVnetRouteResponse, error) {
-	result := PlansClientCreateOrUpdateVnetRouteResponse{RawResponse: resp}
+	result := PlansClientCreateOrUpdateVnetRouteResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VnetRoute); err != nil {
 		return PlansClientCreateOrUpdateVnetRouteResponse{}, err
 	}
@@ -202,7 +201,7 @@ func (client *PlansClient) Delete(ctx context.Context, resourceGroupName string,
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return PlansClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return PlansClientDeleteResponse{RawResponse: resp}, nil
+	return PlansClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -251,7 +250,7 @@ func (client *PlansClient) DeleteHybridConnection(ctx context.Context, resourceG
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return PlansClientDeleteHybridConnectionResponse{}, runtime.NewResponseError(resp)
 	}
-	return PlansClientDeleteHybridConnectionResponse{RawResponse: resp}, nil
+	return PlansClientDeleteHybridConnectionResponse{}, nil
 }
 
 // deleteHybridConnectionCreateRequest creates the DeleteHybridConnection request.
@@ -307,7 +306,7 @@ func (client *PlansClient) DeleteVnetRoute(ctx context.Context, resourceGroupNam
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return PlansClientDeleteVnetRouteResponse{}, runtime.NewResponseError(resp)
 	}
-	return PlansClientDeleteVnetRouteResponse{RawResponse: resp}, nil
+	return PlansClientDeleteVnetRouteResponse{}, nil
 }
 
 // deleteVnetRouteCreateRequest creates the DeleteVnetRoute request.
@@ -392,7 +391,7 @@ func (client *PlansClient) getCreateRequest(ctx context.Context, resourceGroupNa
 
 // getHandleResponse handles the Get response.
 func (client *PlansClient) getHandleResponse(resp *http.Response) (PlansClientGetResponse, error) {
-	result := PlansClientGetResponse{RawResponse: resp}
+	result := PlansClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Plan); err != nil {
 		return PlansClientGetResponse{}, err
 	}
@@ -458,7 +457,7 @@ func (client *PlansClient) getHybridConnectionCreateRequest(ctx context.Context,
 
 // getHybridConnectionHandleResponse handles the GetHybridConnection response.
 func (client *PlansClient) getHybridConnectionHandleResponse(resp *http.Response) (PlansClientGetHybridConnectionResponse, error) {
-	result := PlansClientGetHybridConnectionResponse{RawResponse: resp}
+	result := PlansClientGetHybridConnectionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HybridConnection); err != nil {
 		return PlansClientGetHybridConnectionResponse{}, err
 	}
@@ -514,7 +513,7 @@ func (client *PlansClient) getHybridConnectionPlanLimitCreateRequest(ctx context
 
 // getHybridConnectionPlanLimitHandleResponse handles the GetHybridConnectionPlanLimit response.
 func (client *PlansClient) getHybridConnectionPlanLimitHandleResponse(resp *http.Response) (PlansClientGetHybridConnectionPlanLimitResponse, error) {
-	result := PlansClientGetHybridConnectionPlanLimitResponse{RawResponse: resp}
+	result := PlansClientGetHybridConnectionPlanLimitResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HybridConnectionLimits); err != nil {
 		return PlansClientGetHybridConnectionPlanLimitResponse{}, err
 	}
@@ -579,7 +578,7 @@ func (client *PlansClient) getRouteForVnetCreateRequest(ctx context.Context, res
 
 // getRouteForVnetHandleResponse handles the GetRouteForVnet response.
 func (client *PlansClient) getRouteForVnetHandleResponse(resp *http.Response) (PlansClientGetRouteForVnetResponse, error) {
-	result := PlansClientGetRouteForVnetResponse{RawResponse: resp}
+	result := PlansClientGetRouteForVnetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VnetRouteArray); err != nil {
 		return PlansClientGetRouteForVnetResponse{}, err
 	}
@@ -634,7 +633,7 @@ func (client *PlansClient) getServerFarmSKUsCreateRequest(ctx context.Context, r
 
 // getServerFarmSKUsHandleResponse handles the GetServerFarmSKUs response.
 func (client *PlansClient) getServerFarmSKUsHandleResponse(resp *http.Response) (PlansClientGetServerFarmSKUsResponse, error) {
-	result := PlansClientGetServerFarmSKUsResponse{RawResponse: resp}
+	result := PlansClientGetServerFarmSKUsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Interface); err != nil {
 		return PlansClientGetServerFarmSKUsResponse{}, err
 	}
@@ -695,7 +694,7 @@ func (client *PlansClient) getVnetFromServerFarmCreateRequest(ctx context.Contex
 
 // getVnetFromServerFarmHandleResponse handles the GetVnetFromServerFarm response.
 func (client *PlansClient) getVnetFromServerFarmHandleResponse(resp *http.Response) (PlansClientGetVnetFromServerFarmResponse, error) {
-	result := PlansClientGetVnetFromServerFarmResponse{RawResponse: resp}
+	result := PlansClientGetVnetFromServerFarmResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VnetInfoResource); err != nil {
 		return PlansClientGetVnetFromServerFarmResponse{}, err
 	}
@@ -760,7 +759,7 @@ func (client *PlansClient) getVnetGatewayCreateRequest(ctx context.Context, reso
 
 // getVnetGatewayHandleResponse handles the GetVnetGateway response.
 func (client *PlansClient) getVnetGatewayHandleResponse(resp *http.Response) (PlansClientGetVnetGatewayResponse, error) {
-	result := PlansClientGetVnetGatewayResponse{RawResponse: resp}
+	result := PlansClientGetVnetGatewayResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VnetGateway); err != nil {
 		return PlansClientGetVnetGatewayResponse{}, err
 	}
@@ -770,16 +769,32 @@ func (client *PlansClient) getVnetGatewayHandleResponse(resp *http.Response) (Pl
 // List - Description for Get all App Service plans for a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - PlansClientListOptions contains the optional parameters for the PlansClient.List method.
-func (client *PlansClient) List(options *PlansClientListOptions) *PlansClientListPager {
-	return &PlansClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *PlansClient) List(options *PlansClientListOptions) *runtime.Pager[PlansClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PlansClientListResponse]{
+		More: func(page PlansClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PlansClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PlanCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *PlansClientListResponse) (PlansClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return PlansClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PlansClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PlansClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -805,7 +820,7 @@ func (client *PlansClient) listCreateRequest(ctx context.Context, options *Plans
 
 // listHandleResponse handles the List response.
 func (client *PlansClient) listHandleResponse(resp *http.Response) (PlansClientListResponse, error) {
-	result := PlansClientListResponse{RawResponse: resp}
+	result := PlansClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PlanCollection); err != nil {
 		return PlansClientListResponse{}, err
 	}
@@ -817,16 +832,32 @@ func (client *PlansClient) listHandleResponse(resp *http.Response) (PlansClientL
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // options - PlansClientListByResourceGroupOptions contains the optional parameters for the PlansClient.ListByResourceGroup
 // method.
-func (client *PlansClient) ListByResourceGroup(resourceGroupName string, options *PlansClientListByResourceGroupOptions) *PlansClientListByResourceGroupPager {
-	return &PlansClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *PlansClient) ListByResourceGroup(resourceGroupName string, options *PlansClientListByResourceGroupOptions) *runtime.Pager[PlansClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PlansClientListByResourceGroupResponse]{
+		More: func(page PlansClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PlansClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PlanCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *PlansClientListByResourceGroupResponse) (PlansClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return PlansClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PlansClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PlansClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -853,7 +884,7 @@ func (client *PlansClient) listByResourceGroupCreateRequest(ctx context.Context,
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *PlansClient) listByResourceGroupHandleResponse(resp *http.Response) (PlansClientListByResourceGroupResponse, error) {
-	result := PlansClientListByResourceGroupResponse{RawResponse: resp}
+	result := PlansClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PlanCollection); err != nil {
 		return PlansClientListByResourceGroupResponse{}, err
 	}
@@ -908,7 +939,7 @@ func (client *PlansClient) listCapabilitiesCreateRequest(ctx context.Context, re
 
 // listCapabilitiesHandleResponse handles the ListCapabilities response.
 func (client *PlansClient) listCapabilitiesHandleResponse(resp *http.Response) (PlansClientListCapabilitiesResponse, error) {
-	result := PlansClientListCapabilitiesResponse{RawResponse: resp}
+	result := PlansClientListCapabilitiesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CapabilityArray); err != nil {
 		return PlansClientListCapabilitiesResponse{}, err
 	}
@@ -974,7 +1005,7 @@ func (client *PlansClient) listHybridConnectionKeysCreateRequest(ctx context.Con
 
 // listHybridConnectionKeysHandleResponse handles the ListHybridConnectionKeys response.
 func (client *PlansClient) listHybridConnectionKeysHandleResponse(resp *http.Response) (PlansClientListHybridConnectionKeysResponse, error) {
-	result := PlansClientListHybridConnectionKeysResponse{RawResponse: resp}
+	result := PlansClientListHybridConnectionKeysResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HybridConnectionKey); err != nil {
 		return PlansClientListHybridConnectionKeysResponse{}, err
 	}
@@ -987,16 +1018,32 @@ func (client *PlansClient) listHybridConnectionKeysHandleResponse(resp *http.Res
 // name - Name of the App Service plan.
 // options - PlansClientListHybridConnectionsOptions contains the optional parameters for the PlansClient.ListHybridConnections
 // method.
-func (client *PlansClient) ListHybridConnections(resourceGroupName string, name string, options *PlansClientListHybridConnectionsOptions) *PlansClientListHybridConnectionsPager {
-	return &PlansClientListHybridConnectionsPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listHybridConnectionsCreateRequest(ctx, resourceGroupName, name, options)
+func (client *PlansClient) ListHybridConnections(resourceGroupName string, name string, options *PlansClientListHybridConnectionsOptions) *runtime.Pager[PlansClientListHybridConnectionsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PlansClientListHybridConnectionsResponse]{
+		More: func(page PlansClientListHybridConnectionsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PlansClientListHybridConnectionsResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.HybridConnectionCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *PlansClientListHybridConnectionsResponse) (PlansClientListHybridConnectionsResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listHybridConnectionsCreateRequest(ctx, resourceGroupName, name, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return PlansClientListHybridConnectionsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PlansClientListHybridConnectionsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PlansClientListHybridConnectionsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHybridConnectionsHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listHybridConnectionsCreateRequest creates the ListHybridConnections request.
@@ -1027,7 +1074,7 @@ func (client *PlansClient) listHybridConnectionsCreateRequest(ctx context.Contex
 
 // listHybridConnectionsHandleResponse handles the ListHybridConnections response.
 func (client *PlansClient) listHybridConnectionsHandleResponse(resp *http.Response) (PlansClientListHybridConnectionsResponse, error) {
-	result := PlansClientListHybridConnectionsResponse{RawResponse: resp}
+	result := PlansClientListHybridConnectionsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HybridConnectionCollection); err != nil {
 		return PlansClientListHybridConnectionsResponse{}, err
 	}
@@ -1087,7 +1134,7 @@ func (client *PlansClient) listRoutesForVnetCreateRequest(ctx context.Context, r
 
 // listRoutesForVnetHandleResponse handles the ListRoutesForVnet response.
 func (client *PlansClient) listRoutesForVnetHandleResponse(resp *http.Response) (PlansClientListRoutesForVnetResponse, error) {
-	result := PlansClientListRoutesForVnetResponse{RawResponse: resp}
+	result := PlansClientListRoutesForVnetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VnetRouteArray); err != nil {
 		return PlansClientListRoutesForVnetResponse{}, err
 	}
@@ -1099,16 +1146,32 @@ func (client *PlansClient) listRoutesForVnetHandleResponse(resp *http.Response) 
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of App Service Plan
 // options - PlansClientListUsagesOptions contains the optional parameters for the PlansClient.ListUsages method.
-func (client *PlansClient) ListUsages(resourceGroupName string, name string, options *PlansClientListUsagesOptions) *PlansClientListUsagesPager {
-	return &PlansClientListUsagesPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listUsagesCreateRequest(ctx, resourceGroupName, name, options)
+func (client *PlansClient) ListUsages(resourceGroupName string, name string, options *PlansClientListUsagesOptions) *runtime.Pager[PlansClientListUsagesResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PlansClientListUsagesResponse]{
+		More: func(page PlansClientListUsagesResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PlansClientListUsagesResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.CsmUsageQuotaCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *PlansClientListUsagesResponse) (PlansClientListUsagesResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listUsagesCreateRequest(ctx, resourceGroupName, name, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return PlansClientListUsagesResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PlansClientListUsagesResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PlansClientListUsagesResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listUsagesHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listUsagesCreateRequest creates the ListUsages request.
@@ -1144,7 +1207,7 @@ func (client *PlansClient) listUsagesCreateRequest(ctx context.Context, resource
 
 // listUsagesHandleResponse handles the ListUsages response.
 func (client *PlansClient) listUsagesHandleResponse(resp *http.Response) (PlansClientListUsagesResponse, error) {
-	result := PlansClientListUsagesResponse{RawResponse: resp}
+	result := PlansClientListUsagesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CsmUsageQuotaCollection); err != nil {
 		return PlansClientListUsagesResponse{}, err
 	}
@@ -1199,7 +1262,7 @@ func (client *PlansClient) listVnetsCreateRequest(ctx context.Context, resourceG
 
 // listVnetsHandleResponse handles the ListVnets response.
 func (client *PlansClient) listVnetsHandleResponse(resp *http.Response) (PlansClientListVnetsResponse, error) {
-	result := PlansClientListVnetsResponse{RawResponse: resp}
+	result := PlansClientListVnetsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VnetInfoResourceArray); err != nil {
 		return PlansClientListVnetsResponse{}, err
 	}
@@ -1211,16 +1274,32 @@ func (client *PlansClient) listVnetsHandleResponse(resp *http.Response) (PlansCl
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service plan.
 // options - PlansClientListWebAppsOptions contains the optional parameters for the PlansClient.ListWebApps method.
-func (client *PlansClient) ListWebApps(resourceGroupName string, name string, options *PlansClientListWebAppsOptions) *PlansClientListWebAppsPager {
-	return &PlansClientListWebAppsPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listWebAppsCreateRequest(ctx, resourceGroupName, name, options)
+func (client *PlansClient) ListWebApps(resourceGroupName string, name string, options *PlansClientListWebAppsOptions) *runtime.Pager[PlansClientListWebAppsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PlansClientListWebAppsResponse]{
+		More: func(page PlansClientListWebAppsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PlansClientListWebAppsResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.WebAppCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *PlansClientListWebAppsResponse) (PlansClientListWebAppsResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listWebAppsCreateRequest(ctx, resourceGroupName, name, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return PlansClientListWebAppsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PlansClientListWebAppsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PlansClientListWebAppsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listWebAppsHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listWebAppsCreateRequest creates the ListWebApps request.
@@ -1262,7 +1341,7 @@ func (client *PlansClient) listWebAppsCreateRequest(ctx context.Context, resourc
 
 // listWebAppsHandleResponse handles the ListWebApps response.
 func (client *PlansClient) listWebAppsHandleResponse(resp *http.Response) (PlansClientListWebAppsResponse, error) {
-	result := PlansClientListWebAppsResponse{RawResponse: resp}
+	result := PlansClientListWebAppsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WebAppCollection); err != nil {
 		return PlansClientListWebAppsResponse{}, err
 	}
@@ -1277,16 +1356,32 @@ func (client *PlansClient) listWebAppsHandleResponse(resp *http.Response) (Plans
 // relayName - Name of the Hybrid Connection relay.
 // options - PlansClientListWebAppsByHybridConnectionOptions contains the optional parameters for the PlansClient.ListWebAppsByHybridConnection
 // method.
-func (client *PlansClient) ListWebAppsByHybridConnection(resourceGroupName string, name string, namespaceName string, relayName string, options *PlansClientListWebAppsByHybridConnectionOptions) *PlansClientListWebAppsByHybridConnectionPager {
-	return &PlansClientListWebAppsByHybridConnectionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listWebAppsByHybridConnectionCreateRequest(ctx, resourceGroupName, name, namespaceName, relayName, options)
+func (client *PlansClient) ListWebAppsByHybridConnection(resourceGroupName string, name string, namespaceName string, relayName string, options *PlansClientListWebAppsByHybridConnectionOptions) *runtime.Pager[PlansClientListWebAppsByHybridConnectionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PlansClientListWebAppsByHybridConnectionResponse]{
+		More: func(page PlansClientListWebAppsByHybridConnectionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PlansClientListWebAppsByHybridConnectionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ResourceCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *PlansClientListWebAppsByHybridConnectionResponse) (PlansClientListWebAppsByHybridConnectionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listWebAppsByHybridConnectionCreateRequest(ctx, resourceGroupName, name, namespaceName, relayName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return PlansClientListWebAppsByHybridConnectionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PlansClientListWebAppsByHybridConnectionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PlansClientListWebAppsByHybridConnectionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listWebAppsByHybridConnectionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listWebAppsByHybridConnectionCreateRequest creates the ListWebAppsByHybridConnection request.
@@ -1325,7 +1420,7 @@ func (client *PlansClient) listWebAppsByHybridConnectionCreateRequest(ctx contex
 
 // listWebAppsByHybridConnectionHandleResponse handles the ListWebAppsByHybridConnection response.
 func (client *PlansClient) listWebAppsByHybridConnectionHandleResponse(resp *http.Response) (PlansClientListWebAppsByHybridConnectionResponse, error) {
-	result := PlansClientListWebAppsByHybridConnectionResponse{RawResponse: resp}
+	result := PlansClientListWebAppsByHybridConnectionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceCollection); err != nil {
 		return PlansClientListWebAppsByHybridConnectionResponse{}, err
 	}
@@ -1350,7 +1445,7 @@ func (client *PlansClient) RebootWorker(ctx context.Context, resourceGroupName s
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return PlansClientRebootWorkerResponse{}, runtime.NewResponseError(resp)
 	}
-	return PlansClientRebootWorkerResponse{RawResponse: resp}, nil
+	return PlansClientRebootWorkerResponse{}, nil
 }
 
 // rebootWorkerCreateRequest creates the RebootWorker request.
@@ -1400,7 +1495,7 @@ func (client *PlansClient) RestartWebApps(ctx context.Context, resourceGroupName
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return PlansClientRestartWebAppsResponse{}, runtime.NewResponseError(resp)
 	}
-	return PlansClientRestartWebAppsResponse{RawResponse: resp}, nil
+	return PlansClientRestartWebAppsResponse{}, nil
 }
 
 // restartWebAppsCreateRequest creates the RestartWebApps request.
@@ -1481,7 +1576,7 @@ func (client *PlansClient) updateCreateRequest(ctx context.Context, resourceGrou
 
 // updateHandleResponse handles the Update response.
 func (client *PlansClient) updateHandleResponse(resp *http.Response) (PlansClientUpdateResponse, error) {
-	result := PlansClientUpdateResponse{RawResponse: resp}
+	result := PlansClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Plan); err != nil {
 		return PlansClientUpdateResponse{}, err
 	}
@@ -1547,7 +1642,7 @@ func (client *PlansClient) updateVnetGatewayCreateRequest(ctx context.Context, r
 
 // updateVnetGatewayHandleResponse handles the UpdateVnetGateway response.
 func (client *PlansClient) updateVnetGatewayHandleResponse(resp *http.Response) (PlansClientUpdateVnetGatewayResponse, error) {
-	result := PlansClientUpdateVnetGatewayResponse{RawResponse: resp}
+	result := PlansClientUpdateVnetGatewayResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VnetGateway); err != nil {
 		return PlansClientUpdateVnetGatewayResponse{}, err
 	}
@@ -1613,7 +1708,7 @@ func (client *PlansClient) updateVnetRouteCreateRequest(ctx context.Context, res
 
 // updateVnetRouteHandleResponse handles the UpdateVnetRoute response.
 func (client *PlansClient) updateVnetRouteHandleResponse(resp *http.Response) (PlansClientUpdateVnetRouteResponse, error) {
-	result := PlansClientUpdateVnetRouteResponse{RawResponse: resp}
+	result := PlansClientUpdateVnetRouteResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VnetRoute); err != nil {
 		return PlansClientUpdateVnetRouteResponse{}, err
 	}

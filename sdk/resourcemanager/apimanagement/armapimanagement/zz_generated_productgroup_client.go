@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -35,20 +36,24 @@ type ProductGroupClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewProductGroupClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ProductGroupClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewProductGroupClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProductGroupClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ProductGroupClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CheckEntityExists - Checks that Group entity specified by identifier is associated with the Product entity.
@@ -67,7 +72,7 @@ func (client *ProductGroupClient) CheckEntityExists(ctx context.Context, resourc
 	if err != nil {
 		return ProductGroupClientCheckEntityExistsResponse{}, err
 	}
-	result := ProductGroupClientCheckEntityExistsResponse{RawResponse: resp}
+	result := ProductGroupClientCheckEntityExistsResponse{}
 	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
 		result.Success = true
 	}
@@ -167,7 +172,7 @@ func (client *ProductGroupClient) createOrUpdateCreateRequest(ctx context.Contex
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *ProductGroupClient) createOrUpdateHandleResponse(resp *http.Response) (ProductGroupClientCreateOrUpdateResponse, error) {
-	result := ProductGroupClientCreateOrUpdateResponse{RawResponse: resp}
+	result := ProductGroupClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GroupContract); err != nil {
 		return ProductGroupClientCreateOrUpdateResponse{}, err
 	}
@@ -193,7 +198,7 @@ func (client *ProductGroupClient) Delete(ctx context.Context, resourceGroupName 
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return ProductGroupClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ProductGroupClientDeleteResponse{RawResponse: resp}, nil
+	return ProductGroupClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -237,16 +242,32 @@ func (client *ProductGroupClient) deleteCreateRequest(ctx context.Context, resou
 // productID - Product identifier. Must be unique in the current API Management service instance.
 // options - ProductGroupClientListByProductOptions contains the optional parameters for the ProductGroupClient.ListByProduct
 // method.
-func (client *ProductGroupClient) ListByProduct(resourceGroupName string, serviceName string, productID string, options *ProductGroupClientListByProductOptions) *ProductGroupClientListByProductPager {
-	return &ProductGroupClientListByProductPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByProductCreateRequest(ctx, resourceGroupName, serviceName, productID, options)
+func (client *ProductGroupClient) ListByProduct(resourceGroupName string, serviceName string, productID string, options *ProductGroupClientListByProductOptions) *runtime.Pager[ProductGroupClientListByProductResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ProductGroupClientListByProductResponse]{
+		More: func(page ProductGroupClientListByProductResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ProductGroupClientListByProductResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.GroupCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *ProductGroupClientListByProductResponse) (ProductGroupClientListByProductResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByProductCreateRequest(ctx, resourceGroupName, serviceName, productID, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ProductGroupClientListByProductResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ProductGroupClientListByProductResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ProductGroupClientListByProductResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByProductHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByProductCreateRequest creates the ListByProduct request.
@@ -290,7 +311,7 @@ func (client *ProductGroupClient) listByProductCreateRequest(ctx context.Context
 
 // listByProductHandleResponse handles the ListByProduct response.
 func (client *ProductGroupClient) listByProductHandleResponse(resp *http.Response) (ProductGroupClientListByProductResponse, error) {
-	result := ProductGroupClientListByProductResponse{RawResponse: resp}
+	result := ProductGroupClientListByProductResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GroupCollection); err != nil {
 		return ProductGroupClientListByProductResponse{}, err
 	}

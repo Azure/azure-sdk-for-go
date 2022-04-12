@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -35,20 +36,24 @@ type GatewayHostnameConfigurationClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewGatewayHostnameConfigurationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *GatewayHostnameConfigurationClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewGatewayHostnameConfigurationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GatewayHostnameConfigurationClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &GatewayHostnameConfigurationClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates of updates hostname configuration for a Gateway.
@@ -114,7 +119,7 @@ func (client *GatewayHostnameConfigurationClient) createOrUpdateCreateRequest(ct
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *GatewayHostnameConfigurationClient) createOrUpdateHandleResponse(resp *http.Response) (GatewayHostnameConfigurationClientCreateOrUpdateResponse, error) {
-	result := GatewayHostnameConfigurationClientCreateOrUpdateResponse{RawResponse: resp}
+	result := GatewayHostnameConfigurationClientCreateOrUpdateResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -147,7 +152,7 @@ func (client *GatewayHostnameConfigurationClient) Delete(ctx context.Context, re
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return GatewayHostnameConfigurationClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return GatewayHostnameConfigurationClientDeleteResponse{RawResponse: resp}, nil
+	return GatewayHostnameConfigurationClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -245,7 +250,7 @@ func (client *GatewayHostnameConfigurationClient) getCreateRequest(ctx context.C
 
 // getHandleResponse handles the Get response.
 func (client *GatewayHostnameConfigurationClient) getHandleResponse(resp *http.Response) (GatewayHostnameConfigurationClientGetResponse, error) {
-	result := GatewayHostnameConfigurationClientGetResponse{RawResponse: resp}
+	result := GatewayHostnameConfigurationClientGetResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -311,7 +316,7 @@ func (client *GatewayHostnameConfigurationClient) getEntityTagCreateRequest(ctx 
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
 func (client *GatewayHostnameConfigurationClient) getEntityTagHandleResponse(resp *http.Response) (GatewayHostnameConfigurationClientGetEntityTagResponse, error) {
-	result := GatewayHostnameConfigurationClientGetEntityTagResponse{RawResponse: resp}
+	result := GatewayHostnameConfigurationClientGetEntityTagResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -329,16 +334,32 @@ func (client *GatewayHostnameConfigurationClient) getEntityTagHandleResponse(res
 // 'managed'
 // options - GatewayHostnameConfigurationClientListByServiceOptions contains the optional parameters for the GatewayHostnameConfigurationClient.ListByService
 // method.
-func (client *GatewayHostnameConfigurationClient) ListByService(resourceGroupName string, serviceName string, gatewayID string, options *GatewayHostnameConfigurationClientListByServiceOptions) *GatewayHostnameConfigurationClientListByServicePager {
-	return &GatewayHostnameConfigurationClientListByServicePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, gatewayID, options)
+func (client *GatewayHostnameConfigurationClient) ListByService(resourceGroupName string, serviceName string, gatewayID string, options *GatewayHostnameConfigurationClientListByServiceOptions) *runtime.Pager[GatewayHostnameConfigurationClientListByServiceResponse] {
+	return runtime.NewPager(runtime.PageProcessor[GatewayHostnameConfigurationClientListByServiceResponse]{
+		More: func(page GatewayHostnameConfigurationClientListByServiceResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp GatewayHostnameConfigurationClientListByServiceResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.GatewayHostnameConfigurationCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *GatewayHostnameConfigurationClientListByServiceResponse) (GatewayHostnameConfigurationClientListByServiceResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, gatewayID, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return GatewayHostnameConfigurationClientListByServiceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return GatewayHostnameConfigurationClientListByServiceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return GatewayHostnameConfigurationClientListByServiceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByServiceHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByServiceCreateRequest creates the ListByService request.
@@ -382,7 +403,7 @@ func (client *GatewayHostnameConfigurationClient) listByServiceCreateRequest(ctx
 
 // listByServiceHandleResponse handles the ListByService response.
 func (client *GatewayHostnameConfigurationClient) listByServiceHandleResponse(resp *http.Response) (GatewayHostnameConfigurationClientListByServiceResponse, error) {
-	result := GatewayHostnameConfigurationClientListByServiceResponse{RawResponse: resp}
+	result := GatewayHostnameConfigurationClientListByServiceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GatewayHostnameConfigurationCollection); err != nil {
 		return GatewayHostnameConfigurationClientListByServiceResponse{}, err
 	}

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,324 +19,408 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement"
 )
 
-// x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementRestoreWithAccessKey.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementRestoreWithAccessKey.json
 func ExampleServiceClient_BeginRestore() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armapimanagement.NewServiceClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewServiceClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginRestore(ctx,
 		"<resource-group-name>",
 		"<service-name>",
 		armapimanagement.ServiceBackupRestoreParameters{
-			AccessKey:      to.StringPtr("<access-key>"),
-			AccessType:     armapimanagement.AccessType("AccessKey").ToPtr(),
-			BackupName:     to.StringPtr("<backup-name>"),
-			ContainerName:  to.StringPtr("<container-name>"),
-			StorageAccount: to.StringPtr("<storage-account>"),
+			AccessKey:      to.Ptr("<access-key>"),
+			AccessType:     to.Ptr(armapimanagement.AccessTypeAccessKey),
+			BackupName:     to.Ptr("<backup-name>"),
+			ContainerName:  to.Ptr("<container-name>"),
+			StorageAccount: to.Ptr("<storage-account>"),
 		},
-		nil)
+		&armapimanagement.ServiceClientBeginRestoreOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ServiceClientRestoreResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementBackupWithAccessKey.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementBackupWithAccessKey.json
 func ExampleServiceClient_BeginBackup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armapimanagement.NewServiceClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewServiceClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginBackup(ctx,
 		"<resource-group-name>",
 		"<service-name>",
 		armapimanagement.ServiceBackupRestoreParameters{
-			AccessKey:      to.StringPtr("<access-key>"),
-			AccessType:     armapimanagement.AccessType("AccessKey").ToPtr(),
-			BackupName:     to.StringPtr("<backup-name>"),
-			ContainerName:  to.StringPtr("<container-name>"),
-			StorageAccount: to.StringPtr("<storage-account>"),
+			AccessKey:      to.Ptr("<access-key>"),
+			AccessType:     to.Ptr(armapimanagement.AccessTypeAccessKey),
+			BackupName:     to.Ptr("<backup-name>"),
+			ContainerName:  to.Ptr("<container-name>"),
+			StorageAccount: to.Ptr("<storage-account>"),
 		},
-		nil)
+		&armapimanagement.ServiceClientBeginBackupOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ServiceClientBackupResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateMultiRegionServiceWithCustomHostname.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateMultiRegionServiceWithCustomHostname.json
 func ExampleServiceClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armapimanagement.NewServiceClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewServiceClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<service-name>",
 		armapimanagement.ServiceResource{
 			Tags: map[string]*string{
-				"tag1": to.StringPtr("value1"),
-				"tag2": to.StringPtr("value2"),
-				"tag3": to.StringPtr("value3"),
+				"tag1": to.Ptr("value1"),
+				"tag2": to.Ptr("value2"),
+				"tag3": to.Ptr("value3"),
 			},
-			Location: to.StringPtr("<location>"),
+			Location: to.Ptr("<location>"),
 			Properties: &armapimanagement.ServiceProperties{
 				AdditionalLocations: []*armapimanagement.AdditionalLocation{
 					{
-						DisableGateway: to.BoolPtr(true),
-						Location:       to.StringPtr("<location>"),
+						DisableGateway: to.Ptr(true),
+						Location:       to.Ptr("<location>"),
 						SKU: &armapimanagement.ServiceSKUProperties{
-							Name:     armapimanagement.SKUType("Premium").ToPtr(),
-							Capacity: to.Int32Ptr(1),
+							Name:     to.Ptr(armapimanagement.SKUTypePremium),
+							Capacity: to.Ptr[int32](1),
 						},
 					}},
 				APIVersionConstraint: &armapimanagement.APIVersionConstraint{
-					MinAPIVersion: to.StringPtr("<min-apiversion>"),
+					MinAPIVersion: to.Ptr("<min-apiversion>"),
 				},
 				HostnameConfigurations: []*armapimanagement.HostnameConfiguration{
 					{
-						Type:                armapimanagement.HostnameType("Proxy").ToPtr(),
-						CertificatePassword: to.StringPtr("<certificate-password>"),
-						DefaultSSLBinding:   to.BoolPtr(true),
-						EncodedCertificate:  to.StringPtr("<encoded-certificate>"),
-						HostName:            to.StringPtr("<host-name>"),
+						Type:                to.Ptr(armapimanagement.HostnameTypeProxy),
+						CertificatePassword: to.Ptr("<certificate-password>"),
+						DefaultSSLBinding:   to.Ptr(true),
+						EncodedCertificate:  to.Ptr("<encoded-certificate>"),
+						HostName:            to.Ptr("<host-name>"),
 					},
 					{
-						Type:                armapimanagement.HostnameType("Management").ToPtr(),
-						CertificatePassword: to.StringPtr("<certificate-password>"),
-						EncodedCertificate:  to.StringPtr("<encoded-certificate>"),
-						HostName:            to.StringPtr("<host-name>"),
+						Type:                to.Ptr(armapimanagement.HostnameTypeManagement),
+						CertificatePassword: to.Ptr("<certificate-password>"),
+						EncodedCertificate:  to.Ptr("<encoded-certificate>"),
+						HostName:            to.Ptr("<host-name>"),
 					},
 					{
-						Type:                armapimanagement.HostnameType("Portal").ToPtr(),
-						CertificatePassword: to.StringPtr("<certificate-password>"),
-						EncodedCertificate:  to.StringPtr("<encoded-certificate>"),
-						HostName:            to.StringPtr("<host-name>"),
+						Type:                to.Ptr(armapimanagement.HostnameTypePortal),
+						CertificatePassword: to.Ptr("<certificate-password>"),
+						EncodedCertificate:  to.Ptr("<encoded-certificate>"),
+						HostName:            to.Ptr("<host-name>"),
 					}},
-				VirtualNetworkType: armapimanagement.VirtualNetworkType("None").ToPtr(),
-				PublisherEmail:     to.StringPtr("<publisher-email>"),
-				PublisherName:      to.StringPtr("<publisher-name>"),
+				VirtualNetworkType: to.Ptr(armapimanagement.VirtualNetworkTypeNone),
+				PublisherEmail:     to.Ptr("<publisher-email>"),
+				PublisherName:      to.Ptr("<publisher-name>"),
 			},
 			SKU: &armapimanagement.ServiceSKUProperties{
-				Name:     armapimanagement.SKUType("Premium").ToPtr(),
-				Capacity: to.Int32Ptr(1),
+				Name:     to.Ptr(armapimanagement.SKUTypePremium),
+				Capacity: to.Ptr[int32](1),
 			},
 		},
-		nil)
+		&armapimanagement.ServiceClientBeginCreateOrUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ServiceClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementUpdateServiceDisableTls10.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementUpdateServiceDisableTls10.json
 func ExampleServiceClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armapimanagement.NewServiceClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewServiceClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginUpdate(ctx,
 		"<resource-group-name>",
 		"<service-name>",
 		armapimanagement.ServiceUpdateParameters{
 			Properties: &armapimanagement.ServiceUpdateProperties{
 				CustomProperties: map[string]*string{
-					"Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls10": to.StringPtr("false"),
+					"Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls10": to.Ptr("false"),
 				},
 			},
 		},
-		nil)
+		&armapimanagement.ServiceClientBeginUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ServiceClientUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementServiceGetMultiRegionInternalVnet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementServiceGetMultiRegionInternalVnet.json
 func ExampleServiceClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armapimanagement.NewServiceClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewServiceClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<service-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ServiceClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementServiceDeleteService.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementServiceDeleteService.json
 func ExampleServiceClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armapimanagement.NewServiceClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewServiceClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
 		"<service-name>",
-		nil)
+		&armapimanagement.ServiceClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementListServiceBySubscriptionAndResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementListServiceBySubscriptionAndResourceGroup.json
 func ExampleServiceClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armapimanagement.NewServiceClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewServiceClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementListServiceBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementListServiceBySubscription.json
 func ExampleServiceClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armapimanagement.NewServiceClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewServiceClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.List(nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementServiceGetSsoToken.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementServiceGetSsoToken.json
 func ExampleServiceClient_GetSsoToken() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armapimanagement.NewServiceClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewServiceClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GetSsoToken(ctx,
 		"<resource-group-name>",
 		"<service-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ServiceClientGetSsoTokenResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementServiceCheckNameAvailability.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementServiceCheckNameAvailability.json
 func ExampleServiceClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armapimanagement.NewServiceClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewServiceClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.CheckNameAvailability(ctx,
 		armapimanagement.ServiceCheckNameAvailabilityParameters{
-			Name: to.StringPtr("<name>"),
+			Name: to.Ptr("<name>"),
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ServiceClientCheckNameAvailabilityResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementServiceGetDomainOwnershipIdentifier.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementServiceGetDomainOwnershipIdentifier.json
 func ExampleServiceClient_GetDomainOwnershipIdentifier() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armapimanagement.NewServiceClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewServiceClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GetDomainOwnershipIdentifier(ctx,
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ServiceClientGetDomainOwnershipIdentifierResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementApplyNetworkConfigurationUpdates.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementApplyNetworkConfigurationUpdates.json
 func ExampleServiceClient_BeginApplyNetworkConfigurationUpdates() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armapimanagement.NewServiceClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewServiceClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginApplyNetworkConfigurationUpdates(ctx,
 		"<resource-group-name>",
 		"<service-name>",
 		&armapimanagement.ServiceClientBeginApplyNetworkConfigurationUpdatesOptions{Parameters: &armapimanagement.ServiceApplyNetworkConfigurationParameters{
-			Location: to.StringPtr("<location>"),
+			Location: to.Ptr("<location>"),
 		},
+			ResumeToken: "",
 		})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ServiceClientApplyNetworkConfigurationUpdatesResult)
+	// TODO: use response item
+	_ = res
 }

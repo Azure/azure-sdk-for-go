@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -35,20 +36,24 @@ type PortalRevisionClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewPortalRevisionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PortalRevisionClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewPortalRevisionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PortalRevisionClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &PortalRevisionClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates a new developer portal's revision by running the portal's publishing. The isCurrent property
@@ -59,22 +64,18 @@ func NewPortalRevisionClient(subscriptionID string, credential azcore.TokenCrede
 // portalRevisionID - Portal revision identifier. Must be unique in the current API Management service instance.
 // options - PortalRevisionClientBeginCreateOrUpdateOptions contains the optional parameters for the PortalRevisionClient.BeginCreateOrUpdate
 // method.
-func (client *PortalRevisionClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, portalRevisionID string, parameters PortalRevisionContract, options *PortalRevisionClientBeginCreateOrUpdateOptions) (PortalRevisionClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, serviceName, portalRevisionID, parameters, options)
-	if err != nil {
-		return PortalRevisionClientCreateOrUpdatePollerResponse{}, err
+func (client *PortalRevisionClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, portalRevisionID string, parameters PortalRevisionContract, options *PortalRevisionClientBeginCreateOrUpdateOptions) (*armruntime.Poller[PortalRevisionClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, serviceName, portalRevisionID, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[PortalRevisionClientCreateOrUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[PortalRevisionClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := PortalRevisionClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("PortalRevisionClient.CreateOrUpdate", "location", resp, client.pl)
-	if err != nil {
-		return PortalRevisionClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &PortalRevisionClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates a new developer portal's revision by running the portal's publishing. The isCurrent property indicates
@@ -178,7 +179,7 @@ func (client *PortalRevisionClient) getCreateRequest(ctx context.Context, resour
 
 // getHandleResponse handles the Get response.
 func (client *PortalRevisionClient) getHandleResponse(resp *http.Response) (PortalRevisionClientGetResponse, error) {
-	result := PortalRevisionClientGetResponse{RawResponse: resp}
+	result := PortalRevisionClientGetResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -238,7 +239,7 @@ func (client *PortalRevisionClient) getEntityTagCreateRequest(ctx context.Contex
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
 func (client *PortalRevisionClient) getEntityTagHandleResponse(resp *http.Response) (PortalRevisionClientGetEntityTagResponse, error) {
-	result := PortalRevisionClientGetEntityTagResponse{RawResponse: resp}
+	result := PortalRevisionClientGetEntityTagResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -254,16 +255,32 @@ func (client *PortalRevisionClient) getEntityTagHandleResponse(resp *http.Respon
 // serviceName - The name of the API Management service.
 // options - PortalRevisionClientListByServiceOptions contains the optional parameters for the PortalRevisionClient.ListByService
 // method.
-func (client *PortalRevisionClient) ListByService(resourceGroupName string, serviceName string, options *PortalRevisionClientListByServiceOptions) *PortalRevisionClientListByServicePager {
-	return &PortalRevisionClientListByServicePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
+func (client *PortalRevisionClient) ListByService(resourceGroupName string, serviceName string, options *PortalRevisionClientListByServiceOptions) *runtime.Pager[PortalRevisionClientListByServiceResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PortalRevisionClientListByServiceResponse]{
+		More: func(page PortalRevisionClientListByServiceResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PortalRevisionClientListByServiceResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PortalRevisionCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *PortalRevisionClientListByServiceResponse) (PortalRevisionClientListByServiceResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return PortalRevisionClientListByServiceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PortalRevisionClientListByServiceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PortalRevisionClientListByServiceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByServiceHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByServiceCreateRequest creates the ListByService request.
@@ -303,7 +320,7 @@ func (client *PortalRevisionClient) listByServiceCreateRequest(ctx context.Conte
 
 // listByServiceHandleResponse handles the ListByService response.
 func (client *PortalRevisionClient) listByServiceHandleResponse(resp *http.Response) (PortalRevisionClientListByServiceResponse, error) {
-	result := PortalRevisionClientListByServiceResponse{RawResponse: resp}
+	result := PortalRevisionClientListByServiceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PortalRevisionCollection); err != nil {
 		return PortalRevisionClientListByServiceResponse{}, err
 	}
@@ -319,22 +336,18 @@ func (client *PortalRevisionClient) listByServiceHandleResponse(resp *http.Respo
 // it should be * for unconditional update.
 // options - PortalRevisionClientBeginUpdateOptions contains the optional parameters for the PortalRevisionClient.BeginUpdate
 // method.
-func (client *PortalRevisionClient) BeginUpdate(ctx context.Context, resourceGroupName string, serviceName string, portalRevisionID string, ifMatch string, parameters PortalRevisionContract, options *PortalRevisionClientBeginUpdateOptions) (PortalRevisionClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, serviceName, portalRevisionID, ifMatch, parameters, options)
-	if err != nil {
-		return PortalRevisionClientUpdatePollerResponse{}, err
+func (client *PortalRevisionClient) BeginUpdate(ctx context.Context, resourceGroupName string, serviceName string, portalRevisionID string, ifMatch string, parameters PortalRevisionContract, options *PortalRevisionClientBeginUpdateOptions) (*armruntime.Poller[PortalRevisionClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, serviceName, portalRevisionID, ifMatch, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[PortalRevisionClientUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[PortalRevisionClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := PortalRevisionClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("PortalRevisionClient.Update", "location", resp, client.pl)
-	if err != nil {
-		return PortalRevisionClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &PortalRevisionClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Updates the description of specified portal revision or makes it current.

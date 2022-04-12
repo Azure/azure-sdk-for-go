@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ContainerAppsRevisionsClient struct {
 // subscriptionID - Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewContainerAppsRevisionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ContainerAppsRevisionsClient {
+func NewContainerAppsRevisionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ContainerAppsRevisionsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ContainerAppsRevisionsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // ActivateRevision - Activates a revision for a Container App
@@ -68,7 +73,7 @@ func (client *ContainerAppsRevisionsClient) ActivateRevision(ctx context.Context
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return ContainerAppsRevisionsClientActivateRevisionResponse{}, runtime.NewResponseError(resp)
 	}
-	return ContainerAppsRevisionsClientActivateRevisionResponse{RawResponse: resp}, nil
+	return ContainerAppsRevisionsClientActivateRevisionResponse{}, nil
 }
 
 // activateRevisionCreateRequest creates the ActivateRevision request.
@@ -120,7 +125,7 @@ func (client *ContainerAppsRevisionsClient) DeactivateRevision(ctx context.Conte
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return ContainerAppsRevisionsClientDeactivateRevisionResponse{}, runtime.NewResponseError(resp)
 	}
-	return ContainerAppsRevisionsClientDeactivateRevisionResponse{RawResponse: resp}, nil
+	return ContainerAppsRevisionsClientDeactivateRevisionResponse{}, nil
 }
 
 // deactivateRevisionCreateRequest creates the DeactivateRevision request.
@@ -207,7 +212,7 @@ func (client *ContainerAppsRevisionsClient) getRevisionCreateRequest(ctx context
 
 // getRevisionHandleResponse handles the GetRevision response.
 func (client *ContainerAppsRevisionsClient) getRevisionHandleResponse(resp *http.Response) (ContainerAppsRevisionsClientGetRevisionResponse, error) {
-	result := ContainerAppsRevisionsClientGetRevisionResponse{RawResponse: resp}
+	result := ContainerAppsRevisionsClientGetRevisionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Revision); err != nil {
 		return ContainerAppsRevisionsClientGetRevisionResponse{}, err
 	}
@@ -220,16 +225,32 @@ func (client *ContainerAppsRevisionsClient) getRevisionHandleResponse(resp *http
 // containerAppName - Name of the Container App for which Revisions are needed.
 // options - ContainerAppsRevisionsClientListRevisionsOptions contains the optional parameters for the ContainerAppsRevisionsClient.ListRevisions
 // method.
-func (client *ContainerAppsRevisionsClient) ListRevisions(resourceGroupName string, containerAppName string, options *ContainerAppsRevisionsClientListRevisionsOptions) *ContainerAppsRevisionsClientListRevisionsPager {
-	return &ContainerAppsRevisionsClientListRevisionsPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listRevisionsCreateRequest(ctx, resourceGroupName, containerAppName, options)
+func (client *ContainerAppsRevisionsClient) ListRevisions(resourceGroupName string, containerAppName string, options *ContainerAppsRevisionsClientListRevisionsOptions) *runtime.Pager[ContainerAppsRevisionsClientListRevisionsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ContainerAppsRevisionsClientListRevisionsResponse]{
+		More: func(page ContainerAppsRevisionsClientListRevisionsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ContainerAppsRevisionsClientListRevisionsResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.RevisionCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *ContainerAppsRevisionsClientListRevisionsResponse) (ContainerAppsRevisionsClientListRevisionsResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listRevisionsCreateRequest(ctx, resourceGroupName, containerAppName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ContainerAppsRevisionsClientListRevisionsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ContainerAppsRevisionsClientListRevisionsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ContainerAppsRevisionsClientListRevisionsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listRevisionsHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listRevisionsCreateRequest creates the ListRevisions request.
@@ -260,7 +281,7 @@ func (client *ContainerAppsRevisionsClient) listRevisionsCreateRequest(ctx conte
 
 // listRevisionsHandleResponse handles the ListRevisions response.
 func (client *ContainerAppsRevisionsClient) listRevisionsHandleResponse(resp *http.Response) (ContainerAppsRevisionsClientListRevisionsResponse, error) {
-	result := ContainerAppsRevisionsClientListRevisionsResponse{RawResponse: resp}
+	result := ContainerAppsRevisionsClientListRevisionsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RevisionCollection); err != nil {
 		return ContainerAppsRevisionsClientListRevisionsResponse{}, err
 	}
@@ -286,7 +307,7 @@ func (client *ContainerAppsRevisionsClient) RestartRevision(ctx context.Context,
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return ContainerAppsRevisionsClientRestartRevisionResponse{}, runtime.NewResponseError(resp)
 	}
-	return ContainerAppsRevisionsClientRestartRevisionResponse{RawResponse: resp}, nil
+	return ContainerAppsRevisionsClientRestartRevisionResponse{}, nil
 }
 
 // restartRevisionCreateRequest creates the RestartRevision request.

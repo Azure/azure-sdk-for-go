@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,113 +19,133 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice"
 )
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ListContainerAppsBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ListContainerAppsBySubscription.json
 func ExampleContainerAppsClient_ListBySubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armappservice.NewContainerAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewContainerAppsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListBySubscription(nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ListContainerAppsByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ListContainerAppsByResourceGroup.json
 func ExampleContainerAppsClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armappservice.NewContainerAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewContainerAppsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetContainerApp.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetContainerApp.json
 func ExampleContainerAppsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armappservice.NewContainerAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewContainerAppsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ContainerAppsClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/CreateOrUpdateContainerApp.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/CreateOrUpdateContainerApp.json
 func ExampleContainerAppsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armappservice.NewContainerAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewContainerAppsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<name>",
 		armappservice.ContainerApp{
-			Kind:     to.StringPtr("<kind>"),
-			Location: to.StringPtr("<location>"),
+			Kind:     to.Ptr("<kind>"),
+			Location: to.Ptr("<location>"),
 			Properties: &armappservice.ContainerAppProperties{
 				Configuration: &armappservice.Configuration{
 					Ingress: &armappservice.Ingress{
-						External:   to.BoolPtr(true),
-						TargetPort: to.Int32Ptr(3000),
+						External:   to.Ptr(true),
+						TargetPort: to.Ptr[int32](3000),
 					},
 				},
-				KubeEnvironmentID: to.StringPtr("<kube-environment-id>"),
+				KubeEnvironmentID: to.Ptr("<kube-environment-id>"),
 				Template: &armappservice.Template{
 					Containers: []*armappservice.Container{
 						{
-							Name:  to.StringPtr("<name>"),
-							Image: to.StringPtr("<image>"),
+							Name:  to.Ptr("<name>"),
+							Image: to.Ptr("<image>"),
 						}},
 					Dapr: &armappservice.Dapr{
-						AppPort: to.Int32Ptr(3000),
-						Enabled: to.BoolPtr(true),
+						AppPort: to.Ptr[int32](3000),
+						Enabled: to.Ptr(true),
 					},
 					Scale: &armappservice.Scale{
-						MaxReplicas: to.Int32Ptr(5),
-						MinReplicas: to.Int32Ptr(1),
+						MaxReplicas: to.Ptr[int32](5),
+						MinReplicas: to.Ptr[int32](1),
 						Rules: []*armappservice.ScaleRule{
 							{
-								Name: to.StringPtr("<name>"),
+								Name: to.Ptr("<name>"),
 								Custom: &armappservice.CustomScaleRule{
-									Type: to.StringPtr("<type>"),
+									Type: to.Ptr("<type>"),
 									Metadata: map[string]*string{
-										"concurrentRequests": to.StringPtr("50"),
+										"concurrentRequests": to.Ptr("50"),
 									},
 								},
 							}},
@@ -133,51 +153,68 @@ func ExampleContainerAppsClient_BeginCreateOrUpdate() {
 				},
 			},
 		},
-		nil)
+		&armappservice.ContainerAppsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ContainerAppsClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/DeleteContainerApp.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/DeleteContainerApp.json
 func ExampleContainerAppsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armappservice.NewContainerAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewContainerAppsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
 		"<name>",
-		nil)
+		&armappservice.ContainerAppsClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ListContainerAppSecrets.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ListContainerAppSecrets.json
 func ExampleContainerAppsClient_ListSecrets() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armappservice.NewContainerAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewContainerAppsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.ListSecrets(ctx,
 		"<name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ContainerAppsClientListSecretsResult)
+	// TODO: use response item
+	_ = res
 }

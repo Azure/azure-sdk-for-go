@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type AlertsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewAlertsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AlertsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewAlertsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AlertsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &AlertsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // ChangeState - Change the state of an alert.
@@ -95,7 +100,7 @@ func (client *AlertsClient) changeStateCreateRequest(ctx context.Context, alertI
 
 // changeStateHandleResponse handles the ChangeState response.
 func (client *AlertsClient) changeStateHandleResponse(resp *http.Response) (AlertsClientChangeStateResponse, error) {
-	result := AlertsClientChangeStateResponse{RawResponse: resp}
+	result := AlertsClientChangeStateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Alert); err != nil {
 		return AlertsClientChangeStateResponse{}, err
 	}
@@ -107,16 +112,32 @@ func (client *AlertsClient) changeStateHandleResponse(resp *http.Response) (Aler
 // lastModifiedDateTime.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AlertsClientGetAllOptions contains the optional parameters for the AlertsClient.GetAll method.
-func (client *AlertsClient) GetAll(options *AlertsClientGetAllOptions) *AlertsClientGetAllPager {
-	return &AlertsClientGetAllPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.getAllCreateRequest(ctx, options)
+func (client *AlertsClient) GetAll(options *AlertsClientGetAllOptions) *runtime.Pager[AlertsClientGetAllResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AlertsClientGetAllResponse]{
+		More: func(page AlertsClientGetAllResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AlertsClientGetAllResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AlertsList.NextLink)
+		Fetcher: func(ctx context.Context, page *AlertsClientGetAllResponse) (AlertsClientGetAllResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.getAllCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AlertsClientGetAllResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AlertsClientGetAllResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AlertsClientGetAllResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.getAllHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // getAllCreateRequest creates the GetAll request.
@@ -190,7 +211,7 @@ func (client *AlertsClient) getAllCreateRequest(ctx context.Context, options *Al
 
 // getAllHandleResponse handles the GetAll response.
 func (client *AlertsClient) getAllHandleResponse(resp *http.Response) (AlertsClientGetAllResponse, error) {
-	result := AlertsClientGetAllResponse{RawResponse: resp}
+	result := AlertsClientGetAllResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertsList); err != nil {
 		return AlertsClientGetAllResponse{}, err
 	}
@@ -240,7 +261,7 @@ func (client *AlertsClient) getByIDCreateRequest(ctx context.Context, alertID st
 
 // getByIDHandleResponse handles the GetByID response.
 func (client *AlertsClient) getByIDHandleResponse(resp *http.Response) (AlertsClientGetByIDResponse, error) {
-	result := AlertsClientGetByIDResponse{RawResponse: resp}
+	result := AlertsClientGetByIDResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Alert); err != nil {
 		return AlertsClientGetByIDResponse{}, err
 	}
@@ -291,7 +312,7 @@ func (client *AlertsClient) getHistoryCreateRequest(ctx context.Context, alertID
 
 // getHistoryHandleResponse handles the GetHistory response.
 func (client *AlertsClient) getHistoryHandleResponse(resp *http.Response) (AlertsClientGetHistoryResponse, error) {
-	result := AlertsClientGetHistoryResponse{RawResponse: resp}
+	result := AlertsClientGetHistoryResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertModification); err != nil {
 		return AlertsClientGetHistoryResponse{}, err
 	}
@@ -373,7 +394,7 @@ func (client *AlertsClient) getSummaryCreateRequest(ctx context.Context, groupby
 
 // getSummaryHandleResponse handles the GetSummary response.
 func (client *AlertsClient) getSummaryHandleResponse(resp *http.Response) (AlertsClientGetSummaryResponse, error) {
-	result := AlertsClientGetSummaryResponse{RawResponse: resp}
+	result := AlertsClientGetSummaryResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertsSummary); err != nil {
 		return AlertsClientGetSummaryResponse{}, err
 	}
@@ -416,7 +437,7 @@ func (client *AlertsClient) metaDataCreateRequest(ctx context.Context, identifie
 
 // metaDataHandleResponse handles the MetaData response.
 func (client *AlertsClient) metaDataHandleResponse(resp *http.Response) (AlertsClientMetaDataResponse, error) {
-	result := AlertsClientMetaDataResponse{RawResponse: resp}
+	result := AlertsClientMetaDataResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertsMetaData); err != nil {
 		return AlertsClientMetaDataResponse{}, err
 	}

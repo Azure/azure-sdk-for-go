@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -35,20 +36,24 @@ type APIProductClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewAPIProductClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *APIProductClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewAPIProductClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*APIProductClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &APIProductClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // ListByApis - Lists all Products, which the API is part of.
@@ -57,16 +62,32 @@ func NewAPIProductClient(subscriptionID string, credential azcore.TokenCredentia
 // serviceName - The name of the API Management service.
 // apiID - API identifier. Must be unique in the current API Management service instance.
 // options - APIProductClientListByApisOptions contains the optional parameters for the APIProductClient.ListByApis method.
-func (client *APIProductClient) ListByApis(resourceGroupName string, serviceName string, apiID string, options *APIProductClientListByApisOptions) *APIProductClientListByApisPager {
-	return &APIProductClientListByApisPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByApisCreateRequest(ctx, resourceGroupName, serviceName, apiID, options)
+func (client *APIProductClient) ListByApis(resourceGroupName string, serviceName string, apiID string, options *APIProductClientListByApisOptions) *runtime.Pager[APIProductClientListByApisResponse] {
+	return runtime.NewPager(runtime.PageProcessor[APIProductClientListByApisResponse]{
+		More: func(page APIProductClientListByApisResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp APIProductClientListByApisResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ProductCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *APIProductClientListByApisResponse) (APIProductClientListByApisResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByApisCreateRequest(ctx, resourceGroupName, serviceName, apiID, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return APIProductClientListByApisResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return APIProductClientListByApisResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return APIProductClientListByApisResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByApisHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByApisCreateRequest creates the ListByApis request.
@@ -110,7 +131,7 @@ func (client *APIProductClient) listByApisCreateRequest(ctx context.Context, res
 
 // listByApisHandleResponse handles the ListByApis response.
 func (client *APIProductClient) listByApisHandleResponse(resp *http.Response) (APIProductClientListByApisResponse, error) {
-	result := APIProductClientListByApisResponse{RawResponse: resp}
+	result := APIProductClientListByApisResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProductCollection); err != nil {
 		return APIProductClientListByApisResponse{}, err
 	}

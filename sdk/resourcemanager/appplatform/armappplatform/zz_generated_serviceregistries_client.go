@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type ServiceRegistriesClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewServiceRegistriesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServiceRegistriesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewServiceRegistriesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ServiceRegistriesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ServiceRegistriesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Create the default Service Registry or update the existing Service Registry.
@@ -58,22 +63,18 @@ func NewServiceRegistriesClient(subscriptionID string, credential azcore.TokenCr
 // serviceRegistryName - The name of Service Registry.
 // options - ServiceRegistriesClientBeginCreateOrUpdateOptions contains the optional parameters for the ServiceRegistriesClient.BeginCreateOrUpdate
 // method.
-func (client *ServiceRegistriesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, serviceRegistryName string, options *ServiceRegistriesClientBeginCreateOrUpdateOptions) (ServiceRegistriesClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, serviceName, serviceRegistryName, options)
-	if err != nil {
-		return ServiceRegistriesClientCreateOrUpdatePollerResponse{}, err
+func (client *ServiceRegistriesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, serviceRegistryName string, options *ServiceRegistriesClientBeginCreateOrUpdateOptions) (*armruntime.Poller[ServiceRegistriesClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, serviceName, serviceRegistryName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ServiceRegistriesClientCreateOrUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[ServiceRegistriesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ServiceRegistriesClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ServiceRegistriesClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return ServiceRegistriesClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &ServiceRegistriesClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Create the default Service Registry or update the existing Service Registry.
@@ -117,7 +118,7 @@ func (client *ServiceRegistriesClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -131,22 +132,18 @@ func (client *ServiceRegistriesClient) createOrUpdateCreateRequest(ctx context.C
 // serviceRegistryName - The name of Service Registry.
 // options - ServiceRegistriesClientBeginDeleteOptions contains the optional parameters for the ServiceRegistriesClient.BeginDelete
 // method.
-func (client *ServiceRegistriesClient) BeginDelete(ctx context.Context, resourceGroupName string, serviceName string, serviceRegistryName string, options *ServiceRegistriesClientBeginDeleteOptions) (ServiceRegistriesClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, serviceName, serviceRegistryName, options)
-	if err != nil {
-		return ServiceRegistriesClientDeletePollerResponse{}, err
+func (client *ServiceRegistriesClient) BeginDelete(ctx context.Context, resourceGroupName string, serviceName string, serviceRegistryName string, options *ServiceRegistriesClientBeginDeleteOptions) (*armruntime.Poller[ServiceRegistriesClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, serviceName, serviceRegistryName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ServiceRegistriesClientDeleteResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[ServiceRegistriesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ServiceRegistriesClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ServiceRegistriesClient.Delete", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return ServiceRegistriesClientDeletePollerResponse{}, err
-	}
-	result.Poller = &ServiceRegistriesClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Disable the default Service Registry.
@@ -190,7 +187,7 @@ func (client *ServiceRegistriesClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -242,7 +239,7 @@ func (client *ServiceRegistriesClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -250,7 +247,7 @@ func (client *ServiceRegistriesClient) getCreateRequest(ctx context.Context, res
 
 // getHandleResponse handles the Get response.
 func (client *ServiceRegistriesClient) getHandleResponse(resp *http.Response) (ServiceRegistriesClientGetResponse, error) {
-	result := ServiceRegistriesClientGetResponse{RawResponse: resp}
+	result := ServiceRegistriesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceRegistryResource); err != nil {
 		return ServiceRegistriesClientGetResponse{}, err
 	}
@@ -263,16 +260,32 @@ func (client *ServiceRegistriesClient) getHandleResponse(resp *http.Response) (S
 // Resource Manager API or the portal.
 // serviceName - The name of the Service resource.
 // options - ServiceRegistriesClientListOptions contains the optional parameters for the ServiceRegistriesClient.List method.
-func (client *ServiceRegistriesClient) List(resourceGroupName string, serviceName string, options *ServiceRegistriesClientListOptions) *ServiceRegistriesClientListPager {
-	return &ServiceRegistriesClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, serviceName, options)
+func (client *ServiceRegistriesClient) List(resourceGroupName string, serviceName string, options *ServiceRegistriesClientListOptions) *runtime.Pager[ServiceRegistriesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ServiceRegistriesClientListResponse]{
+		More: func(page ServiceRegistriesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ServiceRegistriesClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ServiceRegistryResourceCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *ServiceRegistriesClientListResponse) (ServiceRegistriesClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, serviceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ServiceRegistriesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ServiceRegistriesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ServiceRegistriesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -295,7 +308,7 @@ func (client *ServiceRegistriesClient) listCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -303,7 +316,7 @@ func (client *ServiceRegistriesClient) listCreateRequest(ctx context.Context, re
 
 // listHandleResponse handles the List response.
 func (client *ServiceRegistriesClient) listHandleResponse(resp *http.Response) (ServiceRegistriesClientListResponse, error) {
-	result := ServiceRegistriesClientListResponse{RawResponse: resp}
+	result := ServiceRegistriesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceRegistryResourceCollection); err != nil {
 		return ServiceRegistriesClientListResponse{}, err
 	}

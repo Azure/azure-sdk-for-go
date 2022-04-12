@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type RegisteredAsnsClient struct {
 // subscriptionID - The Azure subscription ID.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewRegisteredAsnsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RegisteredAsnsClient {
+func NewRegisteredAsnsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RegisteredAsnsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &RegisteredAsnsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates a new registered ASN with the specified name under the given subscription, resource group and
@@ -97,7 +102,7 @@ func (client *RegisteredAsnsClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, registeredAsn)
@@ -105,7 +110,7 @@ func (client *RegisteredAsnsClient) createOrUpdateCreateRequest(ctx context.Cont
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *RegisteredAsnsClient) createOrUpdateHandleResponse(resp *http.Response) (RegisteredAsnsClientCreateOrUpdateResponse, error) {
-	result := RegisteredAsnsClientCreateOrUpdateResponse{RawResponse: resp}
+	result := RegisteredAsnsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RegisteredAsn); err != nil {
 		return RegisteredAsnsClientCreateOrUpdateResponse{}, err
 	}
@@ -130,7 +135,7 @@ func (client *RegisteredAsnsClient) Delete(ctx context.Context, resourceGroupNam
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return RegisteredAsnsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return RegisteredAsnsClientDeleteResponse{RawResponse: resp}, nil
+	return RegisteredAsnsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -157,7 +162,7 @@ func (client *RegisteredAsnsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -208,7 +213,7 @@ func (client *RegisteredAsnsClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -216,7 +221,7 @@ func (client *RegisteredAsnsClient) getCreateRequest(ctx context.Context, resour
 
 // getHandleResponse handles the Get response.
 func (client *RegisteredAsnsClient) getHandleResponse(resp *http.Response) (RegisteredAsnsClientGetResponse, error) {
-	result := RegisteredAsnsClientGetResponse{RawResponse: resp}
+	result := RegisteredAsnsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RegisteredAsn); err != nil {
 		return RegisteredAsnsClientGetResponse{}, err
 	}
@@ -229,16 +234,32 @@ func (client *RegisteredAsnsClient) getHandleResponse(resp *http.Response) (Regi
 // peeringName - The name of the peering.
 // options - RegisteredAsnsClientListByPeeringOptions contains the optional parameters for the RegisteredAsnsClient.ListByPeering
 // method.
-func (client *RegisteredAsnsClient) ListByPeering(resourceGroupName string, peeringName string, options *RegisteredAsnsClientListByPeeringOptions) *RegisteredAsnsClientListByPeeringPager {
-	return &RegisteredAsnsClientListByPeeringPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByPeeringCreateRequest(ctx, resourceGroupName, peeringName, options)
+func (client *RegisteredAsnsClient) ListByPeering(resourceGroupName string, peeringName string, options *RegisteredAsnsClientListByPeeringOptions) *runtime.Pager[RegisteredAsnsClientListByPeeringResponse] {
+	return runtime.NewPager(runtime.PageProcessor[RegisteredAsnsClientListByPeeringResponse]{
+		More: func(page RegisteredAsnsClientListByPeeringResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp RegisteredAsnsClientListByPeeringResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.RegisteredAsnListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *RegisteredAsnsClientListByPeeringResponse) (RegisteredAsnsClientListByPeeringResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByPeeringCreateRequest(ctx, resourceGroupName, peeringName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return RegisteredAsnsClientListByPeeringResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return RegisteredAsnsClientListByPeeringResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return RegisteredAsnsClientListByPeeringResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByPeeringHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByPeeringCreateRequest creates the ListByPeering request.
@@ -261,7 +282,7 @@ func (client *RegisteredAsnsClient) listByPeeringCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -269,7 +290,7 @@ func (client *RegisteredAsnsClient) listByPeeringCreateRequest(ctx context.Conte
 
 // listByPeeringHandleResponse handles the ListByPeering response.
 func (client *RegisteredAsnsClient) listByPeeringHandleResponse(resp *http.Response) (RegisteredAsnsClientListByPeeringResponse, error) {
-	result := RegisteredAsnsClientListByPeeringResponse{RawResponse: resp}
+	result := RegisteredAsnsClientListByPeeringResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RegisteredAsnListResult); err != nil {
 		return RegisteredAsnsClientListByPeeringResponse{}, err
 	}

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,48 +27,46 @@ import (
 type ManagementAssociationsClient struct {
 	host           string
 	subscriptionID string
-	providerName   string
-	resourceType   string
-	resourceName   string
 	pl             runtime.Pipeline
 }
 
 // NewManagementAssociationsClient creates a new instance of ManagementAssociationsClient with the specified values.
 // subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
 // forms part of the URI for every service call.
-// providerName - Provider name for the parent resource.
-// resourceType - Resource type for the parent resource
-// resourceName - Parent resource name.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewManagementAssociationsClient(subscriptionID string, providerName string, resourceType string, resourceName string, credential azcore.TokenCredential, options *arm.ClientOptions) *ManagementAssociationsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewManagementAssociationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagementAssociationsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ManagementAssociationsClient{
 		subscriptionID: subscriptionID,
-		providerName:   providerName,
-		resourceType:   resourceType,
-		resourceName:   resourceName,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates the ManagementAssociation.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group to get. The name is case insensitive.
+// providerName - Provider name for the parent resource.
+// resourceType - Resource type for the parent resource
+// resourceName - Parent resource name.
 // managementAssociationName - User ManagementAssociation Name.
 // parameters - The parameters required to create ManagementAssociation extension.
 // options - ManagementAssociationsClientCreateOrUpdateOptions contains the optional parameters for the ManagementAssociationsClient.CreateOrUpdate
 // method.
-func (client *ManagementAssociationsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, managementAssociationName string, parameters ManagementAssociation, options *ManagementAssociationsClientCreateOrUpdateOptions) (ManagementAssociationsClientCreateOrUpdateResponse, error) {
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, managementAssociationName, parameters, options)
+func (client *ManagementAssociationsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, providerName string, resourceType string, resourceName string, managementAssociationName string, parameters ManagementAssociation, options *ManagementAssociationsClientCreateOrUpdateOptions) (ManagementAssociationsClientCreateOrUpdateResponse, error) {
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, providerName, resourceType, resourceName, managementAssociationName, parameters, options)
 	if err != nil {
 		return ManagementAssociationsClientCreateOrUpdateResponse{}, err
 	}
@@ -82,7 +81,7 @@ func (client *ManagementAssociationsClient) CreateOrUpdate(ctx context.Context, 
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ManagementAssociationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, managementAssociationName string, parameters ManagementAssociation, options *ManagementAssociationsClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ManagementAssociationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, providerName string, resourceType string, resourceName string, managementAssociationName string, parameters ManagementAssociation, options *ManagementAssociationsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}/{resourceType}/{resourceName}/providers/Microsoft.OperationsManagement/ManagementAssociations/{managementAssociationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -92,18 +91,18 @@ func (client *ManagementAssociationsClient) createOrUpdateCreateRequest(ctx cont
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if client.providerName == "" {
-		return nil, errors.New("parameter client.providerName cannot be empty")
+	if providerName == "" {
+		return nil, errors.New("parameter providerName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{providerName}", url.PathEscape(client.providerName))
-	if client.resourceType == "" {
-		return nil, errors.New("parameter client.resourceType cannot be empty")
+	urlPath = strings.ReplaceAll(urlPath, "{providerName}", url.PathEscape(providerName))
+	if resourceType == "" {
+		return nil, errors.New("parameter resourceType cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceType}", url.PathEscape(client.resourceType))
-	if client.resourceName == "" {
-		return nil, errors.New("parameter client.resourceName cannot be empty")
+	urlPath = strings.ReplaceAll(urlPath, "{resourceType}", url.PathEscape(resourceType))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(client.resourceName))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
 	if managementAssociationName == "" {
 		return nil, errors.New("parameter managementAssociationName cannot be empty")
 	}
@@ -121,7 +120,7 @@ func (client *ManagementAssociationsClient) createOrUpdateCreateRequest(ctx cont
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *ManagementAssociationsClient) createOrUpdateHandleResponse(resp *http.Response) (ManagementAssociationsClientCreateOrUpdateResponse, error) {
-	result := ManagementAssociationsClientCreateOrUpdateResponse{RawResponse: resp}
+	result := ManagementAssociationsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagementAssociation); err != nil {
 		return ManagementAssociationsClientCreateOrUpdateResponse{}, err
 	}
@@ -131,11 +130,14 @@ func (client *ManagementAssociationsClient) createOrUpdateHandleResponse(resp *h
 // Delete - Deletes the ManagementAssociation in the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group to get. The name is case insensitive.
+// providerName - Provider name for the parent resource.
+// resourceType - Resource type for the parent resource
+// resourceName - Parent resource name.
 // managementAssociationName - User ManagementAssociation Name.
 // options - ManagementAssociationsClientDeleteOptions contains the optional parameters for the ManagementAssociationsClient.Delete
 // method.
-func (client *ManagementAssociationsClient) Delete(ctx context.Context, resourceGroupName string, managementAssociationName string, options *ManagementAssociationsClientDeleteOptions) (ManagementAssociationsClientDeleteResponse, error) {
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, managementAssociationName, options)
+func (client *ManagementAssociationsClient) Delete(ctx context.Context, resourceGroupName string, providerName string, resourceType string, resourceName string, managementAssociationName string, options *ManagementAssociationsClientDeleteOptions) (ManagementAssociationsClientDeleteResponse, error) {
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, providerName, resourceType, resourceName, managementAssociationName, options)
 	if err != nil {
 		return ManagementAssociationsClientDeleteResponse{}, err
 	}
@@ -146,11 +148,11 @@ func (client *ManagementAssociationsClient) Delete(ctx context.Context, resource
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return ManagementAssociationsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ManagementAssociationsClientDeleteResponse{RawResponse: resp}, nil
+	return ManagementAssociationsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ManagementAssociationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, managementAssociationName string, options *ManagementAssociationsClientDeleteOptions) (*policy.Request, error) {
+func (client *ManagementAssociationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, providerName string, resourceType string, resourceName string, managementAssociationName string, options *ManagementAssociationsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}/{resourceType}/{resourceName}/providers/Microsoft.OperationsManagement/ManagementAssociations/{managementAssociationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -160,18 +162,18 @@ func (client *ManagementAssociationsClient) deleteCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if client.providerName == "" {
-		return nil, errors.New("parameter client.providerName cannot be empty")
+	if providerName == "" {
+		return nil, errors.New("parameter providerName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{providerName}", url.PathEscape(client.providerName))
-	if client.resourceType == "" {
-		return nil, errors.New("parameter client.resourceType cannot be empty")
+	urlPath = strings.ReplaceAll(urlPath, "{providerName}", url.PathEscape(providerName))
+	if resourceType == "" {
+		return nil, errors.New("parameter resourceType cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceType}", url.PathEscape(client.resourceType))
-	if client.resourceName == "" {
-		return nil, errors.New("parameter client.resourceName cannot be empty")
+	urlPath = strings.ReplaceAll(urlPath, "{resourceType}", url.PathEscape(resourceType))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(client.resourceName))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
 	if managementAssociationName == "" {
 		return nil, errors.New("parameter managementAssociationName cannot be empty")
 	}
@@ -190,11 +192,14 @@ func (client *ManagementAssociationsClient) deleteCreateRequest(ctx context.Cont
 // Get - Retrieves the user ManagementAssociation.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group to get. The name is case insensitive.
+// providerName - Provider name for the parent resource.
+// resourceType - Resource type for the parent resource
+// resourceName - Parent resource name.
 // managementAssociationName - User ManagementAssociation Name.
 // options - ManagementAssociationsClientGetOptions contains the optional parameters for the ManagementAssociationsClient.Get
 // method.
-func (client *ManagementAssociationsClient) Get(ctx context.Context, resourceGroupName string, managementAssociationName string, options *ManagementAssociationsClientGetOptions) (ManagementAssociationsClientGetResponse, error) {
-	req, err := client.getCreateRequest(ctx, resourceGroupName, managementAssociationName, options)
+func (client *ManagementAssociationsClient) Get(ctx context.Context, resourceGroupName string, providerName string, resourceType string, resourceName string, managementAssociationName string, options *ManagementAssociationsClientGetOptions) (ManagementAssociationsClientGetResponse, error) {
+	req, err := client.getCreateRequest(ctx, resourceGroupName, providerName, resourceType, resourceName, managementAssociationName, options)
 	if err != nil {
 		return ManagementAssociationsClientGetResponse{}, err
 	}
@@ -209,7 +214,7 @@ func (client *ManagementAssociationsClient) Get(ctx context.Context, resourceGro
 }
 
 // getCreateRequest creates the Get request.
-func (client *ManagementAssociationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, managementAssociationName string, options *ManagementAssociationsClientGetOptions) (*policy.Request, error) {
+func (client *ManagementAssociationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, providerName string, resourceType string, resourceName string, managementAssociationName string, options *ManagementAssociationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}/{resourceType}/{resourceName}/providers/Microsoft.OperationsManagement/ManagementAssociations/{managementAssociationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -219,18 +224,18 @@ func (client *ManagementAssociationsClient) getCreateRequest(ctx context.Context
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if client.providerName == "" {
-		return nil, errors.New("parameter client.providerName cannot be empty")
+	if providerName == "" {
+		return nil, errors.New("parameter providerName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{providerName}", url.PathEscape(client.providerName))
-	if client.resourceType == "" {
-		return nil, errors.New("parameter client.resourceType cannot be empty")
+	urlPath = strings.ReplaceAll(urlPath, "{providerName}", url.PathEscape(providerName))
+	if resourceType == "" {
+		return nil, errors.New("parameter resourceType cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceType}", url.PathEscape(client.resourceType))
-	if client.resourceName == "" {
-		return nil, errors.New("parameter client.resourceName cannot be empty")
+	urlPath = strings.ReplaceAll(urlPath, "{resourceType}", url.PathEscape(resourceType))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(client.resourceName))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
 	if managementAssociationName == "" {
 		return nil, errors.New("parameter managementAssociationName cannot be empty")
 	}
@@ -248,7 +253,7 @@ func (client *ManagementAssociationsClient) getCreateRequest(ctx context.Context
 
 // getHandleResponse handles the Get response.
 func (client *ManagementAssociationsClient) getHandleResponse(resp *http.Response) (ManagementAssociationsClientGetResponse, error) {
-	result := ManagementAssociationsClientGetResponse{RawResponse: resp}
+	result := ManagementAssociationsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagementAssociation); err != nil {
 		return ManagementAssociationsClientGetResponse{}, err
 	}
@@ -294,7 +299,7 @@ func (client *ManagementAssociationsClient) listBySubscriptionCreateRequest(ctx 
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
 func (client *ManagementAssociationsClient) listBySubscriptionHandleResponse(resp *http.Response) (ManagementAssociationsClientListBySubscriptionResponse, error) {
-	result := ManagementAssociationsClientListBySubscriptionResponse{RawResponse: resp}
+	result := ManagementAssociationsClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagementAssociationPropertiesList); err != nil {
 		return ManagementAssociationsClientListBySubscriptionResponse{}, err
 	}

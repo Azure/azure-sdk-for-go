@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,35 +17,40 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/policyinsights/armpolicyinsights"
 )
 
-// x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2020-07-01/examples/PolicyRestrictions_CheckAtSubscriptionScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-03-01/examples/PolicyRestrictions_CheckAtSubscriptionScope.json
 func ExamplePolicyRestrictionsClient_CheckAtSubscriptionScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armpolicyinsights.NewPolicyRestrictionsClient("<subscription-id>", cred, nil)
+	client, err := armpolicyinsights.NewPolicyRestrictionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.CheckAtSubscriptionScope(ctx,
 		armpolicyinsights.CheckRestrictionsRequest{
 			PendingFields: []*armpolicyinsights.PendingField{
 				{
-					Field: to.StringPtr("<field>"),
+					Field: to.Ptr("<field>"),
 					Values: []*string{
-						to.StringPtr("myVMName")},
+						to.Ptr("myVMName")},
 				},
 				{
-					Field: to.StringPtr("<field>"),
+					Field: to.Ptr("<field>"),
 					Values: []*string{
-						to.StringPtr("eastus"),
-						to.StringPtr("westus"),
-						to.StringPtr("westus2"),
-						to.StringPtr("westeurope")},
+						to.Ptr("eastus"),
+						to.Ptr("westus"),
+						to.Ptr("westus2"),
+						to.Ptr("westeurope")},
 				},
 				{
-					Field: to.StringPtr("<field>"),
+					Field: to.Ptr("<field>"),
 				}},
 			ResourceDetails: &armpolicyinsights.CheckRestrictionsResourceDetails{
-				APIVersion: to.StringPtr("<apiversion>"),
+				APIVersion: to.Ptr("<apiversion>"),
 				ResourceContent: map[string]interface{}{
 					"type": "Microsoft.Compute/virtualMachines",
 					"properties": map[string]interface{}{
@@ -56,41 +61,48 @@ func ExamplePolicyRestrictionsClient_CheckAtSubscriptionScope() {
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.PolicyRestrictionsClientCheckAtSubscriptionScopeResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2020-07-01/examples/PolicyRestrictions_CheckAtResourceGroupScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-03-01/examples/PolicyRestrictions_CheckAtResourceGroupScope.json
 func ExamplePolicyRestrictionsClient_CheckAtResourceGroupScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armpolicyinsights.NewPolicyRestrictionsClient("<subscription-id>", cred, nil)
+	client, err := armpolicyinsights.NewPolicyRestrictionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.CheckAtResourceGroupScope(ctx,
 		"<resource-group-name>",
 		armpolicyinsights.CheckRestrictionsRequest{
 			PendingFields: []*armpolicyinsights.PendingField{
 				{
-					Field: to.StringPtr("<field>"),
+					Field: to.Ptr("<field>"),
 					Values: []*string{
-						to.StringPtr("myVMName")},
+						to.Ptr("myVMName")},
 				},
 				{
-					Field: to.StringPtr("<field>"),
+					Field: to.Ptr("<field>"),
 					Values: []*string{
-						to.StringPtr("eastus"),
-						to.StringPtr("westus"),
-						to.StringPtr("westus2"),
-						to.StringPtr("westeurope")},
+						to.Ptr("eastus"),
+						to.Ptr("westus"),
+						to.Ptr("westus2"),
+						to.Ptr("westeurope")},
 				},
 				{
-					Field: to.StringPtr("<field>"),
+					Field: to.Ptr("<field>"),
 				}},
 			ResourceDetails: &armpolicyinsights.CheckRestrictionsResourceDetails{
-				APIVersion: to.StringPtr("<apiversion>"),
+				APIVersion: to.Ptr("<apiversion>"),
 				ResourceContent: map[string]interface{}{
 					"type": "Microsoft.Compute/virtualMachines",
 					"properties": map[string]interface{}{
@@ -101,7 +113,39 @@ func ExamplePolicyRestrictionsClient_CheckAtResourceGroupScope() {
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.PolicyRestrictionsClientCheckAtResourceGroupScopeResult)
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-03-01/examples/PolicyRestrictions_CheckAtManagementGroupScope.json
+func ExamplePolicyRestrictionsClient_CheckAtManagementGroupScope() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+		return
+	}
+	ctx := context.Background()
+	client, err := armpolicyinsights.NewPolicyRestrictionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
+	res, err := client.CheckAtManagementGroupScope(ctx,
+		"<management-group-id>",
+		armpolicyinsights.CheckManagementGroupRestrictionsRequest{
+			PendingFields: []*armpolicyinsights.PendingField{
+				{
+					Field: to.Ptr("<field>"),
+				}},
+		},
+		nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+		return
+	}
+	// TODO: use response item
+	_ = res
 }

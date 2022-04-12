@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,12 +8,7 @@
 
 package armpowerbiprivatelinks
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
 
 // AsyncOperationDetail
 type AsyncOperationDetail struct {
@@ -51,7 +46,7 @@ type ConnectionState struct {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info map[string]interface{} `json:"info,omitempty" azure:"ro"`
+	Info interface{} `json:"info,omitempty" azure:"ro"`
 
 	// READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -73,17 +68,6 @@ type ErrorDetail struct {
 
 	// READ-ONLY; The error target.
 	Target *string `json:"target,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ErrorDetail.
-func (e ErrorDetail) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalInfo", e.AdditionalInfo)
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "message", e.Message)
-	populate(objectMap, "target", e.Target)
-	return json.Marshal(objectMap)
 }
 
 // ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
@@ -109,17 +93,6 @@ type GroupConnectivityInformation struct {
 
 	// Specifies the ARM region of the group connectivity information.
 	PrivateLinkServiceArmRegion *string `json:"privateLinkServiceArmRegion,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type GroupConnectivityInformation.
-func (g GroupConnectivityInformation) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "customerVisibleFqdns", g.CustomerVisibleFqdns)
-	populate(objectMap, "groupId", g.GroupID)
-	populate(objectMap, "internalFqdn", g.InternalFqdn)
-	populate(objectMap, "memberName", g.MemberName)
-	populate(objectMap, "privateLinkServiceArmRegion", g.PrivateLinkServiceArmRegion)
-	return json.Marshal(objectMap)
 }
 
 // Operation - Details of a REST API operation, returned from the Resource Provider Operations API
@@ -169,14 +142,6 @@ type OperationListResult struct {
 
 	// READ-ONLY; List of operations supported by the resource provider
 	Value []*Operation `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
-func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
@@ -240,14 +205,6 @@ type PrivateEndpointConnectionListResult struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateEndpointConnectionListResult.
-func (p PrivateEndpointConnectionListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
 // PrivateEndpointConnectionProperties
 type PrivateEndpointConnectionProperties struct {
 	// Specifies the private endpoint.
@@ -263,7 +220,8 @@ type PrivateEndpointConnectionProperties struct {
 // PrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginDelete
 // method.
 type PrivateEndpointConnectionsClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // PrivateEndpointConnectionsClientCreateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.Create
@@ -329,15 +287,6 @@ type PrivateLinkResourceProperties struct {
 	RequiredMembers []*string `json:"requiredMembers,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkResourceProperties.
-func (p PrivateLinkResourceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "groupId", p.GroupID)
-	populate(objectMap, "requiredMembers", p.RequiredMembers)
-	populate(objectMap, "requiredZoneNames", p.RequiredZoneNames)
-	return json.Marshal(objectMap)
-}
-
 // PrivateLinkResourcesClientGetOptions contains the optional parameters for the PrivateLinkResourcesClient.Get method.
 type PrivateLinkResourcesClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -358,14 +307,6 @@ type PrivateLinkResourcesListResult struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkResourcesListResult.
-func (p PrivateLinkResourcesListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
 // PrivateLinkServiceConnection
 type PrivateLinkServiceConnection struct {
 	// Specifies the group ids of the private link service connection.
@@ -376,15 +317,6 @@ type PrivateLinkServiceConnection struct {
 
 	// Specifies the request message of the private link service connection.
 	RequestMessage *string `json:"requestMessage,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkServiceConnection.
-func (p PrivateLinkServiceConnection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "groupIds", p.GroupIDs)
-	populate(objectMap, "name", p.Name)
-	populate(objectMap, "requestMessage", p.RequestMessage)
-	return json.Marshal(objectMap)
 }
 
 // PrivateLinkServiceProxy
@@ -402,20 +334,11 @@ type PrivateLinkServiceProxy struct {
 	RemotePrivateLinkServiceConnectionState *ConnectionState `json:"remotePrivateLinkServiceConnectionState,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkServiceProxy.
-func (p PrivateLinkServiceProxy) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "groupConnectivityInformation", p.GroupConnectivityInformation)
-	populate(objectMap, "id", p.ID)
-	populate(objectMap, "remotePrivateEndpointConnection", p.RemotePrivateEndpointConnection)
-	populate(objectMap, "remotePrivateLinkServiceConnectionState", p.RemotePrivateLinkServiceConnectionState)
-	return json.Marshal(objectMap)
-}
-
 // PrivateLinkServiceResourceOperationResultsClientBeginGetOptions contains the optional parameters for the PrivateLinkServiceResourceOperationResultsClient.BeginGet
 // method.
 type PrivateLinkServiceResourceOperationResultsClientBeginGetOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // PrivateLinkServicesClientListByResourceGroupOptions contains the optional parameters for the PrivateLinkServicesClient.ListByResourceGroup
@@ -457,53 +380,6 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SystemData.
-func (s SystemData) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
-	populate(objectMap, "createdBy", s.CreatedBy)
-	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
-	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
-	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SystemData.
-func (s *SystemData) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdAt":
-			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
-			delete(rawMsg, key)
-		case "createdBy":
-			err = unpopulate(val, &s.CreatedBy)
-			delete(rawMsg, key)
-		case "createdByType":
-			err = unpopulate(val, &s.CreatedByType)
-			delete(rawMsg, key)
-		case "lastModifiedAt":
-			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
-			delete(rawMsg, key)
-		case "lastModifiedBy":
-			err = unpopulate(val, &s.LastModifiedBy)
-			delete(rawMsg, key)
-		case "lastModifiedByType":
-			err = unpopulate(val, &s.LastModifiedByType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // TenantProperties
 type TenantProperties struct {
 	// Specifies the private endpoint connections of the resource.
@@ -511,14 +387,6 @@ type TenantProperties struct {
 
 	// Specifies the tenant id of the resource.
 	TenantID *string `json:"tenantId,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type TenantProperties.
-func (t TenantProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "privateEndpointConnections", t.PrivateEndpointConnections)
-	populate(objectMap, "tenantId", t.TenantID)
-	return json.Marshal(objectMap)
 }
 
 // TenantResource
@@ -543,34 +411,4 @@ type TenantResource struct {
 
 	// READ-ONLY; Specifies the type of the resource.
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type TenantResource.
-func (t TenantResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", t.ID)
-	populate(objectMap, "location", t.Location)
-	populate(objectMap, "name", t.Name)
-	populate(objectMap, "properties", t.Properties)
-	populate(objectMap, "systemData", t.SystemData)
-	populate(objectMap, "tags", t.Tags)
-	populate(objectMap, "type", t.Type)
-	return json.Marshal(objectMap)
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

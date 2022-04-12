@@ -1,5 +1,89 @@
 # Release History
 
+## 0.3.0 (2022-04-12)
+### Breaking Changes
+
+- Function `*DashboardsClient.ListBySubscription` return value(s) have been changed from `(*DashboardsClientListBySubscriptionPager)` to `(*runtime.Pager[DashboardsClientListBySubscriptionResponse])`
+- Function `NewListTenantConfigurationViolationsClient` return value(s) have been changed from `(*ListTenantConfigurationViolationsClient)` to `(*ListTenantConfigurationViolationsClient, error)`
+- Function `*TenantConfigurationsClient.List` return value(s) have been changed from `(*TenantConfigurationsClientListPager)` to `(*runtime.Pager[TenantConfigurationsClientListResponse])`
+- Function `NewTenantConfigurationsClient` return value(s) have been changed from `(*TenantConfigurationsClient)` to `(*TenantConfigurationsClient, error)`
+- Function `*ListTenantConfigurationViolationsClient.List` return value(s) have been changed from `(*ListTenantConfigurationViolationsClientListPager)` to `(*runtime.Pager[ListTenantConfigurationViolationsClientListResponse])`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `*DashboardsClient.ListByResourceGroup` return value(s) have been changed from `(*DashboardsClientListByResourceGroupPager)` to `(*runtime.Pager[DashboardsClientListByResourceGroupResponse])`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `NewDashboardsClient` return value(s) have been changed from `(*DashboardsClient)` to `(*DashboardsClient, error)`
+- Type of `DashboardProperties.Metadata` has been changed from `map[string]map[string]interface{}` to `map[string]interface{}`
+- Type of `DashboardPartsPosition.Metadata` has been changed from `map[string]map[string]interface{}` to `map[string]interface{}`
+- Type of `MarkdownPartMetadata.Inputs` has been changed from `[]map[string]interface{}` to `[]interface{}`
+- Type of `DashboardLens.Metadata` has been changed from `map[string]map[string]interface{}` to `map[string]interface{}`
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `*DashboardsClientListBySubscriptionPager.NextPage` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Function `*ListTenantConfigurationViolationsClientListPager.NextPage` has been removed
+- Function `*TenantConfigurationsClientListPager.PageResponse` has been removed
+- Function `ConfigurationName.ToPtr` has been removed
+- Function `*ListTenantConfigurationViolationsClientListPager.Err` has been removed
+- Function `*DashboardsClientListBySubscriptionPager.PageResponse` has been removed
+- Function `*DashboardsClientListBySubscriptionPager.Err` has been removed
+- Function `*DashboardsClientListByResourceGroupPager.NextPage` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `*ListTenantConfigurationViolationsClientListPager.PageResponse` has been removed
+- Function `*DashboardsClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*TenantConfigurationsClientListPager.NextPage` has been removed
+- Function `*TenantConfigurationsClientListPager.Err` has been removed
+- Function `*DashboardsClientListByResourceGroupPager.Err` has been removed
+- Struct `DashboardsClientCreateOrUpdateResult` has been removed
+- Struct `DashboardsClientGetResult` has been removed
+- Struct `DashboardsClientListByResourceGroupPager` has been removed
+- Struct `DashboardsClientListByResourceGroupResult` has been removed
+- Struct `DashboardsClientListBySubscriptionPager` has been removed
+- Struct `DashboardsClientListBySubscriptionResult` has been removed
+- Struct `DashboardsClientUpdateResult` has been removed
+- Struct `ListTenantConfigurationViolationsClientListPager` has been removed
+- Struct `ListTenantConfigurationViolationsClientListResult` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `TenantConfigurationsClientCreateResult` has been removed
+- Struct `TenantConfigurationsClientGetResult` has been removed
+- Struct `TenantConfigurationsClientListPager` has been removed
+- Struct `TenantConfigurationsClientListResult` has been removed
+- Field `DashboardsClientListBySubscriptionResult` of struct `DashboardsClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `DashboardsClientListBySubscriptionResponse` has been removed
+- Field `DashboardsClientCreateOrUpdateResult` of struct `DashboardsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `DashboardsClientCreateOrUpdateResponse` has been removed
+- Field `DashboardsClientListByResourceGroupResult` of struct `DashboardsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `DashboardsClientListByResourceGroupResponse` has been removed
+- Field `ListTenantConfigurationViolationsClientListResult` of struct `ListTenantConfigurationViolationsClientListResponse` has been removed
+- Field `RawResponse` of struct `ListTenantConfigurationViolationsClientListResponse` has been removed
+- Field `RawResponse` of struct `TenantConfigurationsClientDeleteResponse` has been removed
+- Field `TenantConfigurationsClientGetResult` of struct `TenantConfigurationsClientGetResponse` has been removed
+- Field `RawResponse` of struct `TenantConfigurationsClientGetResponse` has been removed
+- Field `TenantConfigurationsClientCreateResult` of struct `TenantConfigurationsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `TenantConfigurationsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `DashboardsClientDeleteResponse` has been removed
+- Field `DashboardsClientUpdateResult` of struct `DashboardsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `DashboardsClientUpdateResponse` has been removed
+- Field `DashboardsClientGetResult` of struct `DashboardsClientGetResponse` has been removed
+- Field `RawResponse` of struct `DashboardsClientGetResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `TenantConfigurationsClientListResult` of struct `TenantConfigurationsClientListResponse` has been removed
+- Field `RawResponse` of struct `TenantConfigurationsClientListResponse` has been removed
+
+### Features Added
+
+- New anonymous field `Dashboard` in struct `DashboardsClientGetResponse`
+- New anonymous field `DashboardListResult` in struct `DashboardsClientListBySubscriptionResponse`
+- New anonymous field `ConfigurationList` in struct `TenantConfigurationsClientListResponse`
+- New anonymous field `Dashboard` in struct `DashboardsClientCreateOrUpdateResponse`
+- New anonymous field `ResourceProviderOperationList` in struct `OperationsClientListResponse`
+- New anonymous field `Configuration` in struct `TenantConfigurationsClientCreateResponse`
+- New anonymous field `Configuration` in struct `TenantConfigurationsClientGetResponse`
+- New anonymous field `DashboardListResult` in struct `DashboardsClientListByResourceGroupResponse`
+- New anonymous field `Dashboard` in struct `DashboardsClientUpdateResponse`
+- New anonymous field `ViolationsList` in struct `ListTenantConfigurationViolationsClientListResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

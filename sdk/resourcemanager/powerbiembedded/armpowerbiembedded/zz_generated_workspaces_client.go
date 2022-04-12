@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type WorkspacesClient struct {
 // ID forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewWorkspacesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *WorkspacesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewWorkspacesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkspacesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &WorkspacesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // List - Retrieves all existing Power BI workspaces in the specified workspace collection.
@@ -55,19 +60,26 @@ func NewWorkspacesClient(subscriptionID string, credential azcore.TokenCredentia
 // resourceGroupName - Azure resource group
 // workspaceCollectionName - Power BI Embedded Workspace Collection name
 // options - WorkspacesClientListOptions contains the optional parameters for the WorkspacesClient.List method.
-func (client *WorkspacesClient) List(ctx context.Context, resourceGroupName string, workspaceCollectionName string, options *WorkspacesClientListOptions) (WorkspacesClientListResponse, error) {
-	req, err := client.listCreateRequest(ctx, resourceGroupName, workspaceCollectionName, options)
-	if err != nil {
-		return WorkspacesClientListResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return WorkspacesClientListResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return WorkspacesClientListResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listHandleResponse(resp)
+func (client *WorkspacesClient) List(resourceGroupName string, workspaceCollectionName string, options *WorkspacesClientListOptions) *runtime.Pager[WorkspacesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[WorkspacesClientListResponse]{
+		More: func(page WorkspacesClientListResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *WorkspacesClientListResponse) (WorkspacesClientListResponse, error) {
+			req, err := client.listCreateRequest(ctx, resourceGroupName, workspaceCollectionName, options)
+			if err != nil {
+				return WorkspacesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return WorkspacesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return WorkspacesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
+		},
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -98,7 +110,7 @@ func (client *WorkspacesClient) listCreateRequest(ctx context.Context, resourceG
 
 // listHandleResponse handles the List response.
 func (client *WorkspacesClient) listHandleResponse(resp *http.Response) (WorkspacesClientListResponse, error) {
-	result := WorkspacesClientListResponse{RawResponse: resp}
+	result := WorkspacesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkspaceList); err != nil {
 		return WorkspacesClientListResponse{}, err
 	}

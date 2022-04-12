@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -13,6 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -30,19 +31,23 @@ type PolicyMetadataClient struct {
 // NewPolicyMetadataClient creates a new instance of PolicyMetadataClient with the specified values.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewPolicyMetadataClient(credential azcore.TokenCredential, options *arm.ClientOptions) *PolicyMetadataClient {
+func NewPolicyMetadataClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*PolicyMetadataClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &PolicyMetadataClient{
-		host: string(ep),
-		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host: ep,
+		pl:   pl,
 	}
-	return client
+	return client, nil
 }
 
 // GetResource - Get policy metadata resource.
@@ -82,7 +87,7 @@ func (client *PolicyMetadataClient) getResourceCreateRequest(ctx context.Context
 
 // getResourceHandleResponse handles the GetResource response.
 func (client *PolicyMetadataClient) getResourceHandleResponse(resp *http.Response) (PolicyMetadataClientGetResourceResponse, error) {
-	result := PolicyMetadataClientGetResourceResponse{RawResponse: resp}
+	result := PolicyMetadataClientGetResourceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PolicyMetadata); err != nil {
 		return PolicyMetadataClientGetResourceResponse{}, err
 	}
@@ -91,22 +96,39 @@ func (client *PolicyMetadataClient) getResourceHandleResponse(resp *http.Respons
 
 // List - Get a list of the policy metadata resources.
 // If the operation fails it returns an *azcore.ResponseError type.
-// options - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
+// QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
-func (client *PolicyMetadataClient) List(options *QueryOptions) *PolicyMetadataClientListPager {
-	return &PolicyMetadataClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+// options - PolicyMetadataClientListOptions contains the optional parameters for the PolicyMetadataClient.List method.
+func (client *PolicyMetadataClient) List(queryOptions *QueryOptions, options *PolicyMetadataClientListOptions) *runtime.Pager[PolicyMetadataClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PolicyMetadataClientListResponse]{
+		More: func(page PolicyMetadataClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PolicyMetadataClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PolicyMetadataCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *PolicyMetadataClientListResponse) (PolicyMetadataClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, queryOptions, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return PolicyMetadataClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PolicyMetadataClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PolicyMetadataClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
-func (client *PolicyMetadataClient) listCreateRequest(ctx context.Context, options *QueryOptions) (*policy.Request, error) {
+func (client *PolicyMetadataClient) listCreateRequest(ctx context.Context, queryOptions *QueryOptions, options *PolicyMetadataClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.PolicyInsights/policyMetadata"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
@@ -114,8 +136,8 @@ func (client *PolicyMetadataClient) listCreateRequest(ctx context.Context, optio
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-10-01")
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	if queryOptions != nil && queryOptions.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*queryOptions.Top), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
@@ -124,7 +146,7 @@ func (client *PolicyMetadataClient) listCreateRequest(ctx context.Context, optio
 
 // listHandleResponse handles the List response.
 func (client *PolicyMetadataClient) listHandleResponse(resp *http.Response) (PolicyMetadataClientListResponse, error) {
-	result := PolicyMetadataClientListResponse{RawResponse: resp}
+	result := PolicyMetadataClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PolicyMetadataCollection); err != nil {
 		return PolicyMetadataClientListResponse{}, err
 	}

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -39,23 +40,27 @@ type PrivateEndpointConnectionsClient struct {
 // privateEndpointName - The name of the private endpoint.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewPrivateEndpointConnectionsClient(subscriptionID string, resourceGroupName string, azureResourceName string, privateEndpointName string, credential azcore.TokenCredential, options *arm.ClientOptions) *PrivateEndpointConnectionsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewPrivateEndpointConnectionsClient(subscriptionID string, resourceGroupName string, azureResourceName string, privateEndpointName string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateEndpointConnectionsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &PrivateEndpointConnectionsClient{
 		subscriptionID:      subscriptionID,
 		resourceGroupName:   resourceGroupName,
 		azureResourceName:   azureResourceName,
 		privateEndpointName: privateEndpointName,
-		host:                string(cp.Endpoint),
-		pl:                  armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:                ep,
+		pl:                  pl,
 	}
-	return client
+	return client, nil
 }
 
 // Create - Updates the status of Private Endpoint Connection object. Used to approve or reject a connection.
@@ -110,7 +115,7 @@ func (client *PrivateEndpointConnectionsClient) createCreateRequest(ctx context.
 
 // createHandleResponse handles the Create response.
 func (client *PrivateEndpointConnectionsClient) createHandleResponse(resp *http.Response) (PrivateEndpointConnectionsClientCreateResponse, error) {
-	result := PrivateEndpointConnectionsClientCreateResponse{RawResponse: resp}
+	result := PrivateEndpointConnectionsClientCreateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnection); err != nil {
 		return PrivateEndpointConnectionsClientCreateResponse{}, err
 	}
@@ -121,22 +126,18 @@ func (client *PrivateEndpointConnectionsClient) createHandleResponse(resp *http.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - PrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginDelete
 // method.
-func (client *PrivateEndpointConnectionsClient) BeginDelete(ctx context.Context, options *PrivateEndpointConnectionsClientBeginDeleteOptions) (PrivateEndpointConnectionsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, options)
-	if err != nil {
-		return PrivateEndpointConnectionsClientDeletePollerResponse{}, err
+func (client *PrivateEndpointConnectionsClient) BeginDelete(ctx context.Context, options *PrivateEndpointConnectionsClientBeginDeleteOptions) (*armruntime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[PrivateEndpointConnectionsClientDeleteResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[PrivateEndpointConnectionsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := PrivateEndpointConnectionsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("PrivateEndpointConnectionsClient.Delete", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return PrivateEndpointConnectionsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &PrivateEndpointConnectionsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes a private endpoint connection for Power BI by private endpoint name.
@@ -237,7 +238,7 @@ func (client *PrivateEndpointConnectionsClient) getCreateRequest(ctx context.Con
 
 // getHandleResponse handles the Get response.
 func (client *PrivateEndpointConnectionsClient) getHandleResponse(resp *http.Response) (PrivateEndpointConnectionsClientGetResponse, error) {
-	result := PrivateEndpointConnectionsClientGetResponse{RawResponse: resp}
+	result := PrivateEndpointConnectionsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnection); err != nil {
 		return PrivateEndpointConnectionsClientGetResponse{}, err
 	}
@@ -250,16 +251,32 @@ func (client *PrivateEndpointConnectionsClient) getHandleResponse(resp *http.Res
 // azureResourceName - The name of the powerbi resource.
 // options - PrivateEndpointConnectionsClientListByResourceOptions contains the optional parameters for the PrivateEndpointConnectionsClient.ListByResource
 // method.
-func (client *PrivateEndpointConnectionsClient) ListByResource(resourceGroupName string, azureResourceName string, options *PrivateEndpointConnectionsClientListByResourceOptions) *PrivateEndpointConnectionsClientListByResourcePager {
-	return &PrivateEndpointConnectionsClientListByResourcePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceCreateRequest(ctx, resourceGroupName, azureResourceName, options)
+func (client *PrivateEndpointConnectionsClient) ListByResource(resourceGroupName string, azureResourceName string, options *PrivateEndpointConnectionsClientListByResourceOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByResourceResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PrivateEndpointConnectionsClientListByResourceResponse]{
+		More: func(page PrivateEndpointConnectionsClientListByResourceResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PrivateEndpointConnectionsClientListByResourceResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PrivateEndpointConnectionListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *PrivateEndpointConnectionsClientListByResourceResponse) (PrivateEndpointConnectionsClientListByResourceResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceCreateRequest(ctx, resourceGroupName, azureResourceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return PrivateEndpointConnectionsClientListByResourceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PrivateEndpointConnectionsClientListByResourceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PrivateEndpointConnectionsClientListByResourceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceCreateRequest creates the ListByResource request.
@@ -290,7 +307,7 @@ func (client *PrivateEndpointConnectionsClient) listByResourceCreateRequest(ctx 
 
 // listByResourceHandleResponse handles the ListByResource response.
 func (client *PrivateEndpointConnectionsClient) listByResourceHandleResponse(resp *http.Response) (PrivateEndpointConnectionsClientListByResourceResponse, error) {
-	result := PrivateEndpointConnectionsClientListByResourceResponse{RawResponse: resp}
+	result := PrivateEndpointConnectionsClientListByResourceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnectionListResult); err != nil {
 		return PrivateEndpointConnectionsClientListByResourceResponse{}, err
 	}

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,12 +8,7 @@
 
 package armpolicyinsights
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
 
 // Attestation - An attestation resource.
 type Attestation struct {
@@ -51,14 +46,6 @@ type AttestationListResult struct {
 	Value []*Attestation `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AttestationListResult.
-func (a AttestationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
-}
-
 // AttestationProperties - The properties of an attestation resource.
 type AttestationProperties struct {
 	// REQUIRED; The resource ID of the policy assignment that the attestation is setting the state for.
@@ -92,81 +79,25 @@ type AttestationProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AttestationProperties.
-func (a AttestationProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "comments", a.Comments)
-	populate(objectMap, "complianceState", a.ComplianceState)
-	populate(objectMap, "evidence", a.Evidence)
-	populateTimeRFC3339(objectMap, "expiresOn", a.ExpiresOn)
-	populateTimeRFC3339(objectMap, "lastComplianceStateChangeAt", a.LastComplianceStateChangeAt)
-	populate(objectMap, "owner", a.Owner)
-	populate(objectMap, "policyAssignmentId", a.PolicyAssignmentID)
-	populate(objectMap, "policyDefinitionReferenceId", a.PolicyDefinitionReferenceID)
-	populate(objectMap, "provisioningState", a.ProvisioningState)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AttestationProperties.
-func (a *AttestationProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "comments":
-			err = unpopulate(val, &a.Comments)
-			delete(rawMsg, key)
-		case "complianceState":
-			err = unpopulate(val, &a.ComplianceState)
-			delete(rawMsg, key)
-		case "evidence":
-			err = unpopulate(val, &a.Evidence)
-			delete(rawMsg, key)
-		case "expiresOn":
-			err = unpopulateTimeRFC3339(val, &a.ExpiresOn)
-			delete(rawMsg, key)
-		case "lastComplianceStateChangeAt":
-			err = unpopulateTimeRFC3339(val, &a.LastComplianceStateChangeAt)
-			delete(rawMsg, key)
-		case "owner":
-			err = unpopulate(val, &a.Owner)
-			delete(rawMsg, key)
-		case "policyAssignmentId":
-			err = unpopulate(val, &a.PolicyAssignmentID)
-			delete(rawMsg, key)
-		case "policyDefinitionReferenceId":
-			err = unpopulate(val, &a.PolicyDefinitionReferenceID)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &a.ProvisioningState)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // AttestationsClientBeginCreateOrUpdateAtResourceGroupOptions contains the optional parameters for the AttestationsClient.BeginCreateOrUpdateAtResourceGroup
 // method.
 type AttestationsClientBeginCreateOrUpdateAtResourceGroupOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // AttestationsClientBeginCreateOrUpdateAtResourceOptions contains the optional parameters for the AttestationsClient.BeginCreateOrUpdateAtResource
 // method.
 type AttestationsClientBeginCreateOrUpdateAtResourceOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // AttestationsClientBeginCreateOrUpdateAtSubscriptionOptions contains the optional parameters for the AttestationsClient.BeginCreateOrUpdateAtSubscription
 // method.
 type AttestationsClientBeginCreateOrUpdateAtSubscriptionOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // AttestationsClientDeleteAtResourceGroupOptions contains the optional parameters for the AttestationsClient.DeleteAtResourceGroup
@@ -221,6 +152,16 @@ type AttestationsClientListForSubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
+// CheckManagementGroupRestrictionsRequest - The check policy restrictions parameters describing the resource that is being
+// evaluated.
+type CheckManagementGroupRestrictionsRequest struct {
+	// The list of fields and values that should be evaluated for potential restrictions.
+	PendingFields []*PendingField `json:"pendingFields,omitempty"`
+
+	// The information about the resource that will be evaluated.
+	ResourceDetails *CheckRestrictionsResourceDetails `json:"resourceDetails,omitempty"`
+}
+
 // CheckRestrictionsRequest - The check policy restrictions parameters describing the resource that is being evaluated.
 type CheckRestrictionsRequest struct {
 	// REQUIRED; The information about the resource that will be evaluated.
@@ -228,14 +169,6 @@ type CheckRestrictionsRequest struct {
 
 	// The list of fields and values that should be evaluated for potential restrictions.
 	PendingFields []*PendingField `json:"pendingFields,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CheckRestrictionsRequest.
-func (c CheckRestrictionsRequest) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "pendingFields", c.PendingFields)
-	populate(objectMap, "resourceDetails", c.ResourceDetails)
-	return json.Marshal(objectMap)
 }
 
 // CheckRestrictionsResourceDetails - The information about the resource that will be evaluated.
@@ -261,26 +194,11 @@ type CheckRestrictionsResult struct {
 	FieldRestrictions []*FieldRestrictions `json:"fieldRestrictions,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CheckRestrictionsResult.
-func (c CheckRestrictionsResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "contentEvaluationResult", c.ContentEvaluationResult)
-	populate(objectMap, "fieldRestrictions", c.FieldRestrictions)
-	return json.Marshal(objectMap)
-}
-
 // CheckRestrictionsResultContentEvaluationResult - Evaluation results for the provided partial resource content.
 type CheckRestrictionsResultContentEvaluationResult struct {
 	// Policy evaluation results against the given resource content. This will indicate if the partial content that was provided
 	// will be denied as-is.
 	PolicyEvaluations []*PolicyEvaluationResult `json:"policyEvaluations,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CheckRestrictionsResultContentEvaluationResult.
-func (c CheckRestrictionsResultContentEvaluationResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "policyEvaluations", c.PolicyEvaluations)
-	return json.Marshal(objectMap)
 }
 
 // ComplianceDetail - The compliance state rollup.
@@ -319,72 +237,6 @@ type ComponentEventDetails struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ComponentEventDetails.
-func (c ComponentEventDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", c.ID)
-	populate(objectMap, "name", c.Name)
-	populate(objectMap, "policyDefinitionAction", c.PolicyDefinitionAction)
-	populate(objectMap, "principalOid", c.PrincipalOid)
-	populate(objectMap, "tenantId", c.TenantID)
-	populateTimeRFC3339(objectMap, "timestamp", c.Timestamp)
-	populate(objectMap, "type", c.Type)
-	if c.AdditionalProperties != nil {
-		for key, val := range c.AdditionalProperties {
-			objectMap[key] = val
-		}
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ComponentEventDetails.
-func (c *ComponentEventDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &c.ID)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &c.Name)
-			delete(rawMsg, key)
-		case "policyDefinitionAction":
-			err = unpopulate(val, &c.PolicyDefinitionAction)
-			delete(rawMsg, key)
-		case "principalOid":
-			err = unpopulate(val, &c.PrincipalOid)
-			delete(rawMsg, key)
-		case "tenantId":
-			err = unpopulate(val, &c.TenantID)
-			delete(rawMsg, key)
-		case "timestamp":
-			err = unpopulateTimeRFC3339(val, &c.Timestamp)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &c.Type)
-			delete(rawMsg, key)
-		default:
-			if c.AdditionalProperties == nil {
-				c.AdditionalProperties = map[string]interface{}{}
-			}
-			if val != nil {
-				var aux interface{}
-				err = json.Unmarshal(val, &aux)
-				c.AdditionalProperties[key] = aux
-			}
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ComponentStateDetails - Component state details.
 type ComponentStateDetails struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
@@ -406,64 +258,6 @@ type ComponentStateDetails struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ComponentStateDetails.
-func (c ComponentStateDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "complianceState", c.ComplianceState)
-	populate(objectMap, "id", c.ID)
-	populate(objectMap, "name", c.Name)
-	populateTimeRFC3339(objectMap, "timestamp", c.Timestamp)
-	populate(objectMap, "type", c.Type)
-	if c.AdditionalProperties != nil {
-		for key, val := range c.AdditionalProperties {
-			objectMap[key] = val
-		}
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ComponentStateDetails.
-func (c *ComponentStateDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "complianceState":
-			err = unpopulate(val, &c.ComplianceState)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &c.ID)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &c.Name)
-			delete(rawMsg, key)
-		case "timestamp":
-			err = unpopulateTimeRFC3339(val, &c.Timestamp)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &c.Type)
-			delete(rawMsg, key)
-		default:
-			if c.AdditionalProperties == nil {
-				c.AdditionalProperties = map[string]interface{}{}
-			}
-			if val != nil {
-				var aux interface{}
-				err = json.Unmarshal(val, &aux)
-				c.AdditionalProperties[key] = aux
-			}
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ErrorDefinition - Error definition.
 type ErrorDefinition struct {
 	// READ-ONLY; Additional scenario specific error details.
@@ -482,15 +276,58 @@ type ErrorDefinition struct {
 	Target *string `json:"target,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ErrorDefinition.
-func (e ErrorDefinition) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalInfo", e.AdditionalInfo)
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "message", e.Message)
-	populate(objectMap, "target", e.Target)
-	return json.Marshal(objectMap)
+// ErrorDefinitionAutoGenerated - Error definition.
+type ErrorDefinitionAutoGenerated struct {
+	// READ-ONLY; Additional scenario specific error details.
+	AdditionalInfo []*TypedErrorInfo `json:"additionalInfo,omitempty" azure:"ro"`
+
+	// READ-ONLY; Service specific error code which serves as the substatus for the HTTP error code.
+	Code *string `json:"code,omitempty" azure:"ro"`
+
+	// READ-ONLY; Internal error details.
+	Details []*ErrorDefinitionAutoGenerated `json:"details,omitempty" azure:"ro"`
+
+	// READ-ONLY; Description of the error.
+	Message *string `json:"message,omitempty" azure:"ro"`
+
+	// READ-ONLY; The target of the error.
+	Target *string `json:"target,omitempty" azure:"ro"`
+}
+
+// ErrorDefinitionAutoGenerated2 - Error definition.
+type ErrorDefinitionAutoGenerated2 struct {
+	// READ-ONLY; Additional scenario specific error details.
+	AdditionalInfo []*TypedErrorInfo `json:"additionalInfo,omitempty" azure:"ro"`
+
+	// READ-ONLY; Service specific error code which serves as the substatus for the HTTP error code.
+	Code *string `json:"code,omitempty" azure:"ro"`
+
+	// READ-ONLY; Internal error details.
+	Details []*ErrorDefinitionAutoGenerated2 `json:"details,omitempty" azure:"ro"`
+
+	// READ-ONLY; Description of the error.
+	Message *string `json:"message,omitempty" azure:"ro"`
+
+	// READ-ONLY; The target of the error.
+	Target *string `json:"target,omitempty" azure:"ro"`
+}
+
+// ErrorResponse - Error response.
+type ErrorResponse struct {
+	// The error details.
+	Error *ErrorDefinition `json:"error,omitempty"`
+}
+
+// ErrorResponseAutoGenerated - Error response.
+type ErrorResponseAutoGenerated struct {
+	// The error details.
+	Error *ErrorDefinitionAutoGenerated `json:"error,omitempty"`
+}
+
+// ErrorResponseAutoGenerated2 - Error response.
+type ErrorResponseAutoGenerated2 struct {
+	// The error details.
+	Error *ErrorDefinitionAutoGenerated2 `json:"error,omitempty"`
 }
 
 // ExpressionEvaluationDetails - Evaluation details of policy language expressions.
@@ -532,16 +369,6 @@ type FieldRestriction struct {
 	Values []*string `json:"values,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type FieldRestriction.
-func (f FieldRestriction) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "defaultValue", f.DefaultValue)
-	populate(objectMap, "policy", f.Policy)
-	populate(objectMap, "result", f.Result)
-	populate(objectMap, "values", f.Values)
-	return json.Marshal(objectMap)
-}
-
 // FieldRestrictions - The restrictions that will be placed on a field in the resource by policy.
 type FieldRestrictions struct {
 	// The restrictions placed on that field by policy.
@@ -549,14 +376,6 @@ type FieldRestrictions struct {
 
 	// READ-ONLY; The name of the field. This can be a top-level property like 'name' or 'type' or an Azure Policy field alias.
 	Field *string `json:"field,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type FieldRestrictions.
-func (f FieldRestrictions) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "field", f.Field)
-	populate(objectMap, "restrictions", f.Restrictions)
-	return json.Marshal(objectMap)
 }
 
 // IfNotExistsEvaluationDetails - Evaluation details of IfNotExists effect.
@@ -606,14 +425,6 @@ type OperationsListResults struct {
 	Value []*Operation `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationsListResults.
-func (o OperationsListResults) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "@odata.count", o.ODataCount)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
-}
-
 // PendingField - A field that should be evaluated against Azure Policy to determine restrictions.
 type PendingField struct {
 	// REQUIRED; The name of the field. This can be a top-level property like 'name' or 'type' or an Azure Policy field alias.
@@ -621,14 +432,6 @@ type PendingField struct {
 
 	// The list of potential values for the field that should be evaluated against Azure Policy.
 	Values []*string `json:"values,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PendingField.
-func (p PendingField) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "field", p.Field)
-	populate(objectMap, "values", p.Values)
-	return json.Marshal(objectMap)
 }
 
 // PolicyAssignmentSummary - Policy assignment summary.
@@ -649,17 +452,6 @@ type PolicyAssignmentSummary struct {
 	Results *SummaryResults `json:"results,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PolicyAssignmentSummary.
-func (p PolicyAssignmentSummary) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "policyAssignmentId", p.PolicyAssignmentID)
-	populate(objectMap, "policyDefinitions", p.PolicyDefinitions)
-	populate(objectMap, "policyGroups", p.PolicyGroups)
-	populate(objectMap, "policySetDefinitionId", p.PolicySetDefinitionID)
-	populate(objectMap, "results", p.Results)
-	return json.Marshal(objectMap)
-}
-
 // PolicyDefinitionSummary - Policy definition summary.
 type PolicyDefinitionSummary struct {
 	// Policy effect, i.e. policy definition action.
@@ -676,17 +468,6 @@ type PolicyDefinitionSummary struct {
 
 	// Compliance summary for the policy definition.
 	Results *SummaryResults `json:"results,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PolicyDefinitionSummary.
-func (p PolicyDefinitionSummary) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "effect", p.Effect)
-	populate(objectMap, "policyDefinitionGroupNames", p.PolicyDefinitionGroupNames)
-	populate(objectMap, "policyDefinitionId", p.PolicyDefinitionID)
-	populate(objectMap, "policyDefinitionReferenceId", p.PolicyDefinitionReferenceID)
-	populate(objectMap, "results", p.Results)
-	return json.Marshal(objectMap)
 }
 
 // PolicyDetails - The policy details.
@@ -717,14 +498,6 @@ type PolicyEvaluationDetails struct {
 
 	// Evaluation details of IfNotExists effect.
 	IfNotExistsDetails *IfNotExistsEvaluationDetails `json:"ifNotExistsDetails,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PolicyEvaluationDetails.
-func (p PolicyEvaluationDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "evaluatedExpressions", p.EvaluatedExpressions)
-	populate(objectMap, "ifNotExistsDetails", p.IfNotExistsDetails)
-	return json.Marshal(objectMap)
 }
 
 // PolicyEvaluationResult - The result of a non-compliant policy evaluation against the given resource content.
@@ -839,168 +612,6 @@ type PolicyEvent struct {
 	Timestamp *time.Time `json:"timestamp,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PolicyEvent.
-func (p PolicyEvent) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "complianceState", p.ComplianceState)
-	populate(objectMap, "components", p.Components)
-	populate(objectMap, "effectiveParameters", p.EffectiveParameters)
-	populate(objectMap, "isCompliant", p.IsCompliant)
-	populate(objectMap, "managementGroupIds", p.ManagementGroupIDs)
-	populate(objectMap, "@odata.context", p.ODataContext)
-	populate(objectMap, "@odata.id", p.ODataID)
-	populate(objectMap, "policyAssignmentId", p.PolicyAssignmentID)
-	populate(objectMap, "policyAssignmentName", p.PolicyAssignmentName)
-	populate(objectMap, "policyAssignmentOwner", p.PolicyAssignmentOwner)
-	populate(objectMap, "policyAssignmentParameters", p.PolicyAssignmentParameters)
-	populate(objectMap, "policyAssignmentScope", p.PolicyAssignmentScope)
-	populate(objectMap, "policyDefinitionAction", p.PolicyDefinitionAction)
-	populate(objectMap, "policyDefinitionCategory", p.PolicyDefinitionCategory)
-	populate(objectMap, "policyDefinitionId", p.PolicyDefinitionID)
-	populate(objectMap, "policyDefinitionName", p.PolicyDefinitionName)
-	populate(objectMap, "policyDefinitionReferenceId", p.PolicyDefinitionReferenceID)
-	populate(objectMap, "policySetDefinitionCategory", p.PolicySetDefinitionCategory)
-	populate(objectMap, "policySetDefinitionId", p.PolicySetDefinitionID)
-	populate(objectMap, "policySetDefinitionName", p.PolicySetDefinitionName)
-	populate(objectMap, "policySetDefinitionOwner", p.PolicySetDefinitionOwner)
-	populate(objectMap, "policySetDefinitionParameters", p.PolicySetDefinitionParameters)
-	populate(objectMap, "principalOid", p.PrincipalOid)
-	populate(objectMap, "resourceGroup", p.ResourceGroup)
-	populate(objectMap, "resourceId", p.ResourceID)
-	populate(objectMap, "resourceLocation", p.ResourceLocation)
-	populate(objectMap, "resourceTags", p.ResourceTags)
-	populate(objectMap, "resourceType", p.ResourceType)
-	populate(objectMap, "subscriptionId", p.SubscriptionID)
-	populate(objectMap, "tenantId", p.TenantID)
-	populateTimeRFC3339(objectMap, "timestamp", p.Timestamp)
-	if p.AdditionalProperties != nil {
-		for key, val := range p.AdditionalProperties {
-			objectMap[key] = val
-		}
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type PolicyEvent.
-func (p *PolicyEvent) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "complianceState":
-			err = unpopulate(val, &p.ComplianceState)
-			delete(rawMsg, key)
-		case "components":
-			err = unpopulate(val, &p.Components)
-			delete(rawMsg, key)
-		case "effectiveParameters":
-			err = unpopulate(val, &p.EffectiveParameters)
-			delete(rawMsg, key)
-		case "isCompliant":
-			err = unpopulate(val, &p.IsCompliant)
-			delete(rawMsg, key)
-		case "managementGroupIds":
-			err = unpopulate(val, &p.ManagementGroupIDs)
-			delete(rawMsg, key)
-		case "@odata.context":
-			err = unpopulate(val, &p.ODataContext)
-			delete(rawMsg, key)
-		case "@odata.id":
-			err = unpopulate(val, &p.ODataID)
-			delete(rawMsg, key)
-		case "policyAssignmentId":
-			err = unpopulate(val, &p.PolicyAssignmentID)
-			delete(rawMsg, key)
-		case "policyAssignmentName":
-			err = unpopulate(val, &p.PolicyAssignmentName)
-			delete(rawMsg, key)
-		case "policyAssignmentOwner":
-			err = unpopulate(val, &p.PolicyAssignmentOwner)
-			delete(rawMsg, key)
-		case "policyAssignmentParameters":
-			err = unpopulate(val, &p.PolicyAssignmentParameters)
-			delete(rawMsg, key)
-		case "policyAssignmentScope":
-			err = unpopulate(val, &p.PolicyAssignmentScope)
-			delete(rawMsg, key)
-		case "policyDefinitionAction":
-			err = unpopulate(val, &p.PolicyDefinitionAction)
-			delete(rawMsg, key)
-		case "policyDefinitionCategory":
-			err = unpopulate(val, &p.PolicyDefinitionCategory)
-			delete(rawMsg, key)
-		case "policyDefinitionId":
-			err = unpopulate(val, &p.PolicyDefinitionID)
-			delete(rawMsg, key)
-		case "policyDefinitionName":
-			err = unpopulate(val, &p.PolicyDefinitionName)
-			delete(rawMsg, key)
-		case "policyDefinitionReferenceId":
-			err = unpopulate(val, &p.PolicyDefinitionReferenceID)
-			delete(rawMsg, key)
-		case "policySetDefinitionCategory":
-			err = unpopulate(val, &p.PolicySetDefinitionCategory)
-			delete(rawMsg, key)
-		case "policySetDefinitionId":
-			err = unpopulate(val, &p.PolicySetDefinitionID)
-			delete(rawMsg, key)
-		case "policySetDefinitionName":
-			err = unpopulate(val, &p.PolicySetDefinitionName)
-			delete(rawMsg, key)
-		case "policySetDefinitionOwner":
-			err = unpopulate(val, &p.PolicySetDefinitionOwner)
-			delete(rawMsg, key)
-		case "policySetDefinitionParameters":
-			err = unpopulate(val, &p.PolicySetDefinitionParameters)
-			delete(rawMsg, key)
-		case "principalOid":
-			err = unpopulate(val, &p.PrincipalOid)
-			delete(rawMsg, key)
-		case "resourceGroup":
-			err = unpopulate(val, &p.ResourceGroup)
-			delete(rawMsg, key)
-		case "resourceId":
-			err = unpopulate(val, &p.ResourceID)
-			delete(rawMsg, key)
-		case "resourceLocation":
-			err = unpopulate(val, &p.ResourceLocation)
-			delete(rawMsg, key)
-		case "resourceTags":
-			err = unpopulate(val, &p.ResourceTags)
-			delete(rawMsg, key)
-		case "resourceType":
-			err = unpopulate(val, &p.ResourceType)
-			delete(rawMsg, key)
-		case "subscriptionId":
-			err = unpopulate(val, &p.SubscriptionID)
-			delete(rawMsg, key)
-		case "tenantId":
-			err = unpopulate(val, &p.TenantID)
-			delete(rawMsg, key)
-		case "timestamp":
-			err = unpopulateTimeRFC3339(val, &p.Timestamp)
-			delete(rawMsg, key)
-		default:
-			if p.AdditionalProperties == nil {
-				p.AdditionalProperties = map[string]interface{}{}
-			}
-			if val != nil {
-				var aux interface{}
-				err = json.Unmarshal(val, &aux)
-				p.AdditionalProperties[key] = aux
-			}
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // PolicyEventsClientListQueryResultsForManagementGroupOptions contains the optional parameters for the PolicyEventsClient.ListQueryResultsForManagementGroup
 // method.
 type PolicyEventsClientListQueryResultsForManagementGroupOptions struct {
@@ -1064,16 +675,6 @@ type PolicyEventsQueryResults struct {
 	Value []*PolicyEvent `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PolicyEventsQueryResults.
-func (p PolicyEventsQueryResults) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "@odata.context", p.ODataContext)
-	populate(objectMap, "@odata.count", p.ODataCount)
-	populate(objectMap, "@odata.nextLink", p.ODataNextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
 // PolicyGroupSummary - Policy definition group summary.
 type PolicyGroupSummary struct {
 	// Policy group name.
@@ -1115,14 +716,6 @@ type PolicyMetadataCollection struct {
 
 	// READ-ONLY; Array of policy metadata definitions.
 	Value []*SlimPolicyMetadata `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PolicyMetadataCollection.
-func (p PolicyMetadataCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
 }
 
 // PolicyMetadataProperties - The properties of the policy metadata.
@@ -1186,6 +779,12 @@ type PolicyReference struct {
 
 	// READ-ONLY; The resource identifier of the policy set definition.
 	PolicySetDefinitionID *string `json:"policySetDefinitionId,omitempty" azure:"ro"`
+}
+
+// PolicyRestrictionsClientCheckAtManagementGroupScopeOptions contains the optional parameters for the PolicyRestrictionsClient.CheckAtManagementGroupScope
+// method.
+type PolicyRestrictionsClientCheckAtManagementGroupScopeOptions struct {
+	// placeholder for future optional parameters
 }
 
 // PolicyRestrictionsClientCheckAtResourceGroupScopeOptions contains the optional parameters for the PolicyRestrictionsClient.CheckAtResourceGroupScope
@@ -1309,190 +908,18 @@ type PolicyState struct {
 	PolicySetDefinitionVersion *string `json:"policySetDefinitionVersion,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PolicyState.
-func (p PolicyState) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "complianceState", p.ComplianceState)
-	populate(objectMap, "components", p.Components)
-	populate(objectMap, "effectiveParameters", p.EffectiveParameters)
-	populate(objectMap, "isCompliant", p.IsCompliant)
-	populate(objectMap, "managementGroupIds", p.ManagementGroupIDs)
-	populate(objectMap, "@odata.context", p.ODataContext)
-	populate(objectMap, "@odata.id", p.ODataID)
-	populate(objectMap, "policyAssignmentId", p.PolicyAssignmentID)
-	populate(objectMap, "policyAssignmentName", p.PolicyAssignmentName)
-	populate(objectMap, "policyAssignmentOwner", p.PolicyAssignmentOwner)
-	populate(objectMap, "policyAssignmentParameters", p.PolicyAssignmentParameters)
-	populate(objectMap, "policyAssignmentScope", p.PolicyAssignmentScope)
-	populate(objectMap, "policyAssignmentVersion", p.PolicyAssignmentVersion)
-	populate(objectMap, "policyDefinitionAction", p.PolicyDefinitionAction)
-	populate(objectMap, "policyDefinitionCategory", p.PolicyDefinitionCategory)
-	populate(objectMap, "policyDefinitionGroupNames", p.PolicyDefinitionGroupNames)
-	populate(objectMap, "policyDefinitionId", p.PolicyDefinitionID)
-	populate(objectMap, "policyDefinitionName", p.PolicyDefinitionName)
-	populate(objectMap, "policyDefinitionReferenceId", p.PolicyDefinitionReferenceID)
-	populate(objectMap, "policyDefinitionVersion", p.PolicyDefinitionVersion)
-	populate(objectMap, "policyEvaluationDetails", p.PolicyEvaluationDetails)
-	populate(objectMap, "policySetDefinitionCategory", p.PolicySetDefinitionCategory)
-	populate(objectMap, "policySetDefinitionId", p.PolicySetDefinitionID)
-	populate(objectMap, "policySetDefinitionName", p.PolicySetDefinitionName)
-	populate(objectMap, "policySetDefinitionOwner", p.PolicySetDefinitionOwner)
-	populate(objectMap, "policySetDefinitionParameters", p.PolicySetDefinitionParameters)
-	populate(objectMap, "policySetDefinitionVersion", p.PolicySetDefinitionVersion)
-	populate(objectMap, "resourceGroup", p.ResourceGroup)
-	populate(objectMap, "resourceId", p.ResourceID)
-	populate(objectMap, "resourceLocation", p.ResourceLocation)
-	populate(objectMap, "resourceTags", p.ResourceTags)
-	populate(objectMap, "resourceType", p.ResourceType)
-	populate(objectMap, "subscriptionId", p.SubscriptionID)
-	populateTimeRFC3339(objectMap, "timestamp", p.Timestamp)
-	if p.AdditionalProperties != nil {
-		for key, val := range p.AdditionalProperties {
-			objectMap[key] = val
-		}
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type PolicyState.
-func (p *PolicyState) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "complianceState":
-			err = unpopulate(val, &p.ComplianceState)
-			delete(rawMsg, key)
-		case "components":
-			err = unpopulate(val, &p.Components)
-			delete(rawMsg, key)
-		case "effectiveParameters":
-			err = unpopulate(val, &p.EffectiveParameters)
-			delete(rawMsg, key)
-		case "isCompliant":
-			err = unpopulate(val, &p.IsCompliant)
-			delete(rawMsg, key)
-		case "managementGroupIds":
-			err = unpopulate(val, &p.ManagementGroupIDs)
-			delete(rawMsg, key)
-		case "@odata.context":
-			err = unpopulate(val, &p.ODataContext)
-			delete(rawMsg, key)
-		case "@odata.id":
-			err = unpopulate(val, &p.ODataID)
-			delete(rawMsg, key)
-		case "policyAssignmentId":
-			err = unpopulate(val, &p.PolicyAssignmentID)
-			delete(rawMsg, key)
-		case "policyAssignmentName":
-			err = unpopulate(val, &p.PolicyAssignmentName)
-			delete(rawMsg, key)
-		case "policyAssignmentOwner":
-			err = unpopulate(val, &p.PolicyAssignmentOwner)
-			delete(rawMsg, key)
-		case "policyAssignmentParameters":
-			err = unpopulate(val, &p.PolicyAssignmentParameters)
-			delete(rawMsg, key)
-		case "policyAssignmentScope":
-			err = unpopulate(val, &p.PolicyAssignmentScope)
-			delete(rawMsg, key)
-		case "policyAssignmentVersion":
-			err = unpopulate(val, &p.PolicyAssignmentVersion)
-			delete(rawMsg, key)
-		case "policyDefinitionAction":
-			err = unpopulate(val, &p.PolicyDefinitionAction)
-			delete(rawMsg, key)
-		case "policyDefinitionCategory":
-			err = unpopulate(val, &p.PolicyDefinitionCategory)
-			delete(rawMsg, key)
-		case "policyDefinitionGroupNames":
-			err = unpopulate(val, &p.PolicyDefinitionGroupNames)
-			delete(rawMsg, key)
-		case "policyDefinitionId":
-			err = unpopulate(val, &p.PolicyDefinitionID)
-			delete(rawMsg, key)
-		case "policyDefinitionName":
-			err = unpopulate(val, &p.PolicyDefinitionName)
-			delete(rawMsg, key)
-		case "policyDefinitionReferenceId":
-			err = unpopulate(val, &p.PolicyDefinitionReferenceID)
-			delete(rawMsg, key)
-		case "policyDefinitionVersion":
-			err = unpopulate(val, &p.PolicyDefinitionVersion)
-			delete(rawMsg, key)
-		case "policyEvaluationDetails":
-			err = unpopulate(val, &p.PolicyEvaluationDetails)
-			delete(rawMsg, key)
-		case "policySetDefinitionCategory":
-			err = unpopulate(val, &p.PolicySetDefinitionCategory)
-			delete(rawMsg, key)
-		case "policySetDefinitionId":
-			err = unpopulate(val, &p.PolicySetDefinitionID)
-			delete(rawMsg, key)
-		case "policySetDefinitionName":
-			err = unpopulate(val, &p.PolicySetDefinitionName)
-			delete(rawMsg, key)
-		case "policySetDefinitionOwner":
-			err = unpopulate(val, &p.PolicySetDefinitionOwner)
-			delete(rawMsg, key)
-		case "policySetDefinitionParameters":
-			err = unpopulate(val, &p.PolicySetDefinitionParameters)
-			delete(rawMsg, key)
-		case "policySetDefinitionVersion":
-			err = unpopulate(val, &p.PolicySetDefinitionVersion)
-			delete(rawMsg, key)
-		case "resourceGroup":
-			err = unpopulate(val, &p.ResourceGroup)
-			delete(rawMsg, key)
-		case "resourceId":
-			err = unpopulate(val, &p.ResourceID)
-			delete(rawMsg, key)
-		case "resourceLocation":
-			err = unpopulate(val, &p.ResourceLocation)
-			delete(rawMsg, key)
-		case "resourceTags":
-			err = unpopulate(val, &p.ResourceTags)
-			delete(rawMsg, key)
-		case "resourceType":
-			err = unpopulate(val, &p.ResourceType)
-			delete(rawMsg, key)
-		case "subscriptionId":
-			err = unpopulate(val, &p.SubscriptionID)
-			delete(rawMsg, key)
-		case "timestamp":
-			err = unpopulateTimeRFC3339(val, &p.Timestamp)
-			delete(rawMsg, key)
-		default:
-			if p.AdditionalProperties == nil {
-				p.AdditionalProperties = map[string]interface{}{}
-			}
-			if val != nil {
-				var aux interface{}
-				err = json.Unmarshal(val, &aux)
-				p.AdditionalProperties[key] = aux
-			}
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // PolicyStatesClientBeginTriggerResourceGroupEvaluationOptions contains the optional parameters for the PolicyStatesClient.BeginTriggerResourceGroupEvaluation
 // method.
 type PolicyStatesClientBeginTriggerResourceGroupEvaluationOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // PolicyStatesClientBeginTriggerSubscriptionEvaluationOptions contains the optional parameters for the PolicyStatesClient.BeginTriggerSubscriptionEvaluation
 // method.
 type PolicyStatesClientBeginTriggerSubscriptionEvaluationOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // PolicyStatesClientListQueryResultsForManagementGroupOptions contains the optional parameters for the PolicyStatesClient.ListQueryResultsForManagementGroup
@@ -1606,16 +1033,6 @@ type PolicyStatesQueryResults struct {
 	Value []*PolicyState `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PolicyStatesQueryResults.
-func (p PolicyStatesQueryResults) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "@odata.context", p.ODataContext)
-	populate(objectMap, "@odata.count", p.ODataCount)
-	populate(objectMap, "@odata.nextLink", p.ODataNextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
 // PolicyTrackedResource - Policy tracked resource record.
 type PolicyTrackedResource struct {
 	// READ-ONLY; The details of the policy triggered deployment that created the tracked resource.
@@ -1632,49 +1049,6 @@ type PolicyTrackedResource struct {
 
 	// READ-ONLY; The ID of the policy tracked resource.
 	TrackedResourceID *string `json:"trackedResourceId,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PolicyTrackedResource.
-func (p PolicyTrackedResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "createdBy", p.CreatedBy)
-	populate(objectMap, "lastModifiedBy", p.LastModifiedBy)
-	populateTimeRFC3339(objectMap, "lastUpdateUtc", p.LastUpdateUTC)
-	populate(objectMap, "policyDetails", p.PolicyDetails)
-	populate(objectMap, "trackedResourceId", p.TrackedResourceID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type PolicyTrackedResource.
-func (p *PolicyTrackedResource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdBy":
-			err = unpopulate(val, &p.CreatedBy)
-			delete(rawMsg, key)
-		case "lastModifiedBy":
-			err = unpopulate(val, &p.LastModifiedBy)
-			delete(rawMsg, key)
-		case "lastUpdateUtc":
-			err = unpopulateTimeRFC3339(val, &p.LastUpdateUTC)
-			delete(rawMsg, key)
-		case "policyDetails":
-			err = unpopulate(val, &p.PolicyDetails)
-			delete(rawMsg, key)
-		case "trackedResourceId":
-			err = unpopulate(val, &p.TrackedResourceID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // PolicyTrackedResourcesClientListQueryResultsForManagementGroupOptions contains the optional parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
@@ -1710,12 +1084,19 @@ type PolicyTrackedResourcesQueryResults struct {
 	Value []*PolicyTrackedResource `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PolicyTrackedResourcesQueryResults.
-func (p PolicyTrackedResourcesQueryResults) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
+// QueryFailure - Error response.
+type QueryFailure struct {
+	// Error definition.
+	Error *QueryFailureError `json:"error,omitempty"`
+}
+
+// QueryFailureError - Error definition.
+type QueryFailureError struct {
+	// READ-ONLY; Service specific error code which serves as the substatus for the HTTP error code.
+	Code *string `json:"code,omitempty" azure:"ro"`
+
+	// READ-ONLY; Description of the error.
+	Message *string `json:"message,omitempty" azure:"ro"`
 }
 
 // QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup method.
@@ -1786,57 +1167,6 @@ type RemediationDeployment struct {
 	Status *string `json:"status,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type RemediationDeployment.
-func (r RemediationDeployment) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdOn", r.CreatedOn)
-	populate(objectMap, "deploymentId", r.DeploymentID)
-	populate(objectMap, "error", r.Error)
-	populateTimeRFC3339(objectMap, "lastUpdatedOn", r.LastUpdatedOn)
-	populate(objectMap, "remediatedResourceId", r.RemediatedResourceID)
-	populate(objectMap, "resourceLocation", r.ResourceLocation)
-	populate(objectMap, "status", r.Status)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type RemediationDeployment.
-func (r *RemediationDeployment) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdOn":
-			err = unpopulateTimeRFC3339(val, &r.CreatedOn)
-			delete(rawMsg, key)
-		case "deploymentId":
-			err = unpopulate(val, &r.DeploymentID)
-			delete(rawMsg, key)
-		case "error":
-			err = unpopulate(val, &r.Error)
-			delete(rawMsg, key)
-		case "lastUpdatedOn":
-			err = unpopulateTimeRFC3339(val, &r.LastUpdatedOn)
-			delete(rawMsg, key)
-		case "remediatedResourceId":
-			err = unpopulate(val, &r.RemediatedResourceID)
-			delete(rawMsg, key)
-		case "resourceLocation":
-			err = unpopulate(val, &r.ResourceLocation)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &r.Status)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // RemediationDeploymentSummary - The deployment status summary for all deployments created by the remediation.
 type RemediationDeploymentSummary struct {
 	// READ-ONLY; The number of deployments required by the remediation that have failed.
@@ -1858,25 +1188,10 @@ type RemediationDeploymentsListResult struct {
 	Value []*RemediationDeployment `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type RemediationDeploymentsListResult.
-func (r RemediationDeploymentsListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", r.NextLink)
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
-}
-
 // RemediationFilters - The filters that will be applied to determine which resources to remediate.
 type RemediationFilters struct {
 	// The resource locations that will be remediated.
 	Locations []*string `json:"locations,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RemediationFilters.
-func (r RemediationFilters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "locations", r.Locations)
-	return json.Marshal(objectMap)
 }
 
 // RemediationListResult - List of remediations.
@@ -1886,14 +1201,6 @@ type RemediationListResult struct {
 
 	// READ-ONLY; Array of remediation definitions.
 	Value []*Remediation `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RemediationListResult.
-func (r RemediationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", r.NextLink)
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
 }
 
 // RemediationProperties - The remediation properties.
@@ -1939,81 +1246,6 @@ type RemediationProperties struct {
 
 	// READ-ONLY; The remediation status message. Provides additional details regarding the state of the remediation.
 	StatusMessage *string `json:"statusMessage,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RemediationProperties.
-func (r RemediationProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "correlationId", r.CorrelationID)
-	populateTimeRFC3339(objectMap, "createdOn", r.CreatedOn)
-	populate(objectMap, "deploymentStatus", r.DeploymentStatus)
-	populate(objectMap, "failureThreshold", r.FailureThreshold)
-	populate(objectMap, "filters", r.Filters)
-	populateTimeRFC3339(objectMap, "lastUpdatedOn", r.LastUpdatedOn)
-	populate(objectMap, "parallelDeployments", r.ParallelDeployments)
-	populate(objectMap, "policyAssignmentId", r.PolicyAssignmentID)
-	populate(objectMap, "policyDefinitionReferenceId", r.PolicyDefinitionReferenceID)
-	populate(objectMap, "provisioningState", r.ProvisioningState)
-	populate(objectMap, "resourceCount", r.ResourceCount)
-	populate(objectMap, "resourceDiscoveryMode", r.ResourceDiscoveryMode)
-	populate(objectMap, "statusMessage", r.StatusMessage)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type RemediationProperties.
-func (r *RemediationProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "correlationId":
-			err = unpopulate(val, &r.CorrelationID)
-			delete(rawMsg, key)
-		case "createdOn":
-			err = unpopulateTimeRFC3339(val, &r.CreatedOn)
-			delete(rawMsg, key)
-		case "deploymentStatus":
-			err = unpopulate(val, &r.DeploymentStatus)
-			delete(rawMsg, key)
-		case "failureThreshold":
-			err = unpopulate(val, &r.FailureThreshold)
-			delete(rawMsg, key)
-		case "filters":
-			err = unpopulate(val, &r.Filters)
-			delete(rawMsg, key)
-		case "lastUpdatedOn":
-			err = unpopulateTimeRFC3339(val, &r.LastUpdatedOn)
-			delete(rawMsg, key)
-		case "parallelDeployments":
-			err = unpopulate(val, &r.ParallelDeployments)
-			delete(rawMsg, key)
-		case "policyAssignmentId":
-			err = unpopulate(val, &r.PolicyAssignmentID)
-			delete(rawMsg, key)
-		case "policyDefinitionReferenceId":
-			err = unpopulate(val, &r.PolicyDefinitionReferenceID)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &r.ProvisioningState)
-			delete(rawMsg, key)
-		case "resourceCount":
-			err = unpopulate(val, &r.ResourceCount)
-			delete(rawMsg, key)
-		case "resourceDiscoveryMode":
-			err = unpopulate(val, &r.ResourceDiscoveryMode)
-			delete(rawMsg, key)
-		case "statusMessage":
-			err = unpopulate(val, &r.StatusMessage)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // RemediationPropertiesFailureThreshold - The remediation failure threshold settings
@@ -2205,15 +1437,6 @@ type SummarizeResults struct {
 	Value []*Summary `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SummarizeResults.
-func (s SummarizeResults) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "@odata.context", s.ODataContext)
-	populate(objectMap, "@odata.count", s.ODataCount)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
-}
-
 // Summary results.
 type Summary struct {
 	// OData context string; used by OData clients to resolve type information based on metadata.
@@ -2227,16 +1450,6 @@ type Summary struct {
 
 	// Compliance summary for all policy assignments.
 	Results *SummaryResults `json:"results,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Summary.
-func (s Summary) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "@odata.context", s.ODataContext)
-	populate(objectMap, "@odata.id", s.ODataID)
-	populate(objectMap, "policyAssignments", s.PolicyAssignments)
-	populate(objectMap, "results", s.Results)
-	return json.Marshal(objectMap)
 }
 
 // SummaryResults - Compliance summary on a particular summary level.
@@ -2263,18 +1476,6 @@ type SummaryResults struct {
 	ResourceDetails []*ComplianceDetail `json:"resourceDetails,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SummaryResults.
-func (s SummaryResults) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nonCompliantPolicies", s.NonCompliantPolicies)
-	populate(objectMap, "nonCompliantResources", s.NonCompliantResources)
-	populate(objectMap, "policyDetails", s.PolicyDetails)
-	populate(objectMap, "policyGroupDetails", s.PolicyGroupDetails)
-	populate(objectMap, "queryResultsUri", s.QueryResultsURI)
-	populate(objectMap, "resourceDetails", s.ResourceDetails)
-	return json.Marshal(objectMap)
-}
-
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
@@ -2296,53 +1497,6 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SystemData.
-func (s SystemData) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
-	populate(objectMap, "createdBy", s.CreatedBy)
-	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
-	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
-	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SystemData.
-func (s *SystemData) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdAt":
-			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
-			delete(rawMsg, key)
-		case "createdBy":
-			err = unpopulate(val, &s.CreatedBy)
-			delete(rawMsg, key)
-		case "createdByType":
-			err = unpopulate(val, &s.CreatedByType)
-			delete(rawMsg, key)
-		case "lastModifiedAt":
-			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
-			delete(rawMsg, key)
-		case "lastModifiedBy":
-			err = unpopulate(val, &s.LastModifiedBy)
-			delete(rawMsg, key)
-		case "lastModifiedByType":
-			err = unpopulate(val, &s.LastModifiedByType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // TrackedResourceModificationDetails - The details of the policy triggered deployment that created or modified the tracked
 // resource.
 type TrackedResourceModificationDetails struct {
@@ -2356,41 +1510,6 @@ type TrackedResourceModificationDetails struct {
 	PolicyDetails *PolicyDetails `json:"policyDetails,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type TrackedResourceModificationDetails.
-func (t TrackedResourceModificationDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "deploymentId", t.DeploymentID)
-	populateTimeRFC3339(objectMap, "deploymentTime", t.DeploymentTime)
-	populate(objectMap, "policyDetails", t.PolicyDetails)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type TrackedResourceModificationDetails.
-func (t *TrackedResourceModificationDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "deploymentId":
-			err = unpopulate(val, &t.DeploymentID)
-			delete(rawMsg, key)
-		case "deploymentTime":
-			err = unpopulateTimeRFC3339(val, &t.DeploymentTime)
-			delete(rawMsg, key)
-		case "policyDetails":
-			err = unpopulate(val, &t.PolicyDetails)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // TypedErrorInfo - Scenario specific error details.
 type TypedErrorInfo struct {
 	// READ-ONLY; The scenario specific error details.
@@ -2398,21 +1517,4 @@ type TypedErrorInfo struct {
 
 	// READ-ONLY; The type of included error details.
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

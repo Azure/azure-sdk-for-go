@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,14 +19,19 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devtestlabs/armdevtestlabs"
 )
 
-// x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualMachineSchedules_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualMachineSchedules_List.json
 func ExampleVirtualMachineSchedulesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdevtestlabs.NewVirtualMachineSchedulesClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewVirtualMachineSchedulesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.List("<resource-group-name>",
 		"<lab-name>",
 		"<virtual-machine-name>",
@@ -35,28 +40,32 @@ func ExampleVirtualMachineSchedulesClient_List() {
 			Top:     nil,
 			Orderby: nil,
 		})
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualMachineSchedules_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualMachineSchedules_Get.json
 func ExampleVirtualMachineSchedulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdevtestlabs.NewVirtualMachineSchedulesClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewVirtualMachineSchedulesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<lab-name>",
@@ -64,71 +73,85 @@ func ExampleVirtualMachineSchedulesClient_Get() {
 		"<name>",
 		&armdevtestlabs.VirtualMachineSchedulesClientGetOptions{Expand: nil})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.VirtualMachineSchedulesClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualMachineSchedules_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualMachineSchedules_CreateOrUpdate.json
 func ExampleVirtualMachineSchedulesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdevtestlabs.NewVirtualMachineSchedulesClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewVirtualMachineSchedulesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.CreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<lab-name>",
 		"<virtual-machine-name>",
 		"<name>",
 		armdevtestlabs.Schedule{
-			Location: to.StringPtr("<location>"),
+			Location: to.Ptr("<location>"),
 			Tags: map[string]*string{
-				"tagName1": to.StringPtr("tagValue1"),
+				"tagName1": to.Ptr("tagValue1"),
 			},
 			Properties: &armdevtestlabs.ScheduleProperties{
 				DailyRecurrence: &armdevtestlabs.DayDetails{
-					Time: to.StringPtr("<time>"),
+					Time: to.Ptr("<time>"),
 				},
 				HourlyRecurrence: &armdevtestlabs.HourDetails{
-					Minute: to.Int32Ptr(30),
+					Minute: to.Ptr[int32](30),
 				},
 				NotificationSettings: &armdevtestlabs.NotificationSettings{
-					EmailRecipient:     to.StringPtr("<email-recipient>"),
-					NotificationLocale: to.StringPtr("<notification-locale>"),
-					Status:             armdevtestlabs.EnableStatus("Enabled").ToPtr(),
-					TimeInMinutes:      to.Int32Ptr(30),
-					WebhookURL:         to.StringPtr("<webhook-url>"),
+					EmailRecipient:     to.Ptr("<email-recipient>"),
+					NotificationLocale: to.Ptr("<notification-locale>"),
+					Status:             to.Ptr(armdevtestlabs.EnableStatusEnabled),
+					TimeInMinutes:      to.Ptr[int32](30),
+					WebhookURL:         to.Ptr("<webhook-url>"),
 				},
-				Status:           armdevtestlabs.EnableStatus("Enabled").ToPtr(),
-				TargetResourceID: to.StringPtr("<target-resource-id>"),
-				TaskType:         to.StringPtr("<task-type>"),
-				TimeZoneID:       to.StringPtr("<time-zone-id>"),
+				Status:           to.Ptr(armdevtestlabs.EnableStatusEnabled),
+				TargetResourceID: to.Ptr("<target-resource-id>"),
+				TaskType:         to.Ptr("<task-type>"),
+				TimeZoneID:       to.Ptr("<time-zone-id>"),
 				WeeklyRecurrence: &armdevtestlabs.WeekDetails{
-					Time: to.StringPtr("<time>"),
+					Time: to.Ptr("<time>"),
 					Weekdays: []*string{
-						to.StringPtr("Friday"),
-						to.StringPtr("Saturday"),
-						to.StringPtr("Sunday")},
+						to.Ptr("Friday"),
+						to.Ptr("Saturday"),
+						to.Ptr("Sunday")},
 				},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.VirtualMachineSchedulesClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualMachineSchedules_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualMachineSchedules_Delete.json
 func ExampleVirtualMachineSchedulesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdevtestlabs.NewVirtualMachineSchedulesClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewVirtualMachineSchedulesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Delete(ctx,
 		"<resource-group-name>",
 		"<lab-name>",
@@ -136,18 +159,24 @@ func ExampleVirtualMachineSchedulesClient_Delete() {
 		"<name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualMachineSchedules_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualMachineSchedules_Update.json
 func ExampleVirtualMachineSchedulesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdevtestlabs.NewVirtualMachineSchedulesClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewVirtualMachineSchedulesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Update(ctx,
 		"<resource-group-name>",
 		"<lab-name>",
@@ -155,35 +184,44 @@ func ExampleVirtualMachineSchedulesClient_Update() {
 		"<name>",
 		armdevtestlabs.ScheduleFragment{
 			Tags: map[string]*string{
-				"tagName1": to.StringPtr("tagValue1"),
+				"tagName1": to.Ptr("tagValue1"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.VirtualMachineSchedulesClientUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualMachineSchedules_Execute.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualMachineSchedules_Execute.json
 func ExampleVirtualMachineSchedulesClient_BeginExecute() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdevtestlabs.NewVirtualMachineSchedulesClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewVirtualMachineSchedulesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginExecute(ctx,
 		"<resource-group-name>",
 		"<lab-name>",
 		"<virtual-machine-name>",
 		"<name>",
-		nil)
+		&armdevtestlabs.VirtualMachineSchedulesClientBeginExecuteOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }

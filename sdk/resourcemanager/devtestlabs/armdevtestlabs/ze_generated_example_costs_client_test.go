@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,95 +19,109 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devtestlabs/armdevtestlabs"
 )
 
-// x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Costs_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Costs_Get.json
 func ExampleCostsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdevtestlabs.NewCostsClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewCostsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<lab-name>",
 		"<name>",
 		&armdevtestlabs.CostsClientGetOptions{Expand: nil})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.CostsClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Costs_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Costs_CreateOrUpdate.json
 func ExampleCostsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdevtestlabs.NewCostsClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewCostsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.CreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<lab-name>",
 		"<name>",
 		armdevtestlabs.LabCost{
 			Properties: &armdevtestlabs.LabCostProperties{
-				CurrencyCode:  to.StringPtr("<currency-code>"),
-				EndDateTime:   to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-31T23:59:59Z"); return t }()),
-				StartDateTime: to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-01T00:00:00Z"); return t }()),
+				CurrencyCode:  to.Ptr("<currency-code>"),
+				EndDateTime:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-31T23:59:59Z"); return t }()),
+				StartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-01T00:00:00Z"); return t }()),
 				TargetCost: &armdevtestlabs.TargetCostProperties{
 					CostThresholds: []*armdevtestlabs.CostThresholdProperties{
 						{
-							DisplayOnChart: armdevtestlabs.CostThresholdStatus("Disabled").ToPtr(),
+							DisplayOnChart: to.Ptr(armdevtestlabs.CostThresholdStatusDisabled),
 							PercentageThreshold: &armdevtestlabs.PercentageCostThresholdProperties{
-								ThresholdValue: to.Float64Ptr(25),
+								ThresholdValue: to.Ptr[float64](25),
 							},
-							SendNotificationWhenExceeded: armdevtestlabs.CostThresholdStatus("Disabled").ToPtr(),
-							ThresholdID:                  to.StringPtr("<threshold-id>"),
+							SendNotificationWhenExceeded: to.Ptr(armdevtestlabs.CostThresholdStatusDisabled),
+							ThresholdID:                  to.Ptr("<threshold-id>"),
 						},
 						{
-							DisplayOnChart: armdevtestlabs.CostThresholdStatus("Enabled").ToPtr(),
+							DisplayOnChart: to.Ptr(armdevtestlabs.CostThresholdStatusEnabled),
 							PercentageThreshold: &armdevtestlabs.PercentageCostThresholdProperties{
-								ThresholdValue: to.Float64Ptr(50),
+								ThresholdValue: to.Ptr[float64](50),
 							},
-							SendNotificationWhenExceeded: armdevtestlabs.CostThresholdStatus("Enabled").ToPtr(),
-							ThresholdID:                  to.StringPtr("<threshold-id>"),
+							SendNotificationWhenExceeded: to.Ptr(armdevtestlabs.CostThresholdStatusEnabled),
+							ThresholdID:                  to.Ptr("<threshold-id>"),
 						},
 						{
-							DisplayOnChart: armdevtestlabs.CostThresholdStatus("Disabled").ToPtr(),
+							DisplayOnChart: to.Ptr(armdevtestlabs.CostThresholdStatusDisabled),
 							PercentageThreshold: &armdevtestlabs.PercentageCostThresholdProperties{
-								ThresholdValue: to.Float64Ptr(75),
+								ThresholdValue: to.Ptr[float64](75),
 							},
-							SendNotificationWhenExceeded: armdevtestlabs.CostThresholdStatus("Disabled").ToPtr(),
-							ThresholdID:                  to.StringPtr("<threshold-id>"),
+							SendNotificationWhenExceeded: to.Ptr(armdevtestlabs.CostThresholdStatusDisabled),
+							ThresholdID:                  to.Ptr("<threshold-id>"),
 						},
 						{
-							DisplayOnChart: armdevtestlabs.CostThresholdStatus("Disabled").ToPtr(),
+							DisplayOnChart: to.Ptr(armdevtestlabs.CostThresholdStatusDisabled),
 							PercentageThreshold: &armdevtestlabs.PercentageCostThresholdProperties{
-								ThresholdValue: to.Float64Ptr(100),
+								ThresholdValue: to.Ptr[float64](100),
 							},
-							SendNotificationWhenExceeded: armdevtestlabs.CostThresholdStatus("Disabled").ToPtr(),
-							ThresholdID:                  to.StringPtr("<threshold-id>"),
+							SendNotificationWhenExceeded: to.Ptr(armdevtestlabs.CostThresholdStatusDisabled),
+							ThresholdID:                  to.Ptr("<threshold-id>"),
 						},
 						{
-							DisplayOnChart: armdevtestlabs.CostThresholdStatus("Disabled").ToPtr(),
+							DisplayOnChart: to.Ptr(armdevtestlabs.CostThresholdStatusDisabled),
 							PercentageThreshold: &armdevtestlabs.PercentageCostThresholdProperties{
-								ThresholdValue: to.Float64Ptr(125),
+								ThresholdValue: to.Ptr[float64](125),
 							},
-							SendNotificationWhenExceeded: armdevtestlabs.CostThresholdStatus("Disabled").ToPtr(),
-							ThresholdID:                  to.StringPtr("<threshold-id>"),
+							SendNotificationWhenExceeded: to.Ptr(armdevtestlabs.CostThresholdStatusDisabled),
+							ThresholdID:                  to.Ptr("<threshold-id>"),
 						}},
-					CycleEndDateTime:   to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-31T00:00:00.000Z"); return t }()),
-					CycleStartDateTime: to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-01T00:00:00.000Z"); return t }()),
-					CycleType:          armdevtestlabs.ReportingCycleType("CalendarMonth").ToPtr(),
-					Status:             armdevtestlabs.TargetCostStatus("Enabled").ToPtr(),
-					Target:             to.Int32Ptr(100),
+					CycleEndDateTime:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-31T00:00:00.000Z"); return t }()),
+					CycleStartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-01T00:00:00.000Z"); return t }()),
+					CycleType:          to.Ptr(armdevtestlabs.ReportingCycleTypeCalendarMonth),
+					Status:             to.Ptr(armdevtestlabs.TargetCostStatusEnabled),
+					Target:             to.Ptr[int32](100),
 				},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.CostsClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }

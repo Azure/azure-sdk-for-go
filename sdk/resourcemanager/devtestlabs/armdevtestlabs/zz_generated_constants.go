@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armdevtestlabs
 
 const (
 	moduleName    = "armdevtestlabs"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // CostThresholdStatus - Indicates whether this threshold will be displayed on cost charts.
@@ -27,11 +27,6 @@ func PossibleCostThresholdStatusValues() []CostThresholdStatus {
 		CostThresholdStatusDisabled,
 		CostThresholdStatusEnabled,
 	}
-}
-
-// ToPtr returns a *CostThresholdStatus pointing to the current value.
-func (c CostThresholdStatus) ToPtr() *CostThresholdStatus {
-	return &c
 }
 
 // CostType - The type of the cost.
@@ -52,11 +47,6 @@ func PossibleCostTypeValues() []CostType {
 	}
 }
 
-// ToPtr returns a *CostType pointing to the current value.
-func (c CostType) ToPtr() *CostType {
-	return &c
-}
-
 // CustomImageOsType - The OS type of the custom image (i.e. Windows, Linux)
 type CustomImageOsType string
 
@@ -75,11 +65,6 @@ func PossibleCustomImageOsTypeValues() []CustomImageOsType {
 	}
 }
 
-// ToPtr returns a *CustomImageOsType pointing to the current value.
-func (c CustomImageOsType) ToPtr() *CustomImageOsType {
-	return &c
-}
-
 // EnableStatus - Indicates if the artifact source is enabled (values: Enabled, Disabled).
 type EnableStatus string
 
@@ -94,11 +79,6 @@ func PossibleEnableStatusValues() []EnableStatus {
 		EnableStatusDisabled,
 		EnableStatusEnabled,
 	}
-}
-
-// ToPtr returns a *EnableStatus pointing to the current value.
-func (c EnableStatus) ToPtr() *EnableStatus {
-	return &c
 }
 
 // EnvironmentPermission - The access rights to be granted to the user when provisioning an environment
@@ -117,11 +97,6 @@ func PossibleEnvironmentPermissionValues() []EnvironmentPermission {
 	}
 }
 
-// ToPtr returns a *EnvironmentPermission pointing to the current value.
-func (c EnvironmentPermission) ToPtr() *EnvironmentPermission {
-	return &c
-}
-
 // FileUploadOptions - Options for uploading the files for the artifact. UploadFilesAndGenerateSasTokens is the default value.
 type FileUploadOptions string
 
@@ -136,11 +111,6 @@ func PossibleFileUploadOptionsValues() []FileUploadOptions {
 		FileUploadOptionsNone,
 		FileUploadOptionsUploadFilesAndGenerateSasTokens,
 	}
-}
-
-// ToPtr returns a *FileUploadOptions pointing to the current value.
-func (c FileUploadOptions) ToPtr() *FileUploadOptions {
-	return &c
 }
 
 // HTTPStatusCode - The status code for the operation.
@@ -249,11 +219,6 @@ func PossibleHTTPStatusCodeValues() []HTTPStatusCode {
 	}
 }
 
-// ToPtr returns a *HTTPStatusCode pointing to the current value.
-func (c HTTPStatusCode) ToPtr() *HTTPStatusCode {
-	return &c
-}
-
 // HostCachingOptions - Caching option for a data disk (i.e. None, ReadOnly, ReadWrite).
 type HostCachingOptions string
 
@@ -272,11 +237,6 @@ func PossibleHostCachingOptionsValues() []HostCachingOptions {
 	}
 }
 
-// ToPtr returns a *HostCachingOptions pointing to the current value.
-func (c HostCachingOptions) ToPtr() *HostCachingOptions {
-	return &c
-}
-
 // LinuxOsState - The state of the Linux OS (i.e. NonDeprovisioned, DeprovisionRequested, DeprovisionApplied).
 type LinuxOsState string
 
@@ -293,11 +253,6 @@ func PossibleLinuxOsStateValues() []LinuxOsState {
 		LinuxOsStateDeprovisionRequested,
 		LinuxOsStateNonDeprovisioned,
 	}
-}
-
-// ToPtr returns a *LinuxOsState pointing to the current value.
-func (c LinuxOsState) ToPtr() *LinuxOsState {
-	return &c
 }
 
 // ManagedIdentityType - Managed identity.
@@ -320,11 +275,6 @@ func PossibleManagedIdentityTypeValues() []ManagedIdentityType {
 	}
 }
 
-// ToPtr returns a *ManagedIdentityType pointing to the current value.
-func (c ManagedIdentityType) ToPtr() *ManagedIdentityType {
-	return &c
-}
-
 // NotificationChannelEventType - The event type for which this notification is enabled (i.e. AutoShutdown, Cost)
 type NotificationChannelEventType string
 
@@ -341,11 +291,6 @@ func PossibleNotificationChannelEventTypeValues() []NotificationChannelEventType
 	}
 }
 
-// ToPtr returns a *NotificationChannelEventType pointing to the current value.
-func (c NotificationChannelEventType) ToPtr() *NotificationChannelEventType {
-	return &c
-}
-
 // PolicyEvaluatorType - The evaluator type of the policy (i.e. AllowedValuesPolicy, MaxValuePolicy).
 type PolicyEvaluatorType string
 
@@ -360,11 +305,6 @@ func PossiblePolicyEvaluatorTypeValues() []PolicyEvaluatorType {
 		PolicyEvaluatorTypeAllowedValuesPolicy,
 		PolicyEvaluatorTypeMaxValuePolicy,
 	}
-}
-
-// ToPtr returns a *PolicyEvaluatorType pointing to the current value.
-func (c PolicyEvaluatorType) ToPtr() *PolicyEvaluatorType {
-	return &c
 }
 
 // PolicyFactName - The fact name of the policy (e.g. LabVmCount, LabVmSize, MaxVmsAllowedPerLab, etc.
@@ -399,11 +339,6 @@ func PossiblePolicyFactNameValues() []PolicyFactName {
 	}
 }
 
-// ToPtr returns a *PolicyFactName pointing to the current value.
-func (c PolicyFactName) ToPtr() *PolicyFactName {
-	return &c
-}
-
 // PolicyStatus - The status of the policy.
 type PolicyStatus string
 
@@ -418,11 +353,6 @@ func PossiblePolicyStatusValues() []PolicyStatus {
 		PolicyStatusDisabled,
 		PolicyStatusEnabled,
 	}
-}
-
-// ToPtr returns a *PolicyStatus pointing to the current value.
-func (c PolicyStatus) ToPtr() *PolicyStatus {
-	return &c
 }
 
 // PremiumDataDisk - The setting to enable usage of premium data disks. When its value is 'Enabled', creation of standard
@@ -443,11 +373,6 @@ func PossiblePremiumDataDiskValues() []PremiumDataDisk {
 	}
 }
 
-// ToPtr returns a *PremiumDataDisk pointing to the current value.
-func (c PremiumDataDisk) ToPtr() *PremiumDataDisk {
-	return &c
-}
-
 // ReportingCycleType - Reporting cycle type.
 type ReportingCycleType string
 
@@ -462,11 +387,6 @@ func PossibleReportingCycleTypeValues() []ReportingCycleType {
 		ReportingCycleTypeCalendarMonth,
 		ReportingCycleTypeCustom,
 	}
-}
-
-// ToPtr returns a *ReportingCycleType pointing to the current value.
-func (c ReportingCycleType) ToPtr() *ReportingCycleType {
-	return &c
 }
 
 // SourceControlType - The artifact source's type.
@@ -487,11 +407,6 @@ func PossibleSourceControlTypeValues() []SourceControlType {
 	}
 }
 
-// ToPtr returns a *SourceControlType pointing to the current value.
-func (c SourceControlType) ToPtr() *SourceControlType {
-	return &c
-}
-
 // StorageType - The storage type for the disk (i.e. Standard, Premium).
 type StorageType string
 
@@ -510,11 +425,6 @@ func PossibleStorageTypeValues() []StorageType {
 	}
 }
 
-// ToPtr returns a *StorageType pointing to the current value.
-func (c StorageType) ToPtr() *StorageType {
-	return &c
-}
-
 // TargetCostStatus - Target cost status
 type TargetCostStatus string
 
@@ -531,11 +441,6 @@ func PossibleTargetCostStatusValues() []TargetCostStatus {
 	}
 }
 
-// ToPtr returns a *TargetCostStatus pointing to the current value.
-func (c TargetCostStatus) ToPtr() *TargetCostStatus {
-	return &c
-}
-
 // TransportProtocol - The transport protocol for the endpoint.
 type TransportProtocol string
 
@@ -550,11 +455,6 @@ func PossibleTransportProtocolValues() []TransportProtocol {
 		TransportProtocolTCP,
 		TransportProtocolUDP,
 	}
-}
-
-// ToPtr returns a *TransportProtocol pointing to the current value.
-func (c TransportProtocol) ToPtr() *TransportProtocol {
-	return &c
 }
 
 // UsagePermissionType - The permission policy of the subnet for allowing public IP addresses (i.e. Allow, Deny)).
@@ -575,11 +475,6 @@ func PossibleUsagePermissionTypeValues() []UsagePermissionType {
 	}
 }
 
-// ToPtr returns a *UsagePermissionType pointing to the current value.
-func (c UsagePermissionType) ToPtr() *UsagePermissionType {
-	return &c
-}
-
 // VirtualMachineCreationSource - Tells source of creation of lab virtual machine. Output property only.
 type VirtualMachineCreationSource string
 
@@ -598,11 +493,6 @@ func PossibleVirtualMachineCreationSourceValues() []VirtualMachineCreationSource
 	}
 }
 
-// ToPtr returns a *VirtualMachineCreationSource pointing to the current value.
-func (c VirtualMachineCreationSource) ToPtr() *VirtualMachineCreationSource {
-	return &c
-}
-
 // WindowsOsState - The state of the Windows OS (i.e. NonSysprepped, SysprepRequested, SysprepApplied).
 type WindowsOsState string
 
@@ -619,9 +509,4 @@ func PossibleWindowsOsStateValues() []WindowsOsState {
 		WindowsOsStateSysprepApplied,
 		WindowsOsStateSysprepRequested,
 	}
-}
-
-// ToPtr returns a *WindowsOsState pointing to the current value.
-func (c WindowsOsState) ToPtr() *WindowsOsState {
-	return &c
 }

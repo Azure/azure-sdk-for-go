@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type VirtualMachineSchedulesClient struct {
 // subscriptionID - The subscription ID.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewVirtualMachineSchedulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VirtualMachineSchedulesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewVirtualMachineSchedulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VirtualMachineSchedulesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &VirtualMachineSchedulesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Create or replace an existing schedule.
@@ -110,7 +115,7 @@ func (client *VirtualMachineSchedulesClient) createOrUpdateCreateRequest(ctx con
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *VirtualMachineSchedulesClient) createOrUpdateHandleResponse(resp *http.Response) (VirtualMachineSchedulesClientCreateOrUpdateResponse, error) {
-	result := VirtualMachineSchedulesClientCreateOrUpdateResponse{RawResponse: resp}
+	result := VirtualMachineSchedulesClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Schedule); err != nil {
 		return VirtualMachineSchedulesClientCreateOrUpdateResponse{}, err
 	}
@@ -137,7 +142,7 @@ func (client *VirtualMachineSchedulesClient) Delete(ctx context.Context, resourc
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return VirtualMachineSchedulesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return VirtualMachineSchedulesClientDeleteResponse{RawResponse: resp}, nil
+	return VirtualMachineSchedulesClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -182,22 +187,16 @@ func (client *VirtualMachineSchedulesClient) deleteCreateRequest(ctx context.Con
 // name - The name of the schedule.
 // options - VirtualMachineSchedulesClientBeginExecuteOptions contains the optional parameters for the VirtualMachineSchedulesClient.BeginExecute
 // method.
-func (client *VirtualMachineSchedulesClient) BeginExecute(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, name string, options *VirtualMachineSchedulesClientBeginExecuteOptions) (VirtualMachineSchedulesClientExecutePollerResponse, error) {
-	resp, err := client.execute(ctx, resourceGroupName, labName, virtualMachineName, name, options)
-	if err != nil {
-		return VirtualMachineSchedulesClientExecutePollerResponse{}, err
+func (client *VirtualMachineSchedulesClient) BeginExecute(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, name string, options *VirtualMachineSchedulesClientBeginExecuteOptions) (*armruntime.Poller[VirtualMachineSchedulesClientExecuteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.execute(ctx, resourceGroupName, labName, virtualMachineName, name, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[VirtualMachineSchedulesClientExecuteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[VirtualMachineSchedulesClientExecuteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := VirtualMachineSchedulesClientExecutePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("VirtualMachineSchedulesClient.Execute", "", resp, client.pl)
-	if err != nil {
-		return VirtualMachineSchedulesClientExecutePollerResponse{}, err
-	}
-	result.Poller = &VirtualMachineSchedulesClientExecutePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Execute - Execute a schedule. This operation can take a while to complete.
@@ -313,7 +312,7 @@ func (client *VirtualMachineSchedulesClient) getCreateRequest(ctx context.Contex
 
 // getHandleResponse handles the Get response.
 func (client *VirtualMachineSchedulesClient) getHandleResponse(resp *http.Response) (VirtualMachineSchedulesClientGetResponse, error) {
-	result := VirtualMachineSchedulesClientGetResponse{RawResponse: resp}
+	result := VirtualMachineSchedulesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Schedule); err != nil {
 		return VirtualMachineSchedulesClientGetResponse{}, err
 	}
@@ -327,16 +326,32 @@ func (client *VirtualMachineSchedulesClient) getHandleResponse(resp *http.Respon
 // virtualMachineName - The name of the virtual machine.
 // options - VirtualMachineSchedulesClientListOptions contains the optional parameters for the VirtualMachineSchedulesClient.List
 // method.
-func (client *VirtualMachineSchedulesClient) List(resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachineSchedulesClientListOptions) *VirtualMachineSchedulesClientListPager {
-	return &VirtualMachineSchedulesClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, labName, virtualMachineName, options)
+func (client *VirtualMachineSchedulesClient) List(resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachineSchedulesClientListOptions) *runtime.Pager[VirtualMachineSchedulesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[VirtualMachineSchedulesClientListResponse]{
+		More: func(page VirtualMachineSchedulesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp VirtualMachineSchedulesClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ScheduleList.NextLink)
+		Fetcher: func(ctx context.Context, page *VirtualMachineSchedulesClientListResponse) (VirtualMachineSchedulesClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, labName, virtualMachineName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return VirtualMachineSchedulesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return VirtualMachineSchedulesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return VirtualMachineSchedulesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -383,7 +398,7 @@ func (client *VirtualMachineSchedulesClient) listCreateRequest(ctx context.Conte
 
 // listHandleResponse handles the List response.
 func (client *VirtualMachineSchedulesClient) listHandleResponse(resp *http.Response) (VirtualMachineSchedulesClientListResponse, error) {
-	result := VirtualMachineSchedulesClientListResponse{RawResponse: resp}
+	result := VirtualMachineSchedulesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ScheduleList); err != nil {
 		return VirtualMachineSchedulesClientListResponse{}, err
 	}
@@ -450,7 +465,7 @@ func (client *VirtualMachineSchedulesClient) updateCreateRequest(ctx context.Con
 
 // updateHandleResponse handles the Update response.
 func (client *VirtualMachineSchedulesClient) updateHandleResponse(resp *http.Response) (VirtualMachineSchedulesClientUpdateResponse, error) {
-	result := VirtualMachineSchedulesClientUpdateResponse{RawResponse: resp}
+	result := VirtualMachineSchedulesClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Schedule); err != nil {
 		return VirtualMachineSchedulesClientUpdateResponse{}, err
 	}

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type InstancesClient struct {
 // subscriptionID - The Azure subscription ID.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewInstancesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *InstancesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewInstancesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*InstancesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &InstancesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreate - Creates or updates instance.
@@ -56,22 +61,18 @@ func NewInstancesClient(subscriptionID string, credential azcore.TokenCredential
 // instanceName - Instance name.
 // instance - Instance details.
 // options - InstancesClientBeginCreateOptions contains the optional parameters for the InstancesClient.BeginCreate method.
-func (client *InstancesClient) BeginCreate(ctx context.Context, resourceGroupName string, accountName string, instanceName string, instance Instance, options *InstancesClientBeginCreateOptions) (InstancesClientCreatePollerResponse, error) {
-	resp, err := client.create(ctx, resourceGroupName, accountName, instanceName, instance, options)
-	if err != nil {
-		return InstancesClientCreatePollerResponse{}, err
+func (client *InstancesClient) BeginCreate(ctx context.Context, resourceGroupName string, accountName string, instanceName string, instance Instance, options *InstancesClientBeginCreateOptions) (*armruntime.Poller[InstancesClientCreateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.create(ctx, resourceGroupName, accountName, instanceName, instance, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[InstancesClientCreateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[InstancesClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := InstancesClientCreatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("InstancesClient.Create", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return InstancesClientCreatePollerResponse{}, err
-	}
-	result.Poller = &InstancesClientCreatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Create - Creates or updates instance.
@@ -127,22 +128,18 @@ func (client *InstancesClient) createCreateRequest(ctx context.Context, resource
 // accountName - Account name.
 // instanceName - Instance name.
 // options - InstancesClientBeginDeleteOptions contains the optional parameters for the InstancesClient.BeginDelete method.
-func (client *InstancesClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, instanceName string, options *InstancesClientBeginDeleteOptions) (InstancesClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, instanceName, options)
-	if err != nil {
-		return InstancesClientDeletePollerResponse{}, err
+func (client *InstancesClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, instanceName string, options *InstancesClientBeginDeleteOptions) (*armruntime.Poller[InstancesClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, instanceName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[InstancesClientDeleteResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[InstancesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := InstancesClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("InstancesClient.Delete", "location", resp, client.pl)
-	if err != nil {
-		return InstancesClientDeletePollerResponse{}, err
-	}
-	result.Poller = &InstancesClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes instance.
@@ -245,7 +242,7 @@ func (client *InstancesClient) getCreateRequest(ctx context.Context, resourceGro
 
 // getHandleResponse handles the Get response.
 func (client *InstancesClient) getHandleResponse(resp *http.Response) (InstancesClientGetResponse, error) {
-	result := InstancesClientGetResponse{RawResponse: resp}
+	result := InstancesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Instance); err != nil {
 		return InstancesClientGetResponse{}, err
 	}
@@ -266,7 +263,7 @@ func (client *InstancesClient) Head(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return InstancesClientHeadResponse{}, err
 	}
-	result := InstancesClientHeadResponse{RawResponse: resp}
+	result := InstancesClientHeadResponse{}
 	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
 		result.Success = true
 	}
@@ -308,16 +305,32 @@ func (client *InstancesClient) headCreateRequest(ctx context.Context, resourceGr
 // resourceGroupName - The resource group name.
 // accountName - Account name.
 // options - InstancesClientListByAccountOptions contains the optional parameters for the InstancesClient.ListByAccount method.
-func (client *InstancesClient) ListByAccount(resourceGroupName string, accountName string, options *InstancesClientListByAccountOptions) *InstancesClientListByAccountPager {
-	return &InstancesClientListByAccountPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByAccountCreateRequest(ctx, resourceGroupName, accountName, options)
+func (client *InstancesClient) ListByAccount(resourceGroupName string, accountName string, options *InstancesClientListByAccountOptions) *runtime.Pager[InstancesClientListByAccountResponse] {
+	return runtime.NewPager(runtime.PageProcessor[InstancesClientListByAccountResponse]{
+		More: func(page InstancesClientListByAccountResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp InstancesClientListByAccountResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.InstanceList.NextLink)
+		Fetcher: func(ctx context.Context, page *InstancesClientListByAccountResponse) (InstancesClientListByAccountResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByAccountCreateRequest(ctx, resourceGroupName, accountName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return InstancesClientListByAccountResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return InstancesClientListByAccountResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return InstancesClientListByAccountResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByAccountHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByAccountCreateRequest creates the ListByAccount request.
@@ -348,7 +361,7 @@ func (client *InstancesClient) listByAccountCreateRequest(ctx context.Context, r
 
 // listByAccountHandleResponse handles the ListByAccount response.
 func (client *InstancesClient) listByAccountHandleResponse(resp *http.Response) (InstancesClientListByAccountResponse, error) {
-	result := InstancesClientListByAccountResponse{RawResponse: resp}
+	result := InstancesClientListByAccountResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.InstanceList); err != nil {
 		return InstancesClientListByAccountResponse{}, err
 	}
@@ -409,7 +422,7 @@ func (client *InstancesClient) updateCreateRequest(ctx context.Context, resource
 
 // updateHandleResponse handles the Update response.
 func (client *InstancesClient) updateHandleResponse(resp *http.Response) (InstancesClientUpdateResponse, error) {
-	result := InstancesClientUpdateResponse{RawResponse: resp}
+	result := InstancesClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Instance); err != nil {
 		return InstancesClientUpdateResponse{}, err
 	}

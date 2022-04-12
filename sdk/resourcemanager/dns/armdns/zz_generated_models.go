@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -7,12 +7,6 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package armdns
-
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-)
 
 // ARecord - An A record.
 type ARecord struct {
@@ -57,16 +51,6 @@ type CloudErrorBody struct {
 
 	// The target of the particular error. For example, the name of the property in error.
 	Target *string `json:"target,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CloudErrorBody.
-func (c CloudErrorBody) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "code", c.Code)
-	populate(objectMap, "details", c.Details)
-	populate(objectMap, "message", c.Message)
-	populate(objectMap, "target", c.Target)
-	return json.Marshal(objectMap)
 }
 
 // CnameRecord - A CNAME record.
@@ -114,17 +98,6 @@ type RecordSet struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type RecordSet.
-func (r RecordSet) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", r.Etag)
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "properties", r.Properties)
-	populate(objectMap, "type", r.Type)
-	return json.Marshal(objectMap)
-}
-
 // RecordSetListResult - The response to a record set List operation.
 type RecordSetListResult struct {
 	// Information about the record sets in the response.
@@ -132,14 +105,6 @@ type RecordSetListResult struct {
 
 	// READ-ONLY; The continuation token for the next page of results.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RecordSetListResult.
-func (r RecordSetListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", r.NextLink)
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
 }
 
 // RecordSetProperties - Represents the properties of the records in the record set.
@@ -188,27 +153,6 @@ type RecordSetProperties struct {
 
 	// READ-ONLY; provisioning State of the record set.
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RecordSetProperties.
-func (r RecordSetProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "ARecords", r.ARecords)
-	populate(objectMap, "AAAARecords", r.AaaaRecords)
-	populate(objectMap, "caaRecords", r.CaaRecords)
-	populate(objectMap, "CNAMERecord", r.CnameRecord)
-	populate(objectMap, "fqdn", r.Fqdn)
-	populate(objectMap, "metadata", r.Metadata)
-	populate(objectMap, "MXRecords", r.MxRecords)
-	populate(objectMap, "NSRecords", r.NsRecords)
-	populate(objectMap, "provisioningState", r.ProvisioningState)
-	populate(objectMap, "PTRRecords", r.PtrRecords)
-	populate(objectMap, "SOARecord", r.SoaRecord)
-	populate(objectMap, "SRVRecords", r.SrvRecords)
-	populate(objectMap, "TTL", r.TTL)
-	populate(objectMap, "targetResource", r.TargetResource)
-	populate(objectMap, "TXTRecords", r.TxtRecords)
-	return json.Marshal(objectMap)
 }
 
 // RecordSetUpdateParameters - Parameters supplied to update a record set.
@@ -291,17 +235,6 @@ type Resource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "location", r.Location)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "tags", r.Tags)
-	populate(objectMap, "type", r.Type)
-	return json.Marshal(objectMap)
-}
-
 // ResourceReference - Represents a single Azure resource and its referencing DNS records.
 type ResourceReference struct {
 	// A list of dns Records
@@ -309,14 +242,6 @@ type ResourceReference struct {
 
 	// A reference to an azure resource from where the dns resource value is taken.
 	TargetResource *SubResource `json:"targetResource,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ResourceReference.
-func (r ResourceReference) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "dnsResources", r.DNSResources)
-	populate(objectMap, "targetResource", r.TargetResource)
-	return json.Marshal(objectMap)
 }
 
 // ResourceReferenceClientGetByTargetResourcesOptions contains the optional parameters for the ResourceReferenceClient.GetByTargetResources
@@ -337,13 +262,6 @@ type ResourceReferenceRequestProperties struct {
 	TargetResources []*SubResource `json:"targetResources,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ResourceReferenceRequestProperties.
-func (r ResourceReferenceRequestProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "targetResources", r.TargetResources)
-	return json.Marshal(objectMap)
-}
-
 // ResourceReferenceResult - Represents the properties of the Dns Resource Reference Result.
 type ResourceReferenceResult struct {
 	// The result of dns resource reference request. Returns a list of dns resource references for each of the azure resource
@@ -356,13 +274,6 @@ type ResourceReferenceResult struct {
 type ResourceReferenceResultProperties struct {
 	// The result of dns resource reference request. A list of dns resource references for each of the azure resource in the request
 	DNSResourceReferences []*ResourceReference `json:"dnsResourceReferences,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ResourceReferenceResultProperties.
-func (r ResourceReferenceResultProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "dnsResourceReferences", r.DNSResourceReferences)
-	return json.Marshal(objectMap)
 }
 
 // SoaRecord - An SOA record.
@@ -416,13 +327,6 @@ type TxtRecord struct {
 	Value []*string `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type TxtRecord.
-func (t TxtRecord) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", t.Value)
-	return json.Marshal(objectMap)
-}
-
 // Zone - Describes a DNS zone.
 type Zone struct {
 	// REQUIRED; Resource location.
@@ -447,19 +351,6 @@ type Zone struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Zone.
-func (z Zone) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", z.Etag)
-	populate(objectMap, "id", z.ID)
-	populate(objectMap, "location", z.Location)
-	populate(objectMap, "name", z.Name)
-	populate(objectMap, "properties", z.Properties)
-	populate(objectMap, "tags", z.Tags)
-	populate(objectMap, "type", z.Type)
-	return json.Marshal(objectMap)
-}
-
 // ZoneListResult - The response to a Zone List or ListAll operation.
 type ZoneListResult struct {
 	// Information about the DNS zones.
@@ -467,14 +358,6 @@ type ZoneListResult struct {
 
 	// READ-ONLY; The continuation token for the next page of results.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ZoneListResult.
-func (z ZoneListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", z.NextLink)
-	populate(objectMap, "value", z.Value)
-	return json.Marshal(objectMap)
 }
 
 // ZoneProperties - Represents the properties of the zone.
@@ -504,30 +387,10 @@ type ZoneProperties struct {
 	NumberOfRecordSets *int64 `json:"numberOfRecordSets,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ZoneProperties.
-func (z ZoneProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "maxNumberOfRecordSets", z.MaxNumberOfRecordSets)
-	populate(objectMap, "maxNumberOfRecordsPerRecordSet", z.MaxNumberOfRecordsPerRecordSet)
-	populate(objectMap, "nameServers", z.NameServers)
-	populate(objectMap, "numberOfRecordSets", z.NumberOfRecordSets)
-	populate(objectMap, "registrationVirtualNetworks", z.RegistrationVirtualNetworks)
-	populate(objectMap, "resolutionVirtualNetworks", z.ResolutionVirtualNetworks)
-	populate(objectMap, "zoneType", z.ZoneType)
-	return json.Marshal(objectMap)
-}
-
 // ZoneUpdate - Describes a request to update a DNS zone.
 type ZoneUpdate struct {
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ZoneUpdate.
-func (z ZoneUpdate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "tags", z.Tags)
-	return json.Marshal(objectMap)
 }
 
 // ZonesClientBeginDeleteOptions contains the optional parameters for the ZonesClient.BeginDelete method.
@@ -535,6 +398,8 @@ type ZonesClientBeginDeleteOptions struct {
 	// The etag of the DNS zone. Omit this value to always delete the current zone. Specify the last-seen etag value to prevent
 	// accidentally deleting any concurrent changes.
 	IfMatch *string
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ZonesClientCreateOrUpdateOptions contains the optional parameters for the ZonesClient.CreateOrUpdate method.
@@ -568,14 +433,4 @@ type ZonesClientUpdateOptions struct {
 	// The etag of the DNS zone. Omit this value to always overwrite the current zone. Specify the last-seen etag value to prevent
 	// accidentally overwriting any concurrent changes.
 	IfMatch *string
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type PrivateEndpointConnectionsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewPrivateEndpointConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PrivateEndpointConnectionsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewPrivateEndpointConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateEndpointConnectionsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &PrivateEndpointConnectionsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // DeleteByHostPool - Remove a connection.
@@ -68,7 +73,7 @@ func (client *PrivateEndpointConnectionsClient) DeleteByHostPool(ctx context.Con
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return PrivateEndpointConnectionsClientDeleteByHostPoolResponse{}, runtime.NewResponseError(resp)
 	}
-	return PrivateEndpointConnectionsClientDeleteByHostPoolResponse{RawResponse: resp}, nil
+	return PrivateEndpointConnectionsClientDeleteByHostPoolResponse{}, nil
 }
 
 // deleteByHostPoolCreateRequest creates the DeleteByHostPool request.
@@ -95,7 +100,7 @@ func (client *PrivateEndpointConnectionsClient) deleteByHostPoolCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-03-preview")
+	reqQP.Set("api-version", "2022-02-10-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -120,7 +125,7 @@ func (client *PrivateEndpointConnectionsClient) DeleteByWorkspace(ctx context.Co
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return PrivateEndpointConnectionsClientDeleteByWorkspaceResponse{}, runtime.NewResponseError(resp)
 	}
-	return PrivateEndpointConnectionsClientDeleteByWorkspaceResponse{RawResponse: resp}, nil
+	return PrivateEndpointConnectionsClientDeleteByWorkspaceResponse{}, nil
 }
 
 // deleteByWorkspaceCreateRequest creates the DeleteByWorkspace request.
@@ -147,7 +152,7 @@ func (client *PrivateEndpointConnectionsClient) deleteByWorkspaceCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-03-preview")
+	reqQP.Set("api-version", "2022-02-10-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -199,7 +204,7 @@ func (client *PrivateEndpointConnectionsClient) getByHostPoolCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-03-preview")
+	reqQP.Set("api-version", "2022-02-10-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -207,7 +212,7 @@ func (client *PrivateEndpointConnectionsClient) getByHostPoolCreateRequest(ctx c
 
 // getByHostPoolHandleResponse handles the GetByHostPool response.
 func (client *PrivateEndpointConnectionsClient) getByHostPoolHandleResponse(resp *http.Response) (PrivateEndpointConnectionsClientGetByHostPoolResponse, error) {
-	result := PrivateEndpointConnectionsClientGetByHostPoolResponse{RawResponse: resp}
+	result := PrivateEndpointConnectionsClientGetByHostPoolResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnectionWithSystemData); err != nil {
 		return PrivateEndpointConnectionsClientGetByHostPoolResponse{}, err
 	}
@@ -260,7 +265,7 @@ func (client *PrivateEndpointConnectionsClient) getByWorkspaceCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-03-preview")
+	reqQP.Set("api-version", "2022-02-10-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -268,7 +273,7 @@ func (client *PrivateEndpointConnectionsClient) getByWorkspaceCreateRequest(ctx 
 
 // getByWorkspaceHandleResponse handles the GetByWorkspace response.
 func (client *PrivateEndpointConnectionsClient) getByWorkspaceHandleResponse(resp *http.Response) (PrivateEndpointConnectionsClientGetByWorkspaceResponse, error) {
-	result := PrivateEndpointConnectionsClientGetByWorkspaceResponse{RawResponse: resp}
+	result := PrivateEndpointConnectionsClientGetByWorkspaceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnectionWithSystemData); err != nil {
 		return PrivateEndpointConnectionsClientGetByWorkspaceResponse{}, err
 	}
@@ -281,16 +286,32 @@ func (client *PrivateEndpointConnectionsClient) getByWorkspaceHandleResponse(res
 // hostPoolName - The name of the host pool within the specified resource group
 // options - PrivateEndpointConnectionsClientListByHostPoolOptions contains the optional parameters for the PrivateEndpointConnectionsClient.ListByHostPool
 // method.
-func (client *PrivateEndpointConnectionsClient) ListByHostPool(resourceGroupName string, hostPoolName string, options *PrivateEndpointConnectionsClientListByHostPoolOptions) *PrivateEndpointConnectionsClientListByHostPoolPager {
-	return &PrivateEndpointConnectionsClientListByHostPoolPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByHostPoolCreateRequest(ctx, resourceGroupName, hostPoolName, options)
+func (client *PrivateEndpointConnectionsClient) ListByHostPool(resourceGroupName string, hostPoolName string, options *PrivateEndpointConnectionsClientListByHostPoolOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByHostPoolResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PrivateEndpointConnectionsClientListByHostPoolResponse]{
+		More: func(page PrivateEndpointConnectionsClientListByHostPoolResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PrivateEndpointConnectionsClientListByHostPoolResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PrivateEndpointConnectionListResultWithSystemData.NextLink)
+		Fetcher: func(ctx context.Context, page *PrivateEndpointConnectionsClientListByHostPoolResponse) (PrivateEndpointConnectionsClientListByHostPoolResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByHostPoolCreateRequest(ctx, resourceGroupName, hostPoolName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return PrivateEndpointConnectionsClientListByHostPoolResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PrivateEndpointConnectionsClientListByHostPoolResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PrivateEndpointConnectionsClientListByHostPoolResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByHostPoolHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByHostPoolCreateRequest creates the ListByHostPool request.
@@ -313,7 +334,7 @@ func (client *PrivateEndpointConnectionsClient) listByHostPoolCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-03-preview")
+	reqQP.Set("api-version", "2022-02-10-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -321,7 +342,7 @@ func (client *PrivateEndpointConnectionsClient) listByHostPoolCreateRequest(ctx 
 
 // listByHostPoolHandleResponse handles the ListByHostPool response.
 func (client *PrivateEndpointConnectionsClient) listByHostPoolHandleResponse(resp *http.Response) (PrivateEndpointConnectionsClientListByHostPoolResponse, error) {
-	result := PrivateEndpointConnectionsClientListByHostPoolResponse{RawResponse: resp}
+	result := PrivateEndpointConnectionsClientListByHostPoolResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnectionListResultWithSystemData); err != nil {
 		return PrivateEndpointConnectionsClientListByHostPoolResponse{}, err
 	}
@@ -334,16 +355,32 @@ func (client *PrivateEndpointConnectionsClient) listByHostPoolHandleResponse(res
 // workspaceName - The name of the workspace
 // options - PrivateEndpointConnectionsClientListByWorkspaceOptions contains the optional parameters for the PrivateEndpointConnectionsClient.ListByWorkspace
 // method.
-func (client *PrivateEndpointConnectionsClient) ListByWorkspace(resourceGroupName string, workspaceName string, options *PrivateEndpointConnectionsClientListByWorkspaceOptions) *PrivateEndpointConnectionsClientListByWorkspacePager {
-	return &PrivateEndpointConnectionsClientListByWorkspacePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByWorkspaceCreateRequest(ctx, resourceGroupName, workspaceName, options)
+func (client *PrivateEndpointConnectionsClient) ListByWorkspace(resourceGroupName string, workspaceName string, options *PrivateEndpointConnectionsClientListByWorkspaceOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByWorkspaceResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PrivateEndpointConnectionsClientListByWorkspaceResponse]{
+		More: func(page PrivateEndpointConnectionsClientListByWorkspaceResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PrivateEndpointConnectionsClientListByWorkspaceResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PrivateEndpointConnectionListResultWithSystemData.NextLink)
+		Fetcher: func(ctx context.Context, page *PrivateEndpointConnectionsClientListByWorkspaceResponse) (PrivateEndpointConnectionsClientListByWorkspaceResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByWorkspaceCreateRequest(ctx, resourceGroupName, workspaceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return PrivateEndpointConnectionsClientListByWorkspaceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PrivateEndpointConnectionsClientListByWorkspaceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PrivateEndpointConnectionsClientListByWorkspaceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByWorkspaceHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByWorkspaceCreateRequest creates the ListByWorkspace request.
@@ -366,7 +403,7 @@ func (client *PrivateEndpointConnectionsClient) listByWorkspaceCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-03-preview")
+	reqQP.Set("api-version", "2022-02-10-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -374,7 +411,7 @@ func (client *PrivateEndpointConnectionsClient) listByWorkspaceCreateRequest(ctx
 
 // listByWorkspaceHandleResponse handles the ListByWorkspace response.
 func (client *PrivateEndpointConnectionsClient) listByWorkspaceHandleResponse(resp *http.Response) (PrivateEndpointConnectionsClientListByWorkspaceResponse, error) {
-	result := PrivateEndpointConnectionsClientListByWorkspaceResponse{RawResponse: resp}
+	result := PrivateEndpointConnectionsClientListByWorkspaceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnectionListResultWithSystemData); err != nil {
 		return PrivateEndpointConnectionsClientListByWorkspaceResponse{}, err
 	}
@@ -428,7 +465,7 @@ func (client *PrivateEndpointConnectionsClient) updateByHostPoolCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-03-preview")
+	reqQP.Set("api-version", "2022-02-10-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, connection)
@@ -436,7 +473,7 @@ func (client *PrivateEndpointConnectionsClient) updateByHostPoolCreateRequest(ct
 
 // updateByHostPoolHandleResponse handles the UpdateByHostPool response.
 func (client *PrivateEndpointConnectionsClient) updateByHostPoolHandleResponse(resp *http.Response) (PrivateEndpointConnectionsClientUpdateByHostPoolResponse, error) {
-	result := PrivateEndpointConnectionsClientUpdateByHostPoolResponse{RawResponse: resp}
+	result := PrivateEndpointConnectionsClientUpdateByHostPoolResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnectionWithSystemData); err != nil {
 		return PrivateEndpointConnectionsClientUpdateByHostPoolResponse{}, err
 	}
@@ -490,7 +527,7 @@ func (client *PrivateEndpointConnectionsClient) updateByWorkspaceCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-03-preview")
+	reqQP.Set("api-version", "2022-02-10-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, connection)
@@ -498,7 +535,7 @@ func (client *PrivateEndpointConnectionsClient) updateByWorkspaceCreateRequest(c
 
 // updateByWorkspaceHandleResponse handles the UpdateByWorkspace response.
 func (client *PrivateEndpointConnectionsClient) updateByWorkspaceHandleResponse(resp *http.Response) (PrivateEndpointConnectionsClientUpdateByWorkspaceResponse, error) {
-	result := PrivateEndpointConnectionsClientUpdateByWorkspaceResponse{RawResponse: resp}
+	result := PrivateEndpointConnectionsClientUpdateByWorkspaceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnectionWithSystemData); err != nil {
 		return PrivateEndpointConnectionsClientUpdateByWorkspaceResponse{}, err
 	}

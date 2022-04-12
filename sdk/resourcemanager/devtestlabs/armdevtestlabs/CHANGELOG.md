@@ -1,5 +1,1010 @@
 # Release History
 
+## 0.3.0 (2022-04-11)
+### Breaking Changes
+
+- Function `*VirtualMachinesClient.BeginCreateOrUpdate` return value(s) have been changed from `(VirtualMachinesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[VirtualMachinesClientCreateOrUpdateResponse], error)`
+- Function `*ArmTemplatesClient.List` return value(s) have been changed from `(*ArmTemplatesClientListPager)` to `(*runtime.Pager[ArmTemplatesClientListResponse])`
+- Function `*DisksClient.BeginCreateOrUpdate` return value(s) have been changed from `(DisksClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[DisksClientCreateOrUpdateResponse], error)`
+- Function `*VirtualMachinesClient.BeginUnClaim` return value(s) have been changed from `(VirtualMachinesClientUnClaimPollerResponse, error)` to `(*armruntime.Poller[VirtualMachinesClientUnClaimResponse], error)`
+- Function `NewPolicySetsClient` return value(s) have been changed from `(*PolicySetsClient)` to `(*PolicySetsClient, error)`
+- Function `*CustomImagesClient.List` return value(s) have been changed from `(*CustomImagesClientListPager)` to `(*runtime.Pager[CustomImagesClientListResponse])`
+- Function `*ArtifactsClient.List` return value(s) have been changed from `(*ArtifactsClientListPager)` to `(*runtime.Pager[ArtifactsClientListResponse])`
+- Function `*CustomImagesClient.BeginCreateOrUpdate` return value(s) have been changed from `(CustomImagesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[CustomImagesClientCreateOrUpdateResponse], error)`
+- Function `*ServiceFabricSchedulesClient.List` return value(s) have been changed from `(*ServiceFabricSchedulesClientListPager)` to `(*runtime.Pager[ServiceFabricSchedulesClientListResponse])`
+- Function `*ProviderOperationsClient.List` return value(s) have been changed from `(*ProviderOperationsClientListPager)` to `(*runtime.Pager[ProviderOperationsClientListResponse])`
+- Function `*VirtualMachinesClient.BeginResize` return value(s) have been changed from `(VirtualMachinesClientResizePollerResponse, error)` to `(*armruntime.Poller[VirtualMachinesClientResizeResponse], error)`
+- Function `NewFormulasClient` return value(s) have been changed from `(*FormulasClient)` to `(*FormulasClient, error)`
+- Function `NewServiceFabricsClient` return value(s) have been changed from `(*ServiceFabricsClient)` to `(*ServiceFabricsClient, error)`
+- Function `NewServiceRunnersClient` return value(s) have been changed from `(*ServiceRunnersClient)` to `(*ServiceRunnersClient, error)`
+- Function `*SecretsClient.BeginCreateOrUpdate` return value(s) have been changed from `(SecretsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[SecretsClientCreateOrUpdateResponse], error)`
+- Function `*VirtualNetworksClient.BeginCreateOrUpdate` return value(s) have been changed from `(VirtualNetworksClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[VirtualNetworksClientCreateOrUpdateResponse], error)`
+- Function `NewDisksClient` return value(s) have been changed from `(*DisksClient)` to `(*DisksClient, error)`
+- Function `*LabsClient.BeginDelete` return value(s) have been changed from `(LabsClientDeletePollerResponse, error)` to `(*armruntime.Poller[LabsClientDeleteResponse], error)`
+- Function `NewServiceFabricSchedulesClient` return value(s) have been changed from `(*ServiceFabricSchedulesClient)` to `(*ServiceFabricSchedulesClient, error)`
+- Function `*SchedulesClient.BeginExecute` return value(s) have been changed from `(SchedulesClientExecutePollerResponse, error)` to `(*armruntime.Poller[SchedulesClientExecuteResponse], error)`
+- Function `*ServiceFabricsClient.BeginStart` return value(s) have been changed from `(ServiceFabricsClientStartPollerResponse, error)` to `(*armruntime.Poller[ServiceFabricsClientStartResponse], error)`
+- Function `*FormulasClient.BeginCreateOrUpdate` return value(s) have been changed from `(FormulasClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[FormulasClientCreateOrUpdateResponse], error)`
+- Function `NewArtifactsClient` return value(s) have been changed from `(*ArtifactsClient)` to `(*ArtifactsClient, error)`
+- Function `*VirtualMachineSchedulesClient.BeginExecute` return value(s) have been changed from `(VirtualMachineSchedulesClientExecutePollerResponse, error)` to `(*armruntime.Poller[VirtualMachineSchedulesClientExecuteResponse], error)`
+- Function `NewUsersClient` return value(s) have been changed from `(*UsersClient)` to `(*UsersClient, error)`
+- Function `*GlobalSchedulesClient.ListByResourceGroup` return value(s) have been changed from `(*GlobalSchedulesClientListByResourceGroupPager)` to `(*runtime.Pager[GlobalSchedulesClientListByResourceGroupResponse])`
+- Function `NewVirtualNetworksClient` return value(s) have been changed from `(*VirtualNetworksClient)` to `(*VirtualNetworksClient, error)`
+- Function `NewNotificationChannelsClient` return value(s) have been changed from `(*NotificationChannelsClient)` to `(*NotificationChannelsClient, error)`
+- Function `*LabsClient.ListVhds` return value(s) have been changed from `(*LabsClientListVhdsPager)` to `(*runtime.Pager[LabsClientListVhdsResponse])`
+- Function `NewVirtualMachineSchedulesClient` return value(s) have been changed from `(*VirtualMachineSchedulesClient)` to `(*VirtualMachineSchedulesClient, error)`
+- Function `*EnvironmentsClient.BeginDelete` return value(s) have been changed from `(EnvironmentsClientDeletePollerResponse, error)` to `(*armruntime.Poller[EnvironmentsClientDeleteResponse], error)`
+- Function `NewVirtualMachinesClient` return value(s) have been changed from `(*VirtualMachinesClient)` to `(*VirtualMachinesClient, error)`
+- Function `*ServiceFabricsClient.BeginStop` return value(s) have been changed from `(ServiceFabricsClientStopPollerResponse, error)` to `(*armruntime.Poller[ServiceFabricsClientStopResponse], error)`
+- Function `*LabsClient.ListByResourceGroup` return value(s) have been changed from `(*LabsClientListByResourceGroupPager)` to `(*runtime.Pager[LabsClientListByResourceGroupResponse])`
+- Function `*SecretsClient.List` return value(s) have been changed from `(*SecretsClientListPager)` to `(*runtime.Pager[SecretsClientListResponse])`
+- Function `*DisksClient.BeginDetach` return value(s) have been changed from `(DisksClientDetachPollerResponse, error)` to `(*armruntime.Poller[DisksClientDetachResponse], error)`
+- Function `NewArmTemplatesClient` return value(s) have been changed from `(*ArmTemplatesClient)` to `(*ArmTemplatesClient, error)`
+- Function `*VirtualNetworksClient.List` return value(s) have been changed from `(*VirtualNetworksClientListPager)` to `(*runtime.Pager[VirtualNetworksClientListResponse])`
+- Function `*PoliciesClient.List` return value(s) have been changed from `(*PoliciesClientListPager)` to `(*runtime.Pager[PoliciesClientListResponse])`
+- Function `*VirtualNetworksClient.BeginDelete` return value(s) have been changed from `(VirtualNetworksClientDeletePollerResponse, error)` to `(*armruntime.Poller[VirtualNetworksClientDeleteResponse], error)`
+- Function `NewPoliciesClient` return value(s) have been changed from `(*PoliciesClient)` to `(*PoliciesClient, error)`
+- Function `*GlobalSchedulesClient.BeginRetarget` return value(s) have been changed from `(GlobalSchedulesClientRetargetPollerResponse, error)` to `(*armruntime.Poller[GlobalSchedulesClientRetargetResponse], error)`
+- Function `*ArtifactSourcesClient.List` return value(s) have been changed from `(*ArtifactSourcesClientListPager)` to `(*runtime.Pager[ArtifactSourcesClientListResponse])`
+- Function `NewEnvironmentsClient` return value(s) have been changed from `(*EnvironmentsClient)` to `(*EnvironmentsClient, error)`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `*EnvironmentsClient.BeginCreateOrUpdate` return value(s) have been changed from `(EnvironmentsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[EnvironmentsClientCreateOrUpdateResponse], error)`
+- Function `*ServiceFabricsClient.BeginCreateOrUpdate` return value(s) have been changed from `(ServiceFabricsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ServiceFabricsClientCreateOrUpdateResponse], error)`
+- Function `*VirtualMachinesClient.BeginStop` return value(s) have been changed from `(VirtualMachinesClientStopPollerResponse, error)` to `(*armruntime.Poller[VirtualMachinesClientStopResponse], error)`
+- Function `*VirtualMachinesClient.BeginDetachDataDisk` return value(s) have been changed from `(VirtualMachinesClientDetachDataDiskPollerResponse, error)` to `(*armruntime.Poller[VirtualMachinesClientDetachDataDiskResponse], error)`
+- Function `*GlobalSchedulesClient.ListBySubscription` return value(s) have been changed from `(*GlobalSchedulesClientListBySubscriptionPager)` to `(*runtime.Pager[GlobalSchedulesClientListBySubscriptionResponse])`
+- Function `*SchedulesClient.ListApplicable` return value(s) have been changed from `(*SchedulesClientListApplicablePager)` to `(*runtime.Pager[SchedulesClientListApplicableResponse])`
+- Function `*ServiceFabricsClient.BeginDelete` return value(s) have been changed from `(ServiceFabricsClientDeletePollerResponse, error)` to `(*armruntime.Poller[ServiceFabricsClientDeleteResponse], error)`
+- Function `*LabsClient.BeginClaimAnyVM` return value(s) have been changed from `(LabsClientClaimAnyVMPollerResponse, error)` to `(*armruntime.Poller[LabsClientClaimAnyVMResponse], error)`
+- Function `*ServiceFabricsClient.List` return value(s) have been changed from `(*ServiceFabricsClientListPager)` to `(*runtime.Pager[ServiceFabricsClientListResponse])`
+- Function `*VirtualMachinesClient.BeginRedeploy` return value(s) have been changed from `(VirtualMachinesClientRedeployPollerResponse, error)` to `(*armruntime.Poller[VirtualMachinesClientRedeployResponse], error)`
+- Function `NewSchedulesClient` return value(s) have been changed from `(*SchedulesClient)` to `(*SchedulesClient, error)`
+- Function `*NotificationChannelsClient.List` return value(s) have been changed from `(*NotificationChannelsClientListPager)` to `(*runtime.Pager[NotificationChannelsClientListResponse])`
+- Function `*CustomImagesClient.BeginDelete` return value(s) have been changed from `(CustomImagesClientDeletePollerResponse, error)` to `(*armruntime.Poller[CustomImagesClientDeleteResponse], error)`
+- Function `NewLabsClient` return value(s) have been changed from `(*LabsClient)` to `(*LabsClient, error)`
+- Function `NewProviderOperationsClient` return value(s) have been changed from `(*ProviderOperationsClient)` to `(*ProviderOperationsClient, error)`
+- Function `NewSecretsClient` return value(s) have been changed from `(*SecretsClient)` to `(*SecretsClient, error)`
+- Function `*VirtualMachinesClient.BeginRestart` return value(s) have been changed from `(VirtualMachinesClientRestartPollerResponse, error)` to `(*armruntime.Poller[VirtualMachinesClientRestartResponse], error)`
+- Function `*VirtualMachinesClient.BeginAddDataDisk` return value(s) have been changed from `(VirtualMachinesClientAddDataDiskPollerResponse, error)` to `(*armruntime.Poller[VirtualMachinesClientAddDataDiskResponse], error)`
+- Function `*DisksClient.BeginDelete` return value(s) have been changed from `(DisksClientDeletePollerResponse, error)` to `(*armruntime.Poller[DisksClientDeleteResponse], error)`
+- Function `*VirtualMachinesClient.BeginClaim` return value(s) have been changed from `(VirtualMachinesClientClaimPollerResponse, error)` to `(*armruntime.Poller[VirtualMachinesClientClaimResponse], error)`
+- Function `*VirtualMachineSchedulesClient.List` return value(s) have been changed from `(*VirtualMachineSchedulesClientListPager)` to `(*runtime.Pager[VirtualMachineSchedulesClientListResponse])`
+- Function `*LabsClient.BeginCreateOrUpdate` return value(s) have been changed from `(LabsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[LabsClientCreateOrUpdateResponse], error)`
+- Function `*SchedulesClient.List` return value(s) have been changed from `(*SchedulesClientListPager)` to `(*runtime.Pager[SchedulesClientListResponse])`
+- Function `*UsersClient.List` return value(s) have been changed from `(*UsersClientListPager)` to `(*runtime.Pager[UsersClientListResponse])`
+- Function `NewArtifactSourcesClient` return value(s) have been changed from `(*ArtifactSourcesClient)` to `(*ArtifactSourcesClient, error)`
+- Function `*VirtualMachinesClient.BeginStart` return value(s) have been changed from `(VirtualMachinesClientStartPollerResponse, error)` to `(*armruntime.Poller[VirtualMachinesClientStartResponse], error)`
+- Function `*FormulasClient.List` return value(s) have been changed from `(*FormulasClientListPager)` to `(*runtime.Pager[FormulasClientListResponse])`
+- Function `*DisksClient.BeginAttach` return value(s) have been changed from `(DisksClientAttachPollerResponse, error)` to `(*armruntime.Poller[DisksClientAttachResponse], error)`
+- Function `*LabsClient.ListBySubscription` return value(s) have been changed from `(*LabsClientListBySubscriptionPager)` to `(*runtime.Pager[LabsClientListBySubscriptionResponse])`
+- Function `*UsersClient.BeginCreateOrUpdate` return value(s) have been changed from `(UsersClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[UsersClientCreateOrUpdateResponse], error)`
+- Function `*EnvironmentsClient.List` return value(s) have been changed from `(*EnvironmentsClientListPager)` to `(*runtime.Pager[EnvironmentsClientListResponse])`
+- Function `*LabsClient.BeginImportVirtualMachine` return value(s) have been changed from `(LabsClientImportVirtualMachinePollerResponse, error)` to `(*armruntime.Poller[LabsClientImportVirtualMachineResponse], error)`
+- Function `*GalleryImagesClient.List` return value(s) have been changed from `(*GalleryImagesClientListPager)` to `(*runtime.Pager[GalleryImagesClientListResponse])`
+- Function `*ServiceFabricSchedulesClient.BeginExecute` return value(s) have been changed from `(ServiceFabricSchedulesClientExecutePollerResponse, error)` to `(*armruntime.Poller[ServiceFabricSchedulesClientExecuteResponse], error)`
+- Function `*VirtualMachinesClient.BeginDelete` return value(s) have been changed from `(VirtualMachinesClientDeletePollerResponse, error)` to `(*armruntime.Poller[VirtualMachinesClientDeleteResponse], error)`
+- Function `NewGalleryImagesClient` return value(s) have been changed from `(*GalleryImagesClient)` to `(*GalleryImagesClient, error)`
+- Function `NewCustomImagesClient` return value(s) have been changed from `(*CustomImagesClient)` to `(*CustomImagesClient, error)`
+- Function `*LabsClient.BeginCreateEnvironment` return value(s) have been changed from `(LabsClientCreateEnvironmentPollerResponse, error)` to `(*armruntime.Poller[LabsClientCreateEnvironmentResponse], error)`
+- Function `NewCostsClient` return value(s) have been changed from `(*CostsClient)` to `(*CostsClient, error)`
+- Function `NewGlobalSchedulesClient` return value(s) have been changed from `(*GlobalSchedulesClient)` to `(*GlobalSchedulesClient, error)`
+- Function `*UsersClient.BeginDelete` return value(s) have been changed from `(UsersClientDeletePollerResponse, error)` to `(*armruntime.Poller[UsersClientDeleteResponse], error)`
+- Function `*LabsClient.BeginExportResourceUsage` return value(s) have been changed from `(LabsClientExportResourceUsagePollerResponse, error)` to `(*armruntime.Poller[LabsClientExportResourceUsageResponse], error)`
+- Function `*VirtualMachinesClient.BeginTransferDisks` return value(s) have been changed from `(VirtualMachinesClientTransferDisksPollerResponse, error)` to `(*armruntime.Poller[VirtualMachinesClientTransferDisksResponse], error)`
+- Function `*DisksClient.List` return value(s) have been changed from `(*DisksClientListPager)` to `(*runtime.Pager[DisksClientListResponse])`
+- Function `*VirtualMachinesClient.BeginApplyArtifacts` return value(s) have been changed from `(VirtualMachinesClientApplyArtifactsPollerResponse, error)` to `(*armruntime.Poller[VirtualMachinesClientApplyArtifactsResponse], error)`
+- Function `*VirtualMachinesClient.List` return value(s) have been changed from `(*VirtualMachinesClientListPager)` to `(*runtime.Pager[VirtualMachinesClientListResponse])`
+- Function `*GlobalSchedulesClient.BeginExecute` return value(s) have been changed from `(GlobalSchedulesClientExecutePollerResponse, error)` to `(*armruntime.Poller[GlobalSchedulesClientExecuteResponse], error)`
+- Type of `ArmTemplateInfo.Parameters` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `ArmTemplateInfo.Template` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `ArtifactProperties.Parameters` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `ParametersValueFileInfo.ParametersValueInfo` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `ArmTemplateProperties.Contents` has been changed from `map[string]interface{}` to `interface{}`
+- Function `*LabsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `EnvironmentPermission.ToPtr` has been removed
+- Function `*LabsClientImportVirtualMachinePollerResponse.Resume` has been removed
+- Function `*VirtualMachinesClientClaimPoller.Poll` has been removed
+- Function `*ArtifactSourcesClientListPager.NextPage` has been removed
+- Function `*PoliciesClientListPager.Err` has been removed
+- Function `*ServiceFabricsClientDeletePoller.FinalResponse` has been removed
+- Function `*VirtualNetworksClientDeletePoller.Done` has been removed
+- Function `*VirtualNetworksClientListPager.Err` has been removed
+- Function `*VirtualMachinesClientApplyArtifactsPoller.ResumeToken` has been removed
+- Function `*LabsClientExportResourceUsagePollerResponse.Resume` has been removed
+- Function `*ServiceFabricsClientDeletePoller.ResumeToken` has been removed
+- Function `LabsClientImportVirtualMachinePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachinesClientStartPoller.Poll` has been removed
+- Function `*PoliciesClientListPager.NextPage` has been removed
+- Function `*SecretsClientListPager.PageResponse` has been removed
+- Function `*VirtualNetworksClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*SchedulesClientListApplicablePager.NextPage` has been removed
+- Function `*LabsClientDeletePoller.Poll` has been removed
+- Function `VirtualMachinesClientUnClaimPollerResponse.PollUntilDone` has been removed
+- Function `*DisksClientDetachPoller.ResumeToken` has been removed
+- Function `*ServiceFabricSchedulesClientExecutePoller.ResumeToken` has been removed
+- Function `*VirtualMachinesClientDeletePollerResponse.Resume` has been removed
+- Function `ServiceFabricsClientStopPollerResponse.PollUntilDone` has been removed
+- Function `VirtualMachinesClientAddDataDiskPollerResponse.PollUntilDone` has been removed
+- Function `*ServiceFabricSchedulesClientExecutePollerResponse.Resume` has been removed
+- Function `*LabsClientExportResourceUsagePoller.ResumeToken` has been removed
+- Function `*FormulasClientCreateOrUpdatePoller.Done` has been removed
+- Function `*VirtualNetworksClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*SecretsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*EnvironmentsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualMachinesClientStartPoller.ResumeToken` has been removed
+- Function `*UsersClientDeletePoller.ResumeToken` has been removed
+- Function `LabsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*CustomImagesClientDeletePollerResponse.Resume` has been removed
+- Function `*CustomImagesClientListPager.NextPage` has been removed
+- Function `*ArtifactSourcesClientListPager.Err` has been removed
+- Function `*EnvironmentsClientListPager.Err` has been removed
+- Function `VirtualMachinesClientRestartPollerResponse.PollUntilDone` has been removed
+- Function `*NotificationChannelsClientListPager.PageResponse` has been removed
+- Function `*DisksClientDeletePoller.FinalResponse` has been removed
+- Function `ServiceFabricsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*FormulasClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*LabsClientListBySubscriptionPager.PageResponse` has been removed
+- Function `*VirtualMachinesClientRestartPoller.FinalResponse` has been removed
+- Function `*CustomImagesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*LabsClientListByResourceGroupPager.NextPage` has been removed
+- Function `*GlobalSchedulesClientRetargetPollerResponse.Resume` has been removed
+- Function `*UsersClientListPager.PageResponse` has been removed
+- Function `VirtualMachineSchedulesClientExecutePollerResponse.PollUntilDone` has been removed
+- Function `*GalleryImagesClientListPager.NextPage` has been removed
+- Function `*DisksClientListPager.NextPage` has been removed
+- Function `*VirtualMachinesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*FormulasClientListPager.Err` has been removed
+- Function `*VirtualNetworksClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*LabsClientImportVirtualMachinePoller.ResumeToken` has been removed
+- Function `*GlobalSchedulesClientListBySubscriptionPager.NextPage` has been removed
+- Function `*CustomImagesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*UsersClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*VirtualMachinesClientApplyArtifactsPollerResponse.Resume` has been removed
+- Function `*DisksClientDetachPoller.FinalResponse` has been removed
+- Function `*LabsClientClaimAnyVMPoller.Poll` has been removed
+- Function `HostCachingOptions.ToPtr` has been removed
+- Function `*VirtualMachinesClientAddDataDiskPoller.FinalResponse` has been removed
+- Function `*VirtualNetworksClientListPager.PageResponse` has been removed
+- Function `*ServiceFabricsClientListPager.PageResponse` has been removed
+- Function `VirtualNetworksClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*CustomImagesClientDeletePoller.Done` has been removed
+- Function `DisksClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ServiceFabricsClientStopPoller.Done` has been removed
+- Function `*VirtualMachinesClientRestartPoller.ResumeToken` has been removed
+- Function `*ServiceFabricsClientStartPoller.ResumeToken` has been removed
+- Function `*ServiceFabricsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*UsersClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*DisksClientAttachPoller.Done` has been removed
+- Function `*ProviderOperationsClientListPager.Err` has been removed
+- Function `*NotificationChannelsClientListPager.Err` has been removed
+- Function `*VirtualMachinesClientRedeployPoller.Poll` has been removed
+- Function `*SchedulesClientExecutePoller.ResumeToken` has been removed
+- Function `*ProviderOperationsClientListPager.PageResponse` has been removed
+- Function `*ArtifactSourcesClientListPager.PageResponse` has been removed
+- Function `*GlobalSchedulesClientExecutePoller.ResumeToken` has been removed
+- Function `PolicyFactName.ToPtr` has been removed
+- Function `*SecretsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*VirtualMachinesClientCreateOrUpdatePoller.Done` has been removed
+- Function `LinuxOsState.ToPtr` has been removed
+- Function `*ServiceFabricsClientCreateOrUpdatePoller.Done` has been removed
+- Function `DisksClientDetachPollerResponse.PollUntilDone` has been removed
+- Function `TransportProtocol.ToPtr` has been removed
+- Function `*VirtualMachinesClientDetachDataDiskPoller.Poll` has been removed
+- Function `TargetCostStatus.ToPtr` has been removed
+- Function `*VirtualMachinesClientRestartPoller.Poll` has been removed
+- Function `VirtualMachinesClientRedeployPollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachinesClientUnClaimPoller.ResumeToken` has been removed
+- Function `*LabsClientCreateEnvironmentPoller.Done` has been removed
+- Function `*ServiceFabricsClientStopPoller.ResumeToken` has been removed
+- Function `*DisksClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*GlobalSchedulesClientRetargetPoller.Poll` has been removed
+- Function `SourceControlType.ToPtr` has been removed
+- Function `*CustomImagesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*VirtualMachinesClientResizePoller.Done` has been removed
+- Function `*DisksClientAttachPoller.FinalResponse` has been removed
+- Function `UsersClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ServiceFabricsClientStartPoller.FinalResponse` has been removed
+- Function `*EnvironmentsClientListPager.PageResponse` has been removed
+- Function `*SecretsClientListPager.Err` has been removed
+- Function `*VirtualMachinesClientUnClaimPoller.FinalResponse` has been removed
+- Function `*PoliciesClientListPager.PageResponse` has been removed
+- Function `*VirtualMachinesClientApplyArtifactsPoller.Done` has been removed
+- Function `*VirtualMachineSchedulesClientExecutePollerResponse.Resume` has been removed
+- Function `*VirtualMachineSchedulesClientExecutePoller.FinalResponse` has been removed
+- Function `*VirtualMachineSchedulesClientExecutePoller.Poll` has been removed
+- Function `*VirtualMachinesClientDeletePoller.Done` has been removed
+- Function `*VirtualMachinesClientResizePollerResponse.Resume` has been removed
+- Function `*DisksClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*VirtualMachinesClientApplyArtifactsPoller.Poll` has been removed
+- Function `*VirtualMachinesClientDetachDataDiskPoller.ResumeToken` has been removed
+- Function `*VirtualNetworksClientDeletePoller.FinalResponse` has been removed
+- Function `*UsersClientListPager.Err` has been removed
+- Function `*EnvironmentsClientDeletePoller.Done` has been removed
+- Function `*GlobalSchedulesClientListBySubscriptionPager.PageResponse` has been removed
+- Function `*ServiceFabricSchedulesClientExecutePoller.Poll` has been removed
+- Function `VirtualMachinesClientClaimPollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachinesClientUnClaimPollerResponse.Resume` has been removed
+- Function `*VirtualMachinesClientStopPoller.Done` has been removed
+- Function `HTTPStatusCode.ToPtr` has been removed
+- Function `FileUploadOptions.ToPtr` has been removed
+- Function `*GlobalSchedulesClientRetargetPoller.ResumeToken` has been removed
+- Function `*GlobalSchedulesClientListBySubscriptionPager.Err` has been removed
+- Function `GlobalSchedulesClientRetargetPollerResponse.PollUntilDone` has been removed
+- Function `*VirtualNetworksClientDeletePoller.Poll` has been removed
+- Function `*SchedulesClientListPager.Err` has been removed
+- Function `*ServiceFabricSchedulesClientListPager.PageResponse` has been removed
+- Function `*VirtualMachinesClientStopPoller.FinalResponse` has been removed
+- Function `*VirtualMachinesClientAddDataDiskPoller.ResumeToken` has been removed
+- Function `ManagedIdentityType.ToPtr` has been removed
+- Function `*VirtualMachinesClientTransferDisksPoller.Done` has been removed
+- Function `*UsersClientListPager.NextPage` has been removed
+- Function `CostType.ToPtr` has been removed
+- Function `LabsClientClaimAnyVMPollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachinesClientTransferDisksPoller.FinalResponse` has been removed
+- Function `VirtualMachineCreationSource.ToPtr` has been removed
+- Function `EnableStatus.ToPtr` has been removed
+- Function `*DisksClientAttachPoller.ResumeToken` has been removed
+- Function `*LabsClientImportVirtualMachinePoller.Poll` has been removed
+- Function `VirtualMachinesClientStopPollerResponse.PollUntilDone` has been removed
+- Function `*LabsClientExportResourceUsagePoller.Done` has been removed
+- Function `*VirtualMachineSchedulesClientListPager.NextPage` has been removed
+- Function `*VirtualMachinesClientClaimPoller.ResumeToken` has been removed
+- Function `*UsersClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualMachinesClientAddDataDiskPollerResponse.Resume` has been removed
+- Function `*VirtualMachinesClientTransferDisksPoller.ResumeToken` has been removed
+- Function `*VirtualMachinesClientRedeployPollerResponse.Resume` has been removed
+- Function `*UsersClientDeletePoller.Done` has been removed
+- Function `*DisksClientDeletePoller.Poll` has been removed
+- Function `*LabsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*LabsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `VirtualMachinesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*LabsClientListVhdsPager.Err` has been removed
+- Function `*VirtualMachinesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*VirtualMachinesClientDetachDataDiskPollerResponse.Resume` has been removed
+- Function `*EnvironmentsClientListPager.NextPage` has been removed
+- Function `*LabsClientDeletePoller.ResumeToken` has been removed
+- Function `*EnvironmentsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `PolicyEvaluatorType.ToPtr` has been removed
+- Function `CustomImageOsType.ToPtr` has been removed
+- Function `NotificationChannelEventType.ToPtr` has been removed
+- Function `*LabsClientImportVirtualMachinePoller.Done` has been removed
+- Function `*ServiceFabricsClientListPager.NextPage` has been removed
+- Function `*DisksClientDetachPollerResponse.Resume` has been removed
+- Function `*UsersClientCreateOrUpdatePoller.Done` has been removed
+- Function `*LabsClientListBySubscriptionPager.Err` has been removed
+- Function `*VirtualMachinesClientApplyArtifactsPoller.FinalResponse` has been removed
+- Function `*LabsClientCreateEnvironmentPoller.FinalResponse` has been removed
+- Function `LabsClientExportResourceUsagePollerResponse.PollUntilDone` has been removed
+- Function `*EnvironmentsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ServiceFabricsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*EnvironmentsClientDeletePoller.ResumeToken` has been removed
+- Function `*VirtualMachinesClientDeletePoller.ResumeToken` has been removed
+- Function `*VirtualMachinesClientRedeployPoller.Done` has been removed
+- Function `*LabsClientClaimAnyVMPoller.Done` has been removed
+- Function `DisksClientAttachPollerResponse.PollUntilDone` has been removed
+- Function `*ServiceFabricsClientStartPollerResponse.Resume` has been removed
+- Function `*VirtualMachinesClientTransferDisksPoller.Poll` has been removed
+- Function `*FormulasClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*LabsClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*DisksClientListPager.Err` has been removed
+- Function `*LabsClientClaimAnyVMPollerResponse.Resume` has been removed
+- Function `*VirtualMachinesClientClaimPoller.Done` has been removed
+- Function `*VirtualMachinesClientRedeployPoller.FinalResponse` has been removed
+- Function `*GlobalSchedulesClientExecutePoller.FinalResponse` has been removed
+- Function `*SchedulesClientExecutePoller.FinalResponse` has been removed
+- Function `*LabsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `PremiumDataDisk.ToPtr` has been removed
+- Function `*EnvironmentsClientDeletePoller.Poll` has been removed
+- Function `*CustomImagesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*UsersClientDeletePollerResponse.Resume` has been removed
+- Function `*FormulasClientListPager.PageResponse` has been removed
+- Function `*VirtualMachinesClientAddDataDiskPoller.Poll` has been removed
+- Function `*EnvironmentsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*GlobalSchedulesClientExecutePoller.Poll` has been removed
+- Function `*FormulasClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `VirtualMachinesClientApplyArtifactsPollerResponse.PollUntilDone` has been removed
+- Function `*DisksClientDetachPoller.Poll` has been removed
+- Function `*VirtualMachinesClientListPager.PageResponse` has been removed
+- Function `*CustomImagesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*SecretsClientListPager.NextPage` has been removed
+- Function `*SecretsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualNetworksClientCreateOrUpdatePoller.Done` has been removed
+- Function `VirtualMachinesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `ServiceFabricSchedulesClientExecutePollerResponse.PollUntilDone` has been removed
+- Function `*ServiceFabricsClientListPager.Err` has been removed
+- Function `*VirtualMachinesClientStopPollerResponse.Resume` has been removed
+- Function `*VirtualMachinesClientRestartPoller.Done` has been removed
+- Function `*VirtualNetworksClientListPager.NextPage` has been removed
+- Function `*VirtualMachineSchedulesClientListPager.PageResponse` has been removed
+- Function `*GlobalSchedulesClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*FormulasClientCreateOrUpdatePoller.Poll` has been removed
+- Function `GlobalSchedulesClientExecutePollerResponse.PollUntilDone` has been removed
+- Function `*ServiceFabricsClientDeletePollerResponse.Resume` has been removed
+- Function `*GalleryImagesClientListPager.Err` has been removed
+- Function `LabsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*CustomImagesClientDeletePoller.ResumeToken` has been removed
+- Function `*LabsClientImportVirtualMachinePoller.FinalResponse` has been removed
+- Function `*ArtifactsClientListPager.NextPage` has been removed
+- Function `*CustomImagesClientListPager.Err` has been removed
+- Function `*LabsClientListBySubscriptionPager.NextPage` has been removed
+- Function `*ArmTemplatesClientListPager.Err` has been removed
+- Function `VirtualMachinesClientResizePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachinesClientStopPoller.Poll` has been removed
+- Function `*LabsClientExportResourceUsagePoller.FinalResponse` has been removed
+- Function `UsagePermissionType.ToPtr` has been removed
+- Function `UsersClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ServiceFabricsClientStopPoller.FinalResponse` has been removed
+- Function `ServiceFabricsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualNetworksClientDeletePollerResponse.Resume` has been removed
+- Function `*SchedulesClientListPager.NextPage` has been removed
+- Function `*VirtualMachinesClientClaimPoller.FinalResponse` has been removed
+- Function `*CustomImagesClientDeletePoller.FinalResponse` has been removed
+- Function `*GlobalSchedulesClientExecutePollerResponse.Resume` has been removed
+- Function `EnvironmentsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*LabsClientListVhdsPager.NextPage` has been removed
+- Function `*LabsClientDeletePollerResponse.Resume` has been removed
+- Function `*NotificationChannelsClientListPager.NextPage` has been removed
+- Function `*SecretsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualMachinesClientStartPollerResponse.Resume` has been removed
+- Function `*LabsClientListByResourceGroupPager.Err` has been removed
+- Function `*ServiceFabricSchedulesClientExecutePoller.Done` has been removed
+- Function `*FormulasClientListPager.NextPage` has been removed
+- Function `*VirtualMachinesClientTransferDisksPollerResponse.Resume` has been removed
+- Function `*LabsClientCreateEnvironmentPoller.ResumeToken` has been removed
+- Function `*LabsClientCreateEnvironmentPollerResponse.Resume` has been removed
+- Function `*GalleryImagesClientListPager.PageResponse` has been removed
+- Function `*VirtualMachinesClientDetachDataDiskPoller.FinalResponse` has been removed
+- Function `*LabsClientExportResourceUsagePoller.Poll` has been removed
+- Function `*SecretsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*VirtualMachinesClientStartPoller.Done` has been removed
+- Function `*ArtifactsClientListPager.Err` has been removed
+- Function `*CustomImagesClientDeletePoller.Poll` has been removed
+- Function `*DisksClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `PolicyStatus.ToPtr` has been removed
+- Function `*DisksClientListPager.PageResponse` has been removed
+- Function `*ArmTemplatesClientListPager.PageResponse` has been removed
+- Function `*SchedulesClientExecutePollerResponse.Resume` has been removed
+- Function `*ArtifactsClientListPager.PageResponse` has been removed
+- Function `CostThresholdStatus.ToPtr` has been removed
+- Function `*ServiceFabricsClientDeletePoller.Done` has been removed
+- Function `*EnvironmentsClientDeletePollerResponse.Resume` has been removed
+- Function `*VirtualMachinesClientListPager.Err` has been removed
+- Function `*EnvironmentsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*VirtualMachinesClientUnClaimPoller.Poll` has been removed
+- Function `*ServiceFabricSchedulesClientListPager.Err` has been removed
+- Function `*SchedulesClientListPager.PageResponse` has been removed
+- Function `*VirtualMachinesClientAddDataDiskPoller.Done` has been removed
+- Function `SchedulesClientExecutePollerResponse.PollUntilDone` has been removed
+- Function `FormulasClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ServiceFabricsClientStopPoller.Poll` has been removed
+- Function `*ServiceFabricsClientStartPoller.Poll` has been removed
+- Function `*LabsClientClaimAnyVMPoller.ResumeToken` has been removed
+- Function `*LabsClientDeletePoller.FinalResponse` has been removed
+- Function `ReportingCycleType.ToPtr` has been removed
+- Function `*ServiceFabricSchedulesClientExecutePoller.FinalResponse` has been removed
+- Function `*VirtualMachinesClientUnClaimPoller.Done` has been removed
+- Function `*ServiceFabricSchedulesClientListPager.NextPage` has been removed
+- Function `EnvironmentsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachinesClientListPager.NextPage` has been removed
+- Function `*VirtualMachinesClientClaimPollerResponse.Resume` has been removed
+- Function `VirtualMachinesClientStartPollerResponse.PollUntilDone` has been removed
+- Function `*VirtualNetworksClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*UsersClientDeletePoller.FinalResponse` has been removed
+- Function `*SchedulesClientListApplicablePager.Err` has been removed
+- Function `*VirtualMachineSchedulesClientExecutePoller.ResumeToken` has been removed
+- Function `*VirtualMachinesClientResizePoller.ResumeToken` has been removed
+- Function `*GlobalSchedulesClientRetargetPoller.FinalResponse` has been removed
+- Function `*LabsClientClaimAnyVMPoller.FinalResponse` has been removed
+- Function `*EnvironmentsClientDeletePoller.FinalResponse` has been removed
+- Function `*GlobalSchedulesClientRetargetPoller.Done` has been removed
+- Function `*VirtualMachinesClientRestartPollerResponse.Resume` has been removed
+- Function `*GlobalSchedulesClientExecutePoller.Done` has been removed
+- Function `ServiceFabricsClientStartPollerResponse.PollUntilDone` has been removed
+- Function `*SchedulesClientExecutePoller.Done` has been removed
+- Function `*SchedulesClientListApplicablePager.PageResponse` has been removed
+- Function `*VirtualMachinesClientResizePoller.FinalResponse` has been removed
+- Function `*VirtualMachineSchedulesClientExecutePoller.Done` has been removed
+- Function `*LabsClientCreateOrUpdatePoller.Done` has been removed
+- Function `LabsClientCreateEnvironmentPollerResponse.PollUntilDone` has been removed
+- Function `*ServiceFabricsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*CustomImagesClientListPager.PageResponse` has been removed
+- Function `*DisksClientDeletePoller.Done` has been removed
+- Function `*VirtualMachineSchedulesClientListPager.Err` has been removed
+- Function `*ServiceFabricsClientStopPollerResponse.Resume` has been removed
+- Function `VirtualMachinesClientDetachDataDiskPollerResponse.PollUntilDone` has been removed
+- Function `StorageType.ToPtr` has been removed
+- Function `*VirtualMachinesClientResizePoller.Poll` has been removed
+- Function `*DisksClientDeletePoller.ResumeToken` has been removed
+- Function `*LabsClientDeletePoller.Done` has been removed
+- Function `*DisksClientAttachPoller.Poll` has been removed
+- Function `*VirtualMachinesClientStartPoller.FinalResponse` has been removed
+- Function `*GlobalSchedulesClientListByResourceGroupPager.Err` has been removed
+- Function `*VirtualMachinesClientRedeployPoller.ResumeToken` has been removed
+- Function `VirtualNetworksClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachinesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*UsersClientDeletePoller.Poll` has been removed
+- Function `*VirtualMachinesClientDetachDataDiskPoller.Done` has been removed
+- Function `*DisksClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `VirtualMachinesClientTransferDisksPollerResponse.PollUntilDone` has been removed
+- Function `*VirtualNetworksClientDeletePoller.ResumeToken` has been removed
+- Function `SecretsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*DisksClientDetachPoller.Done` has been removed
+- Function `*ProviderOperationsClientListPager.NextPage` has been removed
+- Function `CustomImagesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*DisksClientAttachPollerResponse.Resume` has been removed
+- Function `*ArmTemplatesClientListPager.NextPage` has been removed
+- Function `DisksClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*DisksClientCreateOrUpdatePoller.Done` has been removed
+- Function `*SchedulesClientExecutePoller.Poll` has been removed
+- Function `*ServiceFabricsClientStartPoller.Done` has been removed
+- Function `*DisksClientDeletePollerResponse.Resume` has been removed
+- Function `*UsersClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*LabsClientListVhdsPager.PageResponse` has been removed
+- Function `*VirtualMachinesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualMachinesClientDeletePoller.FinalResponse` has been removed
+- Function `*ServiceFabricsClientDeletePoller.Poll` has been removed
+- Function `*LabsClientCreateEnvironmentPoller.Poll` has been removed
+- Function `*VirtualMachinesClientStopPoller.ResumeToken` has been removed
+- Function `*VirtualMachinesClientDeletePoller.Poll` has been removed
+- Function `CustomImagesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ServiceFabricsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `WindowsOsState.ToPtr` has been removed
+- Function `*GlobalSchedulesClientListByResourceGroupPager.NextPage` has been removed
+- Struct `ArmTemplatesClientGetResult` has been removed
+- Struct `ArmTemplatesClientListPager` has been removed
+- Struct `ArmTemplatesClientListResult` has been removed
+- Struct `ArtifactSourcesClientCreateOrUpdateResult` has been removed
+- Struct `ArtifactSourcesClientGetResult` has been removed
+- Struct `ArtifactSourcesClientListPager` has been removed
+- Struct `ArtifactSourcesClientListResult` has been removed
+- Struct `ArtifactSourcesClientUpdateResult` has been removed
+- Struct `ArtifactsClientGenerateArmTemplateResult` has been removed
+- Struct `ArtifactsClientGetResult` has been removed
+- Struct `ArtifactsClientListPager` has been removed
+- Struct `ArtifactsClientListResult` has been removed
+- Struct `CostsClientCreateOrUpdateResult` has been removed
+- Struct `CostsClientGetResult` has been removed
+- Struct `CustomImagesClientCreateOrUpdatePoller` has been removed
+- Struct `CustomImagesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `CustomImagesClientCreateOrUpdateResult` has been removed
+- Struct `CustomImagesClientDeletePoller` has been removed
+- Struct `CustomImagesClientDeletePollerResponse` has been removed
+- Struct `CustomImagesClientGetResult` has been removed
+- Struct `CustomImagesClientListPager` has been removed
+- Struct `CustomImagesClientListResult` has been removed
+- Struct `CustomImagesClientUpdateResult` has been removed
+- Struct `DisksClientAttachPoller` has been removed
+- Struct `DisksClientAttachPollerResponse` has been removed
+- Struct `DisksClientCreateOrUpdatePoller` has been removed
+- Struct `DisksClientCreateOrUpdatePollerResponse` has been removed
+- Struct `DisksClientCreateOrUpdateResult` has been removed
+- Struct `DisksClientDeletePoller` has been removed
+- Struct `DisksClientDeletePollerResponse` has been removed
+- Struct `DisksClientDetachPoller` has been removed
+- Struct `DisksClientDetachPollerResponse` has been removed
+- Struct `DisksClientGetResult` has been removed
+- Struct `DisksClientListPager` has been removed
+- Struct `DisksClientListResult` has been removed
+- Struct `DisksClientUpdateResult` has been removed
+- Struct `EnvironmentsClientCreateOrUpdatePoller` has been removed
+- Struct `EnvironmentsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `EnvironmentsClientCreateOrUpdateResult` has been removed
+- Struct `EnvironmentsClientDeletePoller` has been removed
+- Struct `EnvironmentsClientDeletePollerResponse` has been removed
+- Struct `EnvironmentsClientGetResult` has been removed
+- Struct `EnvironmentsClientListPager` has been removed
+- Struct `EnvironmentsClientListResult` has been removed
+- Struct `EnvironmentsClientUpdateResult` has been removed
+- Struct `FormulasClientCreateOrUpdatePoller` has been removed
+- Struct `FormulasClientCreateOrUpdatePollerResponse` has been removed
+- Struct `FormulasClientCreateOrUpdateResult` has been removed
+- Struct `FormulasClientGetResult` has been removed
+- Struct `FormulasClientListPager` has been removed
+- Struct `FormulasClientListResult` has been removed
+- Struct `FormulasClientUpdateResult` has been removed
+- Struct `GalleryImagesClientListPager` has been removed
+- Struct `GalleryImagesClientListResult` has been removed
+- Struct `GlobalSchedulesClientCreateOrUpdateResult` has been removed
+- Struct `GlobalSchedulesClientExecutePoller` has been removed
+- Struct `GlobalSchedulesClientExecutePollerResponse` has been removed
+- Struct `GlobalSchedulesClientGetResult` has been removed
+- Struct `GlobalSchedulesClientListByResourceGroupPager` has been removed
+- Struct `GlobalSchedulesClientListByResourceGroupResult` has been removed
+- Struct `GlobalSchedulesClientListBySubscriptionPager` has been removed
+- Struct `GlobalSchedulesClientListBySubscriptionResult` has been removed
+- Struct `GlobalSchedulesClientRetargetPoller` has been removed
+- Struct `GlobalSchedulesClientRetargetPollerResponse` has been removed
+- Struct `GlobalSchedulesClientUpdateResult` has been removed
+- Struct `LabsClientClaimAnyVMPoller` has been removed
+- Struct `LabsClientClaimAnyVMPollerResponse` has been removed
+- Struct `LabsClientCreateEnvironmentPoller` has been removed
+- Struct `LabsClientCreateEnvironmentPollerResponse` has been removed
+- Struct `LabsClientCreateOrUpdatePoller` has been removed
+- Struct `LabsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `LabsClientCreateOrUpdateResult` has been removed
+- Struct `LabsClientDeletePoller` has been removed
+- Struct `LabsClientDeletePollerResponse` has been removed
+- Struct `LabsClientExportResourceUsagePoller` has been removed
+- Struct `LabsClientExportResourceUsagePollerResponse` has been removed
+- Struct `LabsClientGenerateUploadURIResult` has been removed
+- Struct `LabsClientGetResult` has been removed
+- Struct `LabsClientImportVirtualMachinePoller` has been removed
+- Struct `LabsClientImportVirtualMachinePollerResponse` has been removed
+- Struct `LabsClientListByResourceGroupPager` has been removed
+- Struct `LabsClientListByResourceGroupResult` has been removed
+- Struct `LabsClientListBySubscriptionPager` has been removed
+- Struct `LabsClientListBySubscriptionResult` has been removed
+- Struct `LabsClientListVhdsPager` has been removed
+- Struct `LabsClientListVhdsResult` has been removed
+- Struct `LabsClientUpdateResult` has been removed
+- Struct `NotificationChannelsClientCreateOrUpdateResult` has been removed
+- Struct `NotificationChannelsClientGetResult` has been removed
+- Struct `NotificationChannelsClientListPager` has been removed
+- Struct `NotificationChannelsClientListResult` has been removed
+- Struct `NotificationChannelsClientUpdateResult` has been removed
+- Struct `OperationsClientGetResult` has been removed
+- Struct `PoliciesClientCreateOrUpdateResult` has been removed
+- Struct `PoliciesClientGetResult` has been removed
+- Struct `PoliciesClientListPager` has been removed
+- Struct `PoliciesClientListResult` has been removed
+- Struct `PoliciesClientUpdateResult` has been removed
+- Struct `PolicySetsClientEvaluatePoliciesResult` has been removed
+- Struct `ProviderOperationsClientListPager` has been removed
+- Struct `ProviderOperationsClientListResult` has been removed
+- Struct `SchedulesClientCreateOrUpdateResult` has been removed
+- Struct `SchedulesClientExecutePoller` has been removed
+- Struct `SchedulesClientExecutePollerResponse` has been removed
+- Struct `SchedulesClientGetResult` has been removed
+- Struct `SchedulesClientListApplicablePager` has been removed
+- Struct `SchedulesClientListApplicableResult` has been removed
+- Struct `SchedulesClientListPager` has been removed
+- Struct `SchedulesClientListResult` has been removed
+- Struct `SchedulesClientUpdateResult` has been removed
+- Struct `SecretsClientCreateOrUpdatePoller` has been removed
+- Struct `SecretsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `SecretsClientCreateOrUpdateResult` has been removed
+- Struct `SecretsClientGetResult` has been removed
+- Struct `SecretsClientListPager` has been removed
+- Struct `SecretsClientListResult` has been removed
+- Struct `SecretsClientUpdateResult` has been removed
+- Struct `ServiceFabricSchedulesClientCreateOrUpdateResult` has been removed
+- Struct `ServiceFabricSchedulesClientExecutePoller` has been removed
+- Struct `ServiceFabricSchedulesClientExecutePollerResponse` has been removed
+- Struct `ServiceFabricSchedulesClientGetResult` has been removed
+- Struct `ServiceFabricSchedulesClientListPager` has been removed
+- Struct `ServiceFabricSchedulesClientListResult` has been removed
+- Struct `ServiceFabricSchedulesClientUpdateResult` has been removed
+- Struct `ServiceFabricsClientCreateOrUpdatePoller` has been removed
+- Struct `ServiceFabricsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ServiceFabricsClientCreateOrUpdateResult` has been removed
+- Struct `ServiceFabricsClientDeletePoller` has been removed
+- Struct `ServiceFabricsClientDeletePollerResponse` has been removed
+- Struct `ServiceFabricsClientGetResult` has been removed
+- Struct `ServiceFabricsClientListApplicableSchedulesResult` has been removed
+- Struct `ServiceFabricsClientListPager` has been removed
+- Struct `ServiceFabricsClientListResult` has been removed
+- Struct `ServiceFabricsClientStartPoller` has been removed
+- Struct `ServiceFabricsClientStartPollerResponse` has been removed
+- Struct `ServiceFabricsClientStopPoller` has been removed
+- Struct `ServiceFabricsClientStopPollerResponse` has been removed
+- Struct `ServiceFabricsClientUpdateResult` has been removed
+- Struct `ServiceRunnersClientCreateOrUpdateResult` has been removed
+- Struct `ServiceRunnersClientGetResult` has been removed
+- Struct `UsersClientCreateOrUpdatePoller` has been removed
+- Struct `UsersClientCreateOrUpdatePollerResponse` has been removed
+- Struct `UsersClientCreateOrUpdateResult` has been removed
+- Struct `UsersClientDeletePoller` has been removed
+- Struct `UsersClientDeletePollerResponse` has been removed
+- Struct `UsersClientGetResult` has been removed
+- Struct `UsersClientListPager` has been removed
+- Struct `UsersClientListResult` has been removed
+- Struct `UsersClientUpdateResult` has been removed
+- Struct `VirtualMachineSchedulesClientCreateOrUpdateResult` has been removed
+- Struct `VirtualMachineSchedulesClientExecutePoller` has been removed
+- Struct `VirtualMachineSchedulesClientExecutePollerResponse` has been removed
+- Struct `VirtualMachineSchedulesClientGetResult` has been removed
+- Struct `VirtualMachineSchedulesClientListPager` has been removed
+- Struct `VirtualMachineSchedulesClientListResult` has been removed
+- Struct `VirtualMachineSchedulesClientUpdateResult` has been removed
+- Struct `VirtualMachinesClientAddDataDiskPoller` has been removed
+- Struct `VirtualMachinesClientAddDataDiskPollerResponse` has been removed
+- Struct `VirtualMachinesClientApplyArtifactsPoller` has been removed
+- Struct `VirtualMachinesClientApplyArtifactsPollerResponse` has been removed
+- Struct `VirtualMachinesClientClaimPoller` has been removed
+- Struct `VirtualMachinesClientClaimPollerResponse` has been removed
+- Struct `VirtualMachinesClientCreateOrUpdatePoller` has been removed
+- Struct `VirtualMachinesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `VirtualMachinesClientCreateOrUpdateResult` has been removed
+- Struct `VirtualMachinesClientDeletePoller` has been removed
+- Struct `VirtualMachinesClientDeletePollerResponse` has been removed
+- Struct `VirtualMachinesClientDetachDataDiskPoller` has been removed
+- Struct `VirtualMachinesClientDetachDataDiskPollerResponse` has been removed
+- Struct `VirtualMachinesClientGetRdpFileContentsResult` has been removed
+- Struct `VirtualMachinesClientGetResult` has been removed
+- Struct `VirtualMachinesClientListApplicableSchedulesResult` has been removed
+- Struct `VirtualMachinesClientListPager` has been removed
+- Struct `VirtualMachinesClientListResult` has been removed
+- Struct `VirtualMachinesClientRedeployPoller` has been removed
+- Struct `VirtualMachinesClientRedeployPollerResponse` has been removed
+- Struct `VirtualMachinesClientResizePoller` has been removed
+- Struct `VirtualMachinesClientResizePollerResponse` has been removed
+- Struct `VirtualMachinesClientRestartPoller` has been removed
+- Struct `VirtualMachinesClientRestartPollerResponse` has been removed
+- Struct `VirtualMachinesClientStartPoller` has been removed
+- Struct `VirtualMachinesClientStartPollerResponse` has been removed
+- Struct `VirtualMachinesClientStopPoller` has been removed
+- Struct `VirtualMachinesClientStopPollerResponse` has been removed
+- Struct `VirtualMachinesClientTransferDisksPoller` has been removed
+- Struct `VirtualMachinesClientTransferDisksPollerResponse` has been removed
+- Struct `VirtualMachinesClientUnClaimPoller` has been removed
+- Struct `VirtualMachinesClientUnClaimPollerResponse` has been removed
+- Struct `VirtualMachinesClientUpdateResult` has been removed
+- Struct `VirtualNetworksClientCreateOrUpdatePoller` has been removed
+- Struct `VirtualNetworksClientCreateOrUpdatePollerResponse` has been removed
+- Struct `VirtualNetworksClientCreateOrUpdateResult` has been removed
+- Struct `VirtualNetworksClientDeletePoller` has been removed
+- Struct `VirtualNetworksClientDeletePollerResponse` has been removed
+- Struct `VirtualNetworksClientGetResult` has been removed
+- Struct `VirtualNetworksClientListPager` has been removed
+- Struct `VirtualNetworksClientListResult` has been removed
+- Struct `VirtualNetworksClientUpdateResult` has been removed
+- Field `ServiceFabricsClientUpdateResult` of struct `ServiceFabricsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ServiceFabricsClientUpdateResponse` has been removed
+- Field `ArtifactSourcesClientListResult` of struct `ArtifactSourcesClientListResponse` has been removed
+- Field `RawResponse` of struct `ArtifactSourcesClientListResponse` has been removed
+- Field `DisksClientListResult` of struct `DisksClientListResponse` has been removed
+- Field `RawResponse` of struct `DisksClientListResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachinesClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `ServiceRunnersClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachinesClientClaimResponse` has been removed
+- Field `PolicySetsClientEvaluatePoliciesResult` of struct `PolicySetsClientEvaluatePoliciesResponse` has been removed
+- Field `RawResponse` of struct `PolicySetsClientEvaluatePoliciesResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachinesClientRedeployResponse` has been removed
+- Field `RawResponse` of struct `GlobalSchedulesClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `DisksClientDetachResponse` has been removed
+- Field `ArtifactsClientGenerateArmTemplateResult` of struct `ArtifactsClientGenerateArmTemplateResponse` has been removed
+- Field `RawResponse` of struct `ArtifactsClientGenerateArmTemplateResponse` has been removed
+- Field `RawResponse` of struct `ArtifactSourcesClientDeleteResponse` has been removed
+- Field `GlobalSchedulesClientCreateOrUpdateResult` of struct `GlobalSchedulesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `GlobalSchedulesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `UsersClientDeleteResponse` has been removed
+- Field `ServiceFabricsClientListApplicableSchedulesResult` of struct `ServiceFabricsClientListApplicableSchedulesResponse` has been removed
+- Field `RawResponse` of struct `ServiceFabricsClientListApplicableSchedulesResponse` has been removed
+- Field `VirtualNetworksClientGetResult` of struct `VirtualNetworksClientGetResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworksClientGetResponse` has been removed
+- Field `SchedulesClientUpdateResult` of struct `SchedulesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `SchedulesClientUpdateResponse` has been removed
+- Field `GlobalSchedulesClientGetResult` of struct `GlobalSchedulesClientGetResponse` has been removed
+- Field `RawResponse` of struct `GlobalSchedulesClientGetResponse` has been removed
+- Field `UsersClientListResult` of struct `UsersClientListResponse` has been removed
+- Field `RawResponse` of struct `UsersClientListResponse` has been removed
+- Field `PoliciesClientUpdateResult` of struct `PoliciesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `PoliciesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachinesClientStopResponse` has been removed
+- Field `CostsClientCreateOrUpdateResult` of struct `CostsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `CostsClientCreateOrUpdateResponse` has been removed
+- Field `VirtualNetworksClientListResult` of struct `VirtualNetworksClientListResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworksClientListResponse` has been removed
+- Field `RawResponse` of struct `LabsClientClaimAnyVMResponse` has been removed
+- Field `RawResponse` of struct `NotificationChannelsClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `FormulasClientDeleteResponse` has been removed
+- Field `SchedulesClientListApplicableResult` of struct `SchedulesClientListApplicableResponse` has been removed
+- Field `RawResponse` of struct `SchedulesClientListApplicableResponse` has been removed
+- Field `SecretsClientUpdateResult` of struct `SecretsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `SecretsClientUpdateResponse` has been removed
+- Field `NotificationChannelsClientUpdateResult` of struct `NotificationChannelsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `NotificationChannelsClientUpdateResponse` has been removed
+- Field `ServiceFabricsClientGetResult` of struct `ServiceFabricsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ServiceFabricsClientGetResponse` has been removed
+- Field `ServiceFabricSchedulesClientCreateOrUpdateResult` of struct `ServiceFabricSchedulesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ServiceFabricSchedulesClientCreateOrUpdateResponse` has been removed
+- Field `SecretsClientGetResult` of struct `SecretsClientGetResponse` has been removed
+- Field `RawResponse` of struct `SecretsClientGetResponse` has been removed
+- Field `ServiceFabricSchedulesClientGetResult` of struct `ServiceFabricSchedulesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ServiceFabricSchedulesClientGetResponse` has been removed
+- Field `RawResponse` of struct `GlobalSchedulesClientRetargetResponse` has been removed
+- Field `RawResponse` of struct `SecretsClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachinesClientUnClaimResponse` has been removed
+- Field `DisksClientGetResult` of struct `DisksClientGetResponse` has been removed
+- Field `RawResponse` of struct `DisksClientGetResponse` has been removed
+- Field `RawResponse` of struct `ServiceFabricsClientStopResponse` has been removed
+- Field `RawResponse` of struct `LabsClientExportResourceUsageResponse` has been removed
+- Field `RawResponse` of struct `LabsClientImportVirtualMachineResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachinesClientApplyArtifactsResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineSchedulesClientExecuteResponse` has been removed
+- Field `ArmTemplatesClientListResult` of struct `ArmTemplatesClientListResponse` has been removed
+- Field `RawResponse` of struct `ArmTemplatesClientListResponse` has been removed
+- Field `SecretsClientCreateOrUpdateResult` of struct `SecretsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `SecretsClientCreateOrUpdateResponse` has been removed
+- Field `ProviderOperationsClientListResult` of struct `ProviderOperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `ProviderOperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `DisksClientAttachResponse` has been removed
+- Field `CustomImagesClientCreateOrUpdateResult` of struct `CustomImagesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `CustomImagesClientCreateOrUpdateResponse` has been removed
+- Field `GalleryImagesClientListResult` of struct `GalleryImagesClientListResponse` has been removed
+- Field `RawResponse` of struct `GalleryImagesClientListResponse` has been removed
+- Field `EnvironmentsClientGetResult` of struct `EnvironmentsClientGetResponse` has been removed
+- Field `RawResponse` of struct `EnvironmentsClientGetResponse` has been removed
+- Field `SchedulesClientGetResult` of struct `SchedulesClientGetResponse` has been removed
+- Field `RawResponse` of struct `SchedulesClientGetResponse` has been removed
+- Field `GlobalSchedulesClientListBySubscriptionResult` of struct `GlobalSchedulesClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `GlobalSchedulesClientListBySubscriptionResponse` has been removed
+- Field `UsersClientCreateOrUpdateResult` of struct `UsersClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `UsersClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ServiceFabricsClientStartResponse` has been removed
+- Field `RawResponse` of struct `ServiceFabricsClientDeleteResponse` has been removed
+- Field `VirtualMachinesClientListApplicableSchedulesResult` of struct `VirtualMachinesClientListApplicableSchedulesResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachinesClientListApplicableSchedulesResponse` has been removed
+- Field `LabsClientListBySubscriptionResult` of struct `LabsClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `LabsClientListBySubscriptionResponse` has been removed
+- Field `LabsClientUpdateResult` of struct `LabsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `LabsClientUpdateResponse` has been removed
+- Field `VirtualMachinesClientGetResult` of struct `VirtualMachinesClientGetResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachinesClientGetResponse` has been removed
+- Field `GlobalSchedulesClientUpdateResult` of struct `GlobalSchedulesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `GlobalSchedulesClientUpdateResponse` has been removed
+- Field `VirtualMachineSchedulesClientListResult` of struct `VirtualMachineSchedulesClientListResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineSchedulesClientListResponse` has been removed
+- Field `ServiceFabricsClientListResult` of struct `ServiceFabricsClientListResponse` has been removed
+- Field `RawResponse` of struct `ServiceFabricsClientListResponse` has been removed
+- Field `ArtifactSourcesClientUpdateResult` of struct `ArtifactSourcesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ArtifactSourcesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ServiceFabricSchedulesClientExecuteResponse` has been removed
+- Field `LabsClientCreateOrUpdateResult` of struct `LabsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `LabsClientCreateOrUpdateResponse` has been removed
+- Field `SchedulesClientCreateOrUpdateResult` of struct `SchedulesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `SchedulesClientCreateOrUpdateResponse` has been removed
+- Field `ArtifactsClientListResult` of struct `ArtifactsClientListResponse` has been removed
+- Field `RawResponse` of struct `ArtifactsClientListResponse` has been removed
+- Field `ServiceRunnersClientGetResult` of struct `ServiceRunnersClientGetResponse` has been removed
+- Field `RawResponse` of struct `ServiceRunnersClientGetResponse` has been removed
+- Field `FormulasClientUpdateResult` of struct `FormulasClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `FormulasClientUpdateResponse` has been removed
+- Field `VirtualMachineSchedulesClientUpdateResult` of struct `VirtualMachineSchedulesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineSchedulesClientUpdateResponse` has been removed
+- Field `CustomImagesClientListResult` of struct `CustomImagesClientListResponse` has been removed
+- Field `RawResponse` of struct `CustomImagesClientListResponse` has been removed
+- Field `LabsClientGenerateUploadURIResult` of struct `LabsClientGenerateUploadURIResponse` has been removed
+- Field `RawResponse` of struct `LabsClientGenerateUploadURIResponse` has been removed
+- Field `RawResponse` of struct `EnvironmentsClientDeleteResponse` has been removed
+- Field `LabsClientListVhdsResult` of struct `LabsClientListVhdsResponse` has been removed
+- Field `RawResponse` of struct `LabsClientListVhdsResponse` has been removed
+- Field `FormulasClientCreateOrUpdateResult` of struct `FormulasClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `FormulasClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachinesClientResizeResponse` has been removed
+- Field `VirtualMachinesClientListResult` of struct `VirtualMachinesClientListResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachinesClientListResponse` has been removed
+- Field `SchedulesClientListResult` of struct `SchedulesClientListResponse` has been removed
+- Field `RawResponse` of struct `SchedulesClientListResponse` has been removed
+- Field `VirtualMachinesClientCreateOrUpdateResult` of struct `VirtualMachinesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachinesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachinesClientStartResponse` has been removed
+- Field `VirtualNetworksClientUpdateResult` of struct `VirtualNetworksClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworksClientUpdateResponse` has been removed
+- Field `VirtualMachineSchedulesClientCreateOrUpdateResult` of struct `VirtualMachineSchedulesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineSchedulesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `PoliciesClientDeleteResponse` has been removed
+- Field `ServiceFabricSchedulesClientUpdateResult` of struct `ServiceFabricSchedulesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ServiceFabricSchedulesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineSchedulesClientDeleteResponse` has been removed
+- Field `CustomImagesClientUpdateResult` of struct `CustomImagesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `CustomImagesClientUpdateResponse` has been removed
+- Field `OperationsClientGetResult` of struct `OperationsClientGetResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientGetResponse` has been removed
+- Field `PoliciesClientCreateOrUpdateResult` of struct `PoliciesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `PoliciesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `GlobalSchedulesClientExecuteResponse` has been removed
+- Field `ServiceRunnersClientCreateOrUpdateResult` of struct `ServiceRunnersClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ServiceRunnersClientCreateOrUpdateResponse` has been removed
+- Field `DisksClientUpdateResult` of struct `DisksClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `DisksClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachinesClientTransferDisksResponse` has been removed
+- Field `VirtualMachinesClientUpdateResult` of struct `VirtualMachinesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachinesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachinesClientDetachDataDiskResponse` has been removed
+- Field `CustomImagesClientGetResult` of struct `CustomImagesClientGetResponse` has been removed
+- Field `RawResponse` of struct `CustomImagesClientGetResponse` has been removed
+- Field `RawResponse` of struct `LabsClientCreateEnvironmentResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachinesClientRestartResponse` has been removed
+- Field `RawResponse` of struct `CustomImagesClientDeleteResponse` has been removed
+- Field `EnvironmentsClientCreateOrUpdateResult` of struct `EnvironmentsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `EnvironmentsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `DisksClientDeleteResponse` has been removed
+- Field `ServiceFabricsClientCreateOrUpdateResult` of struct `ServiceFabricsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ServiceFabricsClientCreateOrUpdateResponse` has been removed
+- Field `VirtualNetworksClientCreateOrUpdateResult` of struct `VirtualNetworksClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworksClientCreateOrUpdateResponse` has been removed
+- Field `VirtualMachineSchedulesClientGetResult` of struct `VirtualMachineSchedulesClientGetResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineSchedulesClientGetResponse` has been removed
+- Field `LabsClientGetResult` of struct `LabsClientGetResponse` has been removed
+- Field `RawResponse` of struct `LabsClientGetResponse` has been removed
+- Field `NotificationChannelsClientCreateOrUpdateResult` of struct `NotificationChannelsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `NotificationChannelsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `LabsClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `NotificationChannelsClientNotifyResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachinesClientAddDataDiskResponse` has been removed
+- Field `ArtifactsClientGetResult` of struct `ArtifactsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ArtifactsClientGetResponse` has been removed
+- Field `NotificationChannelsClientListResult` of struct `NotificationChannelsClientListResponse` has been removed
+- Field `RawResponse` of struct `NotificationChannelsClientListResponse` has been removed
+- Field `LabsClientListByResourceGroupResult` of struct `LabsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `LabsClientListByResourceGroupResponse` has been removed
+- Field `EnvironmentsClientUpdateResult` of struct `EnvironmentsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `EnvironmentsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `SchedulesClientDeleteResponse` has been removed
+- Field `ServiceFabricSchedulesClientListResult` of struct `ServiceFabricSchedulesClientListResponse` has been removed
+- Field `RawResponse` of struct `ServiceFabricSchedulesClientListResponse` has been removed
+- Field `PoliciesClientGetResult` of struct `PoliciesClientGetResponse` has been removed
+- Field `RawResponse` of struct `PoliciesClientGetResponse` has been removed
+- Field `FormulasClientGetResult` of struct `FormulasClientGetResponse` has been removed
+- Field `RawResponse` of struct `FormulasClientGetResponse` has been removed
+- Field `PoliciesClientListResult` of struct `PoliciesClientListResponse` has been removed
+- Field `RawResponse` of struct `PoliciesClientListResponse` has been removed
+- Field `UsersClientGetResult` of struct `UsersClientGetResponse` has been removed
+- Field `RawResponse` of struct `UsersClientGetResponse` has been removed
+- Field `EnvironmentsClientListResult` of struct `EnvironmentsClientListResponse` has been removed
+- Field `RawResponse` of struct `EnvironmentsClientListResponse` has been removed
+- Field `RawResponse` of struct `ServiceFabricSchedulesClientDeleteResponse` has been removed
+- Field `CostsClientGetResult` of struct `CostsClientGetResponse` has been removed
+- Field `RawResponse` of struct `CostsClientGetResponse` has been removed
+- Field `RawResponse` of struct `VirtualNetworksClientDeleteResponse` has been removed
+- Field `ArtifactSourcesClientGetResult` of struct `ArtifactSourcesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ArtifactSourcesClientGetResponse` has been removed
+- Field `SecretsClientListResult` of struct `SecretsClientListResponse` has been removed
+- Field `RawResponse` of struct `SecretsClientListResponse` has been removed
+- Field `NotificationChannelsClientGetResult` of struct `NotificationChannelsClientGetResponse` has been removed
+- Field `RawResponse` of struct `NotificationChannelsClientGetResponse` has been removed
+- Field `FormulasClientListResult` of struct `FormulasClientListResponse` has been removed
+- Field `RawResponse` of struct `FormulasClientListResponse` has been removed
+- Field `RawResponse` of struct `SchedulesClientExecuteResponse` has been removed
+- Field `VirtualMachinesClientGetRdpFileContentsResult` of struct `VirtualMachinesClientGetRdpFileContentsResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachinesClientGetRdpFileContentsResponse` has been removed
+- Field `DisksClientCreateOrUpdateResult` of struct `DisksClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `DisksClientCreateOrUpdateResponse` has been removed
+- Field `ArmTemplatesClientGetResult` of struct `ArmTemplatesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ArmTemplatesClientGetResponse` has been removed
+- Field `GlobalSchedulesClientListByResourceGroupResult` of struct `GlobalSchedulesClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `GlobalSchedulesClientListByResourceGroupResponse` has been removed
+- Field `ArtifactSourcesClientCreateOrUpdateResult` of struct `ArtifactSourcesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ArtifactSourcesClientCreateOrUpdateResponse` has been removed
+- Field `UsersClientUpdateResult` of struct `UsersClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `UsersClientUpdateResponse` has been removed
+
+### Features Added
+
+- New anonymous field `CustomImageList` in struct `CustomImagesClientListResponse`
+- New anonymous field `LabVirtualMachine` in struct `VirtualMachinesClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `VirtualMachinesClientBeginResizeOptions`
+- New anonymous field `Disk` in struct `DisksClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `VirtualMachinesClientBeginRestartOptions`
+- New field `ResumeToken` in struct `CustomImagesClientBeginCreateOrUpdateOptions`
+- New anonymous field `ScheduleList` in struct `VirtualMachineSchedulesClientListResponse`
+- New field `ResumeToken` in struct `EnvironmentsClientBeginDeleteOptions`
+- New anonymous field `NotificationChannelList` in struct `NotificationChannelsClientListResponse`
+- New field `ResumeToken` in struct `UsersClientBeginCreateOrUpdateOptions`
+- New anonymous field `ArmTemplateList` in struct `ArmTemplatesClientListResponse`
+- New anonymous field `UserList` in struct `UsersClientListResponse`
+- New anonymous field `Lab` in struct `LabsClientGetResponse`
+- New anonymous field `ServiceFabric` in struct `ServiceFabricsClientCreateOrUpdateResponse`
+- New anonymous field `Lab` in struct `LabsClientCreateOrUpdateResponse`
+- New anonymous field `ScheduleList` in struct `SchedulesClientListResponse`
+- New anonymous field `ArtifactSourceList` in struct `ArtifactSourcesClientListResponse`
+- New anonymous field `LabVirtualMachine` in struct `VirtualMachinesClientUpdateResponse`
+- New anonymous field `ArtifactList` in struct `ArtifactsClientListResponse`
+- New anonymous field `Schedule` in struct `GlobalSchedulesClientCreateOrUpdateResponse`
+- New anonymous field `GalleryImageList` in struct `GalleryImagesClientListResponse`
+- New field `ResumeToken` in struct `DisksClientBeginDetachOptions`
+- New anonymous field `PolicyList` in struct `PoliciesClientListResponse`
+- New anonymous field `NotificationChannel` in struct `NotificationChannelsClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `UsersClientBeginDeleteOptions`
+- New anonymous field `LabVirtualMachine` in struct `VirtualMachinesClientGetResponse`
+- New anonymous field `Formula` in struct `FormulasClientUpdateResponse`
+- New anonymous field `Schedule` in struct `VirtualMachineSchedulesClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `VirtualMachinesClientBeginDeleteOptions`
+- New anonymous field `LabCost` in struct `CostsClientCreateOrUpdateResponse`
+- New anonymous field `LabList` in struct `LabsClientListBySubscriptionResponse`
+- New anonymous field `ApplicableSchedule` in struct `ServiceFabricsClientListApplicableSchedulesResponse`
+- New anonymous field `Artifact` in struct `ArtifactsClientGetResponse`
+- New anonymous field `ArmTemplateInfo` in struct `ArtifactsClientGenerateArmTemplateResponse`
+- New field `ResumeToken` in struct `VirtualNetworksClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `VirtualMachinesClientBeginTransferDisksOptions`
+- New field `ResumeToken` in struct `VirtualNetworksClientBeginDeleteOptions`
+- New anonymous field `DtlEnvironment` in struct `EnvironmentsClientCreateOrUpdateResponse`
+- New anonymous field `Policy` in struct `PoliciesClientGetResponse`
+- New field `ResumeToken` in struct `SchedulesClientBeginExecuteOptions`
+- New anonymous field `ArtifactSource` in struct `ArtifactSourcesClientUpdateResponse`
+- New field `ResumeToken` in struct `VirtualMachinesClientBeginStopOptions`
+- New anonymous field `User` in struct `UsersClientUpdateResponse`
+- New anonymous field `RdpConnection` in struct `VirtualMachinesClientGetRdpFileContentsResponse`
+- New anonymous field `User` in struct `UsersClientCreateOrUpdateResponse`
+- New anonymous field `Schedule` in struct `ServiceFabricSchedulesClientCreateOrUpdateResponse`
+- New anonymous field `NotificationChannel` in struct `NotificationChannelsClientUpdateResponse`
+- New anonymous field `Secret` in struct `SecretsClientGetResponse`
+- New anonymous field `LabVhdList` in struct `LabsClientListVhdsResponse`
+- New anonymous field `ServiceFabric` in struct `ServiceFabricsClientGetResponse`
+- New anonymous field `Schedule` in struct `ServiceFabricSchedulesClientGetResponse`
+- New anonymous field `CustomImage` in struct `CustomImagesClientUpdateResponse`
+- New anonymous field `User` in struct `UsersClientGetResponse`
+- New anonymous field `VirtualNetwork` in struct `VirtualNetworksClientCreateOrUpdateResponse`
+- New anonymous field `Policy` in struct `PoliciesClientCreateOrUpdateResponse`
+- New anonymous field `DtlEnvironmentList` in struct `EnvironmentsClientListResponse`
+- New field `ResumeToken` in struct `VirtualMachineSchedulesClientBeginExecuteOptions`
+- New anonymous field `ScheduleList` in struct `GlobalSchedulesClientListByResourceGroupResponse`
+- New anonymous field `LabVirtualMachineList` in struct `VirtualMachinesClientListResponse`
+- New field `ResumeToken` in struct `SecretsClientBeginCreateOrUpdateOptions`
+- New anonymous field `VirtualNetwork` in struct `VirtualNetworksClientUpdateResponse`
+- New anonymous field `ArmTemplate` in struct `ArmTemplatesClientGetResponse`
+- New anonymous field `GenerateUploadURIResponse` in struct `LabsClientGenerateUploadURIResponse`
+- New field `ResumeToken` in struct `EnvironmentsClientBeginCreateOrUpdateOptions`
+- New anonymous field `VirtualNetwork` in struct `VirtualNetworksClientGetResponse`
+- New anonymous field `Schedule` in struct `GlobalSchedulesClientGetResponse`
+- New anonymous field `ScheduleList` in struct `ServiceFabricSchedulesClientListResponse`
+- New field `ResumeToken` in struct `LabsClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `VirtualMachinesClientBeginClaimOptions`
+- New field `ResumeToken` in struct `ServiceFabricsClientBeginStopOptions`
+- New field `ResumeToken` in struct `VirtualMachinesClientBeginRedeployOptions`
+- New field `ResumeToken` in struct `DisksClientBeginAttachOptions`
+- New anonymous field `FormulaList` in struct `FormulasClientListResponse`
+- New field `ResumeToken` in struct `GlobalSchedulesClientBeginRetargetOptions`
+- New anonymous field `ScheduleList` in struct `SchedulesClientListApplicableResponse`
+- New anonymous field `ProviderOperationResult` in struct `ProviderOperationsClientListResponse`
+- New field `ResumeToken` in struct `ServiceFabricSchedulesClientBeginExecuteOptions`
+- New anonymous field `Schedule` in struct `SchedulesClientCreateOrUpdateResponse`
+- New anonymous field `DtlEnvironment` in struct `EnvironmentsClientGetResponse`
+- New anonymous field `ServiceRunner` in struct `ServiceRunnersClientCreateOrUpdateResponse`
+- New anonymous field `Disk` in struct `DisksClientUpdateResponse`
+- New field `ResumeToken` in struct `ServiceFabricsClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `LabsClientBeginCreateEnvironmentOptions`
+- New field `ResumeToken` in struct `ServiceFabricsClientBeginDeleteOptions`
+- New anonymous field `LabCost` in struct `CostsClientGetResponse`
+- New anonymous field `DtlEnvironment` in struct `EnvironmentsClientUpdateResponse`
+- New field `ResumeToken` in struct `LabsClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `VirtualMachinesClientBeginUnClaimOptions`
+- New anonymous field `Schedule` in struct `ServiceFabricSchedulesClientUpdateResponse`
+- New anonymous field `Lab` in struct `LabsClientUpdateResponse`
+- New field `ResumeToken` in struct `FormulasClientBeginCreateOrUpdateOptions`
+- New anonymous field `DiskList` in struct `DisksClientListResponse`
+- New anonymous field `OperationResult` in struct `OperationsClientGetResponse`
+- New field `ResumeToken` in struct `VirtualMachinesClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `ServiceFabricsClientBeginStartOptions`
+- New anonymous field `CustomImage` in struct `CustomImagesClientCreateOrUpdateResponse`
+- New anonymous field `Schedule` in struct `VirtualMachineSchedulesClientUpdateResponse`
+- New anonymous field `Schedule` in struct `GlobalSchedulesClientUpdateResponse`
+- New anonymous field `Secret` in struct `SecretsClientUpdateResponse`
+- New anonymous field `Formula` in struct `FormulasClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `LabsClientBeginImportVirtualMachineOptions`
+- New field `ResumeToken` in struct `LabsClientBeginClaimAnyVMOptions`
+- New field `ResumeToken` in struct `DisksClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `VirtualMachinesClientBeginAddDataDiskOptions`
+- New anonymous field `ServiceRunner` in struct `ServiceRunnersClientGetResponse`
+- New anonymous field `Policy` in struct `PoliciesClientUpdateResponse`
+- New anonymous field `ArtifactSource` in struct `ArtifactSourcesClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `DisksClientBeginCreateOrUpdateOptions`
+- New anonymous field `LabList` in struct `LabsClientListByResourceGroupResponse`
+- New anonymous field `ArtifactSource` in struct `ArtifactSourcesClientGetResponse`
+- New anonymous field `Schedule` in struct `SchedulesClientGetResponse`
+- New anonymous field `Secret` in struct `SecretsClientCreateOrUpdateResponse`
+- New anonymous field `ScheduleList` in struct `GlobalSchedulesClientListBySubscriptionResponse`
+- New field `ResumeToken` in struct `VirtualMachinesClientBeginStartOptions`
+- New anonymous field `EvaluatePoliciesResponse` in struct `PolicySetsClientEvaluatePoliciesResponse`
+- New anonymous field `ServiceFabricList` in struct `ServiceFabricsClientListResponse`
+- New anonymous field `Schedule` in struct `SchedulesClientUpdateResponse`
+- New anonymous field `SecretList` in struct `SecretsClientListResponse`
+- New anonymous field `CustomImage` in struct `CustomImagesClientGetResponse`
+- New field `ResumeToken` in struct `VirtualMachinesClientBeginApplyArtifactsOptions`
+- New field `ResumeToken` in struct `CustomImagesClientBeginDeleteOptions`
+- New anonymous field `NotificationChannel` in struct `NotificationChannelsClientGetResponse`
+- New field `ResumeToken` in struct `GlobalSchedulesClientBeginExecuteOptions`
+- New field `ResumeToken` in struct `VirtualMachinesClientBeginDetachDataDiskOptions`
+- New anonymous field `Disk` in struct `DisksClientGetResponse`
+- New field `ResumeToken` in struct `LabsClientBeginExportResourceUsageOptions`
+- New anonymous field `ApplicableSchedule` in struct `VirtualMachinesClientListApplicableSchedulesResponse`
+- New anonymous field `ServiceFabric` in struct `ServiceFabricsClientUpdateResponse`
+- New anonymous field `VirtualNetworkList` in struct `VirtualNetworksClientListResponse`
+- New anonymous field `Formula` in struct `FormulasClientGetResponse`
+- New anonymous field `Schedule` in struct `VirtualMachineSchedulesClientGetResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

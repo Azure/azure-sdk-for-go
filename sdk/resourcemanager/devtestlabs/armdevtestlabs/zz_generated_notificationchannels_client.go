@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type NotificationChannelsClient struct {
 // subscriptionID - The subscription ID.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewNotificationChannelsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *NotificationChannelsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewNotificationChannelsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NotificationChannelsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &NotificationChannelsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Create or replace an existing notification channel.
@@ -105,7 +110,7 @@ func (client *NotificationChannelsClient) createOrUpdateCreateRequest(ctx contex
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *NotificationChannelsClient) createOrUpdateHandleResponse(resp *http.Response) (NotificationChannelsClientCreateOrUpdateResponse, error) {
-	result := NotificationChannelsClientCreateOrUpdateResponse{RawResponse: resp}
+	result := NotificationChannelsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NotificationChannel); err != nil {
 		return NotificationChannelsClientCreateOrUpdateResponse{}, err
 	}
@@ -131,7 +136,7 @@ func (client *NotificationChannelsClient) Delete(ctx context.Context, resourceGr
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return NotificationChannelsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return NotificationChannelsClientDeleteResponse{RawResponse: resp}, nil
+	return NotificationChannelsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -221,7 +226,7 @@ func (client *NotificationChannelsClient) getCreateRequest(ctx context.Context, 
 
 // getHandleResponse handles the Get response.
 func (client *NotificationChannelsClient) getHandleResponse(resp *http.Response) (NotificationChannelsClientGetResponse, error) {
-	result := NotificationChannelsClientGetResponse{RawResponse: resp}
+	result := NotificationChannelsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NotificationChannel); err != nil {
 		return NotificationChannelsClientGetResponse{}, err
 	}
@@ -234,16 +239,32 @@ func (client *NotificationChannelsClient) getHandleResponse(resp *http.Response)
 // labName - The name of the lab.
 // options - NotificationChannelsClientListOptions contains the optional parameters for the NotificationChannelsClient.List
 // method.
-func (client *NotificationChannelsClient) List(resourceGroupName string, labName string, options *NotificationChannelsClientListOptions) *NotificationChannelsClientListPager {
-	return &NotificationChannelsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, labName, options)
+func (client *NotificationChannelsClient) List(resourceGroupName string, labName string, options *NotificationChannelsClientListOptions) *runtime.Pager[NotificationChannelsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[NotificationChannelsClientListResponse]{
+		More: func(page NotificationChannelsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp NotificationChannelsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.NotificationChannelList.NextLink)
+		Fetcher: func(ctx context.Context, page *NotificationChannelsClientListResponse) (NotificationChannelsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, labName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return NotificationChannelsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return NotificationChannelsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return NotificationChannelsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -286,7 +307,7 @@ func (client *NotificationChannelsClient) listCreateRequest(ctx context.Context,
 
 // listHandleResponse handles the List response.
 func (client *NotificationChannelsClient) listHandleResponse(resp *http.Response) (NotificationChannelsClientListResponse, error) {
-	result := NotificationChannelsClientListResponse{RawResponse: resp}
+	result := NotificationChannelsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NotificationChannelList); err != nil {
 		return NotificationChannelsClientListResponse{}, err
 	}
@@ -313,7 +334,7 @@ func (client *NotificationChannelsClient) Notify(ctx context.Context, resourceGr
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return NotificationChannelsClientNotifyResponse{}, runtime.NewResponseError(resp)
 	}
-	return NotificationChannelsClientNotifyResponse{RawResponse: resp}, nil
+	return NotificationChannelsClientNotifyResponse{}, nil
 }
 
 // notifyCreateRequest creates the Notify request.
@@ -401,7 +422,7 @@ func (client *NotificationChannelsClient) updateCreateRequest(ctx context.Contex
 
 // updateHandleResponse handles the Update response.
 func (client *NotificationChannelsClient) updateHandleResponse(resp *http.Response) (NotificationChannelsClientUpdateResponse, error) {
-	result := NotificationChannelsClientUpdateResponse{RawResponse: resp}
+	result := NotificationChannelsClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NotificationChannel); err != nil {
 		return NotificationChannelsClientUpdateResponse{}, err
 	}

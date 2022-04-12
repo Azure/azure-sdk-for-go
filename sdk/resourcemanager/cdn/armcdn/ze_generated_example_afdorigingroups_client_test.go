@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,58 +19,74 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn"
 )
 
-// x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/AFDOriginGroups_ListByProfile.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/AFDOriginGroups_ListByProfile.json
 func ExampleAFDOriginGroupsClient_ListByProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcdn.NewAFDOriginGroupsClient("<subscription-id>", cred, nil)
+	client, err := armcdn.NewAFDOriginGroupsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListByProfile("<resource-group-name>",
 		"<profile-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/AFDOriginGroups_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/AFDOriginGroups_Get.json
 func ExampleAFDOriginGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcdn.NewAFDOriginGroupsClient("<subscription-id>", cred, nil)
+	client, err := armcdn.NewAFDOriginGroupsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<profile-name>",
 		"<origin-group-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.AFDOriginGroupsClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/AFDOriginGroups_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/AFDOriginGroups_Create.json
 func ExampleAFDOriginGroupsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcdn.NewAFDOriginGroupsClient("<subscription-id>", cred, nil)
+	client, err := armcdn.NewAFDOriginGroupsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreate(ctx,
 		"<resource-group-name>",
 		"<profile-name>",
@@ -78,38 +94,46 @@ func ExampleAFDOriginGroupsClient_BeginCreate() {
 		armcdn.AFDOriginGroup{
 			Properties: &armcdn.AFDOriginGroupProperties{
 				HealthProbeSettings: &armcdn.HealthProbeParameters{
-					ProbeIntervalInSeconds: to.Int32Ptr(10),
-					ProbePath:              to.StringPtr("<probe-path>"),
-					ProbeProtocol:          armcdn.ProbeProtocolNotSet.ToPtr(),
-					ProbeRequestType:       armcdn.HealthProbeRequestTypeNotSet.ToPtr(),
+					ProbeIntervalInSeconds: to.Ptr[int32](10),
+					ProbePath:              to.Ptr("<probe-path>"),
+					ProbeProtocol:          to.Ptr(armcdn.ProbeProtocolNotSet),
+					ProbeRequestType:       to.Ptr(armcdn.HealthProbeRequestTypeNotSet),
 				},
 				LoadBalancingSettings: &armcdn.LoadBalancingSettingsParameters{
-					AdditionalLatencyInMilliseconds: to.Int32Ptr(1000),
-					SampleSize:                      to.Int32Ptr(3),
-					SuccessfulSamplesRequired:       to.Int32Ptr(3),
+					AdditionalLatencyInMilliseconds: to.Ptr[int32](1000),
+					SampleSize:                      to.Ptr[int32](3),
+					SuccessfulSamplesRequired:       to.Ptr[int32](3),
 				},
-				TrafficRestorationTimeToHealedOrNewEndpointsInMinutes: to.Int32Ptr(5),
+				TrafficRestorationTimeToHealedOrNewEndpointsInMinutes: to.Ptr[int32](5),
 			},
 		},
-		nil)
+		&armcdn.AFDOriginGroupsClientBeginCreateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.AFDOriginGroupsClientCreateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/AFDOriginGroups_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/AFDOriginGroups_Update.json
 func ExampleAFDOriginGroupsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcdn.NewAFDOriginGroupsClient("<subscription-id>", cred, nil)
+	client, err := armcdn.NewAFDOriginGroupsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginUpdate(ctx,
 		"<resource-group-name>",
 		"<profile-name>",
@@ -117,74 +141,88 @@ func ExampleAFDOriginGroupsClient_BeginUpdate() {
 		armcdn.AFDOriginGroupUpdateParameters{
 			Properties: &armcdn.AFDOriginGroupUpdatePropertiesParameters{
 				HealthProbeSettings: &armcdn.HealthProbeParameters{
-					ProbeIntervalInSeconds: to.Int32Ptr(10),
-					ProbePath:              to.StringPtr("<probe-path>"),
-					ProbeProtocol:          armcdn.ProbeProtocolNotSet.ToPtr(),
-					ProbeRequestType:       armcdn.HealthProbeRequestTypeNotSet.ToPtr(),
+					ProbeIntervalInSeconds: to.Ptr[int32](10),
+					ProbePath:              to.Ptr("<probe-path>"),
+					ProbeProtocol:          to.Ptr(armcdn.ProbeProtocolNotSet),
+					ProbeRequestType:       to.Ptr(armcdn.HealthProbeRequestTypeNotSet),
 				},
 				LoadBalancingSettings: &armcdn.LoadBalancingSettingsParameters{
-					AdditionalLatencyInMilliseconds: to.Int32Ptr(1000),
-					SampleSize:                      to.Int32Ptr(3),
-					SuccessfulSamplesRequired:       to.Int32Ptr(3),
+					AdditionalLatencyInMilliseconds: to.Ptr[int32](1000),
+					SampleSize:                      to.Ptr[int32](3),
+					SuccessfulSamplesRequired:       to.Ptr[int32](3),
 				},
-				TrafficRestorationTimeToHealedOrNewEndpointsInMinutes: to.Int32Ptr(5),
+				TrafficRestorationTimeToHealedOrNewEndpointsInMinutes: to.Ptr[int32](5),
 			},
 		},
-		nil)
+		&armcdn.AFDOriginGroupsClientBeginUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.AFDOriginGroupsClientUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/AFDOriginGroups_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/AFDOriginGroups_Delete.json
 func ExampleAFDOriginGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcdn.NewAFDOriginGroupsClient("<subscription-id>", cred, nil)
+	client, err := armcdn.NewAFDOriginGroupsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
 		"<profile-name>",
 		"<origin-group-name>",
-		nil)
+		&armcdn.AFDOriginGroupsClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/AFDOriginGroups_ListResourceUsage.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/AFDOriginGroups_ListResourceUsage.json
 func ExampleAFDOriginGroupsClient_ListResourceUsage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcdn.NewAFDOriginGroupsClient("<subscription-id>", cred, nil)
+	client, err := armcdn.NewAFDOriginGroupsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListResourceUsage("<resource-group-name>",
 		"<profile-name>",
 		"<origin-group-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }

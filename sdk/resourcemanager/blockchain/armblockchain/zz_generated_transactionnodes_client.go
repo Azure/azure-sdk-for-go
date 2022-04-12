@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type TransactionNodesClient struct {
 // ID is part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewTransactionNodesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *TransactionNodesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewTransactionNodesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TransactionNodesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &TransactionNodesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreate - Create or update the transaction node.
@@ -58,22 +63,16 @@ func NewTransactionNodesClient(subscriptionID string, credential azcore.TokenCre
 // Resource Manager API or the portal.
 // options - TransactionNodesClientBeginCreateOptions contains the optional parameters for the TransactionNodesClient.BeginCreate
 // method.
-func (client *TransactionNodesClient) BeginCreate(ctx context.Context, blockchainMemberName string, transactionNodeName string, resourceGroupName string, options *TransactionNodesClientBeginCreateOptions) (TransactionNodesClientCreatePollerResponse, error) {
-	resp, err := client.create(ctx, blockchainMemberName, transactionNodeName, resourceGroupName, options)
-	if err != nil {
-		return TransactionNodesClientCreatePollerResponse{}, err
+func (client *TransactionNodesClient) BeginCreate(ctx context.Context, blockchainMemberName string, transactionNodeName string, resourceGroupName string, options *TransactionNodesClientBeginCreateOptions) (*armruntime.Poller[TransactionNodesClientCreateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.create(ctx, blockchainMemberName, transactionNodeName, resourceGroupName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[TransactionNodesClientCreateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[TransactionNodesClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := TransactionNodesClientCreatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("TransactionNodesClient.Create", "", resp, client.pl)
-	if err != nil {
-		return TransactionNodesClientCreatePollerResponse{}, err
-	}
-	result.Poller = &TransactionNodesClientCreatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Create - Create or update the transaction node.
@@ -134,22 +133,16 @@ func (client *TransactionNodesClient) createCreateRequest(ctx context.Context, b
 // Resource Manager API or the portal.
 // options - TransactionNodesClientBeginDeleteOptions contains the optional parameters for the TransactionNodesClient.BeginDelete
 // method.
-func (client *TransactionNodesClient) BeginDelete(ctx context.Context, blockchainMemberName string, transactionNodeName string, resourceGroupName string, options *TransactionNodesClientBeginDeleteOptions) (TransactionNodesClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, blockchainMemberName, transactionNodeName, resourceGroupName, options)
-	if err != nil {
-		return TransactionNodesClientDeletePollerResponse{}, err
+func (client *TransactionNodesClient) BeginDelete(ctx context.Context, blockchainMemberName string, transactionNodeName string, resourceGroupName string, options *TransactionNodesClientBeginDeleteOptions) (*armruntime.Poller[TransactionNodesClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, blockchainMemberName, transactionNodeName, resourceGroupName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[TransactionNodesClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[TransactionNodesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := TransactionNodesClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("TransactionNodesClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return TransactionNodesClientDeletePollerResponse{}, err
-	}
-	result.Poller = &TransactionNodesClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Delete the transaction node.
@@ -252,7 +245,7 @@ func (client *TransactionNodesClient) getCreateRequest(ctx context.Context, bloc
 
 // getHandleResponse handles the Get response.
 func (client *TransactionNodesClient) getHandleResponse(resp *http.Response) (TransactionNodesClientGetResponse, error) {
-	result := TransactionNodesClientGetResponse{RawResponse: resp}
+	result := TransactionNodesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TransactionNode); err != nil {
 		return TransactionNodesClientGetResponse{}, err
 	}
@@ -265,16 +258,32 @@ func (client *TransactionNodesClient) getHandleResponse(resp *http.Response) (Tr
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // options - TransactionNodesClientListOptions contains the optional parameters for the TransactionNodesClient.List method.
-func (client *TransactionNodesClient) List(blockchainMemberName string, resourceGroupName string, options *TransactionNodesClientListOptions) *TransactionNodesClientListPager {
-	return &TransactionNodesClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, blockchainMemberName, resourceGroupName, options)
+func (client *TransactionNodesClient) List(blockchainMemberName string, resourceGroupName string, options *TransactionNodesClientListOptions) *runtime.Pager[TransactionNodesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[TransactionNodesClientListResponse]{
+		More: func(page TransactionNodesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp TransactionNodesClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.TransactionNodeCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *TransactionNodesClientListResponse) (TransactionNodesClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, blockchainMemberName, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return TransactionNodesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return TransactionNodesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return TransactionNodesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -305,7 +314,7 @@ func (client *TransactionNodesClient) listCreateRequest(ctx context.Context, blo
 
 // listHandleResponse handles the List response.
 func (client *TransactionNodesClient) listHandleResponse(resp *http.Response) (TransactionNodesClientListResponse, error) {
-	result := TransactionNodesClientListResponse{RawResponse: resp}
+	result := TransactionNodesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TransactionNodeCollection); err != nil {
 		return TransactionNodesClientListResponse{}, err
 	}
@@ -367,7 +376,7 @@ func (client *TransactionNodesClient) listAPIKeysCreateRequest(ctx context.Conte
 
 // listAPIKeysHandleResponse handles the ListAPIKeys response.
 func (client *TransactionNodesClient) listAPIKeysHandleResponse(resp *http.Response) (TransactionNodesClientListAPIKeysResponse, error) {
-	result := TransactionNodesClientListAPIKeysResponse{RawResponse: resp}
+	result := TransactionNodesClientListAPIKeysResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.APIKeyCollection); err != nil {
 		return TransactionNodesClientListAPIKeysResponse{}, err
 	}
@@ -432,7 +441,7 @@ func (client *TransactionNodesClient) listRegenerateAPIKeysCreateRequest(ctx con
 
 // listRegenerateAPIKeysHandleResponse handles the ListRegenerateAPIKeys response.
 func (client *TransactionNodesClient) listRegenerateAPIKeysHandleResponse(resp *http.Response) (TransactionNodesClientListRegenerateAPIKeysResponse, error) {
-	result := TransactionNodesClientListRegenerateAPIKeysResponse{RawResponse: resp}
+	result := TransactionNodesClientListRegenerateAPIKeysResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.APIKeyCollection); err != nil {
 		return TransactionNodesClientListRegenerateAPIKeysResponse{}, err
 	}
@@ -496,7 +505,7 @@ func (client *TransactionNodesClient) updateCreateRequest(ctx context.Context, b
 
 // updateHandleResponse handles the Update response.
 func (client *TransactionNodesClient) updateHandleResponse(resp *http.Response) (TransactionNodesClientUpdateResponse, error) {
-	result := TransactionNodesClientUpdateResponse{RawResponse: resp}
+	result := TransactionNodesClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TransactionNode); err != nil {
 		return TransactionNodesClientUpdateResponse{}, err
 	}

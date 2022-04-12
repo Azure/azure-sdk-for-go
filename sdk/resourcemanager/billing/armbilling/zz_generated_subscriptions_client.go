@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type SubscriptionsClient struct {
 // subscriptionID - The ID that uniquely identifies an Azure subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewSubscriptionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SubscriptionsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewSubscriptionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SubscriptionsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &SubscriptionsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Gets a subscription by its ID. The operation is supported for billing accounts with agreement type Microsoft Customer
@@ -93,7 +98,7 @@ func (client *SubscriptionsClient) getCreateRequest(ctx context.Context, billing
 
 // getHandleResponse handles the Get response.
 func (client *SubscriptionsClient) getHandleResponse(resp *http.Response) (SubscriptionsClientGetResponse, error) {
-	result := SubscriptionsClientGetResponse{RawResponse: resp}
+	result := SubscriptionsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Subscription); err != nil {
 		return SubscriptionsClientGetResponse{}, err
 	}
@@ -106,16 +111,32 @@ func (client *SubscriptionsClient) getHandleResponse(resp *http.Response) (Subsc
 // billingAccountName - The ID that uniquely identifies a billing account.
 // options - SubscriptionsClientListByBillingAccountOptions contains the optional parameters for the SubscriptionsClient.ListByBillingAccount
 // method.
-func (client *SubscriptionsClient) ListByBillingAccount(billingAccountName string, options *SubscriptionsClientListByBillingAccountOptions) *SubscriptionsClientListByBillingAccountPager {
-	return &SubscriptionsClientListByBillingAccountPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByBillingAccountCreateRequest(ctx, billingAccountName, options)
+func (client *SubscriptionsClient) ListByBillingAccount(billingAccountName string, options *SubscriptionsClientListByBillingAccountOptions) *runtime.Pager[SubscriptionsClientListByBillingAccountResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SubscriptionsClientListByBillingAccountResponse]{
+		More: func(page SubscriptionsClientListByBillingAccountResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SubscriptionsClientListByBillingAccountResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SubscriptionsListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *SubscriptionsClientListByBillingAccountResponse) (SubscriptionsClientListByBillingAccountResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByBillingAccountCreateRequest(ctx, billingAccountName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SubscriptionsClientListByBillingAccountResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SubscriptionsClientListByBillingAccountResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SubscriptionsClientListByBillingAccountResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByBillingAccountHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByBillingAccountCreateRequest creates the ListByBillingAccount request.
@@ -138,7 +159,7 @@ func (client *SubscriptionsClient) listByBillingAccountCreateRequest(ctx context
 
 // listByBillingAccountHandleResponse handles the ListByBillingAccount response.
 func (client *SubscriptionsClient) listByBillingAccountHandleResponse(resp *http.Response) (SubscriptionsClientListByBillingAccountResponse, error) {
-	result := SubscriptionsClientListByBillingAccountResponse{RawResponse: resp}
+	result := SubscriptionsClientListByBillingAccountResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionsListResult); err != nil {
 		return SubscriptionsClientListByBillingAccountResponse{}, err
 	}
@@ -152,16 +173,32 @@ func (client *SubscriptionsClient) listByBillingAccountHandleResponse(resp *http
 // billingProfileName - The ID that uniquely identifies a billing profile.
 // options - SubscriptionsClientListByBillingProfileOptions contains the optional parameters for the SubscriptionsClient.ListByBillingProfile
 // method.
-func (client *SubscriptionsClient) ListByBillingProfile(billingAccountName string, billingProfileName string, options *SubscriptionsClientListByBillingProfileOptions) *SubscriptionsClientListByBillingProfilePager {
-	return &SubscriptionsClientListByBillingProfilePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByBillingProfileCreateRequest(ctx, billingAccountName, billingProfileName, options)
+func (client *SubscriptionsClient) ListByBillingProfile(billingAccountName string, billingProfileName string, options *SubscriptionsClientListByBillingProfileOptions) *runtime.Pager[SubscriptionsClientListByBillingProfileResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SubscriptionsClientListByBillingProfileResponse]{
+		More: func(page SubscriptionsClientListByBillingProfileResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SubscriptionsClientListByBillingProfileResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SubscriptionsListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *SubscriptionsClientListByBillingProfileResponse) (SubscriptionsClientListByBillingProfileResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByBillingProfileCreateRequest(ctx, billingAccountName, billingProfileName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SubscriptionsClientListByBillingProfileResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SubscriptionsClientListByBillingProfileResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SubscriptionsClientListByBillingProfileResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByBillingProfileHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByBillingProfileCreateRequest creates the ListByBillingProfile request.
@@ -188,7 +225,7 @@ func (client *SubscriptionsClient) listByBillingProfileCreateRequest(ctx context
 
 // listByBillingProfileHandleResponse handles the ListByBillingProfile response.
 func (client *SubscriptionsClient) listByBillingProfileHandleResponse(resp *http.Response) (SubscriptionsClientListByBillingProfileResponse, error) {
-	result := SubscriptionsClientListByBillingProfileResponse{RawResponse: resp}
+	result := SubscriptionsClientListByBillingProfileResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionsListResult); err != nil {
 		return SubscriptionsClientListByBillingProfileResponse{}, err
 	}
@@ -202,16 +239,32 @@ func (client *SubscriptionsClient) listByBillingProfileHandleResponse(resp *http
 // customerName - The ID that uniquely identifies a customer.
 // options - SubscriptionsClientListByCustomerOptions contains the optional parameters for the SubscriptionsClient.ListByCustomer
 // method.
-func (client *SubscriptionsClient) ListByCustomer(billingAccountName string, customerName string, options *SubscriptionsClientListByCustomerOptions) *SubscriptionsClientListByCustomerPager {
-	return &SubscriptionsClientListByCustomerPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByCustomerCreateRequest(ctx, billingAccountName, customerName, options)
+func (client *SubscriptionsClient) ListByCustomer(billingAccountName string, customerName string, options *SubscriptionsClientListByCustomerOptions) *runtime.Pager[SubscriptionsClientListByCustomerResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SubscriptionsClientListByCustomerResponse]{
+		More: func(page SubscriptionsClientListByCustomerResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SubscriptionsClientListByCustomerResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SubscriptionsListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *SubscriptionsClientListByCustomerResponse) (SubscriptionsClientListByCustomerResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByCustomerCreateRequest(ctx, billingAccountName, customerName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SubscriptionsClientListByCustomerResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SubscriptionsClientListByCustomerResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SubscriptionsClientListByCustomerResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByCustomerHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByCustomerCreateRequest creates the ListByCustomer request.
@@ -238,7 +291,7 @@ func (client *SubscriptionsClient) listByCustomerCreateRequest(ctx context.Conte
 
 // listByCustomerHandleResponse handles the ListByCustomer response.
 func (client *SubscriptionsClient) listByCustomerHandleResponse(resp *http.Response) (SubscriptionsClientListByCustomerResponse, error) {
-	result := SubscriptionsClientListByCustomerResponse{RawResponse: resp}
+	result := SubscriptionsClientListByCustomerResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionsListResult); err != nil {
 		return SubscriptionsClientListByCustomerResponse{}, err
 	}
@@ -253,16 +306,32 @@ func (client *SubscriptionsClient) listByCustomerHandleResponse(resp *http.Respo
 // invoiceSectionName - The ID that uniquely identifies an invoice section.
 // options - SubscriptionsClientListByInvoiceSectionOptions contains the optional parameters for the SubscriptionsClient.ListByInvoiceSection
 // method.
-func (client *SubscriptionsClient) ListByInvoiceSection(billingAccountName string, billingProfileName string, invoiceSectionName string, options *SubscriptionsClientListByInvoiceSectionOptions) *SubscriptionsClientListByInvoiceSectionPager {
-	return &SubscriptionsClientListByInvoiceSectionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByInvoiceSectionCreateRequest(ctx, billingAccountName, billingProfileName, invoiceSectionName, options)
+func (client *SubscriptionsClient) ListByInvoiceSection(billingAccountName string, billingProfileName string, invoiceSectionName string, options *SubscriptionsClientListByInvoiceSectionOptions) *runtime.Pager[SubscriptionsClientListByInvoiceSectionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SubscriptionsClientListByInvoiceSectionResponse]{
+		More: func(page SubscriptionsClientListByInvoiceSectionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SubscriptionsClientListByInvoiceSectionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SubscriptionsListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *SubscriptionsClientListByInvoiceSectionResponse) (SubscriptionsClientListByInvoiceSectionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByInvoiceSectionCreateRequest(ctx, billingAccountName, billingProfileName, invoiceSectionName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SubscriptionsClientListByInvoiceSectionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SubscriptionsClientListByInvoiceSectionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SubscriptionsClientListByInvoiceSectionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByInvoiceSectionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByInvoiceSectionCreateRequest creates the ListByInvoiceSection request.
@@ -293,7 +362,7 @@ func (client *SubscriptionsClient) listByInvoiceSectionCreateRequest(ctx context
 
 // listByInvoiceSectionHandleResponse handles the ListByInvoiceSection response.
 func (client *SubscriptionsClient) listByInvoiceSectionHandleResponse(resp *http.Response) (SubscriptionsClientListByInvoiceSectionResponse, error) {
-	result := SubscriptionsClientListByInvoiceSectionResponse{RawResponse: resp}
+	result := SubscriptionsClientListByInvoiceSectionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionsListResult); err != nil {
 		return SubscriptionsClientListByInvoiceSectionResponse{}, err
 	}
@@ -307,22 +376,16 @@ func (client *SubscriptionsClient) listByInvoiceSectionHandleResponse(resp *http
 // billingAccountName - The ID that uniquely identifies a billing account.
 // parameters - Request parameters that are provided to the move subscription operation.
 // options - SubscriptionsClientBeginMoveOptions contains the optional parameters for the SubscriptionsClient.BeginMove method.
-func (client *SubscriptionsClient) BeginMove(ctx context.Context, billingAccountName string, parameters TransferBillingSubscriptionRequestProperties, options *SubscriptionsClientBeginMoveOptions) (SubscriptionsClientMovePollerResponse, error) {
-	resp, err := client.move(ctx, billingAccountName, parameters, options)
-	if err != nil {
-		return SubscriptionsClientMovePollerResponse{}, err
+func (client *SubscriptionsClient) BeginMove(ctx context.Context, billingAccountName string, parameters TransferBillingSubscriptionRequestProperties, options *SubscriptionsClientBeginMoveOptions) (*armruntime.Poller[SubscriptionsClientMoveResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.move(ctx, billingAccountName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[SubscriptionsClientMoveResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[SubscriptionsClientMoveResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SubscriptionsClientMovePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SubscriptionsClient.Move", "", resp, client.pl)
-	if err != nil {
-		return SubscriptionsClientMovePollerResponse{}, err
-	}
-	result.Poller = &SubscriptionsClientMovePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Move - Moves a subscription's charges to a new invoice section. The new invoice section must belong to the same billing
@@ -411,7 +474,7 @@ func (client *SubscriptionsClient) updateCreateRequest(ctx context.Context, bill
 
 // updateHandleResponse handles the Update response.
 func (client *SubscriptionsClient) updateHandleResponse(resp *http.Response) (SubscriptionsClientUpdateResponse, error) {
-	result := SubscriptionsClientUpdateResponse{RawResponse: resp}
+	result := SubscriptionsClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Subscription); err != nil {
 		return SubscriptionsClientUpdateResponse{}, err
 	}
@@ -464,7 +527,7 @@ func (client *SubscriptionsClient) validateMoveCreateRequest(ctx context.Context
 
 // validateMoveHandleResponse handles the ValidateMove response.
 func (client *SubscriptionsClient) validateMoveHandleResponse(resp *http.Response) (SubscriptionsClientValidateMoveResponse, error) {
-	result := SubscriptionsClientValidateMoveResponse{RawResponse: resp}
+	result := SubscriptionsClientValidateMoveResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ValidateSubscriptionTransferEligibilityResult); err != nil {
 		return SubscriptionsClientValidateMoveResponse{}, err
 	}

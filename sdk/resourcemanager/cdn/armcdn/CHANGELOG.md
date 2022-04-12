@@ -1,5 +1,1173 @@
 # Release History
 
+## 0.4.0 (2022-04-11)
+### Breaking Changes
+
+- Function `*OriginGroupsClient.BeginCreate` return value(s) have been changed from `(OriginGroupsClientCreatePollerResponse, error)` to `(*armruntime.Poller[OriginGroupsClientCreateResponse], error)`
+- Function `*OriginGroupsClient.ListByEndpoint` return value(s) have been changed from `(*OriginGroupsClientListByEndpointPager)` to `(*runtime.Pager[OriginGroupsClientListByEndpointResponse])`
+- Function `NewAFDOriginGroupsClient` return value(s) have been changed from `(*AFDOriginGroupsClient)` to `(*AFDOriginGroupsClient, error)`
+- Function `*AFDCustomDomainsClient.BeginRefreshValidationToken` return value(s) have been changed from `(AFDCustomDomainsClientRefreshValidationTokenPollerResponse, error)` to `(*armruntime.Poller[AFDCustomDomainsClientRefreshValidationTokenResponse], error)`
+- Function `*EndpointsClient.ListByProfile` return value(s) have been changed from `(*EndpointsClientListByProfilePager)` to `(*runtime.Pager[EndpointsClientListByProfileResponse])`
+- Function `NewOriginGroupsClient` return value(s) have been changed from `(*OriginGroupsClient)` to `(*OriginGroupsClient, error)`
+- Function `*EndpointsClient.BeginStop` return value(s) have been changed from `(EndpointsClientStopPollerResponse, error)` to `(*armruntime.Poller[EndpointsClientStopResponse], error)`
+- Function `NewManagementClient` return value(s) have been changed from `(*ManagementClient)` to `(*ManagementClient, error)`
+- Function `*RulesClient.BeginCreate` return value(s) have been changed from `(RulesClientCreatePollerResponse, error)` to `(*armruntime.Poller[RulesClientCreateResponse], error)`
+- Function `NewRoutesClient` return value(s) have been changed from `(*RoutesClient)` to `(*RoutesClient, error)`
+- Function `NewRuleSetsClient` return value(s) have been changed from `(*RuleSetsClient)` to `(*RuleSetsClient, error)`
+- Function `*AFDCustomDomainsClient.BeginUpdate` return value(s) have been changed from `(AFDCustomDomainsClientUpdatePollerResponse, error)` to `(*armruntime.Poller[AFDCustomDomainsClientUpdateResponse], error)`
+- Function `*AFDOriginGroupsClient.ListByProfile` return value(s) have been changed from `(*AFDOriginGroupsClientListByProfilePager)` to `(*runtime.Pager[AFDOriginGroupsClientListByProfileResponse])`
+- Function `NewEdgeNodesClient` return value(s) have been changed from `(*EdgeNodesClient)` to `(*EdgeNodesClient, error)`
+- Function `*RoutesClient.BeginCreate` return value(s) have been changed from `(RoutesClientCreatePollerResponse, error)` to `(*armruntime.Poller[RoutesClientCreateResponse], error)`
+- Function `*AFDOriginsClient.BeginUpdate` return value(s) have been changed from `(AFDOriginsClientUpdatePollerResponse, error)` to `(*armruntime.Poller[AFDOriginsClientUpdateResponse], error)`
+- Function `*SecretsClient.BeginDelete` return value(s) have been changed from `(SecretsClientDeletePollerResponse, error)` to `(*armruntime.Poller[SecretsClientDeleteResponse], error)`
+- Function `*ProfilesClient.ListByResourceGroup` return value(s) have been changed from `(*ProfilesClientListByResourceGroupPager)` to `(*runtime.Pager[ProfilesClientListByResourceGroupResponse])`
+- Function `*ProfilesClient.BeginUpdate` return value(s) have been changed from `(ProfilesClientUpdatePollerResponse, error)` to `(*armruntime.Poller[ProfilesClientUpdateResponse], error)`
+- Function `NewProfilesClient` return value(s) have been changed from `(*ProfilesClient)` to `(*ProfilesClient, error)`
+- Function `*EndpointsClient.BeginStart` return value(s) have been changed from `(EndpointsClientStartPollerResponse, error)` to `(*armruntime.Poller[EndpointsClientStartResponse], error)`
+- Function `*OriginsClient.ListByEndpoint` return value(s) have been changed from `(*OriginsClientListByEndpointPager)` to `(*runtime.Pager[OriginsClientListByEndpointResponse])`
+- Function `*AFDOriginGroupsClient.BeginUpdate` return value(s) have been changed from `(AFDOriginGroupsClientUpdatePollerResponse, error)` to `(*armruntime.Poller[AFDOriginGroupsClientUpdateResponse], error)`
+- Function `*CustomDomainsClient.BeginDelete` return value(s) have been changed from `(CustomDomainsClientDeletePollerResponse, error)` to `(*armruntime.Poller[CustomDomainsClientDeleteResponse], error)`
+- Function `*CustomDomainsClient.ListByEndpoint` return value(s) have been changed from `(*CustomDomainsClientListByEndpointPager)` to `(*runtime.Pager[CustomDomainsClientListByEndpointResponse])`
+- Function `*AFDEndpointsClient.BeginDelete` return value(s) have been changed from `(AFDEndpointsClientDeletePollerResponse, error)` to `(*armruntime.Poller[AFDEndpointsClientDeleteResponse], error)`
+- Function `*OriginGroupsClient.BeginUpdate` return value(s) have been changed from `(OriginGroupsClientUpdatePollerResponse, error)` to `(*armruntime.Poller[OriginGroupsClientUpdateResponse], error)`
+- Function `NewAFDOriginsClient` return value(s) have been changed from `(*AFDOriginsClient)` to `(*AFDOriginsClient, error)`
+- Function `*AFDCustomDomainsClient.ListByProfile` return value(s) have been changed from `(*AFDCustomDomainsClientListByProfilePager)` to `(*runtime.Pager[AFDCustomDomainsClientListByProfileResponse])`
+- Function `*PoliciesClient.List` return value(s) have been changed from `(*PoliciesClientListPager)` to `(*runtime.Pager[PoliciesClientListResponse])`
+- Function `*AFDOriginsClient.ListByOriginGroup` return value(s) have been changed from `(*AFDOriginsClientListByOriginGroupPager)` to `(*runtime.Pager[AFDOriginsClientListByOriginGroupResponse])`
+- Function `*RulesClient.ListByRuleSet` return value(s) have been changed from `(*RulesClientListByRuleSetPager)` to `(*runtime.Pager[RulesClientListByRuleSetResponse])`
+- Function `*AFDOriginGroupsClient.ListResourceUsage` return value(s) have been changed from `(*AFDOriginGroupsClientListResourceUsagePager)` to `(*runtime.Pager[AFDOriginGroupsClientListResourceUsageResponse])`
+- Function `NewManagedRuleSetsClient` return value(s) have been changed from `(*ManagedRuleSetsClient)` to `(*ManagedRuleSetsClient, error)`
+- Function `*ManagedRuleSetsClient.List` return value(s) have been changed from `(*ManagedRuleSetsClientListPager)` to `(*runtime.Pager[ManagedRuleSetsClientListResponse])`
+- Function `*SecretsClient.ListByProfile` return value(s) have been changed from `(*SecretsClientListByProfilePager)` to `(*runtime.Pager[SecretsClientListByProfileResponse])`
+- Function `*OriginsClient.BeginCreate` return value(s) have been changed from `(OriginsClientCreatePollerResponse, error)` to `(*armruntime.Poller[OriginsClientCreateResponse], error)`
+- Function `*AFDCustomDomainsClient.BeginDelete` return value(s) have been changed from `(AFDCustomDomainsClientDeletePollerResponse, error)` to `(*armruntime.Poller[AFDCustomDomainsClientDeleteResponse], error)`
+- Function `*ProfilesClient.BeginDelete` return value(s) have been changed from `(ProfilesClientDeletePollerResponse, error)` to `(*armruntime.Poller[ProfilesClientDeleteResponse], error)`
+- Function `*EndpointsClient.BeginPurgeContent` return value(s) have been changed from `(EndpointsClientPurgeContentPollerResponse, error)` to `(*armruntime.Poller[EndpointsClientPurgeContentResponse], error)`
+- Function `*SecurityPoliciesClient.BeginDelete` return value(s) have been changed from `(SecurityPoliciesClientDeletePollerResponse, error)` to `(*armruntime.Poller[SecurityPoliciesClientDeleteResponse], error)`
+- Function `NewRulesClient` return value(s) have been changed from `(*RulesClient)` to `(*RulesClient, error)`
+- Function `NewLogAnalyticsClient` return value(s) have been changed from `(*LogAnalyticsClient)` to `(*LogAnalyticsClient, error)`
+- Function `NewResourceUsageClient` return value(s) have been changed from `(*ResourceUsageClient)` to `(*ResourceUsageClient, error)`
+- Function `NewEndpointsClient` return value(s) have been changed from `(*EndpointsClient)` to `(*EndpointsClient, error)`
+- Function `NewAFDEndpointsClient` return value(s) have been changed from `(*AFDEndpointsClient)` to `(*AFDEndpointsClient, error)`
+- Function `*EndpointsClient.BeginLoadContent` return value(s) have been changed from `(EndpointsClientLoadContentPollerResponse, error)` to `(*armruntime.Poller[EndpointsClientLoadContentResponse], error)`
+- Function `*RoutesClient.BeginUpdate` return value(s) have been changed from `(RoutesClientUpdatePollerResponse, error)` to `(*armruntime.Poller[RoutesClientUpdateResponse], error)`
+- Function `*AFDEndpointsClient.ListResourceUsage` return value(s) have been changed from `(*AFDEndpointsClientListResourceUsagePager)` to `(*runtime.Pager[AFDEndpointsClientListResourceUsageResponse])`
+- Function `*SecurityPoliciesClient.BeginPatch` return value(s) have been changed from `(SecurityPoliciesClientPatchPollerResponse, error)` to `(*armruntime.Poller[SecurityPoliciesClientPatchResponse], error)`
+- Function `*AFDEndpointsClient.ListByProfile` return value(s) have been changed from `(*AFDEndpointsClientListByProfilePager)` to `(*runtime.Pager[AFDEndpointsClientListByProfileResponse])`
+- Function `NewCustomDomainsClient` return value(s) have been changed from `(*CustomDomainsClient)` to `(*CustomDomainsClient, error)`
+- Function `*RoutesClient.BeginDelete` return value(s) have been changed from `(RoutesClientDeletePollerResponse, error)` to `(*armruntime.Poller[RoutesClientDeleteResponse], error)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `*OriginsClient.BeginDelete` return value(s) have been changed from `(OriginsClientDeletePollerResponse, error)` to `(*armruntime.Poller[OriginsClientDeleteResponse], error)`
+- Function `NewAFDProfilesClient` return value(s) have been changed from `(*AFDProfilesClient)` to `(*AFDProfilesClient, error)`
+- Function `*EndpointsClient.BeginUpdate` return value(s) have been changed from `(EndpointsClientUpdatePollerResponse, error)` to `(*armruntime.Poller[EndpointsClientUpdateResponse], error)`
+- Function `*AFDProfilesClient.ListResourceUsage` return value(s) have been changed from `(*AFDProfilesClientListResourceUsagePager)` to `(*runtime.Pager[AFDProfilesClientListResourceUsageResponse])`
+- Function `*AFDCustomDomainsClient.BeginCreate` return value(s) have been changed from `(AFDCustomDomainsClientCreatePollerResponse, error)` to `(*armruntime.Poller[AFDCustomDomainsClientCreateResponse], error)`
+- Function `*AFDEndpointsClient.BeginCreate` return value(s) have been changed from `(AFDEndpointsClientCreatePollerResponse, error)` to `(*armruntime.Poller[AFDEndpointsClientCreateResponse], error)`
+- Function `NewSecretsClient` return value(s) have been changed from `(*SecretsClient)` to `(*SecretsClient, error)`
+- Function `*SecurityPoliciesClient.BeginCreate` return value(s) have been changed from `(SecurityPoliciesClientCreatePollerResponse, error)` to `(*armruntime.Poller[SecurityPoliciesClientCreateResponse], error)`
+- Function `*RuleSetsClient.ListResourceUsage` return value(s) have been changed from `(*RuleSetsClientListResourceUsagePager)` to `(*runtime.Pager[RuleSetsClientListResourceUsageResponse])`
+- Function `NewPoliciesClient` return value(s) have been changed from `(*PoliciesClient)` to `(*PoliciesClient, error)`
+- Function `*PoliciesClient.BeginCreateOrUpdate` return value(s) have been changed from `(PoliciesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[PoliciesClientCreateOrUpdateResponse], error)`
+- Function `*AFDEndpointsClient.BeginPurgeContent` return value(s) have been changed from `(AFDEndpointsClientPurgeContentPollerResponse, error)` to `(*armruntime.Poller[AFDEndpointsClientPurgeContentResponse], error)`
+- Function `*ProfilesClient.BeginCreate` return value(s) have been changed from `(ProfilesClientCreatePollerResponse, error)` to `(*armruntime.Poller[ProfilesClientCreateResponse], error)`
+- Function `*RulesClient.BeginUpdate` return value(s) have been changed from `(RulesClientUpdatePollerResponse, error)` to `(*armruntime.Poller[RulesClientUpdateResponse], error)`
+- Function `*EndpointsClient.ListResourceUsage` return value(s) have been changed from `(*EndpointsClientListResourceUsagePager)` to `(*runtime.Pager[EndpointsClientListResourceUsageResponse])`
+- Function `*ProfilesClient.List` return value(s) have been changed from `(*ProfilesClientListPager)` to `(*runtime.Pager[ProfilesClientListResponse])`
+- Function `NewOriginsClient` return value(s) have been changed from `(*OriginsClient)` to `(*OriginsClient, error)`
+- Function `*OriginsClient.BeginUpdate` return value(s) have been changed from `(OriginsClientUpdatePollerResponse, error)` to `(*armruntime.Poller[OriginsClientUpdateResponse], error)`
+- Function `*AFDOriginGroupsClient.BeginDelete` return value(s) have been changed from `(AFDOriginGroupsClientDeletePollerResponse, error)` to `(*armruntime.Poller[AFDOriginGroupsClientDeleteResponse], error)`
+- Function `*AFDOriginGroupsClient.BeginCreate` return value(s) have been changed from `(AFDOriginGroupsClientCreatePollerResponse, error)` to `(*armruntime.Poller[AFDOriginGroupsClientCreateResponse], error)`
+- Function `*SecretsClient.BeginCreate` return value(s) have been changed from `(SecretsClientCreatePollerResponse, error)` to `(*armruntime.Poller[SecretsClientCreateResponse], error)`
+- Function `*RulesClient.BeginDelete` return value(s) have been changed from `(RulesClientDeletePollerResponse, error)` to `(*armruntime.Poller[RulesClientDeleteResponse], error)`
+- Function `*AFDEndpointsClient.BeginUpdate` return value(s) have been changed from `(AFDEndpointsClientUpdatePollerResponse, error)` to `(*armruntime.Poller[AFDEndpointsClientUpdateResponse], error)`
+- Function `*SecurityPoliciesClient.ListByProfile` return value(s) have been changed from `(*SecurityPoliciesClientListByProfilePager)` to `(*runtime.Pager[SecurityPoliciesClientListByProfileResponse])`
+- Function `*RuleSetsClient.ListByProfile` return value(s) have been changed from `(*RuleSetsClientListByProfilePager)` to `(*runtime.Pager[RuleSetsClientListByProfileResponse])`
+- Function `*EdgeNodesClient.List` return value(s) have been changed from `(*EdgeNodesClientListPager)` to `(*runtime.Pager[EdgeNodesClientListResponse])`
+- Function `*EndpointsClient.BeginCreate` return value(s) have been changed from `(EndpointsClientCreatePollerResponse, error)` to `(*armruntime.Poller[EndpointsClientCreateResponse], error)`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `*RuleSetsClient.BeginDelete` return value(s) have been changed from `(RuleSetsClientDeletePollerResponse, error)` to `(*armruntime.Poller[RuleSetsClientDeleteResponse], error)`
+- Function `*PoliciesClient.BeginUpdate` return value(s) have been changed from `(PoliciesClientUpdatePollerResponse, error)` to `(*armruntime.Poller[PoliciesClientUpdateResponse], error)`
+- Function `*OriginGroupsClient.BeginDelete` return value(s) have been changed from `(OriginGroupsClientDeletePollerResponse, error)` to `(*armruntime.Poller[OriginGroupsClientDeleteResponse], error)`
+- Function `*AFDOriginsClient.BeginDelete` return value(s) have been changed from `(AFDOriginsClientDeletePollerResponse, error)` to `(*armruntime.Poller[AFDOriginsClientDeleteResponse], error)`
+- Function `*EndpointsClient.BeginDelete` return value(s) have been changed from `(EndpointsClientDeletePollerResponse, error)` to `(*armruntime.Poller[EndpointsClientDeleteResponse], error)`
+- Function `NewValidateClient` return value(s) have been changed from `(*ValidateClient)` to `(*ValidateClient, error)`
+- Function `*RoutesClient.ListByEndpoint` return value(s) have been changed from `(*RoutesClientListByEndpointPager)` to `(*runtime.Pager[RoutesClientListByEndpointResponse])`
+- Function `*AFDOriginsClient.BeginCreate` return value(s) have been changed from `(AFDOriginsClientCreatePollerResponse, error)` to `(*armruntime.Poller[AFDOriginsClientCreateResponse], error)`
+- Function `*CustomDomainsClient.BeginCreate` return value(s) have been changed from `(CustomDomainsClientCreatePollerResponse, error)` to `(*armruntime.Poller[CustomDomainsClientCreateResponse], error)`
+- Function `NewSecurityPoliciesClient` return value(s) have been changed from `(*SecurityPoliciesClient)` to `(*SecurityPoliciesClient, error)`
+- Function `*ResourceUsageClient.List` return value(s) have been changed from `(*ResourceUsageClientListPager)` to `(*runtime.Pager[ResourceUsageClientListResponse])`
+- Function `NewAFDCustomDomainsClient` return value(s) have been changed from `(*AFDCustomDomainsClient)` to `(*AFDCustomDomainsClient, error)`
+- Function `*ProfilesClient.ListResourceUsage` return value(s) have been changed from `(*ProfilesClientListResourceUsagePager)` to `(*runtime.Pager[ProfilesClientListResourceUsageResponse])`
+- Type of `AFDOriginProperties.SharedPrivateLinkResource` has been changed from `interface{}` to `*SharedPrivateLinkResourceProperties`
+- Type of `AFDOriginUpdatePropertiesParameters.SharedPrivateLinkResource` has been changed from `interface{}` to `*SharedPrivateLinkResourceProperties`
+- Type of `AfdRouteCacheConfiguration.CompressionSettings` has been changed from `interface{}` to `*CompressionSettings`
+- Const `ManagedServiceIdentityTypeSystemAssignedUserAssigned` has been removed
+- Const `ManagedServiceIdentityTypeUserAssigned` has been removed
+- Const `ManagedServiceIdentityTypeNone` has been removed
+- Const `ManagedServiceIdentityTypeSystemAssigned` has been removed
+- Function `ProtocolType.ToPtr` has been removed
+- Function `*EndpointsClientListResourceUsagePager.PageResponse` has been removed
+- Function `*OriginGroupsClientListByEndpointPager.NextPage` has been removed
+- Function `*OriginsClientUpdatePoller.Done` has been removed
+- Function `AFDOriginGroupsClientCreatePollerResponse.PollUntilDone` has been removed
+- Function `*AFDProfilesClientListResourceUsagePager.PageResponse` has been removed
+- Function `*OriginGroupsClientCreatePoller.Done` has been removed
+- Function `*AFDCustomDomainsClientRefreshValidationTokenPoller.Poll` has been removed
+- Function `*OriginGroupsClientDeletePoller.FinalResponse` has been removed
+- Function `CdnCertificateSourceParametersTypeName.ToPtr` has been removed
+- Function `WafAction.ToPtr` has been removed
+- Function `AFDCustomDomainsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*OriginGroupsClientDeletePoller.ResumeToken` has been removed
+- Function `RoutesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*SecurityPoliciesClientCreatePollerResponse.Resume` has been removed
+- Function `*ProfilesClientListResourceUsagePager.PageResponse` has been removed
+- Function `*CustomDomainsClientCreatePoller.Poll` has been removed
+- Function `CacheExpirationActionParametersTypeName.ToPtr` has been removed
+- Function `PoliciesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*OriginsClientUpdatePoller.Poll` has been removed
+- Function `*SecurityPoliciesClientPatchPoller.Done` has been removed
+- Function `RequestURIOperator.ToPtr` has been removed
+- Function `*EndpointsClientUpdatePoller.ResumeToken` has been removed
+- Function `*RulesClientUpdatePoller.Done` has been removed
+- Function `*RoutesClientCreatePollerResponse.Resume` has been removed
+- Function `LogMetric.ToPtr` has been removed
+- Function `*CustomDomainsClientDeletePoller.Poll` has been removed
+- Function `*AFDEndpointsClientDeletePoller.Poll` has been removed
+- Function `*EndpointsClientCreatePollerResponse.Resume` has been removed
+- Function `CacheKeyQueryStringActionParametersTypeName.ToPtr` has been removed
+- Function `*EndpointsClientListByProfilePager.NextPage` has been removed
+- Function `*OriginsClientCreatePollerResponse.Resume` has been removed
+- Function `RequestBodyMatchConditionParametersTypeName.ToPtr` has been removed
+- Function `CacheBehavior.ToPtr` has been removed
+- Function `*EndpointsClientStartPoller.ResumeToken` has been removed
+- Function `*EndpointsClientStartPollerResponse.Resume` has been removed
+- Function `*AFDOriginsClientCreatePoller.Done` has been removed
+- Function `*EndpointsClientCreatePoller.ResumeToken` has been removed
+- Function `*SecurityPoliciesClientDeletePoller.Poll` has been removed
+- Function `*AFDEndpointsClientListResourceUsagePager.PageResponse` has been removed
+- Function `HeaderAction.ToPtr` has been removed
+- Function `EndpointResourceState.ToPtr` has been removed
+- Function `*AFDOriginGroupsClientListByProfilePager.PageResponse` has been removed
+- Function `SocketAddrMatchConditionParametersTypeName.ToPtr` has been removed
+- Function `EndpointsClientStopPollerResponse.PollUntilDone` has been removed
+- Function `*CustomDomainsClientListByEndpointPager.NextPage` has been removed
+- Function `*SecurityPoliciesClientCreatePoller.FinalResponse` has been removed
+- Function `*EndpointsClientDeletePollerResponse.Resume` has been removed
+- Function `KeyVaultSigningKeyParametersTypeName.ToPtr` has been removed
+- Function `*ProfilesClientListResourceUsagePager.Err` has been removed
+- Function `*OriginGroupsClientUpdatePoller.Done` has been removed
+- Function `*AFDCustomDomainsClientUpdatePoller.FinalResponse` has been removed
+- Function `*AFDOriginsClientDeletePollerResponse.Resume` has been removed
+- Function `RequestSchemeMatchConditionParametersTypeName.ToPtr` has been removed
+- Function `*PoliciesClientUpdatePoller.Poll` has been removed
+- Function `SSLProtocol.ToPtr` has been removed
+- Function `*ProfilesClientCreatePoller.ResumeToken` has been removed
+- Function `*EndpointsClientPurgeContentPoller.ResumeToken` has been removed
+- Function `*ProfilesClientUpdatePollerResponse.Resume` has been removed
+- Function `LinkToDefaultDomain.ToPtr` has been removed
+- Function `*SecurityPoliciesClientCreatePoller.Done` has been removed
+- Function `*ResourceUsageClientListPager.NextPage` has been removed
+- Function `*AFDOriginGroupsClientCreatePoller.ResumeToken` has been removed
+- Function `*PoliciesClientUpdatePoller.ResumeToken` has been removed
+- Function `CookiesMatchConditionParametersTypeName.ToPtr` has been removed
+- Function `*RulesClientDeletePollerResponse.Resume` has been removed
+- Function `*AFDCustomDomainsClientDeletePoller.Done` has been removed
+- Function `IsDeviceMatchConditionParametersMatchValuesItem.ToPtr` has been removed
+- Function `*SecretsClientDeletePoller.Poll` has been removed
+- Function `MinimumTLSVersion.ToPtr` has been removed
+- Function `*AFDOriginGroupsClientCreatePollerResponse.Resume` has been removed
+- Function `*AFDOriginGroupsClientListResourceUsagePager.PageResponse` has been removed
+- Function `*RoutesClientListByEndpointPager.PageResponse` has been removed
+- Function `*AFDOriginGroupsClientListByProfilePager.Err` has been removed
+- Function `*EndpointsClientLoadContentPoller.ResumeToken` has been removed
+- Function `*OriginsClientCreatePoller.ResumeToken` has been removed
+- Function `EndpointsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*AFDOriginGroupsClientDeletePoller.FinalResponse` has been removed
+- Function `ResponseBasedDetectedErrorTypes.ToPtr` has been removed
+- Function `*AFDCustomDomainsClientDeletePollerResponse.Resume` has been removed
+- Function `OriginResourceState.ToPtr` has been removed
+- Function `UsageUnit.ToPtr` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Function `AFDEndpointsClientCreatePollerResponse.PollUntilDone` has been removed
+- Function `*SecretsClientCreatePollerResponse.Resume` has been removed
+- Function `*AFDOriginsClientUpdatePoller.Poll` has been removed
+- Function `EndpointsClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `SecurityPoliciesClientCreatePollerResponse.PollUntilDone` has been removed
+- Function `*AFDOriginGroupsClientDeletePoller.Done` has been removed
+- Function `*ProfilesClientCreatePoller.FinalResponse` has been removed
+- Function `ProfilesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*RoutesClientDeletePoller.Poll` has been removed
+- Function `*ProfilesClientDeletePoller.Done` has been removed
+- Function `*AFDEndpointsClientDeletePoller.ResumeToken` has been removed
+- Function `*AFDOriginsClientUpdatePoller.ResumeToken` has been removed
+- Function `*EndpointsClientStartPoller.FinalResponse` has been removed
+- Function `ProfilesClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*PoliciesClientUpdatePollerResponse.Resume` has been removed
+- Function `RequestHeaderMatchConditionParametersTypeName.ToPtr` has been removed
+- Function `RequestHeaderOperator.ToPtr` has been removed
+- Function `ProfilesClientCreatePollerResponse.PollUntilDone` has been removed
+- Function `OriginGroupsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `PolicySettingsDefaultCustomBlockResponseStatusCode.ToPtr` has been removed
+- Function `*AFDEndpointsClientPurgeContentPoller.Poll` has been removed
+- Function `*CustomDomainsClientCreatePollerResponse.Resume` has been removed
+- Function `AFDOriginGroupsClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*OriginGroupsClientUpdatePoller.ResumeToken` has been removed
+- Function `*EdgeNodesClientListPager.NextPage` has been removed
+- Function `RequestSchemeMatchConditionParametersOperator.ToPtr` has been removed
+- Function `IsDeviceOperator.ToPtr` has been removed
+- Function `URLFileNameOperator.ToPtr` has been removed
+- Function `*AFDEndpointsClientCreatePoller.FinalResponse` has been removed
+- Function `WafRuleType.ToPtr` has been removed
+- Function `*ProfilesClientListPager.Err` has been removed
+- Function `*RulesClientUpdatePoller.ResumeToken` has been removed
+- Function `*EndpointsClientPurgeContentPoller.FinalResponse` has been removed
+- Function `URLSigningActionParametersTypeName.ToPtr` has been removed
+- Function `LogRankingMetric.ToPtr` has been removed
+- Function `*AFDOriginsClientUpdatePollerResponse.Resume` has been removed
+- Function `*OriginsClientCreatePoller.FinalResponse` has been removed
+- Function `*EndpointsClientListByProfilePager.Err` has been removed
+- Function `*RuleSetsClientDeletePoller.Poll` has been removed
+- Function `*AFDCustomDomainsClientCreatePoller.FinalResponse` has been removed
+- Function `*AFDCustomDomainsClientCreatePoller.Poll` has been removed
+- Function `*RoutesClientUpdatePoller.FinalResponse` has been removed
+- Function `*RulesClientDeletePoller.FinalResponse` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `WafRankingGroupBy.ToPtr` has been removed
+- Function `DeliveryRuleAction.ToPtr` has been removed
+- Function `*SecurityPoliciesClientDeletePollerResponse.Resume` has been removed
+- Function `*SecretsClientListByProfilePager.PageResponse` has been removed
+- Function `CookiesOperator.ToPtr` has been removed
+- Function `*SecretsClientDeletePoller.ResumeToken` has been removed
+- Function `SecretType.ToPtr` has been removed
+- Function `URLPathMatchConditionParametersTypeName.ToPtr` has been removed
+- Function `*SecretsClientCreatePoller.FinalResponse` has been removed
+- Function `*AFDEndpointsClientUpdatePoller.FinalResponse` has been removed
+- Function `WafMatchVariable.ToPtr` has been removed
+- Function `*AFDEndpointsClientCreatePollerResponse.Resume` has been removed
+- Function `*RoutesClientUpdatePoller.ResumeToken` has been removed
+- Function `*SecurityPoliciesClientCreatePoller.ResumeToken` has been removed
+- Function `OriginGroupsClientCreatePollerResponse.PollUntilDone` has been removed
+- Function `*CustomDomainsClientCreatePoller.FinalResponse` has been removed
+- Function `*ManagedRuleSetsClientListPager.PageResponse` has been removed
+- Function `*AFDEndpointsClientPurgeContentPollerResponse.Resume` has been removed
+- Function `LogMetricsGranularity.ToPtr` has been removed
+- Function `AFDOriginsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `MatchVariable.ToPtr` has been removed
+- Function `*EndpointsClientLoadContentPoller.Poll` has been removed
+- Function `ServerPortOperator.ToPtr` has been removed
+- Function `RoutesClientCreatePollerResponse.PollUntilDone` has been removed
+- Function `*OriginGroupsClientDeletePoller.Poll` has been removed
+- Function `HTTPSRedirect.ToPtr` has been removed
+- Function `HTTPVersionOperator.ToPtr` has been removed
+- Function `*CustomDomainsClientListByEndpointPager.PageResponse` has been removed
+- Function `ProvisioningState.ToPtr` has been removed
+- Function `PossibleManagedServiceIdentityTypeValues` has been removed
+- Function `URLFileExtensionOperator.ToPtr` has been removed
+- Function `*RuleSetsClientDeletePollerResponse.Resume` has been removed
+- Function `AFDEndpointsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `CertificateSource.ToPtr` has been removed
+- Function `HeaderActionParametersTypeName.ToPtr` has been removed
+- Function `*ResourceUsageClientListPager.Err` has been removed
+- Function `*AFDCustomDomainsClientRefreshValidationTokenPoller.FinalResponse` has been removed
+- Function `CacheType.ToPtr` has been removed
+- Function `AFDCustomDomainsClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `ServerPortMatchConditionParametersTypeName.ToPtr` has been removed
+- Function `*OriginGroupsClientCreatePoller.Poll` has been removed
+- Function `RuleSetsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `OptimizationType.ToPtr` has been removed
+- Function `*AFDOriginGroupsClientUpdatePoller.FinalResponse` has been removed
+- Function `*OriginGroupsClientCreatePoller.ResumeToken` has been removed
+- Function `*EndpointsClientUpdatePoller.Poll` has been removed
+- Function `RuleIsCompressionEnabled.ToPtr` has been removed
+- Function `AFDOriginsClientCreatePollerResponse.PollUntilDone` has been removed
+- Function `*RulesClientUpdatePoller.FinalResponse` has been removed
+- Function `*OriginsClientListByEndpointPager.NextPage` has been removed
+- Function `*OriginGroupsClientUpdatePoller.Poll` has been removed
+- Function `*AFDProfilesClientListResourceUsagePager.Err` has been removed
+- Function `RequestURIMatchConditionParametersTypeName.ToPtr` has been removed
+- Function `*RulesClientCreatePoller.Poll` has been removed
+- Function `SocketAddrOperator.ToPtr` has been removed
+- Function `HostNameOperator.ToPtr` has been removed
+- Function `*AFDOriginGroupsClientCreatePoller.Poll` has been removed
+- Function `*OriginGroupsClientCreatePollerResponse.Resume` has been removed
+- Function `*AFDOriginGroupsClientListResourceUsagePager.Err` has been removed
+- Function `WafMetricsResponseGranularity.ToPtr` has been removed
+- Function `*RuleSetsClientListResourceUsagePager.PageResponse` has been removed
+- Function `*AFDEndpointsClientListByProfilePager.NextPage` has been removed
+- Function `*EndpointsClientStartPoller.Done` has been removed
+- Function `*SecretsClientDeletePollerResponse.Resume` has been removed
+- Function `*CustomDomainsClientListByEndpointPager.Err` has been removed
+- Function `*OriginsClientListByEndpointPager.Err` has been removed
+- Function `DeploymentStatus.ToPtr` has been removed
+- Function `SKUName.ToPtr` has been removed
+- Function `*AFDCustomDomainsClientRefreshValidationTokenPollerResponse.Resume` has been removed
+- Function `*RulesClientUpdatePoller.Poll` has been removed
+- Function `*AFDCustomDomainsClientDeletePoller.ResumeToken` has been removed
+- Function `*RoutesClientUpdatePoller.Done` has been removed
+- Function `EnabledState.ToPtr` has been removed
+- Function `*OriginsClientDeletePoller.FinalResponse` has been removed
+- Function `*RoutesClientDeletePoller.FinalResponse` has been removed
+- Function `*AFDCustomDomainsClientDeletePoller.FinalResponse` has been removed
+- Function `*AFDOriginGroupsClientDeletePoller.Poll` has been removed
+- Function `*EdgeNodesClientListPager.PageResponse` has been removed
+- Function `*RuleSetsClientDeletePoller.FinalResponse` has been removed
+- Function `MatchProcessingBehavior.ToPtr` has been removed
+- Function `*AFDOriginGroupsClientListByProfilePager.NextPage` has been removed
+- Function `Algorithm.ToPtr` has been removed
+- Function `*CustomDomainsClientDeletePollerResponse.Resume` has been removed
+- Function `URLFileNameMatchConditionParametersTypeName.ToPtr` has been removed
+- Function `*SecretsClientListByProfilePager.Err` has been removed
+- Function `AfdQueryStringCachingBehavior.ToPtr` has been removed
+- Function `*AFDOriginGroupsClientDeletePollerResponse.Resume` has been removed
+- Function `RoutesClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ResourceUsageClientListPager.PageResponse` has been removed
+- Function `*AFDEndpointsClientUpdatePoller.ResumeToken` has been removed
+- Function `*RoutesClientUpdatePollerResponse.Resume` has been removed
+- Function `*RoutesClientCreatePoller.FinalResponse` has been removed
+- Function `WafRankingType.ToPtr` has been removed
+- Function `*EndpointsClientStopPoller.Done` has been removed
+- Function `QueryStringMatchConditionParametersTypeName.ToPtr` has been removed
+- Function `*EndpointsClientLoadContentPollerResponse.Resume` has been removed
+- Function `RequestMethodMatchConditionParametersTypeName.ToPtr` has been removed
+- Function `*RulesClientCreatePoller.ResumeToken` has been removed
+- Function `*PoliciesClientListPager.PageResponse` has been removed
+- Function `SecurityPoliciesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `RuleQueryStringCachingBehavior.ToPtr` has been removed
+- Function `*EndpointsClientStopPoller.ResumeToken` has been removed
+- Function `*ProfilesClientListByResourceGroupPager.Err` has been removed
+- Function `*OriginsClientDeletePoller.ResumeToken` has been removed
+- Function `RemoteAddressOperator.ToPtr` has been removed
+- Function `RulesClientCreatePollerResponse.PollUntilDone` has been removed
+- Function `*AFDOriginsClientListByOriginGroupPager.NextPage` has been removed
+- Function `*EndpointsClientPurgeContentPoller.Poll` has been removed
+- Function `*OriginsClientDeletePoller.Done` has been removed
+- Function `*AFDOriginsClientDeletePoller.FinalResponse` has been removed
+- Function `*RuleSetsClientListByProfilePager.Err` has been removed
+- Function `*PoliciesClientListPager.Err` has been removed
+- Function `*RoutesClientDeletePollerResponse.Resume` has been removed
+- Function `UpdateRule.ToPtr` has been removed
+- Function `*ProfilesClientListByResourceGroupPager.NextPage` has been removed
+- Function `*AFDCustomDomainsClientCreatePoller.Done` has been removed
+- Function `*AFDCustomDomainsClientCreatePoller.ResumeToken` has been removed
+- Function `EndpointsClientStartPollerResponse.PollUntilDone` has been removed
+- Function `QueryStringBehavior.ToPtr` has been removed
+- Function `*PoliciesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*EndpointsClientStopPollerResponse.Resume` has been removed
+- Function `*AFDOriginsClientCreatePollerResponse.Resume` has been removed
+- Function `LogRanking.ToPtr` has been removed
+- Function `CustomDomainsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*PoliciesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*OriginGroupsClientDeletePoller.Done` has been removed
+- Function `PostArgsMatchConditionParametersTypeName.ToPtr` has been removed
+- Function `*SecurityPoliciesClientListByProfilePager.Err` has been removed
+- Function `EndpointsClientPurgeContentPollerResponse.PollUntilDone` has been removed
+- Function `HealthProbeRequestType.ToPtr` has been removed
+- Function `*EndpointsClientCreatePoller.FinalResponse` has been removed
+- Function `*AFDOriginGroupsClientListResourceUsagePager.NextPage` has been removed
+- Function `ManagedRuleEnabledState.ToPtr` has been removed
+- Function `*RuleSetsClientListByProfilePager.PageResponse` has been removed
+- Function `AFDEndpointProtocols.ToPtr` has been removed
+- Function `*EdgeNodesClientListPager.Err` has been removed
+- Function `*AFDCustomDomainsClientListByProfilePager.PageResponse` has been removed
+- Function `ParamIndicator.ToPtr` has been removed
+- Function `*ProfilesClientUpdatePoller.FinalResponse` has been removed
+- Function `RequestMethodMatchConditionParametersMatchValuesItem.ToPtr` has been removed
+- Function `OriginGroupResourceState.ToPtr` has been removed
+- Function `AfdProvisioningState.ToPtr` has been removed
+- Function `*AFDOriginsClientUpdatePoller.FinalResponse` has been removed
+- Function `*OriginsClientListByEndpointPager.PageResponse` has been removed
+- Function `*AFDOriginsClientDeletePoller.Done` has been removed
+- Function `*AFDEndpointsClientUpdatePoller.Done` has been removed
+- Function `EndpointsClientLoadContentPollerResponse.PollUntilDone` has been removed
+- Function `*RulesClientListByRuleSetPager.PageResponse` has been removed
+- Function `*AFDOriginGroupsClientUpdatePollerResponse.Resume` has been removed
+- Function `MetricsResponseGranularity.ToPtr` has been removed
+- Function `*SecurityPoliciesClientPatchPollerResponse.Resume` has been removed
+- Function `*OriginGroupsClientUpdatePoller.FinalResponse` has been removed
+- Function `*RulesClientCreatePoller.FinalResponse` has been removed
+- Function `MetricsResponseSeriesItemUnit.ToPtr` has been removed
+- Function `URLFileExtensionMatchConditionParametersTypeName.ToPtr` has been removed
+- Function `*OriginsClientDeletePoller.Poll` has been removed
+- Function `*OriginGroupsClientListByEndpointPager.Err` has been removed
+- Function `*ProfilesClientListPager.PageResponse` has been removed
+- Function `IdentityType.ToPtr` has been removed
+- Function `*PoliciesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `RouteConfigurationOverrideActionParametersTypeName.ToPtr` has been removed
+- Function `*SecretsClientCreatePoller.Poll` has been removed
+- Function `*AFDOriginsClientListByOriginGroupPager.PageResponse` has been removed
+- Function `OriginsClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*RoutesClientCreatePoller.Done` has been removed
+- Function `*AFDOriginsClientListByOriginGroupPager.Err` has been removed
+- Function `*AFDOriginsClientCreatePoller.FinalResponse` has been removed
+- Function `AFDOriginsClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*RuleSetsClientDeletePoller.Done` has been removed
+- Function `*AFDEndpointsClientListResourceUsagePager.NextPage` has been removed
+- Function `ProfileResourceState.ToPtr` has been removed
+- Function `*OriginGroupsClientListByEndpointPager.PageResponse` has been removed
+- Function `*SecretsClientDeletePoller.FinalResponse` has been removed
+- Function `*CustomDomainsClientDeletePoller.Done` has been removed
+- Function `*ProfilesClientDeletePollerResponse.Resume` has been removed
+- Function `Transform.ToPtr` has been removed
+- Function `*RuleSetsClientListResourceUsagePager.NextPage` has been removed
+- Function `*PoliciesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*OriginGroupsClientCreatePoller.FinalResponse` has been removed
+- Function `*CustomDomainsClientCreatePoller.Done` has been removed
+- Function `IsDeviceMatchConditionParametersTypeName.ToPtr` has been removed
+- Function `WafGranularity.ToPtr` has been removed
+- Function `*AFDEndpointsClientListResourceUsagePager.Err` has been removed
+- Function `WafMetric.ToPtr` has been removed
+- Function `*RulesClientUpdatePollerResponse.Resume` has been removed
+- Function `*EndpointsClientLoadContentPoller.Done` has been removed
+- Function `*ProfilesClientListByResourceGroupPager.PageResponse` has been removed
+- Function `PoliciesClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*AFDCustomDomainsClientUpdatePollerResponse.Resume` has been removed
+- Function `*AFDEndpointsClientPurgeContentPoller.FinalResponse` has been removed
+- Function `*AFDOriginGroupsClientCreatePoller.FinalResponse` has been removed
+- Function `*RoutesClientDeletePoller.Done` has been removed
+- Function `AFDCustomDomainsClientRefreshValidationTokenPollerResponse.PollUntilDone` has been removed
+- Function `*EndpointsClientStopPoller.FinalResponse` has been removed
+- Function `*AFDCustomDomainsClientRefreshValidationTokenPoller.Done` has been removed
+- Function `HostNameMatchConditionParametersTypeName.ToPtr` has been removed
+- Function `*SecretsClientCreatePoller.ResumeToken` has been removed
+- Function `*AFDOriginsClientCreatePoller.Poll` has been removed
+- Function `*OriginsClientCreatePoller.Done` has been removed
+- Function `*EndpointsClientListByProfilePager.PageResponse` has been removed
+- Function `*AFDOriginGroupsClientUpdatePoller.Done` has been removed
+- Function `CustomRuleEnabledState.ToPtr` has been removed
+- Function `*OriginsClientUpdatePoller.ResumeToken` has been removed
+- Function `*AFDOriginsClientUpdatePoller.Done` has been removed
+- Function `*ProfilesClientCreatePollerResponse.Resume` has been removed
+- Function `*ProfilesClientDeletePoller.Poll` has been removed
+- Function `*RoutesClientUpdatePoller.Poll` has been removed
+- Function `*AFDEndpointsClientCreatePoller.Done` has been removed
+- Function `*EndpointsClientCreatePoller.Poll` has been removed
+- Function `*AFDCustomDomainsClientUpdatePoller.Done` has been removed
+- Function `*AFDEndpointsClientCreatePoller.Poll` has been removed
+- Function `*OriginsClientCreatePoller.Poll` has been removed
+- Function `DeleteRule.ToPtr` has been removed
+- Function `WafMetricsResponseSeriesItemUnit.ToPtr` has been removed
+- Function `AFDCustomDomainsClientCreatePollerResponse.PollUntilDone` has been removed
+- Function `*CustomDomainsClientDeletePoller.FinalResponse` has been removed
+- Function `*ManagedRuleSetsClientListPager.Err` has been removed
+- Function `*ManagedRuleSetsClientListPager.NextPage` has been removed
+- Function `AFDOriginGroupsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*AFDEndpointsClientListByProfilePager.Err` has been removed
+- Function `*RuleSetsClientListByProfilePager.NextPage` has been removed
+- Function `*ProfilesClientListResourceUsagePager.NextPage` has been removed
+- Function `*EndpointsClientPurgeContentPollerResponse.Resume` has been removed
+- Function `RequestBodyOperator.ToPtr` has been removed
+- Function `*RulesClientDeletePoller.ResumeToken` has been removed
+- Function `QueryStringCachingBehavior.ToPtr` has been removed
+- Function `ProbeProtocol.ToPtr` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `*SecurityPoliciesClientDeletePoller.ResumeToken` has been removed
+- Function `*SecurityPoliciesClientListByProfilePager.PageResponse` has been removed
+- Function `*EndpointsClientDeletePoller.Poll` has been removed
+- Function `OriginsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `RemoteAddressMatchConditionParametersTypeName.ToPtr` has been removed
+- Function `OriginGroupsClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `PostArgsOperator.ToPtr` has been removed
+- Function `*SecurityPoliciesClientPatchPoller.Poll` has been removed
+- Function `URLRedirectActionParametersTypeName.ToPtr` has been removed
+- Function `*AFDEndpointsClientListByProfilePager.PageResponse` has been removed
+- Function `PolicyMode.ToPtr` has been removed
+- Function `*OriginsClientDeletePollerResponse.Resume` has been removed
+- Function `RequestSchemeMatchConditionParametersMatchValuesItem.ToPtr` has been removed
+- Function `OriginGroupOverrideActionParametersTypeName.ToPtr` has been removed
+- Function `*OriginGroupsClientDeletePollerResponse.Resume` has been removed
+- Function `*EndpointsClientDeletePoller.FinalResponse` has been removed
+- Function `QueryStringOperator.ToPtr` has been removed
+- Function `*RulesClientCreatePollerResponse.Resume` has been removed
+- Function `*PoliciesClientListPager.NextPage` has been removed
+- Function `CustomDomainResourceState.ToPtr` has been removed
+- Function `*SecretsClientCreatePoller.Done` has been removed
+- Function `*ProfilesClientCreatePoller.Poll` has been removed
+- Function `*ProfilesClientUpdatePoller.Poll` has been removed
+- Function `*EndpointsClientUpdatePollerResponse.Resume` has been removed
+- Function `SecretsClientCreatePollerResponse.PollUntilDone` has been removed
+- Function `RequestMethodOperator.ToPtr` has been removed
+- Function `PrivateEndpointStatus.ToPtr` has been removed
+- Function `ActionType.ToPtr` has been removed
+- Function `*SecurityPoliciesClientPatchPoller.FinalResponse` has been removed
+- Function `GeoFilterActions.ToPtr` has been removed
+- Function `*EndpointsClientPurgeContentPoller.Done` has been removed
+- Function `URLPathOperator.ToPtr` has been removed
+- Function `RulesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*AFDOriginsClientCreatePoller.ResumeToken` has been removed
+- Function `*AFDEndpointsClientDeletePoller.Done` has been removed
+- Function `*RoutesClientDeletePoller.ResumeToken` has been removed
+- Function `SecurityPoliciesClientPatchPollerResponse.PollUntilDone` has been removed
+- Function `*ProfilesClientCreatePoller.Done` has been removed
+- Function `AfdCertificateType.ToPtr` has been removed
+- Function `*AFDOriginGroupsClientCreatePoller.Done` has been removed
+- Function `*OriginGroupsClientUpdatePollerResponse.Resume` has been removed
+- Function `*OriginsClientUpdatePollerResponse.Resume` has been removed
+- Function `*RulesClientDeletePoller.Done` has been removed
+- Function `SecurityPolicyType.ToPtr` has been removed
+- Function `EndpointsClientCreatePollerResponse.PollUntilDone` has been removed
+- Function `*RulesClientDeletePoller.Poll` has been removed
+- Function `*SecretsClientListByProfilePager.NextPage` has been removed
+- Function `DestinationProtocol.ToPtr` has been removed
+- Function `*AFDOriginGroupsClientUpdatePoller.ResumeToken` has been removed
+- Function `CustomDomainsClientCreatePollerResponse.PollUntilDone` has been removed
+- Function `*AFDEndpointsClientUpdatePoller.Poll` has been removed
+- Function `URLRewriteActionParametersTypeName.ToPtr` has been removed
+- Function `*RoutesClientListByEndpointPager.NextPage` has been removed
+- Function `*AFDOriginGroupsClientDeletePoller.ResumeToken` has been removed
+- Function `AFDEndpointsClientPurgeContentPollerResponse.PollUntilDone` has been removed
+- Function `*PoliciesClientUpdatePoller.Done` has been removed
+- Function `*AFDCustomDomainsClientListByProfilePager.NextPage` has been removed
+- Function `*SecurityPoliciesClientDeletePoller.FinalResponse` has been removed
+- Function `ClientPortMatchConditionParametersTypeName.ToPtr` has been removed
+- Function `*EndpointsClientLoadContentPoller.FinalResponse` has been removed
+- Function `LogMetricsGroupBy.ToPtr` has been removed
+- Function `ForwardingProtocol.ToPtr` has been removed
+- Function `*AFDCustomDomainsClientDeletePoller.Poll` has been removed
+- Function `*AFDCustomDomainsClientUpdatePoller.Poll` has been removed
+- Function `ManagedServiceIdentity.MarshalJSON` has been removed
+- Function `*RoutesClientCreatePoller.Poll` has been removed
+- Function `*RuleSetsClientListResourceUsagePager.Err` has been removed
+- Function `*AFDEndpointsClientCreatePoller.ResumeToken` has been removed
+- Function `AFDEndpointsClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*EndpointsClientListResourceUsagePager.Err` has been removed
+- Function `*AFDCustomDomainsClientUpdatePoller.ResumeToken` has been removed
+- Function `*AFDEndpointsClientDeletePoller.FinalResponse` has been removed
+- Function `OriginsClientCreatePollerResponse.PollUntilDone` has been removed
+- Function `*SecurityPoliciesClientPatchPoller.ResumeToken` has been removed
+- Function `*EndpointsClientCreatePoller.Done` has been removed
+- Function `AfdMinimumTLSVersion.ToPtr` has been removed
+- Function `ResourceType.ToPtr` has been removed
+- Function `ManagedServiceIdentityType.ToPtr` has been removed
+- Function `*AFDEndpointsClientPurgeContentPoller.Done` has been removed
+- Function `Operator.ToPtr` has been removed
+- Function `RedirectType.ToPtr` has been removed
+- Function `*AFDEndpointsClientPurgeContentPoller.ResumeToken` has been removed
+- Function `*PoliciesClientUpdatePoller.FinalResponse` has been removed
+- Function `DomainValidationState.ToPtr` has been removed
+- Function `*AFDEndpointsClientDeletePollerResponse.Resume` has been removed
+- Function `Status.ToPtr` has been removed
+- Function `ClientPortOperator.ToPtr` has been removed
+- Function `*SecurityPoliciesClientCreatePoller.Poll` has been removed
+- Function `RuleCacheBehavior.ToPtr` has been removed
+- Function `*ProfilesClientDeletePoller.FinalResponse` has been removed
+- Function `*SecurityPoliciesClientDeletePoller.Done` has been removed
+- Function `*AFDOriginGroupsClientUpdatePoller.Poll` has been removed
+- Function `CustomHTTPSProvisioningState.ToPtr` has been removed
+- Function `*ProfilesClientDeletePoller.ResumeToken` has been removed
+- Function `*CustomDomainsClientCreatePoller.ResumeToken` has been removed
+- Function `*EndpointsClientStartPoller.Poll` has been removed
+- Function `*RulesClientCreatePoller.Done` has been removed
+- Function `*OriginsClientUpdatePoller.FinalResponse` has been removed
+- Function `*AFDEndpointsClientUpdatePollerResponse.Resume` has been removed
+- Function `CertificateType.ToPtr` has been removed
+- Function `*SecurityPoliciesClientListByProfilePager.NextPage` has been removed
+- Function `TransformType.ToPtr` has been removed
+- Function `*RoutesClientCreatePoller.ResumeToken` has been removed
+- Function `*RulesClientListByRuleSetPager.NextPage` has been removed
+- Function `SSLProtocolOperator.ToPtr` has been removed
+- Function `*EndpointsClientUpdatePoller.FinalResponse` has been removed
+- Function `*EndpointsClientDeletePoller.ResumeToken` has been removed
+- Function `SSLProtocolMatchConditionParametersTypeName.ToPtr` has been removed
+- Function `*AFDOriginsClientDeletePoller.ResumeToken` has been removed
+- Function `PolicyEnabledState.ToPtr` has been removed
+- Function `*PoliciesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ProfilesClientUpdatePoller.Done` has been removed
+- Function `*CustomDomainsClientDeletePoller.ResumeToken` has been removed
+- Function `CustomHTTPSProvisioningSubstate.ToPtr` has been removed
+- Function `*EndpointsClientListResourceUsagePager.NextPage` has been removed
+- Function `*AFDCustomDomainsClientCreatePollerResponse.Resume` has been removed
+- Function `*ProfilesClientListPager.NextPage` has been removed
+- Function `*AFDProfilesClientListResourceUsagePager.NextPage` has been removed
+- Function `*ProfilesClientUpdatePoller.ResumeToken` has been removed
+- Function `*AFDOriginsClientDeletePoller.Poll` has been removed
+- Function `SharedPrivateLinkResourceStatus.ToPtr` has been removed
+- Function `HTTPVersionMatchConditionParametersTypeName.ToPtr` has been removed
+- Function `*AFDCustomDomainsClientRefreshValidationTokenPoller.ResumeToken` has been removed
+- Function `KeyVaultCertificateSourceParametersTypeName.ToPtr` has been removed
+- Function `SecretsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*RoutesClientListByEndpointPager.Err` has been removed
+- Function `*EndpointsClientUpdatePoller.Done` has been removed
+- Function `*EndpointsClientDeletePoller.Done` has been removed
+- Function `*RulesClientListByRuleSetPager.Err` has been removed
+- Function `*EndpointsClientStopPoller.Poll` has been removed
+- Function `PolicyResourceState.ToPtr` has been removed
+- Function `*RuleSetsClientDeletePoller.ResumeToken` has been removed
+- Function `*AFDCustomDomainsClientListByProfilePager.Err` has been removed
+- Function `RulesClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*SecretsClientDeletePoller.Done` has been removed
+- Struct `AFDCustomDomainsClientCreatePoller` has been removed
+- Struct `AFDCustomDomainsClientCreatePollerResponse` has been removed
+- Struct `AFDCustomDomainsClientCreateResult` has been removed
+- Struct `AFDCustomDomainsClientDeletePoller` has been removed
+- Struct `AFDCustomDomainsClientDeletePollerResponse` has been removed
+- Struct `AFDCustomDomainsClientGetResult` has been removed
+- Struct `AFDCustomDomainsClientListByProfilePager` has been removed
+- Struct `AFDCustomDomainsClientListByProfileResult` has been removed
+- Struct `AFDCustomDomainsClientRefreshValidationTokenPoller` has been removed
+- Struct `AFDCustomDomainsClientRefreshValidationTokenPollerResponse` has been removed
+- Struct `AFDCustomDomainsClientUpdatePoller` has been removed
+- Struct `AFDCustomDomainsClientUpdatePollerResponse` has been removed
+- Struct `AFDCustomDomainsClientUpdateResult` has been removed
+- Struct `AFDEndpointsClientCreatePoller` has been removed
+- Struct `AFDEndpointsClientCreatePollerResponse` has been removed
+- Struct `AFDEndpointsClientCreateResult` has been removed
+- Struct `AFDEndpointsClientDeletePoller` has been removed
+- Struct `AFDEndpointsClientDeletePollerResponse` has been removed
+- Struct `AFDEndpointsClientGetResult` has been removed
+- Struct `AFDEndpointsClientListByProfilePager` has been removed
+- Struct `AFDEndpointsClientListByProfileResult` has been removed
+- Struct `AFDEndpointsClientListResourceUsagePager` has been removed
+- Struct `AFDEndpointsClientListResourceUsageResult` has been removed
+- Struct `AFDEndpointsClientPurgeContentPoller` has been removed
+- Struct `AFDEndpointsClientPurgeContentPollerResponse` has been removed
+- Struct `AFDEndpointsClientUpdatePoller` has been removed
+- Struct `AFDEndpointsClientUpdatePollerResponse` has been removed
+- Struct `AFDEndpointsClientUpdateResult` has been removed
+- Struct `AFDEndpointsClientValidateCustomDomainResult` has been removed
+- Struct `AFDOriginGroupsClientCreatePoller` has been removed
+- Struct `AFDOriginGroupsClientCreatePollerResponse` has been removed
+- Struct `AFDOriginGroupsClientCreateResult` has been removed
+- Struct `AFDOriginGroupsClientDeletePoller` has been removed
+- Struct `AFDOriginGroupsClientDeletePollerResponse` has been removed
+- Struct `AFDOriginGroupsClientGetResult` has been removed
+- Struct `AFDOriginGroupsClientListByProfilePager` has been removed
+- Struct `AFDOriginGroupsClientListByProfileResult` has been removed
+- Struct `AFDOriginGroupsClientListResourceUsagePager` has been removed
+- Struct `AFDOriginGroupsClientListResourceUsageResult` has been removed
+- Struct `AFDOriginGroupsClientUpdatePoller` has been removed
+- Struct `AFDOriginGroupsClientUpdatePollerResponse` has been removed
+- Struct `AFDOriginGroupsClientUpdateResult` has been removed
+- Struct `AFDOriginsClientCreatePoller` has been removed
+- Struct `AFDOriginsClientCreatePollerResponse` has been removed
+- Struct `AFDOriginsClientCreateResult` has been removed
+- Struct `AFDOriginsClientDeletePoller` has been removed
+- Struct `AFDOriginsClientDeletePollerResponse` has been removed
+- Struct `AFDOriginsClientGetResult` has been removed
+- Struct `AFDOriginsClientListByOriginGroupPager` has been removed
+- Struct `AFDOriginsClientListByOriginGroupResult` has been removed
+- Struct `AFDOriginsClientUpdatePoller` has been removed
+- Struct `AFDOriginsClientUpdatePollerResponse` has been removed
+- Struct `AFDOriginsClientUpdateResult` has been removed
+- Struct `AFDProfilesClientCheckHostNameAvailabilityResult` has been removed
+- Struct `AFDProfilesClientListResourceUsagePager` has been removed
+- Struct `AFDProfilesClientListResourceUsageResult` has been removed
+- Struct `CustomDomainsClientCreatePoller` has been removed
+- Struct `CustomDomainsClientCreatePollerResponse` has been removed
+- Struct `CustomDomainsClientCreateResult` has been removed
+- Struct `CustomDomainsClientDeletePoller` has been removed
+- Struct `CustomDomainsClientDeletePollerResponse` has been removed
+- Struct `CustomDomainsClientDeleteResult` has been removed
+- Struct `CustomDomainsClientDisableCustomHTTPSResult` has been removed
+- Struct `CustomDomainsClientEnableCustomHTTPSResult` has been removed
+- Struct `CustomDomainsClientGetResult` has been removed
+- Struct `CustomDomainsClientListByEndpointPager` has been removed
+- Struct `CustomDomainsClientListByEndpointResult` has been removed
+- Struct `EdgeNodesClientListPager` has been removed
+- Struct `EdgeNodesClientListResult` has been removed
+- Struct `EndpointsClientCreatePoller` has been removed
+- Struct `EndpointsClientCreatePollerResponse` has been removed
+- Struct `EndpointsClientCreateResult` has been removed
+- Struct `EndpointsClientDeletePoller` has been removed
+- Struct `EndpointsClientDeletePollerResponse` has been removed
+- Struct `EndpointsClientGetResult` has been removed
+- Struct `EndpointsClientListByProfilePager` has been removed
+- Struct `EndpointsClientListByProfileResult` has been removed
+- Struct `EndpointsClientListResourceUsagePager` has been removed
+- Struct `EndpointsClientListResourceUsageResult` has been removed
+- Struct `EndpointsClientLoadContentPoller` has been removed
+- Struct `EndpointsClientLoadContentPollerResponse` has been removed
+- Struct `EndpointsClientPurgeContentPoller` has been removed
+- Struct `EndpointsClientPurgeContentPollerResponse` has been removed
+- Struct `EndpointsClientStartPoller` has been removed
+- Struct `EndpointsClientStartPollerResponse` has been removed
+- Struct `EndpointsClientStartResult` has been removed
+- Struct `EndpointsClientStopPoller` has been removed
+- Struct `EndpointsClientStopPollerResponse` has been removed
+- Struct `EndpointsClientStopResult` has been removed
+- Struct `EndpointsClientUpdatePoller` has been removed
+- Struct `EndpointsClientUpdatePollerResponse` has been removed
+- Struct `EndpointsClientUpdateResult` has been removed
+- Struct `EndpointsClientValidateCustomDomainResult` has been removed
+- Struct `LogAnalyticsClientGetLogAnalyticsLocationsResult` has been removed
+- Struct `LogAnalyticsClientGetLogAnalyticsMetricsResult` has been removed
+- Struct `LogAnalyticsClientGetLogAnalyticsRankingsResult` has been removed
+- Struct `LogAnalyticsClientGetLogAnalyticsResourcesResult` has been removed
+- Struct `LogAnalyticsClientGetWafLogAnalyticsMetricsResult` has been removed
+- Struct `LogAnalyticsClientGetWafLogAnalyticsRankingsResult` has been removed
+- Struct `ManagedRuleSetsClientListPager` has been removed
+- Struct `ManagedRuleSetsClientListResult` has been removed
+- Struct `ManagedServiceIdentity` has been removed
+- Struct `ManagementClientCheckNameAvailabilityResult` has been removed
+- Struct `ManagementClientCheckNameAvailabilityWithSubscriptionResult` has been removed
+- Struct `ManagementClientValidateProbeResult` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `OriginGroupsClientCreatePoller` has been removed
+- Struct `OriginGroupsClientCreatePollerResponse` has been removed
+- Struct `OriginGroupsClientCreateResult` has been removed
+- Struct `OriginGroupsClientDeletePoller` has been removed
+- Struct `OriginGroupsClientDeletePollerResponse` has been removed
+- Struct `OriginGroupsClientGetResult` has been removed
+- Struct `OriginGroupsClientListByEndpointPager` has been removed
+- Struct `OriginGroupsClientListByEndpointResult` has been removed
+- Struct `OriginGroupsClientUpdatePoller` has been removed
+- Struct `OriginGroupsClientUpdatePollerResponse` has been removed
+- Struct `OriginGroupsClientUpdateResult` has been removed
+- Struct `OriginsClientCreatePoller` has been removed
+- Struct `OriginsClientCreatePollerResponse` has been removed
+- Struct `OriginsClientCreateResult` has been removed
+- Struct `OriginsClientDeletePoller` has been removed
+- Struct `OriginsClientDeletePollerResponse` has been removed
+- Struct `OriginsClientGetResult` has been removed
+- Struct `OriginsClientListByEndpointPager` has been removed
+- Struct `OriginsClientListByEndpointResult` has been removed
+- Struct `OriginsClientUpdatePoller` has been removed
+- Struct `OriginsClientUpdatePollerResponse` has been removed
+- Struct `OriginsClientUpdateResult` has been removed
+- Struct `PoliciesClientCreateOrUpdatePoller` has been removed
+- Struct `PoliciesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `PoliciesClientCreateOrUpdateResult` has been removed
+- Struct `PoliciesClientGetResult` has been removed
+- Struct `PoliciesClientListPager` has been removed
+- Struct `PoliciesClientListResult` has been removed
+- Struct `PoliciesClientUpdatePoller` has been removed
+- Struct `PoliciesClientUpdatePollerResponse` has been removed
+- Struct `PoliciesClientUpdateResult` has been removed
+- Struct `ProfilesClientCreatePoller` has been removed
+- Struct `ProfilesClientCreatePollerResponse` has been removed
+- Struct `ProfilesClientCreateResult` has been removed
+- Struct `ProfilesClientDeletePoller` has been removed
+- Struct `ProfilesClientDeletePollerResponse` has been removed
+- Struct `ProfilesClientGenerateSsoURIResult` has been removed
+- Struct `ProfilesClientGetResult` has been removed
+- Struct `ProfilesClientListByResourceGroupPager` has been removed
+- Struct `ProfilesClientListByResourceGroupResult` has been removed
+- Struct `ProfilesClientListPager` has been removed
+- Struct `ProfilesClientListResourceUsagePager` has been removed
+- Struct `ProfilesClientListResourceUsageResult` has been removed
+- Struct `ProfilesClientListResult` has been removed
+- Struct `ProfilesClientListSupportedOptimizationTypesResult` has been removed
+- Struct `ProfilesClientUpdatePoller` has been removed
+- Struct `ProfilesClientUpdatePollerResponse` has been removed
+- Struct `ProfilesClientUpdateResult` has been removed
+- Struct `ResourceUsageClientListPager` has been removed
+- Struct `ResourceUsageClientListResult` has been removed
+- Struct `RoutesClientCreatePoller` has been removed
+- Struct `RoutesClientCreatePollerResponse` has been removed
+- Struct `RoutesClientCreateResult` has been removed
+- Struct `RoutesClientDeletePoller` has been removed
+- Struct `RoutesClientDeletePollerResponse` has been removed
+- Struct `RoutesClientGetResult` has been removed
+- Struct `RoutesClientListByEndpointPager` has been removed
+- Struct `RoutesClientListByEndpointResult` has been removed
+- Struct `RoutesClientUpdatePoller` has been removed
+- Struct `RoutesClientUpdatePollerResponse` has been removed
+- Struct `RoutesClientUpdateResult` has been removed
+- Struct `RuleSetsClientCreateResult` has been removed
+- Struct `RuleSetsClientDeletePoller` has been removed
+- Struct `RuleSetsClientDeletePollerResponse` has been removed
+- Struct `RuleSetsClientGetResult` has been removed
+- Struct `RuleSetsClientListByProfilePager` has been removed
+- Struct `RuleSetsClientListByProfileResult` has been removed
+- Struct `RuleSetsClientListResourceUsagePager` has been removed
+- Struct `RuleSetsClientListResourceUsageResult` has been removed
+- Struct `RulesClientCreatePoller` has been removed
+- Struct `RulesClientCreatePollerResponse` has been removed
+- Struct `RulesClientCreateResult` has been removed
+- Struct `RulesClientDeletePoller` has been removed
+- Struct `RulesClientDeletePollerResponse` has been removed
+- Struct `RulesClientGetResult` has been removed
+- Struct `RulesClientListByRuleSetPager` has been removed
+- Struct `RulesClientListByRuleSetResult` has been removed
+- Struct `RulesClientUpdatePoller` has been removed
+- Struct `RulesClientUpdatePollerResponse` has been removed
+- Struct `RulesClientUpdateResult` has been removed
+- Struct `SecretsClientCreatePoller` has been removed
+- Struct `SecretsClientCreatePollerResponse` has been removed
+- Struct `SecretsClientCreateResult` has been removed
+- Struct `SecretsClientDeletePoller` has been removed
+- Struct `SecretsClientDeletePollerResponse` has been removed
+- Struct `SecretsClientGetResult` has been removed
+- Struct `SecretsClientListByProfilePager` has been removed
+- Struct `SecretsClientListByProfileResult` has been removed
+- Struct `SecurityPoliciesClientCreatePoller` has been removed
+- Struct `SecurityPoliciesClientCreatePollerResponse` has been removed
+- Struct `SecurityPoliciesClientCreateResult` has been removed
+- Struct `SecurityPoliciesClientDeletePoller` has been removed
+- Struct `SecurityPoliciesClientDeletePollerResponse` has been removed
+- Struct `SecurityPoliciesClientGetResult` has been removed
+- Struct `SecurityPoliciesClientListByProfilePager` has been removed
+- Struct `SecurityPoliciesClientListByProfileResult` has been removed
+- Struct `SecurityPoliciesClientPatchPoller` has been removed
+- Struct `SecurityPoliciesClientPatchPollerResponse` has been removed
+- Struct `SecurityPoliciesClientPatchResult` has been removed
+- Struct `UserAssignedIdentity` has been removed
+- Struct `ValidateClientSecretResult` has been removed
+- Field `RawResponse` of struct `OriginsClientDeleteResponse` has been removed
+- Field `AFDEndpointsClientUpdateResult` of struct `AFDEndpointsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `AFDEndpointsClientUpdateResponse` has been removed
+- Field `OriginGroupsClientListByEndpointResult` of struct `OriginGroupsClientListByEndpointResponse` has been removed
+- Field `RawResponse` of struct `OriginGroupsClientListByEndpointResponse` has been removed
+- Field `AFDOriginGroupsClientGetResult` of struct `AFDOriginGroupsClientGetResponse` has been removed
+- Field `RawResponse` of struct `AFDOriginGroupsClientGetResponse` has been removed
+- Field `OriginGroupsClientUpdateResult` of struct `OriginGroupsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `OriginGroupsClientUpdateResponse` has been removed
+- Field `AFDOriginsClientCreateResult` of struct `AFDOriginsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `AFDOriginsClientCreateResponse` has been removed
+- Field `ResponseBasedAfdOriginErrorDetectionSettings` of struct `AFDOriginGroupProperties` has been removed
+- Field `AFDProfilesClientListResourceUsageResult` of struct `AFDProfilesClientListResourceUsageResponse` has been removed
+- Field `RawResponse` of struct `AFDProfilesClientListResourceUsageResponse` has been removed
+- Field `PoliciesClientGetResult` of struct `PoliciesClientGetResponse` has been removed
+- Field `RawResponse` of struct `PoliciesClientGetResponse` has been removed
+- Field `RawResponse` of struct `EndpointsClientPurgeContentResponse` has been removed
+- Field `ProfilesClientListResourceUsageResult` of struct `ProfilesClientListResourceUsageResponse` has been removed
+- Field `RawResponse` of struct `ProfilesClientListResourceUsageResponse` has been removed
+- Field `OriginGroupsClientGetResult` of struct `OriginGroupsClientGetResponse` has been removed
+- Field `RawResponse` of struct `OriginGroupsClientGetResponse` has been removed
+- Field `AFDOriginsClientUpdateResult` of struct `AFDOriginsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `AFDOriginsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `AFDEndpointsClientDeleteResponse` has been removed
+- Field `RoutesClientGetResult` of struct `RoutesClientGetResponse` has been removed
+- Field `RawResponse` of struct `RoutesClientGetResponse` has been removed
+- Field `AFDEndpointsClientValidateCustomDomainResult` of struct `AFDEndpointsClientValidateCustomDomainResponse` has been removed
+- Field `RawResponse` of struct `AFDEndpointsClientValidateCustomDomainResponse` has been removed
+- Field `AFDEndpointsClientListResourceUsageResult` of struct `AFDEndpointsClientListResourceUsageResponse` has been removed
+- Field `RawResponse` of struct `AFDEndpointsClientListResourceUsageResponse` has been removed
+- Field `SecretsClientGetResult` of struct `SecretsClientGetResponse` has been removed
+- Field `RawResponse` of struct `SecretsClientGetResponse` has been removed
+- Field `RulesClientListByRuleSetResult` of struct `RulesClientListByRuleSetResponse` has been removed
+- Field `RawResponse` of struct `RulesClientListByRuleSetResponse` has been removed
+- Field `OriginsClientCreateResult` of struct `OriginsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `OriginsClientCreateResponse` has been removed
+- Field `SecretsClientListByProfileResult` of struct `SecretsClientListByProfileResponse` has been removed
+- Field `RawResponse` of struct `SecretsClientListByProfileResponse` has been removed
+- Field `RuleSetsClientCreateResult` of struct `RuleSetsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `RuleSetsClientCreateResponse` has been removed
+- Field `RulesClientCreateResult` of struct `RulesClientCreateResponse` has been removed
+- Field `RawResponse` of struct `RulesClientCreateResponse` has been removed
+- Field `EndpointsClientValidateCustomDomainResult` of struct `EndpointsClientValidateCustomDomainResponse` has been removed
+- Field `RawResponse` of struct `EndpointsClientValidateCustomDomainResponse` has been removed
+- Field `EndpointsClientListByProfileResult` of struct `EndpointsClientListByProfileResponse` has been removed
+- Field `RawResponse` of struct `EndpointsClientListByProfileResponse` has been removed
+- Field `CustomDomainsClientGetResult` of struct `CustomDomainsClientGetResponse` has been removed
+- Field `RawResponse` of struct `CustomDomainsClientGetResponse` has been removed
+- Field `ManagedRuleSetsClientListResult` of struct `ManagedRuleSetsClientListResponse` has been removed
+- Field `RawResponse` of struct `ManagedRuleSetsClientListResponse` has been removed
+- Field `ProfilesClientListResult` of struct `ProfilesClientListResponse` has been removed
+- Field `RawResponse` of struct `ProfilesClientListResponse` has been removed
+- Field `RawResponse` of struct `OriginGroupsClientDeleteResponse` has been removed
+- Field `ManagementClientCheckNameAvailabilityWithSubscriptionResult` of struct `ManagementClientCheckNameAvailabilityWithSubscriptionResponse` has been removed
+- Field `RawResponse` of struct `ManagementClientCheckNameAvailabilityWithSubscriptionResponse` has been removed
+- Field `CustomDomainsClientDisableCustomHTTPSResult` of struct `CustomDomainsClientDisableCustomHTTPSResponse` has been removed
+- Field `RawResponse` of struct `CustomDomainsClientDisableCustomHTTPSResponse` has been removed
+- Field `RulesClientGetResult` of struct `RulesClientGetResponse` has been removed
+- Field `RawResponse` of struct `RulesClientGetResponse` has been removed
+- Field `RuleSetsClientListByProfileResult` of struct `RuleSetsClientListByProfileResponse` has been removed
+- Field `RawResponse` of struct `RuleSetsClientListByProfileResponse` has been removed
+- Field `ProfilesClientListSupportedOptimizationTypesResult` of struct `ProfilesClientListSupportedOptimizationTypesResponse` has been removed
+- Field `RawResponse` of struct `ProfilesClientListSupportedOptimizationTypesResponse` has been removed
+- Field `RulesClientUpdateResult` of struct `RulesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `RulesClientUpdateResponse` has been removed
+- Field `CustomDomainsClientCreateResult` of struct `CustomDomainsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `CustomDomainsClientCreateResponse` has been removed
+- Field `ManagementClientValidateProbeResult` of struct `ManagementClientValidateProbeResponse` has been removed
+- Field `RawResponse` of struct `ManagementClientValidateProbeResponse` has been removed
+- Field `LogAnalyticsClientGetWafLogAnalyticsRankingsResult` of struct `LogAnalyticsClientGetWafLogAnalyticsRankingsResponse` has been removed
+- Field `RawResponse` of struct `LogAnalyticsClientGetWafLogAnalyticsRankingsResponse` has been removed
+- Field `ValidateClientSecretResult` of struct `ValidateClientSecretResponse` has been removed
+- Field `RawResponse` of struct `ValidateClientSecretResponse` has been removed
+- Field `AFDOriginGroupsClientUpdateResult` of struct `AFDOriginGroupsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `AFDOriginGroupsClientUpdateResponse` has been removed
+- Field `ProfilesClientListByResourceGroupResult` of struct `ProfilesClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `ProfilesClientListByResourceGroupResponse` has been removed
+- Field `AFDOriginGroupsClientListByProfileResult` of struct `AFDOriginGroupsClientListByProfileResponse` has been removed
+- Field `RawResponse` of struct `AFDOriginGroupsClientListByProfileResponse` has been removed
+- Field `ProfilesClientGenerateSsoURIResult` of struct `ProfilesClientGenerateSsoURIResponse` has been removed
+- Field `RawResponse` of struct `ProfilesClientGenerateSsoURIResponse` has been removed
+- Field `OriginsClientUpdateResult` of struct `OriginsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `OriginsClientUpdateResponse` has been removed
+- Field `AFDOriginGroupsClientCreateResult` of struct `AFDOriginGroupsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `AFDOriginGroupsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `RoutesClientDeleteResponse` has been removed
+- Field `EndpointsClientStopResult` of struct `EndpointsClientStopResponse` has been removed
+- Field `RawResponse` of struct `EndpointsClientStopResponse` has been removed
+- Field `AFDOriginsClientListByOriginGroupResult` of struct `AFDOriginsClientListByOriginGroupResponse` has been removed
+- Field `RawResponse` of struct `AFDOriginsClientListByOriginGroupResponse` has been removed
+- Field `RuleSetsClientListResourceUsageResult` of struct `RuleSetsClientListResourceUsageResponse` has been removed
+- Field `RawResponse` of struct `RuleSetsClientListResourceUsageResponse` has been removed
+- Field `ManagementClientCheckNameAvailabilityResult` of struct `ManagementClientCheckNameAvailabilityResponse` has been removed
+- Field `RawResponse` of struct `ManagementClientCheckNameAvailabilityResponse` has been removed
+- Field `ProfilesClientGetResult` of struct `ProfilesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ProfilesClientGetResponse` has been removed
+- Field `AFDOriginsClientGetResult` of struct `AFDOriginsClientGetResponse` has been removed
+- Field `RawResponse` of struct `AFDOriginsClientGetResponse` has been removed
+- Field `RawResponse` of struct `EndpointsClientDeleteResponse` has been removed
+- Field `CustomDomainsClientEnableCustomHTTPSResult` of struct `CustomDomainsClientEnableCustomHTTPSResponse` has been removed
+- Field `RawResponse` of struct `CustomDomainsClientEnableCustomHTTPSResponse` has been removed
+- Field `RawResponse` of struct `EndpointsClientLoadContentResponse` has been removed
+- Field `OriginsClientGetResult` of struct `OriginsClientGetResponse` has been removed
+- Field `RawResponse` of struct `OriginsClientGetResponse` has been removed
+- Field `AFDEndpointsClientGetResult` of struct `AFDEndpointsClientGetResponse` has been removed
+- Field `RawResponse` of struct `AFDEndpointsClientGetResponse` has been removed
+- Field `PoliciesClientUpdateResult` of struct `PoliciesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `PoliciesClientUpdateResponse` has been removed
+- Field `OriginsClientListByEndpointResult` of struct `OriginsClientListByEndpointResponse` has been removed
+- Field `RawResponse` of struct `OriginsClientListByEndpointResponse` has been removed
+- Field `RoutesClientListByEndpointResult` of struct `RoutesClientListByEndpointResponse` has been removed
+- Field `RawResponse` of struct `RoutesClientListByEndpointResponse` has been removed
+- Field `LogAnalyticsClientGetWafLogAnalyticsMetricsResult` of struct `LogAnalyticsClientGetWafLogAnalyticsMetricsResponse` has been removed
+- Field `RawResponse` of struct `LogAnalyticsClientGetWafLogAnalyticsMetricsResponse` has been removed
+- Field `EndpointsClientStartResult` of struct `EndpointsClientStartResponse` has been removed
+- Field `RawResponse` of struct `EndpointsClientStartResponse` has been removed
+- Field `EndpointsClientCreateResult` of struct `EndpointsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `EndpointsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `ProfilesClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `AFDOriginGroupsClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `RulesClientDeleteResponse` has been removed
+- Field `AFDEndpointsClientListByProfileResult` of struct `AFDEndpointsClientListByProfileResponse` has been removed
+- Field `RawResponse` of struct `AFDEndpointsClientListByProfileResponse` has been removed
+- Field `AFDCustomDomainsClientCreateResult` of struct `AFDCustomDomainsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `AFDCustomDomainsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `AFDCustomDomainsClientDeleteResponse` has been removed
+- Field `PoliciesClientListResult` of struct `PoliciesClientListResponse` has been removed
+- Field `RawResponse` of struct `PoliciesClientListResponse` has been removed
+- Field `AFDCustomDomainsClientUpdateResult` of struct `AFDCustomDomainsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `AFDCustomDomainsClientUpdateResponse` has been removed
+- Field `EndpointsClientGetResult` of struct `EndpointsClientGetResponse` has been removed
+- Field `RawResponse` of struct `EndpointsClientGetResponse` has been removed
+- Field `ProfilesClientUpdateResult` of struct `ProfilesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ProfilesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `AFDEndpointsClientPurgeContentResponse` has been removed
+- Field `AFDOriginGroupsClientListResourceUsageResult` of struct `AFDOriginGroupsClientListResourceUsageResponse` has been removed
+- Field `RawResponse` of struct `AFDOriginGroupsClientListResourceUsageResponse` has been removed
+- Field `LogAnalyticsClientGetLogAnalyticsMetricsResult` of struct `LogAnalyticsClientGetLogAnalyticsMetricsResponse` has been removed
+- Field `RawResponse` of struct `LogAnalyticsClientGetLogAnalyticsMetricsResponse` has been removed
+- Field `SecurityPoliciesClientListByProfileResult` of struct `SecurityPoliciesClientListByProfileResponse` has been removed
+- Field `RawResponse` of struct `SecurityPoliciesClientListByProfileResponse` has been removed
+- Field `SecretsClientCreateResult` of struct `SecretsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `SecretsClientCreateResponse` has been removed
+- Field `RoutesClientCreateResult` of struct `RoutesClientCreateResponse` has been removed
+- Field `RawResponse` of struct `RoutesClientCreateResponse` has been removed
+- Field `SecurityPoliciesClientPatchResult` of struct `SecurityPoliciesClientPatchResponse` has been removed
+- Field `RawResponse` of struct `SecurityPoliciesClientPatchResponse` has been removed
+- Field `AFDEndpointsClientCreateResult` of struct `AFDEndpointsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `AFDEndpointsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `RuleSetsClientDeleteResponse` has been removed
+- Field `EndpointsClientUpdateResult` of struct `EndpointsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `EndpointsClientUpdateResponse` has been removed
+- Field `PoliciesClientCreateOrUpdateResult` of struct `PoliciesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `PoliciesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `SecurityPoliciesClientDeleteResponse` has been removed
+- Field `CustomDomainsClientDeleteResult` of struct `CustomDomainsClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `CustomDomainsClientDeleteResponse` has been removed
+- Field `AFDProfilesClientCheckHostNameAvailabilityResult` of struct `AFDProfilesClientCheckHostNameAvailabilityResponse` has been removed
+- Field `RawResponse` of struct `AFDProfilesClientCheckHostNameAvailabilityResponse` has been removed
+- Field `SecurityPoliciesClientCreateResult` of struct `SecurityPoliciesClientCreateResponse` has been removed
+- Field `RawResponse` of struct `SecurityPoliciesClientCreateResponse` has been removed
+- Field `LogAnalyticsClientGetLogAnalyticsLocationsResult` of struct `LogAnalyticsClientGetLogAnalyticsLocationsResponse` has been removed
+- Field `RawResponse` of struct `LogAnalyticsClientGetLogAnalyticsLocationsResponse` has been removed
+- Field `EdgeNodesClientListResult` of struct `EdgeNodesClientListResponse` has been removed
+- Field `RawResponse` of struct `EdgeNodesClientListResponse` has been removed
+- Field `CustomDomainsClientListByEndpointResult` of struct `CustomDomainsClientListByEndpointResponse` has been removed
+- Field `RawResponse` of struct `CustomDomainsClientListByEndpointResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `RuleSetsClientGetResult` of struct `RuleSetsClientGetResponse` has been removed
+- Field `RawResponse` of struct `RuleSetsClientGetResponse` has been removed
+- Field `RawResponse` of struct `SecretsClientDeleteResponse` has been removed
+- Field `ProfilesClientCreateResult` of struct `ProfilesClientCreateResponse` has been removed
+- Field `RawResponse` of struct `ProfilesClientCreateResponse` has been removed
+- Field `OriginGroupsClientCreateResult` of struct `OriginGroupsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `OriginGroupsClientCreateResponse` has been removed
+- Field `LogAnalyticsClientGetLogAnalyticsRankingsResult` of struct `LogAnalyticsClientGetLogAnalyticsRankingsResponse` has been removed
+- Field `RawResponse` of struct `LogAnalyticsClientGetLogAnalyticsRankingsResponse` has been removed
+- Field `SecurityPoliciesClientGetResult` of struct `SecurityPoliciesClientGetResponse` has been removed
+- Field `RawResponse` of struct `SecurityPoliciesClientGetResponse` has been removed
+- Field `RawResponse` of struct `AFDOriginsClientDeleteResponse` has been removed
+- Field `ResponseBasedAfdOriginErrorDetectionSettings` of struct `AFDOriginGroupUpdatePropertiesParameters` has been removed
+- Field `EndpointsClientListResourceUsageResult` of struct `EndpointsClientListResourceUsageResponse` has been removed
+- Field `RawResponse` of struct `EndpointsClientListResourceUsageResponse` has been removed
+- Field `RoutesClientUpdateResult` of struct `RoutesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `RoutesClientUpdateResponse` has been removed
+- Field `Identity` of struct `ProfileProperties` has been removed
+- Field `ResourceUsageClientListResult` of struct `ResourceUsageClientListResponse` has been removed
+- Field `RawResponse` of struct `ResourceUsageClientListResponse` has been removed
+- Field `LogAnalyticsClientGetLogAnalyticsResourcesResult` of struct `LogAnalyticsClientGetLogAnalyticsResourcesResponse` has been removed
+- Field `RawResponse` of struct `LogAnalyticsClientGetLogAnalyticsResourcesResponse` has been removed
+- Field `AFDCustomDomainsClientGetResult` of struct `AFDCustomDomainsClientGetResponse` has been removed
+- Field `RawResponse` of struct `AFDCustomDomainsClientGetResponse` has been removed
+- Field `RawResponse` of struct `AFDCustomDomainsClientRefreshValidationTokenResponse` has been removed
+- Field `AFDCustomDomainsClientListByProfileResult` of struct `AFDCustomDomainsClientListByProfileResponse` has been removed
+- Field `RawResponse` of struct `AFDCustomDomainsClientListByProfileResponse` has been removed
+- Field `RawResponse` of struct `PoliciesClientDeleteResponse` has been removed
+
+### Features Added
+
+- New const `AutoGeneratedDomainNameLabelScopeNoReuse`
+- New const `DomainValidationStateInternalError`
+- New const `AutoGeneratedDomainNameLabelScopeResourceGroupReuse`
+- New const `AutoGeneratedDomainNameLabelScopeSubscriptionReuse`
+- New const `DomainValidationStateRefreshingValidationToken`
+- New const `AutoGeneratedDomainNameLabelScopeTenantReuse`
+- New function `PossibleAutoGeneratedDomainNameLabelScopeValues() []AutoGeneratedDomainNameLabelScope`
+- New function `CompressionSettings.MarshalJSON() ([]byte, error)`
+- New function `CustomerCertificate.MarshalJSON() ([]byte, error)`
+- New function `*ManagementClient.CheckEndpointNameAvailability(context.Context, string, CheckEndpointNameAvailabilityInput, *ManagementClientCheckEndpointNameAvailabilityOptions) (ManagementClientCheckEndpointNameAvailabilityResponse, error)`
+- New function `ErrorDetail.MarshalJSON() ([]byte, error)`
+- New struct `AfdErrorResponse`
+- New struct `AzureFirstPartyManagedCertificate`
+- New struct `Certificate`
+- New struct `CheckEndpointNameAvailabilityInput`
+- New struct `CheckEndpointNameAvailabilityOutput`
+- New struct `CompressionSettings`
+- New struct `CustomerCertificate`
+- New struct `ErrorAdditionalInfo`
+- New struct `ErrorDetail`
+- New struct `ErrorResponse`
+- New struct `ManagedCertificate`
+- New struct `ManagementClientCheckEndpointNameAvailabilityOptions`
+- New struct `ManagementClientCheckEndpointNameAvailabilityResponse`
+- New struct `ProfilePropertiesUpdateParameters`
+- New struct `SharedPrivateLinkResourceProperties`
+- New struct `ValidationToken`
+- New anonymous field `AFDOriginGroup` in struct `AFDOriginGroupsClientUpdateResponse`
+- New anonymous field `Endpoint` in struct `EndpointsClientGetResponse`
+- New anonymous field `AFDEndpoint` in struct `AFDEndpointsClientGetResponse`
+- New field `ResumeToken` in struct `EndpointsClientBeginDeleteOptions`
+- New anonymous field `Route` in struct `RoutesClientUpdateResponse`
+- New anonymous field `ResourceUsageListResult` in struct `ProfilesClientListResourceUsageResponse`
+- New anonymous field `Origin` in struct `OriginsClientCreateResponse`
+- New anonymous field `Route` in struct `RoutesClientCreateResponse`
+- New field `ResumeToken` in struct `EndpointsClientBeginStartOptions`
+- New anonymous field `AFDOrigin` in struct `AFDOriginsClientUpdateResponse`
+- New field `ResumeToken` in struct `RoutesClientBeginDeleteOptions`
+- New anonymous field `Endpoint` in struct `EndpointsClientCreateResponse`
+- New anonymous field `AFDOriginGroup` in struct `AFDOriginGroupsClientCreateResponse`
+- New anonymous field `WebApplicationFirewallPolicy` in struct `PoliciesClientCreateOrUpdateResponse`
+- New anonymous field `MetricsResponse` in struct `LogAnalyticsClientGetLogAnalyticsMetricsResponse`
+- New anonymous field `ContinentsResponse` in struct `LogAnalyticsClientGetLogAnalyticsLocationsResponse`
+- New anonymous field `CustomDomain` in struct `CustomDomainsClientDeleteResponse`
+- New field `ResumeToken` in struct `SecretsClientBeginDeleteOptions`
+- New anonymous field `CustomDomain` in struct `CustomDomainsClientEnableCustomHTTPSResponse`
+- New anonymous field `AFDOriginListResult` in struct `AFDOriginsClientListByOriginGroupResponse`
+- New anonymous field `Rule` in struct `RulesClientGetResponse`
+- New anonymous field `ValidateSecretOutput` in struct `ValidateClientSecretResponse`
+- New anonymous field `AFDEndpoint` in struct `AFDEndpointsClientUpdateResponse`
+- New field `ResumeToken` in struct `RuleSetsClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `AFDEndpointsClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `EndpointsClientBeginCreateOptions`
+- New field `ResumeToken` in struct `SecurityPoliciesClientBeginCreateOptions`
+- New field `ResumeToken` in struct `OriginsClientBeginUpdateOptions`
+- New anonymous field `AFDOrigin` in struct `AFDOriginsClientCreateResponse`
+- New field `ResumeToken` in struct `OriginGroupsClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `RoutesClientBeginUpdateOptions`
+- New anonymous field `UsagesListResult` in struct `AFDEndpointsClientListResourceUsageResponse`
+- New anonymous field `AFDDomain` in struct `AFDCustomDomainsClientUpdateResponse`
+- New anonymous field `Endpoint` in struct `EndpointsClientStartResponse`
+- New field `ResumeToken` in struct `AFDOriginsClientBeginCreateOptions`
+- New anonymous field `Route` in struct `RoutesClientGetResponse`
+- New anonymous field `CheckNameAvailabilityOutput` in struct `ManagementClientCheckNameAvailabilityWithSubscriptionResponse`
+- New anonymous field `AFDDomainListResult` in struct `AFDCustomDomainsClientListByProfileResponse`
+- New anonymous field `Rule` in struct `RulesClientCreateResponse`
+- New anonymous field `AFDOriginGroupListResult` in struct `AFDOriginGroupsClientListByProfileResponse`
+- New anonymous field `ValidateProbeOutput` in struct `ManagementClientValidateProbeResponse`
+- New anonymous field `Profile` in struct `ProfilesClientGetResponse`
+- New field `ResumeToken` in struct `OriginsClientBeginCreateOptions`
+- New anonymous field `Endpoint` in struct `EndpointsClientUpdateResponse`
+- New field `ResumeToken` in struct `ProfilesClientBeginDeleteOptions`
+- New anonymous field `ProfileListResult` in struct `ProfilesClientListResponse`
+- New anonymous field `CustomDomainListResult` in struct `CustomDomainsClientListByEndpointResponse`
+- New field `ResumeToken` in struct `EndpointsClientBeginPurgeContentOptions`
+- New anonymous field `SecurityPolicyListResult` in struct `SecurityPoliciesClientListByProfileResponse`
+- New anonymous field `ProfileListResult` in struct `ProfilesClientListByResourceGroupResponse`
+- New field `ResumeToken` in struct `RoutesClientBeginCreateOptions`
+- New anonymous field `ResourceUsageListResult` in struct `EndpointsClientListResourceUsageResponse`
+- New anonymous field `SecurityPolicy` in struct `SecurityPoliciesClientPatchResponse`
+- New field `AutoGeneratedDomainNameLabelScope` in struct `AFDEndpointProperties`
+- New anonymous field `Secret` in struct `SecretsClientGetResponse`
+- New anonymous field `AFDEndpoint` in struct `AFDEndpointsClientCreateResponse`
+- New anonymous field `SecretListResult` in struct `SecretsClientListByProfileResponse`
+- New anonymous field `AFDEndpointListResult` in struct `AFDEndpointsClientListByProfileResponse`
+- New field `ResumeToken` in struct `EndpointsClientBeginUpdateOptions`
+- New field `ResumeToken` in struct `CustomDomainsClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `AFDOriginGroupsClientBeginCreateOptions`
+- New field `ResumeToken` in struct `RulesClientBeginCreateOptions`
+- New anonymous field `Profile` in struct `ProfilesClientUpdateResponse`
+- New anonymous field `CheckNameAvailabilityOutput` in struct `AFDProfilesClientCheckHostNameAvailabilityResponse`
+- New field `ResumeToken` in struct `AFDCustomDomainsClientBeginCreateOptions`
+- New anonymous field `WafRankingsResponse` in struct `LogAnalyticsClientGetWafLogAnalyticsRankingsResponse`
+- New anonymous field `AFDDomain` in struct `AFDCustomDomainsClientCreateResponse`
+- New anonymous field `OriginGroupListResult` in struct `OriginGroupsClientListByEndpointResponse`
+- New anonymous field `WebApplicationFirewallPolicyList` in struct `PoliciesClientListResponse`
+- New anonymous field `EdgenodeResult` in struct `EdgeNodesClientListResponse`
+- New anonymous field `ResourcesResponse` in struct `LogAnalyticsClientGetLogAnalyticsResourcesResponse`
+- New field `ResumeToken` in struct `OriginGroupsClientBeginCreateOptions`
+- New anonymous field `SsoURI` in struct `ProfilesClientGenerateSsoURIResponse`
+- New anonymous field `EndpointListResult` in struct `EndpointsClientListByProfileResponse`
+- New field `ResumeToken` in struct `EndpointsClientBeginLoadContentOptions`
+- New field `ResumeToken` in struct `AFDOriginGroupsClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `AFDCustomDomainsClientBeginDeleteOptions`
+- New anonymous field `SupportedOptimizationTypesListResult` in struct `ProfilesClientListSupportedOptimizationTypesResponse`
+- New anonymous field `ResourceUsageListResult` in struct `ResourceUsageClientListResponse`
+- New anonymous field `RankingsResponse` in struct `LogAnalyticsClientGetLogAnalyticsRankingsResponse`
+- New anonymous field `CheckNameAvailabilityOutput` in struct `ManagementClientCheckNameAvailabilityResponse`
+- New field `ResumeToken` in struct `AFDEndpointsClientBeginCreateOptions`
+- New anonymous field `RuleSet` in struct `RuleSetsClientCreateResponse`
+- New anonymous field `WafMetricsResponse` in struct `LogAnalyticsClientGetWafLogAnalyticsMetricsResponse`
+- New field `ResumeToken` in struct `AFDOriginsClientBeginDeleteOptions`
+- New anonymous field `OriginListResult` in struct `OriginsClientListByEndpointResponse`
+- New field `ResumeToken` in struct `AFDCustomDomainsClientBeginRefreshValidationTokenOptions`
+- New anonymous field `RouteListResult` in struct `RoutesClientListByEndpointResponse`
+- New anonymous field `SecurityPolicy` in struct `SecurityPoliciesClientCreateResponse`
+- New field `ResumeToken` in struct `AFDEndpointsClientBeginPurgeContentOptions`
+- New anonymous field `UsagesListResult` in struct `AFDProfilesClientListResourceUsageResponse`
+- New field `ResumeToken` in struct `AFDOriginGroupsClientBeginUpdateOptions`
+- New anonymous field `WebApplicationFirewallPolicy` in struct `PoliciesClientUpdateResponse`
+- New anonymous field `Profile` in struct `ProfilesClientCreateResponse`
+- New anonymous field `RuleSet` in struct `RuleSetsClientGetResponse`
+- New field `Properties` in struct `ProfileUpdateParameters`
+- New field `ResumeToken` in struct `ProfilesClientBeginCreateOptions`
+- New anonymous field `AFDOrigin` in struct `AFDOriginsClientGetResponse`
+- New field `ResumeToken` in struct `PoliciesClientBeginCreateOrUpdateOptions`
+- New anonymous field `RuleSetListResult` in struct `RuleSetsClientListByProfileResponse`
+- New anonymous field `Origin` in struct `OriginsClientUpdateResponse`
+- New anonymous field `OriginGroup` in struct `OriginGroupsClientGetResponse`
+- New anonymous field `RuleListResult` in struct `RulesClientListByRuleSetResponse`
+- New field `ResumeToken` in struct `SecretsClientBeginCreateOptions`
+- New anonymous field `OriginGroup` in struct `OriginGroupsClientUpdateResponse`
+- New field `ResumeToken` in struct `CustomDomainsClientBeginCreateOptions`
+- New anonymous field `Rule` in struct `RulesClientUpdateResponse`
+- New anonymous field `WebApplicationFirewallPolicy` in struct `PoliciesClientGetResponse`
+- New field `ResumeToken` in struct `SecurityPoliciesClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `RulesClientBeginUpdateOptions`
+- New anonymous field `UsagesListResult` in struct `AFDOriginGroupsClientListResourceUsageResponse`
+- New field `ResumeToken` in struct `AFDCustomDomainsClientBeginUpdateOptions`
+- New field `ResumeToken` in struct `OriginsClientBeginDeleteOptions`
+- New anonymous field `CustomDomain` in struct `CustomDomainsClientCreateResponse`
+- New anonymous field `Origin` in struct `OriginsClientGetResponse`
+- New anonymous field `Endpoint` in struct `EndpointsClientStopResponse`
+- New anonymous field `AFDOriginGroup` in struct `AFDOriginGroupsClientGetResponse`
+- New field `ResumeToken` in struct `EndpointsClientBeginStopOptions`
+- New field `ResumeToken` in struct `RulesClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `PoliciesClientBeginUpdateOptions`
+- New anonymous field `AFDDomain` in struct `AFDCustomDomainsClientGetResponse`
+- New anonymous field `ValidateCustomDomainOutput` in struct `EndpointsClientValidateCustomDomainResponse`
+- New field `ResumeToken` in struct `AFDOriginsClientBeginUpdateOptions`
+- New field `ResumeToken` in struct `SecurityPoliciesClientBeginPatchOptions`
+- New field `ResumeToken` in struct `ProfilesClientBeginUpdateOptions`
+- New anonymous field `SecurityPolicy` in struct `SecurityPoliciesClientGetResponse`
+- New field `ResumeToken` in struct `OriginGroupsClientBeginUpdateOptions`
+- New anonymous field `Secret` in struct `SecretsClientCreateResponse`
+- New anonymous field `CustomDomain` in struct `CustomDomainsClientGetResponse`
+- New anonymous field `OperationsListResult` in struct `OperationsClientListResponse`
+- New anonymous field `OriginGroup` in struct `OriginGroupsClientCreateResponse`
+- New anonymous field `UsagesListResult` in struct `RuleSetsClientListResourceUsageResponse`
+- New anonymous field `ManagedRuleSetDefinitionList` in struct `ManagedRuleSetsClientListResponse`
+- New anonymous field `ValidateCustomDomainOutput` in struct `AFDEndpointsClientValidateCustomDomainResponse`
+- New field `ResumeToken` in struct `AFDEndpointsClientBeginUpdateOptions`
+- New anonymous field `CustomDomain` in struct `CustomDomainsClientDisableCustomHTTPSResponse`
+
+
 ## 0.3.1 (2022-02-22)
 
 ### Other Changes

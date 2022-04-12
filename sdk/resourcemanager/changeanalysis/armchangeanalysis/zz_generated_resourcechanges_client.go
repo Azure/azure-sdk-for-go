@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -32,19 +33,23 @@ type ResourceChangesClient struct {
 // NewResourceChangesClient creates a new instance of ResourceChangesClient with the specified values.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewResourceChangesClient(credential azcore.TokenCredential, options *arm.ClientOptions) *ResourceChangesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewResourceChangesClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ResourceChangesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ResourceChangesClient{
-		host: string(cp.Endpoint),
-		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host: ep,
+		pl:   pl,
 	}
-	return client
+	return client, nil
 }
 
 // List - List the changes of a resource within the specified time range. Customer data will be masked if the user doesn't
@@ -54,16 +59,32 @@ func NewResourceChangesClient(credential azcore.TokenCredential, options *arm.Cl
 // startTime - Specifies the start time of the changes request.
 // endTime - Specifies the end time of the changes request.
 // options - ResourceChangesClientListOptions contains the optional parameters for the ResourceChangesClient.List method.
-func (client *ResourceChangesClient) List(resourceID string, startTime time.Time, endTime time.Time, options *ResourceChangesClientListOptions) *ResourceChangesClientListPager {
-	return &ResourceChangesClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceID, startTime, endTime, options)
+func (client *ResourceChangesClient) List(resourceID string, startTime time.Time, endTime time.Time, options *ResourceChangesClientListOptions) *runtime.Pager[ResourceChangesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ResourceChangesClientListResponse]{
+		More: func(page ResourceChangesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ResourceChangesClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ChangeList.NextLink)
+		Fetcher: func(ctx context.Context, page *ResourceChangesClientListResponse) (ResourceChangesClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceID, startTime, endTime, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ResourceChangesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ResourceChangesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ResourceChangesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -91,7 +112,7 @@ func (client *ResourceChangesClient) listCreateRequest(ctx context.Context, reso
 
 // listHandleResponse handles the List response.
 func (client *ResourceChangesClient) listHandleResponse(resp *http.Response) (ResourceChangesClientListResponse, error) {
-	result := ResourceChangesClientListResponse{RawResponse: resp}
+	result := ResourceChangesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ChangeList); err != nil {
 		return ResourceChangesClientListResponse{}, err
 	}

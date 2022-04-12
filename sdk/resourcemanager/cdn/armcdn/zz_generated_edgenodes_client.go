@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -13,6 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -28,34 +29,54 @@ type EdgeNodesClient struct {
 // NewEdgeNodesClient creates a new instance of EdgeNodesClient with the specified values.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewEdgeNodesClient(credential azcore.TokenCredential, options *arm.ClientOptions) *EdgeNodesClient {
+func NewEdgeNodesClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*EdgeNodesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &EdgeNodesClient{
-		host: string(ep),
-		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host: ep,
+		pl:   pl,
 	}
-	return client
+	return client, nil
 }
 
 // List - Edgenodes are the global Point of Presence (POP) locations used to deliver CDN content to end users.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - EdgeNodesClientListOptions contains the optional parameters for the EdgeNodesClient.List method.
-func (client *EdgeNodesClient) List(options *EdgeNodesClientListOptions) *EdgeNodesClientListPager {
-	return &EdgeNodesClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *EdgeNodesClient) List(options *EdgeNodesClientListOptions) *runtime.Pager[EdgeNodesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[EdgeNodesClientListResponse]{
+		More: func(page EdgeNodesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp EdgeNodesClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.EdgenodeResult.NextLink)
+		Fetcher: func(ctx context.Context, page *EdgeNodesClientListResponse) (EdgeNodesClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return EdgeNodesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return EdgeNodesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return EdgeNodesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -74,7 +95,7 @@ func (client *EdgeNodesClient) listCreateRequest(ctx context.Context, options *E
 
 // listHandleResponse handles the List response.
 func (client *EdgeNodesClient) listHandleResponse(resp *http.Response) (EdgeNodesClientListResponse, error) {
-	result := EdgeNodesClientListResponse{RawResponse: resp}
+	result := EdgeNodesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EdgenodeResult); err != nil {
 		return EdgeNodesClientListResponse{}, err
 	}

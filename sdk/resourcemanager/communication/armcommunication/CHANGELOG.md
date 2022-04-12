@@ -1,5 +1,97 @@
 # Release History
 
+## 0.3.0 (2022-04-11)
+### Breaking Changes
+
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `NewServiceClient` return value(s) have been changed from `(*ServiceClient)` to `(*ServiceClient, error)`
+- Function `*ServiceClient.BeginDelete` return value(s) have been changed from `(ServiceClientDeletePollerResponse, error)` to `(*armruntime.Poller[ServiceClientDeleteResponse], error)`
+- Function `*ServiceClient.ListByResourceGroup` return value(s) have been changed from `(*ServiceClientListByResourceGroupPager)` to `(*runtime.Pager[ServiceClientListByResourceGroupResponse])`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `*ServiceClient.BeginCreateOrUpdate` return value(s) have been changed from `(ServiceClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ServiceClientCreateOrUpdateResponse], error)`
+- Function `*ServiceClient.ListBySubscription` return value(s) have been changed from `(*ServiceClientListBySubscriptionPager)` to `(*runtime.Pager[ServiceClientListBySubscriptionResponse])`
+- Type of `ErrorAdditionalInfo.Info` has been changed from `map[string]interface{}` to `interface{}`
+- Function `Origin.ToPtr` has been removed
+- Function `*ServiceClientDeletePoller.FinalResponse` has been removed
+- Function `*ServiceClientDeletePoller.ResumeToken` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `*ServiceClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ServiceClientCreateOrUpdatePoller.Done` has been removed
+- Function `ServiceClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ServiceClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `ActionType.ToPtr` has been removed
+- Function `*ServiceClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*ServiceClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*ServiceClientListBySubscriptionPager.NextPage` has been removed
+- Function `*ServiceClientDeletePoller.Done` has been removed
+- Function `*ServiceClientListBySubscriptionPager.Err` has been removed
+- Function `CreatedByType.ToPtr` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `KeyType.ToPtr` has been removed
+- Function `ProvisioningState.ToPtr` has been removed
+- Function `*ServiceClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ServiceClientListByResourceGroupPager.NextPage` has been removed
+- Function `*ServiceClientListBySubscriptionPager.PageResponse` has been removed
+- Function `*ServiceClientDeletePoller.Poll` has been removed
+- Function `*ServiceClientDeletePollerResponse.Resume` has been removed
+- Function `ServiceClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ServiceClientListByResourceGroupPager.Err` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `ServiceClientCheckNameAvailabilityResult` has been removed
+- Struct `ServiceClientCreateOrUpdatePoller` has been removed
+- Struct `ServiceClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ServiceClientCreateOrUpdateResult` has been removed
+- Struct `ServiceClientDeletePoller` has been removed
+- Struct `ServiceClientDeletePollerResponse` has been removed
+- Struct `ServiceClientGetResult` has been removed
+- Struct `ServiceClientLinkNotificationHubResult` has been removed
+- Struct `ServiceClientListByResourceGroupPager` has been removed
+- Struct `ServiceClientListByResourceGroupResult` has been removed
+- Struct `ServiceClientListBySubscriptionPager` has been removed
+- Struct `ServiceClientListBySubscriptionResult` has been removed
+- Struct `ServiceClientListKeysResult` has been removed
+- Struct `ServiceClientRegenerateKeyResult` has been removed
+- Struct `ServiceClientUpdateResult` has been removed
+- Field `ServiceClientCheckNameAvailabilityResult` of struct `ServiceClientCheckNameAvailabilityResponse` has been removed
+- Field `RawResponse` of struct `ServiceClientCheckNameAvailabilityResponse` has been removed
+- Field `ServiceClientListByResourceGroupResult` of struct `ServiceClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `ServiceClientListByResourceGroupResponse` has been removed
+- Field `ServiceClientRegenerateKeyResult` of struct `ServiceClientRegenerateKeyResponse` has been removed
+- Field `RawResponse` of struct `ServiceClientRegenerateKeyResponse` has been removed
+- Field `ServiceClientListBySubscriptionResult` of struct `ServiceClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `ServiceClientListBySubscriptionResponse` has been removed
+- Field `ServiceClientCreateOrUpdateResult` of struct `ServiceClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ServiceClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ServiceClientDeleteResponse` has been removed
+- Field `ServiceClientLinkNotificationHubResult` of struct `ServiceClientLinkNotificationHubResponse` has been removed
+- Field `RawResponse` of struct `ServiceClientLinkNotificationHubResponse` has been removed
+- Field `ServiceClientGetResult` of struct `ServiceClientGetResponse` has been removed
+- Field `RawResponse` of struct `ServiceClientGetResponse` has been removed
+- Field `ServiceClientListKeysResult` of struct `ServiceClientListKeysResponse` has been removed
+- Field `RawResponse` of struct `ServiceClientListKeysResponse` has been removed
+- Field `ServiceClientUpdateResult` of struct `ServiceClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ServiceClientUpdateResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+
+### Features Added
+
+- New anonymous field `ServiceResourceList` in struct `ServiceClientListByResourceGroupResponse`
+- New anonymous field `ServiceResource` in struct `ServiceClientGetResponse`
+- New anonymous field `LinkedNotificationHub` in struct `ServiceClientLinkNotificationHubResponse`
+- New anonymous field `ServiceResource` in struct `ServiceClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `ServiceClientBeginCreateOrUpdateOptions`
+- New anonymous field `ServiceKeys` in struct `ServiceClientListKeysResponse`
+- New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
+- New anonymous field `ServiceResourceList` in struct `ServiceClientListBySubscriptionResponse`
+- New anonymous field `ServiceKeys` in struct `ServiceClientRegenerateKeyResponse`
+- New anonymous field `ServiceResource` in struct `ServiceClientUpdateResponse`
+- New field `ResumeToken` in struct `ServiceClientBeginDeleteOptions`
+- New anonymous field `NameAvailability` in struct `ServiceClientCheckNameAvailabilityResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

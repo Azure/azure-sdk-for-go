@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type OriginGroupsClient struct {
 // subscriptionID - Azure Subscription ID.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewOriginGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *OriginGroupsClient {
+func NewOriginGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OriginGroupsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &OriginGroupsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreate - Creates a new origin group within the specified endpoint.
@@ -58,22 +63,16 @@ func NewOriginGroupsClient(subscriptionID string, credential azcore.TokenCredent
 // originGroup - Origin group properties
 // options - OriginGroupsClientBeginCreateOptions contains the optional parameters for the OriginGroupsClient.BeginCreate
 // method.
-func (client *OriginGroupsClient) BeginCreate(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originGroupName string, originGroup OriginGroup, options *OriginGroupsClientBeginCreateOptions) (OriginGroupsClientCreatePollerResponse, error) {
-	resp, err := client.create(ctx, resourceGroupName, profileName, endpointName, originGroupName, originGroup, options)
-	if err != nil {
-		return OriginGroupsClientCreatePollerResponse{}, err
+func (client *OriginGroupsClient) BeginCreate(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originGroupName string, originGroup OriginGroup, options *OriginGroupsClientBeginCreateOptions) (*armruntime.Poller[OriginGroupsClientCreateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.create(ctx, resourceGroupName, profileName, endpointName, originGroupName, originGroup, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[OriginGroupsClientCreateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[OriginGroupsClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := OriginGroupsClientCreatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("OriginGroupsClient.Create", "", resp, client.pl)
-	if err != nil {
-		return OriginGroupsClientCreatePollerResponse{}, err
-	}
-	result.Poller = &OriginGroupsClientCreatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Create - Creates a new origin group within the specified endpoint.
@@ -135,22 +134,16 @@ func (client *OriginGroupsClient) createCreateRequest(ctx context.Context, resou
 // originGroupName - Name of the origin group which is unique within the endpoint.
 // options - OriginGroupsClientBeginDeleteOptions contains the optional parameters for the OriginGroupsClient.BeginDelete
 // method.
-func (client *OriginGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originGroupName string, options *OriginGroupsClientBeginDeleteOptions) (OriginGroupsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, profileName, endpointName, originGroupName, options)
-	if err != nil {
-		return OriginGroupsClientDeletePollerResponse{}, err
+func (client *OriginGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originGroupName string, options *OriginGroupsClientBeginDeleteOptions) (*armruntime.Poller[OriginGroupsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, profileName, endpointName, originGroupName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[OriginGroupsClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[OriginGroupsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := OriginGroupsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("OriginGroupsClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return OriginGroupsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &OriginGroupsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes an existing origin group within an endpoint.
@@ -262,7 +255,7 @@ func (client *OriginGroupsClient) getCreateRequest(ctx context.Context, resource
 
 // getHandleResponse handles the Get response.
 func (client *OriginGroupsClient) getHandleResponse(resp *http.Response) (OriginGroupsClientGetResponse, error) {
-	result := OriginGroupsClientGetResponse{RawResponse: resp}
+	result := OriginGroupsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OriginGroup); err != nil {
 		return OriginGroupsClientGetResponse{}, err
 	}
@@ -276,16 +269,32 @@ func (client *OriginGroupsClient) getHandleResponse(resp *http.Response) (Origin
 // endpointName - Name of the endpoint under the profile which is unique globally.
 // options - OriginGroupsClientListByEndpointOptions contains the optional parameters for the OriginGroupsClient.ListByEndpoint
 // method.
-func (client *OriginGroupsClient) ListByEndpoint(resourceGroupName string, profileName string, endpointName string, options *OriginGroupsClientListByEndpointOptions) *OriginGroupsClientListByEndpointPager {
-	return &OriginGroupsClientListByEndpointPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByEndpointCreateRequest(ctx, resourceGroupName, profileName, endpointName, options)
+func (client *OriginGroupsClient) ListByEndpoint(resourceGroupName string, profileName string, endpointName string, options *OriginGroupsClientListByEndpointOptions) *runtime.Pager[OriginGroupsClientListByEndpointResponse] {
+	return runtime.NewPager(runtime.PageProcessor[OriginGroupsClientListByEndpointResponse]{
+		More: func(page OriginGroupsClientListByEndpointResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp OriginGroupsClientListByEndpointResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.OriginGroupListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *OriginGroupsClientListByEndpointResponse) (OriginGroupsClientListByEndpointResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByEndpointCreateRequest(ctx, resourceGroupName, profileName, endpointName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return OriginGroupsClientListByEndpointResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return OriginGroupsClientListByEndpointResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return OriginGroupsClientListByEndpointResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByEndpointHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByEndpointCreateRequest creates the ListByEndpoint request.
@@ -320,7 +329,7 @@ func (client *OriginGroupsClient) listByEndpointCreateRequest(ctx context.Contex
 
 // listByEndpointHandleResponse handles the ListByEndpoint response.
 func (client *OriginGroupsClient) listByEndpointHandleResponse(resp *http.Response) (OriginGroupsClientListByEndpointResponse, error) {
-	result := OriginGroupsClientListByEndpointResponse{RawResponse: resp}
+	result := OriginGroupsClientListByEndpointResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OriginGroupListResult); err != nil {
 		return OriginGroupsClientListByEndpointResponse{}, err
 	}
@@ -336,22 +345,16 @@ func (client *OriginGroupsClient) listByEndpointHandleResponse(resp *http.Respon
 // originGroupUpdateProperties - Origin group properties
 // options - OriginGroupsClientBeginUpdateOptions contains the optional parameters for the OriginGroupsClient.BeginUpdate
 // method.
-func (client *OriginGroupsClient) BeginUpdate(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originGroupName string, originGroupUpdateProperties OriginGroupUpdateParameters, options *OriginGroupsClientBeginUpdateOptions) (OriginGroupsClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, profileName, endpointName, originGroupName, originGroupUpdateProperties, options)
-	if err != nil {
-		return OriginGroupsClientUpdatePollerResponse{}, err
+func (client *OriginGroupsClient) BeginUpdate(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originGroupName string, originGroupUpdateProperties OriginGroupUpdateParameters, options *OriginGroupsClientBeginUpdateOptions) (*armruntime.Poller[OriginGroupsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, profileName, endpointName, originGroupName, originGroupUpdateProperties, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[OriginGroupsClientUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[OriginGroupsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := OriginGroupsClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("OriginGroupsClient.Update", "", resp, client.pl)
-	if err != nil {
-		return OriginGroupsClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &OriginGroupsClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Updates an existing origin group within an endpoint.

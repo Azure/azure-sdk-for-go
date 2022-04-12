@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -31,19 +32,23 @@ type ArtifactsClient struct {
 // NewArtifactsClient creates a new instance of ArtifactsClient with the specified values.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewArtifactsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *ArtifactsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewArtifactsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ArtifactsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ArtifactsClient{
-		host: string(cp.Endpoint),
-		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host: ep,
+		pl:   pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Create or update blueprint artifact.
@@ -95,7 +100,7 @@ func (client *ArtifactsClient) createOrUpdateCreateRequest(ctx context.Context, 
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *ArtifactsClient) createOrUpdateHandleResponse(resp *http.Response) (ArtifactsClientCreateOrUpdateResponse, error) {
-	result := ArtifactsClientCreateOrUpdateResponse{RawResponse: resp}
+	result := ArtifactsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
 		return ArtifactsClientCreateOrUpdateResponse{}, err
 	}
@@ -149,7 +154,7 @@ func (client *ArtifactsClient) deleteCreateRequest(ctx context.Context, resource
 
 // deleteHandleResponse handles the Delete response.
 func (client *ArtifactsClient) deleteHandleResponse(resp *http.Response) (ArtifactsClientDeleteResponse, error) {
-	result := ArtifactsClientDeleteResponse{RawResponse: resp}
+	result := ArtifactsClientDeleteResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
 		return ArtifactsClientDeleteResponse{}, err
 	}
@@ -203,7 +208,7 @@ func (client *ArtifactsClient) getCreateRequest(ctx context.Context, resourceSco
 
 // getHandleResponse handles the Get response.
 func (client *ArtifactsClient) getHandleResponse(resp *http.Response) (ArtifactsClientGetResponse, error) {
-	result := ArtifactsClientGetResponse{RawResponse: resp}
+	result := ArtifactsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
 		return ArtifactsClientGetResponse{}, err
 	}
@@ -216,16 +221,32 @@ func (client *ArtifactsClient) getHandleResponse(resp *http.Response) (Artifacts
 // subscription (format: '/subscriptions/{subscriptionId}').
 // blueprintName - Name of the blueprint definition.
 // options - ArtifactsClientListOptions contains the optional parameters for the ArtifactsClient.List method.
-func (client *ArtifactsClient) List(resourceScope string, blueprintName string, options *ArtifactsClientListOptions) *ArtifactsClientListPager {
-	return &ArtifactsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceScope, blueprintName, options)
+func (client *ArtifactsClient) List(resourceScope string, blueprintName string, options *ArtifactsClientListOptions) *runtime.Pager[ArtifactsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ArtifactsClientListResponse]{
+		More: func(page ArtifactsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ArtifactsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ArtifactList.NextLink)
+		Fetcher: func(ctx context.Context, page *ArtifactsClientListResponse) (ArtifactsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceScope, blueprintName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ArtifactsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ArtifactsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ArtifactsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -249,7 +270,7 @@ func (client *ArtifactsClient) listCreateRequest(ctx context.Context, resourceSc
 
 // listHandleResponse handles the List response.
 func (client *ArtifactsClient) listHandleResponse(resp *http.Response) (ArtifactsClientListResponse, error) {
-	result := ArtifactsClientListResponse{RawResponse: resp}
+	result := ArtifactsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ArtifactList); err != nil {
 		return ArtifactsClientListResponse{}, err
 	}

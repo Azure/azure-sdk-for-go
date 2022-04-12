@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -31,19 +32,23 @@ type BlueprintsClient struct {
 // NewBlueprintsClient creates a new instance of BlueprintsClient with the specified values.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewBlueprintsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *BlueprintsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewBlueprintsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*BlueprintsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &BlueprintsClient{
-		host: string(cp.Endpoint),
-		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host: ep,
+		pl:   pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Create or update a blueprint definition.
@@ -90,7 +95,7 @@ func (client *BlueprintsClient) createOrUpdateCreateRequest(ctx context.Context,
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *BlueprintsClient) createOrUpdateHandleResponse(resp *http.Response) (BlueprintsClientCreateOrUpdateResponse, error) {
-	result := BlueprintsClientCreateOrUpdateResponse{RawResponse: resp}
+	result := BlueprintsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Blueprint); err != nil {
 		return BlueprintsClientCreateOrUpdateResponse{}, err
 	}
@@ -139,7 +144,7 @@ func (client *BlueprintsClient) deleteCreateRequest(ctx context.Context, resourc
 
 // deleteHandleResponse handles the Delete response.
 func (client *BlueprintsClient) deleteHandleResponse(resp *http.Response) (BlueprintsClientDeleteResponse, error) {
-	result := BlueprintsClientDeleteResponse{RawResponse: resp}
+	result := BlueprintsClientDeleteResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Blueprint); err != nil {
 		return BlueprintsClientDeleteResponse{}, err
 	}
@@ -188,7 +193,7 @@ func (client *BlueprintsClient) getCreateRequest(ctx context.Context, resourceSc
 
 // getHandleResponse handles the Get response.
 func (client *BlueprintsClient) getHandleResponse(resp *http.Response) (BlueprintsClientGetResponse, error) {
-	result := BlueprintsClientGetResponse{RawResponse: resp}
+	result := BlueprintsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Blueprint); err != nil {
 		return BlueprintsClientGetResponse{}, err
 	}
@@ -200,16 +205,32 @@ func (client *BlueprintsClient) getHandleResponse(resp *http.Response) (Blueprin
 // resourceScope - The scope of the resource. Valid scopes are: management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'),
 // subscription (format: '/subscriptions/{subscriptionId}').
 // options - BlueprintsClientListOptions contains the optional parameters for the BlueprintsClient.List method.
-func (client *BlueprintsClient) List(resourceScope string, options *BlueprintsClientListOptions) *BlueprintsClientListPager {
-	return &BlueprintsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceScope, options)
+func (client *BlueprintsClient) List(resourceScope string, options *BlueprintsClientListOptions) *runtime.Pager[BlueprintsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[BlueprintsClientListResponse]{
+		More: func(page BlueprintsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp BlueprintsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.List.NextLink)
+		Fetcher: func(ctx context.Context, page *BlueprintsClientListResponse) (BlueprintsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceScope, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return BlueprintsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return BlueprintsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return BlueprintsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -229,7 +250,7 @@ func (client *BlueprintsClient) listCreateRequest(ctx context.Context, resourceS
 
 // listHandleResponse handles the List response.
 func (client *BlueprintsClient) listHandleResponse(resp *http.Response) (BlueprintsClientListResponse, error) {
-	result := BlueprintsClientListResponse{RawResponse: resp}
+	result := BlueprintsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.List); err != nil {
 		return BlueprintsClientListResponse{}, err
 	}

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,12 +8,7 @@
 
 package armchaos
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
 
 // ActionClassification provides polymorphic access to related types.
 // Call the interface's GetAction() method to access the common type.
@@ -33,9 +28,6 @@ type Action struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// GetAction implements the ActionClassification interface for type Action.
-func (a *Action) GetAction() *Action { return a }
-
 // ActionStatus - Model that represents the an action and its status.
 type ActionStatus struct {
 	// READ-ONLY; The id of the action status.
@@ -51,16 +43,6 @@ type ActionStatus struct {
 	Targets []*ExperimentExecutionActionTargetDetailsProperties `json:"targets,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ActionStatus.
-func (a ActionStatus) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", a.ID)
-	populate(objectMap, "name", a.Name)
-	populate(objectMap, "status", a.Status)
-	populate(objectMap, "targets", a.Targets)
-	return json.Marshal(objectMap)
-}
-
 // Branch - Model that represents a branch in the step.
 type Branch struct {
 	// REQUIRED; List of actions.
@@ -68,37 +50,6 @@ type Branch struct {
 
 	// REQUIRED; String of the branch name.
 	Name *string `json:"name,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Branch.
-func (b Branch) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "actions", b.Actions)
-	populate(objectMap, "name", b.Name)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type Branch.
-func (b *Branch) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "actions":
-			b.Actions, err = unmarshalActionClassificationArray(val)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &b.Name)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // BranchStatus - Model that represents the a list of actions and action statuses.
@@ -114,16 +65,6 @@ type BranchStatus struct {
 
 	// READ-ONLY; The status of the branch.
 	Status *string `json:"status,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BranchStatus.
-func (b BranchStatus) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "actions", b.Actions)
-	populate(objectMap, "id", b.ID)
-	populate(objectMap, "name", b.Name)
-	populate(objectMap, "status", b.Status)
-	return json.Marshal(objectMap)
 }
 
 // CapabilitiesClientCreateOrUpdateOptions contains the optional parameters for the CapabilitiesClient.CreateOrUpdate method.
@@ -174,14 +115,6 @@ type CapabilityListResult struct {
 	Value []*Capability `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CapabilityListResult.
-func (c CapabilityListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", c.NextLink)
-	populate(objectMap, "value", c.Value)
-	return json.Marshal(objectMap)
-}
-
 // CapabilityProperties - Model that represents the Capability properties model.
 type CapabilityProperties struct {
 	// READ-ONLY; Localized string of the description.
@@ -228,14 +161,6 @@ type CapabilityTypeListResult struct {
 
 	// READ-ONLY; List of Capability Type resources.
 	Value []*CapabilityType `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CapabilityTypeListResult.
-func (c CapabilityTypeListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", c.NextLink)
-	populate(objectMap, "value", c.Value)
-	return json.Marshal(objectMap)
 }
 
 // CapabilityTypeProperties - Model that represents the Capability Type properties model.
@@ -288,57 +213,6 @@ type ContinuousAction struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// GetAction implements the ActionClassification interface for type ContinuousAction.
-func (c *ContinuousAction) GetAction() *Action {
-	return &Action{
-		Type: c.Type,
-		Name: c.Name,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ContinuousAction.
-func (c ContinuousAction) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "duration", c.Duration)
-	populate(objectMap, "name", c.Name)
-	populate(objectMap, "parameters", c.Parameters)
-	populate(objectMap, "selectorId", c.SelectorID)
-	objectMap["type"] = "continuous"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ContinuousAction.
-func (c *ContinuousAction) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "duration":
-			err = unpopulate(val, &c.Duration)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &c.Name)
-			delete(rawMsg, key)
-		case "parameters":
-			err = unpopulate(val, &c.Parameters)
-			delete(rawMsg, key)
-		case "selectorId":
-			err = unpopulate(val, &c.SelectorID)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &c.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // DelayAction - Model that represents a delay action.
 type DelayAction struct {
 	// REQUIRED; ISO8601 formatted string that represents a duration.
@@ -349,49 +223,6 @@ type DelayAction struct {
 
 	// REQUIRED; Enum that discriminates between action models.
 	Type *string `json:"type,omitempty"`
-}
-
-// GetAction implements the ActionClassification interface for type DelayAction.
-func (d *DelayAction) GetAction() *Action {
-	return &Action{
-		Type: d.Type,
-		Name: d.Name,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DelayAction.
-func (d DelayAction) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "duration", d.Duration)
-	populate(objectMap, "name", d.Name)
-	objectMap["type"] = "delay"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type DelayAction.
-func (d *DelayAction) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "duration":
-			err = unpopulate(val, &d.Duration)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &d.Name)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &d.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // DiscreteAction - Model that represents a discrete action.
@@ -409,57 +240,10 @@ type DiscreteAction struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// GetAction implements the ActionClassification interface for type DiscreteAction.
-func (d *DiscreteAction) GetAction() *Action {
-	return &Action{
-		Type: d.Type,
-		Name: d.Name,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DiscreteAction.
-func (d DiscreteAction) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "name", d.Name)
-	populate(objectMap, "parameters", d.Parameters)
-	populate(objectMap, "selectorId", d.SelectorID)
-	objectMap["type"] = "discrete"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type DiscreteAction.
-func (d *DiscreteAction) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "name":
-			err = unpopulate(val, &d.Name)
-			delete(rawMsg, key)
-		case "parameters":
-			err = unpopulate(val, &d.Parameters)
-			delete(rawMsg, key)
-		case "selectorId":
-			err = unpopulate(val, &d.SelectorID)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &d.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info map[string]interface{} `json:"info,omitempty" azure:"ro"`
+	Info interface{} `json:"info,omitempty" azure:"ro"`
 
 	// READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -481,17 +265,6 @@ type ErrorDetail struct {
 
 	// READ-ONLY; The error target.
 	Target *string `json:"target,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ErrorDetail.
-func (e ErrorDetail) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalInfo", e.AdditionalInfo)
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "message", e.Message)
-	populate(objectMap, "target", e.Target)
-	return json.Marshal(objectMap)
 }
 
 // ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
@@ -526,20 +299,6 @@ type Experiment struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Experiment.
-func (e Experiment) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", e.ID)
-	populate(objectMap, "identity", e.Identity)
-	populate(objectMap, "location", e.Location)
-	populate(objectMap, "name", e.Name)
-	populate(objectMap, "properties", e.Properties)
-	populate(objectMap, "systemData", e.SystemData)
-	populate(objectMap, "tags", e.Tags)
-	populate(objectMap, "type", e.Type)
-	return json.Marshal(objectMap)
 }
 
 // ExperimentCancelOperationResult - Model that represents the result of a cancel Experiment operation.
@@ -579,49 +338,6 @@ type ExperimentExecutionActionTargetDetailsProperties struct {
 	Target *string `json:"target,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ExperimentExecutionActionTargetDetailsProperties.
-func (e ExperimentExecutionActionTargetDetailsProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "completedDateUtc", e.CompletedDateUTC)
-	populate(objectMap, "error", e.Error)
-	populateTimeRFC3339(objectMap, "failedDateUtc", e.FailedDateUTC)
-	populate(objectMap, "status", e.Status)
-	populate(objectMap, "target", e.Target)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ExperimentExecutionActionTargetDetailsProperties.
-func (e *ExperimentExecutionActionTargetDetailsProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "completedDateUtc":
-			err = unpopulateTimeRFC3339(val, &e.CompletedDateUTC)
-			delete(rawMsg, key)
-		case "error":
-			err = unpopulate(val, &e.Error)
-			delete(rawMsg, key)
-		case "failedDateUtc":
-			err = unpopulateTimeRFC3339(val, &e.FailedDateUTC)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &e.Status)
-			delete(rawMsg, key)
-		case "target":
-			err = unpopulate(val, &e.Target)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ExperimentExecutionDetails - Model that represents the execution details of a Experiment.
 type ExperimentExecutionDetails struct {
 	// READ-ONLY; String of the fully qualified resource ID.
@@ -644,14 +360,6 @@ type ExperimentExecutionDetailsListResult struct {
 
 	// READ-ONLY; List of Experiment execution details.
 	Value []*ExperimentExecutionDetails `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ExperimentExecutionDetailsListResult.
-func (e ExperimentExecutionDetailsListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", e.NextLink)
-	populate(objectMap, "value", e.Value)
-	return json.Marshal(objectMap)
 }
 
 // ExperimentExecutionDetailsProperties - Model that represents the Experiment execution details properties model.
@@ -681,72 +389,10 @@ type ExperimentExecutionDetailsProperties struct {
 	StopDateUTC *time.Time `json:"stopDateUtc,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ExperimentExecutionDetailsProperties.
-func (e ExperimentExecutionDetailsProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdDateUtc", e.CreatedDateUTC)
-	populate(objectMap, "experimentId", e.ExperimentID)
-	populate(objectMap, "failureReason", e.FailureReason)
-	populateTimeRFC3339(objectMap, "lastActionDateUtc", e.LastActionDateUTC)
-	populate(objectMap, "runInformation", e.RunInformation)
-	populateTimeRFC3339(objectMap, "startDateUtc", e.StartDateUTC)
-	populate(objectMap, "status", e.Status)
-	populateTimeRFC3339(objectMap, "stopDateUtc", e.StopDateUTC)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ExperimentExecutionDetailsProperties.
-func (e *ExperimentExecutionDetailsProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdDateUtc":
-			err = unpopulateTimeRFC3339(val, &e.CreatedDateUTC)
-			delete(rawMsg, key)
-		case "experimentId":
-			err = unpopulate(val, &e.ExperimentID)
-			delete(rawMsg, key)
-		case "failureReason":
-			err = unpopulate(val, &e.FailureReason)
-			delete(rawMsg, key)
-		case "lastActionDateUtc":
-			err = unpopulateTimeRFC3339(val, &e.LastActionDateUTC)
-			delete(rawMsg, key)
-		case "runInformation":
-			err = unpopulate(val, &e.RunInformation)
-			delete(rawMsg, key)
-		case "startDateUtc":
-			err = unpopulateTimeRFC3339(val, &e.StartDateUTC)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &e.Status)
-			delete(rawMsg, key)
-		case "stopDateUtc":
-			err = unpopulateTimeRFC3339(val, &e.StopDateUTC)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ExperimentExecutionDetailsPropertiesRunInformation - The information of the experiment run.
 type ExperimentExecutionDetailsPropertiesRunInformation struct {
 	// READ-ONLY; The steps of the experiment run.
 	Steps []*StepStatus `json:"steps,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ExperimentExecutionDetailsPropertiesRunInformation.
-func (e ExperimentExecutionDetailsPropertiesRunInformation) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "steps", e.Steps)
-	return json.Marshal(objectMap)
 }
 
 // ExperimentListResult - Model that represents a list of Experiment resources and a link for pagination.
@@ -756,14 +402,6 @@ type ExperimentListResult struct {
 
 	// READ-ONLY; List of Experiment resources.
 	Value []*Experiment `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ExperimentListResult.
-func (e ExperimentListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", e.NextLink)
-	populate(objectMap, "value", e.Value)
-	return json.Marshal(objectMap)
 }
 
 // ExperimentProperties - Model that represents the Experiment properties model.
@@ -776,15 +414,6 @@ type ExperimentProperties struct {
 
 	// A boolean value that indicates if experiment should be started on creation or not.
 	StartOnCreation *bool `json:"startOnCreation,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ExperimentProperties.
-func (e ExperimentProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "selectors", e.Selectors)
-	populate(objectMap, "startOnCreation", e.StartOnCreation)
-	populate(objectMap, "steps", e.Steps)
-	return json.Marshal(objectMap)
 }
 
 // ExperimentStartOperationResult - Model that represents the result of a start Experiment operation.
@@ -820,14 +449,6 @@ type ExperimentStatusListResult struct {
 	Value []*ExperimentStatus `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ExperimentStatusListResult.
-func (e ExperimentStatusListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", e.NextLink)
-	populate(objectMap, "value", e.Value)
-	return json.Marshal(objectMap)
-}
-
 // ExperimentStatusProperties - Model that represents the Experiment status properties model.
 type ExperimentStatusProperties struct {
 	// READ-ONLY; String that represents the created date time of a Experiment.
@@ -840,50 +461,17 @@ type ExperimentStatusProperties struct {
 	Status *string `json:"status,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ExperimentStatusProperties.
-func (e ExperimentStatusProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdDateUtc", e.CreatedDateUTC)
-	populateTimeRFC3339(objectMap, "endDateUtc", e.EndDateUTC)
-	populate(objectMap, "status", e.Status)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ExperimentStatusProperties.
-func (e *ExperimentStatusProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdDateUtc":
-			err = unpopulateTimeRFC3339(val, &e.CreatedDateUTC)
-			delete(rawMsg, key)
-		case "endDateUtc":
-			err = unpopulateTimeRFC3339(val, &e.EndDateUTC)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &e.Status)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ExperimentsClientBeginCancelOptions contains the optional parameters for the ExperimentsClient.BeginCancel method.
 type ExperimentsClientBeginCancelOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ExperimentsClientBeginCreateOrUpdateOptions contains the optional parameters for the ExperimentsClient.BeginCreateOrUpdate
 // method.
 type ExperimentsClientBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ExperimentsClientDeleteOptions contains the optional parameters for the ExperimentsClient.Delete method.
@@ -999,14 +587,6 @@ type OperationListResult struct {
 	Value []*Operation `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
-func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
-}
-
 // OperationsClientListAllOptions contains the optional parameters for the OperationsClient.ListAll method.
 type OperationsClientListAllOptions struct {
 	// placeholder for future optional parameters
@@ -1048,15 +628,6 @@ type Selector struct {
 	Type *SelectorType `json:"type,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Selector.
-func (s Selector) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", s.ID)
-	populate(objectMap, "targets", s.Targets)
-	populate(objectMap, "type", s.Type)
-	return json.Marshal(objectMap)
-}
-
 // Step - Model that represents a step in the Experiment resource.
 type Step struct {
 	// REQUIRED; List of branches.
@@ -1064,14 +635,6 @@ type Step struct {
 
 	// REQUIRED; String of the step name.
 	Name *string `json:"name,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Step.
-func (s Step) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "branches", s.Branches)
-	populate(objectMap, "name", s.Name)
-	return json.Marshal(objectMap)
 }
 
 // StepStatus - Model that represents the a list of branches and branch statuses.
@@ -1087,16 +650,6 @@ type StepStatus struct {
 
 	// READ-ONLY; The value of the status of the step.
 	Status *string `json:"status,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type StepStatus.
-func (s StepStatus) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "branches", s.Branches)
-	populate(objectMap, "id", s.ID)
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "status", s.Status)
-	return json.Marshal(objectMap)
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
@@ -1120,53 +673,6 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SystemData.
-func (s SystemData) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
-	populate(objectMap, "createdBy", s.CreatedBy)
-	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
-	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
-	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SystemData.
-func (s *SystemData) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdAt":
-			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
-			delete(rawMsg, key)
-		case "createdBy":
-			err = unpopulate(val, &s.CreatedBy)
-			delete(rawMsg, key)
-		case "createdByType":
-			err = unpopulate(val, &s.CreatedByType)
-			delete(rawMsg, key)
-		case "lastModifiedAt":
-			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
-			delete(rawMsg, key)
-		case "lastModifiedBy":
-			err = unpopulate(val, &s.LastModifiedBy)
-			delete(rawMsg, key)
-		case "lastModifiedByType":
-			err = unpopulate(val, &s.LastModifiedByType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // Target - Model that represents a Target resource.
 type Target struct {
 	// REQUIRED; The properties of the target resource.
@@ -1188,18 +694,6 @@ type Target struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Target.
-func (t Target) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", t.ID)
-	populate(objectMap, "location", t.Location)
-	populate(objectMap, "name", t.Name)
-	populate(objectMap, "properties", t.Properties)
-	populate(objectMap, "systemData", t.SystemData)
-	populate(objectMap, "type", t.Type)
-	return json.Marshal(objectMap)
-}
-
 // TargetListResult - Model that represents a list of Target resources and a link for pagination.
 type TargetListResult struct {
 	// READ-ONLY; URL to retrieve the next page of Target resources.
@@ -1207,14 +701,6 @@ type TargetListResult struct {
 
 	// READ-ONLY; List of Target resources.
 	Value []*Target `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type TargetListResult.
-func (t TargetListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", t.NextLink)
-	populate(objectMap, "value", t.Value)
-	return json.Marshal(objectMap)
 }
 
 // TargetReference - Model that represents a reference to a Target in the selector.
@@ -1256,14 +742,6 @@ type TargetTypeListResult struct {
 	Value []*TargetType `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type TargetTypeListResult.
-func (t TargetTypeListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", t.NextLink)
-	populate(objectMap, "value", t.Value)
-	return json.Marshal(objectMap)
-}
-
 // TargetTypeProperties - Model that represents the base Target Type properties model.
 type TargetTypeProperties struct {
 	// READ-ONLY; Localized string of the description.
@@ -1277,16 +755,6 @@ type TargetTypeProperties struct {
 
 	// READ-ONLY; List of resource types this Target Type can extend.
 	ResourceTypes []*string `json:"resourceTypes,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type TargetTypeProperties.
-func (t TargetTypeProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "description", t.Description)
-	populate(objectMap, "displayName", t.DisplayName)
-	populate(objectMap, "propertiesSchema", t.PropertiesSchema)
-	populate(objectMap, "resourceTypes", t.ResourceTypes)
-	return json.Marshal(objectMap)
 }
 
 // TargetTypesClientGetOptions contains the optional parameters for the TargetTypesClient.Get method.
@@ -1338,32 +806,4 @@ type TrackedResource struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type TrackedResource.
-func (t TrackedResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", t.ID)
-	populate(objectMap, "location", t.Location)
-	populate(objectMap, "name", t.Name)
-	populate(objectMap, "tags", t.Tags)
-	populate(objectMap, "type", t.Type)
-	return json.Marshal(objectMap)
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

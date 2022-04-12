@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type BotConnectionClient struct {
 // subscriptionID - Azure Subscription ID.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewBotConnectionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *BotConnectionClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewBotConnectionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BotConnectionClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &BotConnectionClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Create - Register a new Auth Connection for a Bot Service
@@ -103,7 +108,7 @@ func (client *BotConnectionClient) createCreateRequest(ctx context.Context, reso
 
 // createHandleResponse handles the Create response.
 func (client *BotConnectionClient) createHandleResponse(resp *http.Response) (BotConnectionClientCreateResponse, error) {
-	result := BotConnectionClientCreateResponse{RawResponse: resp}
+	result := BotConnectionClientCreateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectionSetting); err != nil {
 		return BotConnectionClientCreateResponse{}, err
 	}
@@ -128,7 +133,7 @@ func (client *BotConnectionClient) Delete(ctx context.Context, resourceGroupName
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return BotConnectionClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return BotConnectionClientDeleteResponse{RawResponse: resp}, nil
+	return BotConnectionClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -214,7 +219,7 @@ func (client *BotConnectionClient) getCreateRequest(ctx context.Context, resourc
 
 // getHandleResponse handles the Get response.
 func (client *BotConnectionClient) getHandleResponse(resp *http.Response) (BotConnectionClientGetResponse, error) {
-	result := BotConnectionClientGetResponse{RawResponse: resp}
+	result := BotConnectionClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectionSetting); err != nil {
 		return BotConnectionClientGetResponse{}, err
 	}
@@ -227,16 +232,32 @@ func (client *BotConnectionClient) getHandleResponse(resp *http.Response) (BotCo
 // resourceName - The name of the Bot resource.
 // options - BotConnectionClientListByBotServiceOptions contains the optional parameters for the BotConnectionClient.ListByBotService
 // method.
-func (client *BotConnectionClient) ListByBotService(resourceGroupName string, resourceName string, options *BotConnectionClientListByBotServiceOptions) *BotConnectionClientListByBotServicePager {
-	return &BotConnectionClientListByBotServicePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByBotServiceCreateRequest(ctx, resourceGroupName, resourceName, options)
+func (client *BotConnectionClient) ListByBotService(resourceGroupName string, resourceName string, options *BotConnectionClientListByBotServiceOptions) *runtime.Pager[BotConnectionClientListByBotServiceResponse] {
+	return runtime.NewPager(runtime.PageProcessor[BotConnectionClientListByBotServiceResponse]{
+		More: func(page BotConnectionClientListByBotServiceResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp BotConnectionClientListByBotServiceResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ConnectionSettingResponseList.NextLink)
+		Fetcher: func(ctx context.Context, page *BotConnectionClientListByBotServiceResponse) (BotConnectionClientListByBotServiceResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByBotServiceCreateRequest(ctx, resourceGroupName, resourceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return BotConnectionClientListByBotServiceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return BotConnectionClientListByBotServiceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return BotConnectionClientListByBotServiceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByBotServiceHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByBotServiceCreateRequest creates the ListByBotService request.
@@ -267,7 +288,7 @@ func (client *BotConnectionClient) listByBotServiceCreateRequest(ctx context.Con
 
 // listByBotServiceHandleResponse handles the ListByBotService response.
 func (client *BotConnectionClient) listByBotServiceHandleResponse(resp *http.Response) (BotConnectionClientListByBotServiceResponse, error) {
-	result := BotConnectionClientListByBotServiceResponse{RawResponse: resp}
+	result := BotConnectionClientListByBotServiceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectionSettingResponseList); err != nil {
 		return BotConnectionClientListByBotServiceResponse{}, err
 	}
@@ -313,7 +334,7 @@ func (client *BotConnectionClient) listServiceProvidersCreateRequest(ctx context
 
 // listServiceProvidersHandleResponse handles the ListServiceProviders response.
 func (client *BotConnectionClient) listServiceProvidersHandleResponse(resp *http.Response) (BotConnectionClientListServiceProvidersResponse, error) {
-	result := BotConnectionClientListServiceProvidersResponse{RawResponse: resp}
+	result := BotConnectionClientListServiceProvidersResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceProviderResponseList); err != nil {
 		return BotConnectionClientListServiceProvidersResponse{}, err
 	}
@@ -374,7 +395,7 @@ func (client *BotConnectionClient) listWithSecretsCreateRequest(ctx context.Cont
 
 // listWithSecretsHandleResponse handles the ListWithSecrets response.
 func (client *BotConnectionClient) listWithSecretsHandleResponse(resp *http.Response) (BotConnectionClientListWithSecretsResponse, error) {
-	result := BotConnectionClientListWithSecretsResponse{RawResponse: resp}
+	result := BotConnectionClientListWithSecretsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectionSetting); err != nil {
 		return BotConnectionClientListWithSecretsResponse{}, err
 	}
@@ -435,7 +456,7 @@ func (client *BotConnectionClient) updateCreateRequest(ctx context.Context, reso
 
 // updateHandleResponse handles the Update response.
 func (client *BotConnectionClient) updateHandleResponse(resp *http.Response) (BotConnectionClientUpdateResponse, error) {
-	result := BotConnectionClientUpdateResponse{RawResponse: resp}
+	result := BotConnectionClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectionSetting); err != nil {
 		return BotConnectionClientUpdateResponse{}, err
 	}

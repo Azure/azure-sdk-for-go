@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -31,19 +32,23 @@ type InstructionsClient struct {
 // NewInstructionsClient creates a new instance of InstructionsClient with the specified values.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewInstructionsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *InstructionsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewInstructionsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*InstructionsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &InstructionsClient{
-		host: string(cp.Endpoint),
-		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host: ep,
+		pl:   pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Get the instruction by name. These are custom billing instructions and are only applicable for certain customers.
@@ -95,7 +100,7 @@ func (client *InstructionsClient) getCreateRequest(ctx context.Context, billingA
 
 // getHandleResponse handles the Get response.
 func (client *InstructionsClient) getHandleResponse(resp *http.Response) (InstructionsClientGetResponse, error) {
-	result := InstructionsClientGetResponse{RawResponse: resp}
+	result := InstructionsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Instruction); err != nil {
 		return InstructionsClientGetResponse{}, err
 	}
@@ -108,16 +113,32 @@ func (client *InstructionsClient) getHandleResponse(resp *http.Response) (Instru
 // billingProfileName - The ID that uniquely identifies a billing profile.
 // options - InstructionsClientListByBillingProfileOptions contains the optional parameters for the InstructionsClient.ListByBillingProfile
 // method.
-func (client *InstructionsClient) ListByBillingProfile(billingAccountName string, billingProfileName string, options *InstructionsClientListByBillingProfileOptions) *InstructionsClientListByBillingProfilePager {
-	return &InstructionsClientListByBillingProfilePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByBillingProfileCreateRequest(ctx, billingAccountName, billingProfileName, options)
+func (client *InstructionsClient) ListByBillingProfile(billingAccountName string, billingProfileName string, options *InstructionsClientListByBillingProfileOptions) *runtime.Pager[InstructionsClientListByBillingProfileResponse] {
+	return runtime.NewPager(runtime.PageProcessor[InstructionsClientListByBillingProfileResponse]{
+		More: func(page InstructionsClientListByBillingProfileResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp InstructionsClientListByBillingProfileResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.InstructionListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *InstructionsClientListByBillingProfileResponse) (InstructionsClientListByBillingProfileResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByBillingProfileCreateRequest(ctx, billingAccountName, billingProfileName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return InstructionsClientListByBillingProfileResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return InstructionsClientListByBillingProfileResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return InstructionsClientListByBillingProfileResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByBillingProfileHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByBillingProfileCreateRequest creates the ListByBillingProfile request.
@@ -144,7 +165,7 @@ func (client *InstructionsClient) listByBillingProfileCreateRequest(ctx context.
 
 // listByBillingProfileHandleResponse handles the ListByBillingProfile response.
 func (client *InstructionsClient) listByBillingProfileHandleResponse(resp *http.Response) (InstructionsClientListByBillingProfileResponse, error) {
-	result := InstructionsClientListByBillingProfileResponse{RawResponse: resp}
+	result := InstructionsClientListByBillingProfileResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.InstructionListResult); err != nil {
 		return InstructionsClientListByBillingProfileResponse{}, err
 	}
@@ -201,7 +222,7 @@ func (client *InstructionsClient) putCreateRequest(ctx context.Context, billingA
 
 // putHandleResponse handles the Put response.
 func (client *InstructionsClient) putHandleResponse(resp *http.Response) (InstructionsClientPutResponse, error) {
-	result := InstructionsClientPutResponse{RawResponse: resp}
+	result := InstructionsClientPutResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Instruction); err != nil {
 		return InstructionsClientPutResponse{}, err
 	}

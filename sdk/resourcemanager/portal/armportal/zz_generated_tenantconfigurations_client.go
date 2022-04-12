@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -31,19 +32,23 @@ type TenantConfigurationsClient struct {
 // NewTenantConfigurationsClient creates a new instance of TenantConfigurationsClient with the specified values.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewTenantConfigurationsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *TenantConfigurationsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewTenantConfigurationsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*TenantConfigurationsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &TenantConfigurationsClient{
-		host: string(cp.Endpoint),
-		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host: ep,
+		pl:   pl,
 	}
-	return client
+	return client, nil
 }
 
 // Create - Create the tenant configuration. If configuration already exists - update it. User has to be a Tenant Admin for
@@ -88,7 +93,7 @@ func (client *TenantConfigurationsClient) createCreateRequest(ctx context.Contex
 
 // createHandleResponse handles the Create response.
 func (client *TenantConfigurationsClient) createHandleResponse(resp *http.Response) (TenantConfigurationsClientCreateResponse, error) {
-	result := TenantConfigurationsClientCreateResponse{RawResponse: resp}
+	result := TenantConfigurationsClientCreateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Configuration); err != nil {
 		return TenantConfigurationsClientCreateResponse{}, err
 	}
@@ -112,7 +117,7 @@ func (client *TenantConfigurationsClient) Delete(ctx context.Context, configurat
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return TenantConfigurationsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return TenantConfigurationsClientDeleteResponse{RawResponse: resp}, nil
+	return TenantConfigurationsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -173,7 +178,7 @@ func (client *TenantConfigurationsClient) getCreateRequest(ctx context.Context, 
 
 // getHandleResponse handles the Get response.
 func (client *TenantConfigurationsClient) getHandleResponse(resp *http.Response) (TenantConfigurationsClientGetResponse, error) {
-	result := TenantConfigurationsClientGetResponse{RawResponse: resp}
+	result := TenantConfigurationsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Configuration); err != nil {
 		return TenantConfigurationsClientGetResponse{}, err
 	}
@@ -184,16 +189,32 @@ func (client *TenantConfigurationsClient) getHandleResponse(resp *http.Response)
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - TenantConfigurationsClientListOptions contains the optional parameters for the TenantConfigurationsClient.List
 // method.
-func (client *TenantConfigurationsClient) List(options *TenantConfigurationsClientListOptions) *TenantConfigurationsClientListPager {
-	return &TenantConfigurationsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *TenantConfigurationsClient) List(options *TenantConfigurationsClientListOptions) *runtime.Pager[TenantConfigurationsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[TenantConfigurationsClientListResponse]{
+		More: func(page TenantConfigurationsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp TenantConfigurationsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ConfigurationList.NextLink)
+		Fetcher: func(ctx context.Context, page *TenantConfigurationsClientListResponse) (TenantConfigurationsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return TenantConfigurationsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return TenantConfigurationsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return TenantConfigurationsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -212,7 +233,7 @@ func (client *TenantConfigurationsClient) listCreateRequest(ctx context.Context,
 
 // listHandleResponse handles the List response.
 func (client *TenantConfigurationsClient) listHandleResponse(resp *http.Response) (TenantConfigurationsClientListResponse, error) {
-	result := TenantConfigurationsClientListResponse{RawResponse: resp}
+	result := TenantConfigurationsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConfigurationList); err != nil {
 		return TenantConfigurationsClientListResponse{}, err
 	}

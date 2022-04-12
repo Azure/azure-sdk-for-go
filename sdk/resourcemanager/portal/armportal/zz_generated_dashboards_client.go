@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type DashboardsClient struct {
 // subscriptionID - The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000)
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewDashboardsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DashboardsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewDashboardsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DashboardsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &DashboardsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates a Dashboard.
@@ -99,7 +104,7 @@ func (client *DashboardsClient) createOrUpdateCreateRequest(ctx context.Context,
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *DashboardsClient) createOrUpdateHandleResponse(resp *http.Response) (DashboardsClientCreateOrUpdateResponse, error) {
-	result := DashboardsClientCreateOrUpdateResponse{RawResponse: resp}
+	result := DashboardsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Dashboard); err != nil {
 		return DashboardsClientCreateOrUpdateResponse{}, err
 	}
@@ -123,7 +128,7 @@ func (client *DashboardsClient) Delete(ctx context.Context, resourceGroupName st
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return DashboardsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return DashboardsClientDeleteResponse{RawResponse: resp}, nil
+	return DashboardsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -200,7 +205,7 @@ func (client *DashboardsClient) getCreateRequest(ctx context.Context, resourceGr
 
 // getHandleResponse handles the Get response.
 func (client *DashboardsClient) getHandleResponse(resp *http.Response) (DashboardsClientGetResponse, error) {
-	result := DashboardsClientGetResponse{RawResponse: resp}
+	result := DashboardsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Dashboard); err != nil {
 		return DashboardsClientGetResponse{}, err
 	}
@@ -212,16 +217,32 @@ func (client *DashboardsClient) getHandleResponse(resp *http.Response) (Dashboar
 // resourceGroupName - The name of the resource group.
 // options - DashboardsClientListByResourceGroupOptions contains the optional parameters for the DashboardsClient.ListByResourceGroup
 // method.
-func (client *DashboardsClient) ListByResourceGroup(resourceGroupName string, options *DashboardsClientListByResourceGroupOptions) *DashboardsClientListByResourceGroupPager {
-	return &DashboardsClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *DashboardsClient) ListByResourceGroup(resourceGroupName string, options *DashboardsClientListByResourceGroupOptions) *runtime.Pager[DashboardsClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DashboardsClientListByResourceGroupResponse]{
+		More: func(page DashboardsClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DashboardsClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DashboardListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *DashboardsClientListByResourceGroupResponse) (DashboardsClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DashboardsClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DashboardsClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DashboardsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -248,7 +269,7 @@ func (client *DashboardsClient) listByResourceGroupCreateRequest(ctx context.Con
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *DashboardsClient) listByResourceGroupHandleResponse(resp *http.Response) (DashboardsClientListByResourceGroupResponse, error) {
-	result := DashboardsClientListByResourceGroupResponse{RawResponse: resp}
+	result := DashboardsClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DashboardListResult); err != nil {
 		return DashboardsClientListByResourceGroupResponse{}, err
 	}
@@ -259,16 +280,32 @@ func (client *DashboardsClient) listByResourceGroupHandleResponse(resp *http.Res
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - DashboardsClientListBySubscriptionOptions contains the optional parameters for the DashboardsClient.ListBySubscription
 // method.
-func (client *DashboardsClient) ListBySubscription(options *DashboardsClientListBySubscriptionOptions) *DashboardsClientListBySubscriptionPager {
-	return &DashboardsClientListBySubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySubscriptionCreateRequest(ctx, options)
+func (client *DashboardsClient) ListBySubscription(options *DashboardsClientListBySubscriptionOptions) *runtime.Pager[DashboardsClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DashboardsClientListBySubscriptionResponse]{
+		More: func(page DashboardsClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DashboardsClientListBySubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DashboardListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *DashboardsClientListBySubscriptionResponse) (DashboardsClientListBySubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySubscriptionCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DashboardsClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DashboardsClientListBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DashboardsClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
@@ -291,7 +328,7 @@ func (client *DashboardsClient) listBySubscriptionCreateRequest(ctx context.Cont
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
 func (client *DashboardsClient) listBySubscriptionHandleResponse(resp *http.Response) (DashboardsClientListBySubscriptionResponse, error) {
-	result := DashboardsClientListBySubscriptionResponse{RawResponse: resp}
+	result := DashboardsClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DashboardListResult); err != nil {
 		return DashboardsClientListBySubscriptionResponse{}, err
 	}
@@ -347,7 +384,7 @@ func (client *DashboardsClient) updateCreateRequest(ctx context.Context, resourc
 
 // updateHandleResponse handles the Update response.
 func (client *DashboardsClient) updateHandleResponse(resp *http.Response) (DashboardsClientUpdateResponse, error) {
-	result := DashboardsClientUpdateResponse{RawResponse: resp}
+	result := DashboardsClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Dashboard); err != nil {
 		return DashboardsClientUpdateResponse{}, err
 	}

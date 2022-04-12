@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,136 +8,62 @@
 
 package armportal
 
-import "net/http"
-
 // DashboardsClientCreateOrUpdateResponse contains the response from method DashboardsClient.CreateOrUpdate.
 type DashboardsClientCreateOrUpdateResponse struct {
-	DashboardsClientCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DashboardsClientCreateOrUpdateResult contains the result from method DashboardsClient.CreateOrUpdate.
-type DashboardsClientCreateOrUpdateResult struct {
 	Dashboard
 }
 
 // DashboardsClientDeleteResponse contains the response from method DashboardsClient.Delete.
 type DashboardsClientDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	// placeholder for future response values
 }
 
 // DashboardsClientGetResponse contains the response from method DashboardsClient.Get.
 type DashboardsClientGetResponse struct {
-	DashboardsClientGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DashboardsClientGetResult contains the result from method DashboardsClient.Get.
-type DashboardsClientGetResult struct {
 	Dashboard
 }
 
 // DashboardsClientListByResourceGroupResponse contains the response from method DashboardsClient.ListByResourceGroup.
 type DashboardsClientListByResourceGroupResponse struct {
-	DashboardsClientListByResourceGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DashboardsClientListByResourceGroupResult contains the result from method DashboardsClient.ListByResourceGroup.
-type DashboardsClientListByResourceGroupResult struct {
 	DashboardListResult
 }
 
 // DashboardsClientListBySubscriptionResponse contains the response from method DashboardsClient.ListBySubscription.
 type DashboardsClientListBySubscriptionResponse struct {
-	DashboardsClientListBySubscriptionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DashboardsClientListBySubscriptionResult contains the result from method DashboardsClient.ListBySubscription.
-type DashboardsClientListBySubscriptionResult struct {
 	DashboardListResult
 }
 
 // DashboardsClientUpdateResponse contains the response from method DashboardsClient.Update.
 type DashboardsClientUpdateResponse struct {
-	DashboardsClientUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DashboardsClientUpdateResult contains the result from method DashboardsClient.Update.
-type DashboardsClientUpdateResult struct {
 	Dashboard
 }
 
 // ListTenantConfigurationViolationsClientListResponse contains the response from method ListTenantConfigurationViolationsClient.List.
 type ListTenantConfigurationViolationsClientListResponse struct {
-	ListTenantConfigurationViolationsClientListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ListTenantConfigurationViolationsClientListResult contains the result from method ListTenantConfigurationViolationsClient.List.
-type ListTenantConfigurationViolationsClientListResult struct {
 	ViolationsList
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.List.
 type OperationsClientListResponse struct {
-	OperationsClientListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// OperationsClientListResult contains the result from method OperationsClient.List.
-type OperationsClientListResult struct {
 	ResourceProviderOperationList
 }
 
 // TenantConfigurationsClientCreateResponse contains the response from method TenantConfigurationsClient.Create.
 type TenantConfigurationsClientCreateResponse struct {
-	TenantConfigurationsClientCreateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// TenantConfigurationsClientCreateResult contains the result from method TenantConfigurationsClient.Create.
-type TenantConfigurationsClientCreateResult struct {
 	Configuration
 }
 
 // TenantConfigurationsClientDeleteResponse contains the response from method TenantConfigurationsClient.Delete.
 type TenantConfigurationsClientDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	// placeholder for future response values
 }
 
 // TenantConfigurationsClientGetResponse contains the response from method TenantConfigurationsClient.Get.
 type TenantConfigurationsClientGetResponse struct {
-	TenantConfigurationsClientGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// TenantConfigurationsClientGetResult contains the result from method TenantConfigurationsClient.Get.
-type TenantConfigurationsClientGetResult struct {
 	Configuration
 }
 
 // TenantConfigurationsClientListResponse contains the response from method TenantConfigurationsClient.List.
 type TenantConfigurationsClientListResponse struct {
-	TenantConfigurationsClientListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// TenantConfigurationsClientListResult contains the result from method TenantConfigurationsClient.List.
-type TenantConfigurationsClientListResult struct {
 	ConfigurationList
 }

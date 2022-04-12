@@ -32,7 +32,7 @@ type AccountSASSignatureValues struct {
 func (v AccountSASSignatureValues) Sign(sharedKeyCredential *SharedKeyCredential) (SASQueryParameters, error) {
 	// https://docs.microsoft.com/en-us/rest/api/storageservices/Constructing-an-Account-SAS
 	if v.ExpiryTime.IsZero() || v.Permissions == "" || v.ResourceTypes == "" || v.Services == "" {
-		return SASQueryParameters{}, errors.New("account SAS is missing at least one of these: ExpiryTime, Permissions, Service, or ResourceType")
+		return SASQueryParameters{}, errors.New("account SAS is missing at least one of these: ExpiryTime, FilePermissions, Service, or ResourceType")
 	}
 	if v.Version == "" {
 		v.Version = SASVersion
@@ -83,13 +83,13 @@ func (v AccountSASSignatureValues) Sign(sharedKeyCredential *SharedKeyCredential
 }
 
 // The AccountSASPermissions type simplifies creating the permissions string for an Azure Storage Account SAS.
-// Initialize an instance of this type and then call its String method to set AccountSASSignatureValues's Permissions field.
+// Initialize an instance of this type and then call its String method to set AccountSASSignatureValues's FilePermissions field.
 type AccountSASPermissions struct {
 	Read, Write, Delete, DeletePreviousVersion, List, Add, Create, Update, Process bool
 }
 
 // String produces the SAS permissions string for an Azure Storage account.
-// Call this method to set AccountSASSignatureValues's Permissions field.
+// Call this method to set AccountSASSignatureValues's FilePermissions field.
 func (p AccountSASPermissions) String() string {
 	var buffer bytes.Buffer
 	if p.Read {

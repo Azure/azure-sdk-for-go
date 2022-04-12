@@ -213,7 +213,7 @@ func createNewFileFromShare(_assert *assert.Assertions, fileName string, fileSiz
 
 	fClient := getFileClientFromDirectory(_require, fileName, dirClient)
 
-	cResp, err := fClient.Create(ctx, &CreateFileOptions{
+	cResp, err := fClient.Create(ctx, &FileCreateOptions{
 		FileContentLength: to.Int64Ptr(fileSize),
 	})
 	_require.Nil(err)
@@ -225,9 +225,9 @@ func createNewFileFromShare(_assert *assert.Assertions, fileName string, fileSiz
 func createNewFileFromShareWithPermissions(_assert *assert.Assertions, fileName string, fileSize int64, srClient ShareClient) (fClient FileClient) {
 	fClient = getFileClientFromShare(_require, fileName, srClient)
 
-	cResp, err := fClient.Create(ctx, &CreateFileOptions{
+	cResp, err := fClient.Create(ctx, &FileCreateOptions{
 		FileContentLength: to.Int64Ptr(fileSize),
-		FilePermissions: &Permissions{
+		FilePermissions: &FilePermissions{
 			PermissionStr: &sampleSDDL,
 		},
 	})
@@ -241,9 +241,9 @@ func createNewFileFromShareWithPermissions(_assert *assert.Assertions, fileName 
 func createNewFileFromShareWithGivenData(_assert *assert.Assertions, fileName string, fileData string, srClient ShareClient) (fClient FileClient) {
 	fClient = getFileClientFromShare(_require, fileName, srClient)
 
-	cResp, err := fClient.Create(ctx, &CreateFileOptions{
+	cResp, err := fClient.Create(ctx, &FileCreateOptions{
 		FileContentLength: to.Int64Ptr(int64(len(fileData))),
-		FilePermissions: &Permissions{
+		FilePermissions: &FilePermissions{
 			PermissionStr: &sampleSDDL,
 		},
 	})

@@ -99,50 +99,52 @@ func (d *DirectoryClient) NewDirectoryClient(directoryName string) (*DirectoryCl
 // Pass default values for SMB properties (ex: "None" for file attributes).
 // If permissions is empty, the default permission "inherit" is used.
 // For SDDL strings over 9KB, upload using ShareURL.CreatePermission, and supply the permissionKey.
-func (d DirectoryClient) Create(ctx context.Context, options *CreateDirectoryOptions) (DirectoryCreateResponse, error) {
-	fileAttributes, fileCreationTime, fileLastWriteTime, directoryCreateOptions, err := options.format()
+func (d DirectoryClient) Create(ctx context.Context, options *DirectoryCreateOptions) (DirectoryCreateResponse, error) {
+	fileAttributes, fileCreationTime, fileLastWriteTime, createOptions, err := options.format()
 	if err != nil {
 		return DirectoryCreateResponse{}, err
 	}
 
-	directoryCreateResponse, err := d.client.Create(ctx, fileAttributes, fileCreationTime, fileLastWriteTime, directoryCreateOptions)
-	return directoryCreateResponse, handleError(err)
+	directoryCreateResponse, err := d.client.Create(ctx, fileAttributes, fileCreationTime, fileLastWriteTime, createOptions)
+	return toDirectoryCreateResponse(directoryCreateResponse), handleError(err)
 }
 
 // Delete removes the specified empty directory. Note that the directory must be empty before it can be deleted..
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/delete-directory.
-func (d DirectoryClient) Delete(ctx context.Context, options *DeleteDirectoryOptions) (DirectoryDeleteResponse, error) {
-	directoryDeleteResponse, err := d.client.Delete(ctx, nil)
-	return directoryDeleteResponse, handleError(err)
+func (d DirectoryClient) Delete(ctx context.Context, options *DirectoryDeleteOptions) (DirectoryDeleteResponse, error) {
+	directoryDeleteOptions := options.format()
+	directoryDeleteResponse, err := d.client.Delete(ctx, directoryDeleteOptions)
+	return toDirectoryDeleteResponse(directoryDeleteResponse), handleError(err)
 }
 
 // GetProperties returns the directory's metadata and system properties.
 // For more information, see https://docs.microsoft.com/en-us/rest/api/storageservices/get-directory-properties.
-func (d DirectoryClient) GetProperties(ctx context.Context, options *GetDirectoryPropertiesOptions) (DirectoryGetPropertiesResponse, error) {
+func (d DirectoryClient) GetProperties(ctx context.Context, options *DirectoryGetPropertiesOptions) (DirectoryGetPropertiesResponse, error) {
 	directoryGetPropertiesOptions := options.format()
 	directoryGetPropertiesResponse, err := d.client.GetProperties(ctx, directoryGetPropertiesOptions)
-	return directoryGetPropertiesResponse, handleError(err)
+	return toDirectoryGetPropertiesResponse(directoryGetPropertiesResponse), handleError(err)
 }
 
 // SetProperties sets the directory's metadata and system properties.
 // Preserve values for SMB properties.
 // For more information, see https://docs.microsoft.com/en-us/rest/api/storageservices/set-directory-properties.
-func (d DirectoryClient) SetProperties(ctx context.Context, options *SetDirectoryPropertiesOptions) (DirectorySetPropertiesResponse, error) {
+func (d DirectoryClient) SetProperties(ctx context.Context, options *DirectorySetPropertiesOptions) (DirectorySetPropertiesResponse, error) {
 	fileAttributes, fileCreationTime, fileLastWriteTime, directorySetPropertiesOptions := options.format()
 
 	directorySetPropertiesResponse, err := d.client.SetProperties(ctx, fileAttributes, fileCreationTime, fileLastWriteTime, directorySetPropertiesOptions)
-	return directorySetPropertiesResponse, handleError(err)
+	return toDirectorySetPropertiesResponse(directorySetPropertiesResponse), handleError(err)
 }
 
 // SetMetadata sets the directory's metadata.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/set-directory-metadata.
-func (d DirectoryClient) SetMetadata(ctx context.Context, metadata map[string]string, options *SetDirectoryMetadataOptions) (DirectorySetMetadataResponse, error) {
+func (d DirectoryClient) SetMetadata(ctx context.Context, metadata map[string]string, options *DirectorySetMetadataOptions) (DirectorySetMetadataResponse, error) {
 	formattedOptions, err := options.format(metadata)
 	if err != nil {
 		return DirectorySetMetadataResponse{}, err
 	}
+
 	directorySetMetadataResponse, err := d.client.SetMetadata(ctx, formattedOptions)
-	return directorySetMetadataResponse, handleError(err)
+	return toDirectorySetMetadataResponse(directorySetMetadataResponse), handleError(err)
 }
 
 // ListFilesAndDirectories returns a single segment of files and directories starting from the specified Marker.
@@ -150,7 +152,8 @@ func (d DirectoryClient) SetMetadata(ctx context.Context, metadata map[string]st
 // After getting a segment, process it, and then call ListFilesAndDirectoriesSegment again (passing the the previously-returned
 // Marker) to get the next segment. This method lists the contents only for a single level of the directory hierarchy.
 // For more information, see https://docs.microsoft.com/en-us/rest/api/storageservices/list-directories-and-files.
-func (d DirectoryClient) ListFilesAndDirectories(ctx context.Context, marker *string, options *ListFilesAndDirectoriesOptions) *DirectoryListFilesAndDirectoriesSegmentPager {
-	formattedOptions := options.format(marker)
-	return d.client.ListFilesAndDirectoriesSegment(formattedOptions)
+func (d DirectoryClient) ListFilesAndDirectories(options *DirectoryListFilesAndDirectoriesOptions) *DirectoryListFilesAndDirectoriesPager {
+	formattedOptions := options.format()
+	pager := d.client.ListFilesAndDirectoriesSegment(formattedOptions)
+	return toDirectoryListFilesAndDirectoriesPager(pager)
 }

@@ -123,13 +123,13 @@ func getCanonicalName(account string, shareName string, filePath string) string 
 }
 
 // The ShareSASPermissions type simplifies creating the permissions string for an Azure Storage share SAS.
-// Initialize an instance of this type and then call its String method to set FileSASSignatureValues's Permissions field.
+// Initialize an instance of this type and then call its String method to set FileSASSignatureValues's FilePermissions field.
 type ShareSASPermissions struct {
 	Read, Create, Write, Delete, List bool
 }
 
 // String produces the SAS permissions string for an Azure Storage share.
-// Call this method to set FileSASSignatureValues's Permissions field.
+// Call this method to set FileSASSignatureValues's FilePermissions field.
 func (p ShareSASPermissions) String() string {
 	var b bytes.Buffer
 	if p.Read {
@@ -173,11 +173,11 @@ func (p *ShareSASPermissions) Parse(s string) error {
 }
 
 // The FileSASPermissions type simplifies creating the permissions string for an Azure Storage file SAS.
-// Initialize an instance of this type and then call its String method to set FileSASSignatureValues's Permissions field.
+// Initialize an instance of this type and then call its String method to set FileSASSignatureValues's FilePermissions field.
 type FileSASPermissions struct{ Read, Create, Write, Delete bool }
 
 // String produces the SAS permissions string for an Azure Storage file.
-// Call this method to set FileSASSignatureValues' Permissions field.
+// Call this method to set FileSASSignatureValues' FilePermissions field.
 func (p FileSASPermissions) String() string {
 	var b bytes.Buffer
 	if p.Read {

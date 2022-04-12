@@ -12,6 +12,8 @@ import (
 	"time"
 )
 
+// ---------------------------------------------------------------------------------------------------------------------
+
 // SMBPropertyHolder is an interface designed for SMBPropertyAdapter, to identify valid response types for adapting.
 type SMBPropertyHolder interface {
 	FileCreationTime() string
@@ -50,25 +52,28 @@ func (s *SMBPropertyAdapter) FileAttributes() FileAttributeFlags {
 	return ParseFileAttributeFlagsString(s.PropertySource.FileAttributes())
 }
 
-type CreateDirectoryOptions struct {
+// ---------------------------------------------------------------------------------------------------------------------
+
+type DirectoryCreateOptions struct {
 	SMBProperties   *SMBProperties
-	FilePermissions *Permissions
+	FilePermissions *FilePermissions
 	Metadata        map[string]string
 }
 
-func (o *CreateDirectoryOptions) format() (fileAttributes string, fileCreationTime string, fileLastWriteTime string, directoryCreateOptions *DirectoryCreateOptions, err error) {
+func (o *DirectoryCreateOptions) format() (fileAttributes string, fileCreationTime string, fileLastWriteTime string, createOptions *directoryClientCreateOptions, err error) {
 	if o == nil {
-		return DefaultFileAttributes, DefaultCurrentTimeString, DefaultCurrentTimeString, &DirectoryCreateOptions{FilePermission: to.StringPtr(DefaultFilePermissionStr)}, nil
+		return DefaultFileAttributes, DefaultCurrentTimeString, DefaultCurrentTimeString, &directoryClientCreateOptions{
+			FilePermission: to.Ptr(DefaultFilePermissionString)}, nil
 	}
 
 	fileAttributes, fileCreationTime, fileLastWriteTime = o.SMBProperties.format(false, DefaultFileAttributes, DefaultCurrentTimeString)
 
-	filePermission, filePermissionKey, err := o.FilePermissions.format(&DefaultFilePermissionStr)
+	filePermission, filePermissionKey, err := o.FilePermissions.format(&DefaultFilePermissionString)
 	if err != nil {
 		return
 	}
 
-	directoryCreateOptions = &DirectoryCreateOptions{
+	createOptions = &directoryClientCreateOptions{
 		FilePermission:    filePermission,
 		FilePermissionKey: filePermissionKey,
 		Metadata:          o.Metadata,
@@ -77,27 +82,119 @@ func (o *CreateDirectoryOptions) format() (fileAttributes string, fileCreationTi
 	return
 }
 
-type DeleteDirectoryOptions struct {
+type DirectoryCreateResponse struct {
+	directoryClientCreateResponse
+}
+
+func toDirectoryCreateResponse(resp directoryClientCreateResponse) DirectoryCreateResponse {
+	return DirectoryCreateResponse{resp}
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+type DirectoryDeleteOptions struct {
+}
+
+func (o *DirectoryDeleteOptions) format() *directoryClientDeleteOptions {
+	return nil
+}
+
+type DirectoryDeleteResponse struct {
+	directoryClientDeleteResponse
+}
+
+func toDirectoryDeleteResponse(resp directoryClientDeleteResponse) DirectoryDeleteResponse {
+	return DirectoryDeleteResponse{resp}
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
-type GetDirectoryPropertiesOptions struct {
+type DirectoryGetPropertiesOptions struct {
 	ShareSnapshot *string
 }
 
-func (o *GetDirectoryPropertiesOptions) format() *DirectoryGetPropertiesOptions {
+func (o *DirectoryGetPropertiesOptions) format() *directoryClientGetPropertiesOptions {
 	if o == nil {
 		return nil
 	}
-	directoryGetPropertiesOptions := &DirectoryGetPropertiesOptions{
+
+	return &directoryClientGetPropertiesOptions{
 		Sharesnapshot: o.ShareSnapshot,
 	}
-	return directoryGetPropertiesOptions
 }
 
-// ListFilesAndDirectoriesOptions defines options available when calling ListFilesAndDirectoriesSegment.
-type ListFilesAndDirectoriesOptions struct {
+type DirectoryGetPropertiesResponse struct {
+	directoryClientGetPropertiesResponse
+}
+
+func toDirectoryGetPropertiesResponse(resp directoryClientGetPropertiesResponse) DirectoryGetPropertiesResponse {
+	return DirectoryGetPropertiesResponse{resp}
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+type DirectorySetPropertiesOptions struct {
+	SMBProperties *SMBProperties
+
+	FilePermissions *FilePermissions
+}
+
+func (o *DirectorySetPropertiesOptions) format() (fileAttributes string, fileCreationTime string, fileLastWriteTime string, setPropertiesOptions *directoryClientSetPropertiesOptions) {
+	if o == nil {
+		return DefaultPreserveString, DefaultPreserveString, DefaultPreserveString, nil
+	}
+
+	fileAttributes, fileCreationTime, fileLastWriteTime = o.SMBProperties.format(false, DefaultPreserveString, DefaultPreserveString)
+
+	filePermission, filePermissionKey, err := o.FilePermissions.format(&DefaultPreserveString)
+	if err != nil {
+		return
+	}
+	setPropertiesOptions = &directoryClientSetPropertiesOptions{
+		FilePermission:    filePermission,
+		FilePermissionKey: filePermissionKey,
+	}
+	return
+}
+
+type DirectorySetPropertiesResponse struct {
+	directoryClientSetPropertiesResponse
+}
+
+func toDirectorySetPropertiesResponse(resp directoryClientSetPropertiesResponse) DirectorySetPropertiesResponse {
+	return DirectorySetPropertiesResponse{resp}
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+type DirectorySetMetadataOptions struct {
+	// A name-value pair to associate with a file storage object.
+
+}
+
+func (o *DirectorySetMetadataOptions) format(metadata map[string]string) (*directoryClientSetMetadataOptions, error) {
+	if metadata == nil {
+		return nil, errors.New("metadata cannot be nil")
+	}
+
+	return &directoryClientSetMetadataOptions{
+		Metadata: metadata,
+	}, nil
+}
+
+type DirectorySetMetadataResponse struct {
+	directoryClientSetMetadataResponse
+}
+
+func toDirectorySetMetadataResponse(resp directoryClientSetMetadataResponse) DirectorySetMetadataResponse {
+	return DirectorySetMetadataResponse{resp}
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// DirectoryListFilesAndDirectoriesOptions defines options available when calling ListFilesAndDirectoriesSegment.
+type DirectoryListFilesAndDirectoriesOptions struct {
+	Marker *string
 	// Specifies the maximum number of entries to return. If the request does not specify maxresults, or specifies a value greater than 5,000, the server will
 	// return up to 5,000 items.
 	MaxResults *int32
@@ -107,53 +204,22 @@ type ListFilesAndDirectoriesOptions struct {
 	ShareSnapshot *string
 }
 
-func (o *ListFilesAndDirectoriesOptions) format(marker *string) *DirectoryListFilesAndDirectoriesSegmentOptions {
+func (o *DirectoryListFilesAndDirectoriesOptions) format() *directoryClientListFilesAndDirectoriesSegmentOptions {
 	if o == nil {
-		return &DirectoryListFilesAndDirectoriesSegmentOptions{Marker: marker}
+		return nil
 	}
-	return &DirectoryListFilesAndDirectoriesSegmentOptions{
-		Marker:        marker,
+	return &directoryClientListFilesAndDirectoriesSegmentOptions{
+		Marker:        o.Marker,
 		Maxresults:    o.MaxResults,
 		Prefix:        o.Prefix,
 		Sharesnapshot: o.ShareSnapshot,
 	}
 }
 
-type SetDirectoryPropertiesOptions struct {
-	SMBProperties *SMBProperties
-
-	FilePermissions *Permissions
+type DirectoryListFilesAndDirectoriesPager struct {
+	*directoryClientListFilesAndDirectoriesSegmentPager
 }
 
-func (o *SetDirectoryPropertiesOptions) format() (fileAttributes string, fileCreationTime string, fileLastWriteTime string, directorySetPropertiesOptions *DirectorySetPropertiesOptions) {
-	if o == nil {
-		return DefaultPreserveString, DefaultPreserveString, DefaultPreserveString, nil
-	}
-	fileAttributes, fileCreationTime, fileLastWriteTime = o.SMBProperties.format(false, DefaultPreserveString, DefaultPreserveString)
-
-	filePermission, filePermissionKey, err := o.FilePermissions.format(&DefaultPreserveString)
-	if err != nil {
-		return
-	}
-	directorySetPropertiesOptions = &DirectorySetPropertiesOptions{
-		FilePermission:    filePermission,
-		FilePermissionKey: filePermissionKey,
-	}
-	return
-}
-
-type SetDirectoryMetadataOptions struct {
-	// A name-value pair to associate with a file storage object.
-
-}
-
-func (o *SetDirectoryMetadataOptions) format(metadata map[string]string) (*DirectorySetMetadataOptions, error) {
-	if metadata == nil {
-		return nil, errors.New("metadata cannot be nil")
-
-	}
-
-	return &DirectorySetMetadataOptions{
-		Metadata: metadata,
-	}, nil
+func toDirectoryListFilesAndDirectoriesPager(pager *directoryClientListFilesAndDirectoriesSegmentPager) *DirectoryListFilesAndDirectoriesPager {
+	return &DirectoryListFilesAndDirectoriesPager{pager}
 }

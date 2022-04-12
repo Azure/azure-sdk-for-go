@@ -97,7 +97,7 @@ func (s *azfileLiveTestSuite) TestDirSetProperties() {
 	key := *cResp.FilePermissionKey
 
 	// Set the custom permissions
-	sResp, err := dirClient.SetProperties(ctx, &SetDirectoryPropertiesOptions{FilePermissions: &Permissions{PermissionStr: &sampleSDDL}})
+	sResp, err := dirClient.SetProperties(ctx, &DirectorySetPropertiesOptions{FilePermissions: &FilePermissions{PermissionStr: &sampleSDDL}})
 	_require.Nil(err)
 	_require.NotEqual(*sResp.FilePermissionKey, key)
 	key = *sResp.FilePermissionKey
@@ -128,7 +128,7 @@ func (s *azfileLiveTestSuite) TestDirCreateDeleteNonDefault() {
 		"Bar": "bArvaLue",
 	}
 
-	cResp, err := dirClient.Create(context.Background(), &CreateDirectoryOptions{Metadata: md, FilePermissions: &Permissions{PermissionStr: &sampleSDDL}})
+	cResp, err := dirClient.Create(context.Background(), &DirectoryCreateOptions{Metadata: md, FilePermissions: &FilePermissions{PermissionStr: &sampleSDDL}})
 	_require.Nil(err)
 	// Ensure that the file key isn't empty, but don't worry about checking the permission. We just need to know it exists.
 	_require.NotEqual(*cResp.FilePermissionKey, "")
@@ -144,7 +144,7 @@ func (s *azfileLiveTestSuite) TestDirCreateDeleteNonDefault() {
 	_require.Equal(gResp.RawResponse.StatusCode, 200)
 
 	// Creating again will result in 409 and ResourceAlreadyExists.
-	cResp, err = dirClient.Create(context.Background(), &CreateDirectoryOptions{Metadata: md})
+	cResp, err = dirClient.Create(context.Background(), &DirectoryCreateOptions{Metadata: md})
 	_require.NotNil(err)
 	//serr := err.(*StorageError)
 	//_require.Equal(serr.Response().StatusCode,409)
@@ -460,7 +460,7 @@ func (s *azfileLiveTestSuite) TestDirGetSetMetadataMergeAndReplace() {
 //	defer delDirectory(_require, dirClient)
 //
 //	// Empty directory
-//	lResp, err := dirClient.ListFilesAndDirectories(context.Background(), Marker{}, ListFilesAndDirectoriesOptions{})
+//	lResp, err := dirClient.ListFilesAndDirectories(context.Background(), Marker{}, DirectoryListFilesAndDirectoriesOptions{})
 //	_require.Nil(err)
 //	_assert(lResp.Response().StatusCode, chk.Equals, 200)
 //	_assert(lResp.StatusCode(), chk.Equals, 200)
@@ -485,7 +485,7 @@ func (s *azfileLiveTestSuite) TestDirGetSetMetadataMergeAndReplace() {
 //	defer delFile(c, innerFile)
 //
 //	// List 1 file, 1 directory
-//	lResp2, err := dirClient.ListFilesAndDirectories(context.Background(), Marker{}, ListFilesAndDirectoriesOptions{})
+//	lResp2, err := dirClient.ListFilesAndDirectories(context.Background(), Marker{}, DirectoryListFilesAndDirectoriesOptions{})
 //	_require.Nil(err)
 //	_assert(lResp2.Response().StatusCode, chk.Equals, 200)
 //	_assert(lResp2.DirectoryItems, chk.HasLen, 1)
@@ -501,7 +501,7 @@ func (s *azfileLiveTestSuite) TestDirGetSetMetadataMergeAndReplace() {
 //	defer delFile(c, innerFile2)
 //
 //	// List 2 files and 2 directories
-//	lResp3, err := dirClient.ListFilesAndDirectories(context.Background(), Marker{}, ListFilesAndDirectoriesOptions{})
+//	lResp3, err := dirClient.ListFilesAndDirectories(context.Background(), Marker{}, DirectoryListFilesAndDirectoriesOptions{})
 //	_require.Nil(err)
 //	_assert(lResp3.Response().StatusCode, chk.Equals, 200)
 //	_assert(lResp3.DirectoryItems, chk.HasLen, 2)
@@ -546,7 +546,7 @@ func (s *azfileLiveTestSuite) TestDirGetSetMetadataMergeAndReplace() {
 //
 //	marker := Marker{}
 //
-//	lResp, err := dirClient.ListFilesAndDirectories(context.Background(), marker, ListFilesAndDirectoriesOptions{MaxResults: maxResultsPerPage, Prefix: testPrefix})
+//	lResp, err := dirClient.ListFilesAndDirectories(context.Background(), marker, DirectoryListFilesAndDirectoriesOptions{MaxResults: maxResultsPerPage, Prefix: testPrefix})
 //	_require.Nil(err)
 //	_assert(lResp.FileItems, chk.HasLen, 1)
 //	_assert(lResp.FileItems[0].Name, chk.Equals, file1Name)
@@ -556,7 +556,7 @@ func (s *azfileLiveTestSuite) TestDirGetSetMetadataMergeAndReplace() {
 //	_assert(lResp.NextMarker.NotDone(), chk.Equals, true)
 //	marker = lResp.NextMarker
 //
-//	lResp, err = dirClient.ListFilesAndDirectories(context.Background(), marker, ListFilesAndDirectoriesOptions{MaxResults: maxResultsPerPage, Prefix: testPrefix})
+//	lResp, err = dirClient.ListFilesAndDirectories(context.Background(), marker, DirectoryListFilesAndDirectoriesOptions{MaxResults: maxResultsPerPage, Prefix: testPrefix})
 //	_require.Nil(err)
 //	_assert(lResp.FileItems, chk.HasLen, 1)
 //	_assert(lResp.FileItems[0].Name, chk.Equals, file2Name)
@@ -579,7 +579,7 @@ func (s *azfileLiveTestSuite) TestDirGetSetMetadataMergeAndReplace() {
 //
 //	dirURL := shareURL.NewRootDirectoryClient()
 //
-//	resp, err := dirURL.ListFilesAndDirectories(ctx, Marker{}, ListFilesAndDirectoriesOptions{Prefix: filePrefix + filePrefix})
+//	resp, err := dirURL.ListFilesAndDirectories(ctx, Marker{}, DirectoryListFilesAndDirectoriesOptions{Prefix: filePrefix + filePrefix})
 //
 //	_require.Nil(err)
 //	_assert(resp.FileItems, chk.HasLen, 0)
@@ -597,7 +597,7 @@ func (s *azfileLiveTestSuite) TestDirGetSetMetadataMergeAndReplace() {
 //	createNewFileFromShare(c, shareURL, 0)
 //	dirURL := shareURL.NewRootDirectoryClient()
 //
-//	_, err := dirURL.ListFilesAndDirectories(ctx, Marker{}, ListFilesAndDirectoriesOptions{MaxResults: -2})
+//	_, err := dirURL.ListFilesAndDirectories(ctx, Marker{}, DirectoryListFilesAndDirectoriesOptions{MaxResults: -2})
 //	_require.NotNil(err)
 //	_assert(strings.Contains(err.Error(), "validation failed"), chk.Equals, true)
 //}
@@ -614,7 +614,7 @@ func (s *azfileLiveTestSuite) TestDirGetSetMetadataMergeAndReplace() {
 //	createNewFileFromShare(c, shareURL, 0)
 //	dirURL := shareURL.NewRootDirectoryClient()
 //
-//	resp, err := dirURL.ListFilesAndDirectories(ctx, Marker{}, ListFilesAndDirectoriesOptions{MaxResults: 0})
+//	resp, err := dirURL.ListFilesAndDirectories(ctx, Marker{}, DirectoryListFilesAndDirectoriesOptions{MaxResults: 0})
 //
 //	_require.Nil(err)
 //	_assert(resp.FileItems, chk.HasLen, 1)
@@ -635,7 +635,7 @@ func (s *azfileLiveTestSuite) TestDirGetSetMetadataMergeAndReplace() {
 //	_, dirName1 := createNewDirectoryWithPrefix(c, dirURL, additionalPrefix+"a")
 //	_, dirName2 := createNewDirectoryWithPrefix(c, dirURL, additionalPrefix+"b")
 //
-//	resp, err := dirURL.ListFilesAndDirectories(ctx, Marker{}, ListFilesAndDirectoriesOptions{MaxResults: 2, Prefix: additionalPrefix})
+//	resp, err := dirURL.ListFilesAndDirectories(ctx, Marker{}, DirectoryListFilesAndDirectoriesOptions{MaxResults: 2, Prefix: additionalPrefix})
 //
 //	_require.Nil(err)
 //	_assert(resp.DirectoryItems, chk.HasLen, 2)
@@ -665,7 +665,7 @@ func (s *azfileLiveTestSuite) TestDirGetSetMetadataMergeAndReplace() {
 //		Protocol:    SASProtocolHTTPS,              // Users MUST use HTTPS (not HTTP)
 //		ExpiryTime:  time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
 //		ShareName:   shareName,
-//		Permissions: ShareSASPermissions{Read: true, Write: true, List: true}.String(),
+//		FilePermissions: ShareSASPermissions{Read: true, Write: true, List: true}.String(),
 //	}.NewSASQueryParameters(credential)
 //	_require.Nil(err)
 //
@@ -679,7 +679,7 @@ func (s *azfileLiveTestSuite) TestDirGetSetMetadataMergeAndReplace() {
 //	dirURL := NewDirectoryClient(*u, NewPipeline(NewAnonymousCredential(), PipelineOptions{}))
 //
 //	marker := Marker{}
-//	lResp, err := dirURL.ListFilesAndDirectories(context.Background(), marker, ListFilesAndDirectoriesOptions{})
+//	lResp, err := dirURL.ListFilesAndDirectories(context.Background(), marker, DirectoryListFilesAndDirectoriesOptions{})
 //	_require.Nil(err)
 //	_assert(lResp.NextMarker.NotDone(), chk.Equals, false)
 //}

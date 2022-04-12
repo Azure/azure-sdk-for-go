@@ -757,7 +757,7 @@ func (s *azfileLiveTestSuite) TestSetAndGetStatistics() {
 	_require.Nil(err)
 
 	fCLient, err := dirClient.NewFileClient("testfile")
-	_, err = fCLient.Create(ctx, &CreateFileOptions{FileContentLength: to.Int64Ptr(1024 * 1024 * 1024 * 1024)})
+	_, err = fCLient.Create(ctx, &FileCreateOptions{FileContentLength: to.Int64Ptr(1024 * 1024 * 1024 * 1024)})
 	_require.Nil(err)
 
 	getStats, err := srClient.GetStatistics(ctx, nil)
@@ -857,9 +857,9 @@ func (s *azfileLiveTestSuite) TestSetAndGetStatistics() {
 //		ExpiryTime: time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
 //		ShareName:  shareName,
 //
-//		// To produce a share SAS (as opposed to a file SAS), assign to Permissions using
+//		// To produce a share SAS (as opposed to a file SAS), assign to FilePermissions using
 //		// ShareSASPermissions and make sure the DirectoryAndFilePath field is "" (the default).
-//		Permissions: ShareSASPermissions{Read: true, Write: true}.String(),
+//		FilePermissions: ShareSASPermissions{Read: true, Write: true}.String(),
 //	}.NewSASQueryParameters(credential)
 //	_require.Nil(err)
 //

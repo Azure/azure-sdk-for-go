@@ -9,7 +9,6 @@ package azfile
 import (
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"io"
 	"strconv"
 )
@@ -28,21 +27,26 @@ type HttpRange struct {
 	Count  int64
 }
 
-func (r HttpRange) format() *string {
-	if r.Offset == 0 && r.Count == 0 { // Do common case first for performance
+func NewHttpRange(offset, count int64) *HttpRange {
+	return &HttpRange{Offset: offset, Count: count}
+}
+
+func (r *HttpRange) format() *string {
+	if r != nil || (r.Offset == 0 && r.Count == 0) { // Do common case first for performance
 		return nil // No specified range
 	}
 	endOffset := "" // if Count == CountToEnd (0)
 	if r.Count > 0 {
 		endOffset = strconv.FormatInt((r.Offset+r.Count)-1, 10)
 	}
-	return to.StringPtr(fmt.Sprintf("bytes=%v-%s", r.Offset, endOffset))
+	dataRange := fmt.Sprintf("bytes=%v-%s", r.Offset, endOffset)
+	return &dataRange
 }
 
-// toRange makes range string adhere to REST API.
+// getSourceRange makes range string adhere to REST API.
 // A Count with value CountToEnd means Count of bytes from Offset to the end of file.
 // For more information, see https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-the-range-header-for-file-service-operations.
-func toRange(offset, count *int64) *string {
+func getSourceRange(offset, count *int64) *string {
 	if offset == nil && count == nil {
 		return nil
 	}
@@ -57,21 +61,8 @@ func toRange(offset, count *int64) *string {
 		newCount = *count
 	}
 
-	return HttpRange{Offset: newOffset, Count: newCount}.format()
+	return (&HttpRange{Offset: newOffset, Count: newCount}).format()
 }
-
-//// toRange makes range string adhere to REST API.
-//// A count with value CountToEnd means count of bytes from offset to the end of file.
-//// For more information, see https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-the-range-header-for-file-service-operations.
-//func toRange(offset int64, count int64) *string {
-//	// No additional validation by design. API can validate parameter by case, and use this method.
-//	endRange := ""
-//	if count != CountToEnd {
-//		endRange = strconv.FormatInt(offset+count-1, 10)
-//	}
-//	r := fmt.Sprintf("bytes=%d-%s", offset, endRange)
-//	return &r
-//}
 
 func validateSeekableStreamAt0AndGetCount(body io.ReadSeeker) (int64, error) {
 	if body == nil { // nil body's are "logically" seekable to 0 and are 0 bytes long

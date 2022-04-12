@@ -7,41 +7,18 @@
 package azfile
 
 import (
+	"context"
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"io"
+	"net/http"
 	"strings"
 	"time"
 )
 
-const (
-	// FileMaxUploadRangeBytes indicates the maximum number of bytes that can be sent in a call to UploadRange.
-	FileMaxUploadRangeBytes = 4 * 1024 * 1024 // 4MB
-
-	ISO8601 = "2006-01-02T15:04:05.0000000Z"
-)
-
-var (
-	// DefaultFilePermissionStr is a constant for all intents and purposes.
-	// But you can't take the address of a constant string, so it's a variable.
-	// Inherit inherits permissions from the parent folder (default when creating files/folders)
-	DefaultFilePermissionStr = "inherit"
-
-	// DefaultCurrentTimeString sets creation/last write times to now
-	DefaultCurrentTimeString = "now"
-
-	// DefaultPreserveString preserves old permissions on the file/folder (default when updating properties)
-	DefaultPreserveString = "preserve"
-
-	// DefaultFileAttributes is defaults for file attributes
-	DefaultFileAttributes = "None"
-
-	DefaultPermissionCopyMode = PermissionCopyModeType("")
-)
-
 //----------------------------------------------------------------------------------------------------------------------
 
-type Permissions struct {
+type FilePermissions struct {
 	// If specified the permission (security descriptor) shall be set for the directory/file. This header can be used if Permission size is <= 8KB, else x-ms-file-permission-key
 	// header shall be used. Default value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the x-ms-file-permission
 	// or x-ms-file-permission-key should be specified.
@@ -50,7 +27,7 @@ type Permissions struct {
 	PermissionKey *string
 }
 
-func (p *Permissions) format(defaultFilePermissionStr *string) (filePermission *string, filePermissionKey *string, err error) {
+func (p *FilePermissions) format(defaultFilePermissionStr *string) (filePermission *string, filePermissionKey *string, err error) {
 	if p == nil {
 		return defaultFilePermissionStr, nil, nil
 	}
@@ -116,14 +93,14 @@ func (sp *SMBProperties) format(isDir bool, defaultFileAttributes, defaultCurren
 
 //----------------------------------------------------------------------------------------------------------------------
 
-type CreateFileOptions struct {
+type FileCreateOptions struct {
 	FileContentLength *int64
 
 	Metadata map[string]string
 
 	FileHTTPHeaders *FileHTTPHeaders
 
-	FilePermissions *Permissions
+	FilePermissions *FilePermissions
 
 	// In Windows, a 32 bit file attributes integer exists. This is that.
 	SMBProperties *SMBProperties
@@ -131,9 +108,10 @@ type CreateFileOptions struct {
 	LeaseAccessConditions *LeaseAccessConditions
 }
 
-func (o *CreateFileOptions) format() (fileContentLength int64, fileAttributes string, fileCreationTime string, fileLastWriteTime string, fileCreateOptions *FileCreateOptions, fileHTTPHeaders *FileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions, err error) {
+func (o *FileCreateOptions) format() (fileContentLength int64, fileAttributes string, fileCreationTime string, fileLastWriteTime string, createOptions *fileClientCreateOptions, fileHTTPHeaders *FileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions, err error) {
 	if o == nil {
-		return int64(0), DefaultFileAttributes, DefaultCurrentTimeString, DefaultCurrentTimeString, &FileCreateOptions{FilePermission: to.StringPtr(DefaultFilePermissionStr)}, nil, nil, nil
+		return int64(0), DefaultFileAttributes, DefaultCurrentTimeString, DefaultCurrentTimeString,
+			&fileClientCreateOptions{FilePermission: to.Ptr(DefaultFilePermissionString)}, nil, nil, nil
 	}
 	fileContentLength = 0
 
@@ -143,12 +121,12 @@ func (o *CreateFileOptions) format() (fileContentLength int64, fileAttributes st
 
 	fileAttributes, fileCreationTime, fileLastWriteTime = o.SMBProperties.format(false, DefaultFileAttributes, DefaultCurrentTimeString)
 
-	filePermission, filePermissionKey, err := o.FilePermissions.format(&DefaultFilePermissionStr)
+	filePermission, filePermissionKey, err := o.FilePermissions.format(&DefaultFilePermissionString)
 	if err != nil {
 		return
 	}
 
-	fileCreateOptions = &FileCreateOptions{
+	createOptions = &fileClientCreateOptions{
 		FilePermission:    filePermission,
 		FilePermissionKey: filePermissionKey,
 		Metadata:          o.Metadata,
@@ -160,10 +138,18 @@ func (o *CreateFileOptions) format() (fileContentLength int64, fileAttributes st
 	return
 }
 
+type FileCreateResponse struct {
+	fileClientCreateResponse
+}
+
+func toFileCreateResponse(resp fileClientCreateResponse) FileCreateResponse {
+	return FileCreateResponse{resp}
+}
+
 //----------------------------------------------------------------------------------------------------------------------
 
-type StartFileCopyOptions struct {
-	FilePermissions *Permissions
+type FileStartCopyOptions struct {
+	FilePermissions *FilePermissions
 	// A name-value pair to associate with a file storage object.
 	Metadata map[string]string
 
@@ -172,7 +158,7 @@ type StartFileCopyOptions struct {
 	LeaseAccessConditions *LeaseAccessConditions
 }
 
-func (o *StartFileCopyOptions) format() (fileStartCopyOptions *FileStartCopyOptions, copyFileSmbInfo *CopyFileSmbInfo, leaseAccessConditions *LeaseAccessConditions, err error) {
+func (o *FileStartCopyOptions) format() (startCopyOptions *fileClientStartCopyOptions, copyFileSmbInfo *CopyFileSmbInfo, leaseAccessConditions *LeaseAccessConditions, err error) {
 	if o == nil {
 		return
 	}
@@ -182,7 +168,7 @@ func (o *StartFileCopyOptions) format() (fileStartCopyOptions *FileStartCopyOpti
 		return
 	}
 
-	fileStartCopyOptions = &FileStartCopyOptions{
+	startCopyOptions = &fileClientStartCopyOptions{
 		FilePermission:    filePermission,
 		FilePermissionKey: filePermissionKey,
 		Metadata:          o.Metadata,
@@ -193,23 +179,39 @@ func (o *StartFileCopyOptions) format() (fileStartCopyOptions *FileStartCopyOpti
 	return
 }
 
+type FileStartCopyResponse struct {
+	fileClientStartCopyResponse
+}
+
+func toFileStartCopyResponse(resp fileClientStartCopyResponse) FileStartCopyResponse {
+	return FileStartCopyResponse{resp}
+}
+
 //----------------------------------------------------------------------------------------------------------------------
 
-type AbortFileCopyOptions struct {
+type FileAbortCopyOptions struct {
 	LeaseAccessConditions *LeaseAccessConditions
 }
 
-func (o *AbortFileCopyOptions) format() (fileAbortCopyOptions *FileAbortCopyOptions, leaseAccessConditions *LeaseAccessConditions) {
+func (o *FileAbortCopyOptions) format() (*fileClientAbortCopyOptions, *LeaseAccessConditions) {
 	if o == nil {
-		return
+		return nil, nil
 	}
 
 	return nil, o.LeaseAccessConditions
 }
 
+type FileAbortCopyResponse struct {
+	fileClientAbortCopyResponse
+}
+
+func toFileAbortCopyResponse(resp fileClientAbortCopyResponse) FileAbortCopyResponse {
+	return FileAbortCopyResponse{resp}
+}
+
 //----------------------------------------------------------------------------------------------------------------------
 
-type DownloadFileOptions struct {
+type FileDownloadOptions struct {
 	// When this header is set to true and specified together with the Range header,
 	// the service returns the MD5 hash for the range, as long as the range is less than or equal to 4 MB in size.
 	RangeGetContentMD5 *bool
@@ -217,26 +219,61 @@ type DownloadFileOptions struct {
 	LeaseAccessConditions *LeaseAccessConditions
 }
 
-func (o *DownloadFileOptions) format(offset, count *int64) (fileDownloadOptions *FileDownloadOptions, leaseAccessConditions *LeaseAccessConditions) {
-	fileDownloadOptions = &FileDownloadOptions{
-		Range: toRange(offset, count),
+func (o *FileDownloadOptions) format(offset, count int64) (downloadOptions *fileClientDownloadOptions, leaseAccessConditions *LeaseAccessConditions) {
+	downloadOptions = &fileClientDownloadOptions{
+		Range: NewHttpRange(offset, count).format(),
 	}
 
 	if o != nil {
-		fileDownloadOptions.RangeGetContentMD5 = o.RangeGetContentMD5
+		downloadOptions.RangeGetContentMD5 = o.RangeGetContentMD5
 		leaseAccessConditions = o.LeaseAccessConditions
 	}
 
 	return
 }
 
+// FileDownloadResponse wraps AutoRest generated DownloadResponse and helps to provide info for retry.
+type FileDownloadResponse struct {
+	fileClientDownloadResponse
+	// Fields need for retry.
+	ctx  context.Context
+	f    *FileClient
+	info HTTPGetterInfo
+}
+
+func toFileDownloadResponse(ctx context.Context, f *FileClient, downloadResponse fileClientDownloadResponse, offset int64, count int64) FileDownloadResponse {
+	return FileDownloadResponse{
+		fileClientDownloadResponse: downloadResponse,
+		f:                          f,
+		ctx:                        ctx,
+		info:                       HTTPGetterInfo{Offset: offset, Count: count, ETag: downloadResponse.ETag},
+	}
+}
+
+// Body constructs a stream to read data from with a resilient reader option.
+// A zero-value option means to get a raw stream.
+func (dr *FileDownloadResponse) Body(o RetryReaderOptions) io.ReadCloser {
+	if o.MaxRetryRequests == 0 {
+		return dr.RawResponse.Body
+	}
+
+	return NewRetryReader(dr.ctx, dr.RawResponse, dr.info, o,
+		func(ctx context.Context, info HTTPGetterInfo) (*http.Response, error) {
+			resp, err := dr.f.Download(ctx, info.Offset, info.Count, nil)
+			if err != nil {
+				return nil, err
+			}
+			return resp.RawResponse, err
+		})
+}
+
 //----------------------------------------------------------------------------------------------------------------------
 
-type DeleteFileOptions struct {
+type FileDeleteOptions struct {
 	LeaseAccessConditions *LeaseAccessConditions
 }
 
-func (o *DeleteFileOptions) format() (fileDownloadOptions *FileDeleteOptions, leaseAccessConditions *LeaseAccessConditions) {
+func (o *FileDeleteOptions) format() (deleteOptions *fileClientDeleteOptions, leaseAccessConditions *LeaseAccessConditions) {
 	if o == nil {
 		return
 	}
@@ -244,24 +281,40 @@ func (o *DeleteFileOptions) format() (fileDownloadOptions *FileDeleteOptions, le
 	return
 }
 
+type FileDeleteResponse struct {
+	fileClientDeleteResponse
+}
+
+func toFileDeleteResponse(resp fileClientDeleteResponse) FileDeleteResponse {
+	return FileDeleteResponse{resp}
+}
+
 //----------------------------------------------------------------------------------------------------------------------
 
-type GetFilePropertiesOptions struct {
+type FileGetPropertiesOptions struct {
 	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
 	ShareSnapshot *string
 
 	LeaseAccessConditions *LeaseAccessConditions
 }
 
-func (o *GetFilePropertiesOptions) format() (fileGetPropertiesOptions *FileGetPropertiesOptions, leaseAccessConditions *LeaseAccessConditions) {
+func (o *FileGetPropertiesOptions) format() (getPropertiesOptions *fileClientGetPropertiesOptions, leaseAccessConditions *LeaseAccessConditions) {
 	if o == nil {
 		return
 	}
-	fileGetPropertiesOptions = &FileGetPropertiesOptions{
+	getPropertiesOptions = &fileClientGetPropertiesOptions{
 		Sharesnapshot: o.ShareSnapshot,
 	}
 	leaseAccessConditions = o.LeaseAccessConditions
 	return
+}
+
+type FileGetPropertiesResponse struct {
+	fileClientGetPropertiesResponse
+}
+
+func toFileGetPropertiesResponse(resp fileClientGetPropertiesResponse) FileGetPropertiesResponse {
+	return FileGetPropertiesResponse{resp}
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -272,7 +325,7 @@ type SetFileHTTPHeadersOptions struct {
 	// then all ranges above the specified byte value are cleared.
 	FileContentLength *int64
 
-	FilePermissions *Permissions
+	FilePermissions *FilePermissions
 
 	SMBProperties *SMBProperties
 
@@ -282,37 +335,46 @@ type SetFileHTTPHeadersOptions struct {
 }
 
 func (o *SetFileHTTPHeadersOptions) format() (fileAttributes string, fileCreationTime string, fileLastWriteTime string,
-	fileSetHTTPHeadersOptions *FileSetHTTPHeadersOptions, fileHTTPHeaders *FileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions, err error) {
+	setHTTPHeadersOptions *fileClientSetHTTPHeadersOptions, fileHTTPHeaders *FileHTTPHeaders,
+	leaseAccessConditions *LeaseAccessConditions, err error) {
 
-	fileAttributes, fileCreationTime, fileLastWriteTime = "preserve", "preserve", "preserve"
+	fileAttributes, fileCreationTime, fileLastWriteTime = DefaultPreserveString, DefaultPreserveString, DefaultPreserveString
 
 	filePermission, filePermissionKey, err := o.FilePermissions.format(&DefaultPreserveString)
 	if err != nil {
 		return
 	}
 
-	fileSetHTTPHeadersOptions = &FileSetHTTPHeadersOptions{
+	setHTTPHeadersOptions = &fileClientSetHTTPHeadersOptions{
 		FilePermission:    filePermission,
 		FilePermissionKey: filePermissionKey,
 	}
 
 	if o != nil {
-		fileSetHTTPHeadersOptions.FileContentLength = o.FileContentLength
+		setHTTPHeadersOptions.FileContentLength = o.FileContentLength
 		fileHTTPHeaders = o.FileHTTPHeaders
 		leaseAccessConditions = o.LeaseAccessConditions
 	}
 	return
 }
 
+type FileSetHTTPHeadersResponse struct {
+	fileClientSetHTTPHeadersResponse
+}
+
+func toFileSetHTTPHeadersResponse(resp fileClientSetHTTPHeadersResponse) FileSetHTTPHeadersResponse {
+	return FileSetHTTPHeadersResponse{resp}
+}
+
 //----------------------------------------------------------------------------------------------------------------------
 
-type SetFileMetadataOptions struct {
+type FileSetMetadataOptions struct {
 	// A name-value pair to associate with a file storage object.
 	LeaseAccessConditions *LeaseAccessConditions
 }
 
-func (o *SetFileMetadataOptions) format(metadata map[string]string) (fileSetMetadataOptions *FileSetMetadataOptions, leaseAccessConditions *LeaseAccessConditions) {
-	fileSetMetadataOptions = &FileSetMetadataOptions{
+func (o *FileSetMetadataOptions) format(metadata map[string]string) (setMetadataOptions *fileClientSetMetadataOptions, leaseAccessConditions *LeaseAccessConditions) {
+	setMetadataOptions = &fileClientSetMetadataOptions{
 		Metadata: metadata,
 	}
 
@@ -322,21 +384,31 @@ func (o *SetFileMetadataOptions) format(metadata map[string]string) (fileSetMeta
 	return
 }
 
+type FileSetMetadataResponse struct {
+	fileClientSetMetadataResponse
+}
+
+func toFileSetMetadataResponse(resp fileClientSetMetadataResponse) FileSetMetadataResponse {
+	return FileSetMetadataResponse{resp}
+}
+
 //----------------------------------------------------------------------------------------------------------------------
 
-type ResizeFileOptions struct {
+type FileResizeOptions struct {
 	LeaseAccessCondition *LeaseAccessConditions
 }
 
-func (o *ResizeFileOptions) format(contentLength int64) (fileAttributes string, fileCreationTime string, fileLastWriteTime string,
-	fileSetHTTPHeadersOptions *FileSetHTTPHeadersOptions, fileHTTPHeaders *FileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) {
+func (o *FileResizeOptions) format(contentLength int64) (fileAttributes string, fileCreationTime string, fileLastWriteTime string,
+	setHTTPHeadersOptions *fileClientSetHTTPHeadersOptions, fileHTTPHeaders *FileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) {
 
 	fileAttributes, fileCreationTime, fileLastWriteTime = DefaultPreserveString, DefaultPreserveString, DefaultPreserveString
 
-	fileSetHTTPHeadersOptions = &FileSetHTTPHeadersOptions{
-		FileContentLength: to.Int64Ptr(contentLength),
+	setHTTPHeadersOptions = &fileClientSetHTTPHeadersOptions{
+		FileContentLength: to.Ptr(contentLength),
 		FilePermission:    &DefaultPreserveString,
 	}
+
+	fileHTTPHeaders = nil
 
 	if o != nil {
 		leaseAccessConditions = o.LeaseAccessCondition
@@ -344,12 +416,21 @@ func (o *ResizeFileOptions) format(contentLength int64) (fileAttributes string, 
 	return
 }
 
+type FileResizeResponse struct {
+	fileClientSetHTTPHeadersResponse
+}
+
+func toFileResizeResponse(resp fileClientSetHTTPHeadersResponse) FileResizeResponse {
+	return FileResizeResponse{resp}
+}
+
 //----------------------------------------------------------------------------------------------------------------------
 
-type UploadFileRangeOptions struct {
-	// An MD5 hash of the content. This hash is used to verify the integrity of the data during transport.
-	// When the Content-MD5 header is specified, the File service compares the hash of the content that has arrived with the header value that was sent.
-	// If the two hashes do not match, the operation will fail with error code 400 (Bad Request).
+type FileUploadRangeOptions struct {
+	// An MD5 hash of the content. This hash is used to verify the integrity of the data during transport. When the Content-MD5
+	// header is specified, the File service compares the hash of the content that has
+	// arrived with the header value that was sent. If the two hashes do not match, the operation will fail with error code 400
+	// (Bad Request).
 	ContentMD5 []byte
 
 	TransactionalMD5 []byte
@@ -359,8 +440,10 @@ type UploadFileRangeOptions struct {
 	LeaseAccessConditions *LeaseAccessConditions
 }
 
-func (o *UploadFileRangeOptions) format(offset int64, body io.ReadSeekCloser) (rangeParam string, fileRangeWrite FileRangeWriteType, contentLength int64,
-	fileUploadRangeOptions *FileUploadRangeOptions, leaseAccessConditions *LeaseAccessConditions, err error) {
+func (o *FileUploadRangeOptions) format(offset int64, body io.ReadSeekCloser) (rangeParam string,
+	fileRangeWrite FileRangeWriteType, contentLength int64, uploadRangeOptions *fileClientUploadRangeOptions,
+	leaseAccessConditions *LeaseAccessConditions, err error) {
+
 	if offset < 0 {
 		err = errors.New("invalid argument, offset must be >= 0")
 		return
@@ -381,7 +464,7 @@ func (o *UploadFileRangeOptions) format(offset int64, body io.ReadSeekCloser) (r
 		return
 	}
 
-	rangeParam = *toRange(to.Int64Ptr(offset), to.Int64Ptr(count))
+	rangeParam = *NewHttpRange(offset, count).format()
 	fileRangeWrite = FileRangeWriteTypeUpdate
 	contentLength = count
 
@@ -397,7 +480,7 @@ func (o *UploadFileRangeOptions) format(offset int64, body io.ReadSeekCloser) (r
 		leaseAccessConditions = o.LeaseAccessConditions
 	}
 
-	fileUploadRangeOptions = &FileUploadRangeOptions{
+	uploadRangeOptions = &fileClientUploadRangeOptions{
 		ContentMD5:   contentMD5,
 		Optionalbody: body,
 	}
@@ -405,60 +488,103 @@ func (o *UploadFileRangeOptions) format(offset int64, body io.ReadSeekCloser) (r
 	return
 }
 
+type FileUploadRangeResponse struct {
+	fileClientUploadRangeResponse
+}
+
+func toFileUploadRangeResponse(resp fileClientUploadRangeResponse) FileUploadRangeResponse {
+	return FileUploadRangeResponse{resp}
+}
+
 //----------------------------------------------------------------------------------------------------------------------
 
-type UploadFileRangeFromURLOptions struct {
-
+type FileUploadRangeFromURLOptions struct {
 	// Specify the crc64 calculated for the range of bytes that must be read from the copy source.
 	SourceContentCRC64 []byte
 
 	SourceModifiedAccessConditions *SourceModifiedAccessConditions
 
 	LeaseAccessConditions *LeaseAccessConditions
+
+	// Only Bearer type is supported. Credentials should be a valid OAuth access token to copy source.
+	CopySourceAuthorization *string
+	// Bytes of source data in the specified range.
+	SourceRange *string
 }
 
-func (o *UploadFileRangeFromURLOptions) format(sourceURL string, sourceOffset, destinationOffset, count *int64) (rangeParam string, copySource string,
-	contentLength int64, fileUploadRangeFromURLOptions *FileUploadRangeFromURLOptions, sourceModifiedAccessConditions *SourceModifiedAccessConditions,
-	leaseAccessConditions *LeaseAccessConditions) {
+func (o *FileUploadRangeFromURLOptions) format(sourceURL string, sourceOffset, destinationOffset, count int64) (rangeParam string,
+	copySource string, contentLength int64, uploadRangeFromURLOptions *fileClientUploadRangeFromURLOptions,
+	sourceModifiedAccessConditions *SourceModifiedAccessConditions, leaseAccessConditions *LeaseAccessConditions) {
 
-	rangeParam = *toRange(destinationOffset, count)
+	rangeParam = *(NewHttpRange(destinationOffset, count).format())
 	copySource = sourceURL
-	contentLength = *count
-	fileUploadRangeFromURLOptions = &FileUploadRangeFromURLOptions{SourceRange: toRange(sourceOffset, count)}
+	contentLength = count
+	uploadRangeFromURLOptions = &fileClientUploadRangeFromURLOptions{
+		SourceRange: NewHttpRange(sourceOffset, count).format(),
+	}
 	if o != nil {
-		fileUploadRangeFromURLOptions.SourceContentCRC64 = o.SourceContentCRC64
+		uploadRangeFromURLOptions.SourceContentCRC64 = o.SourceContentCRC64
+		uploadRangeFromURLOptions.CopySourceAuthorization = o.CopySourceAuthorization
+
 		sourceModifiedAccessConditions = o.SourceModifiedAccessConditions
 		leaseAccessConditions = o.LeaseAccessConditions
 	}
 	return
 }
 
+type FileUploadRangeFromURLResponse struct {
+	fileClientUploadRangeFromURLResponse
+}
+
+func toFileUploadRangeFromURLResponse(resp fileClientUploadRangeFromURLResponse) FileUploadRangeFromURLResponse {
+	return FileUploadRangeFromURLResponse{resp}
+}
+
 //----------------------------------------------------------------------------------------------------------------------
 
-type ClearFileRangeOptions struct {
+type FileClearRangeOptions struct {
+	// An MD5 hash of the content. This hash is used to verify the integrity of the data during transport. When the Content-MD5
+	// header is specified, the File service compares the hash of the content that has
+	// arrived with the header value that was sent. If the two hashes do not match, the operation will fail with error code 400
+	// (Bad Request).
+	ContentMD5 []byte
+	// Initial data.
+	OptionalBody io.ReadSeekCloser
+
 	LeaseAccessConditions *LeaseAccessConditions
 }
 
-func (o *ClearFileRangeOptions) format(offset, count *int64) (rangeParam string, fileRangeWrite FileRangeWriteType, contentLength int64,
-	fileUploadRangeOptions *FileUploadRangeOptions, leaseAccessConditions *LeaseAccessConditions, err error) {
+func (o *FileClearRangeOptions) format(offset, count int64) (string, FileRangeWriteType, int64, *fileClientUploadRangeOptions, *LeaseAccessConditions, error) {
+	httpRange := NewHttpRange(offset, count).format()
+	fileRangeWrite := FileRangeWriteTypeClear
+	contentLength := int64(0)
 
-	if *offset < 0 || *count <= 0 {
-		err = errors.New("invalid argument: either offset is < 0 or count <= 0")
-		return
+	if offset < 0 || count <= 0 {
+		return *httpRange, fileRangeWrite, contentLength, &fileClientUploadRangeOptions{}, nil, errors.New("invalid argument: either offset is < 0 or count <= 0")
 	}
-	rangeParam = *toRange(offset, count)
-	fileRangeWrite = FileRangeWriteTypeClear
-	contentLength = 0
 
-	if o != nil {
-		leaseAccessConditions = o.LeaseAccessConditions
+	if o == nil {
+		return *httpRange, fileRangeWrite, contentLength, &fileClientUploadRangeOptions{}, nil, nil
 	}
-	return
+
+	uploadRangeOptions := fileClientUploadRangeOptions{
+		ContentMD5:   o.ContentMD5,
+		Optionalbody: o.OptionalBody,
+	}
+	return *httpRange, fileRangeWrite, contentLength, &uploadRangeOptions, o.LeaseAccessConditions, nil
+}
+
+type FileClearRangeResponse struct {
+	fileClientUploadRangeResponse
+}
+
+func toFileClearRangeResponse(resp fileClientUploadRangeResponse) FileClearRangeResponse {
+	return FileClearRangeResponse{resp}
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
-type GetFileRangeListOptions struct {
+type FileGetRangeListOptions struct {
 	// The previous snapshot parameter is an opaque DateTime value that, when present, specifies the previous snapshot.
 	PrevShareSnapshot *string
 	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
@@ -467,14 +593,26 @@ type GetFileRangeListOptions struct {
 	LeaseAccessConditions *LeaseAccessConditions
 }
 
-func (o *GetFileRangeListOptions) format(offset, count *int64) (fileGetRangeListOptions *FileGetRangeListOptions, leaseAccessConditions *LeaseAccessConditions) {
-	if o == nil {
-		return
+func (o *FileGetRangeListOptions) format(offset, count int64) (*fileClientGetRangeListOptions, *LeaseAccessConditions) {
+	getRangeListOptions := &fileClientGetRangeListOptions{
+		Prevsharesnapshot: o.PrevShareSnapshot,
+		Range:             NewHttpRange(offset, count).format(),
+		Sharesnapshot:     o.ShareSnapshot,
 	}
 
-	return &FileGetRangeListOptions{
-		Prevsharesnapshot: o.PrevShareSnapshot,
-		Range:             toRange(offset, count),
-		Sharesnapshot:     o.ShareSnapshot,
-	}, o.LeaseAccessConditions
+	if o == nil {
+		return getRangeListOptions, nil
+	}
+
+	return getRangeListOptions, o.LeaseAccessConditions
 }
+
+type FileGetRangeListResponse struct {
+	fileClientGetRangeListResponse
+}
+
+func toFileGetRangeListResponse(resp fileClientGetRangeListResponse) FileGetRangeListResponse {
+	return FileGetRangeListResponse{resp}
+}
+
+//----------------------------------------------------------------------------------------------------------------------

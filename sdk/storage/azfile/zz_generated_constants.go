@@ -195,6 +195,7 @@ func (c ListSharesIncludeType) ToPtr() *ListSharesIncludeType {
 type PermissionCopyModeType string
 
 const (
+	PermissionCopyModeTypeNone     PermissionCopyModeType = ""
 	PermissionCopyModeTypeSource   PermissionCopyModeType = "source"
 	PermissionCopyModeTypeOverride PermissionCopyModeType = "override"
 )

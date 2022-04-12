@@ -98,7 +98,7 @@ func (s *azfileLiveTestSuite) TestFileCreateNonDefaultMetadataNonEmpty() {
 
 	fClient := getFileClientFromShare(_require, generateFileName(testName), srClient)
 
-	_, err = fClient.Create(ctx, &CreateFileOptions{
+	_, err = fClient.Create(ctx, &FileCreateOptions{
 		Metadata: basicMetadata,
 	})
 	_require.Nil(err)
@@ -119,7 +119,7 @@ func (s *azfileLiveTestSuite) TestFileCreateNonDefaultHTTPHeaders() {
 	defer delShare(_require, srClient, nil)
 	fClient := getFileClientFromShare(_require, generateFileName(testName), srClient)
 
-	_, err = fClient.Create(ctx, &CreateFileOptions{FileHTTPHeaders: &basicHeaders})
+	_, err = fClient.Create(ctx, &FileCreateOptions{FileHTTPHeaders: &basicHeaders})
 	_require.Nil(err)
 
 	_, err = fClient.GetProperties(ctx, nil)
@@ -140,7 +140,7 @@ func (s *azfileLiveTestSuite) TestFileCreateNegativeMetadataInvalid() {
 	defer delShare(_require, srClient, nil)
 	fClient := getFileClientFromShare(_require, generateFileName(testName), srClient)
 
-	_, err = fClient.Create(ctx, &CreateFileOptions{
+	_, err = fClient.Create(ctx, &FileCreateOptions{
 		Metadata:        map[string]string{"!@#$%^&*()": "!@#$%^&*()"},
 		FileHTTPHeaders: &FileHTTPHeaders{},
 	})
@@ -175,7 +175,7 @@ func (s *azfileLiveTestSuite) TestFileCreateNegativeMetadataInvalid() {
 //	_require.Nil(err)
 //
 //	options := &SetFileHTTPHeadersOptions{
-//		Permissions: &Permissions{ PermissionStr: &sampleSDDL},
+//		FilePermissions: &FilePermissions{ PermissionStr: &sampleSDDL},
 //		SMBProperties: &SMBProperties{
 //			FileAttributes:    &attribs,
 //			FileCreationTime:  &creationTime,
@@ -580,7 +580,7 @@ func (s *azfileLiveTestSuite) TestFileStartCopyDestEmpty() {
 //	fClient := createNewFileFromShare(_require, "src" + generateFileName(testName), 0, srClient)
 //	copyfClient := getFileClientFromShare(_require, "dst" + generateFileName(testName), srClient)
 //
-//	resp, err := copyfClient.StartCopy(ctx, fClient.URL(), &StartFileCopyOptions{Metadata: basicMetadata})
+//	resp, err := copyfClient.StartCopy(ctx, fClient.URL(), &FileStartCopyOptions{Metadata: basicMetadata})
 //	_require.Nil(err)
 //	waitForCopy(_require, copyfClient, resp)
 //
@@ -602,7 +602,7 @@ func (s *azfileLiveTestSuite) TestFileStartCopyMetadataNil() {
 	copyfClient := getFileClientFromShare(_require, "dst"+generateFileName(testName), srClient)
 
 	// Have the destination start with metadata so we ensure the nil metadata passed later takes effect
-	_, err = copyfClient.Create(ctx, &CreateFileOptions{Metadata: basicMetadata})
+	_, err = copyfClient.Create(ctx, &FileCreateOptions{Metadata: basicMetadata})
 	_require.Nil(err)
 
 	resp, err := copyfClient.StartCopy(ctx, fClient.URL(), nil)
@@ -628,10 +628,10 @@ func (s *azfileLiveTestSuite) TestFileStartCopyMetadataEmpty() {
 	copyfClient := getFileClientFromShare(_require, "dst"+generateFileName(testName), srClient)
 
 	// Have the destination start with metadata so we ensure the nil metadata passed later takes effect
-	_, err = copyfClient.Create(ctx, &CreateFileOptions{Metadata: basicMetadata})
+	_, err = copyfClient.Create(ctx, &FileCreateOptions{Metadata: basicMetadata})
 	_require.Nil(err)
 
-	resp, err := copyfClient.StartCopy(ctx, fClient.URL(), &StartFileCopyOptions{Metadata: map[string]string{}})
+	resp, err := copyfClient.StartCopy(ctx, fClient.URL(), &FileStartCopyOptions{Metadata: map[string]string{}})
 	_require.Nil(err)
 
 	waitForCopy(_require, copyfClient, resp)
@@ -653,7 +653,7 @@ func (s *azfileLiveTestSuite) TestFileStartCopyNegativeMetadataInvalidField() {
 	fClient := createNewFileFromShare(_require, "src"+generateFileName(testName), 0, srClient)
 	copyfClient := getFileClientFromShare(_require, "dst"+generateFileName(testName), srClient)
 
-	_, err = copyfClient.StartCopy(ctx, fClient.URL(), &StartFileCopyOptions{Metadata: map[string]string{"!@#$%^&*()": "!@#$%^&*()"}})
+	_, err = copyfClient.StartCopy(ctx, fClient.URL(), &FileStartCopyOptions{Metadata: map[string]string{"!@#$%^&*()": "!@#$%^&*()"}})
 	_require.NotNil(err)
 }
 
@@ -687,7 +687,7 @@ func (s *azfileLiveTestSuite) TestFileStartCopySourceNonExistent() {
 //	// Create sas values for the source file
 //	credential, _ := getCredential()
 //	serviceSASValues := FileSASSignatureValues{Version: "2015-04-05", StartTime: time.Now().Add(-1 * time.Hour).UTC(),
-//		ExpiryTime: time.Now().Add(time.Hour).UTC(), Permissions: FileSASPermissions{Read: true, Write: true, Create: true, Delete: true}.String(),
+//		ExpiryTime: time.Now().Add(time.Hour).UTC(), FilePermissions: FileSASPermissions{Read: true, Write: true, Create: true, Delete: true}.String(),
 //		ShareName: shareName, FilePath: fileName}
 //	queryParams, err := serviceSASValues.NewSASQueryParameters(credential)
 //	_require.Nil(err)
@@ -729,7 +729,7 @@ func (s *azfileLiveTestSuite) TestFileStartCopySourceNonExistent() {
 //
 //	// Generate SAS on the source
 //	serviceSASValues := FileSASSignatureValues{ExpiryTime: time.Now().Add(time.Hour).UTC(),
-//		Permissions: FileSASPermissions{Read: true, Write: true, Create: true}.String(), ShareName: shareName, FilePath: fileName}
+//		FilePermissions: FileSASPermissions{Read: true, Write: true, Create: true}.String(), ShareName: shareName, FilePath: fileName}
 //	credentials, _ := getCredential()
 //	queryParams, err := serviceSASValues.NewSASQueryParameters(credentials)
 //	_require.Nil(err)
@@ -740,7 +740,7 @@ func (s *azfileLiveTestSuite) TestFileStartCopySourceNonExistent() {
 //
 //	// Generate Sas for the destination
 //	copyServiceSASvalues := FileSASSignatureValues{StartTime: time.Now().Add(-1 * time.Hour).UTC(),
-//		ExpiryTime: time.Now().Add(time.Hour).UTC(), Permissions: FileSASPermissions{Read: true, Write: true}.String(),
+//		ExpiryTime: time.Now().Add(time.Hour).UTC(), FilePermissions: FileSASPermissions{Read: true, Write: true}.String(),
 //		ShareName: copyShareName, FilePath: copyFileName}
 //	copyQueryParams, err := copyServiceSASvalues.NewSASQueryParameters(credentials)
 //	_require.Nil(err)
@@ -792,7 +792,7 @@ func (s *azfileLiveTestSuite) TestFileStartCopySourceNonExistent() {
 //	for i := range fileData {
 //		fileData[i] = byte('a' + i%26)
 //	}
-//	_, err = fClient.Create(ctx, &CreateFileOptions{FileContentLength: to.Int64Ptr(int64(fileSize)), FileHTTPHeaders: &FileHTTPHeaders{}})
+//	_, err = fClient.Create(ctx, &FileCreateOptions{FileContentLength: to.Int64Ptr(int64(fileSize)), FileHTTPHeaders: &FileHTTPHeaders{}})
 //	_require.Nil(err)
 //
 //	_, err = fClient.UploadRange(ctx, 0, internal.NopCloser(bytes.NewReader(fileData[0:4*1024*1024])), nil)
@@ -802,7 +802,7 @@ func (s *azfileLiveTestSuite) TestFileStartCopySourceNonExistent() {
 //	_, err = fClient.UploadRange(ctx, 8*1024*1024, internal.NopCloser(bytes.NewReader(fileData[8*1024*1024:])), nil)
 //	_require.Nil(err)
 //	serviceSASValues := FileSASSignatureValues{ExpiryTime: time.Now().Add(time.Hour).UTC(),
-//		Permissions: FileSASPermissions{Read: true, Write: true, Create: true}.String(), ShareName: shareName, FilePath: fileName}
+//		FilePermissions: FileSASPermissions{Read: true, Write: true, Create: true}.String(), ShareName: shareName, FilePath: fileName}
 //	credentials, _ := getGenericCredential(nil, testAccountDefault)
 //	queryParams, err := serviceSASValues.NewSASQueryParameters(credentials)
 //	_require.Nil(err)
@@ -926,7 +926,7 @@ func (s *azfileLiveTestSuite) TestFileAbortCopyNoCopyStarted() {
 //		Protocol:    SASProtocolHTTPS,
 //		ExpiryTime:  time.Now().UTC().Add(48 * time.Hour),
 //		ShareName:   shareName,
-//		Permissions: ShareSASPermissions{Create: true, Read: true, Write: true, Delete: true, List: true}.String(),
+//		FilePermissions: ShareSASPermissions{Create: true, Read: true, Write: true, Delete: true, List: true}.String(),
 //	}.NewSASQueryParameters(credential)
 //	_require.Nil(err)
 //
@@ -958,7 +958,7 @@ func (s *azfileLiveTestSuite) TestFileAbortCopyNoCopyStarted() {
 //	_, err = dirURL.Create(ctx, map[string]string, SMBProperties{})
 //	_require.Nil(err)
 //
-//	_, err = dirURL.ListFilesAndDirectoriesSegment(ctx, Marker{}, ListFilesAndDirectoriesOptions{})
+//	_, err = dirURL.ListFilesAndDirectoriesSegment(ctx, Marker{}, DirectoryListFilesAndDirectoriesOptions{})
 //	_require.Nil(err)
 //}
 //
@@ -984,7 +984,7 @@ func (s *azfileLiveTestSuite) TestFileAbortCopyNoCopyStarted() {
 //		Protocol:           SASProtocolHTTPS,
 //		ExpiryTime:         time.Now().UTC().Add(48 * time.Hour),
 //		ShareName:          shareName,
-//		Permissions:        FileSASPermissions{Create: true, Read: true, Write: true, Delete: true}.String(),
+//		FilePermissions:        FileSASPermissions{Create: true, Read: true, Write: true, Delete: true}.String(),
 //		CacheControl:       cacheControlVal,
 //		ContentDisposition: contentDispositionVal,
 //		ContentEncoding:    contentEncodingVal,
@@ -1090,7 +1090,7 @@ func (s *azfileLiveTestSuite) TestFileAbortCopyNoCopyStarted() {
 //
 //	// Get with rangeGetContentMD5 enabled.
 //	// Partial data, check status code 206.
-//	resp, err := fClient.Download(ctx, 0, 1024, &DownloadFileOptions{RangeGetContentMD5: to.BoolPtr(true)})
+//	resp, err := fClient.Download(ctx, 0, 1024, &FileDownloadOptions{RangeGetContentMD5: to.BoolPtr(true)})
 //	_require.Nil(err)
 //	_require.Equal(resp.RawResponse.StatusCode, http.StatusPartialContent)
 //	_require.Equal(*resp.ContentLength, int64(1024))
@@ -1383,7 +1383,7 @@ func (s *azfileLiveTestSuite) TestFileUploadRangeTransactionalMD5() {
 	md5 := md5.Sum(contentD)
 
 	// Upload range with correct transactional MD5
-	pResp, err := fClient.UploadRange(ctx, 0, contentR, &UploadFileRangeOptions{ContentMD5: md5[:]})
+	pResp, err := fClient.UploadRange(ctx, 0, contentR, &FileUploadRangeOptions{ContentMD5: md5[:]})
 	_require.Nil(err)
 	_require.NotNil(pResp.ContentMD5)
 	_require.Equal(pResp.RawResponse.StatusCode, http.StatusCreated)
@@ -1427,7 +1427,7 @@ func (s *azfileLiveTestSuite) TestFileUploadRangeIncorrectTransactionalMD5() {
 	_, incorrectMD5 := generateData(16)
 
 	// Upload range with incorrect transactional MD5
-	_, err = fClient.UploadRange(ctx, 0, contentR, &UploadFileRangeOptions{ContentMD5: incorrectMD5[:]})
+	_, err = fClient.UploadRange(ctx, 0, contentR, &FileUploadRangeOptions{ContentMD5: incorrectMD5[:]})
 	validateStorageError(_require, err, StorageErrorCodeMD5Mismatch)
 }
 
@@ -1460,7 +1460,7 @@ func (s *azfileLiveTestSuite) TestFileUploadRangeIncorrectTransactionalMD5() {
 //		Protocol:    SASProtocolHTTPS,
 //		ExpiryTime:  time.Now().UTC().Add(48 * time.Hour),
 //		ShareName:   shareName,
-//		Permissions: FileSASPermissions{Create: true, Read: true, Write: true, Delete: true}.String(),
+//		FilePermissions: FileSASPermissions{Create: true, Read: true, Write: true, Delete: true}.String(),
 //	}.NewSASQueryParameters(credential)
 //	_require.Nil(err)
 //	srcfClient.u.RawQuery = sasQueryParams.Encode()
@@ -1477,7 +1477,7 @@ func (s *azfileLiveTestSuite) TestFileUploadRangeIncorrectTransactionalMD5() {
 //	_require.Equal(uploadFromURLResp.RawResponse.StatusCode, 201)
 //
 //	// verify the destination
-//	resp, err := dstfClient.Download(ctx, int64(dstOffset), int64(expectedDataSize), &DownloadFileOptions{RangeGetContentMD5: to.BoolPtr(false)})
+//	resp, err := dstfClient.Download(ctx, int64(dstOffset), int64(expectedDataSize), &FileDownloadOptions{RangeGetContentMD5: to.BoolPtr(false)})
 //	_require.Nil(err)
 //	downloadedData, err := ioutil.ReadAll(resp.RawResponse.Body)
 //	_require.Nil(err)
@@ -1499,7 +1499,7 @@ func (s *azfileLiveTestSuite) TestGetRangeListNonDefaultExact() {
 
 	fileSize := int64(512 * 10)
 
-	_, err = fClient.Create(ctx, &CreateFileOptions{FileContentLength: to.Int64Ptr(fileSize), FileHTTPHeaders: &FileHTTPHeaders{}})
+	_, err = fClient.Create(ctx, &FileCreateOptions{FileContentLength: to.Int64Ptr(fileSize), FileHTTPHeaders: &FileHTTPHeaders{}})
 	_require.Nil(err)
 
 	defer delFile(_require, fClient)
@@ -1836,7 +1836,7 @@ func (s *azfileLiveTestSuite) TestCreateMaximumSizeFileShare() {
 	dirClient, err := srClient.NewRootDirectoryClient()
 	_require.Nil(err)
 	fClient := getFileClientFromDirectory(_require, generateFileName(testName), dirClient)
-	_, err = fClient.Create(ctx, &CreateFileOptions{
+	_, err = fClient.Create(ctx, &FileCreateOptions{
 		FileContentLength: &fileMaxAllowedSizeInBytes,
 		FileHTTPHeaders:   &FileHTTPHeaders{},
 	})

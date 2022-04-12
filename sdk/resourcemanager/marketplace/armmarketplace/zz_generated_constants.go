@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armmarketplace
 
 const (
 	moduleName    = "armmarketplace"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // Accessibility - Plan accessibility
@@ -33,11 +33,6 @@ func PossibleAccessibilityValues() []Accessibility {
 	}
 }
 
-// ToPtr returns a *Accessibility pointing to the current value.
-func (c Accessibility) ToPtr() *Accessibility {
-	return &c
-}
-
 // AdminAction - Gets or sets admin action
 type AdminAction string
 
@@ -54,11 +49,6 @@ func PossibleAdminActionValues() []AdminAction {
 	}
 }
 
-// ToPtr returns a *AdminAction pointing to the current value.
-func (c AdminAction) ToPtr() *AdminAction {
-	return &c
-}
-
 // Availability - Indicates private store availability
 type Availability string
 
@@ -73,11 +63,6 @@ func PossibleAvailabilityValues() []Availability {
 		AvailabilityDisabled,
 		AvailabilityEnabled,
 	}
-}
-
-// ToPtr returns a *Availability pointing to the current value.
-func (c Availability) ToPtr() *Availability {
-	return &c
 }
 
 // IdentityType - The type of identity that creates/modifies resources
@@ -100,11 +85,6 @@ func PossibleIdentityTypeValues() []IdentityType {
 	}
 }
 
-// ToPtr returns a *IdentityType pointing to the current value.
-func (c IdentityType) ToPtr() *IdentityType {
-	return &c
-}
-
 // Operation - Set the Operation for the POST method. Ping or Delete
 type Operation string
 
@@ -123,11 +103,6 @@ func PossibleOperationValues() []Operation {
 		OperationDeletePrivateStoreOffer,
 		OperationPing,
 	}
-}
-
-// ToPtr returns a *Operation pointing to the current value.
-func (c Operation) ToPtr() *Operation {
-	return &c
 }
 
 // Status - Gets the plan status
@@ -150,7 +125,24 @@ func PossibleStatusValues() []Status {
 	}
 }
 
-// ToPtr returns a *Status pointing to the current value.
-func (c Status) ToPtr() *Status {
-	return &c
+// SubscriptionState - The subscription state. Possible values are Enabled, Warned, PastDue, Disabled, and Deleted.
+type SubscriptionState string
+
+const (
+	SubscriptionStateDeleted  SubscriptionState = "Deleted"
+	SubscriptionStateDisabled SubscriptionState = "Disabled"
+	SubscriptionStateEnabled  SubscriptionState = "Enabled"
+	SubscriptionStatePastDue  SubscriptionState = "PastDue"
+	SubscriptionStateWarned   SubscriptionState = "Warned"
+)
+
+// PossibleSubscriptionStateValues returns the possible values for the SubscriptionState const type.
+func PossibleSubscriptionStateValues() []SubscriptionState {
+	return []SubscriptionState{
+		SubscriptionStateDeleted,
+		SubscriptionStateDisabled,
+		SubscriptionStateEnabled,
+		SubscriptionStatePastDue,
+		SubscriptionStateWarned,
+	}
 }

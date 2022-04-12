@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ImagesClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewImagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ImagesClient {
+func NewImagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ImagesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ImagesClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Updates an image resource via PUT. Creating new resources via PUT will not function.
@@ -104,7 +109,7 @@ func (client *ImagesClient) createOrUpdateCreateRequest(ctx context.Context, res
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *ImagesClient) createOrUpdateHandleResponse(resp *http.Response) (ImagesClientCreateOrUpdateResponse, error) {
-	result := ImagesClientCreateOrUpdateResponse{RawResponse: resp}
+	result := ImagesClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Image); err != nil {
 		return ImagesClientCreateOrUpdateResponse{}, err
 	}
@@ -165,7 +170,7 @@ func (client *ImagesClient) getCreateRequest(ctx context.Context, resourceGroupN
 
 // getHandleResponse handles the Get response.
 func (client *ImagesClient) getHandleResponse(resp *http.Response) (ImagesClientGetResponse, error) {
-	result := ImagesClientGetResponse{RawResponse: resp}
+	result := ImagesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Image); err != nil {
 		return ImagesClientGetResponse{}, err
 	}
@@ -178,16 +183,32 @@ func (client *ImagesClient) getHandleResponse(resp *http.Response) (ImagesClient
 // labPlanName - The name of the lab plan that uniquely identifies it within containing resource group. Used in resource URIs
 // and in UI.
 // options - ImagesClientListByLabPlanOptions contains the optional parameters for the ImagesClient.ListByLabPlan method.
-func (client *ImagesClient) ListByLabPlan(resourceGroupName string, labPlanName string, options *ImagesClientListByLabPlanOptions) *ImagesClientListByLabPlanPager {
-	return &ImagesClientListByLabPlanPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByLabPlanCreateRequest(ctx, resourceGroupName, labPlanName, options)
+func (client *ImagesClient) ListByLabPlan(resourceGroupName string, labPlanName string, options *ImagesClientListByLabPlanOptions) *runtime.Pager[ImagesClientListByLabPlanResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ImagesClientListByLabPlanResponse]{
+		More: func(page ImagesClientListByLabPlanResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ImagesClientListByLabPlanResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PagedImages.NextLink)
+		Fetcher: func(ctx context.Context, page *ImagesClientListByLabPlanResponse) (ImagesClientListByLabPlanResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByLabPlanCreateRequest(ctx, resourceGroupName, labPlanName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ImagesClientListByLabPlanResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ImagesClientListByLabPlanResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ImagesClientListByLabPlanResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByLabPlanHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByLabPlanCreateRequest creates the ListByLabPlan request.
@@ -221,7 +242,7 @@ func (client *ImagesClient) listByLabPlanCreateRequest(ctx context.Context, reso
 
 // listByLabPlanHandleResponse handles the ListByLabPlan response.
 func (client *ImagesClient) listByLabPlanHandleResponse(resp *http.Response) (ImagesClientListByLabPlanResponse, error) {
-	result := ImagesClientListByLabPlanResponse{RawResponse: resp}
+	result := ImagesClientListByLabPlanResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PagedImages); err != nil {
 		return ImagesClientListByLabPlanResponse{}, err
 	}
@@ -283,7 +304,7 @@ func (client *ImagesClient) updateCreateRequest(ctx context.Context, resourceGro
 
 // updateHandleResponse handles the Update response.
 func (client *ImagesClient) updateHandleResponse(resp *http.Response) (ImagesClientUpdateResponse, error) {
-	result := ImagesClientUpdateResponse{RawResponse: resp}
+	result := ImagesClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Image); err != nil {
 		return ImagesClientUpdateResponse{}, err
 	}

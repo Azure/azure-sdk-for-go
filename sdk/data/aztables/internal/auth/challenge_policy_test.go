@@ -15,11 +15,9 @@ import (
 )
 
 var fakeTenant = "00000000-0000-0000-0000-000000000000"
-var mhsmScope = "https://managedhsm.azure.net/.default"
-var mhsmResource = "https://managedhsm.azure.net"
 
-var scope = "https://vault.azure.net/.default"
-var resource = "https://vault.azure.net"
+var scope = "https://myaccount.table.core.windows.net/.default"
+var resource = "https://table.core.windows.net"
 
 var authScope = "Bearer authorization_uri=\"https://login.microsoftonline.com/%s\", scope=\"%s\""
 var authResource = "Bearer authorization_uri=\"https://login.microsoftonline.com/%s\", resource_id=\"%s\""
@@ -41,22 +39,9 @@ func TestFindScopeAndTenant(t *testing.T) {
 
 	resp.Header.Set(
 		"WWW-Authenticate",
-		fmt.Sprintf(authResource, fakeTenant, mhsmResource),
-	)
-	err := p.findScopeAndTenant(&resp)
-	require.NoError(t, err)
-	if *p.scope != mhsmScope {
-		t.Fatalf("scope was not properly parsed, got %s, expected %s", *p.scope, mhsmScope)
-	}
-	if *p.tenantID != fakeTenant {
-		t.Fatalf("tenant ID was not properly parsed, got %s, expected %s", *p.tenantID, fakeTenant)
-	}
-
-	resp.Header.Set(
-		"WWW-Authenticate",
 		fmt.Sprintf(authResourceScope, fakeTenant, resource, scope),
 	)
-	err = p.findScopeAndTenant(&resp)
+	err := p.findScopeAndTenant(&resp)
 	require.NoError(t, err)
 	if *p.scope != scope {
 		t.Fatalf("scope was not properly parsed, got %s, expected %s", *p.scope, scope)
@@ -73,19 +58,6 @@ func TestFindScopeAndTenant(t *testing.T) {
 	require.NoError(t, err)
 	if *p.scope != scope {
 		t.Fatalf("scope was not properly parsed, got %s, expected %s", *p.scope, scope)
-	}
-	if *p.tenantID != fakeTenant {
-		t.Fatalf("tenant ID was not properly parsed, got %s, expected %s", *p.tenantID, fakeTenant)
-	}
-
-	resp.Header.Set(
-		"WWW-Authenticate",
-		fmt.Sprintf(resourceScopeAuth, mhsmResource, mhsmScope, fakeTenant),
-	)
-	err = p.findScopeAndTenant(&resp)
-	require.NoError(t, err)
-	if *p.scope != mhsmScope {
-		t.Fatalf("scope was not properly parsed, got %s, expected %s", *p.scope, "https://vault.azure.net/.default")
 	}
 	if *p.tenantID != fakeTenant {
 		t.Fatalf("tenant ID was not properly parsed, got %s, expected %s", *p.tenantID, fakeTenant)

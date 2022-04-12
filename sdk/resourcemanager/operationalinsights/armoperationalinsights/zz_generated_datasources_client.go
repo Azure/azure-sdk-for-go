@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type DataSourcesClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewDataSourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DataSourcesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewDataSourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DataSourcesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &DataSourcesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Create or update a data source.
@@ -104,7 +109,7 @@ func (client *DataSourcesClient) createOrUpdateCreateRequest(ctx context.Context
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *DataSourcesClient) createOrUpdateHandleResponse(resp *http.Response) (DataSourcesClientCreateOrUpdateResponse, error) {
-	result := DataSourcesClientCreateOrUpdateResponse{RawResponse: resp}
+	result := DataSourcesClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataSource); err != nil {
 		return DataSourcesClientCreateOrUpdateResponse{}, err
 	}
@@ -129,7 +134,7 @@ func (client *DataSourcesClient) Delete(ctx context.Context, resourceGroupName s
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return DataSourcesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return DataSourcesClientDeleteResponse{RawResponse: resp}, nil
+	return DataSourcesClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -214,7 +219,7 @@ func (client *DataSourcesClient) getCreateRequest(ctx context.Context, resourceG
 
 // getHandleResponse handles the Get response.
 func (client *DataSourcesClient) getHandleResponse(resp *http.Response) (DataSourcesClientGetResponse, error) {
-	result := DataSourcesClientGetResponse{RawResponse: resp}
+	result := DataSourcesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataSource); err != nil {
 		return DataSourcesClientGetResponse{}, err
 	}
@@ -228,16 +233,32 @@ func (client *DataSourcesClient) getHandleResponse(resp *http.Response) (DataSou
 // filter - The filter to apply on the operation.
 // options - DataSourcesClientListByWorkspaceOptions contains the optional parameters for the DataSourcesClient.ListByWorkspace
 // method.
-func (client *DataSourcesClient) ListByWorkspace(resourceGroupName string, workspaceName string, filter string, options *DataSourcesClientListByWorkspaceOptions) *DataSourcesClientListByWorkspacePager {
-	return &DataSourcesClientListByWorkspacePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByWorkspaceCreateRequest(ctx, resourceGroupName, workspaceName, filter, options)
+func (client *DataSourcesClient) ListByWorkspace(resourceGroupName string, workspaceName string, filter string, options *DataSourcesClientListByWorkspaceOptions) *runtime.Pager[DataSourcesClientListByWorkspaceResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DataSourcesClientListByWorkspaceResponse]{
+		More: func(page DataSourcesClientListByWorkspaceResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DataSourcesClientListByWorkspaceResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DataSourceListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *DataSourcesClientListByWorkspaceResponse) (DataSourcesClientListByWorkspaceResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByWorkspaceCreateRequest(ctx, resourceGroupName, workspaceName, filter, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DataSourcesClientListByWorkspaceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DataSourcesClientListByWorkspaceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DataSourcesClientListByWorkspaceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByWorkspaceHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByWorkspaceCreateRequest creates the ListByWorkspace request.
@@ -272,7 +293,7 @@ func (client *DataSourcesClient) listByWorkspaceCreateRequest(ctx context.Contex
 
 // listByWorkspaceHandleResponse handles the ListByWorkspace response.
 func (client *DataSourcesClient) listByWorkspaceHandleResponse(resp *http.Response) (DataSourcesClientListByWorkspaceResponse, error) {
-	result := DataSourcesClientListByWorkspaceResponse{RawResponse: resp}
+	result := DataSourcesClientListByWorkspaceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataSourceListResult); err != nil {
 		return DataSourcesClientListByWorkspaceResponse{}, err
 	}

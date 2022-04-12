@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,38 +34,49 @@ type DeletedWorkspacesClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewDeletedWorkspacesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DeletedWorkspacesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewDeletedWorkspacesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DeletedWorkspacesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &DeletedWorkspacesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // List - Gets recently deleted workspaces in a subscription, available for recovery.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - DeletedWorkspacesClientListOptions contains the optional parameters for the DeletedWorkspacesClient.List method.
-func (client *DeletedWorkspacesClient) List(ctx context.Context, options *DeletedWorkspacesClientListOptions) (DeletedWorkspacesClientListResponse, error) {
-	req, err := client.listCreateRequest(ctx, options)
-	if err != nil {
-		return DeletedWorkspacesClientListResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return DeletedWorkspacesClientListResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DeletedWorkspacesClientListResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listHandleResponse(resp)
+func (client *DeletedWorkspacesClient) List(options *DeletedWorkspacesClientListOptions) *runtime.Pager[DeletedWorkspacesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DeletedWorkspacesClientListResponse]{
+		More: func(page DeletedWorkspacesClientListResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *DeletedWorkspacesClientListResponse) (DeletedWorkspacesClientListResponse, error) {
+			req, err := client.listCreateRequest(ctx, options)
+			if err != nil {
+				return DeletedWorkspacesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DeletedWorkspacesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DeletedWorkspacesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
+		},
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -87,7 +99,7 @@ func (client *DeletedWorkspacesClient) listCreateRequest(ctx context.Context, op
 
 // listHandleResponse handles the List response.
 func (client *DeletedWorkspacesClient) listHandleResponse(resp *http.Response) (DeletedWorkspacesClientListResponse, error) {
-	result := DeletedWorkspacesClientListResponse{RawResponse: resp}
+	result := DeletedWorkspacesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkspaceListResult); err != nil {
 		return DeletedWorkspacesClientListResponse{}, err
 	}
@@ -99,19 +111,26 @@ func (client *DeletedWorkspacesClient) listHandleResponse(resp *http.Response) (
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - DeletedWorkspacesClientListByResourceGroupOptions contains the optional parameters for the DeletedWorkspacesClient.ListByResourceGroup
 // method.
-func (client *DeletedWorkspacesClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, options *DeletedWorkspacesClientListByResourceGroupOptions) (DeletedWorkspacesClientListByResourceGroupResponse, error) {
-	req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-	if err != nil {
-		return DeletedWorkspacesClientListByResourceGroupResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return DeletedWorkspacesClientListByResourceGroupResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DeletedWorkspacesClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listByResourceGroupHandleResponse(resp)
+func (client *DeletedWorkspacesClient) ListByResourceGroup(resourceGroupName string, options *DeletedWorkspacesClientListByResourceGroupOptions) *runtime.Pager[DeletedWorkspacesClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DeletedWorkspacesClientListByResourceGroupResponse]{
+		More: func(page DeletedWorkspacesClientListByResourceGroupResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *DeletedWorkspacesClientListByResourceGroupResponse) (DeletedWorkspacesClientListByResourceGroupResponse, error) {
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			if err != nil {
+				return DeletedWorkspacesClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DeletedWorkspacesClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DeletedWorkspacesClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
+		},
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -138,7 +157,7 @@ func (client *DeletedWorkspacesClient) listByResourceGroupCreateRequest(ctx cont
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *DeletedWorkspacesClient) listByResourceGroupHandleResponse(resp *http.Response) (DeletedWorkspacesClientListByResourceGroupResponse, error) {
-	result := DeletedWorkspacesClientListByResourceGroupResponse{RawResponse: resp}
+	result := DeletedWorkspacesClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkspaceListResult); err != nil {
 		return DeletedWorkspacesClientListByResourceGroupResponse{}, err
 	}

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type JitRequestsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewJitRequestsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *JitRequestsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewJitRequestsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*JitRequestsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &JitRequestsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates the JIT request.
@@ -56,22 +61,18 @@ func NewJitRequestsClient(subscriptionID string, credential azcore.TokenCredenti
 // parameters - Parameters supplied to the update JIT request.
 // options - JitRequestsClientBeginCreateOrUpdateOptions contains the optional parameters for the JitRequestsClient.BeginCreateOrUpdate
 // method.
-func (client *JitRequestsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, jitRequestName string, parameters JitRequestDefinition, options *JitRequestsClientBeginCreateOrUpdateOptions) (JitRequestsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, jitRequestName, parameters, options)
-	if err != nil {
-		return JitRequestsClientCreateOrUpdatePollerResponse{}, err
+func (client *JitRequestsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, jitRequestName string, parameters JitRequestDefinition, options *JitRequestsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[JitRequestsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, jitRequestName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[JitRequestsClientCreateOrUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[JitRequestsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := JitRequestsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("JitRequestsClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return JitRequestsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &JitRequestsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates the JIT request.
@@ -134,7 +135,7 @@ func (client *JitRequestsClient) Delete(ctx context.Context, resourceGroupName s
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return JitRequestsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return JitRequestsClientDeleteResponse{RawResponse: resp}, nil
+	return JitRequestsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -211,7 +212,7 @@ func (client *JitRequestsClient) getCreateRequest(ctx context.Context, resourceG
 
 // getHandleResponse handles the Get response.
 func (client *JitRequestsClient) getHandleResponse(resp *http.Response) (JitRequestsClientGetResponse, error) {
-	result := JitRequestsClientGetResponse{RawResponse: resp}
+	result := JitRequestsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JitRequestDefinition); err != nil {
 		return JitRequestsClientGetResponse{}, err
 	}
@@ -262,7 +263,7 @@ func (client *JitRequestsClient) listByResourceGroupCreateRequest(ctx context.Co
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *JitRequestsClient) listByResourceGroupHandleResponse(resp *http.Response) (JitRequestsClientListByResourceGroupResponse, error) {
-	result := JitRequestsClientListByResourceGroupResponse{RawResponse: resp}
+	result := JitRequestsClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JitRequestDefinitionListResult); err != nil {
 		return JitRequestsClientListByResourceGroupResponse{}, err
 	}
@@ -308,7 +309,7 @@ func (client *JitRequestsClient) listBySubscriptionCreateRequest(ctx context.Con
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
 func (client *JitRequestsClient) listBySubscriptionHandleResponse(resp *http.Response) (JitRequestsClientListBySubscriptionResponse, error) {
-	result := JitRequestsClientListBySubscriptionResponse{RawResponse: resp}
+	result := JitRequestsClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JitRequestDefinitionListResult); err != nil {
 		return JitRequestsClientListBySubscriptionResponse{}, err
 	}
@@ -364,7 +365,7 @@ func (client *JitRequestsClient) updateCreateRequest(ctx context.Context, resour
 
 // updateHandleResponse handles the Update response.
 func (client *JitRequestsClient) updateHandleResponse(resp *http.Response) (JitRequestsClientUpdateResponse, error) {
-	result := JitRequestsClientUpdateResponse{RawResponse: resp}
+	result := JitRequestsClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JitRequestDefinition); err != nil {
 		return JitRequestsClientUpdateResponse{}, err
 	}

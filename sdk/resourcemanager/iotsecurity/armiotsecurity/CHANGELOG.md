@@ -1,5 +1,303 @@
 # Release History
 
+## 0.3.0 (2022-04-12)
+### Breaking Changes
+
+- Function `*LocationsClient.List` return value(s) have been changed from `(*LocationsClientListPager)` to `(*runtime.Pager[LocationsClientListResponse])`
+- Function `NewDevicesClient` return value(s) have been changed from `(*DevicesClient)` to `(*DevicesClient, error)`
+- Function `*DevicesClient.List` return value(s) have been changed from `(*DevicesClientListPager)` to `(*runtime.Pager[DevicesClientListResponse])`
+- Function `NewDeviceGroupsClient` return value(s) have been changed from `(*DeviceGroupsClient)` to `(*DeviceGroupsClient, error)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `*DeviceGroupsClient.List` return value(s) have been changed from `(*DeviceGroupsClientListPager)` to `(*runtime.Pager[DeviceGroupsClientListResponse])`
+- Function `NewOnPremiseSensorsClient` return value(s) have been changed from `(*OnPremiseSensorsClient)` to `(*OnPremiseSensorsClient, error)`
+- Function `NewLocationsClient` return value(s) have been changed from `(*LocationsClient)` to `(*LocationsClient, error)`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `NewSensorsClient` return value(s) have been changed from `(*SensorsClient)` to `(*SensorsClient, error)`
+- Function `NewSitesClient` return value(s) have been changed from `(*SitesClient)` to `(*SitesClient, error)`
+- Function `NewDefenderSettingsClient` return value(s) have been changed from `(*DefenderSettingsClient)` to `(*DefenderSettingsClient, error)`
+- Type of `ErrorAdditionalInfo.Info` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `Slot.AdditionalData` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `OnPremiseSensor.Properties` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `Firmware.AdditionalFields` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `DeviceProperties.AdditionalFields` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `LocationModel.Properties` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `DeviceGroupModel.Properties` has been changed from `map[string]interface{}` to `interface{}`
+- Const `AlertIntentCredentialAccess` has been removed
+- Const `AlertIntentPersistence` has been removed
+- Const `AlertSeverityHigh` has been removed
+- Const `AlertIntentUnknown` has been removed
+- Const `AlertSeverityMedium` has been removed
+- Const `AlertIntentProbing` has been removed
+- Const `AlertStatusInProgress` has been removed
+- Const `AlertSeverityInformational` has been removed
+- Const `AlertIntentExploitation` has been removed
+- Const `RecommendationSeverityOffByPolicy` has been removed
+- Const `AlertIntentExfiltration` has been removed
+- Const `SeverityScoreLow` has been removed
+- Const `RecommendationSeverityMedium` has been removed
+- Const `AlertSeverityLow` has been removed
+- Const `RecommendationSeverityLow` has been removed
+- Const `AlertIntentDefenseEvasion` has been removed
+- Const `RecommendationSeverityHigh` has been removed
+- Const `AlertIntentPreAttack` has been removed
+- Const `AlertIntentExecution` has been removed
+- Const `SeverityScoreCritical` has been removed
+- Const `AlertIntentDiscovery` has been removed
+- Const `SeverityScoreHigh` has been removed
+- Const `RecommendationSeverityNotApplicable` has been removed
+- Const `SeverityScoreMedium` has been removed
+- Const `AlertIntentImpact` has been removed
+- Const `RecommendationSeverityUnknown` has been removed
+- Const `AlertIntentPrivilegeEscalation` has been removed
+- Const `RecommendationSeverityHealthy` has been removed
+- Const `AlertIntentCollection` has been removed
+- Const `AlertIntentCommandAndControl` has been removed
+- Const `SeverityScoreNone` has been removed
+- Const `AlertStatusClosed` has been removed
+- Const `AlertIntentInitialAccess` has been removed
+- Const `AlertStatusNew` has been removed
+- Const `AlertIntentLateralMovement` has been removed
+- Function `*AlertTypesClient.Get` has been removed
+- Function `*DevicesClientListPager.PageResponse` has been removed
+- Function `SeverityScore.ToPtr` has been removed
+- Function `AlertTypeProperties.MarshalJSON` has been removed
+- Function `*DeviceGroupsClientListPager.Err` has been removed
+- Function `*IotDeviceVulnerabilityClient.List` has been removed
+- Function `AlertPropertiesModel.MarshalJSON` has been removed
+- Function `*IotAlertsClientListPager.PageResponse` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Function `NewRecommendationTypesClient` has been removed
+- Function `VersionKind.ToPtr` has been removed
+- Function `*IotDeviceVulnerabilityClientListPager.NextPage` has been removed
+- Function `*IotAlertsClientListPager.Err` has been removed
+- Function `SensorStatus.ToPtr` has been removed
+- Function `AlertPatchPropertiesModel.MarshalJSON` has been removed
+- Function `PossibleAlertSeverityValues` has been removed
+- Function `DeviceVulnerabilityPropertiesModel.MarshalJSON` has been removed
+- Function `SlotType.ToPtr` has been removed
+- Function `NewAlertTypesClient` has been removed
+- Function `AlertTypeList.MarshalJSON` has been removed
+- Function `NewIotRecommendationsClient` has been removed
+- Function `*DevicesClientListPager.NextPage` has been removed
+- Function `AlertSeverity.ToPtr` has been removed
+- Function `DeviceStatus.ToPtr` has been removed
+- Function `AuthorizedState.ToPtr` has been removed
+- Function `DeviceDataSource.ToPtr` has been removed
+- Function `PossibleAlertStatusValues` has been removed
+- Function `OnboardingStatus.ToPtr` has been removed
+- Function `RecommendationTypeProperties.MarshalJSON` has been removed
+- Function `*DeviceGroupsClientListPager.PageResponse` has been removed
+- Function `*IotRecommendationsClient.List` has been removed
+- Function `RecommendationListModel.MarshalJSON` has been removed
+- Function `*IotDeviceVulnerabilityClientListPager.PageResponse` has been removed
+- Function `*LocationsClientListPager.Err` has been removed
+- Function `*IotDeviceVulnerabilityClient.Get` has been removed
+- Function `ProgrammingState.ToPtr` has been removed
+- Function `RecommendationTypeList.MarshalJSON` has been removed
+- Function `PossibleSeverityScoreValues` has been removed
+- Function `RecommendationSeverity.ToPtr` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `*IotDeviceVulnerabilityClientListPager.Err` has been removed
+- Function `*RecommendationTypesClient.Get` has been removed
+- Function `NewIotDeviceVulnerabilityClient` has been removed
+- Function `*DevicesClientListPager.Err` has been removed
+- Function `TiStatus.ToPtr` has been removed
+- Function `MacCertainty.ToPtr` has been removed
+- Function `*LocationsClientListPager.PageResponse` has been removed
+- Function `*IotRecommendationsClientListPager.Err` has been removed
+- Function `*IotAlertsClient.Patch` has been removed
+- Function `*IotRecommendationsClientListPager.PageResponse` has been removed
+- Function `*DeviceGroupsClientListPager.NextPage` has been removed
+- Function `MdeIntegration.ToPtr` has been removed
+- Function `AlertStatus.ToPtr` has been removed
+- Function `AlertIntent.ToPtr` has been removed
+- Function `PossibleRecommendationSeverityValues` has been removed
+- Function `*LocationsClientListPager.NextPage` has been removed
+- Function `PossibleAlertIntentValues` has been removed
+- Function `Criticality.ToPtr` has been removed
+- Function `AlertListModel.MarshalJSON` has been removed
+- Function `DeviceVulnerabilityListModel.MarshalJSON` has been removed
+- Function `*AlertTypesClient.List` has been removed
+- Function `OnboardingKind.ToPtr` has been removed
+- Function `*IotAlertsClient.List` has been removed
+- Function `*RecommendationTypesClient.List` has been removed
+- Function `*IotRecommendationsClient.Get` has been removed
+- Function `PurdueLevel.ToPtr` has been removed
+- Function `*IotAlertsClient.Get` has been removed
+- Function `*IotAlertsClientListPager.NextPage` has been removed
+- Function `*IotRecommendationsClientListPager.NextPage` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `NewIotAlertsClient` has been removed
+- Function `SensorType.ToPtr` has been removed
+- Function `CreatedByType.ToPtr` has been removed
+- Struct `AlertListModel` has been removed
+- Struct `AlertModel` has been removed
+- Struct `AlertPatchPropertiesModel` has been removed
+- Struct `AlertPatchPropertiesModelProperties` has been removed
+- Struct `AlertPropertiesModel` has been removed
+- Struct `AlertType` has been removed
+- Struct `AlertTypeList` has been removed
+- Struct `AlertTypeProperties` has been removed
+- Struct `AlertTypesClient` has been removed
+- Struct `AlertTypesClientGetOptions` has been removed
+- Struct `AlertTypesClientGetResponse` has been removed
+- Struct `AlertTypesClientGetResult` has been removed
+- Struct `AlertTypesClientListOptions` has been removed
+- Struct `AlertTypesClientListResponse` has been removed
+- Struct `AlertTypesClientListResult` has been removed
+- Struct `DefenderSettingsClientCreateOrUpdateResult` has been removed
+- Struct `DefenderSettingsClientGetResult` has been removed
+- Struct `DefenderSettingsClientListResult` has been removed
+- Struct `DefenderSettingsClientPackageDownloadsResult` has been removed
+- Struct `DeviceGroupsClientCreateOrUpdateResult` has been removed
+- Struct `DeviceGroupsClientGetResult` has been removed
+- Struct `DeviceGroupsClientListPager` has been removed
+- Struct `DeviceGroupsClientListResult` has been removed
+- Struct `DeviceVulnerabilityListModel` has been removed
+- Struct `DeviceVulnerabilityModel` has been removed
+- Struct `DeviceVulnerabilityPropertiesModel` has been removed
+- Struct `DevicesClientGetResult` has been removed
+- Struct `DevicesClientListPager` has been removed
+- Struct `DevicesClientListResult` has been removed
+- Struct `IotAlertsClient` has been removed
+- Struct `IotAlertsClientGetOptions` has been removed
+- Struct `IotAlertsClientGetResponse` has been removed
+- Struct `IotAlertsClientGetResult` has been removed
+- Struct `IotAlertsClientListOptions` has been removed
+- Struct `IotAlertsClientListPager` has been removed
+- Struct `IotAlertsClientListResponse` has been removed
+- Struct `IotAlertsClientListResult` has been removed
+- Struct `IotAlertsClientPatchOptions` has been removed
+- Struct `IotAlertsClientPatchResponse` has been removed
+- Struct `IotAlertsClientPatchResult` has been removed
+- Struct `IotDeviceVulnerabilityClient` has been removed
+- Struct `IotDeviceVulnerabilityClientGetOptions` has been removed
+- Struct `IotDeviceVulnerabilityClientGetResponse` has been removed
+- Struct `IotDeviceVulnerabilityClientGetResult` has been removed
+- Struct `IotDeviceVulnerabilityClientListOptions` has been removed
+- Struct `IotDeviceVulnerabilityClientListPager` has been removed
+- Struct `IotDeviceVulnerabilityClientListResponse` has been removed
+- Struct `IotDeviceVulnerabilityClientListResult` has been removed
+- Struct `IotRecommendationsClient` has been removed
+- Struct `IotRecommendationsClientGetOptions` has been removed
+- Struct `IotRecommendationsClientGetResponse` has been removed
+- Struct `IotRecommendationsClientGetResult` has been removed
+- Struct `IotRecommendationsClientListOptions` has been removed
+- Struct `IotRecommendationsClientListPager` has been removed
+- Struct `IotRecommendationsClientListResponse` has been removed
+- Struct `IotRecommendationsClientListResult` has been removed
+- Struct `LocationsClientGetResult` has been removed
+- Struct `LocationsClientListPager` has been removed
+- Struct `LocationsClientListResult` has been removed
+- Struct `OnPremiseSensorsClientCreateOrUpdateResult` has been removed
+- Struct `OnPremiseSensorsClientGetResult` has been removed
+- Struct `OnPremiseSensorsClientListResult` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `RecommendationListModel` has been removed
+- Struct `RecommendationModel` has been removed
+- Struct `RecommendationPropertiesModel` has been removed
+- Struct `RecommendationType` has been removed
+- Struct `RecommendationTypeList` has been removed
+- Struct `RecommendationTypeProperties` has been removed
+- Struct `RecommendationTypesClient` has been removed
+- Struct `RecommendationTypesClientGetOptions` has been removed
+- Struct `RecommendationTypesClientGetResponse` has been removed
+- Struct `RecommendationTypesClientGetResult` has been removed
+- Struct `RecommendationTypesClientListOptions` has been removed
+- Struct `RecommendationTypesClientListResponse` has been removed
+- Struct `RecommendationTypesClientListResult` has been removed
+- Struct `SensorsClientCreateOrUpdateResult` has been removed
+- Struct `SensorsClientGetResult` has been removed
+- Struct `SensorsClientListResult` has been removed
+- Struct `SitesClientCreateOrUpdateResult` has been removed
+- Struct `SitesClientGetResult` has been removed
+- Struct `SitesClientListResult` has been removed
+- Struct `TechniqueModel` has been removed
+- Field `OnPremiseSensorsClientCreateOrUpdateResult` of struct `OnPremiseSensorsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `OnPremiseSensorsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `SensorsClientDownloadActivationResponse` has been removed
+- Field `RawResponse` of struct `SensorsClientDownloadResetPasswordResponse` has been removed
+- Field `DeviceGroupsClientListResult` of struct `DeviceGroupsClientListResponse` has been removed
+- Field `RawResponse` of struct `DeviceGroupsClientListResponse` has been removed
+- Field `RawResponse` of struct `SensorsClientDeleteResponse` has been removed
+- Field `LocationsClientGetResult` of struct `LocationsClientGetResponse` has been removed
+- Field `RawResponse` of struct `LocationsClientGetResponse` has been removed
+- Field `RawResponse` of struct `SitesClientDeleteResponse` has been removed
+- Field `DeviceGroupsClientCreateOrUpdateResult` of struct `DeviceGroupsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `DeviceGroupsClientCreateOrUpdateResponse` has been removed
+- Field `SitesClientCreateOrUpdateResult` of struct `SitesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `SitesClientCreateOrUpdateResponse` has been removed
+- Field `DefenderSettingsClientListResult` of struct `DefenderSettingsClientListResponse` has been removed
+- Field `RawResponse` of struct `DefenderSettingsClientListResponse` has been removed
+- Field `OnPremiseSensorsClientGetResult` of struct `OnPremiseSensorsClientGetResponse` has been removed
+- Field `RawResponse` of struct `OnPremiseSensorsClientGetResponse` has been removed
+- Field `RawResponse` of struct `DefenderSettingsClientDeleteResponse` has been removed
+- Field `SensorsClientListResult` of struct `SensorsClientListResponse` has been removed
+- Field `RawResponse` of struct `SensorsClientListResponse` has been removed
+- Field `DefenderSettingsClientCreateOrUpdateResult` of struct `DefenderSettingsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `DefenderSettingsClientCreateOrUpdateResponse` has been removed
+- Field `SensorsClientGetResult` of struct `SensorsClientGetResponse` has been removed
+- Field `RawResponse` of struct `SensorsClientGetResponse` has been removed
+- Field `DefenderSettingsClientGetResult` of struct `DefenderSettingsClientGetResponse` has been removed
+- Field `RawResponse` of struct `DefenderSettingsClientGetResponse` has been removed
+- Field `LocationsClientListResult` of struct `LocationsClientListResponse` has been removed
+- Field `RawResponse` of struct `LocationsClientListResponse` has been removed
+- Field `SitesClientListResult` of struct `SitesClientListResponse` has been removed
+- Field `RawResponse` of struct `SitesClientListResponse` has been removed
+- Field `DevicesClientGetResult` of struct `DevicesClientGetResponse` has been removed
+- Field `RawResponse` of struct `DevicesClientGetResponse` has been removed
+- Field `RawResponse` of struct `SensorsClientTriggerTiPackageUpdateResponse` has been removed
+- Field `RawResponse` of struct `OnPremiseSensorsClientDownloadActivationResponse` has been removed
+- Field `RawResponse` of struct `DefenderSettingsClientDownloadManagerActivationResponse` has been removed
+- Field `SitesClientGetResult` of struct `SitesClientGetResponse` has been removed
+- Field `RawResponse` of struct `SitesClientGetResponse` has been removed
+- Field `RawResponse` of struct `DeviceGroupsClientDeleteResponse` has been removed
+- Field `DefenderSettingsClientPackageDownloadsResult` of struct `DefenderSettingsClientPackageDownloadsResponse` has been removed
+- Field `RawResponse` of struct `DefenderSettingsClientPackageDownloadsResponse` has been removed
+- Field `RawResponse` of struct `OnPremiseSensorsClientDeleteResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OnPremiseSensorsClientDownloadResetPasswordResponse` has been removed
+- Field `SensorsClientCreateOrUpdateResult` of struct `SensorsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `SensorsClientCreateOrUpdateResponse` has been removed
+- Field `OnPremiseSensorsClientListResult` of struct `OnPremiseSensorsClientListResponse` has been removed
+- Field `RawResponse` of struct `OnPremiseSensorsClientListResponse` has been removed
+- Field `DevicesClientListResult` of struct `DevicesClientListResponse` has been removed
+- Field `RawResponse` of struct `DevicesClientListResponse` has been removed
+- Field `DeviceGroupsClientGetResult` of struct `DeviceGroupsClientGetResponse` has been removed
+- Field `RawResponse` of struct `DeviceGroupsClientGetResponse` has been removed
+
+### Features Added
+
+- New anonymous field `SiteModel` in struct `SitesClientCreateOrUpdateResponse`
+- New anonymous field `SiteModel` in struct `SitesClientGetResponse`
+- New anonymous field `DeviceGroupModel` in struct `DeviceGroupsClientCreateOrUpdateResponse`
+- New anonymous field `SitesList` in struct `SitesClientListResponse`
+- New anonymous field `OnPremiseSensor` in struct `OnPremiseSensorsClientGetResponse`
+- New anonymous field `DeviceList` in struct `DevicesClientListResponse`
+- New anonymous field `LocationList` in struct `LocationsClientListResponse`
+- New anonymous field `DefenderSettingsList` in struct `DefenderSettingsClientListResponse`
+- New anonymous field `OnPremiseSensor` in struct `OnPremiseSensorsClientCreateOrUpdateResponse`
+- New anonymous field `DefenderSettingsModel` in struct `DefenderSettingsClientCreateOrUpdateResponse`
+- New anonymous field `SensorModel` in struct `SensorsClientGetResponse`
+- New field `Body` in struct `OnPremiseSensorsClientDownloadActivationResponse`
+- New anonymous field `DefenderSettingsModel` in struct `DefenderSettingsClientGetResponse`
+- New anonymous field `OnPremiseSensorsList` in struct `OnPremiseSensorsClientListResponse`
+- New field `Body` in struct `DefenderSettingsClientDownloadManagerActivationResponse`
+- New anonymous field `LocationModel` in struct `LocationsClientGetResponse`
+- New anonymous field `OperationList` in struct `OperationsClientListResponse`
+- New anonymous field `PackageDownloads` in struct `DefenderSettingsClientPackageDownloadsResponse`
+- New anonymous field `SensorModel` in struct `SensorsClientCreateOrUpdateResponse`
+- New field `Body` in struct `SensorsClientDownloadResetPasswordResponse`
+- New anonymous field `SensorsList` in struct `SensorsClientListResponse`
+- New field `Body` in struct `SensorsClientDownloadActivationResponse`
+- New anonymous field `DeviceGroupList` in struct `DeviceGroupsClientListResponse`
+- New anonymous field `DeviceModel` in struct `DevicesClientGetResponse`
+- New field `Body` in struct `OnPremiseSensorsClientDownloadResetPasswordResponse`
+- New anonymous field `DeviceGroupModel` in struct `DeviceGroupsClientGetResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armmobilenetwork
 
 const (
 	moduleName    = "armmobilenetwork"
-	moduleVersion = "v0.2.0"
+	moduleVersion = "v0.3.0"
 )
 
 // CoreNetworkType - Core network type.
@@ -29,11 +29,6 @@ func PossibleCoreNetworkTypeValues() []CoreNetworkType {
 		CoreNetworkTypeEPC,
 		CoreNetworkTypeFiveGC,
 	}
-}
-
-// ToPtr returns a *CoreNetworkType pointing to the current value.
-func (c CoreNetworkType) ToPtr() *CoreNetworkType {
-	return &c
 }
 
 // CreatedByType - The type of identity that created the resource.
@@ -56,11 +51,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
-}
-
 // NaptEnabled - Whether Network Address and Port Translation is enabled.
 type NaptEnabled string
 
@@ -79,11 +69,6 @@ func PossibleNaptEnabledValues() []NaptEnabled {
 	}
 }
 
-// ToPtr returns a *NaptEnabled pointing to the current value.
-func (c NaptEnabled) ToPtr() *NaptEnabled {
-	return &c
-}
-
 // PduSessionType - PDU session type (IPv4/IPv6).
 type PduSessionType string
 
@@ -98,11 +83,6 @@ func PossiblePduSessionTypeValues() []PduSessionType {
 		PduSessionTypeIPv4,
 		PduSessionTypeIPv6,
 	}
-}
-
-// ToPtr returns a *PduSessionType pointing to the current value.
-func (c PduSessionType) ToPtr() *PduSessionType {
-	return &c
 }
 
 // PreemptionCapability - Preemption capability.
@@ -123,11 +103,6 @@ func PossiblePreemptionCapabilityValues() []PreemptionCapability {
 	}
 }
 
-// ToPtr returns a *PreemptionCapability pointing to the current value.
-func (c PreemptionCapability) ToPtr() *PreemptionCapability {
-	return &c
-}
-
 // PreemptionVulnerability - Preemption vulnerability.
 type PreemptionVulnerability string
 
@@ -144,11 +119,6 @@ func PossiblePreemptionVulnerabilityValues() []PreemptionVulnerability {
 		PreemptionVulnerabilityNotPreemptable,
 		PreemptionVulnerabilityPreemptable,
 	}
-}
-
-// ToPtr returns a *PreemptionVulnerability pointing to the current value.
-func (c PreemptionVulnerability) ToPtr() *PreemptionVulnerability {
-	return &c
 }
 
 // ProvisioningState - The current provisioning state.
@@ -177,11 +147,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	}
 }
 
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
-}
-
 // SdfDirection - Service data flow direction.
 type SdfDirection string
 
@@ -201,11 +166,6 @@ func PossibleSdfDirectionValues() []SdfDirection {
 		SdfDirectionDownlink,
 		SdfDirectionUplink,
 	}
-}
-
-// ToPtr returns a *SdfDirection pointing to the current value.
-func (c SdfDirection) ToPtr() *SdfDirection {
-	return &c
 }
 
 // SimState - The state of the sim resource.
@@ -229,11 +189,6 @@ func PossibleSimStateValues() []SimState {
 	}
 }
 
-// ToPtr returns a *SimState pointing to the current value.
-func (c SimState) ToPtr() *SimState {
-	return &c
-}
-
 // TrafficControlPermission - Traffic control permission.
 type TrafficControlPermission string
 
@@ -250,9 +205,4 @@ func PossibleTrafficControlPermissionValues() []TrafficControlPermission {
 		TrafficControlPermissionBlocked,
 		TrafficControlPermissionEnabled,
 	}
-}
-
-// ToPtr returns a *TrafficControlPermission pointing to the current value.
-func (c TrafficControlPermission) ToPtr() *TrafficControlPermission {
-	return &c
 }

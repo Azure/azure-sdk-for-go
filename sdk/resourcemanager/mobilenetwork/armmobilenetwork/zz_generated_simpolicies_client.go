@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type SimPoliciesClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewSimPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SimPoliciesClient {
+func NewSimPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SimPoliciesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &SimPoliciesClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates a SimPolicy.
@@ -57,22 +62,18 @@ func NewSimPoliciesClient(subscriptionID string, credential azcore.TokenCredenti
 // parameters - Parameters supplied to the create or update sim policy operation.
 // options - SimPoliciesClientBeginCreateOrUpdateOptions contains the optional parameters for the SimPoliciesClient.BeginCreateOrUpdate
 // method.
-func (client *SimPoliciesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, mobileNetworkName string, simPolicyName string, parameters SimPolicy, options *SimPoliciesClientBeginCreateOrUpdateOptions) (SimPoliciesClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, mobileNetworkName, simPolicyName, parameters, options)
-	if err != nil {
-		return SimPoliciesClientCreateOrUpdatePollerResponse{}, err
+func (client *SimPoliciesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, mobileNetworkName string, simPolicyName string, parameters SimPolicy, options *SimPoliciesClientBeginCreateOrUpdateOptions) (*armruntime.Poller[SimPoliciesClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, mobileNetworkName, simPolicyName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[SimPoliciesClientCreateOrUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[SimPoliciesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SimPoliciesClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SimPoliciesClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return SimPoliciesClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &SimPoliciesClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a SimPolicy.
@@ -128,22 +129,18 @@ func (client *SimPoliciesClient) createOrUpdateCreateRequest(ctx context.Context
 // mobileNetworkName - The name of the mobile network.
 // simPolicyName - The name of the SIM policy.
 // options - SimPoliciesClientBeginDeleteOptions contains the optional parameters for the SimPoliciesClient.BeginDelete method.
-func (client *SimPoliciesClient) BeginDelete(ctx context.Context, resourceGroupName string, mobileNetworkName string, simPolicyName string, options *SimPoliciesClientBeginDeleteOptions) (SimPoliciesClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, mobileNetworkName, simPolicyName, options)
-	if err != nil {
-		return SimPoliciesClientDeletePollerResponse{}, err
+func (client *SimPoliciesClient) BeginDelete(ctx context.Context, resourceGroupName string, mobileNetworkName string, simPolicyName string, options *SimPoliciesClientBeginDeleteOptions) (*armruntime.Poller[SimPoliciesClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, mobileNetworkName, simPolicyName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[SimPoliciesClientDeleteResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[SimPoliciesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SimPoliciesClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SimPoliciesClient.Delete", "location", resp, client.pl)
-	if err != nil {
-		return SimPoliciesClientDeletePollerResponse{}, err
-	}
-	result.Poller = &SimPoliciesClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes the specified sim policy.
@@ -246,7 +243,7 @@ func (client *SimPoliciesClient) getCreateRequest(ctx context.Context, resourceG
 
 // getHandleResponse handles the Get response.
 func (client *SimPoliciesClient) getHandleResponse(resp *http.Response) (SimPoliciesClientGetResponse, error) {
-	result := SimPoliciesClientGetResponse{RawResponse: resp}
+	result := SimPoliciesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SimPolicy); err != nil {
 		return SimPoliciesClientGetResponse{}, err
 	}
@@ -259,16 +256,32 @@ func (client *SimPoliciesClient) getHandleResponse(resp *http.Response) (SimPoli
 // mobileNetworkName - The name of the mobile network.
 // options - SimPoliciesClientListByMobileNetworkOptions contains the optional parameters for the SimPoliciesClient.ListByMobileNetwork
 // method.
-func (client *SimPoliciesClient) ListByMobileNetwork(resourceGroupName string, mobileNetworkName string, options *SimPoliciesClientListByMobileNetworkOptions) *SimPoliciesClientListByMobileNetworkPager {
-	return &SimPoliciesClientListByMobileNetworkPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByMobileNetworkCreateRequest(ctx, resourceGroupName, mobileNetworkName, options)
+func (client *SimPoliciesClient) ListByMobileNetwork(resourceGroupName string, mobileNetworkName string, options *SimPoliciesClientListByMobileNetworkOptions) *runtime.Pager[SimPoliciesClientListByMobileNetworkResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SimPoliciesClientListByMobileNetworkResponse]{
+		More: func(page SimPoliciesClientListByMobileNetworkResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SimPoliciesClientListByMobileNetworkResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SimPolicyListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *SimPoliciesClientListByMobileNetworkResponse) (SimPoliciesClientListByMobileNetworkResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByMobileNetworkCreateRequest(ctx, resourceGroupName, mobileNetworkName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SimPoliciesClientListByMobileNetworkResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SimPoliciesClientListByMobileNetworkResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SimPoliciesClientListByMobileNetworkResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByMobileNetworkHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByMobileNetworkCreateRequest creates the ListByMobileNetwork request.
@@ -299,7 +312,7 @@ func (client *SimPoliciesClient) listByMobileNetworkCreateRequest(ctx context.Co
 
 // listByMobileNetworkHandleResponse handles the ListByMobileNetwork response.
 func (client *SimPoliciesClient) listByMobileNetworkHandleResponse(resp *http.Response) (SimPoliciesClientListByMobileNetworkResponse, error) {
-	result := SimPoliciesClientListByMobileNetworkResponse{RawResponse: resp}
+	result := SimPoliciesClientListByMobileNetworkResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SimPolicyListResult); err != nil {
 		return SimPoliciesClientListByMobileNetworkResponse{}, err
 	}
@@ -360,7 +373,7 @@ func (client *SimPoliciesClient) updateTagsCreateRequest(ctx context.Context, re
 
 // updateTagsHandleResponse handles the UpdateTags response.
 func (client *SimPoliciesClient) updateTagsHandleResponse(resp *http.Response) (SimPoliciesClientUpdateTagsResponse, error) {
-	result := SimPoliciesClientUpdateTagsResponse{RawResponse: resp}
+	result := SimPoliciesClientUpdateTagsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SimPolicy); err != nil {
 		return SimPoliciesClientUpdateTagsResponse{}, err
 	}

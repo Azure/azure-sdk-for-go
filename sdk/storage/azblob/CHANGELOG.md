@@ -10,7 +10,7 @@
 
 * Fixed SAS Issue
 
-## 0.3.0 (2022-02-09)
+## 0.3.0 (2022-04-09)
 
 ### Breaking Changes
 

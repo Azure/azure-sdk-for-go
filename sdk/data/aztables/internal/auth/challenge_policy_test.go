@@ -25,9 +25,7 @@ var scope = "https://myaccountname.table.core.windows.net/.default"
 var resource = "https://table.core.windows.net"
 
 var authScope = "Bearer authorization_uri=\"https://login.microsoftonline.com/%s\", scope=\"%s\""
-var authResource = "Bearer authorization_uri=\"https://login.microsoftonline.com/%s\", resource_id=\"%s\""
 var authResourceScope = "Bearer authorization_uri=\"https://login.microsoftonline.com/%s\", resource_id=\"%s\" scope=\"%s\""
-var resourceScopeAuth = "Bearer resource_id=\"%s\" scope=\"%s\", authorization_uri=\"https://login.microsoftonline.com/%s\""
 
 func TestParseTenantID(t *testing.T) {
 	sampleURL := "https://login.microsoftonline.com/00000000-0000-0000-0000-000000000000"

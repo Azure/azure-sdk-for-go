@@ -1,3 +1,6 @@
+//go:build go1.18
+// +build go1.18
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -87,7 +90,7 @@ func (o *BlobChangeLeaseOptions) format() (*string, *blobClientChangeLeaseOption
 	if err != nil {
 		return nil, nil, nil, err
 	}
-	leaseID := to.StringPtr(generatedUuid.String())
+	leaseID := to.Ptr(generatedUuid.String())
 	if o == nil {
 		return leaseID, nil, nil, nil
 	}

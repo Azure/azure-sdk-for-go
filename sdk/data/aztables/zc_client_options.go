@@ -15,7 +15,7 @@ type ClientOptions struct {
 
 func (c *ClientOptions) toPolicyOptions() *policy.ClientOptions {
 	if c == nil {
-		return nil
+		return &policy.ClientOptions{}
 	}
 
 	return &policy.ClientOptions{

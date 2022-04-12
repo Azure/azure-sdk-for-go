@@ -21,10 +21,10 @@ var mhsmResource = "https://managedhsm.azure.net"
 var scope = "https://vault.azure.net/.default"
 var resource = "https://vault.azure.net"
 
-var authScope = "Bearer authorization=\"https://login.microsoftonline.com/%s\", scope=\"%s\""
-var authResource = "Bearer authorization=\"https://login.microsoftonline.com/%s\", resource=\"%s\""
-var authResourceScope = "Bearer authorization=\"https://login.microsoftonline.com/%s\", resource=\"%s\" scope=\"%s\""
-var resourceScopeAuth = "Bearer resource=\"%s\" scope=\"%s\", authorization=\"https://login.microsoftonline.com/%s\""
+var authScope = "Bearer authorization_uri=\"https://login.microsoftonline.com/%s\", scope=\"%s\""
+var authResource = "Bearer authorization_uri=\"https://login.microsoftonline.com/%s\", resource_id=\"%s\""
+var authResourceScope = "Bearer authorization_uri=\"https://login.microsoftonline.com/%s\", resource_id=\"%s\" scope=\"%s\""
+var resourceScopeAuth = "Bearer resource_id=\"%s\" scope=\"%s\", authorization_uri=\"https://login.microsoftonline.com/%s\""
 
 func TestParseTenantID(t *testing.T) {
 	sampleURL := "https://login.microsoftonline.com/00000000-0000-0000-0000-000000000000"
@@ -93,7 +93,7 @@ func TestFindScopeAndTenant(t *testing.T) {
 
 	resp.Header.Set(
 		"WWW-Authenticate",
-		"Bearer authorization=\"https://login.microsoftonline.com/00000000-0000-0000-0000-000000000000\", unimportantkey=\"unimportantvalue\" resource=\"https://vault.azure.net/.default\"",
+		"Bearer authorization_uri=\"https://login.microsoftonline.com/00000000-0000-0000-0000-000000000000\", unimportantkey=\"unimportantvalue\" resource_id=\"https://vault.azure.net/.default\"",
 	)
 	err = p.findScopeAndTenant(&resp)
 	require.NoError(t, err)
@@ -106,7 +106,7 @@ func TestFindScopeAndTenant(t *testing.T) {
 
 	resp.Header.Set(
 		"WWW-Authenticate",
-		"Bearer   authorization=\"https://login.microsoftonline.com/00000000-0000-0000-0000-000000000000\",    unimportantkey=\"unimportantvalue\"   resource=\"https://vault.azure.net/.default\"    fakekey=\"fakevalue\"			",
+		"Bearer   authorization_uri=\"https://login.microsoftonline.com/00000000-0000-0000-0000-000000000000\",    unimportantkey=\"unimportantvalue\"   resource_id=\"https://vault.azure.net/.default\"    fakekey=\"fakevalue\"			",
 	)
 	err = p.findScopeAndTenant(&resp)
 	require.NoError(t, err)

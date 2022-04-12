@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type WorkloadNetworksClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewWorkloadNetworksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *WorkloadNetworksClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewWorkloadNetworksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkloadNetworksClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &WorkloadNetworksClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateDNSService - Create a DNS service by id in a private cloud workload network.
@@ -57,22 +62,16 @@ func NewWorkloadNetworksClient(subscriptionID string, credential azcore.TokenCre
 // workloadNetworkDNSService - NSX DNS Service
 // options - WorkloadNetworksClientBeginCreateDNSServiceOptions contains the optional parameters for the WorkloadNetworksClient.BeginCreateDNSService
 // method.
-func (client *WorkloadNetworksClient) BeginCreateDNSService(ctx context.Context, resourceGroupName string, privateCloudName string, dnsServiceID string, workloadNetworkDNSService WorkloadNetworkDNSService, options *WorkloadNetworksClientBeginCreateDNSServiceOptions) (WorkloadNetworksClientCreateDNSServicePollerResponse, error) {
-	resp, err := client.createDNSService(ctx, resourceGroupName, privateCloudName, dnsServiceID, workloadNetworkDNSService, options)
-	if err != nil {
-		return WorkloadNetworksClientCreateDNSServicePollerResponse{}, err
+func (client *WorkloadNetworksClient) BeginCreateDNSService(ctx context.Context, resourceGroupName string, privateCloudName string, dnsServiceID string, workloadNetworkDNSService WorkloadNetworkDNSService, options *WorkloadNetworksClientBeginCreateDNSServiceOptions) (*armruntime.Poller[WorkloadNetworksClientCreateDNSServiceResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createDNSService(ctx, resourceGroupName, privateCloudName, dnsServiceID, workloadNetworkDNSService, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[WorkloadNetworksClientCreateDNSServiceResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[WorkloadNetworksClientCreateDNSServiceResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := WorkloadNetworksClientCreateDNSServicePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("WorkloadNetworksClient.CreateDNSService", "", resp, client.pl)
-	if err != nil {
-		return WorkloadNetworksClientCreateDNSServicePollerResponse{}, err
-	}
-	result.Poller = &WorkloadNetworksClientCreateDNSServicePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateDNSService - Create a DNS service by id in a private cloud workload network.
@@ -130,22 +129,16 @@ func (client *WorkloadNetworksClient) createDNSServiceCreateRequest(ctx context.
 // workloadNetworkDNSZone - NSX DNS Zone
 // options - WorkloadNetworksClientBeginCreateDNSZoneOptions contains the optional parameters for the WorkloadNetworksClient.BeginCreateDNSZone
 // method.
-func (client *WorkloadNetworksClient) BeginCreateDNSZone(ctx context.Context, resourceGroupName string, privateCloudName string, dnsZoneID string, workloadNetworkDNSZone WorkloadNetworkDNSZone, options *WorkloadNetworksClientBeginCreateDNSZoneOptions) (WorkloadNetworksClientCreateDNSZonePollerResponse, error) {
-	resp, err := client.createDNSZone(ctx, resourceGroupName, privateCloudName, dnsZoneID, workloadNetworkDNSZone, options)
-	if err != nil {
-		return WorkloadNetworksClientCreateDNSZonePollerResponse{}, err
+func (client *WorkloadNetworksClient) BeginCreateDNSZone(ctx context.Context, resourceGroupName string, privateCloudName string, dnsZoneID string, workloadNetworkDNSZone WorkloadNetworkDNSZone, options *WorkloadNetworksClientBeginCreateDNSZoneOptions) (*armruntime.Poller[WorkloadNetworksClientCreateDNSZoneResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createDNSZone(ctx, resourceGroupName, privateCloudName, dnsZoneID, workloadNetworkDNSZone, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[WorkloadNetworksClientCreateDNSZoneResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[WorkloadNetworksClientCreateDNSZoneResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := WorkloadNetworksClientCreateDNSZonePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("WorkloadNetworksClient.CreateDNSZone", "", resp, client.pl)
-	if err != nil {
-		return WorkloadNetworksClientCreateDNSZonePollerResponse{}, err
-	}
-	result.Poller = &WorkloadNetworksClientCreateDNSZonePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateDNSZone - Create a DNS zone by id in a private cloud workload network.
@@ -203,22 +196,16 @@ func (client *WorkloadNetworksClient) createDNSZoneCreateRequest(ctx context.Con
 // workloadNetworkDhcp - NSX DHCP
 // options - WorkloadNetworksClientBeginCreateDhcpOptions contains the optional parameters for the WorkloadNetworksClient.BeginCreateDhcp
 // method.
-func (client *WorkloadNetworksClient) BeginCreateDhcp(ctx context.Context, resourceGroupName string, privateCloudName string, dhcpID string, workloadNetworkDhcp WorkloadNetworkDhcp, options *WorkloadNetworksClientBeginCreateDhcpOptions) (WorkloadNetworksClientCreateDhcpPollerResponse, error) {
-	resp, err := client.createDhcp(ctx, resourceGroupName, privateCloudName, dhcpID, workloadNetworkDhcp, options)
-	if err != nil {
-		return WorkloadNetworksClientCreateDhcpPollerResponse{}, err
+func (client *WorkloadNetworksClient) BeginCreateDhcp(ctx context.Context, resourceGroupName string, privateCloudName string, dhcpID string, workloadNetworkDhcp WorkloadNetworkDhcp, options *WorkloadNetworksClientBeginCreateDhcpOptions) (*armruntime.Poller[WorkloadNetworksClientCreateDhcpResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createDhcp(ctx, resourceGroupName, privateCloudName, dhcpID, workloadNetworkDhcp, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[WorkloadNetworksClientCreateDhcpResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[WorkloadNetworksClientCreateDhcpResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := WorkloadNetworksClientCreateDhcpPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("WorkloadNetworksClient.CreateDhcp", "", resp, client.pl)
-	if err != nil {
-		return WorkloadNetworksClientCreateDhcpPollerResponse{}, err
-	}
-	result.Poller = &WorkloadNetworksClientCreateDhcpPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateDhcp - Create dhcp by id in a private cloud workload network.
@@ -276,22 +263,16 @@ func (client *WorkloadNetworksClient) createDhcpCreateRequest(ctx context.Contex
 // workloadNetworkPortMirroring - NSX port mirroring
 // options - WorkloadNetworksClientBeginCreatePortMirroringOptions contains the optional parameters for the WorkloadNetworksClient.BeginCreatePortMirroring
 // method.
-func (client *WorkloadNetworksClient) BeginCreatePortMirroring(ctx context.Context, resourceGroupName string, privateCloudName string, portMirroringID string, workloadNetworkPortMirroring WorkloadNetworkPortMirroring, options *WorkloadNetworksClientBeginCreatePortMirroringOptions) (WorkloadNetworksClientCreatePortMirroringPollerResponse, error) {
-	resp, err := client.createPortMirroring(ctx, resourceGroupName, privateCloudName, portMirroringID, workloadNetworkPortMirroring, options)
-	if err != nil {
-		return WorkloadNetworksClientCreatePortMirroringPollerResponse{}, err
+func (client *WorkloadNetworksClient) BeginCreatePortMirroring(ctx context.Context, resourceGroupName string, privateCloudName string, portMirroringID string, workloadNetworkPortMirroring WorkloadNetworkPortMirroring, options *WorkloadNetworksClientBeginCreatePortMirroringOptions) (*armruntime.Poller[WorkloadNetworksClientCreatePortMirroringResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createPortMirroring(ctx, resourceGroupName, privateCloudName, portMirroringID, workloadNetworkPortMirroring, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[WorkloadNetworksClientCreatePortMirroringResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[WorkloadNetworksClientCreatePortMirroringResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := WorkloadNetworksClientCreatePortMirroringPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("WorkloadNetworksClient.CreatePortMirroring", "", resp, client.pl)
-	if err != nil {
-		return WorkloadNetworksClientCreatePortMirroringPollerResponse{}, err
-	}
-	result.Poller = &WorkloadNetworksClientCreatePortMirroringPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreatePortMirroring - Create a port mirroring profile by id in a private cloud workload network.
@@ -349,22 +330,16 @@ func (client *WorkloadNetworksClient) createPortMirroringCreateRequest(ctx conte
 // workloadNetworkPublicIP - NSX Public IP Block
 // options - WorkloadNetworksClientBeginCreatePublicIPOptions contains the optional parameters for the WorkloadNetworksClient.BeginCreatePublicIP
 // method.
-func (client *WorkloadNetworksClient) BeginCreatePublicIP(ctx context.Context, resourceGroupName string, privateCloudName string, publicIPID string, workloadNetworkPublicIP WorkloadNetworkPublicIP, options *WorkloadNetworksClientBeginCreatePublicIPOptions) (WorkloadNetworksClientCreatePublicIPPollerResponse, error) {
-	resp, err := client.createPublicIP(ctx, resourceGroupName, privateCloudName, publicIPID, workloadNetworkPublicIP, options)
-	if err != nil {
-		return WorkloadNetworksClientCreatePublicIPPollerResponse{}, err
+func (client *WorkloadNetworksClient) BeginCreatePublicIP(ctx context.Context, resourceGroupName string, privateCloudName string, publicIPID string, workloadNetworkPublicIP WorkloadNetworkPublicIP, options *WorkloadNetworksClientBeginCreatePublicIPOptions) (*armruntime.Poller[WorkloadNetworksClientCreatePublicIPResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createPublicIP(ctx, resourceGroupName, privateCloudName, publicIPID, workloadNetworkPublicIP, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[WorkloadNetworksClientCreatePublicIPResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[WorkloadNetworksClientCreatePublicIPResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := WorkloadNetworksClientCreatePublicIPPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("WorkloadNetworksClient.CreatePublicIP", "", resp, client.pl)
-	if err != nil {
-		return WorkloadNetworksClientCreatePublicIPPollerResponse{}, err
-	}
-	result.Poller = &WorkloadNetworksClientCreatePublicIPPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreatePublicIP - Create a Public IP Block by id in a private cloud workload network.
@@ -422,22 +397,16 @@ func (client *WorkloadNetworksClient) createPublicIPCreateRequest(ctx context.Co
 // workloadNetworkSegment - NSX Segment
 // options - WorkloadNetworksClientBeginCreateSegmentsOptions contains the optional parameters for the WorkloadNetworksClient.BeginCreateSegments
 // method.
-func (client *WorkloadNetworksClient) BeginCreateSegments(ctx context.Context, resourceGroupName string, privateCloudName string, segmentID string, workloadNetworkSegment WorkloadNetworkSegment, options *WorkloadNetworksClientBeginCreateSegmentsOptions) (WorkloadNetworksClientCreateSegmentsPollerResponse, error) {
-	resp, err := client.createSegments(ctx, resourceGroupName, privateCloudName, segmentID, workloadNetworkSegment, options)
-	if err != nil {
-		return WorkloadNetworksClientCreateSegmentsPollerResponse{}, err
+func (client *WorkloadNetworksClient) BeginCreateSegments(ctx context.Context, resourceGroupName string, privateCloudName string, segmentID string, workloadNetworkSegment WorkloadNetworkSegment, options *WorkloadNetworksClientBeginCreateSegmentsOptions) (*armruntime.Poller[WorkloadNetworksClientCreateSegmentsResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createSegments(ctx, resourceGroupName, privateCloudName, segmentID, workloadNetworkSegment, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[WorkloadNetworksClientCreateSegmentsResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[WorkloadNetworksClientCreateSegmentsResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := WorkloadNetworksClientCreateSegmentsPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("WorkloadNetworksClient.CreateSegments", "", resp, client.pl)
-	if err != nil {
-		return WorkloadNetworksClientCreateSegmentsPollerResponse{}, err
-	}
-	result.Poller = &WorkloadNetworksClientCreateSegmentsPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateSegments - Create a segment by id in a private cloud workload network.
@@ -495,22 +464,16 @@ func (client *WorkloadNetworksClient) createSegmentsCreateRequest(ctx context.Co
 // workloadNetworkVMGroup - NSX VM Group
 // options - WorkloadNetworksClientBeginCreateVMGroupOptions contains the optional parameters for the WorkloadNetworksClient.BeginCreateVMGroup
 // method.
-func (client *WorkloadNetworksClient) BeginCreateVMGroup(ctx context.Context, resourceGroupName string, privateCloudName string, vmGroupID string, workloadNetworkVMGroup WorkloadNetworkVMGroup, options *WorkloadNetworksClientBeginCreateVMGroupOptions) (WorkloadNetworksClientCreateVMGroupPollerResponse, error) {
-	resp, err := client.createVMGroup(ctx, resourceGroupName, privateCloudName, vmGroupID, workloadNetworkVMGroup, options)
-	if err != nil {
-		return WorkloadNetworksClientCreateVMGroupPollerResponse{}, err
+func (client *WorkloadNetworksClient) BeginCreateVMGroup(ctx context.Context, resourceGroupName string, privateCloudName string, vmGroupID string, workloadNetworkVMGroup WorkloadNetworkVMGroup, options *WorkloadNetworksClientBeginCreateVMGroupOptions) (*armruntime.Poller[WorkloadNetworksClientCreateVMGroupResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createVMGroup(ctx, resourceGroupName, privateCloudName, vmGroupID, workloadNetworkVMGroup, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[WorkloadNetworksClientCreateVMGroupResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[WorkloadNetworksClientCreateVMGroupResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := WorkloadNetworksClientCreateVMGroupPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("WorkloadNetworksClient.CreateVMGroup", "", resp, client.pl)
-	if err != nil {
-		return WorkloadNetworksClientCreateVMGroupPollerResponse{}, err
-	}
-	result.Poller = &WorkloadNetworksClientCreateVMGroupPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateVMGroup - Create a vm group by id in a private cloud workload network.
@@ -567,22 +530,16 @@ func (client *WorkloadNetworksClient) createVMGroupCreateRequest(ctx context.Con
 // privateCloudName - Name of the private cloud
 // options - WorkloadNetworksClientBeginDeleteDNSServiceOptions contains the optional parameters for the WorkloadNetworksClient.BeginDeleteDNSService
 // method.
-func (client *WorkloadNetworksClient) BeginDeleteDNSService(ctx context.Context, resourceGroupName string, dnsServiceID string, privateCloudName string, options *WorkloadNetworksClientBeginDeleteDNSServiceOptions) (WorkloadNetworksClientDeleteDNSServicePollerResponse, error) {
-	resp, err := client.deleteDNSService(ctx, resourceGroupName, dnsServiceID, privateCloudName, options)
-	if err != nil {
-		return WorkloadNetworksClientDeleteDNSServicePollerResponse{}, err
+func (client *WorkloadNetworksClient) BeginDeleteDNSService(ctx context.Context, resourceGroupName string, dnsServiceID string, privateCloudName string, options *WorkloadNetworksClientBeginDeleteDNSServiceOptions) (*armruntime.Poller[WorkloadNetworksClientDeleteDNSServiceResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteDNSService(ctx, resourceGroupName, dnsServiceID, privateCloudName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[WorkloadNetworksClientDeleteDNSServiceResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[WorkloadNetworksClientDeleteDNSServiceResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := WorkloadNetworksClientDeleteDNSServicePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("WorkloadNetworksClient.DeleteDNSService", "", resp, client.pl)
-	if err != nil {
-		return WorkloadNetworksClientDeleteDNSServicePollerResponse{}, err
-	}
-	result.Poller = &WorkloadNetworksClientDeleteDNSServicePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // DeleteDNSService - Delete a DNS service by id in a private cloud workload network.
@@ -639,22 +596,16 @@ func (client *WorkloadNetworksClient) deleteDNSServiceCreateRequest(ctx context.
 // privateCloudName - Name of the private cloud
 // options - WorkloadNetworksClientBeginDeleteDNSZoneOptions contains the optional parameters for the WorkloadNetworksClient.BeginDeleteDNSZone
 // method.
-func (client *WorkloadNetworksClient) BeginDeleteDNSZone(ctx context.Context, resourceGroupName string, dnsZoneID string, privateCloudName string, options *WorkloadNetworksClientBeginDeleteDNSZoneOptions) (WorkloadNetworksClientDeleteDNSZonePollerResponse, error) {
-	resp, err := client.deleteDNSZone(ctx, resourceGroupName, dnsZoneID, privateCloudName, options)
-	if err != nil {
-		return WorkloadNetworksClientDeleteDNSZonePollerResponse{}, err
+func (client *WorkloadNetworksClient) BeginDeleteDNSZone(ctx context.Context, resourceGroupName string, dnsZoneID string, privateCloudName string, options *WorkloadNetworksClientBeginDeleteDNSZoneOptions) (*armruntime.Poller[WorkloadNetworksClientDeleteDNSZoneResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteDNSZone(ctx, resourceGroupName, dnsZoneID, privateCloudName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[WorkloadNetworksClientDeleteDNSZoneResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[WorkloadNetworksClientDeleteDNSZoneResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := WorkloadNetworksClientDeleteDNSZonePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("WorkloadNetworksClient.DeleteDNSZone", "", resp, client.pl)
-	if err != nil {
-		return WorkloadNetworksClientDeleteDNSZonePollerResponse{}, err
-	}
-	result.Poller = &WorkloadNetworksClientDeleteDNSZonePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // DeleteDNSZone - Delete a DNS zone by id in a private cloud workload network.
@@ -711,22 +662,16 @@ func (client *WorkloadNetworksClient) deleteDNSZoneCreateRequest(ctx context.Con
 // dhcpID - NSX DHCP identifier. Generally the same as the DHCP display name
 // options - WorkloadNetworksClientBeginDeleteDhcpOptions contains the optional parameters for the WorkloadNetworksClient.BeginDeleteDhcp
 // method.
-func (client *WorkloadNetworksClient) BeginDeleteDhcp(ctx context.Context, resourceGroupName string, privateCloudName string, dhcpID string, options *WorkloadNetworksClientBeginDeleteDhcpOptions) (WorkloadNetworksClientDeleteDhcpPollerResponse, error) {
-	resp, err := client.deleteDhcp(ctx, resourceGroupName, privateCloudName, dhcpID, options)
-	if err != nil {
-		return WorkloadNetworksClientDeleteDhcpPollerResponse{}, err
+func (client *WorkloadNetworksClient) BeginDeleteDhcp(ctx context.Context, resourceGroupName string, privateCloudName string, dhcpID string, options *WorkloadNetworksClientBeginDeleteDhcpOptions) (*armruntime.Poller[WorkloadNetworksClientDeleteDhcpResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteDhcp(ctx, resourceGroupName, privateCloudName, dhcpID, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[WorkloadNetworksClientDeleteDhcpResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[WorkloadNetworksClientDeleteDhcpResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := WorkloadNetworksClientDeleteDhcpPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("WorkloadNetworksClient.DeleteDhcp", "", resp, client.pl)
-	if err != nil {
-		return WorkloadNetworksClientDeleteDhcpPollerResponse{}, err
-	}
-	result.Poller = &WorkloadNetworksClientDeleteDhcpPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // DeleteDhcp - Delete dhcp by id in a private cloud workload network.
@@ -783,22 +728,16 @@ func (client *WorkloadNetworksClient) deleteDhcpCreateRequest(ctx context.Contex
 // privateCloudName - Name of the private cloud
 // options - WorkloadNetworksClientBeginDeletePortMirroringOptions contains the optional parameters for the WorkloadNetworksClient.BeginDeletePortMirroring
 // method.
-func (client *WorkloadNetworksClient) BeginDeletePortMirroring(ctx context.Context, resourceGroupName string, portMirroringID string, privateCloudName string, options *WorkloadNetworksClientBeginDeletePortMirroringOptions) (WorkloadNetworksClientDeletePortMirroringPollerResponse, error) {
-	resp, err := client.deletePortMirroring(ctx, resourceGroupName, portMirroringID, privateCloudName, options)
-	if err != nil {
-		return WorkloadNetworksClientDeletePortMirroringPollerResponse{}, err
+func (client *WorkloadNetworksClient) BeginDeletePortMirroring(ctx context.Context, resourceGroupName string, portMirroringID string, privateCloudName string, options *WorkloadNetworksClientBeginDeletePortMirroringOptions) (*armruntime.Poller[WorkloadNetworksClientDeletePortMirroringResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deletePortMirroring(ctx, resourceGroupName, portMirroringID, privateCloudName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[WorkloadNetworksClientDeletePortMirroringResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[WorkloadNetworksClientDeletePortMirroringResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := WorkloadNetworksClientDeletePortMirroringPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("WorkloadNetworksClient.DeletePortMirroring", "", resp, client.pl)
-	if err != nil {
-		return WorkloadNetworksClientDeletePortMirroringPollerResponse{}, err
-	}
-	result.Poller = &WorkloadNetworksClientDeletePortMirroringPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // DeletePortMirroring - Delete a port mirroring profile by id in a private cloud workload network.
@@ -855,22 +794,16 @@ func (client *WorkloadNetworksClient) deletePortMirroringCreateRequest(ctx conte
 // privateCloudName - Name of the private cloud
 // options - WorkloadNetworksClientBeginDeletePublicIPOptions contains the optional parameters for the WorkloadNetworksClient.BeginDeletePublicIP
 // method.
-func (client *WorkloadNetworksClient) BeginDeletePublicIP(ctx context.Context, resourceGroupName string, publicIPID string, privateCloudName string, options *WorkloadNetworksClientBeginDeletePublicIPOptions) (WorkloadNetworksClientDeletePublicIPPollerResponse, error) {
-	resp, err := client.deletePublicIP(ctx, resourceGroupName, publicIPID, privateCloudName, options)
-	if err != nil {
-		return WorkloadNetworksClientDeletePublicIPPollerResponse{}, err
+func (client *WorkloadNetworksClient) BeginDeletePublicIP(ctx context.Context, resourceGroupName string, publicIPID string, privateCloudName string, options *WorkloadNetworksClientBeginDeletePublicIPOptions) (*armruntime.Poller[WorkloadNetworksClientDeletePublicIPResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deletePublicIP(ctx, resourceGroupName, publicIPID, privateCloudName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[WorkloadNetworksClientDeletePublicIPResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[WorkloadNetworksClientDeletePublicIPResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := WorkloadNetworksClientDeletePublicIPPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("WorkloadNetworksClient.DeletePublicIP", "", resp, client.pl)
-	if err != nil {
-		return WorkloadNetworksClientDeletePublicIPPollerResponse{}, err
-	}
-	result.Poller = &WorkloadNetworksClientDeletePublicIPPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // DeletePublicIP - Delete a Public IP Block by id in a private cloud workload network.
@@ -927,22 +860,16 @@ func (client *WorkloadNetworksClient) deletePublicIPCreateRequest(ctx context.Co
 // segmentID - NSX Segment identifier. Generally the same as the Segment's display name
 // options - WorkloadNetworksClientBeginDeleteSegmentOptions contains the optional parameters for the WorkloadNetworksClient.BeginDeleteSegment
 // method.
-func (client *WorkloadNetworksClient) BeginDeleteSegment(ctx context.Context, resourceGroupName string, privateCloudName string, segmentID string, options *WorkloadNetworksClientBeginDeleteSegmentOptions) (WorkloadNetworksClientDeleteSegmentPollerResponse, error) {
-	resp, err := client.deleteSegment(ctx, resourceGroupName, privateCloudName, segmentID, options)
-	if err != nil {
-		return WorkloadNetworksClientDeleteSegmentPollerResponse{}, err
+func (client *WorkloadNetworksClient) BeginDeleteSegment(ctx context.Context, resourceGroupName string, privateCloudName string, segmentID string, options *WorkloadNetworksClientBeginDeleteSegmentOptions) (*armruntime.Poller[WorkloadNetworksClientDeleteSegmentResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteSegment(ctx, resourceGroupName, privateCloudName, segmentID, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[WorkloadNetworksClientDeleteSegmentResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[WorkloadNetworksClientDeleteSegmentResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := WorkloadNetworksClientDeleteSegmentPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("WorkloadNetworksClient.DeleteSegment", "", resp, client.pl)
-	if err != nil {
-		return WorkloadNetworksClientDeleteSegmentPollerResponse{}, err
-	}
-	result.Poller = &WorkloadNetworksClientDeleteSegmentPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // DeleteSegment - Delete a segment by id in a private cloud workload network.
@@ -999,22 +926,16 @@ func (client *WorkloadNetworksClient) deleteSegmentCreateRequest(ctx context.Con
 // privateCloudName - Name of the private cloud
 // options - WorkloadNetworksClientBeginDeleteVMGroupOptions contains the optional parameters for the WorkloadNetworksClient.BeginDeleteVMGroup
 // method.
-func (client *WorkloadNetworksClient) BeginDeleteVMGroup(ctx context.Context, resourceGroupName string, vmGroupID string, privateCloudName string, options *WorkloadNetworksClientBeginDeleteVMGroupOptions) (WorkloadNetworksClientDeleteVMGroupPollerResponse, error) {
-	resp, err := client.deleteVMGroup(ctx, resourceGroupName, vmGroupID, privateCloudName, options)
-	if err != nil {
-		return WorkloadNetworksClientDeleteVMGroupPollerResponse{}, err
+func (client *WorkloadNetworksClient) BeginDeleteVMGroup(ctx context.Context, resourceGroupName string, vmGroupID string, privateCloudName string, options *WorkloadNetworksClientBeginDeleteVMGroupOptions) (*armruntime.Poller[WorkloadNetworksClientDeleteVMGroupResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteVMGroup(ctx, resourceGroupName, vmGroupID, privateCloudName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[WorkloadNetworksClientDeleteVMGroupResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[WorkloadNetworksClientDeleteVMGroupResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := WorkloadNetworksClientDeleteVMGroupPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("WorkloadNetworksClient.DeleteVMGroup", "", resp, client.pl)
-	if err != nil {
-		return WorkloadNetworksClientDeleteVMGroupPollerResponse{}, err
-	}
-	result.Poller = &WorkloadNetworksClientDeleteVMGroupPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // DeleteVMGroup - Delete a vm group by id in a private cloud workload network.
@@ -1118,7 +1039,7 @@ func (client *WorkloadNetworksClient) getDNSServiceCreateRequest(ctx context.Con
 
 // getDNSServiceHandleResponse handles the GetDNSService response.
 func (client *WorkloadNetworksClient) getDNSServiceHandleResponse(resp *http.Response) (WorkloadNetworksClientGetDNSServiceResponse, error) {
-	result := WorkloadNetworksClientGetDNSServiceResponse{RawResponse: resp}
+	result := WorkloadNetworksClientGetDNSServiceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkDNSService); err != nil {
 		return WorkloadNetworksClientGetDNSServiceResponse{}, err
 	}
@@ -1179,7 +1100,7 @@ func (client *WorkloadNetworksClient) getDNSZoneCreateRequest(ctx context.Contex
 
 // getDNSZoneHandleResponse handles the GetDNSZone response.
 func (client *WorkloadNetworksClient) getDNSZoneHandleResponse(resp *http.Response) (WorkloadNetworksClientGetDNSZoneResponse, error) {
-	result := WorkloadNetworksClientGetDNSZoneResponse{RawResponse: resp}
+	result := WorkloadNetworksClientGetDNSZoneResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkDNSZone); err != nil {
 		return WorkloadNetworksClientGetDNSZoneResponse{}, err
 	}
@@ -1240,7 +1161,7 @@ func (client *WorkloadNetworksClient) getDhcpCreateRequest(ctx context.Context, 
 
 // getDhcpHandleResponse handles the GetDhcp response.
 func (client *WorkloadNetworksClient) getDhcpHandleResponse(resp *http.Response) (WorkloadNetworksClientGetDhcpResponse, error) {
-	result := WorkloadNetworksClientGetDhcpResponse{RawResponse: resp}
+	result := WorkloadNetworksClientGetDhcpResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkDhcp); err != nil {
 		return WorkloadNetworksClientGetDhcpResponse{}, err
 	}
@@ -1301,7 +1222,7 @@ func (client *WorkloadNetworksClient) getGatewayCreateRequest(ctx context.Contex
 
 // getGatewayHandleResponse handles the GetGateway response.
 func (client *WorkloadNetworksClient) getGatewayHandleResponse(resp *http.Response) (WorkloadNetworksClientGetGatewayResponse, error) {
-	result := WorkloadNetworksClientGetGatewayResponse{RawResponse: resp}
+	result := WorkloadNetworksClientGetGatewayResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkGateway); err != nil {
 		return WorkloadNetworksClientGetGatewayResponse{}, err
 	}
@@ -1362,7 +1283,7 @@ func (client *WorkloadNetworksClient) getPortMirroringCreateRequest(ctx context.
 
 // getPortMirroringHandleResponse handles the GetPortMirroring response.
 func (client *WorkloadNetworksClient) getPortMirroringHandleResponse(resp *http.Response) (WorkloadNetworksClientGetPortMirroringResponse, error) {
-	result := WorkloadNetworksClientGetPortMirroringResponse{RawResponse: resp}
+	result := WorkloadNetworksClientGetPortMirroringResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkPortMirroring); err != nil {
 		return WorkloadNetworksClientGetPortMirroringResponse{}, err
 	}
@@ -1423,7 +1344,7 @@ func (client *WorkloadNetworksClient) getPublicIPCreateRequest(ctx context.Conte
 
 // getPublicIPHandleResponse handles the GetPublicIP response.
 func (client *WorkloadNetworksClient) getPublicIPHandleResponse(resp *http.Response) (WorkloadNetworksClientGetPublicIPResponse, error) {
-	result := WorkloadNetworksClientGetPublicIPResponse{RawResponse: resp}
+	result := WorkloadNetworksClientGetPublicIPResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkPublicIP); err != nil {
 		return WorkloadNetworksClientGetPublicIPResponse{}, err
 	}
@@ -1484,7 +1405,7 @@ func (client *WorkloadNetworksClient) getSegmentCreateRequest(ctx context.Contex
 
 // getSegmentHandleResponse handles the GetSegment response.
 func (client *WorkloadNetworksClient) getSegmentHandleResponse(resp *http.Response) (WorkloadNetworksClientGetSegmentResponse, error) {
-	result := WorkloadNetworksClientGetSegmentResponse{RawResponse: resp}
+	result := WorkloadNetworksClientGetSegmentResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkSegment); err != nil {
 		return WorkloadNetworksClientGetSegmentResponse{}, err
 	}
@@ -1545,7 +1466,7 @@ func (client *WorkloadNetworksClient) getVMGroupCreateRequest(ctx context.Contex
 
 // getVMGroupHandleResponse handles the GetVMGroup response.
 func (client *WorkloadNetworksClient) getVMGroupHandleResponse(resp *http.Response) (WorkloadNetworksClientGetVMGroupResponse, error) {
-	result := WorkloadNetworksClientGetVMGroupResponse{RawResponse: resp}
+	result := WorkloadNetworksClientGetVMGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkVMGroup); err != nil {
 		return WorkloadNetworksClientGetVMGroupResponse{}, err
 	}
@@ -1606,7 +1527,7 @@ func (client *WorkloadNetworksClient) getVirtualMachineCreateRequest(ctx context
 
 // getVirtualMachineHandleResponse handles the GetVirtualMachine response.
 func (client *WorkloadNetworksClient) getVirtualMachineHandleResponse(resp *http.Response) (WorkloadNetworksClientGetVirtualMachineResponse, error) {
-	result := WorkloadNetworksClientGetVirtualMachineResponse{RawResponse: resp}
+	result := WorkloadNetworksClientGetVirtualMachineResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkVirtualMachine); err != nil {
 		return WorkloadNetworksClientGetVirtualMachineResponse{}, err
 	}
@@ -1619,16 +1540,32 @@ func (client *WorkloadNetworksClient) getVirtualMachineHandleResponse(resp *http
 // privateCloudName - Name of the private cloud
 // options - WorkloadNetworksClientListDNSServicesOptions contains the optional parameters for the WorkloadNetworksClient.ListDNSServices
 // method.
-func (client *WorkloadNetworksClient) ListDNSServices(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListDNSServicesOptions) *WorkloadNetworksClientListDNSServicesPager {
-	return &WorkloadNetworksClientListDNSServicesPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listDNSServicesCreateRequest(ctx, resourceGroupName, privateCloudName, options)
+func (client *WorkloadNetworksClient) ListDNSServices(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListDNSServicesOptions) *runtime.Pager[WorkloadNetworksClientListDNSServicesResponse] {
+	return runtime.NewPager(runtime.PageProcessor[WorkloadNetworksClientListDNSServicesResponse]{
+		More: func(page WorkloadNetworksClientListDNSServicesResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp WorkloadNetworksClientListDNSServicesResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.WorkloadNetworkDNSServicesList.NextLink)
+		Fetcher: func(ctx context.Context, page *WorkloadNetworksClientListDNSServicesResponse) (WorkloadNetworksClientListDNSServicesResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listDNSServicesCreateRequest(ctx, resourceGroupName, privateCloudName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return WorkloadNetworksClientListDNSServicesResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return WorkloadNetworksClientListDNSServicesResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return WorkloadNetworksClientListDNSServicesResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listDNSServicesHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listDNSServicesCreateRequest creates the ListDNSServices request.
@@ -1659,7 +1596,7 @@ func (client *WorkloadNetworksClient) listDNSServicesCreateRequest(ctx context.C
 
 // listDNSServicesHandleResponse handles the ListDNSServices response.
 func (client *WorkloadNetworksClient) listDNSServicesHandleResponse(resp *http.Response) (WorkloadNetworksClientListDNSServicesResponse, error) {
-	result := WorkloadNetworksClientListDNSServicesResponse{RawResponse: resp}
+	result := WorkloadNetworksClientListDNSServicesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkDNSServicesList); err != nil {
 		return WorkloadNetworksClientListDNSServicesResponse{}, err
 	}
@@ -1672,16 +1609,32 @@ func (client *WorkloadNetworksClient) listDNSServicesHandleResponse(resp *http.R
 // privateCloudName - Name of the private cloud
 // options - WorkloadNetworksClientListDNSZonesOptions contains the optional parameters for the WorkloadNetworksClient.ListDNSZones
 // method.
-func (client *WorkloadNetworksClient) ListDNSZones(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListDNSZonesOptions) *WorkloadNetworksClientListDNSZonesPager {
-	return &WorkloadNetworksClientListDNSZonesPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listDNSZonesCreateRequest(ctx, resourceGroupName, privateCloudName, options)
+func (client *WorkloadNetworksClient) ListDNSZones(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListDNSZonesOptions) *runtime.Pager[WorkloadNetworksClientListDNSZonesResponse] {
+	return runtime.NewPager(runtime.PageProcessor[WorkloadNetworksClientListDNSZonesResponse]{
+		More: func(page WorkloadNetworksClientListDNSZonesResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp WorkloadNetworksClientListDNSZonesResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.WorkloadNetworkDNSZonesList.NextLink)
+		Fetcher: func(ctx context.Context, page *WorkloadNetworksClientListDNSZonesResponse) (WorkloadNetworksClientListDNSZonesResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listDNSZonesCreateRequest(ctx, resourceGroupName, privateCloudName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return WorkloadNetworksClientListDNSZonesResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return WorkloadNetworksClientListDNSZonesResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return WorkloadNetworksClientListDNSZonesResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listDNSZonesHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listDNSZonesCreateRequest creates the ListDNSZones request.
@@ -1712,7 +1665,7 @@ func (client *WorkloadNetworksClient) listDNSZonesCreateRequest(ctx context.Cont
 
 // listDNSZonesHandleResponse handles the ListDNSZones response.
 func (client *WorkloadNetworksClient) listDNSZonesHandleResponse(resp *http.Response) (WorkloadNetworksClientListDNSZonesResponse, error) {
-	result := WorkloadNetworksClientListDNSZonesResponse{RawResponse: resp}
+	result := WorkloadNetworksClientListDNSZonesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkDNSZonesList); err != nil {
 		return WorkloadNetworksClientListDNSZonesResponse{}, err
 	}
@@ -1725,16 +1678,32 @@ func (client *WorkloadNetworksClient) listDNSZonesHandleResponse(resp *http.Resp
 // privateCloudName - Name of the private cloud
 // options - WorkloadNetworksClientListDhcpOptions contains the optional parameters for the WorkloadNetworksClient.ListDhcp
 // method.
-func (client *WorkloadNetworksClient) ListDhcp(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListDhcpOptions) *WorkloadNetworksClientListDhcpPager {
-	return &WorkloadNetworksClientListDhcpPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listDhcpCreateRequest(ctx, resourceGroupName, privateCloudName, options)
+func (client *WorkloadNetworksClient) ListDhcp(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListDhcpOptions) *runtime.Pager[WorkloadNetworksClientListDhcpResponse] {
+	return runtime.NewPager(runtime.PageProcessor[WorkloadNetworksClientListDhcpResponse]{
+		More: func(page WorkloadNetworksClientListDhcpResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp WorkloadNetworksClientListDhcpResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.WorkloadNetworkDhcpList.NextLink)
+		Fetcher: func(ctx context.Context, page *WorkloadNetworksClientListDhcpResponse) (WorkloadNetworksClientListDhcpResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listDhcpCreateRequest(ctx, resourceGroupName, privateCloudName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return WorkloadNetworksClientListDhcpResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return WorkloadNetworksClientListDhcpResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return WorkloadNetworksClientListDhcpResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listDhcpHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listDhcpCreateRequest creates the ListDhcp request.
@@ -1765,7 +1734,7 @@ func (client *WorkloadNetworksClient) listDhcpCreateRequest(ctx context.Context,
 
 // listDhcpHandleResponse handles the ListDhcp response.
 func (client *WorkloadNetworksClient) listDhcpHandleResponse(resp *http.Response) (WorkloadNetworksClientListDhcpResponse, error) {
-	result := WorkloadNetworksClientListDhcpResponse{RawResponse: resp}
+	result := WorkloadNetworksClientListDhcpResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkDhcpList); err != nil {
 		return WorkloadNetworksClientListDhcpResponse{}, err
 	}
@@ -1778,16 +1747,32 @@ func (client *WorkloadNetworksClient) listDhcpHandleResponse(resp *http.Response
 // privateCloudName - Name of the private cloud
 // options - WorkloadNetworksClientListGatewaysOptions contains the optional parameters for the WorkloadNetworksClient.ListGateways
 // method.
-func (client *WorkloadNetworksClient) ListGateways(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListGatewaysOptions) *WorkloadNetworksClientListGatewaysPager {
-	return &WorkloadNetworksClientListGatewaysPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listGatewaysCreateRequest(ctx, resourceGroupName, privateCloudName, options)
+func (client *WorkloadNetworksClient) ListGateways(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListGatewaysOptions) *runtime.Pager[WorkloadNetworksClientListGatewaysResponse] {
+	return runtime.NewPager(runtime.PageProcessor[WorkloadNetworksClientListGatewaysResponse]{
+		More: func(page WorkloadNetworksClientListGatewaysResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp WorkloadNetworksClientListGatewaysResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.WorkloadNetworkGatewayList.NextLink)
+		Fetcher: func(ctx context.Context, page *WorkloadNetworksClientListGatewaysResponse) (WorkloadNetworksClientListGatewaysResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listGatewaysCreateRequest(ctx, resourceGroupName, privateCloudName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return WorkloadNetworksClientListGatewaysResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return WorkloadNetworksClientListGatewaysResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return WorkloadNetworksClientListGatewaysResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listGatewaysHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listGatewaysCreateRequest creates the ListGateways request.
@@ -1818,7 +1803,7 @@ func (client *WorkloadNetworksClient) listGatewaysCreateRequest(ctx context.Cont
 
 // listGatewaysHandleResponse handles the ListGateways response.
 func (client *WorkloadNetworksClient) listGatewaysHandleResponse(resp *http.Response) (WorkloadNetworksClientListGatewaysResponse, error) {
-	result := WorkloadNetworksClientListGatewaysResponse{RawResponse: resp}
+	result := WorkloadNetworksClientListGatewaysResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkGatewayList); err != nil {
 		return WorkloadNetworksClientListGatewaysResponse{}, err
 	}
@@ -1831,16 +1816,32 @@ func (client *WorkloadNetworksClient) listGatewaysHandleResponse(resp *http.Resp
 // privateCloudName - Name of the private cloud
 // options - WorkloadNetworksClientListPortMirroringOptions contains the optional parameters for the WorkloadNetworksClient.ListPortMirroring
 // method.
-func (client *WorkloadNetworksClient) ListPortMirroring(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListPortMirroringOptions) *WorkloadNetworksClientListPortMirroringPager {
-	return &WorkloadNetworksClientListPortMirroringPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listPortMirroringCreateRequest(ctx, resourceGroupName, privateCloudName, options)
+func (client *WorkloadNetworksClient) ListPortMirroring(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListPortMirroringOptions) *runtime.Pager[WorkloadNetworksClientListPortMirroringResponse] {
+	return runtime.NewPager(runtime.PageProcessor[WorkloadNetworksClientListPortMirroringResponse]{
+		More: func(page WorkloadNetworksClientListPortMirroringResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp WorkloadNetworksClientListPortMirroringResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.WorkloadNetworkPortMirroringList.NextLink)
+		Fetcher: func(ctx context.Context, page *WorkloadNetworksClientListPortMirroringResponse) (WorkloadNetworksClientListPortMirroringResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listPortMirroringCreateRequest(ctx, resourceGroupName, privateCloudName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return WorkloadNetworksClientListPortMirroringResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return WorkloadNetworksClientListPortMirroringResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return WorkloadNetworksClientListPortMirroringResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listPortMirroringHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listPortMirroringCreateRequest creates the ListPortMirroring request.
@@ -1871,7 +1872,7 @@ func (client *WorkloadNetworksClient) listPortMirroringCreateRequest(ctx context
 
 // listPortMirroringHandleResponse handles the ListPortMirroring response.
 func (client *WorkloadNetworksClient) listPortMirroringHandleResponse(resp *http.Response) (WorkloadNetworksClientListPortMirroringResponse, error) {
-	result := WorkloadNetworksClientListPortMirroringResponse{RawResponse: resp}
+	result := WorkloadNetworksClientListPortMirroringResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkPortMirroringList); err != nil {
 		return WorkloadNetworksClientListPortMirroringResponse{}, err
 	}
@@ -1884,16 +1885,32 @@ func (client *WorkloadNetworksClient) listPortMirroringHandleResponse(resp *http
 // privateCloudName - Name of the private cloud
 // options - WorkloadNetworksClientListPublicIPsOptions contains the optional parameters for the WorkloadNetworksClient.ListPublicIPs
 // method.
-func (client *WorkloadNetworksClient) ListPublicIPs(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListPublicIPsOptions) *WorkloadNetworksClientListPublicIPsPager {
-	return &WorkloadNetworksClientListPublicIPsPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listPublicIPsCreateRequest(ctx, resourceGroupName, privateCloudName, options)
+func (client *WorkloadNetworksClient) ListPublicIPs(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListPublicIPsOptions) *runtime.Pager[WorkloadNetworksClientListPublicIPsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[WorkloadNetworksClientListPublicIPsResponse]{
+		More: func(page WorkloadNetworksClientListPublicIPsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp WorkloadNetworksClientListPublicIPsResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.WorkloadNetworkPublicIPsList.NextLink)
+		Fetcher: func(ctx context.Context, page *WorkloadNetworksClientListPublicIPsResponse) (WorkloadNetworksClientListPublicIPsResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listPublicIPsCreateRequest(ctx, resourceGroupName, privateCloudName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return WorkloadNetworksClientListPublicIPsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return WorkloadNetworksClientListPublicIPsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return WorkloadNetworksClientListPublicIPsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listPublicIPsHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listPublicIPsCreateRequest creates the ListPublicIPs request.
@@ -1924,7 +1941,7 @@ func (client *WorkloadNetworksClient) listPublicIPsCreateRequest(ctx context.Con
 
 // listPublicIPsHandleResponse handles the ListPublicIPs response.
 func (client *WorkloadNetworksClient) listPublicIPsHandleResponse(resp *http.Response) (WorkloadNetworksClientListPublicIPsResponse, error) {
-	result := WorkloadNetworksClientListPublicIPsResponse{RawResponse: resp}
+	result := WorkloadNetworksClientListPublicIPsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkPublicIPsList); err != nil {
 		return WorkloadNetworksClientListPublicIPsResponse{}, err
 	}
@@ -1937,16 +1954,32 @@ func (client *WorkloadNetworksClient) listPublicIPsHandleResponse(resp *http.Res
 // privateCloudName - Name of the private cloud
 // options - WorkloadNetworksClientListSegmentsOptions contains the optional parameters for the WorkloadNetworksClient.ListSegments
 // method.
-func (client *WorkloadNetworksClient) ListSegments(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListSegmentsOptions) *WorkloadNetworksClientListSegmentsPager {
-	return &WorkloadNetworksClientListSegmentsPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listSegmentsCreateRequest(ctx, resourceGroupName, privateCloudName, options)
+func (client *WorkloadNetworksClient) ListSegments(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListSegmentsOptions) *runtime.Pager[WorkloadNetworksClientListSegmentsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[WorkloadNetworksClientListSegmentsResponse]{
+		More: func(page WorkloadNetworksClientListSegmentsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp WorkloadNetworksClientListSegmentsResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.WorkloadNetworkSegmentsList.NextLink)
+		Fetcher: func(ctx context.Context, page *WorkloadNetworksClientListSegmentsResponse) (WorkloadNetworksClientListSegmentsResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listSegmentsCreateRequest(ctx, resourceGroupName, privateCloudName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return WorkloadNetworksClientListSegmentsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return WorkloadNetworksClientListSegmentsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return WorkloadNetworksClientListSegmentsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listSegmentsHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listSegmentsCreateRequest creates the ListSegments request.
@@ -1977,7 +2010,7 @@ func (client *WorkloadNetworksClient) listSegmentsCreateRequest(ctx context.Cont
 
 // listSegmentsHandleResponse handles the ListSegments response.
 func (client *WorkloadNetworksClient) listSegmentsHandleResponse(resp *http.Response) (WorkloadNetworksClientListSegmentsResponse, error) {
-	result := WorkloadNetworksClientListSegmentsResponse{RawResponse: resp}
+	result := WorkloadNetworksClientListSegmentsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkSegmentsList); err != nil {
 		return WorkloadNetworksClientListSegmentsResponse{}, err
 	}
@@ -1990,16 +2023,32 @@ func (client *WorkloadNetworksClient) listSegmentsHandleResponse(resp *http.Resp
 // privateCloudName - Name of the private cloud
 // options - WorkloadNetworksClientListVMGroupsOptions contains the optional parameters for the WorkloadNetworksClient.ListVMGroups
 // method.
-func (client *WorkloadNetworksClient) ListVMGroups(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListVMGroupsOptions) *WorkloadNetworksClientListVMGroupsPager {
-	return &WorkloadNetworksClientListVMGroupsPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listVMGroupsCreateRequest(ctx, resourceGroupName, privateCloudName, options)
+func (client *WorkloadNetworksClient) ListVMGroups(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListVMGroupsOptions) *runtime.Pager[WorkloadNetworksClientListVMGroupsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[WorkloadNetworksClientListVMGroupsResponse]{
+		More: func(page WorkloadNetworksClientListVMGroupsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp WorkloadNetworksClientListVMGroupsResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.WorkloadNetworkVMGroupsList.NextLink)
+		Fetcher: func(ctx context.Context, page *WorkloadNetworksClientListVMGroupsResponse) (WorkloadNetworksClientListVMGroupsResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listVMGroupsCreateRequest(ctx, resourceGroupName, privateCloudName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return WorkloadNetworksClientListVMGroupsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return WorkloadNetworksClientListVMGroupsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return WorkloadNetworksClientListVMGroupsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listVMGroupsHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listVMGroupsCreateRequest creates the ListVMGroups request.
@@ -2030,7 +2079,7 @@ func (client *WorkloadNetworksClient) listVMGroupsCreateRequest(ctx context.Cont
 
 // listVMGroupsHandleResponse handles the ListVMGroups response.
 func (client *WorkloadNetworksClient) listVMGroupsHandleResponse(resp *http.Response) (WorkloadNetworksClientListVMGroupsResponse, error) {
-	result := WorkloadNetworksClientListVMGroupsResponse{RawResponse: resp}
+	result := WorkloadNetworksClientListVMGroupsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkVMGroupsList); err != nil {
 		return WorkloadNetworksClientListVMGroupsResponse{}, err
 	}
@@ -2043,16 +2092,32 @@ func (client *WorkloadNetworksClient) listVMGroupsHandleResponse(resp *http.Resp
 // privateCloudName - Name of the private cloud
 // options - WorkloadNetworksClientListVirtualMachinesOptions contains the optional parameters for the WorkloadNetworksClient.ListVirtualMachines
 // method.
-func (client *WorkloadNetworksClient) ListVirtualMachines(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListVirtualMachinesOptions) *WorkloadNetworksClientListVirtualMachinesPager {
-	return &WorkloadNetworksClientListVirtualMachinesPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listVirtualMachinesCreateRequest(ctx, resourceGroupName, privateCloudName, options)
+func (client *WorkloadNetworksClient) ListVirtualMachines(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListVirtualMachinesOptions) *runtime.Pager[WorkloadNetworksClientListVirtualMachinesResponse] {
+	return runtime.NewPager(runtime.PageProcessor[WorkloadNetworksClientListVirtualMachinesResponse]{
+		More: func(page WorkloadNetworksClientListVirtualMachinesResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp WorkloadNetworksClientListVirtualMachinesResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.WorkloadNetworkVirtualMachinesList.NextLink)
+		Fetcher: func(ctx context.Context, page *WorkloadNetworksClientListVirtualMachinesResponse) (WorkloadNetworksClientListVirtualMachinesResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listVirtualMachinesCreateRequest(ctx, resourceGroupName, privateCloudName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return WorkloadNetworksClientListVirtualMachinesResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return WorkloadNetworksClientListVirtualMachinesResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return WorkloadNetworksClientListVirtualMachinesResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listVirtualMachinesHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listVirtualMachinesCreateRequest creates the ListVirtualMachines request.
@@ -2083,7 +2148,7 @@ func (client *WorkloadNetworksClient) listVirtualMachinesCreateRequest(ctx conte
 
 // listVirtualMachinesHandleResponse handles the ListVirtualMachines response.
 func (client *WorkloadNetworksClient) listVirtualMachinesHandleResponse(resp *http.Response) (WorkloadNetworksClientListVirtualMachinesResponse, error) {
-	result := WorkloadNetworksClientListVirtualMachinesResponse{RawResponse: resp}
+	result := WorkloadNetworksClientListVirtualMachinesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkVirtualMachinesList); err != nil {
 		return WorkloadNetworksClientListVirtualMachinesResponse{}, err
 	}
@@ -2098,22 +2163,16 @@ func (client *WorkloadNetworksClient) listVirtualMachinesHandleResponse(resp *ht
 // workloadNetworkDNSService - NSX DNS Service
 // options - WorkloadNetworksClientBeginUpdateDNSServiceOptions contains the optional parameters for the WorkloadNetworksClient.BeginUpdateDNSService
 // method.
-func (client *WorkloadNetworksClient) BeginUpdateDNSService(ctx context.Context, resourceGroupName string, privateCloudName string, dnsServiceID string, workloadNetworkDNSService WorkloadNetworkDNSService, options *WorkloadNetworksClientBeginUpdateDNSServiceOptions) (WorkloadNetworksClientUpdateDNSServicePollerResponse, error) {
-	resp, err := client.updateDNSService(ctx, resourceGroupName, privateCloudName, dnsServiceID, workloadNetworkDNSService, options)
-	if err != nil {
-		return WorkloadNetworksClientUpdateDNSServicePollerResponse{}, err
+func (client *WorkloadNetworksClient) BeginUpdateDNSService(ctx context.Context, resourceGroupName string, privateCloudName string, dnsServiceID string, workloadNetworkDNSService WorkloadNetworkDNSService, options *WorkloadNetworksClientBeginUpdateDNSServiceOptions) (*armruntime.Poller[WorkloadNetworksClientUpdateDNSServiceResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.updateDNSService(ctx, resourceGroupName, privateCloudName, dnsServiceID, workloadNetworkDNSService, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[WorkloadNetworksClientUpdateDNSServiceResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[WorkloadNetworksClientUpdateDNSServiceResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := WorkloadNetworksClientUpdateDNSServicePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("WorkloadNetworksClient.UpdateDNSService", "", resp, client.pl)
-	if err != nil {
-		return WorkloadNetworksClientUpdateDNSServicePollerResponse{}, err
-	}
-	result.Poller = &WorkloadNetworksClientUpdateDNSServicePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // UpdateDNSService - Create or update a DNS service by id in a private cloud workload network.
@@ -2171,22 +2230,16 @@ func (client *WorkloadNetworksClient) updateDNSServiceCreateRequest(ctx context.
 // workloadNetworkDNSZone - NSX DNS Zone
 // options - WorkloadNetworksClientBeginUpdateDNSZoneOptions contains the optional parameters for the WorkloadNetworksClient.BeginUpdateDNSZone
 // method.
-func (client *WorkloadNetworksClient) BeginUpdateDNSZone(ctx context.Context, resourceGroupName string, privateCloudName string, dnsZoneID string, workloadNetworkDNSZone WorkloadNetworkDNSZone, options *WorkloadNetworksClientBeginUpdateDNSZoneOptions) (WorkloadNetworksClientUpdateDNSZonePollerResponse, error) {
-	resp, err := client.updateDNSZone(ctx, resourceGroupName, privateCloudName, dnsZoneID, workloadNetworkDNSZone, options)
-	if err != nil {
-		return WorkloadNetworksClientUpdateDNSZonePollerResponse{}, err
+func (client *WorkloadNetworksClient) BeginUpdateDNSZone(ctx context.Context, resourceGroupName string, privateCloudName string, dnsZoneID string, workloadNetworkDNSZone WorkloadNetworkDNSZone, options *WorkloadNetworksClientBeginUpdateDNSZoneOptions) (*armruntime.Poller[WorkloadNetworksClientUpdateDNSZoneResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.updateDNSZone(ctx, resourceGroupName, privateCloudName, dnsZoneID, workloadNetworkDNSZone, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[WorkloadNetworksClientUpdateDNSZoneResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[WorkloadNetworksClientUpdateDNSZoneResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := WorkloadNetworksClientUpdateDNSZonePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("WorkloadNetworksClient.UpdateDNSZone", "", resp, client.pl)
-	if err != nil {
-		return WorkloadNetworksClientUpdateDNSZonePollerResponse{}, err
-	}
-	result.Poller = &WorkloadNetworksClientUpdateDNSZonePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // UpdateDNSZone - Create or update a DNS zone by id in a private cloud workload network.
@@ -2244,22 +2297,16 @@ func (client *WorkloadNetworksClient) updateDNSZoneCreateRequest(ctx context.Con
 // workloadNetworkDhcp - NSX DHCP
 // options - WorkloadNetworksClientBeginUpdateDhcpOptions contains the optional parameters for the WorkloadNetworksClient.BeginUpdateDhcp
 // method.
-func (client *WorkloadNetworksClient) BeginUpdateDhcp(ctx context.Context, resourceGroupName string, privateCloudName string, dhcpID string, workloadNetworkDhcp WorkloadNetworkDhcp, options *WorkloadNetworksClientBeginUpdateDhcpOptions) (WorkloadNetworksClientUpdateDhcpPollerResponse, error) {
-	resp, err := client.updateDhcp(ctx, resourceGroupName, privateCloudName, dhcpID, workloadNetworkDhcp, options)
-	if err != nil {
-		return WorkloadNetworksClientUpdateDhcpPollerResponse{}, err
+func (client *WorkloadNetworksClient) BeginUpdateDhcp(ctx context.Context, resourceGroupName string, privateCloudName string, dhcpID string, workloadNetworkDhcp WorkloadNetworkDhcp, options *WorkloadNetworksClientBeginUpdateDhcpOptions) (*armruntime.Poller[WorkloadNetworksClientUpdateDhcpResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.updateDhcp(ctx, resourceGroupName, privateCloudName, dhcpID, workloadNetworkDhcp, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[WorkloadNetworksClientUpdateDhcpResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[WorkloadNetworksClientUpdateDhcpResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := WorkloadNetworksClientUpdateDhcpPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("WorkloadNetworksClient.UpdateDhcp", "", resp, client.pl)
-	if err != nil {
-		return WorkloadNetworksClientUpdateDhcpPollerResponse{}, err
-	}
-	result.Poller = &WorkloadNetworksClientUpdateDhcpPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // UpdateDhcp - Create or update dhcp by id in a private cloud workload network.
@@ -2317,22 +2364,16 @@ func (client *WorkloadNetworksClient) updateDhcpCreateRequest(ctx context.Contex
 // workloadNetworkPortMirroring - NSX port mirroring
 // options - WorkloadNetworksClientBeginUpdatePortMirroringOptions contains the optional parameters for the WorkloadNetworksClient.BeginUpdatePortMirroring
 // method.
-func (client *WorkloadNetworksClient) BeginUpdatePortMirroring(ctx context.Context, resourceGroupName string, privateCloudName string, portMirroringID string, workloadNetworkPortMirroring WorkloadNetworkPortMirroring, options *WorkloadNetworksClientBeginUpdatePortMirroringOptions) (WorkloadNetworksClientUpdatePortMirroringPollerResponse, error) {
-	resp, err := client.updatePortMirroring(ctx, resourceGroupName, privateCloudName, portMirroringID, workloadNetworkPortMirroring, options)
-	if err != nil {
-		return WorkloadNetworksClientUpdatePortMirroringPollerResponse{}, err
+func (client *WorkloadNetworksClient) BeginUpdatePortMirroring(ctx context.Context, resourceGroupName string, privateCloudName string, portMirroringID string, workloadNetworkPortMirroring WorkloadNetworkPortMirroring, options *WorkloadNetworksClientBeginUpdatePortMirroringOptions) (*armruntime.Poller[WorkloadNetworksClientUpdatePortMirroringResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.updatePortMirroring(ctx, resourceGroupName, privateCloudName, portMirroringID, workloadNetworkPortMirroring, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[WorkloadNetworksClientUpdatePortMirroringResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[WorkloadNetworksClientUpdatePortMirroringResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := WorkloadNetworksClientUpdatePortMirroringPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("WorkloadNetworksClient.UpdatePortMirroring", "", resp, client.pl)
-	if err != nil {
-		return WorkloadNetworksClientUpdatePortMirroringPollerResponse{}, err
-	}
-	result.Poller = &WorkloadNetworksClientUpdatePortMirroringPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // UpdatePortMirroring - Create or update a port mirroring profile by id in a private cloud workload network.
@@ -2390,22 +2431,16 @@ func (client *WorkloadNetworksClient) updatePortMirroringCreateRequest(ctx conte
 // workloadNetworkSegment - NSX Segment
 // options - WorkloadNetworksClientBeginUpdateSegmentsOptions contains the optional parameters for the WorkloadNetworksClient.BeginUpdateSegments
 // method.
-func (client *WorkloadNetworksClient) BeginUpdateSegments(ctx context.Context, resourceGroupName string, privateCloudName string, segmentID string, workloadNetworkSegment WorkloadNetworkSegment, options *WorkloadNetworksClientBeginUpdateSegmentsOptions) (WorkloadNetworksClientUpdateSegmentsPollerResponse, error) {
-	resp, err := client.updateSegments(ctx, resourceGroupName, privateCloudName, segmentID, workloadNetworkSegment, options)
-	if err != nil {
-		return WorkloadNetworksClientUpdateSegmentsPollerResponse{}, err
+func (client *WorkloadNetworksClient) BeginUpdateSegments(ctx context.Context, resourceGroupName string, privateCloudName string, segmentID string, workloadNetworkSegment WorkloadNetworkSegment, options *WorkloadNetworksClientBeginUpdateSegmentsOptions) (*armruntime.Poller[WorkloadNetworksClientUpdateSegmentsResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.updateSegments(ctx, resourceGroupName, privateCloudName, segmentID, workloadNetworkSegment, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[WorkloadNetworksClientUpdateSegmentsResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[WorkloadNetworksClientUpdateSegmentsResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := WorkloadNetworksClientUpdateSegmentsPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("WorkloadNetworksClient.UpdateSegments", "", resp, client.pl)
-	if err != nil {
-		return WorkloadNetworksClientUpdateSegmentsPollerResponse{}, err
-	}
-	result.Poller = &WorkloadNetworksClientUpdateSegmentsPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // UpdateSegments - Create or update a segment by id in a private cloud workload network.
@@ -2463,22 +2498,16 @@ func (client *WorkloadNetworksClient) updateSegmentsCreateRequest(ctx context.Co
 // workloadNetworkVMGroup - NSX VM Group
 // options - WorkloadNetworksClientBeginUpdateVMGroupOptions contains the optional parameters for the WorkloadNetworksClient.BeginUpdateVMGroup
 // method.
-func (client *WorkloadNetworksClient) BeginUpdateVMGroup(ctx context.Context, resourceGroupName string, privateCloudName string, vmGroupID string, workloadNetworkVMGroup WorkloadNetworkVMGroup, options *WorkloadNetworksClientBeginUpdateVMGroupOptions) (WorkloadNetworksClientUpdateVMGroupPollerResponse, error) {
-	resp, err := client.updateVMGroup(ctx, resourceGroupName, privateCloudName, vmGroupID, workloadNetworkVMGroup, options)
-	if err != nil {
-		return WorkloadNetworksClientUpdateVMGroupPollerResponse{}, err
+func (client *WorkloadNetworksClient) BeginUpdateVMGroup(ctx context.Context, resourceGroupName string, privateCloudName string, vmGroupID string, workloadNetworkVMGroup WorkloadNetworkVMGroup, options *WorkloadNetworksClientBeginUpdateVMGroupOptions) (*armruntime.Poller[WorkloadNetworksClientUpdateVMGroupResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.updateVMGroup(ctx, resourceGroupName, privateCloudName, vmGroupID, workloadNetworkVMGroup, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[WorkloadNetworksClientUpdateVMGroupResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[WorkloadNetworksClientUpdateVMGroupResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := WorkloadNetworksClientUpdateVMGroupPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("WorkloadNetworksClient.UpdateVMGroup", "", resp, client.pl)
-	if err != nil {
-		return WorkloadNetworksClientUpdateVMGroupPollerResponse{}, err
-	}
-	result.Poller = &WorkloadNetworksClientUpdateVMGroupPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // UpdateVMGroup - Create or update a vm group by id in a private cloud workload network.

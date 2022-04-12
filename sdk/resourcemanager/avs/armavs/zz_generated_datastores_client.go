@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type DatastoresClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewDatastoresClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DatastoresClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewDatastoresClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DatastoresClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &DatastoresClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Create or update a datastore in a private cloud cluster
@@ -58,22 +63,16 @@ func NewDatastoresClient(subscriptionID string, credential azcore.TokenCredentia
 // datastore - A datastore in a private cloud cluster
 // options - DatastoresClientBeginCreateOrUpdateOptions contains the optional parameters for the DatastoresClient.BeginCreateOrUpdate
 // method.
-func (client *DatastoresClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, datastoreName string, datastore Datastore, options *DatastoresClientBeginCreateOrUpdateOptions) (DatastoresClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, privateCloudName, clusterName, datastoreName, datastore, options)
-	if err != nil {
-		return DatastoresClientCreateOrUpdatePollerResponse{}, err
+func (client *DatastoresClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, datastoreName string, datastore Datastore, options *DatastoresClientBeginCreateOrUpdateOptions) (*armruntime.Poller[DatastoresClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, privateCloudName, clusterName, datastoreName, datastore, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[DatastoresClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[DatastoresClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DatastoresClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DatastoresClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return DatastoresClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &DatastoresClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Create or update a datastore in a private cloud cluster
@@ -134,22 +133,16 @@ func (client *DatastoresClient) createOrUpdateCreateRequest(ctx context.Context,
 // clusterName - Name of the cluster in the private cloud
 // datastoreName - Name of the datastore in the private cloud cluster
 // options - DatastoresClientBeginDeleteOptions contains the optional parameters for the DatastoresClient.BeginDelete method.
-func (client *DatastoresClient) BeginDelete(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, datastoreName string, options *DatastoresClientBeginDeleteOptions) (DatastoresClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, privateCloudName, clusterName, datastoreName, options)
-	if err != nil {
-		return DatastoresClientDeletePollerResponse{}, err
+func (client *DatastoresClient) BeginDelete(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, datastoreName string, options *DatastoresClientBeginDeleteOptions) (*armruntime.Poller[DatastoresClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, privateCloudName, clusterName, datastoreName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[DatastoresClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[DatastoresClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DatastoresClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DatastoresClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return DatastoresClientDeletePollerResponse{}, err
-	}
-	result.Poller = &DatastoresClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Delete a datastore in a private cloud cluster
@@ -261,7 +254,7 @@ func (client *DatastoresClient) getCreateRequest(ctx context.Context, resourceGr
 
 // getHandleResponse handles the Get response.
 func (client *DatastoresClient) getHandleResponse(resp *http.Response) (DatastoresClientGetResponse, error) {
-	result := DatastoresClientGetResponse{RawResponse: resp}
+	result := DatastoresClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Datastore); err != nil {
 		return DatastoresClientGetResponse{}, err
 	}
@@ -274,16 +267,32 @@ func (client *DatastoresClient) getHandleResponse(resp *http.Response) (Datastor
 // privateCloudName - Name of the private cloud
 // clusterName - Name of the cluster in the private cloud
 // options - DatastoresClientListOptions contains the optional parameters for the DatastoresClient.List method.
-func (client *DatastoresClient) List(resourceGroupName string, privateCloudName string, clusterName string, options *DatastoresClientListOptions) *DatastoresClientListPager {
-	return &DatastoresClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, privateCloudName, clusterName, options)
+func (client *DatastoresClient) List(resourceGroupName string, privateCloudName string, clusterName string, options *DatastoresClientListOptions) *runtime.Pager[DatastoresClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DatastoresClientListResponse]{
+		More: func(page DatastoresClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DatastoresClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DatastoreList.NextLink)
+		Fetcher: func(ctx context.Context, page *DatastoresClientListResponse) (DatastoresClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, privateCloudName, clusterName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DatastoresClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DatastoresClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DatastoresClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -318,7 +327,7 @@ func (client *DatastoresClient) listCreateRequest(ctx context.Context, resourceG
 
 // listHandleResponse handles the List response.
 func (client *DatastoresClient) listHandleResponse(resp *http.Response) (DatastoresClientListResponse, error) {
-	result := DatastoresClientListResponse{RawResponse: resp}
+	result := DatastoresClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatastoreList); err != nil {
 		return DatastoresClientListResponse{}, err
 	}

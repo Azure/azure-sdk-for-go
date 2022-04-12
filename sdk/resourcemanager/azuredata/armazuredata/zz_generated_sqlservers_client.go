@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type SQLServersClient struct {
 // subscriptionID - Subscription ID that identifies an Azure subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewSQLServersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SQLServersClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewSQLServersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SQLServersClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &SQLServersClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates a SQL Server.
@@ -105,7 +110,7 @@ func (client *SQLServersClient) createOrUpdateCreateRequest(ctx context.Context,
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *SQLServersClient) createOrUpdateHandleResponse(resp *http.Response) (SQLServersClientCreateOrUpdateResponse, error) {
-	result := SQLServersClientCreateOrUpdateResponse{RawResponse: resp}
+	result := SQLServersClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLServer); err != nil {
 		return SQLServersClientCreateOrUpdateResponse{}, err
 	}
@@ -131,7 +136,7 @@ func (client *SQLServersClient) Delete(ctx context.Context, resourceGroupName st
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return SQLServersClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return SQLServersClientDeleteResponse{RawResponse: resp}, nil
+	return SQLServersClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -221,7 +226,7 @@ func (client *SQLServersClient) getCreateRequest(ctx context.Context, resourceGr
 
 // getHandleResponse handles the Get response.
 func (client *SQLServersClient) getHandleResponse(resp *http.Response) (SQLServersClientGetResponse, error) {
-	result := SQLServersClientGetResponse{RawResponse: resp}
+	result := SQLServersClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLServer); err != nil {
 		return SQLServersClientGetResponse{}, err
 	}
@@ -235,16 +240,32 @@ func (client *SQLServersClient) getHandleResponse(resp *http.Response) (SQLServe
 // sqlServerRegistrationName - Name of the SQL Server registration.
 // options - SQLServersClientListByResourceGroupOptions contains the optional parameters for the SQLServersClient.ListByResourceGroup
 // method.
-func (client *SQLServersClient) ListByResourceGroup(resourceGroupName string, sqlServerRegistrationName string, options *SQLServersClientListByResourceGroupOptions) *SQLServersClientListByResourceGroupPager {
-	return &SQLServersClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, sqlServerRegistrationName, options)
+func (client *SQLServersClient) ListByResourceGroup(resourceGroupName string, sqlServerRegistrationName string, options *SQLServersClientListByResourceGroupOptions) *runtime.Pager[SQLServersClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SQLServersClientListByResourceGroupResponse]{
+		More: func(page SQLServersClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SQLServersClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SQLServerListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *SQLServersClientListByResourceGroupResponse) (SQLServersClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, sqlServerRegistrationName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SQLServersClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SQLServersClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SQLServersClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -278,7 +299,7 @@ func (client *SQLServersClient) listByResourceGroupCreateRequest(ctx context.Con
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *SQLServersClient) listByResourceGroupHandleResponse(resp *http.Response) (SQLServersClientListByResourceGroupResponse, error) {
-	result := SQLServersClientListByResourceGroupResponse{RawResponse: resp}
+	result := SQLServersClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLServerListResult); err != nil {
 		return SQLServersClientListByResourceGroupResponse{}, err
 	}

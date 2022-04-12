@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -31,19 +32,23 @@ type BestPracticesClient struct {
 // NewBestPracticesClient creates a new instance of BestPracticesClient with the specified values.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewBestPracticesClient(credential azcore.TokenCredential, options *arm.ClientOptions) *BestPracticesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewBestPracticesClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*BestPracticesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &BestPracticesClient{
-		host: string(cp.Endpoint),
-		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host: ep,
+		pl:   pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Get information about a Automanage best practice
@@ -85,7 +90,7 @@ func (client *BestPracticesClient) getCreateRequest(ctx context.Context, bestPra
 
 // getHandleResponse handles the Get response.
 func (client *BestPracticesClient) getHandleResponse(resp *http.Response) (BestPracticesClientGetResponse, error) {
-	result := BestPracticesClientGetResponse{RawResponse: resp}
+	result := BestPracticesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BestPractice); err != nil {
 		return BestPracticesClientGetResponse{}, err
 	}
@@ -96,19 +101,26 @@ func (client *BestPracticesClient) getHandleResponse(resp *http.Response) (BestP
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - BestPracticesClientListByTenantOptions contains the optional parameters for the BestPracticesClient.ListByTenant
 // method.
-func (client *BestPracticesClient) ListByTenant(ctx context.Context, options *BestPracticesClientListByTenantOptions) (BestPracticesClientListByTenantResponse, error) {
-	req, err := client.listByTenantCreateRequest(ctx, options)
-	if err != nil {
-		return BestPracticesClientListByTenantResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return BestPracticesClientListByTenantResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return BestPracticesClientListByTenantResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listByTenantHandleResponse(resp)
+func (client *BestPracticesClient) ListByTenant(options *BestPracticesClientListByTenantOptions) *runtime.Pager[BestPracticesClientListByTenantResponse] {
+	return runtime.NewPager(runtime.PageProcessor[BestPracticesClientListByTenantResponse]{
+		More: func(page BestPracticesClientListByTenantResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *BestPracticesClientListByTenantResponse) (BestPracticesClientListByTenantResponse, error) {
+			req, err := client.listByTenantCreateRequest(ctx, options)
+			if err != nil {
+				return BestPracticesClientListByTenantResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return BestPracticesClientListByTenantResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return BestPracticesClientListByTenantResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByTenantHandleResponse(resp)
+		},
+	})
 }
 
 // listByTenantCreateRequest creates the ListByTenant request.
@@ -127,7 +139,7 @@ func (client *BestPracticesClient) listByTenantCreateRequest(ctx context.Context
 
 // listByTenantHandleResponse handles the ListByTenant response.
 func (client *BestPracticesClient) listByTenantHandleResponse(resp *http.Response) (BestPracticesClientListByTenantResponse, error) {
-	result := BestPracticesClientListByTenantResponse{RawResponse: resp}
+	result := BestPracticesClientListByTenantResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BestPracticeList); err != nil {
 		return BestPracticesClientListByTenantResponse{}, err
 	}

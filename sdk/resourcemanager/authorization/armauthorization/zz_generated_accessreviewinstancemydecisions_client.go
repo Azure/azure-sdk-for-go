@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -31,19 +32,23 @@ type AccessReviewInstanceMyDecisionsClient struct {
 // NewAccessReviewInstanceMyDecisionsClient creates a new instance of AccessReviewInstanceMyDecisionsClient with the specified values.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewAccessReviewInstanceMyDecisionsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *AccessReviewInstanceMyDecisionsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewAccessReviewInstanceMyDecisionsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*AccessReviewInstanceMyDecisionsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &AccessReviewInstanceMyDecisionsClient{
-		host: string(cp.Endpoint),
-		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host: ep,
+		pl:   pl,
 	}
-	return client
+	return client, nil
 }
 
 // GetByID - Get my single access review instance decision.
@@ -88,7 +93,7 @@ func (client *AccessReviewInstanceMyDecisionsClient) getByIDCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2018-05-01-preview")
+	reqQP.Set("api-version", "2021-11-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -96,7 +101,7 @@ func (client *AccessReviewInstanceMyDecisionsClient) getByIDCreateRequest(ctx co
 
 // getByIDHandleResponse handles the GetByID response.
 func (client *AccessReviewInstanceMyDecisionsClient) getByIDHandleResponse(resp *http.Response) (AccessReviewInstanceMyDecisionsClientGetByIDResponse, error) {
-	result := AccessReviewInstanceMyDecisionsClientGetByIDResponse{RawResponse: resp}
+	result := AccessReviewInstanceMyDecisionsClientGetByIDResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessReviewDecision); err != nil {
 		return AccessReviewInstanceMyDecisionsClientGetByIDResponse{}, err
 	}
@@ -109,16 +114,32 @@ func (client *AccessReviewInstanceMyDecisionsClient) getByIDHandleResponse(resp 
 // id - The id of the access review instance.
 // options - AccessReviewInstanceMyDecisionsClientListOptions contains the optional parameters for the AccessReviewInstanceMyDecisionsClient.List
 // method.
-func (client *AccessReviewInstanceMyDecisionsClient) List(scheduleDefinitionID string, id string, options *AccessReviewInstanceMyDecisionsClientListOptions) *AccessReviewInstanceMyDecisionsClientListPager {
-	return &AccessReviewInstanceMyDecisionsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, scheduleDefinitionID, id, options)
+func (client *AccessReviewInstanceMyDecisionsClient) List(scheduleDefinitionID string, id string, options *AccessReviewInstanceMyDecisionsClientListOptions) *runtime.Pager[AccessReviewInstanceMyDecisionsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AccessReviewInstanceMyDecisionsClientListResponse]{
+		More: func(page AccessReviewInstanceMyDecisionsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AccessReviewInstanceMyDecisionsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AccessReviewDecisionListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *AccessReviewInstanceMyDecisionsClientListResponse) (AccessReviewInstanceMyDecisionsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, scheduleDefinitionID, id, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AccessReviewInstanceMyDecisionsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AccessReviewInstanceMyDecisionsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AccessReviewInstanceMyDecisionsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -137,15 +158,20 @@ func (client *AccessReviewInstanceMyDecisionsClient) listCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2018-05-01-preview")
+	reqQP.Set("api-version", "2021-11-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
+	unencodedParams := []string{req.Raw().URL.RawQuery}
+	if options != nil && options.Filter != nil {
+		unencodedParams = append(unencodedParams, "$filter="+*options.Filter)
+	}
+	req.Raw().URL.RawQuery = strings.Join(unencodedParams, "&")
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
 func (client *AccessReviewInstanceMyDecisionsClient) listHandleResponse(resp *http.Response) (AccessReviewInstanceMyDecisionsClientListResponse, error) {
-	result := AccessReviewInstanceMyDecisionsClientListResponse{RawResponse: resp}
+	result := AccessReviewInstanceMyDecisionsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessReviewDecisionListResult); err != nil {
 		return AccessReviewInstanceMyDecisionsClientListResponse{}, err
 	}
@@ -195,7 +221,7 @@ func (client *AccessReviewInstanceMyDecisionsClient) patchCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2018-05-01-preview")
+	reqQP.Set("api-version", "2021-11-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, properties)
@@ -203,7 +229,7 @@ func (client *AccessReviewInstanceMyDecisionsClient) patchCreateRequest(ctx cont
 
 // patchHandleResponse handles the Patch response.
 func (client *AccessReviewInstanceMyDecisionsClient) patchHandleResponse(resp *http.Response) (AccessReviewInstanceMyDecisionsClientPatchResponse, error) {
-	result := AccessReviewInstanceMyDecisionsClientPatchResponse{RawResponse: resp}
+	result := AccessReviewInstanceMyDecisionsClientPatchResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessReviewDecision); err != nil {
 		return AccessReviewInstanceMyDecisionsClientPatchResponse{}, err
 	}

@@ -1,5 +1,52 @@
 # Release History
 
+## 0.3.0 (2022-04-11)
+### Breaking Changes
+
+- Function `NewAzureBareMetalInstancesClient` return value(s) have been changed from `(*AzureBareMetalInstancesClient)` to `(*AzureBareMetalInstancesClient, error)`
+- Function `*AzureBareMetalInstancesClient.ListBySubscription` return value(s) have been changed from `(*AzureBareMetalInstancesClientListBySubscriptionPager)` to `(*runtime.Pager[AzureBareMetalInstancesClientListBySubscriptionResponse])`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(context.Context, *OperationsClientListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(OperationsClientListResponse, error)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `*AzureBareMetalInstancesClient.ListByResourceGroup` return value(s) have been changed from `(*AzureBareMetalInstancesClientListByResourceGroupPager)` to `(*runtime.Pager[AzureBareMetalInstancesClientListByResourceGroupResponse])`
+- Function `*AzureBareMetalInstancesClientListByResourceGroupPager.Err` has been removed
+- Function `*AzureBareMetalInstancesClientListByResourceGroupPager.NextPage` has been removed
+- Function `CreatedByType.ToPtr` has been removed
+- Function `*AzureBareMetalInstancesClientListBySubscriptionPager.NextPage` has been removed
+- Function `AzureBareMetalHardwareTypeNamesEnum.ToPtr` has been removed
+- Function `*AzureBareMetalInstancesClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*AzureBareMetalInstancesClientListBySubscriptionPager.Err` has been removed
+- Function `AzureBareMetalProvisioningStatesEnum.ToPtr` has been removed
+- Function `*AzureBareMetalInstancesClientListBySubscriptionPager.PageResponse` has been removed
+- Function `AzureBareMetalInstancePowerStateEnum.ToPtr` has been removed
+- Function `AzureBareMetalInstanceSizeNamesEnum.ToPtr` has been removed
+- Struct `AzureBareMetalInstancesClientGetResult` has been removed
+- Struct `AzureBareMetalInstancesClientListByResourceGroupPager` has been removed
+- Struct `AzureBareMetalInstancesClientListByResourceGroupResult` has been removed
+- Struct `AzureBareMetalInstancesClientListBySubscriptionPager` has been removed
+- Struct `AzureBareMetalInstancesClientListBySubscriptionResult` has been removed
+- Struct `AzureBareMetalInstancesClientUpdateResult` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Field `AzureBareMetalInstancesClientGetResult` of struct `AzureBareMetalInstancesClientGetResponse` has been removed
+- Field `RawResponse` of struct `AzureBareMetalInstancesClientGetResponse` has been removed
+- Field `AzureBareMetalInstancesClientListByResourceGroupResult` of struct `AzureBareMetalInstancesClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `AzureBareMetalInstancesClientListByResourceGroupResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `AzureBareMetalInstancesClientUpdateResult` of struct `AzureBareMetalInstancesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `AzureBareMetalInstancesClientUpdateResponse` has been removed
+- Field `AzureBareMetalInstancesClientListBySubscriptionResult` of struct `AzureBareMetalInstancesClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `AzureBareMetalInstancesClientListBySubscriptionResponse` has been removed
+
+### Features Added
+
+- New anonymous field `AzureBareMetalInstance` in struct `AzureBareMetalInstancesClientGetResponse`
+- New anonymous field `AzureBareMetalInstancesListResult` in struct `AzureBareMetalInstancesClientListByResourceGroupResponse`
+- New anonymous field `AzureBareMetalInstance` in struct `AzureBareMetalInstancesClientUpdateResponse`
+- New anonymous field `OperationList` in struct `OperationsClientListResponse`
+- New anonymous field `AzureBareMetalInstancesListResult` in struct `AzureBareMetalInstancesClientListBySubscriptionResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

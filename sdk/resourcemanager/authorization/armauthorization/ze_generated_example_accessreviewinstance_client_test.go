@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -16,87 +16,117 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization"
 )
 
-// x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/preview/2018-05-01-preview/examples/StopAccessReviewInstance.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/authorization/resource-manager/Microsoft.Authorization/preview/2021-11-16-preview/examples/StopAccessReviewInstance.json
 func ExampleAccessReviewInstanceClient_Stop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armauthorization.NewAccessReviewInstanceClient("<subscription-id>", cred, nil)
+	client, err := armauthorization.NewAccessReviewInstanceClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Stop(ctx,
 		"<schedule-definition-id>",
 		"<id>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/preview/2018-05-01-preview/examples/AccessReviewInstanceResetDecisions.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/authorization/resource-manager/Microsoft.Authorization/preview/2021-11-16-preview/examples/AccessReviewInstanceResetDecisions.json
 func ExampleAccessReviewInstanceClient_ResetDecisions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armauthorization.NewAccessReviewInstanceClient("<subscription-id>", cred, nil)
+	client, err := armauthorization.NewAccessReviewInstanceClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.ResetDecisions(ctx,
 		"<schedule-definition-id>",
 		"<id>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/preview/2018-05-01-preview/examples/AccessReviewInstanceApplyDecisions.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/authorization/resource-manager/Microsoft.Authorization/preview/2021-11-16-preview/examples/AccessReviewInstanceApplyDecisions.json
 func ExampleAccessReviewInstanceClient_ApplyDecisions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armauthorization.NewAccessReviewInstanceClient("<subscription-id>", cred, nil)
+	client, err := armauthorization.NewAccessReviewInstanceClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.ApplyDecisions(ctx,
 		"<schedule-definition-id>",
 		"<id>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/preview/2018-05-01-preview/examples/AccessReviewInstanceSendReminders.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/authorization/resource-manager/Microsoft.Authorization/preview/2021-11-16-preview/examples/AccessReviewInstanceSendReminders.json
 func ExampleAccessReviewInstanceClient_SendReminders() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armauthorization.NewAccessReviewInstanceClient("<subscription-id>", cred, nil)
+	client, err := armauthorization.NewAccessReviewInstanceClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.SendReminders(ctx,
 		"<schedule-definition-id>",
 		"<id>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/preview/2018-05-01-preview/examples/AccessReviewInstanceAcceptRecommendations.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/authorization/resource-manager/Microsoft.Authorization/preview/2021-11-16-preview/examples/AccessReviewInstanceAcceptRecommendations.json
 func ExampleAccessReviewInstanceClient_AcceptRecommendations() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armauthorization.NewAccessReviewInstanceClient("<subscription-id>", cred, nil)
+	client, err := armauthorization.NewAccessReviewInstanceClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.AcceptRecommendations(ctx,
 		"<schedule-definition-id>",
 		"<id>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }

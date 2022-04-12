@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type ApplicationPackageClient struct {
 // subscriptionID - The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000)
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewApplicationPackageClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ApplicationPackageClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewApplicationPackageClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ApplicationPackageClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ApplicationPackageClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Activate - Activates the specified application package. This should be done after the ApplicationPackage was created and
@@ -104,7 +109,7 @@ func (client *ApplicationPackageClient) activateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -112,7 +117,7 @@ func (client *ApplicationPackageClient) activateCreateRequest(ctx context.Contex
 
 // activateHandleResponse handles the Activate response.
 func (client *ApplicationPackageClient) activateHandleResponse(resp *http.Response) (ApplicationPackageClientActivateResponse, error) {
-	result := ApplicationPackageClientActivateResponse{RawResponse: resp}
+	result := ApplicationPackageClientActivateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationPackage); err != nil {
 		return ApplicationPackageClientActivateResponse{}, err
 	}
@@ -173,7 +178,7 @@ func (client *ApplicationPackageClient) createCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	if options != nil && options.Parameters != nil {
@@ -184,7 +189,7 @@ func (client *ApplicationPackageClient) createCreateRequest(ctx context.Context,
 
 // createHandleResponse handles the Create response.
 func (client *ApplicationPackageClient) createHandleResponse(resp *http.Response) (ApplicationPackageClientCreateResponse, error) {
-	result := ApplicationPackageClientCreateResponse{RawResponse: resp}
+	result := ApplicationPackageClientCreateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationPackage); err != nil {
 		return ApplicationPackageClientCreateResponse{}, err
 	}
@@ -211,7 +216,7 @@ func (client *ApplicationPackageClient) Delete(ctx context.Context, resourceGrou
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return ApplicationPackageClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ApplicationPackageClientDeleteResponse{RawResponse: resp}, nil
+	return ApplicationPackageClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -242,7 +247,7 @@ func (client *ApplicationPackageClient) deleteCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -298,7 +303,7 @@ func (client *ApplicationPackageClient) getCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -306,7 +311,7 @@ func (client *ApplicationPackageClient) getCreateRequest(ctx context.Context, re
 
 // getHandleResponse handles the Get response.
 func (client *ApplicationPackageClient) getHandleResponse(resp *http.Response) (ApplicationPackageClientGetResponse, error) {
-	result := ApplicationPackageClientGetResponse{RawResponse: resp}
+	result := ApplicationPackageClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationPackage); err != nil {
 		return ApplicationPackageClientGetResponse{}, err
 	}
@@ -319,16 +324,32 @@ func (client *ApplicationPackageClient) getHandleResponse(resp *http.Response) (
 // accountName - The name of the Batch account.
 // applicationName - The name of the application. This must be unique within the account.
 // options - ApplicationPackageClientListOptions contains the optional parameters for the ApplicationPackageClient.List method.
-func (client *ApplicationPackageClient) List(resourceGroupName string, accountName string, applicationName string, options *ApplicationPackageClientListOptions) *ApplicationPackageClientListPager {
-	return &ApplicationPackageClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, accountName, applicationName, options)
+func (client *ApplicationPackageClient) List(resourceGroupName string, accountName string, applicationName string, options *ApplicationPackageClientListOptions) *runtime.Pager[ApplicationPackageClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ApplicationPackageClientListResponse]{
+		More: func(page ApplicationPackageClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ApplicationPackageClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ListApplicationPackagesResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ApplicationPackageClientListResponse) (ApplicationPackageClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, accountName, applicationName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ApplicationPackageClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ApplicationPackageClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ApplicationPackageClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -358,7 +379,7 @@ func (client *ApplicationPackageClient) listCreateRequest(ctx context.Context, r
 	if options != nil && options.Maxresults != nil {
 		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.Maxresults), 10))
 	}
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -366,7 +387,7 @@ func (client *ApplicationPackageClient) listCreateRequest(ctx context.Context, r
 
 // listHandleResponse handles the List response.
 func (client *ApplicationPackageClient) listHandleResponse(resp *http.Response) (ApplicationPackageClientListResponse, error) {
-	result := ApplicationPackageClientListResponse{RawResponse: resp}
+	result := ApplicationPackageClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListApplicationPackagesResult); err != nil {
 		return ApplicationPackageClientListResponse{}, err
 	}

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type AzureBareMetalInstancesClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewAzureBareMetalInstancesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AzureBareMetalInstancesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewAzureBareMetalInstancesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AzureBareMetalInstancesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &AzureBareMetalInstancesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Gets an Azure BareMetal instance for the specified subscription, resource group, and instance name.
@@ -98,7 +103,7 @@ func (client *AzureBareMetalInstancesClient) getCreateRequest(ctx context.Contex
 
 // getHandleResponse handles the Get response.
 func (client *AzureBareMetalInstancesClient) getHandleResponse(resp *http.Response) (AzureBareMetalInstancesClientGetResponse, error) {
-	result := AzureBareMetalInstancesClientGetResponse{RawResponse: resp}
+	result := AzureBareMetalInstancesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AzureBareMetalInstance); err != nil {
 		return AzureBareMetalInstancesClientGetResponse{}, err
 	}
@@ -111,16 +116,32 @@ func (client *AzureBareMetalInstancesClient) getHandleResponse(resp *http.Respon
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - AzureBareMetalInstancesClientListByResourceGroupOptions contains the optional parameters for the AzureBareMetalInstancesClient.ListByResourceGroup
 // method.
-func (client *AzureBareMetalInstancesClient) ListByResourceGroup(resourceGroupName string, options *AzureBareMetalInstancesClientListByResourceGroupOptions) *AzureBareMetalInstancesClientListByResourceGroupPager {
-	return &AzureBareMetalInstancesClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *AzureBareMetalInstancesClient) ListByResourceGroup(resourceGroupName string, options *AzureBareMetalInstancesClientListByResourceGroupOptions) *runtime.Pager[AzureBareMetalInstancesClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AzureBareMetalInstancesClientListByResourceGroupResponse]{
+		More: func(page AzureBareMetalInstancesClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AzureBareMetalInstancesClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AzureBareMetalInstancesListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *AzureBareMetalInstancesClientListByResourceGroupResponse) (AzureBareMetalInstancesClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AzureBareMetalInstancesClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AzureBareMetalInstancesClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AzureBareMetalInstancesClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -147,7 +168,7 @@ func (client *AzureBareMetalInstancesClient) listByResourceGroupCreateRequest(ct
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *AzureBareMetalInstancesClient) listByResourceGroupHandleResponse(resp *http.Response) (AzureBareMetalInstancesClientListByResourceGroupResponse, error) {
-	result := AzureBareMetalInstancesClientListByResourceGroupResponse{RawResponse: resp}
+	result := AzureBareMetalInstancesClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AzureBareMetalInstancesListResult); err != nil {
 		return AzureBareMetalInstancesClientListByResourceGroupResponse{}, err
 	}
@@ -159,16 +180,32 @@ func (client *AzureBareMetalInstancesClient) listByResourceGroupHandleResponse(r
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AzureBareMetalInstancesClientListBySubscriptionOptions contains the optional parameters for the AzureBareMetalInstancesClient.ListBySubscription
 // method.
-func (client *AzureBareMetalInstancesClient) ListBySubscription(options *AzureBareMetalInstancesClientListBySubscriptionOptions) *AzureBareMetalInstancesClientListBySubscriptionPager {
-	return &AzureBareMetalInstancesClientListBySubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySubscriptionCreateRequest(ctx, options)
+func (client *AzureBareMetalInstancesClient) ListBySubscription(options *AzureBareMetalInstancesClientListBySubscriptionOptions) *runtime.Pager[AzureBareMetalInstancesClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AzureBareMetalInstancesClientListBySubscriptionResponse]{
+		More: func(page AzureBareMetalInstancesClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AzureBareMetalInstancesClientListBySubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AzureBareMetalInstancesListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *AzureBareMetalInstancesClientListBySubscriptionResponse) (AzureBareMetalInstancesClientListBySubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySubscriptionCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AzureBareMetalInstancesClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AzureBareMetalInstancesClientListBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AzureBareMetalInstancesClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
@@ -191,7 +228,7 @@ func (client *AzureBareMetalInstancesClient) listBySubscriptionCreateRequest(ctx
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
 func (client *AzureBareMetalInstancesClient) listBySubscriptionHandleResponse(resp *http.Response) (AzureBareMetalInstancesClientListBySubscriptionResponse, error) {
-	result := AzureBareMetalInstancesClientListBySubscriptionResponse{RawResponse: resp}
+	result := AzureBareMetalInstancesClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AzureBareMetalInstancesListResult); err != nil {
 		return AzureBareMetalInstancesClientListBySubscriptionResponse{}, err
 	}
@@ -249,7 +286,7 @@ func (client *AzureBareMetalInstancesClient) updateCreateRequest(ctx context.Con
 
 // updateHandleResponse handles the Update response.
 func (client *AzureBareMetalInstancesClient) updateHandleResponse(resp *http.Response) (AzureBareMetalInstancesClientUpdateResponse, error) {
-	result := AzureBareMetalInstancesClientUpdateResponse{RawResponse: resp}
+	result := AzureBareMetalInstancesClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AzureBareMetalInstance); err != nil {
 		return AzureBareMetalInstancesClientUpdateResponse{}, err
 	}

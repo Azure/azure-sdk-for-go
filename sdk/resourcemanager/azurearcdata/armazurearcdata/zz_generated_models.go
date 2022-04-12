@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,12 +8,145 @@
 
 package armazurearcdata
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
+
+// ActiveDirectoryConnectorDNSDetails - DNS server details
+type ActiveDirectoryConnectorDNSDetails struct {
+	// REQUIRED; List of Active Directory DNS server IP addresses.
+	NameserverIPAddresses []*string `json:"nameserverIPAddresses,omitempty"`
+
+	// DNS domain name for which DNS lookups should be forwarded to the Active Directory DNS servers.
+	DomainName *string `json:"domainName,omitempty"`
+
+	// Flag indicating whether to prefer Kubernetes DNS server response over AD DNS server response for IP address lookups.
+	PreferK8SDNSForPtrLookups *bool `json:"preferK8sDnsForPtrLookups,omitempty"`
+
+	// Replica count for DNS proxy service. Default value is 1.
+	Replicas *int64 `json:"replicas,omitempty"`
+}
+
+// ActiveDirectoryConnectorDomainDetails - Active Directory domain details
+type ActiveDirectoryConnectorDomainDetails struct {
+	// REQUIRED; null
+	DomainControllers *ActiveDirectoryDomainControllers `json:"domainControllers,omitempty"`
+
+	// REQUIRED; Name (uppercase) of the Active Directory domain that this AD connector will be associated with.
+	Realm *string `json:"realm,omitempty"`
+
+	// NETBIOS name of the Active Directory domain.
+	NetbiosDomainName *string `json:"netbiosDomainName,omitempty"`
+}
+
+// ActiveDirectoryConnectorListResult - A list of active directory connectors
+type ActiveDirectoryConnectorListResult struct {
+	// READ-ONLY; Link to retrieve next page of results.
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+
+	// READ-ONLY; Array of results.
+	Value []*ActiveDirectoryConnectorResource `json:"value,omitempty" azure:"ro"`
+}
+
+// ActiveDirectoryConnectorProperties - The properties of an Active Directory connector resource
+type ActiveDirectoryConnectorProperties struct {
+	// REQUIRED; null
+	Spec *ActiveDirectoryConnectorSpec `json:"spec,omitempty"`
+
+	// null
+	Status *ActiveDirectoryConnectorStatus `json:"status,omitempty"`
+
+	// READ-ONLY; The provisioning state of the Active Directory connector resource.
+	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// ActiveDirectoryConnectorResource - Active directory connector resource
+type ActiveDirectoryConnectorResource struct {
+	// REQUIRED; null
+	Properties *ActiveDirectoryConnectorProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// ActiveDirectoryConnectorSpec - The specifications of the AD Kubernetes resource.
+type ActiveDirectoryConnectorSpec struct {
+	// REQUIRED; null
+	ActiveDirectory *ActiveDirectoryConnectorDomainDetails `json:"activeDirectory,omitempty"`
+
+	// REQUIRED; null
+	DNS *ActiveDirectoryConnectorDNSDetails `json:"dns,omitempty"`
+}
+
+// ActiveDirectoryConnectorStatus - The status of the Kubernetes custom resource.
+type ActiveDirectoryConnectorStatus struct {
+	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
+	AdditionalProperties map[string]interface{}
+
+	// The time that the custom resource was last updated.
+	LastUpdateTime *string `json:"lastUpdateTime,omitempty"`
+
+	// The version of the replicaSet associated with the AD connector custom resource.
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+
+	// The state of the AD connector custom resource.
+	State *string `json:"state,omitempty"`
+}
+
+// ActiveDirectoryConnectorsClientBeginCreateOptions contains the optional parameters for the ActiveDirectoryConnectorsClient.BeginCreate
+// method.
+type ActiveDirectoryConnectorsClientBeginCreateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ActiveDirectoryConnectorsClientBeginDeleteOptions contains the optional parameters for the ActiveDirectoryConnectorsClient.BeginDelete
+// method.
+type ActiveDirectoryConnectorsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ActiveDirectoryConnectorsClientGetOptions contains the optional parameters for the ActiveDirectoryConnectorsClient.Get
+// method.
+type ActiveDirectoryConnectorsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ActiveDirectoryConnectorsClientListOptions contains the optional parameters for the ActiveDirectoryConnectorsClient.List
+// method.
+type ActiveDirectoryConnectorsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ActiveDirectoryDomainController - Information about a domain controller in the AD domain.
+type ActiveDirectoryDomainController struct {
+	// REQUIRED; Fully-qualified domain name of a domain controller in the AD domain.
+	Hostname *string `json:"hostname,omitempty"`
+}
+
+// ActiveDirectoryDomainControllers - Details about the Active Directory domain controllers associated with this AD connector
+// instance
+type ActiveDirectoryDomainControllers struct {
+	// Information about the Primary Domain Controller (PDC) in the AD domain.
+	PrimaryDomainController *ActiveDirectoryDomainController `json:"primaryDomainController,omitempty"`
+
+	// null
+	SecondaryDomainControllers []*ActiveDirectoryDomainController `json:"secondaryDomainControllers,omitempty"`
+}
+
+// ActiveDirectoryInformation - Active Directory information that related to the resource.
+type ActiveDirectoryInformation struct {
+	// Keytab information that is used for the Sql Managed Instance when Active Directory authentication is used.
+	KeytabInformation *KeytabInformation `json:"keytabInformation,omitempty"`
+}
 
 // BasicLoginInformation - Username and password for basic login authentication.
 type BasicLoginInformation struct {
@@ -22,6 +155,25 @@ type BasicLoginInformation struct {
 
 	// Login username.
 	Username *string `json:"username,omitempty"`
+}
+
+// CommonSKU - The resource model definition representing SKU for ARM resources
+type CommonSKU struct {
+	// REQUIRED; The name of the SKU. It is typically a letter+number code
+	Name *string `json:"name,omitempty"`
+
+	// If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible for the
+	// resource this may be omitted.
+	Capacity *int32 `json:"capacity,omitempty"`
+
+	// Whether dev/test is enabled. When the dev field is set to true, the resource is used for dev/test purpose.
+	Dev *bool `json:"dev,omitempty"`
+
+	// If the service has different generations of hardware, for the same SKU, then that can be captured here.
+	Family *string `json:"family,omitempty"`
+
+	// The SKU size. When the name field is the combination of tier and some other value, this would be the standalone code.
+	Size *string `json:"size,omitempty"`
 }
 
 // DataControllerProperties - The data controller properties.
@@ -40,7 +192,7 @@ type DataControllerProperties struct {
 	Infrastructure *Infrastructure `json:"infrastructure,omitempty"`
 
 	// The raw kubernetes information
-	K8SRaw map[string]interface{} `json:"k8sRaw,omitempty"`
+	K8SRaw interface{} `json:"k8sRaw,omitempty"`
 
 	// Last uploaded date from Kubernetes cluster. Defaults to current date time
 	LastUploadedDate *time.Time `json:"lastUploadedDate,omitempty"`
@@ -63,83 +215,8 @@ type DataControllerProperties struct {
 	// Properties on upload watermark. Mostly timestamp for each upload data type
 	UploadWatermark *UploadWatermark `json:"uploadWatermark,omitempty"`
 
-	// READ-ONLY
+	// READ-ONLY; The provisioning state of the Arc Data Controller resource.
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DataControllerProperties.
-func (d DataControllerProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "basicLoginInformation", d.BasicLoginInformation)
-	populate(objectMap, "clusterId", d.ClusterID)
-	populate(objectMap, "extensionId", d.ExtensionID)
-	populate(objectMap, "infrastructure", d.Infrastructure)
-	populate(objectMap, "k8sRaw", d.K8SRaw)
-	populateTimeRFC3339(objectMap, "lastUploadedDate", d.LastUploadedDate)
-	populate(objectMap, "logAnalyticsWorkspaceConfig", d.LogAnalyticsWorkspaceConfig)
-	populate(objectMap, "logsDashboardCredential", d.LogsDashboardCredential)
-	populate(objectMap, "metricsDashboardCredential", d.MetricsDashboardCredential)
-	populate(objectMap, "onPremiseProperty", d.OnPremiseProperty)
-	populate(objectMap, "provisioningState", d.ProvisioningState)
-	populate(objectMap, "uploadServicePrincipal", d.UploadServicePrincipal)
-	populate(objectMap, "uploadWatermark", d.UploadWatermark)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type DataControllerProperties.
-func (d *DataControllerProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "basicLoginInformation":
-			err = unpopulate(val, &d.BasicLoginInformation)
-			delete(rawMsg, key)
-		case "clusterId":
-			err = unpopulate(val, &d.ClusterID)
-			delete(rawMsg, key)
-		case "extensionId":
-			err = unpopulate(val, &d.ExtensionID)
-			delete(rawMsg, key)
-		case "infrastructure":
-			err = unpopulate(val, &d.Infrastructure)
-			delete(rawMsg, key)
-		case "k8sRaw":
-			err = unpopulate(val, &d.K8SRaw)
-			delete(rawMsg, key)
-		case "lastUploadedDate":
-			err = unpopulateTimeRFC3339(val, &d.LastUploadedDate)
-			delete(rawMsg, key)
-		case "logAnalyticsWorkspaceConfig":
-			err = unpopulate(val, &d.LogAnalyticsWorkspaceConfig)
-			delete(rawMsg, key)
-		case "logsDashboardCredential":
-			err = unpopulate(val, &d.LogsDashboardCredential)
-			delete(rawMsg, key)
-		case "metricsDashboardCredential":
-			err = unpopulate(val, &d.MetricsDashboardCredential)
-			delete(rawMsg, key)
-		case "onPremiseProperty":
-			err = unpopulate(val, &d.OnPremiseProperty)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &d.ProvisioningState)
-			delete(rawMsg, key)
-		case "uploadServicePrincipal":
-			err = unpopulate(val, &d.UploadServicePrincipal)
-			delete(rawMsg, key)
-		case "uploadWatermark":
-			err = unpopulate(val, &d.UploadWatermark)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // DataControllerResource - Data controller resource
@@ -169,43 +246,27 @@ type DataControllerResource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DataControllerResource.
-func (d DataControllerResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "extendedLocation", d.ExtendedLocation)
-	populate(objectMap, "id", d.ID)
-	populate(objectMap, "location", d.Location)
-	populate(objectMap, "name", d.Name)
-	populate(objectMap, "properties", d.Properties)
-	populate(objectMap, "systemData", d.SystemData)
-	populate(objectMap, "tags", d.Tags)
-	populate(objectMap, "type", d.Type)
-	return json.Marshal(objectMap)
-}
-
 // DataControllerUpdate - Used for updating a data controller resource.
 type DataControllerUpdate struct {
+	// The data controller's properties
+	Properties *DataControllerProperties `json:"properties,omitempty"`
+
 	// Resource tags
 	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DataControllerUpdate.
-func (d DataControllerUpdate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "tags", d.Tags)
-	return json.Marshal(objectMap)
 }
 
 // DataControllersClientBeginDeleteDataControllerOptions contains the optional parameters for the DataControllersClient.BeginDeleteDataController
 // method.
 type DataControllersClientBeginDeleteDataControllerOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // DataControllersClientBeginPutDataControllerOptions contains the optional parameters for the DataControllersClient.BeginPutDataController
 // method.
 type DataControllersClientBeginPutDataControllerOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // DataControllersClientGetDataControllerOptions contains the optional parameters for the DataControllersClient.GetDataController
@@ -252,16 +313,6 @@ type ErrorResponseBody struct {
 	Target *string `json:"target,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ErrorResponseBody.
-func (e ErrorResponseBody) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "message", e.Message)
-	populate(objectMap, "target", e.Target)
-	return json.Marshal(objectMap)
-}
-
 // ExtendedLocation - The complex type of the extended location.
 type ExtendedLocation struct {
 	// The name of the extended location.
@@ -274,7 +325,7 @@ type ExtendedLocation struct {
 // K8SResourceRequirements - The kubernetes resource limits and requests used to restrict or reserve resource usage.
 type K8SResourceRequirements struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]map[string]interface{}
+	AdditionalProperties map[string]interface{}
 
 	// Limits for a kubernetes resource type (e.g 'cpu', 'memory'). The 'cpu' request must be less than or equal to 'cpu' limit.
 	// Default 'cpu' is 2, minimum is 1. Default 'memory' is '4Gi', minimum is '2Gi.
@@ -287,154 +338,30 @@ type K8SResourceRequirements struct {
 	Requests map[string]*string `json:"requests,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type K8SResourceRequirements.
-func (k K8SResourceRequirements) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "limits", k.Limits)
-	populate(objectMap, "requests", k.Requests)
-	if k.AdditionalProperties != nil {
-		for key, val := range k.AdditionalProperties {
-			objectMap[key] = val
-		}
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type K8SResourceRequirements.
-func (k *K8SResourceRequirements) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "limits":
-			err = unpopulate(val, &k.Limits)
-			delete(rawMsg, key)
-		case "requests":
-			err = unpopulate(val, &k.Requests)
-			delete(rawMsg, key)
-		default:
-			if k.AdditionalProperties == nil {
-				k.AdditionalProperties = map[string]map[string]interface{}{}
-			}
-			if val != nil {
-				var aux map[string]interface{}
-				err = json.Unmarshal(val, &aux)
-				k.AdditionalProperties[key] = aux
-			}
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // K8SScheduling - The kubernetes scheduling information.
 type K8SScheduling struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]map[string]interface{}
+	AdditionalProperties map[string]interface{}
 
 	// The kubernetes scheduling options. It describes restrictions used to help Kubernetes select appropriate nodes to host the
 	// database service
 	Default *K8SSchedulingOptions `json:"default,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type K8SScheduling.
-func (k K8SScheduling) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "default", k.Default)
-	if k.AdditionalProperties != nil {
-		for key, val := range k.AdditionalProperties {
-			objectMap[key] = val
-		}
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type K8SScheduling.
-func (k *K8SScheduling) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "default":
-			err = unpopulate(val, &k.Default)
-			delete(rawMsg, key)
-		default:
-			if k.AdditionalProperties == nil {
-				k.AdditionalProperties = map[string]map[string]interface{}{}
-			}
-			if val != nil {
-				var aux map[string]interface{}
-				err = json.Unmarshal(val, &aux)
-				k.AdditionalProperties[key] = aux
-			}
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // K8SSchedulingOptions - The kubernetes scheduling options. It describes restrictions used to help Kubernetes select appropriate
 // nodes to host the database service
 type K8SSchedulingOptions struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]map[string]interface{}
+	AdditionalProperties map[string]interface{}
 
 	// The kubernetes resource limits and requests used to restrict or reserve resource usage.
 	Resources *K8SResourceRequirements `json:"resources,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type K8SSchedulingOptions.
-func (k K8SSchedulingOptions) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "resources", k.Resources)
-	if k.AdditionalProperties != nil {
-		for key, val := range k.AdditionalProperties {
-			objectMap[key] = val
-		}
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type K8SSchedulingOptions.
-func (k *K8SSchedulingOptions) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "resources":
-			err = unpopulate(val, &k.Resources)
-			delete(rawMsg, key)
-		default:
-			if k.AdditionalProperties == nil {
-				k.AdditionalProperties = map[string]map[string]interface{}{}
-			}
-			if val != nil {
-				var aux map[string]interface{}
-				err = json.Unmarshal(val, &aux)
-				k.AdditionalProperties[key] = aux
-			}
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
+// KeytabInformation - Keytab used for authenticate with Active Directory.
+type KeytabInformation struct {
+	// A base64-encoded keytab.
+	Keytab *string `json:"keytab,omitempty"`
 }
 
 // LogAnalyticsWorkspaceConfig - Log analytics workspace id and primary key
@@ -473,18 +400,7 @@ type Operation struct {
 	Origin *OperationOrigin `json:"origin,omitempty" azure:"ro"`
 
 	// READ-ONLY; Additional descriptions for the operation.
-	Properties map[string]map[string]interface{} `json:"properties,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Operation.
-func (o Operation) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "display", o.Display)
-	populate(objectMap, "isDataAction", o.IsDataAction)
-	populate(objectMap, "name", o.Name)
-	populate(objectMap, "origin", o.Origin)
-	populate(objectMap, "properties", o.Properties)
-	return json.Marshal(objectMap)
+	Properties map[string]interface{} `json:"properties,omitempty" azure:"ro"`
 }
 
 // OperationDisplay - Display metadata associated with the operation.
@@ -511,31 +427,160 @@ type OperationListResult struct {
 	Value []*Operation `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
-func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
-}
-
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// PageOfDataControllerResource - A list of data controllers.
 type PageOfDataControllerResource struct {
 	// Link to retrieve next page of results.
-	NextLink *string                   `json:"nextLink,omitempty"`
-	Value    []*DataControllerResource `json:"value,omitempty"`
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// Array of results.
+	Value []*DataControllerResource `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PageOfDataControllerResource.
-func (p PageOfDataControllerResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
+// PostgresInstance - A Postgres Instance.
+type PostgresInstance struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
+	// REQUIRED; null
+	Properties *PostgresInstanceProperties `json:"properties,omitempty"`
+
+	// The extendedLocation of the resource.
+	ExtendedLocation *ExtendedLocation `json:"extendedLocation,omitempty"`
+
+	// Resource sku.
+	SKU *PostgresInstanceSKU `json:"sku,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// PostgresInstanceListResult - A list of PostgresInstance.
+type PostgresInstanceListResult struct {
+	// READ-ONLY; Link to retrieve next page of results.
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+
+	// READ-ONLY; Array of results.
+	Value []*PostgresInstance `json:"value,omitempty" azure:"ro"`
+}
+
+// PostgresInstanceProperties - Postgres Instance properties.
+type PostgresInstanceProperties struct {
+	// The instance admin
+	Admin *string `json:"admin,omitempty"`
+
+	// Username and password for basic authentication.
+	BasicLoginInformation *BasicLoginInformation `json:"basicLoginInformation,omitempty"`
+
+	// The data controller id
+	DataControllerID *string `json:"dataControllerId,omitempty"`
+
+	// The raw kubernetes information
+	K8SRaw interface{} `json:"k8sRaw,omitempty"`
+
+	// Last uploaded date from Kubernetes cluster. Defaults to current date time
+	LastUploadedDate *time.Time `json:"lastUploadedDate,omitempty"`
+
+	// READ-ONLY; The provisioning state of the Azure Arc-enabled PostgreSQL instance.
+	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// PostgresInstanceSKU - The resource model definition representing SKU for Azure Database for PostgresSQL - Azure Arc
+type PostgresInstanceSKU struct {
+	// REQUIRED; The name of the SKU. It is typically a letter+number code
+	Name *string `json:"name,omitempty"`
+
+	// If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible for the
+	// resource this may be omitted.
+	Capacity *int32 `json:"capacity,omitempty"`
+
+	// Whether dev/test is enabled. When the dev field is set to true, the resource is used for dev/test purpose.
+	Dev *bool `json:"dev,omitempty"`
+
+	// If the service has different generations of hardware, for the same SKU, then that can be captured here.
+	Family *string `json:"family,omitempty"`
+
+	// The SKU size. When the name field is the combination of tier and some other value, this would be the standalone code.
+	Size *string `json:"size,omitempty"`
+
+	// This field is required to be implemented by the Resource Provider if the service has more than one tier.
+	Tier *string `json:"tier,omitempty"`
+}
+
+// PostgresInstanceUpdate - An update to a Postgres Instance.
+type PostgresInstanceUpdate struct {
+	// Postgres Instance properties.
+	Properties *PostgresInstanceProperties `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+// PostgresInstancesClientBeginCreateOptions contains the optional parameters for the PostgresInstancesClient.BeginCreate
+// method.
+type PostgresInstancesClientBeginCreateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// PostgresInstancesClientBeginDeleteOptions contains the optional parameters for the PostgresInstancesClient.BeginDelete
+// method.
+type PostgresInstancesClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// PostgresInstancesClientGetOptions contains the optional parameters for the PostgresInstancesClient.Get method.
+type PostgresInstancesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PostgresInstancesClientListByResourceGroupOptions contains the optional parameters for the PostgresInstancesClient.ListByResourceGroup
+// method.
+type PostgresInstancesClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PostgresInstancesClientListOptions contains the optional parameters for the PostgresInstancesClient.List method.
+type PostgresInstancesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PostgresInstancesClientUpdateOptions contains the optional parameters for the PostgresInstancesClient.Update method.
+type PostgresInstancesClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
+// location
+type ProxyResource struct {
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
@@ -583,76 +628,19 @@ type SQLManagedInstance struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SQLManagedInstance.
-func (s SQLManagedInstance) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "extendedLocation", s.ExtendedLocation)
-	populate(objectMap, "id", s.ID)
-	populate(objectMap, "location", s.Location)
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "properties", s.Properties)
-	populate(objectMap, "sku", s.SKU)
-	populate(objectMap, "systemData", s.SystemData)
-	populate(objectMap, "tags", s.Tags)
-	populate(objectMap, "type", s.Type)
-	return json.Marshal(objectMap)
-}
-
 // SQLManagedInstanceK8SRaw - The raw kubernetes information.
 type SQLManagedInstanceK8SRaw struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]map[string]interface{}
+	AdditionalProperties map[string]interface{}
 
 	// The kubernetes spec information.
 	Spec *SQLManagedInstanceK8SSpec `json:"spec,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SQLManagedInstanceK8SRaw.
-func (s SQLManagedInstanceK8SRaw) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "spec", s.Spec)
-	if s.AdditionalProperties != nil {
-		for key, val := range s.AdditionalProperties {
-			objectMap[key] = val
-		}
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SQLManagedInstanceK8SRaw.
-func (s *SQLManagedInstanceK8SRaw) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "spec":
-			err = unpopulate(val, &s.Spec)
-			delete(rawMsg, key)
-		default:
-			if s.AdditionalProperties == nil {
-				s.AdditionalProperties = map[string]map[string]interface{}{}
-			}
-			if val != nil {
-				var aux map[string]interface{}
-				err = json.Unmarshal(val, &aux)
-				s.AdditionalProperties[key] = aux
-			}
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // SQLManagedInstanceK8SSpec - The kubernetes spec information.
 type SQLManagedInstanceK8SSpec struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]map[string]interface{}
+	AdditionalProperties map[string]interface{}
 
 	// This option specifies the number of SQL Managed Instance replicas that will be deployed in your Kubernetes cluster for
 	// high availability purposes. If sku.tier is BusinessCritical, allowed values are
@@ -661,52 +649,6 @@ type SQLManagedInstanceK8SSpec struct {
 
 	// The kubernetes scheduling information.
 	Scheduling *K8SScheduling `json:"scheduling,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SQLManagedInstanceK8SSpec.
-func (s SQLManagedInstanceK8SSpec) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "replicas", s.Replicas)
-	populate(objectMap, "scheduling", s.Scheduling)
-	if s.AdditionalProperties != nil {
-		for key, val := range s.AdditionalProperties {
-			objectMap[key] = val
-		}
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SQLManagedInstanceK8SSpec.
-func (s *SQLManagedInstanceK8SSpec) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "replicas":
-			err = unpopulate(val, &s.Replicas)
-			delete(rawMsg, key)
-		case "scheduling":
-			err = unpopulate(val, &s.Scheduling)
-			delete(rawMsg, key)
-		default:
-			if s.AdditionalProperties == nil {
-				s.AdditionalProperties = map[string]map[string]interface{}{}
-			}
-			if val != nil {
-				var aux map[string]interface{}
-				err = json.Unmarshal(val, &aux)
-				s.AdditionalProperties[key] = aux
-			}
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // SQLManagedInstanceListResult - A list of SqlManagedInstance.
@@ -718,16 +660,11 @@ type SQLManagedInstanceListResult struct {
 	Value []*SQLManagedInstance `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SQLManagedInstanceListResult.
-func (s SQLManagedInstanceListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
-}
-
 // SQLManagedInstanceProperties - Properties of sqlManagedInstance.
 type SQLManagedInstanceProperties struct {
+	// Active Directory information related to this SQL Managed Instance.
+	ActiveDirectoryInformation *ActiveDirectoryInformation `json:"activeDirectoryInformation,omitempty"`
+
 	// The instance admin user
 	Admin *string `json:"admin,omitempty"`
 
@@ -758,85 +695,22 @@ type SQLManagedInstanceProperties struct {
 	// The instance start time
 	StartTime *string `json:"startTime,omitempty"`
 
-	// READ-ONLY
+	// READ-ONLY; The provisioning state of the Arc-enabled SQL Managed Instance resource.
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SQLManagedInstanceProperties.
-func (s SQLManagedInstanceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "admin", s.Admin)
-	populate(objectMap, "basicLoginInformation", s.BasicLoginInformation)
-	populate(objectMap, "clusterId", s.ClusterID)
-	populate(objectMap, "dataControllerId", s.DataControllerID)
-	populate(objectMap, "endTime", s.EndTime)
-	populate(objectMap, "extensionId", s.ExtensionID)
-	populate(objectMap, "k8sRaw", s.K8SRaw)
-	populateTimeRFC3339(objectMap, "lastUploadedDate", s.LastUploadedDate)
-	populate(objectMap, "licenseType", s.LicenseType)
-	populate(objectMap, "provisioningState", s.ProvisioningState)
-	populate(objectMap, "startTime", s.StartTime)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SQLManagedInstanceProperties.
-func (s *SQLManagedInstanceProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "admin":
-			err = unpopulate(val, &s.Admin)
-			delete(rawMsg, key)
-		case "basicLoginInformation":
-			err = unpopulate(val, &s.BasicLoginInformation)
-			delete(rawMsg, key)
-		case "clusterId":
-			err = unpopulate(val, &s.ClusterID)
-			delete(rawMsg, key)
-		case "dataControllerId":
-			err = unpopulate(val, &s.DataControllerID)
-			delete(rawMsg, key)
-		case "endTime":
-			err = unpopulate(val, &s.EndTime)
-			delete(rawMsg, key)
-		case "extensionId":
-			err = unpopulate(val, &s.ExtensionID)
-			delete(rawMsg, key)
-		case "k8sRaw":
-			err = unpopulate(val, &s.K8SRaw)
-			delete(rawMsg, key)
-		case "lastUploadedDate":
-			err = unpopulateTimeRFC3339(val, &s.LastUploadedDate)
-			delete(rawMsg, key)
-		case "licenseType":
-			err = unpopulate(val, &s.LicenseType)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &s.ProvisioningState)
-			delete(rawMsg, key)
-		case "startTime":
-			err = unpopulate(val, &s.StartTime)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // SQLManagedInstanceSKU - The resource model definition representing SKU for Azure Managed Instance - Azure Arc
 type SQLManagedInstanceSKU struct {
 	// REQUIRED; The name of the SKU.
-	Name     *SQLManagedInstanceSKUName `json:"name,omitempty"`
-	Capacity *int32                     `json:"capacity,omitempty"`
+	Name *string `json:"name,omitempty"`
+
+	// The SKU capacity
+	Capacity *int32 `json:"capacity,omitempty"`
 
 	// Whether dev/test is enabled. When the dev field is set to true, the resource is used for dev/test purpose.
-	Dev    *bool   `json:"dev,omitempty"`
+	Dev *bool `json:"dev,omitempty"`
+
+	// The SKU family
 	Family *string `json:"family,omitempty"`
 
 	// The SKU size. When the name field is the combination of tier and some other value, this would be the standalone code.
@@ -852,23 +726,18 @@ type SQLManagedInstanceUpdate struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SQLManagedInstanceUpdate.
-func (s SQLManagedInstanceUpdate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "tags", s.Tags)
-	return json.Marshal(objectMap)
-}
-
 // SQLManagedInstancesClientBeginCreateOptions contains the optional parameters for the SQLManagedInstancesClient.BeginCreate
 // method.
 type SQLManagedInstancesClientBeginCreateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // SQLManagedInstancesClientBeginDeleteOptions contains the optional parameters for the SQLManagedInstancesClient.BeginDelete
 // method.
 type SQLManagedInstancesClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // SQLManagedInstancesClientGetOptions contains the optional parameters for the SQLManagedInstancesClient.Get method.
@@ -916,19 +785,6 @@ type SQLServerInstance struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SQLServerInstance.
-func (s SQLServerInstance) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", s.ID)
-	populate(objectMap, "location", s.Location)
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "properties", s.Properties)
-	populate(objectMap, "systemData", s.SystemData)
-	populate(objectMap, "tags", s.Tags)
-	populate(objectMap, "type", s.Type)
-	return json.Marshal(objectMap)
-}
-
 // SQLServerInstanceListResult - A list of SqlServerInstance.
 type SQLServerInstanceListResult struct {
 	// READ-ONLY; Link to retrieve next page of results.
@@ -936,14 +792,6 @@ type SQLServerInstanceListResult struct {
 
 	// READ-ONLY; Array of results.
 	Value []*SQLServerInstance `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SQLServerInstanceListResult.
-func (s SQLServerInstanceListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
 }
 
 // SQLServerInstanceProperties - Properties of SqlServerInstance.
@@ -968,6 +816,9 @@ type SQLServerInstanceProperties struct {
 
 	// SQL Server edition.
 	Edition *EditionType `json:"edition,omitempty"`
+
+	// Type of host for Azure Arc SQL Server
+	HostType *HostType `json:"hostType,omitempty"`
 
 	// SQL Server instance name.
 	InstanceName *string `json:"instanceName,omitempty"`
@@ -996,99 +847,8 @@ type SQLServerInstanceProperties struct {
 	// READ-ONLY; The time when the resource was created.
 	CreateTime *string `json:"createTime,omitempty" azure:"ro"`
 
-	// READ-ONLY
+	// READ-ONLY; The provisioning state of the Arc-enabled SQL Server resource.
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SQLServerInstanceProperties.
-func (s SQLServerInstanceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "azureDefenderStatus", s.AzureDefenderStatus)
-	populateTimeRFC3339(objectMap, "azureDefenderStatusLastUpdated", s.AzureDefenderStatusLastUpdated)
-	populate(objectMap, "collation", s.Collation)
-	populate(objectMap, "containerResourceId", s.ContainerResourceID)
-	populate(objectMap, "createTime", s.CreateTime)
-	populate(objectMap, "currentVersion", s.CurrentVersion)
-	populate(objectMap, "edition", s.Edition)
-	populate(objectMap, "instanceName", s.InstanceName)
-	populate(objectMap, "licenseType", s.LicenseType)
-	populate(objectMap, "patchLevel", s.PatchLevel)
-	populate(objectMap, "productId", s.ProductID)
-	populate(objectMap, "provisioningState", s.ProvisioningState)
-	populate(objectMap, "status", s.Status)
-	populate(objectMap, "tcpDynamicPorts", s.TCPDynamicPorts)
-	populate(objectMap, "tcpStaticPorts", s.TCPStaticPorts)
-	populate(objectMap, "vCore", s.VCore)
-	populate(objectMap, "version", s.Version)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SQLServerInstanceProperties.
-func (s *SQLServerInstanceProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "azureDefenderStatus":
-			err = unpopulate(val, &s.AzureDefenderStatus)
-			delete(rawMsg, key)
-		case "azureDefenderStatusLastUpdated":
-			err = unpopulateTimeRFC3339(val, &s.AzureDefenderStatusLastUpdated)
-			delete(rawMsg, key)
-		case "collation":
-			err = unpopulate(val, &s.Collation)
-			delete(rawMsg, key)
-		case "containerResourceId":
-			err = unpopulate(val, &s.ContainerResourceID)
-			delete(rawMsg, key)
-		case "createTime":
-			err = unpopulate(val, &s.CreateTime)
-			delete(rawMsg, key)
-		case "currentVersion":
-			err = unpopulate(val, &s.CurrentVersion)
-			delete(rawMsg, key)
-		case "edition":
-			err = unpopulate(val, &s.Edition)
-			delete(rawMsg, key)
-		case "instanceName":
-			err = unpopulate(val, &s.InstanceName)
-			delete(rawMsg, key)
-		case "licenseType":
-			err = unpopulate(val, &s.LicenseType)
-			delete(rawMsg, key)
-		case "patchLevel":
-			err = unpopulate(val, &s.PatchLevel)
-			delete(rawMsg, key)
-		case "productId":
-			err = unpopulate(val, &s.ProductID)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &s.ProvisioningState)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &s.Status)
-			delete(rawMsg, key)
-		case "tcpDynamicPorts":
-			err = unpopulate(val, &s.TCPDynamicPorts)
-			delete(rawMsg, key)
-		case "tcpStaticPorts":
-			err = unpopulate(val, &s.TCPStaticPorts)
-			delete(rawMsg, key)
-		case "vCore":
-			err = unpopulate(val, &s.VCore)
-			delete(rawMsg, key)
-		case "version":
-			err = unpopulate(val, &s.Version)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // SQLServerInstanceUpdate - An update to a SQL Server Instance.
@@ -1097,23 +857,18 @@ type SQLServerInstanceUpdate struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SQLServerInstanceUpdate.
-func (s SQLServerInstanceUpdate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "tags", s.Tags)
-	return json.Marshal(objectMap)
-}
-
 // SQLServerInstancesClientBeginCreateOptions contains the optional parameters for the SQLServerInstancesClient.BeginCreate
 // method.
 type SQLServerInstancesClientBeginCreateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // SQLServerInstancesClientBeginDeleteOptions contains the optional parameters for the SQLServerInstancesClient.BeginDelete
 // method.
 type SQLServerInstancesClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // SQLServerInstancesClientGetOptions contains the optional parameters for the SQLServerInstancesClient.Get method.
@@ -1158,53 +913,6 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SystemData.
-func (s SystemData) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
-	populate(objectMap, "createdBy", s.CreatedBy)
-	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
-	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
-	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SystemData.
-func (s *SystemData) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdAt":
-			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
-			delete(rawMsg, key)
-		case "createdBy":
-			err = unpopulate(val, &s.CreatedBy)
-			delete(rawMsg, key)
-		case "createdByType":
-			err = unpopulate(val, &s.CreatedByType)
-			delete(rawMsg, key)
-		case "lastModifiedAt":
-			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
-			delete(rawMsg, key)
-		case "lastModifiedBy":
-			err = unpopulate(val, &s.LastModifiedBy)
-			delete(rawMsg, key)
-		case "lastModifiedByType":
-			err = unpopulate(val, &s.LastModifiedByType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
 // and a 'location'
 type TrackedResource struct {
@@ -1225,18 +933,6 @@ type TrackedResource struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type TrackedResource.
-func (t TrackedResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", t.ID)
-	populate(objectMap, "location", t.Location)
-	populate(objectMap, "name", t.Name)
-	populate(objectMap, "systemData", t.SystemData)
-	populate(objectMap, "tags", t.Tags)
-	populate(objectMap, "type", t.Type)
-	return json.Marshal(objectMap)
 }
 
 // UploadServicePrincipal - Service principal for uploading billing, metrics and logs.
@@ -1264,56 +960,4 @@ type UploadWatermark struct {
 
 	// Last uploaded date for usages from kubernetes cluster. Defaults to current date time
 	Usages *time.Time `json:"usages,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type UploadWatermark.
-func (u UploadWatermark) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "logs", u.Logs)
-	populateTimeRFC3339(objectMap, "metrics", u.Metrics)
-	populateTimeRFC3339(objectMap, "usages", u.Usages)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type UploadWatermark.
-func (u *UploadWatermark) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "logs":
-			err = unpopulateTimeRFC3339(val, &u.Logs)
-			delete(rawMsg, key)
-		case "metrics":
-			err = unpopulateTimeRFC3339(val, &u.Metrics)
-			delete(rawMsg, key)
-		case "usages":
-			err = unpopulateTimeRFC3339(val, &u.Usages)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

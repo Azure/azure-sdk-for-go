@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type JobStreamClient struct {
 // forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewJobStreamClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *JobStreamClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewJobStreamClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*JobStreamClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &JobStreamClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Retrieve the job stream identified by job stream id.
@@ -111,7 +116,7 @@ func (client *JobStreamClient) getCreateRequest(ctx context.Context, resourceGro
 
 // getHandleResponse handles the Get response.
 func (client *JobStreamClient) getHandleResponse(resp *http.Response) (JobStreamClientGetResponse, error) {
-	result := JobStreamClientGetResponse{RawResponse: resp}
+	result := JobStreamClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobStream); err != nil {
 		return JobStreamClientGetResponse{}, err
 	}
@@ -124,16 +129,32 @@ func (client *JobStreamClient) getHandleResponse(resp *http.Response) (JobStream
 // automationAccountName - The name of the automation account.
 // jobName - The job name.
 // options - JobStreamClientListByJobOptions contains the optional parameters for the JobStreamClient.ListByJob method.
-func (client *JobStreamClient) ListByJob(resourceGroupName string, automationAccountName string, jobName string, options *JobStreamClientListByJobOptions) *JobStreamClientListByJobPager {
-	return &JobStreamClientListByJobPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByJobCreateRequest(ctx, resourceGroupName, automationAccountName, jobName, options)
+func (client *JobStreamClient) ListByJob(resourceGroupName string, automationAccountName string, jobName string, options *JobStreamClientListByJobOptions) *runtime.Pager[JobStreamClientListByJobResponse] {
+	return runtime.NewPager(runtime.PageProcessor[JobStreamClientListByJobResponse]{
+		More: func(page JobStreamClientListByJobResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp JobStreamClientListByJobResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.JobStreamListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *JobStreamClientListByJobResponse) (JobStreamClientListByJobResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByJobCreateRequest(ctx, resourceGroupName, automationAccountName, jobName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return JobStreamClientListByJobResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return JobStreamClientListByJobResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return JobStreamClientListByJobResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByJobHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByJobCreateRequest creates the ListByJob request.
@@ -174,7 +195,7 @@ func (client *JobStreamClient) listByJobCreateRequest(ctx context.Context, resou
 
 // listByJobHandleResponse handles the ListByJob response.
 func (client *JobStreamClient) listByJobHandleResponse(resp *http.Response) (JobStreamClientListByJobResponse, error) {
-	result := JobStreamClientListByJobResponse{RawResponse: resp}
+	result := JobStreamClientListByJobResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobStreamListResult); err != nil {
 		return JobStreamClientListByJobResponse{}, err
 	}

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type RunbookClient struct {
 // forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewRunbookClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RunbookClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewRunbookClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RunbookClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &RunbookClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Create the runbook identified by runbook name.
@@ -105,7 +110,7 @@ func (client *RunbookClient) createOrUpdateCreateRequest(ctx context.Context, re
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *RunbookClient) createOrUpdateHandleResponse(resp *http.Response) (RunbookClientCreateOrUpdateResponse, error) {
-	result := RunbookClientCreateOrUpdateResponse{RawResponse: resp}
+	result := RunbookClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Runbook); err != nil {
 		return RunbookClientCreateOrUpdateResponse{}, err
 	}
@@ -130,7 +135,7 @@ func (client *RunbookClient) Delete(ctx context.Context, resourceGroupName strin
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return RunbookClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return RunbookClientDeleteResponse{RawResponse: resp}, nil
+	return RunbookClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -216,7 +221,7 @@ func (client *RunbookClient) getCreateRequest(ctx context.Context, resourceGroup
 
 // getHandleResponse handles the Get response.
 func (client *RunbookClient) getHandleResponse(resp *http.Response) (RunbookClientGetResponse, error) {
-	result := RunbookClientGetResponse{RawResponse: resp}
+	result := RunbookClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Runbook); err != nil {
 		return RunbookClientGetResponse{}, err
 	}
@@ -241,7 +246,7 @@ func (client *RunbookClient) GetContent(ctx context.Context, resourceGroupName s
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted, http.StatusNoContent) {
 		return RunbookClientGetContentResponse{}, runtime.NewResponseError(resp)
 	}
-	return RunbookClientGetContentResponse{RawResponse: resp}, nil
+	return RunbookClientGetContentResponse{}, nil
 }
 
 // getContentCreateRequest creates the GetContent request.
@@ -280,16 +285,32 @@ func (client *RunbookClient) getContentCreateRequest(ctx context.Context, resour
 // automationAccountName - The name of the automation account.
 // options - RunbookClientListByAutomationAccountOptions contains the optional parameters for the RunbookClient.ListByAutomationAccount
 // method.
-func (client *RunbookClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *RunbookClientListByAutomationAccountOptions) *RunbookClientListByAutomationAccountPager {
-	return &RunbookClientListByAutomationAccountPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, options)
+func (client *RunbookClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *RunbookClientListByAutomationAccountOptions) *runtime.Pager[RunbookClientListByAutomationAccountResponse] {
+	return runtime.NewPager(runtime.PageProcessor[RunbookClientListByAutomationAccountResponse]{
+		More: func(page RunbookClientListByAutomationAccountResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp RunbookClientListByAutomationAccountResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.RunbookListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *RunbookClientListByAutomationAccountResponse) (RunbookClientListByAutomationAccountResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return RunbookClientListByAutomationAccountResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return RunbookClientListByAutomationAccountResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return RunbookClientListByAutomationAccountResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByAutomationAccountHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByAutomationAccountCreateRequest creates the ListByAutomationAccount request.
@@ -320,7 +341,7 @@ func (client *RunbookClient) listByAutomationAccountCreateRequest(ctx context.Co
 
 // listByAutomationAccountHandleResponse handles the ListByAutomationAccount response.
 func (client *RunbookClient) listByAutomationAccountHandleResponse(resp *http.Response) (RunbookClientListByAutomationAccountResponse, error) {
-	result := RunbookClientListByAutomationAccountResponse{RawResponse: resp}
+	result := RunbookClientListByAutomationAccountResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RunbookListResult); err != nil {
 		return RunbookClientListByAutomationAccountResponse{}, err
 	}
@@ -333,22 +354,16 @@ func (client *RunbookClient) listByAutomationAccountHandleResponse(resp *http.Re
 // automationAccountName - The name of the automation account.
 // runbookName - The parameters supplied to the publish runbook operation.
 // options - RunbookClientBeginPublishOptions contains the optional parameters for the RunbookClient.BeginPublish method.
-func (client *RunbookClient) BeginPublish(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, options *RunbookClientBeginPublishOptions) (RunbookClientPublishPollerResponse, error) {
-	resp, err := client.publish(ctx, resourceGroupName, automationAccountName, runbookName, options)
-	if err != nil {
-		return RunbookClientPublishPollerResponse{}, err
+func (client *RunbookClient) BeginPublish(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, options *RunbookClientBeginPublishOptions) (*armruntime.Poller[RunbookClientPublishResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.publish(ctx, resourceGroupName, automationAccountName, runbookName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[RunbookClientPublishResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[RunbookClientPublishResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := RunbookClientPublishPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("RunbookClient.Publish", "", resp, client.pl)
-	if err != nil {
-		return RunbookClientPublishPollerResponse{}, err
-	}
-	result.Poller = &RunbookClientPublishPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Publish - Publish runbook draft.
@@ -452,7 +467,7 @@ func (client *RunbookClient) updateCreateRequest(ctx context.Context, resourceGr
 
 // updateHandleResponse handles the Update response.
 func (client *RunbookClient) updateHandleResponse(resp *http.Response) (RunbookClientUpdateResponse, error) {
-	result := RunbookClientUpdateResponse{RawResponse: resp}
+	result := RunbookClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Runbook); err != nil {
 		return RunbookClientUpdateResponse{}, err
 	}

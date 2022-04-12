@@ -5,6 +5,7 @@ package azblob
 
 import (
 	"context"
+	"errors"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -226,18 +227,25 @@ func (c *ContainerClient) ListBlobsHierarchy(delimiter string, o *ContainerListB
 	return toContainerListBlobHierarchySegmentPager(pager)
 }
 
-// GetSASToken is a convenience method for generating a SAS token for the currently pointed at container.
+// GetSASURL is a convenience method for generating a SAS token for the currently pointed at container.
 // It can only be used if the credential supplied during creation was a SharedKeyCredential.
-func (c *ContainerClient) GetSASToken(permissions ContainerSASPermissions, start time.Time, expiry time.Time) (SASQueryParameters, error) {
+func (c *ContainerClient) GetSASURL(permissions ContainerSASPermissions, start time.Time, expiry time.Time) (string, error) {
+	if c.sharedKey == nil {
+		return "", errors.New("SAS can only be signed with a SharedKeyCredential")
+	}
+
 	urlParts, err := NewBlobURLParts(c.URL())
 	if err != nil {
-		return SASQueryParameters{}, err
+		return "", err
 	}
+
 	// Containers do not have snapshots, nor versions.
-	return BlobSASSignatureValues{
+	urlParts.SAS, err = BlobSASSignatureValues{
 		ContainerName: urlParts.ContainerName,
 		Permissions:   permissions.String(),
 		StartTime:     start.UTC(),
 		ExpiryTime:    expiry.UTC(),
 	}.NewSASQueryParameters(c.sharedKey)
+
+	return urlParts.URL(), nil
 }

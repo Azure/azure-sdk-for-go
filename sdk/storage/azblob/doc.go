@@ -64,7 +64,7 @@ The connection string can be found in your storage account in the Azure Portal u
 Using a Shared Access Signature (SAS) Token
 
 To use a shared access signature (SAS) token, provide the token at the end of your service URL.
-You can generate a SAS token from the Azure Portal under Shared Access Signature or use the ServiceClient.GetSASToken() functions.
+You can generate a SAS token from the Azure Portal under Shared Access Signature or use the ServiceClient.GetSASURL() functions.
 
 	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
 	if !ok {
@@ -81,7 +81,7 @@ You can generate a SAS token from the Azure Portal under Shared Access Signature
 	handle(err)
 
     // Provide the convenience function with relevant info
-	accountSAS, err := serviceClient.GetSASToken(AccountSASResourceTypes{Object: true, Service: true, Container: true}, AccountSASPermissions{Read: true, List: true}, AccountSASServices{Blob: true}, time.Now(), time.Now().Add(48*time.Hour))
+	accountSAS, err := serviceClient.GetSASURL(AccountSASResourceTypes{Object: true, Service: true, Container: true}, AccountSASPermissions{Read: true, List: true}, AccountSASServices{Blob: true}, time.Now(), time.Now().Add(48*time.Hour))
 	handle(err)
 
 	urlToSend := fmt.Sprintf("https://%s.blob.core.windows.net/?%s", accountName, accountSAS)

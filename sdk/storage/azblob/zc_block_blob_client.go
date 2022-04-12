@@ -11,17 +11,6 @@ import (
 	"io"
 )
 
-const (
-	// BlockBlobMaxUploadBlobBytes indicates the maximum number of bytes that can be sent in a call to Upload.
-	BlockBlobMaxUploadBlobBytes = 256 * 1024 * 1024 // 256MB
-
-	// BlockBlobMaxStageBlockBytes indicates the maximum number of bytes that can be sent in a call to StageBlock.
-	BlockBlobMaxStageBlockBytes = 4000 * 1024 * 1024 // 4GB
-
-	// BlockBlobMaxBlocks indicates the maximum number of blocks allowed in a block blob.
-	BlockBlobMaxBlocks = 50000
-)
-
 // BlockBlobClient defines a set of operations applicable to block blobs.
 type BlockBlobClient struct {
 	BlobClient

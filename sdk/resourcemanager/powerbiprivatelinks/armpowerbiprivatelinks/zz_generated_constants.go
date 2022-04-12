@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armpowerbiprivatelinks
 
 const (
 	moduleName    = "armpowerbiprivatelinks"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -27,11 +27,6 @@ func PossibleActionTypeValues() []ActionType {
 	}
 }
 
-// ToPtr returns a *ActionType pointing to the current value.
-func (c ActionType) ToPtr() *ActionType {
-	return &c
-}
-
 // ActionsRequired - ActionsRequired
 type ActionsRequired string
 
@@ -46,11 +41,6 @@ func PossibleActionsRequiredValues() []ActionsRequired {
 		ActionsRequiredNone,
 		ActionsRequiredRecreate,
 	}
-}
-
-// ToPtr returns a *ActionsRequired pointing to the current value.
-func (c ActionsRequired) ToPtr() *ActionsRequired {
-	return &c
 }
 
 // CreatedByType - The type of identity that created the resource.
@@ -73,11 +63,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
-}
-
 // Origin - The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
 // value is "user,system"
 type Origin string
@@ -95,11 +80,6 @@ func PossibleOriginValues() []Origin {
 		OriginUser,
 		OriginUserSystem,
 	}
-}
-
-// ToPtr returns a *Origin pointing to the current value.
-func (c Origin) ToPtr() *Origin {
-	return &c
 }
 
 // PersistedConnectionStatus - Status of the connection.
@@ -120,11 +100,6 @@ func PossiblePersistedConnectionStatusValues() []PersistedConnectionStatus {
 		PersistedConnectionStatusPending,
 		PersistedConnectionStatusRejected,
 	}
-}
-
-// ToPtr returns a *PersistedConnectionStatus pointing to the current value.
-func (c PersistedConnectionStatus) ToPtr() *PersistedConnectionStatus {
-	return &c
 }
 
 // ResourceProvisioningState - Provisioning state of the Private Endpoint Connection.
@@ -149,9 +124,4 @@ func PossibleResourceProvisioningStateValues() []ResourceProvisioningState {
 		ResourceProvisioningStateSucceeded,
 		ResourceProvisioningStateUpdating,
 	}
-}
-
-// ToPtr returns a *ResourceProvisioningState pointing to the current value.
-func (c ResourceProvisioningState) ToPtr() *ResourceProvisioningState {
-	return &c
 }

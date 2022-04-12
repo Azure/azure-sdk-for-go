@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,35 +34,55 @@ type ServiceProvidersClient struct {
 // subscriptionID - The Azure subscription ID.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewServiceProvidersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServiceProvidersClient {
+func NewServiceProvidersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ServiceProvidersClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ServiceProvidersClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // List - Lists all of the available peering service locations for the specified kind of peering.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ServiceProvidersClientListOptions contains the optional parameters for the ServiceProvidersClient.List method.
-func (client *ServiceProvidersClient) List(options *ServiceProvidersClientListOptions) *ServiceProvidersClientListPager {
-	return &ServiceProvidersClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *ServiceProvidersClient) List(options *ServiceProvidersClientListOptions) *runtime.Pager[ServiceProvidersClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ServiceProvidersClientListResponse]{
+		More: func(page ServiceProvidersClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ServiceProvidersClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ServiceProviderListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ServiceProvidersClientListResponse) (ServiceProvidersClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ServiceProvidersClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ServiceProvidersClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ServiceProvidersClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -76,7 +97,7 @@ func (client *ServiceProvidersClient) listCreateRequest(ctx context.Context, opt
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -84,7 +105,7 @@ func (client *ServiceProvidersClient) listCreateRequest(ctx context.Context, opt
 
 // listHandleResponse handles the List response.
 func (client *ServiceProvidersClient) listHandleResponse(resp *http.Response) (ServiceProvidersClientListResponse, error) {
-	result := ServiceProvidersClientListResponse{RawResponse: resp}
+	result := ServiceProvidersClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceProviderListResult); err != nil {
 		return ServiceProvidersClientListResponse{}, err
 	}

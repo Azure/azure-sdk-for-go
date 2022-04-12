@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,35 +34,55 @@ type ServiceCountriesClient struct {
 // subscriptionID - The Azure subscription ID.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewServiceCountriesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServiceCountriesClient {
+func NewServiceCountriesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ServiceCountriesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ServiceCountriesClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // List - Lists all of the available countries for peering service.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ServiceCountriesClientListOptions contains the optional parameters for the ServiceCountriesClient.List method.
-func (client *ServiceCountriesClient) List(options *ServiceCountriesClientListOptions) *ServiceCountriesClientListPager {
-	return &ServiceCountriesClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *ServiceCountriesClient) List(options *ServiceCountriesClientListOptions) *runtime.Pager[ServiceCountriesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ServiceCountriesClientListResponse]{
+		More: func(page ServiceCountriesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ServiceCountriesClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ServiceCountryListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ServiceCountriesClientListResponse) (ServiceCountriesClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ServiceCountriesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ServiceCountriesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ServiceCountriesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -76,7 +97,7 @@ func (client *ServiceCountriesClient) listCreateRequest(ctx context.Context, opt
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -84,7 +105,7 @@ func (client *ServiceCountriesClient) listCreateRequest(ctx context.Context, opt
 
 // listHandleResponse handles the List response.
 func (client *ServiceCountriesClient) listHandleResponse(resp *http.Response) (ServiceCountriesClientListResponse, error) {
-	result := ServiceCountriesClientListResponse{RawResponse: resp}
+	result := ServiceCountriesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceCountryListResult); err != nil {
 		return ServiceCountriesClientListResponse{}, err
 	}

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,36 +34,56 @@ type LocationsClient struct {
 // subscriptionID - The Azure subscription ID.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewLocationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *LocationsClient {
+func NewLocationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LocationsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &LocationsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // List - Lists all of the available peering locations for the specified kind of peering.
 // If the operation fails it returns an *azcore.ResponseError type.
 // kind - The kind of the peering.
 // options - LocationsClientListOptions contains the optional parameters for the LocationsClient.List method.
-func (client *LocationsClient) List(kind PeeringLocationsKind, options *LocationsClientListOptions) *LocationsClientListPager {
-	return &LocationsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, kind, options)
+func (client *LocationsClient) List(kind PeeringLocationsKind, options *LocationsClientListOptions) *runtime.Pager[LocationsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[LocationsClientListResponse]{
+		More: func(page LocationsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp LocationsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.LocationListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *LocationsClientListResponse) (LocationsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, kind, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return LocationsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return LocationsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return LocationsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -81,7 +102,7 @@ func (client *LocationsClient) listCreateRequest(ctx context.Context, kind Peeri
 	if options != nil && options.DirectPeeringType != nil {
 		reqQP.Set("directPeeringType", string(*options.DirectPeeringType))
 	}
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -89,7 +110,7 @@ func (client *LocationsClient) listCreateRequest(ctx context.Context, kind Peeri
 
 // listHandleResponse handles the List response.
 func (client *LocationsClient) listHandleResponse(resp *http.Response) (LocationsClientListResponse, error) {
-	result := LocationsClientListResponse{RawResponse: resp}
+	result := LocationsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LocationListResult); err != nil {
 		return LocationsClientListResponse{}, err
 	}

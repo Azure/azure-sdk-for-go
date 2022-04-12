@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type IntegrationServiceEnvironmentManagedAPIOperationsClient struct {
 // subscriptionID - The subscription id.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewIntegrationServiceEnvironmentManagedAPIOperationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *IntegrationServiceEnvironmentManagedAPIOperationsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewIntegrationServiceEnvironmentManagedAPIOperationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IntegrationServiceEnvironmentManagedAPIOperationsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &IntegrationServiceEnvironmentManagedAPIOperationsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // List - Gets the managed Api operations.
@@ -56,16 +61,32 @@ func NewIntegrationServiceEnvironmentManagedAPIOperationsClient(subscriptionID s
 // apiName - The api name.
 // options - IntegrationServiceEnvironmentManagedAPIOperationsClientListOptions contains the optional parameters for the IntegrationServiceEnvironmentManagedAPIOperationsClient.List
 // method.
-func (client *IntegrationServiceEnvironmentManagedAPIOperationsClient) List(resourceGroup string, integrationServiceEnvironmentName string, apiName string, options *IntegrationServiceEnvironmentManagedAPIOperationsClientListOptions) *IntegrationServiceEnvironmentManagedAPIOperationsClientListPager {
-	return &IntegrationServiceEnvironmentManagedAPIOperationsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroup, integrationServiceEnvironmentName, apiName, options)
+func (client *IntegrationServiceEnvironmentManagedAPIOperationsClient) List(resourceGroup string, integrationServiceEnvironmentName string, apiName string, options *IntegrationServiceEnvironmentManagedAPIOperationsClientListOptions) *runtime.Pager[IntegrationServiceEnvironmentManagedAPIOperationsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[IntegrationServiceEnvironmentManagedAPIOperationsClientListResponse]{
+		More: func(page IntegrationServiceEnvironmentManagedAPIOperationsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp IntegrationServiceEnvironmentManagedAPIOperationsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.APIOperationListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *IntegrationServiceEnvironmentManagedAPIOperationsClientListResponse) (IntegrationServiceEnvironmentManagedAPIOperationsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroup, integrationServiceEnvironmentName, apiName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return IntegrationServiceEnvironmentManagedAPIOperationsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return IntegrationServiceEnvironmentManagedAPIOperationsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return IntegrationServiceEnvironmentManagedAPIOperationsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -100,7 +121,7 @@ func (client *IntegrationServiceEnvironmentManagedAPIOperationsClient) listCreat
 
 // listHandleResponse handles the List response.
 func (client *IntegrationServiceEnvironmentManagedAPIOperationsClient) listHandleResponse(resp *http.Response) (IntegrationServiceEnvironmentManagedAPIOperationsClientListResponse, error) {
-	result := IntegrationServiceEnvironmentManagedAPIOperationsClientListResponse{RawResponse: resp}
+	result := IntegrationServiceEnvironmentManagedAPIOperationsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.APIOperationListResult); err != nil {
 		return IntegrationServiceEnvironmentManagedAPIOperationsClientListResponse{}, err
 	}

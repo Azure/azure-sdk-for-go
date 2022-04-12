@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type IntegrationAccountCertificatesClient struct {
 // subscriptionID - The subscription id.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewIntegrationAccountCertificatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *IntegrationAccountCertificatesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewIntegrationAccountCertificatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IntegrationAccountCertificatesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &IntegrationAccountCertificatesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates an integration account certificate.
@@ -105,7 +110,7 @@ func (client *IntegrationAccountCertificatesClient) createOrUpdateCreateRequest(
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *IntegrationAccountCertificatesClient) createOrUpdateHandleResponse(resp *http.Response) (IntegrationAccountCertificatesClientCreateOrUpdateResponse, error) {
-	result := IntegrationAccountCertificatesClientCreateOrUpdateResponse{RawResponse: resp}
+	result := IntegrationAccountCertificatesClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationAccountCertificate); err != nil {
 		return IntegrationAccountCertificatesClientCreateOrUpdateResponse{}, err
 	}
@@ -131,7 +136,7 @@ func (client *IntegrationAccountCertificatesClient) Delete(ctx context.Context, 
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return IntegrationAccountCertificatesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return IntegrationAccountCertificatesClientDeleteResponse{RawResponse: resp}, nil
+	return IntegrationAccountCertificatesClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -218,7 +223,7 @@ func (client *IntegrationAccountCertificatesClient) getCreateRequest(ctx context
 
 // getHandleResponse handles the Get response.
 func (client *IntegrationAccountCertificatesClient) getHandleResponse(resp *http.Response) (IntegrationAccountCertificatesClientGetResponse, error) {
-	result := IntegrationAccountCertificatesClientGetResponse{RawResponse: resp}
+	result := IntegrationAccountCertificatesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationAccountCertificate); err != nil {
 		return IntegrationAccountCertificatesClientGetResponse{}, err
 	}
@@ -231,16 +236,32 @@ func (client *IntegrationAccountCertificatesClient) getHandleResponse(resp *http
 // integrationAccountName - The integration account name.
 // options - IntegrationAccountCertificatesClientListOptions contains the optional parameters for the IntegrationAccountCertificatesClient.List
 // method.
-func (client *IntegrationAccountCertificatesClient) List(resourceGroupName string, integrationAccountName string, options *IntegrationAccountCertificatesClientListOptions) *IntegrationAccountCertificatesClientListPager {
-	return &IntegrationAccountCertificatesClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, integrationAccountName, options)
+func (client *IntegrationAccountCertificatesClient) List(resourceGroupName string, integrationAccountName string, options *IntegrationAccountCertificatesClientListOptions) *runtime.Pager[IntegrationAccountCertificatesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[IntegrationAccountCertificatesClientListResponse]{
+		More: func(page IntegrationAccountCertificatesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp IntegrationAccountCertificatesClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.IntegrationAccountCertificateListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *IntegrationAccountCertificatesClientListResponse) (IntegrationAccountCertificatesClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, integrationAccountName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return IntegrationAccountCertificatesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return IntegrationAccountCertificatesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return IntegrationAccountCertificatesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -274,7 +295,7 @@ func (client *IntegrationAccountCertificatesClient) listCreateRequest(ctx contex
 
 // listHandleResponse handles the List response.
 func (client *IntegrationAccountCertificatesClient) listHandleResponse(resp *http.Response) (IntegrationAccountCertificatesClientListResponse, error) {
-	result := IntegrationAccountCertificatesClientListResponse{RawResponse: resp}
+	result := IntegrationAccountCertificatesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationAccountCertificateListResult); err != nil {
 		return IntegrationAccountCertificatesClientListResponse{}, err
 	}

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type WorkflowTriggerHistoriesClient struct {
 // subscriptionID - The subscription id.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewWorkflowTriggerHistoriesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *WorkflowTriggerHistoriesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewWorkflowTriggerHistoriesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkflowTriggerHistoriesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &WorkflowTriggerHistoriesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Gets a workflow trigger history.
@@ -109,7 +114,7 @@ func (client *WorkflowTriggerHistoriesClient) getCreateRequest(ctx context.Conte
 
 // getHandleResponse handles the Get response.
 func (client *WorkflowTriggerHistoriesClient) getHandleResponse(resp *http.Response) (WorkflowTriggerHistoriesClientGetResponse, error) {
-	result := WorkflowTriggerHistoriesClientGetResponse{RawResponse: resp}
+	result := WorkflowTriggerHistoriesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowTriggerHistory); err != nil {
 		return WorkflowTriggerHistoriesClientGetResponse{}, err
 	}
@@ -123,16 +128,32 @@ func (client *WorkflowTriggerHistoriesClient) getHandleResponse(resp *http.Respo
 // triggerName - The workflow trigger name.
 // options - WorkflowTriggerHistoriesClientListOptions contains the optional parameters for the WorkflowTriggerHistoriesClient.List
 // method.
-func (client *WorkflowTriggerHistoriesClient) List(resourceGroupName string, workflowName string, triggerName string, options *WorkflowTriggerHistoriesClientListOptions) *WorkflowTriggerHistoriesClientListPager {
-	return &WorkflowTriggerHistoriesClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, workflowName, triggerName, options)
+func (client *WorkflowTriggerHistoriesClient) List(resourceGroupName string, workflowName string, triggerName string, options *WorkflowTriggerHistoriesClientListOptions) *runtime.Pager[WorkflowTriggerHistoriesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[WorkflowTriggerHistoriesClientListResponse]{
+		More: func(page WorkflowTriggerHistoriesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp WorkflowTriggerHistoriesClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.WorkflowTriggerHistoryListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *WorkflowTriggerHistoriesClientListResponse) (WorkflowTriggerHistoriesClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, workflowName, triggerName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return WorkflowTriggerHistoriesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return WorkflowTriggerHistoriesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return WorkflowTriggerHistoriesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -173,7 +194,7 @@ func (client *WorkflowTriggerHistoriesClient) listCreateRequest(ctx context.Cont
 
 // listHandleResponse handles the List response.
 func (client *WorkflowTriggerHistoriesClient) listHandleResponse(resp *http.Response) (WorkflowTriggerHistoriesClientListResponse, error) {
-	result := WorkflowTriggerHistoriesClientListResponse{RawResponse: resp}
+	result := WorkflowTriggerHistoriesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowTriggerHistoryListResult); err != nil {
 		return WorkflowTriggerHistoriesClientListResponse{}, err
 	}
@@ -200,7 +221,7 @@ func (client *WorkflowTriggerHistoriesClient) Resubmit(ctx context.Context, reso
 	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
 		return WorkflowTriggerHistoriesClientResubmitResponse{}, runtime.NewResponseError(resp)
 	}
-	return WorkflowTriggerHistoriesClientResubmitResponse{RawResponse: resp}, nil
+	return WorkflowTriggerHistoriesClientResubmitResponse{}, nil
 }
 
 // resubmitCreateRequest creates the Resubmit request.

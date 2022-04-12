@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type IntegrationServiceEnvironmentsClient struct {
 // subscriptionID - The subscription id.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewIntegrationServiceEnvironmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *IntegrationServiceEnvironmentsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewIntegrationServiceEnvironmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IntegrationServiceEnvironmentsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &IntegrationServiceEnvironmentsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates an integration service environment.
@@ -57,22 +62,16 @@ func NewIntegrationServiceEnvironmentsClient(subscriptionID string, credential a
 // integrationServiceEnvironment - The integration service environment.
 // options - IntegrationServiceEnvironmentsClientBeginCreateOrUpdateOptions contains the optional parameters for the IntegrationServiceEnvironmentsClient.BeginCreateOrUpdate
 // method.
-func (client *IntegrationServiceEnvironmentsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, integrationServiceEnvironment IntegrationServiceEnvironment, options *IntegrationServiceEnvironmentsClientBeginCreateOrUpdateOptions) (IntegrationServiceEnvironmentsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroup, integrationServiceEnvironmentName, integrationServiceEnvironment, options)
-	if err != nil {
-		return IntegrationServiceEnvironmentsClientCreateOrUpdatePollerResponse{}, err
+func (client *IntegrationServiceEnvironmentsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, integrationServiceEnvironment IntegrationServiceEnvironment, options *IntegrationServiceEnvironmentsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[IntegrationServiceEnvironmentsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroup, integrationServiceEnvironmentName, integrationServiceEnvironment, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[IntegrationServiceEnvironmentsClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[IntegrationServiceEnvironmentsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := IntegrationServiceEnvironmentsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("IntegrationServiceEnvironmentsClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return IntegrationServiceEnvironmentsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &IntegrationServiceEnvironmentsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates an integration service environment.
@@ -136,7 +135,7 @@ func (client *IntegrationServiceEnvironmentsClient) Delete(ctx context.Context, 
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return IntegrationServiceEnvironmentsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return IntegrationServiceEnvironmentsClientDeleteResponse{RawResponse: resp}, nil
+	return IntegrationServiceEnvironmentsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -214,7 +213,7 @@ func (client *IntegrationServiceEnvironmentsClient) getCreateRequest(ctx context
 
 // getHandleResponse handles the Get response.
 func (client *IntegrationServiceEnvironmentsClient) getHandleResponse(resp *http.Response) (IntegrationServiceEnvironmentsClientGetResponse, error) {
-	result := IntegrationServiceEnvironmentsClientGetResponse{RawResponse: resp}
+	result := IntegrationServiceEnvironmentsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationServiceEnvironment); err != nil {
 		return IntegrationServiceEnvironmentsClientGetResponse{}, err
 	}
@@ -226,16 +225,32 @@ func (client *IntegrationServiceEnvironmentsClient) getHandleResponse(resp *http
 // resourceGroup - The resource group.
 // options - IntegrationServiceEnvironmentsClientListByResourceGroupOptions contains the optional parameters for the IntegrationServiceEnvironmentsClient.ListByResourceGroup
 // method.
-func (client *IntegrationServiceEnvironmentsClient) ListByResourceGroup(resourceGroup string, options *IntegrationServiceEnvironmentsClientListByResourceGroupOptions) *IntegrationServiceEnvironmentsClientListByResourceGroupPager {
-	return &IntegrationServiceEnvironmentsClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroup, options)
+func (client *IntegrationServiceEnvironmentsClient) ListByResourceGroup(resourceGroup string, options *IntegrationServiceEnvironmentsClientListByResourceGroupOptions) *runtime.Pager[IntegrationServiceEnvironmentsClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[IntegrationServiceEnvironmentsClientListByResourceGroupResponse]{
+		More: func(page IntegrationServiceEnvironmentsClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp IntegrationServiceEnvironmentsClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.IntegrationServiceEnvironmentListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *IntegrationServiceEnvironmentsClientListByResourceGroupResponse) (IntegrationServiceEnvironmentsClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroup, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return IntegrationServiceEnvironmentsClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return IntegrationServiceEnvironmentsClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return IntegrationServiceEnvironmentsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -265,7 +280,7 @@ func (client *IntegrationServiceEnvironmentsClient) listByResourceGroupCreateReq
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *IntegrationServiceEnvironmentsClient) listByResourceGroupHandleResponse(resp *http.Response) (IntegrationServiceEnvironmentsClientListByResourceGroupResponse, error) {
-	result := IntegrationServiceEnvironmentsClientListByResourceGroupResponse{RawResponse: resp}
+	result := IntegrationServiceEnvironmentsClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationServiceEnvironmentListResult); err != nil {
 		return IntegrationServiceEnvironmentsClientListByResourceGroupResponse{}, err
 	}
@@ -276,16 +291,32 @@ func (client *IntegrationServiceEnvironmentsClient) listByResourceGroupHandleRes
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - IntegrationServiceEnvironmentsClientListBySubscriptionOptions contains the optional parameters for the IntegrationServiceEnvironmentsClient.ListBySubscription
 // method.
-func (client *IntegrationServiceEnvironmentsClient) ListBySubscription(options *IntegrationServiceEnvironmentsClientListBySubscriptionOptions) *IntegrationServiceEnvironmentsClientListBySubscriptionPager {
-	return &IntegrationServiceEnvironmentsClientListBySubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySubscriptionCreateRequest(ctx, options)
+func (client *IntegrationServiceEnvironmentsClient) ListBySubscription(options *IntegrationServiceEnvironmentsClientListBySubscriptionOptions) *runtime.Pager[IntegrationServiceEnvironmentsClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[IntegrationServiceEnvironmentsClientListBySubscriptionResponse]{
+		More: func(page IntegrationServiceEnvironmentsClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp IntegrationServiceEnvironmentsClientListBySubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.IntegrationServiceEnvironmentListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *IntegrationServiceEnvironmentsClientListBySubscriptionResponse) (IntegrationServiceEnvironmentsClientListBySubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySubscriptionCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return IntegrationServiceEnvironmentsClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return IntegrationServiceEnvironmentsClientListBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return IntegrationServiceEnvironmentsClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
@@ -311,7 +342,7 @@ func (client *IntegrationServiceEnvironmentsClient) listBySubscriptionCreateRequ
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
 func (client *IntegrationServiceEnvironmentsClient) listBySubscriptionHandleResponse(resp *http.Response) (IntegrationServiceEnvironmentsClientListBySubscriptionResponse, error) {
-	result := IntegrationServiceEnvironmentsClientListBySubscriptionResponse{RawResponse: resp}
+	result := IntegrationServiceEnvironmentsClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationServiceEnvironmentListResult); err != nil {
 		return IntegrationServiceEnvironmentsClientListBySubscriptionResponse{}, err
 	}
@@ -336,7 +367,7 @@ func (client *IntegrationServiceEnvironmentsClient) Restart(ctx context.Context,
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return IntegrationServiceEnvironmentsClientRestartResponse{}, runtime.NewResponseError(resp)
 	}
-	return IntegrationServiceEnvironmentsClientRestartResponse{RawResponse: resp}, nil
+	return IntegrationServiceEnvironmentsClientRestartResponse{}, nil
 }
 
 // restartCreateRequest creates the Restart request.
@@ -372,22 +403,16 @@ func (client *IntegrationServiceEnvironmentsClient) restartCreateRequest(ctx con
 // integrationServiceEnvironment - The integration service environment.
 // options - IntegrationServiceEnvironmentsClientBeginUpdateOptions contains the optional parameters for the IntegrationServiceEnvironmentsClient.BeginUpdate
 // method.
-func (client *IntegrationServiceEnvironmentsClient) BeginUpdate(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, integrationServiceEnvironment IntegrationServiceEnvironment, options *IntegrationServiceEnvironmentsClientBeginUpdateOptions) (IntegrationServiceEnvironmentsClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroup, integrationServiceEnvironmentName, integrationServiceEnvironment, options)
-	if err != nil {
-		return IntegrationServiceEnvironmentsClientUpdatePollerResponse{}, err
+func (client *IntegrationServiceEnvironmentsClient) BeginUpdate(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, integrationServiceEnvironment IntegrationServiceEnvironment, options *IntegrationServiceEnvironmentsClientBeginUpdateOptions) (*armruntime.Poller[IntegrationServiceEnvironmentsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroup, integrationServiceEnvironmentName, integrationServiceEnvironment, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[IntegrationServiceEnvironmentsClientUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[IntegrationServiceEnvironmentsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := IntegrationServiceEnvironmentsClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("IntegrationServiceEnvironmentsClient.Update", "", resp, client.pl)
-	if err != nil {
-		return IntegrationServiceEnvironmentsClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &IntegrationServiceEnvironmentsClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Updates an integration service environment.

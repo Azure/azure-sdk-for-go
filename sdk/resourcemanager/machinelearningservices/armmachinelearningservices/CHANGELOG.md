@@ -1,5 +1,361 @@
 # Release History
 
+## 0.3.0 (2022-04-12)
+### Breaking Changes
+
+- Function `*ComputeClient.List` return value(s) have been changed from `(*ComputeClientListPager)` to `(*runtime.Pager[ComputeClientListResponse])`
+- Function `*ComputeClient.ListNodes` return value(s) have been changed from `(*ComputeClientListNodesPager)` to `(*runtime.Pager[ComputeClientListNodesResponse])`
+- Function `*PrivateEndpointConnectionsClient.List` parameter(s) have been changed from `(context.Context, string, string, *PrivateEndpointConnectionsClientListOptions)` to `(string, string, *PrivateEndpointConnectionsClientListOptions)`
+- Function `*PrivateEndpointConnectionsClient.List` return value(s) have been changed from `(PrivateEndpointConnectionsClientListResponse, error)` to `(*runtime.Pager[PrivateEndpointConnectionsClientListResponse])`
+- Function `*WorkspaceSKUsClient.List` return value(s) have been changed from `(*WorkspaceSKUsClientListPager)` to `(*runtime.Pager[WorkspaceSKUsClientListResponse])`
+- Function `*ComputeClient.BeginRestart` return value(s) have been changed from `(ComputeClientRestartPollerResponse, error)` to `(*armruntime.Poller[ComputeClientRestartResponse], error)`
+- Function `*WorkspacesClient.BeginCreateOrUpdate` return value(s) have been changed from `(WorkspacesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[WorkspacesClientCreateOrUpdateResponse], error)`
+- Function `*ComputeClient.BeginStop` return value(s) have been changed from `(ComputeClientStopPollerResponse, error)` to `(*armruntime.Poller[ComputeClientStopResponse], error)`
+- Function `*WorkspacesClient.ListByResourceGroup` return value(s) have been changed from `(*WorkspacesClientListByResourceGroupPager)` to `(*runtime.Pager[WorkspacesClientListByResourceGroupResponse])`
+- Function `*UsagesClient.List` return value(s) have been changed from `(*UsagesClientListPager)` to `(*runtime.Pager[UsagesClientListResponse])`
+- Function `NewWorkspacesClient` return value(s) have been changed from `(*WorkspacesClient)` to `(*WorkspacesClient, error)`
+- Function `*ComputeClient.BeginCreateOrUpdate` return value(s) have been changed from `(ComputeClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ComputeClientCreateOrUpdateResponse], error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(context.Context, *OperationsClientListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(OperationsClientListResponse, error)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `*QuotasClient.List` return value(s) have been changed from `(*QuotasClientListPager)` to `(*runtime.Pager[QuotasClientListResponse])`
+- Function `NewPrivateLinkResourcesClient` return value(s) have been changed from `(*PrivateLinkResourcesClient)` to `(*PrivateLinkResourcesClient, error)`
+- Function `NewVirtualMachineSizesClient` return value(s) have been changed from `(*VirtualMachineSizesClient)` to `(*VirtualMachineSizesClient, error)`
+- Function `NewPrivateEndpointConnectionsClient` return value(s) have been changed from `(*PrivateEndpointConnectionsClient)` to `(*PrivateEndpointConnectionsClient, error)`
+- Function `NewUsagesClient` return value(s) have been changed from `(*UsagesClient)` to `(*UsagesClient, error)`
+- Function `*ComputeClient.BeginStart` return value(s) have been changed from `(ComputeClientStartPollerResponse, error)` to `(*armruntime.Poller[ComputeClientStartResponse], error)`
+- Function `*ComputeClient.BeginDelete` return value(s) have been changed from `(ComputeClientDeletePollerResponse, error)` to `(*armruntime.Poller[ComputeClientDeleteResponse], error)`
+- Function `*WorkspaceConnectionsClient.List` parameter(s) have been changed from `(context.Context, string, string, *WorkspaceConnectionsClientListOptions)` to `(string, string, *WorkspaceConnectionsClientListOptions)`
+- Function `*WorkspaceConnectionsClient.List` return value(s) have been changed from `(WorkspaceConnectionsClientListResponse, error)` to `(*runtime.Pager[WorkspaceConnectionsClientListResponse])`
+- Function `*WorkspacesClient.BeginDelete` return value(s) have been changed from `(WorkspacesClientDeletePollerResponse, error)` to `(*armruntime.Poller[WorkspacesClientDeleteResponse], error)`
+- Function `NewQuotasClient` return value(s) have been changed from `(*QuotasClient)` to `(*QuotasClient, error)`
+- Function `*WorkspacesClient.BeginDiagnose` return value(s) have been changed from `(WorkspacesClientDiagnosePollerResponse, error)` to `(*armruntime.Poller[WorkspacesClientDiagnoseResponse], error)`
+- Function `NewWorkspaceConnectionsClient` return value(s) have been changed from `(*WorkspaceConnectionsClient)` to `(*WorkspaceConnectionsClient, error)`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `NewWorkspaceSKUsClient` return value(s) have been changed from `(*WorkspaceSKUsClient)` to `(*WorkspaceSKUsClient, error)`
+- Function `*WorkspacesClient.BeginPrepareNotebook` return value(s) have been changed from `(WorkspacesClientPrepareNotebookPollerResponse, error)` to `(*armruntime.Poller[WorkspacesClientPrepareNotebookResponse], error)`
+- Function `NewWorkspaceFeaturesClient` return value(s) have been changed from `(*WorkspaceFeaturesClient)` to `(*WorkspaceFeaturesClient, error)`
+- Function `NewComputeClient` return value(s) have been changed from `(*ComputeClient)` to `(*ComputeClient, error)`
+- Function `*WorkspacesClient.ListBySubscription` return value(s) have been changed from `(*WorkspacesClientListBySubscriptionPager)` to `(*runtime.Pager[WorkspacesClientListBySubscriptionResponse])`
+- Function `*ComputeClient.BeginUpdate` return value(s) have been changed from `(ComputeClientUpdatePollerResponse, error)` to `(*armruntime.Poller[ComputeClientUpdateResponse], error)`
+- Function `*WorkspacesClient.BeginResyncKeys` return value(s) have been changed from `(WorkspacesClientResyncKeysPollerResponse, error)` to `(*armruntime.Poller[WorkspacesClientResyncKeysResponse], error)`
+- Function `*WorkspaceFeaturesClient.List` return value(s) have been changed from `(*WorkspaceFeaturesClientListPager)` to `(*runtime.Pager[WorkspaceFeaturesClientListResponse])`
+- Type of `DiagnoseRequestProperties.Nsg` has been changed from `map[string]map[string]interface{}` to `map[string]interface{}`
+- Type of `DiagnoseRequestProperties.StorageAccount` has been changed from `map[string]map[string]interface{}` to `map[string]interface{}`
+- Type of `DiagnoseRequestProperties.Udr` has been changed from `map[string]map[string]interface{}` to `map[string]interface{}`
+- Type of `DiagnoseRequestProperties.ApplicationInsights` has been changed from `map[string]map[string]interface{}` to `map[string]interface{}`
+- Type of `DiagnoseRequestProperties.DNSResolution` has been changed from `map[string]map[string]interface{}` to `map[string]interface{}`
+- Type of `DiagnoseRequestProperties.KeyVault` has been changed from `map[string]map[string]interface{}` to `map[string]interface{}`
+- Type of `DiagnoseRequestProperties.ResourceLock` has been changed from `map[string]map[string]interface{}` to `map[string]interface{}`
+- Type of `DiagnoseRequestProperties.ContainerRegistry` has been changed from `map[string]map[string]interface{}` to `map[string]interface{}`
+- Type of `DiagnoseRequestProperties.Others` has been changed from `map[string]map[string]interface{}` to `map[string]interface{}`
+- Type of `ErrorAdditionalInfo.Info` has been changed from `map[string]interface{}` to `interface{}`
+- Function `*ComputeClientListPager.PageResponse` has been removed
+- Function `*WorkspacesClientCreateOrUpdatePoller.Done` has been removed
+- Function `CreatedByType.ToPtr` has been removed
+- Function `*ComputeClientDeletePoller.Poll` has been removed
+- Function `*WorkspacesClientDeletePoller.Poll` has been removed
+- Function `*WorkspacesClientPrepareNotebookPoller.Poll` has been removed
+- Function `*ComputeClientDeletePollerResponse.Resume` has been removed
+- Function `ReasonCode.ToPtr` has been removed
+- Function `*WorkspacesClientListBySubscriptionPager.PageResponse` has been removed
+- Function `*ComputeClientListNodesPager.NextPage` has been removed
+- Function `*ComputeClientStopPoller.ResumeToken` has been removed
+- Function `ClusterPurpose.ToPtr` has been removed
+- Function `*ComputeClientCreateOrUpdatePoller.Done` has been removed
+- Function `RemoteLoginPortPublicAccess.ToPtr` has been removed
+- Function `*ComputeClientStartPoller.Poll` has been removed
+- Function `*ComputeClientStartPoller.ResumeToken` has been removed
+- Function `*WorkspaceFeaturesClientListPager.PageResponse` has been removed
+- Function `WorkspacesClientPrepareNotebookPollerResponse.PollUntilDone` has been removed
+- Function `ComputeInstanceAuthorizationType.ToPtr` has been removed
+- Function `*ComputeClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ComputeClientListNodesPager.PageResponse` has been removed
+- Function `*WorkspacesClientResyncKeysPoller.FinalResponse` has been removed
+- Function `UnitOfMeasure.ToPtr` has been removed
+- Function `Status.ToPtr` has been removed
+- Function `*UsagesClientListPager.Err` has been removed
+- Function `ComputeClientRestartPollerResponse.PollUntilDone` has been removed
+- Function `*WorkspacesClientResyncKeysPoller.ResumeToken` has been removed
+- Function `*WorkspacesClientDeletePoller.Done` has been removed
+- Function `*ComputeClientRestartPollerResponse.Resume` has been removed
+- Function `*WorkspacesClientResyncKeysPoller.Poll` has been removed
+- Function `OperationName.ToPtr` has been removed
+- Function `*ComputeClientUpdatePoller.ResumeToken` has been removed
+- Function `UnderlyingResourceAction.ToPtr` has been removed
+- Function `*WorkspacesClientListByResourceGroupPager.NextPage` has been removed
+- Function `*WorkspacesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `VMTier.ToPtr` has been removed
+- Function `NodeState.ToPtr` has been removed
+- Function `UsageUnit.ToPtr` has been removed
+- Function `ComputeClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ComputeClientStartPollerResponse.Resume` has been removed
+- Function `*WorkspacesClientDeletePollerResponse.Resume` has been removed
+- Function `DiagnoseResultLevel.ToPtr` has been removed
+- Function `ComputeInstanceState.ToPtr` has been removed
+- Function `*WorkspaceFeaturesClientListPager.Err` has been removed
+- Function `ResourceIdentityType.ToPtr` has been removed
+- Function `ApplicationSharingPolicy.ToPtr` has been removed
+- Function `*ComputeClientRestartPoller.ResumeToken` has been removed
+- Function `*ComputeClientUpdatePoller.Done` has been removed
+- Function `PrivateEndpointConnectionProvisioningState.ToPtr` has been removed
+- Function `QuotaUnit.ToPtr` has been removed
+- Function `*WorkspacesClientDiagnosePoller.Poll` has been removed
+- Function `ValueFormat.ToPtr` has been removed
+- Function `*WorkspacesClientPrepareNotebookPollerResponse.Resume` has been removed
+- Function `*ComputeClientDeletePoller.Done` has been removed
+- Function `*QuotasClientListPager.Err` has been removed
+- Function `ComputeType.ToPtr` has been removed
+- Function `PrivateEndpointServiceConnectionStatus.ToPtr` has been removed
+- Function `*ComputeClientRestartPoller.Done` has been removed
+- Function `*WorkspacesClientDiagnosePollerResponse.Resume` has been removed
+- Function `*UsagesClientListPager.PageResponse` has been removed
+- Function `*WorkspacesClientPrepareNotebookPoller.Done` has been removed
+- Function `SSLConfigurationStatus.ToPtr` has been removed
+- Function `*WorkspacesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `AllocationState.ToPtr` has been removed
+- Function `*ComputeClientListNodesPager.Err` has been removed
+- Function `*ComputeClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*WorkspacesClientDeletePoller.ResumeToken` has been removed
+- Function `*WorkspacesClientPrepareNotebookPoller.ResumeToken` has been removed
+- Function `OsType.ToPtr` has been removed
+- Function `WorkspacesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*WorkspacesClientPrepareNotebookPoller.FinalResponse` has been removed
+- Function `*ComputeClientCreateOrUpdatePoller.Poll` has been removed
+- Function `ProvisioningState.ToPtr` has been removed
+- Function `*WorkspacesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*WorkspaceSKUsClientListPager.PageResponse` has been removed
+- Function `*ComputeClientStopPoller.FinalResponse` has been removed
+- Function `*WorkspaceFeaturesClientListPager.NextPage` has been removed
+- Function `OperationStatus.ToPtr` has been removed
+- Function `*ComputeClientStopPoller.Done` has been removed
+- Function `*WorkspacesClientListByResourceGroupPager.Err` has been removed
+- Function `*WorkspacesClientResyncKeysPoller.Done` has been removed
+- Function `*WorkspacesClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*ComputeClientStopPoller.Poll` has been removed
+- Function `WorkspacesClientResyncKeysPollerResponse.PollUntilDone` has been removed
+- Function `*WorkspaceSKUsClientListPager.Err` has been removed
+- Function `*WorkspacesClientDiagnosePoller.Done` has been removed
+- Function `WorkspacesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `WorkspacesClientDiagnosePollerResponse.PollUntilDone` has been removed
+- Function `*WorkspacesClientDiagnosePoller.FinalResponse` has been removed
+- Function `*ComputeClientUpdatePoller.Poll` has been removed
+- Function `PublicNetworkAccess.ToPtr` has been removed
+- Function `*WorkspacesClientDeletePoller.FinalResponse` has been removed
+- Function `VMPriceOSType.ToPtr` has been removed
+- Function `*ComputeClientListPager.NextPage` has been removed
+- Function `BillingCurrency.ToPtr` has been removed
+- Function `*WorkspacesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ComputeClientListPager.Err` has been removed
+- Function `*ComputeClientRestartPoller.FinalResponse` has been removed
+- Function `*ComputeClientRestartPoller.Poll` has been removed
+- Function `*ComputeClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ComputeClientUpdatePoller.FinalResponse` has been removed
+- Function `*QuotasClientListPager.NextPage` has been removed
+- Function `*ComputeClientStartPoller.FinalResponse` has been removed
+- Function `EncryptionStatus.ToPtr` has been removed
+- Function `*WorkspacesClientResyncKeysPollerResponse.Resume` has been removed
+- Function `*QuotasClientListPager.PageResponse` has been removed
+- Function `VMPriority.ToPtr` has been removed
+- Function `*WorkspacesClientListBySubscriptionPager.Err` has been removed
+- Function `*ComputeClientDeletePoller.FinalResponse` has been removed
+- Function `*WorkspaceSKUsClientListPager.NextPage` has been removed
+- Function `*ComputeClientListKeysResult.UnmarshalJSON` has been removed
+- Function `*UsagesClientListPager.NextPage` has been removed
+- Function `*ComputeClientDeletePoller.ResumeToken` has been removed
+- Function `ComputeClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `ComputeClientStartPollerResponse.PollUntilDone` has been removed
+- Function `ComputeClientStopPollerResponse.PollUntilDone` has been removed
+- Function `*ComputeClientStopPollerResponse.Resume` has been removed
+- Function `SSHPublicAccess.ToPtr` has been removed
+- Function `*ComputeClientStartPoller.Done` has been removed
+- Function `LoadBalancerType.ToPtr` has been removed
+- Function `ComputeClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ComputeClientUpdatePollerResponse.Resume` has been removed
+- Function `*WorkspacesClientListBySubscriptionPager.NextPage` has been removed
+- Function `*WorkspacesClientDiagnosePoller.ResumeToken` has been removed
+- Struct `ComputeClientCreateOrUpdatePoller` has been removed
+- Struct `ComputeClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ComputeClientCreateOrUpdateResult` has been removed
+- Struct `ComputeClientDeletePoller` has been removed
+- Struct `ComputeClientDeletePollerResponse` has been removed
+- Struct `ComputeClientGetResult` has been removed
+- Struct `ComputeClientListKeysResult` has been removed
+- Struct `ComputeClientListNodesPager` has been removed
+- Struct `ComputeClientListNodesResult` has been removed
+- Struct `ComputeClientListPager` has been removed
+- Struct `ComputeClientListResult` has been removed
+- Struct `ComputeClientRestartPoller` has been removed
+- Struct `ComputeClientRestartPollerResponse` has been removed
+- Struct `ComputeClientStartPoller` has been removed
+- Struct `ComputeClientStartPollerResponse` has been removed
+- Struct `ComputeClientStopPoller` has been removed
+- Struct `ComputeClientStopPollerResponse` has been removed
+- Struct `ComputeClientUpdatePoller` has been removed
+- Struct `ComputeClientUpdatePollerResponse` has been removed
+- Struct `ComputeClientUpdateResult` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `PrivateEndpointConnectionsClientCreateOrUpdateResult` has been removed
+- Struct `PrivateEndpointConnectionsClientGetResult` has been removed
+- Struct `PrivateEndpointConnectionsClientListResult` has been removed
+- Struct `PrivateLinkResourcesClientListResult` has been removed
+- Struct `QuotasClientListPager` has been removed
+- Struct `QuotasClientListResult` has been removed
+- Struct `QuotasClientUpdateResult` has been removed
+- Struct `UsagesClientListPager` has been removed
+- Struct `UsagesClientListResult` has been removed
+- Struct `VirtualMachineSizesClientListResult` has been removed
+- Struct `WorkspaceConnectionsClientCreateResult` has been removed
+- Struct `WorkspaceConnectionsClientGetResult` has been removed
+- Struct `WorkspaceConnectionsClientListResult` has been removed
+- Struct `WorkspaceFeaturesClientListPager` has been removed
+- Struct `WorkspaceFeaturesClientListResult` has been removed
+- Struct `WorkspaceSKUsClientListPager` has been removed
+- Struct `WorkspaceSKUsClientListResult` has been removed
+- Struct `WorkspacesClientCreateOrUpdatePoller` has been removed
+- Struct `WorkspacesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `WorkspacesClientCreateOrUpdateResult` has been removed
+- Struct `WorkspacesClientDeletePoller` has been removed
+- Struct `WorkspacesClientDeletePollerResponse` has been removed
+- Struct `WorkspacesClientDiagnosePoller` has been removed
+- Struct `WorkspacesClientDiagnosePollerResponse` has been removed
+- Struct `WorkspacesClientDiagnoseResult` has been removed
+- Struct `WorkspacesClientGetResult` has been removed
+- Struct `WorkspacesClientListByResourceGroupPager` has been removed
+- Struct `WorkspacesClientListByResourceGroupResult` has been removed
+- Struct `WorkspacesClientListBySubscriptionPager` has been removed
+- Struct `WorkspacesClientListBySubscriptionResult` has been removed
+- Struct `WorkspacesClientListKeysResult` has been removed
+- Struct `WorkspacesClientListNotebookAccessTokenResult` has been removed
+- Struct `WorkspacesClientListNotebookKeysResult` has been removed
+- Struct `WorkspacesClientListOutboundNetworkDependenciesEndpointsResult` has been removed
+- Struct `WorkspacesClientListStorageAccountKeysResult` has been removed
+- Struct `WorkspacesClientPrepareNotebookPoller` has been removed
+- Struct `WorkspacesClientPrepareNotebookPollerResponse` has been removed
+- Struct `WorkspacesClientPrepareNotebookResult` has been removed
+- Struct `WorkspacesClientResyncKeysPoller` has been removed
+- Struct `WorkspacesClientResyncKeysPollerResponse` has been removed
+- Struct `WorkspacesClientUpdateResult` has been removed
+- Field `ComputeClientListNodesResult` of struct `ComputeClientListNodesResponse` has been removed
+- Field `RawResponse` of struct `ComputeClientListNodesResponse` has been removed
+- Field `WorkspaceSKUsClientListResult` of struct `WorkspaceSKUsClientListResponse` has been removed
+- Field `RawResponse` of struct `WorkspaceSKUsClientListResponse` has been removed
+- Field `WorkspacesClientListBySubscriptionResult` of struct `WorkspacesClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `WorkspacesClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `WorkspaceConnectionsClientDeleteResponse` has been removed
+- Field `PrivateEndpointConnectionsClientListResult` of struct `PrivateEndpointConnectionsClientListResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientListResponse` has been removed
+- Field `ComputeClientGetResult` of struct `ComputeClientGetResponse` has been removed
+- Field `RawResponse` of struct `ComputeClientGetResponse` has been removed
+- Field `PrivateEndpointConnectionsClientCreateOrUpdateResult` of struct `PrivateEndpointConnectionsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientCreateOrUpdateResponse` has been removed
+- Field `VirtualMachineSizesClientListResult` of struct `VirtualMachineSizesClientListResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachineSizesClientListResponse` has been removed
+- Field `ComputeClientCreateOrUpdateResult` of struct `ComputeClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ComputeClientCreateOrUpdateResponse` has been removed
+- Field `WorkspacesClientGetResult` of struct `WorkspacesClientGetResponse` has been removed
+- Field `RawResponse` of struct `WorkspacesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ComputeClientStartResponse` has been removed
+- Field `ComputeClientUpdateResult` of struct `ComputeClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ComputeClientUpdateResponse` has been removed
+- Field `QuotasClientUpdateResult` of struct `QuotasClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `QuotasClientUpdateResponse` has been removed
+- Field `PrivateLinkResourcesClientListResult` of struct `PrivateLinkResourcesClientListResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkResourcesClientListResponse` has been removed
+- Field `RawResponse` of struct `ComputeClientRestartResponse` has been removed
+- Field `PrivateEndpointConnectionsClientGetResult` of struct `PrivateEndpointConnectionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientDeleteResponse` has been removed
+- Field `WorkspaceConnectionsClientListResult` of struct `WorkspaceConnectionsClientListResponse` has been removed
+- Field `RawResponse` of struct `WorkspaceConnectionsClientListResponse` has been removed
+- Field `QuotasClientListResult` of struct `QuotasClientListResponse` has been removed
+- Field `RawResponse` of struct `QuotasClientListResponse` has been removed
+- Field `RawResponse` of struct `WorkspacesClientResyncKeysResponse` has been removed
+- Field `WorkspacesClientListStorageAccountKeysResult` of struct `WorkspacesClientListStorageAccountKeysResponse` has been removed
+- Field `RawResponse` of struct `WorkspacesClientListStorageAccountKeysResponse` has been removed
+- Field `ComputeClientListKeysResult` of struct `ComputeClientListKeysResponse` has been removed
+- Field `RawResponse` of struct `ComputeClientListKeysResponse` has been removed
+- Field `WorkspacesClientUpdateResult` of struct `WorkspacesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `WorkspacesClientUpdateResponse` has been removed
+- Field `WorkspacesClientPrepareNotebookResult` of struct `WorkspacesClientPrepareNotebookResponse` has been removed
+- Field `RawResponse` of struct `WorkspacesClientPrepareNotebookResponse` has been removed
+- Field `WorkspacesClientListNotebookKeysResult` of struct `WorkspacesClientListNotebookKeysResponse` has been removed
+- Field `RawResponse` of struct `WorkspacesClientListNotebookKeysResponse` has been removed
+- Field `WorkspacesClientListOutboundNetworkDependenciesEndpointsResult` of struct `WorkspacesClientListOutboundNetworkDependenciesEndpointsResponse` has been removed
+- Field `RawResponse` of struct `WorkspacesClientListOutboundNetworkDependenciesEndpointsResponse` has been removed
+- Field `WorkspacesClientListKeysResult` of struct `WorkspacesClientListKeysResponse` has been removed
+- Field `RawResponse` of struct `WorkspacesClientListKeysResponse` has been removed
+- Field `RawResponse` of struct `WorkspacesClientDeleteResponse` has been removed
+- Field `WorkspaceFeaturesClientListResult` of struct `WorkspaceFeaturesClientListResponse` has been removed
+- Field `RawResponse` of struct `WorkspaceFeaturesClientListResponse` has been removed
+- Field `RawResponse` of struct `ComputeClientDeleteResponse` has been removed
+- Field `ComputeClientListResult` of struct `ComputeClientListResponse` has been removed
+- Field `RawResponse` of struct `ComputeClientListResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `WorkspacesClientCreateOrUpdateResult` of struct `WorkspacesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `WorkspacesClientCreateOrUpdateResponse` has been removed
+- Field `WorkspacesClientDiagnoseResult` of struct `WorkspacesClientDiagnoseResponse` has been removed
+- Field `RawResponse` of struct `WorkspacesClientDiagnoseResponse` has been removed
+- Field `RawResponse` of struct `ComputeClientStopResponse` has been removed
+- Field `WorkspaceConnectionsClientCreateResult` of struct `WorkspaceConnectionsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `WorkspaceConnectionsClientCreateResponse` has been removed
+- Field `WorkspacesClientListByResourceGroupResult` of struct `WorkspacesClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `WorkspacesClientListByResourceGroupResponse` has been removed
+- Field `WorkspaceConnectionsClientGetResult` of struct `WorkspaceConnectionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `WorkspaceConnectionsClientGetResponse` has been removed
+- Field `WorkspacesClientListNotebookAccessTokenResult` of struct `WorkspacesClientListNotebookAccessTokenResponse` has been removed
+- Field `RawResponse` of struct `WorkspacesClientListNotebookAccessTokenResponse` has been removed
+- Field `UsagesClientListResult` of struct `UsagesClientListResponse` has been removed
+- Field `RawResponse` of struct `UsagesClientListResponse` has been removed
+
+### Features Added
+
+- New function `*ComputeClientListKeysResponse.UnmarshalJSON([]byte) error`
+- New anonymous field `ExternalFQDNResponse` in struct `WorkspacesClientListOutboundNetworkDependenciesEndpointsResponse`
+- New anonymous field `ListWorkspaceQuotas` in struct `QuotasClientListResponse`
+- New anonymous field `UpdateWorkspaceQuotasResult` in struct `QuotasClientUpdateResponse`
+- New field `ResumeToken` in struct `ComputeClientBeginStopOptions`
+- New field `ResumeToken` in struct `ComputeClientBeginUpdateOptions`
+- New anonymous field `Workspace` in struct `WorkspacesClientGetResponse`
+- New anonymous field `ComputeResource` in struct `ComputeClientCreateOrUpdateResponse`
+- New anonymous field `Workspace` in struct `WorkspacesClientUpdateResponse`
+- New anonymous field `ComputeResource` in struct `ComputeClientUpdateResponse`
+- New anonymous field `VirtualMachineSizeListResult` in struct `VirtualMachineSizesClientListResponse`
+- New anonymous field `PrivateEndpointConnection` in struct `PrivateEndpointConnectionsClientCreateOrUpdateResponse`
+- New anonymous field `ComputeSecretsClassification` in struct `ComputeClientListKeysResponse`
+- New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
+- New anonymous field `PaginatedComputeResourcesList` in struct `ComputeClientListResponse`
+- New anonymous field `SKUListResult` in struct `WorkspaceSKUsClientListResponse`
+- New anonymous field `Workspace` in struct `WorkspacesClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `ComputeClientBeginCreateOrUpdateOptions`
+- New anonymous field `AmlComputeNodesInformation` in struct `ComputeClientListNodesResponse`
+- New anonymous field `ListAmlUserFeatureResult` in struct `WorkspaceFeaturesClientListResponse`
+- New field `ResumeToken` in struct `WorkspacesClientBeginPrepareNotebookOptions`
+- New anonymous field `PrivateLinkResourceListResult` in struct `PrivateLinkResourcesClientListResponse`
+- New anonymous field `WorkspaceListResult` in struct `WorkspacesClientListByResourceGroupResponse`
+- New field `ResumeToken` in struct `WorkspacesClientBeginDeleteOptions`
+- New anonymous field `ListStorageAccountKeysResult` in struct `WorkspacesClientListStorageAccountKeysResponse`
+- New anonymous field `WorkspaceConnection` in struct `WorkspaceConnectionsClientGetResponse`
+- New anonymous field `ComputeResource` in struct `ComputeClientGetResponse`
+- New anonymous field `PrivateEndpointConnectionListResult` in struct `PrivateEndpointConnectionsClientListResponse`
+- New anonymous field `NotebookAccessTokenResult` in struct `WorkspacesClientListNotebookAccessTokenResponse`
+- New field `ResumeToken` in struct `WorkspacesClientBeginCreateOrUpdateOptions`
+- New anonymous field `PrivateEndpointConnection` in struct `PrivateEndpointConnectionsClientGetResponse`
+- New anonymous field `ListNotebookKeysResult` in struct `WorkspacesClientListNotebookKeysResponse`
+- New anonymous field `ListUsagesResult` in struct `UsagesClientListResponse`
+- New anonymous field `NotebookResourceInfo` in struct `WorkspacesClientPrepareNotebookResponse`
+- New anonymous field `DiagnoseResponseResult` in struct `WorkspacesClientDiagnoseResponse`
+- New field `ResumeToken` in struct `WorkspacesClientBeginResyncKeysOptions`
+- New field `ResumeToken` in struct `ComputeClientBeginRestartOptions`
+- New anonymous field `PaginatedWorkspaceConnectionsList` in struct `WorkspaceConnectionsClientListResponse`
+- New field `ResumeToken` in struct `ComputeClientBeginStartOptions`
+- New anonymous field `WorkspaceConnection` in struct `WorkspaceConnectionsClientCreateResponse`
+- New field `ResumeToken` in struct `WorkspacesClientBeginDiagnoseOptions`
+- New anonymous field `ListWorkspaceKeysResult` in struct `WorkspacesClientListKeysResponse`
+- New field `ResumeToken` in struct `ComputeClientBeginDeleteOptions`
+- New anonymous field `WorkspaceListResult` in struct `WorkspacesClientListBySubscriptionResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

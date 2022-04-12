@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type TriggersClient struct {
 // subscriptionID - The subscription identifier.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewTriggersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *TriggersClient {
+func NewTriggersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TriggersClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &TriggersClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates a trigger.
@@ -106,7 +111,7 @@ func (client *TriggersClient) createOrUpdateCreateRequest(ctx context.Context, r
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *TriggersClient) createOrUpdateHandleResponse(resp *http.Response) (TriggersClientCreateOrUpdateResponse, error) {
-	result := TriggersClientCreateOrUpdateResponse{RawResponse: resp}
+	result := TriggersClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TriggerResource); err != nil {
 		return TriggersClientCreateOrUpdateResponse{}, err
 	}
@@ -131,7 +136,7 @@ func (client *TriggersClient) Delete(ctx context.Context, resourceGroupName stri
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return TriggersClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return TriggersClientDeleteResponse{RawResponse: resp}, nil
+	return TriggersClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -220,7 +225,7 @@ func (client *TriggersClient) getCreateRequest(ctx context.Context, resourceGrou
 
 // getHandleResponse handles the Get response.
 func (client *TriggersClient) getHandleResponse(resp *http.Response) (TriggersClientGetResponse, error) {
-	result := TriggersClientGetResponse{RawResponse: resp}
+	result := TriggersClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TriggerResource); err != nil {
 		return TriggersClientGetResponse{}, err
 	}
@@ -281,7 +286,7 @@ func (client *TriggersClient) getEventSubscriptionStatusCreateRequest(ctx contex
 
 // getEventSubscriptionStatusHandleResponse handles the GetEventSubscriptionStatus response.
 func (client *TriggersClient) getEventSubscriptionStatusHandleResponse(resp *http.Response) (TriggersClientGetEventSubscriptionStatusResponse, error) {
-	result := TriggersClientGetEventSubscriptionStatusResponse{RawResponse: resp}
+	result := TriggersClientGetEventSubscriptionStatusResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TriggerSubscriptionOperationStatus); err != nil {
 		return TriggersClientGetEventSubscriptionStatusResponse{}, err
 	}
@@ -293,16 +298,32 @@ func (client *TriggersClient) getEventSubscriptionStatusHandleResponse(resp *htt
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // options - TriggersClientListByFactoryOptions contains the optional parameters for the TriggersClient.ListByFactory method.
-func (client *TriggersClient) ListByFactory(resourceGroupName string, factoryName string, options *TriggersClientListByFactoryOptions) *TriggersClientListByFactoryPager {
-	return &TriggersClientListByFactoryPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByFactoryCreateRequest(ctx, resourceGroupName, factoryName, options)
+func (client *TriggersClient) ListByFactory(resourceGroupName string, factoryName string, options *TriggersClientListByFactoryOptions) *runtime.Pager[TriggersClientListByFactoryResponse] {
+	return runtime.NewPager(runtime.PageProcessor[TriggersClientListByFactoryResponse]{
+		More: func(page TriggersClientListByFactoryResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp TriggersClientListByFactoryResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.TriggerListResponse.NextLink)
+		Fetcher: func(ctx context.Context, page *TriggersClientListByFactoryResponse) (TriggersClientListByFactoryResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByFactoryCreateRequest(ctx, resourceGroupName, factoryName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return TriggersClientListByFactoryResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return TriggersClientListByFactoryResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return TriggersClientListByFactoryResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByFactoryHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByFactoryCreateRequest creates the ListByFactory request.
@@ -333,7 +354,7 @@ func (client *TriggersClient) listByFactoryCreateRequest(ctx context.Context, re
 
 // listByFactoryHandleResponse handles the ListByFactory response.
 func (client *TriggersClient) listByFactoryHandleResponse(resp *http.Response) (TriggersClientListByFactoryResponse, error) {
-	result := TriggersClientListByFactoryResponse{RawResponse: resp}
+	result := TriggersClientListByFactoryResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TriggerListResponse); err != nil {
 		return TriggersClientListByFactoryResponse{}, err
 	}
@@ -389,7 +410,7 @@ func (client *TriggersClient) queryByFactoryCreateRequest(ctx context.Context, r
 
 // queryByFactoryHandleResponse handles the QueryByFactory response.
 func (client *TriggersClient) queryByFactoryHandleResponse(resp *http.Response) (TriggersClientQueryByFactoryResponse, error) {
-	result := TriggersClientQueryByFactoryResponse{RawResponse: resp}
+	result := TriggersClientQueryByFactoryResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TriggerQueryResponse); err != nil {
 		return TriggersClientQueryByFactoryResponse{}, err
 	}
@@ -402,22 +423,16 @@ func (client *TriggersClient) queryByFactoryHandleResponse(resp *http.Response) 
 // factoryName - The factory name.
 // triggerName - The trigger name.
 // options - TriggersClientBeginStartOptions contains the optional parameters for the TriggersClient.BeginStart method.
-func (client *TriggersClient) BeginStart(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersClientBeginStartOptions) (TriggersClientStartPollerResponse, error) {
-	resp, err := client.start(ctx, resourceGroupName, factoryName, triggerName, options)
-	if err != nil {
-		return TriggersClientStartPollerResponse{}, err
+func (client *TriggersClient) BeginStart(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersClientBeginStartOptions) (*armruntime.Poller[TriggersClientStartResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.start(ctx, resourceGroupName, factoryName, triggerName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[TriggersClientStartResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[TriggersClientStartResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := TriggersClientStartPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("TriggersClient.Start", "", resp, client.pl)
-	if err != nil {
-		return TriggersClientStartPollerResponse{}, err
-	}
-	result.Poller = &TriggersClientStartPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Start - Starts a trigger.
@@ -473,22 +488,16 @@ func (client *TriggersClient) startCreateRequest(ctx context.Context, resourceGr
 // factoryName - The factory name.
 // triggerName - The trigger name.
 // options - TriggersClientBeginStopOptions contains the optional parameters for the TriggersClient.BeginStop method.
-func (client *TriggersClient) BeginStop(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersClientBeginStopOptions) (TriggersClientStopPollerResponse, error) {
-	resp, err := client.stop(ctx, resourceGroupName, factoryName, triggerName, options)
-	if err != nil {
-		return TriggersClientStopPollerResponse{}, err
+func (client *TriggersClient) BeginStop(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersClientBeginStopOptions) (*armruntime.Poller[TriggersClientStopResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.stop(ctx, resourceGroupName, factoryName, triggerName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[TriggersClientStopResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[TriggersClientStopResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := TriggersClientStopPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("TriggersClient.Stop", "", resp, client.pl)
-	if err != nil {
-		return TriggersClientStopPollerResponse{}, err
-	}
-	result.Poller = &TriggersClientStopPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Stop - Stops a trigger.
@@ -545,22 +554,16 @@ func (client *TriggersClient) stopCreateRequest(ctx context.Context, resourceGro
 // triggerName - The trigger name.
 // options - TriggersClientBeginSubscribeToEventsOptions contains the optional parameters for the TriggersClient.BeginSubscribeToEvents
 // method.
-func (client *TriggersClient) BeginSubscribeToEvents(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersClientBeginSubscribeToEventsOptions) (TriggersClientSubscribeToEventsPollerResponse, error) {
-	resp, err := client.subscribeToEvents(ctx, resourceGroupName, factoryName, triggerName, options)
-	if err != nil {
-		return TriggersClientSubscribeToEventsPollerResponse{}, err
+func (client *TriggersClient) BeginSubscribeToEvents(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersClientBeginSubscribeToEventsOptions) (*armruntime.Poller[TriggersClientSubscribeToEventsResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.subscribeToEvents(ctx, resourceGroupName, factoryName, triggerName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[TriggersClientSubscribeToEventsResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[TriggersClientSubscribeToEventsResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := TriggersClientSubscribeToEventsPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("TriggersClient.SubscribeToEvents", "", resp, client.pl)
-	if err != nil {
-		return TriggersClientSubscribeToEventsPollerResponse{}, err
-	}
-	result.Poller = &TriggersClientSubscribeToEventsPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // SubscribeToEvents - Subscribe event trigger to events.
@@ -617,22 +620,16 @@ func (client *TriggersClient) subscribeToEventsCreateRequest(ctx context.Context
 // triggerName - The trigger name.
 // options - TriggersClientBeginUnsubscribeFromEventsOptions contains the optional parameters for the TriggersClient.BeginUnsubscribeFromEvents
 // method.
-func (client *TriggersClient) BeginUnsubscribeFromEvents(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersClientBeginUnsubscribeFromEventsOptions) (TriggersClientUnsubscribeFromEventsPollerResponse, error) {
-	resp, err := client.unsubscribeFromEvents(ctx, resourceGroupName, factoryName, triggerName, options)
-	if err != nil {
-		return TriggersClientUnsubscribeFromEventsPollerResponse{}, err
+func (client *TriggersClient) BeginUnsubscribeFromEvents(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersClientBeginUnsubscribeFromEventsOptions) (*armruntime.Poller[TriggersClientUnsubscribeFromEventsResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.unsubscribeFromEvents(ctx, resourceGroupName, factoryName, triggerName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[TriggersClientUnsubscribeFromEventsResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[TriggersClientUnsubscribeFromEventsResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := TriggersClientUnsubscribeFromEventsPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("TriggersClient.UnsubscribeFromEvents", "", resp, client.pl)
-	if err != nil {
-		return TriggersClientUnsubscribeFromEventsPollerResponse{}, err
-	}
-	result.Poller = &TriggersClientUnsubscribeFromEventsPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // UnsubscribeFromEvents - Unsubscribe event trigger from events.

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type IntegrationRuntimeNodesClient struct {
 // subscriptionID - The subscription identifier.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewIntegrationRuntimeNodesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *IntegrationRuntimeNodesClient {
+func NewIntegrationRuntimeNodesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IntegrationRuntimeNodesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &IntegrationRuntimeNodesClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Delete - Deletes a self-hosted integration runtime node.
@@ -69,7 +74,7 @@ func (client *IntegrationRuntimeNodesClient) Delete(ctx context.Context, resourc
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return IntegrationRuntimeNodesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return IntegrationRuntimeNodesClientDeleteResponse{RawResponse: resp}, nil
+	return IntegrationRuntimeNodesClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -165,7 +170,7 @@ func (client *IntegrationRuntimeNodesClient) getCreateRequest(ctx context.Contex
 
 // getHandleResponse handles the Get response.
 func (client *IntegrationRuntimeNodesClient) getHandleResponse(resp *http.Response) (IntegrationRuntimeNodesClientGetResponse, error) {
-	result := IntegrationRuntimeNodesClientGetResponse{RawResponse: resp}
+	result := IntegrationRuntimeNodesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SelfHostedIntegrationRuntimeNode); err != nil {
 		return IntegrationRuntimeNodesClientGetResponse{}, err
 	}
@@ -231,7 +236,7 @@ func (client *IntegrationRuntimeNodesClient) getIPAddressCreateRequest(ctx conte
 
 // getIPAddressHandleResponse handles the GetIPAddress response.
 func (client *IntegrationRuntimeNodesClient) getIPAddressHandleResponse(resp *http.Response) (IntegrationRuntimeNodesClientGetIPAddressResponse, error) {
-	result := IntegrationRuntimeNodesClientGetIPAddressResponse{RawResponse: resp}
+	result := IntegrationRuntimeNodesClientGetIPAddressResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationRuntimeNodeIPAddress); err != nil {
 		return IntegrationRuntimeNodesClientGetIPAddressResponse{}, err
 	}
@@ -298,7 +303,7 @@ func (client *IntegrationRuntimeNodesClient) updateCreateRequest(ctx context.Con
 
 // updateHandleResponse handles the Update response.
 func (client *IntegrationRuntimeNodesClient) updateHandleResponse(resp *http.Response) (IntegrationRuntimeNodesClientUpdateResponse, error) {
-	result := IntegrationRuntimeNodesClientUpdateResponse{RawResponse: resp}
+	result := IntegrationRuntimeNodesClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SelfHostedIntegrationRuntimeNode); err != nil {
 		return IntegrationRuntimeNodesClientUpdateResponse{}, err
 	}

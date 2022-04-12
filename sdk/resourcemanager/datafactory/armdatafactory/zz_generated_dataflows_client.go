@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type DataFlowsClient struct {
 // subscriptionID - The subscription identifier.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewDataFlowsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DataFlowsClient {
+func NewDataFlowsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DataFlowsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &DataFlowsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates a data flow.
@@ -107,7 +112,7 @@ func (client *DataFlowsClient) createOrUpdateCreateRequest(ctx context.Context, 
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *DataFlowsClient) createOrUpdateHandleResponse(resp *http.Response) (DataFlowsClientCreateOrUpdateResponse, error) {
-	result := DataFlowsClientCreateOrUpdateResponse{RawResponse: resp}
+	result := DataFlowsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataFlowResource); err != nil {
 		return DataFlowsClientCreateOrUpdateResponse{}, err
 	}
@@ -132,7 +137,7 @@ func (client *DataFlowsClient) Delete(ctx context.Context, resourceGroupName str
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return DataFlowsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return DataFlowsClientDeleteResponse{RawResponse: resp}, nil
+	return DataFlowsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -221,7 +226,7 @@ func (client *DataFlowsClient) getCreateRequest(ctx context.Context, resourceGro
 
 // getHandleResponse handles the Get response.
 func (client *DataFlowsClient) getHandleResponse(resp *http.Response) (DataFlowsClientGetResponse, error) {
-	result := DataFlowsClientGetResponse{RawResponse: resp}
+	result := DataFlowsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataFlowResource); err != nil {
 		return DataFlowsClientGetResponse{}, err
 	}
@@ -233,16 +238,32 @@ func (client *DataFlowsClient) getHandleResponse(resp *http.Response) (DataFlows
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // options - DataFlowsClientListByFactoryOptions contains the optional parameters for the DataFlowsClient.ListByFactory method.
-func (client *DataFlowsClient) ListByFactory(resourceGroupName string, factoryName string, options *DataFlowsClientListByFactoryOptions) *DataFlowsClientListByFactoryPager {
-	return &DataFlowsClientListByFactoryPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByFactoryCreateRequest(ctx, resourceGroupName, factoryName, options)
+func (client *DataFlowsClient) ListByFactory(resourceGroupName string, factoryName string, options *DataFlowsClientListByFactoryOptions) *runtime.Pager[DataFlowsClientListByFactoryResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DataFlowsClientListByFactoryResponse]{
+		More: func(page DataFlowsClientListByFactoryResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DataFlowsClientListByFactoryResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DataFlowListResponse.NextLink)
+		Fetcher: func(ctx context.Context, page *DataFlowsClientListByFactoryResponse) (DataFlowsClientListByFactoryResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByFactoryCreateRequest(ctx, resourceGroupName, factoryName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DataFlowsClientListByFactoryResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DataFlowsClientListByFactoryResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DataFlowsClientListByFactoryResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByFactoryHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByFactoryCreateRequest creates the ListByFactory request.
@@ -273,7 +294,7 @@ func (client *DataFlowsClient) listByFactoryCreateRequest(ctx context.Context, r
 
 // listByFactoryHandleResponse handles the ListByFactory response.
 func (client *DataFlowsClient) listByFactoryHandleResponse(resp *http.Response) (DataFlowsClientListByFactoryResponse, error) {
-	result := DataFlowsClientListByFactoryResponse{RawResponse: resp}
+	result := DataFlowsClientListByFactoryResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataFlowListResponse); err != nil {
 		return DataFlowsClientListByFactoryResponse{}, err
 	}

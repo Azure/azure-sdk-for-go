@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,42 +17,51 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mediaservices/armmediaservices"
 )
 
-// x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/jobs-list-all-filter-by-created.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/jobs-list-all-filter-by-created.json
 func ExampleJobsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armmediaservices.NewJobsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewJobsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.List("<resource-group-name>",
 		"<account-name>",
 		"<transform-name>",
-		&armmediaservices.JobsClientListOptions{Filter: to.StringPtr("<filter>"),
-			Orderby: to.StringPtr("<orderby>"),
+		&armmediaservices.JobsClientListOptions{Filter: to.Ptr("<filter>"),
+			Orderby: to.Ptr("<orderby>"),
 		})
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/jobs-get-by-name.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/jobs-get-by-name.json
 func ExampleJobsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armmediaservices.NewJobsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewJobsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<account-name>",
@@ -60,19 +69,26 @@ func ExampleJobsClient_Get() {
 		"<job-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.JobsClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/jobs-create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/jobs-create.json
 func ExampleJobsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armmediaservices.NewJobsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewJobsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Create(ctx,
 		"<resource-group-name>",
 		"<account-name>",
@@ -81,34 +97,40 @@ func ExampleJobsClient_Create() {
 		armmediaservices.Job{
 			Properties: &armmediaservices.JobProperties{
 				CorrelationData: map[string]*string{
-					"Key 2": to.StringPtr("Value 2"),
-					"key1":  to.StringPtr("value1"),
+					"Key 2": to.Ptr("Value 2"),
+					"key1":  to.Ptr("value1"),
 				},
 				Input: &armmediaservices.JobInputAsset{
-					ODataType: to.StringPtr("<odata-type>"),
-					AssetName: to.StringPtr("<asset-name>"),
+					ODataType: to.Ptr("<odata-type>"),
+					AssetName: to.Ptr("<asset-name>"),
 				},
 				Outputs: []armmediaservices.JobOutputClassification{
 					&armmediaservices.JobOutputAsset{
-						ODataType: to.StringPtr("<odata-type>"),
-						AssetName: to.StringPtr("<asset-name>"),
+						ODataType: to.Ptr("<odata-type>"),
+						AssetName: to.Ptr("<asset-name>"),
 					}},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/jobs-delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/jobs-delete.json
 func ExampleJobsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armmediaservices.NewJobsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewJobsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Delete(ctx,
 		"<resource-group-name>",
 		"<account-name>",
@@ -116,18 +138,24 @@ func ExampleJobsClient_Delete() {
 		"<job-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/jobs-update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/jobs-update.json
 func ExampleJobsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armmediaservices.NewJobsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewJobsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Update(ctx,
 		"<resource-group-name>",
 		"<account-name>",
@@ -135,34 +163,41 @@ func ExampleJobsClient_Update() {
 		"<job-name>",
 		armmediaservices.Job{
 			Properties: &armmediaservices.JobProperties{
-				Description: to.StringPtr("<description>"),
+				Description: to.Ptr("<description>"),
 				Input: &armmediaservices.JobInputAsset{
-					ODataType: to.StringPtr("<odata-type>"),
-					AssetName: to.StringPtr("<asset-name>"),
+					ODataType: to.Ptr("<odata-type>"),
+					AssetName: to.Ptr("<asset-name>"),
 				},
 				Outputs: []armmediaservices.JobOutputClassification{
 					&armmediaservices.JobOutputAsset{
-						ODataType: to.StringPtr("<odata-type>"),
-						AssetName: to.StringPtr("<asset-name>"),
+						ODataType: to.Ptr("<odata-type>"),
+						AssetName: to.Ptr("<asset-name>"),
 					}},
-				Priority: armmediaservices.Priority("High").ToPtr(),
+				Priority: to.Ptr(armmediaservices.PriorityHigh),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.JobsClientUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/jobs-cancel.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/jobs-cancel.json
 func ExampleJobsClient_CancelJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armmediaservices.NewJobsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewJobsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.CancelJob(ctx,
 		"<resource-group-name>",
 		"<account-name>",
@@ -170,6 +205,7 @@ func ExampleJobsClient_CancelJob() {
 		"<job-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }

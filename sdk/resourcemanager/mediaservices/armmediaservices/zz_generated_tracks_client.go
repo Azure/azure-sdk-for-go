@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type TracksClient struct {
 // subscriptionID - The unique identifier for a Microsoft Azure subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewTracksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *TracksClient {
+func NewTracksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TracksClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &TracksClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Create or update a Track in the asset
@@ -58,22 +63,16 @@ func NewTracksClient(subscriptionID string, credential azcore.TokenCredential, o
 // parameters - The request parameters
 // options - TracksClientBeginCreateOrUpdateOptions contains the optional parameters for the TracksClient.BeginCreateOrUpdate
 // method.
-func (client *TracksClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, assetName string, trackName string, parameters AssetTrack, options *TracksClientBeginCreateOrUpdateOptions) (TracksClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, accountName, assetName, trackName, parameters, options)
-	if err != nil {
-		return TracksClientCreateOrUpdatePollerResponse{}, err
+func (client *TracksClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, assetName string, trackName string, parameters AssetTrack, options *TracksClientBeginCreateOrUpdateOptions) (*armruntime.Poller[TracksClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, accountName, assetName, trackName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[TracksClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[TracksClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := TracksClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("TracksClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return TracksClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &TracksClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Create or update a Track in the asset
@@ -134,22 +133,16 @@ func (client *TracksClient) createOrUpdateCreateRequest(ctx context.Context, res
 // assetName - The Asset name.
 // trackName - The Asset Track name.
 // options - TracksClientBeginDeleteOptions contains the optional parameters for the TracksClient.BeginDelete method.
-func (client *TracksClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, assetName string, trackName string, options *TracksClientBeginDeleteOptions) (TracksClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, assetName, trackName, options)
-	if err != nil {
-		return TracksClientDeletePollerResponse{}, err
+func (client *TracksClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, assetName string, trackName string, options *TracksClientBeginDeleteOptions) (*armruntime.Poller[TracksClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, assetName, trackName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[TracksClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[TracksClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := TracksClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("TracksClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return TracksClientDeletePollerResponse{}, err
-	}
-	result.Poller = &TracksClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes a Track in the asset
@@ -261,7 +254,7 @@ func (client *TracksClient) getCreateRequest(ctx context.Context, resourceGroupN
 
 // getHandleResponse handles the Get response.
 func (client *TracksClient) getHandleResponse(resp *http.Response) (TracksClientGetResponse, error) {
-	result := TracksClientGetResponse{RawResponse: resp}
+	result := TracksClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssetTrack); err != nil {
 		return TracksClientGetResponse{}, err
 	}
@@ -274,19 +267,26 @@ func (client *TracksClient) getHandleResponse(resp *http.Response) (TracksClient
 // accountName - The Media Services account name.
 // assetName - The Asset name.
 // options - TracksClientListOptions contains the optional parameters for the TracksClient.List method.
-func (client *TracksClient) List(ctx context.Context, resourceGroupName string, accountName string, assetName string, options *TracksClientListOptions) (TracksClientListResponse, error) {
-	req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, assetName, options)
-	if err != nil {
-		return TracksClientListResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return TracksClientListResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return TracksClientListResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listHandleResponse(resp)
+func (client *TracksClient) List(resourceGroupName string, accountName string, assetName string, options *TracksClientListOptions) *runtime.Pager[TracksClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[TracksClientListResponse]{
+		More: func(page TracksClientListResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *TracksClientListResponse) (TracksClientListResponse, error) {
+			req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, assetName, options)
+			if err != nil {
+				return TracksClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return TracksClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return TracksClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
+		},
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -321,7 +321,7 @@ func (client *TracksClient) listCreateRequest(ctx context.Context, resourceGroup
 
 // listHandleResponse handles the List response.
 func (client *TracksClient) listHandleResponse(resp *http.Response) (TracksClientListResponse, error) {
-	result := TracksClientListResponse{RawResponse: resp}
+	result := TracksClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssetTrackCollection); err != nil {
 		return TracksClientListResponse{}, err
 	}
@@ -336,22 +336,16 @@ func (client *TracksClient) listHandleResponse(resp *http.Response) (TracksClien
 // trackName - The Asset Track name.
 // parameters - The request parameters
 // options - TracksClientBeginUpdateOptions contains the optional parameters for the TracksClient.BeginUpdate method.
-func (client *TracksClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, assetName string, trackName string, parameters AssetTrack, options *TracksClientBeginUpdateOptions) (TracksClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, accountName, assetName, trackName, parameters, options)
-	if err != nil {
-		return TracksClientUpdatePollerResponse{}, err
+func (client *TracksClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, assetName string, trackName string, parameters AssetTrack, options *TracksClientBeginUpdateOptions) (*armruntime.Poller[TracksClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, accountName, assetName, trackName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[TracksClientUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[TracksClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := TracksClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("TracksClient.Update", "", resp, client.pl)
-	if err != nil {
-		return TracksClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &TracksClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Updates an existing Track in the asset
@@ -417,22 +411,16 @@ func (client *TracksClient) updateCreateRequest(ctx context.Context, resourceGro
 // trackName - The Asset Track name.
 // options - TracksClientBeginUpdateTrackDataOptions contains the optional parameters for the TracksClient.BeginUpdateTrackData
 // method.
-func (client *TracksClient) BeginUpdateTrackData(ctx context.Context, resourceGroupName string, accountName string, assetName string, trackName string, options *TracksClientBeginUpdateTrackDataOptions) (TracksClientUpdateTrackDataPollerResponse, error) {
-	resp, err := client.updateTrackData(ctx, resourceGroupName, accountName, assetName, trackName, options)
-	if err != nil {
-		return TracksClientUpdateTrackDataPollerResponse{}, err
+func (client *TracksClient) BeginUpdateTrackData(ctx context.Context, resourceGroupName string, accountName string, assetName string, trackName string, options *TracksClientBeginUpdateTrackDataOptions) (*armruntime.Poller[TracksClientUpdateTrackDataResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.updateTrackData(ctx, resourceGroupName, accountName, assetName, trackName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[TracksClientUpdateTrackDataResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[TracksClientUpdateTrackDataResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := TracksClientUpdateTrackDataPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("TracksClient.UpdateTrackData", "", resp, client.pl)
-	if err != nil {
-		return TracksClientUpdateTrackDataPollerResponse{}, err
-	}
-	result.Poller = &TracksClientUpdateTrackDataPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // UpdateTrackData - Update the track data. Call this API after any changes are made to the track data stored in the asset

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type LiveOutputsClient struct {
 // subscriptionID - The unique identifier for a Microsoft Azure subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewLiveOutputsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *LiveOutputsClient {
+func NewLiveOutputsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LiveOutputsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &LiveOutputsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreate - Creates a new live output.
@@ -57,22 +62,16 @@ func NewLiveOutputsClient(subscriptionID string, credential azcore.TokenCredenti
 // liveOutputName - The name of the live output.
 // parameters - Live Output properties needed for creation.
 // options - LiveOutputsClientBeginCreateOptions contains the optional parameters for the LiveOutputsClient.BeginCreate method.
-func (client *LiveOutputsClient) BeginCreate(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, liveOutputName string, parameters LiveOutput, options *LiveOutputsClientBeginCreateOptions) (LiveOutputsClientCreatePollerResponse, error) {
-	resp, err := client.create(ctx, resourceGroupName, accountName, liveEventName, liveOutputName, parameters, options)
-	if err != nil {
-		return LiveOutputsClientCreatePollerResponse{}, err
+func (client *LiveOutputsClient) BeginCreate(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, liveOutputName string, parameters LiveOutput, options *LiveOutputsClientBeginCreateOptions) (*armruntime.Poller[LiveOutputsClientCreateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.create(ctx, resourceGroupName, accountName, liveEventName, liveOutputName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[LiveOutputsClientCreateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[LiveOutputsClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := LiveOutputsClientCreatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("LiveOutputsClient.Create", "", resp, client.pl)
-	if err != nil {
-		return LiveOutputsClientCreatePollerResponse{}, err
-	}
-	result.Poller = &LiveOutputsClientCreatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Create - Creates a new live output.
@@ -133,22 +132,16 @@ func (client *LiveOutputsClient) createCreateRequest(ctx context.Context, resour
 // liveEventName - The name of the live event, maximum length is 32.
 // liveOutputName - The name of the live output.
 // options - LiveOutputsClientBeginDeleteOptions contains the optional parameters for the LiveOutputsClient.BeginDelete method.
-func (client *LiveOutputsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, liveOutputName string, options *LiveOutputsClientBeginDeleteOptions) (LiveOutputsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, liveEventName, liveOutputName, options)
-	if err != nil {
-		return LiveOutputsClientDeletePollerResponse{}, err
+func (client *LiveOutputsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, liveOutputName string, options *LiveOutputsClientBeginDeleteOptions) (*armruntime.Poller[LiveOutputsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, liveEventName, liveOutputName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[LiveOutputsClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[LiveOutputsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := LiveOutputsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("LiveOutputsClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return LiveOutputsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &LiveOutputsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
@@ -260,7 +253,7 @@ func (client *LiveOutputsClient) getCreateRequest(ctx context.Context, resourceG
 
 // getHandleResponse handles the Get response.
 func (client *LiveOutputsClient) getHandleResponse(resp *http.Response) (LiveOutputsClientGetResponse, error) {
-	result := LiveOutputsClientGetResponse{RawResponse: resp}
+	result := LiveOutputsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LiveOutput); err != nil {
 		return LiveOutputsClientGetResponse{}, err
 	}
@@ -273,16 +266,32 @@ func (client *LiveOutputsClient) getHandleResponse(resp *http.Response) (LiveOut
 // accountName - The Media Services account name.
 // liveEventName - The name of the live event, maximum length is 32.
 // options - LiveOutputsClientListOptions contains the optional parameters for the LiveOutputsClient.List method.
-func (client *LiveOutputsClient) List(resourceGroupName string, accountName string, liveEventName string, options *LiveOutputsClientListOptions) *LiveOutputsClientListPager {
-	return &LiveOutputsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, accountName, liveEventName, options)
+func (client *LiveOutputsClient) List(resourceGroupName string, accountName string, liveEventName string, options *LiveOutputsClientListOptions) *runtime.Pager[LiveOutputsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[LiveOutputsClientListResponse]{
+		More: func(page LiveOutputsClientListResponse) bool {
+			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp LiveOutputsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.LiveOutputListResult.ODataNextLink)
+		Fetcher: func(ctx context.Context, page *LiveOutputsClientListResponse) (LiveOutputsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, accountName, liveEventName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.ODataNextLink)
+			}
+			if err != nil {
+				return LiveOutputsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return LiveOutputsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return LiveOutputsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -317,7 +326,7 @@ func (client *LiveOutputsClient) listCreateRequest(ctx context.Context, resource
 
 // listHandleResponse handles the List response.
 func (client *LiveOutputsClient) listHandleResponse(resp *http.Response) (LiveOutputsClientListResponse, error) {
-	result := LiveOutputsClientListResponse{RawResponse: resp}
+	result := LiveOutputsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LiveOutputListResult); err != nil {
 		return LiveOutputsClientListResponse{}, err
 	}

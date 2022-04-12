@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type Client struct {
 // subscriptionID - The unique identifier for a Microsoft Azure subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *Client {
+func NewClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*Client, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &Client{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates a Media Services account
@@ -98,7 +103,7 @@ func (client *Client) createOrUpdateCreateRequest(ctx context.Context, resourceG
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *Client) createOrUpdateHandleResponse(resp *http.Response) (ClientCreateOrUpdateResponse, error) {
-	result := ClientCreateOrUpdateResponse{RawResponse: resp}
+	result := ClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MediaService); err != nil {
 		return ClientCreateOrUpdateResponse{}, err
 	}
@@ -122,7 +127,7 @@ func (client *Client) Delete(ctx context.Context, resourceGroupName string, acco
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return ClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ClientDeleteResponse{RawResponse: resp}, nil
+	return ClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -199,7 +204,7 @@ func (client *Client) getCreateRequest(ctx context.Context, resourceGroupName st
 
 // getHandleResponse handles the Get response.
 func (client *Client) getHandleResponse(resp *http.Response) (ClientGetResponse, error) {
-	result := ClientGetResponse{RawResponse: resp}
+	result := ClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MediaService); err != nil {
 		return ClientGetResponse{}, err
 	}
@@ -210,16 +215,32 @@ func (client *Client) getHandleResponse(resp *http.Response) (ClientGetResponse,
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // options - ClientListOptions contains the optional parameters for the Client.List method.
-func (client *Client) List(resourceGroupName string, options *ClientListOptions) *ClientListPager {
-	return &ClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, options)
+func (client *Client) List(resourceGroupName string, options *ClientListOptions) *runtime.Pager[ClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ClientListResponse]{
+		More: func(page ClientListResponse) bool {
+			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.MediaServiceCollection.ODataNextLink)
+		Fetcher: func(ctx context.Context, page *ClientListResponse) (ClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.ODataNextLink)
+			}
+			if err != nil {
+				return ClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -246,7 +267,7 @@ func (client *Client) listCreateRequest(ctx context.Context, resourceGroupName s
 
 // listHandleResponse handles the List response.
 func (client *Client) listHandleResponse(resp *http.Response) (ClientListResponse, error) {
-	result := ClientListResponse{RawResponse: resp}
+	result := ClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MediaServiceCollection); err != nil {
 		return ClientListResponse{}, err
 	}
@@ -256,16 +277,32 @@ func (client *Client) listHandleResponse(resp *http.Response) (ClientListRespons
 // ListBySubscription - List Media Services accounts in the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ClientListBySubscriptionOptions contains the optional parameters for the Client.ListBySubscription method.
-func (client *Client) ListBySubscription(options *ClientListBySubscriptionOptions) *ClientListBySubscriptionPager {
-	return &ClientListBySubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySubscriptionCreateRequest(ctx, options)
+func (client *Client) ListBySubscription(options *ClientListBySubscriptionOptions) *runtime.Pager[ClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ClientListBySubscriptionResponse]{
+		More: func(page ClientListBySubscriptionResponse) bool {
+			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ClientListBySubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.MediaServiceCollection.ODataNextLink)
+		Fetcher: func(ctx context.Context, page *ClientListBySubscriptionResponse) (ClientListBySubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySubscriptionCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.ODataNextLink)
+			}
+			if err != nil {
+				return ClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ClientListBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
@@ -288,7 +325,7 @@ func (client *Client) listBySubscriptionCreateRequest(ctx context.Context, optio
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
 func (client *Client) listBySubscriptionHandleResponse(resp *http.Response) (ClientListBySubscriptionResponse, error) {
-	result := ClientListBySubscriptionResponse{RawResponse: resp}
+	result := ClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MediaServiceCollection); err != nil {
 		return ClientListBySubscriptionResponse{}, err
 	}
@@ -344,7 +381,7 @@ func (client *Client) listEdgePoliciesCreateRequest(ctx context.Context, resourc
 
 // listEdgePoliciesHandleResponse handles the ListEdgePolicies response.
 func (client *Client) listEdgePoliciesHandleResponse(resp *http.Response) (ClientListEdgePoliciesResponse, error) {
-	result := ClientListEdgePoliciesResponse{RawResponse: resp}
+	result := ClientListEdgePoliciesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EdgePolicies); err != nil {
 		return ClientListEdgePoliciesResponse{}, err
 	}
@@ -369,7 +406,7 @@ func (client *Client) SyncStorageKeys(ctx context.Context, resourceGroupName str
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return ClientSyncStorageKeysResponse{}, runtime.NewResponseError(resp)
 	}
-	return ClientSyncStorageKeysResponse{RawResponse: resp}, nil
+	return ClientSyncStorageKeysResponse{}, nil
 }
 
 // syncStorageKeysCreateRequest creates the SyncStorageKeys request.
@@ -447,7 +484,7 @@ func (client *Client) updateCreateRequest(ctx context.Context, resourceGroupName
 
 // updateHandleResponse handles the Update response.
 func (client *Client) updateHandleResponse(resp *http.Response) (ClientUpdateResponse, error) {
-	result := ClientUpdateResponse{RawResponse: resp}
+	result := ClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MediaService); err != nil {
 		return ClientUpdateResponse{}, err
 	}

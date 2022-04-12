@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type LiveEventsClient struct {
 // subscriptionID - The unique identifier for a Microsoft Azure subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewLiveEventsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *LiveEventsClient {
+func NewLiveEventsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LiveEventsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &LiveEventsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginAllocate - A live event is in StandBy state after allocation completes, and is ready to start.
@@ -57,22 +62,16 @@ func NewLiveEventsClient(subscriptionID string, credential azcore.TokenCredentia
 // liveEventName - The name of the live event, maximum length is 32.
 // options - LiveEventsClientBeginAllocateOptions contains the optional parameters for the LiveEventsClient.BeginAllocate
 // method.
-func (client *LiveEventsClient) BeginAllocate(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, options *LiveEventsClientBeginAllocateOptions) (LiveEventsClientAllocatePollerResponse, error) {
-	resp, err := client.allocate(ctx, resourceGroupName, accountName, liveEventName, options)
-	if err != nil {
-		return LiveEventsClientAllocatePollerResponse{}, err
+func (client *LiveEventsClient) BeginAllocate(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, options *LiveEventsClientBeginAllocateOptions) (*armruntime.Poller[LiveEventsClientAllocateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.allocate(ctx, resourceGroupName, accountName, liveEventName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[LiveEventsClientAllocateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[LiveEventsClientAllocateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := LiveEventsClientAllocatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("LiveEventsClient.Allocate", "", resp, client.pl)
-	if err != nil {
-		return LiveEventsClientAllocatePollerResponse{}, err
-	}
-	result.Poller = &LiveEventsClientAllocatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Allocate - A live event is in StandBy state after allocation completes, and is ready to start.
@@ -129,22 +128,16 @@ func (client *LiveEventsClient) allocateCreateRequest(ctx context.Context, resou
 // liveEventName - The name of the live event, maximum length is 32.
 // parameters - Live event properties needed for creation.
 // options - LiveEventsClientBeginCreateOptions contains the optional parameters for the LiveEventsClient.BeginCreate method.
-func (client *LiveEventsClient) BeginCreate(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, parameters LiveEvent, options *LiveEventsClientBeginCreateOptions) (LiveEventsClientCreatePollerResponse, error) {
-	resp, err := client.create(ctx, resourceGroupName, accountName, liveEventName, parameters, options)
-	if err != nil {
-		return LiveEventsClientCreatePollerResponse{}, err
+func (client *LiveEventsClient) BeginCreate(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, parameters LiveEvent, options *LiveEventsClientBeginCreateOptions) (*armruntime.Poller[LiveEventsClientCreateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.create(ctx, resourceGroupName, accountName, liveEventName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[LiveEventsClientCreateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[LiveEventsClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := LiveEventsClientCreatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("LiveEventsClient.Create", "", resp, client.pl)
-	if err != nil {
-		return LiveEventsClientCreatePollerResponse{}, err
-	}
-	result.Poller = &LiveEventsClientCreatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Create - Creates a new live event.
@@ -203,22 +196,16 @@ func (client *LiveEventsClient) createCreateRequest(ctx context.Context, resourc
 // accountName - The Media Services account name.
 // liveEventName - The name of the live event, maximum length is 32.
 // options - LiveEventsClientBeginDeleteOptions contains the optional parameters for the LiveEventsClient.BeginDelete method.
-func (client *LiveEventsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, options *LiveEventsClientBeginDeleteOptions) (LiveEventsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, liveEventName, options)
-	if err != nil {
-		return LiveEventsClientDeletePollerResponse{}, err
+func (client *LiveEventsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, options *LiveEventsClientBeginDeleteOptions) (*armruntime.Poller[LiveEventsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, liveEventName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[LiveEventsClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[LiveEventsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := LiveEventsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("LiveEventsClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return LiveEventsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &LiveEventsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes a live event.
@@ -321,7 +308,7 @@ func (client *LiveEventsClient) getCreateRequest(ctx context.Context, resourceGr
 
 // getHandleResponse handles the Get response.
 func (client *LiveEventsClient) getHandleResponse(resp *http.Response) (LiveEventsClientGetResponse, error) {
-	result := LiveEventsClientGetResponse{RawResponse: resp}
+	result := LiveEventsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LiveEvent); err != nil {
 		return LiveEventsClientGetResponse{}, err
 	}
@@ -333,16 +320,32 @@ func (client *LiveEventsClient) getHandleResponse(resp *http.Response) (LiveEven
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // options - LiveEventsClientListOptions contains the optional parameters for the LiveEventsClient.List method.
-func (client *LiveEventsClient) List(resourceGroupName string, accountName string, options *LiveEventsClientListOptions) *LiveEventsClientListPager {
-	return &LiveEventsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, accountName, options)
+func (client *LiveEventsClient) List(resourceGroupName string, accountName string, options *LiveEventsClientListOptions) *runtime.Pager[LiveEventsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[LiveEventsClientListResponse]{
+		More: func(page LiveEventsClientListResponse) bool {
+			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp LiveEventsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.LiveEventListResult.ODataNextLink)
+		Fetcher: func(ctx context.Context, page *LiveEventsClientListResponse) (LiveEventsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, accountName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.ODataNextLink)
+			}
+			if err != nil {
+				return LiveEventsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return LiveEventsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return LiveEventsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -373,7 +376,7 @@ func (client *LiveEventsClient) listCreateRequest(ctx context.Context, resourceG
 
 // listHandleResponse handles the List response.
 func (client *LiveEventsClient) listHandleResponse(resp *http.Response) (LiveEventsClientListResponse, error) {
-	result := LiveEventsClientListResponse{RawResponse: resp}
+	result := LiveEventsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LiveEventListResult); err != nil {
 		return LiveEventsClientListResponse{}, err
 	}
@@ -388,22 +391,16 @@ func (client *LiveEventsClient) listHandleResponse(resp *http.Response) (LiveEve
 // accountName - The Media Services account name.
 // liveEventName - The name of the live event, maximum length is 32.
 // options - LiveEventsClientBeginResetOptions contains the optional parameters for the LiveEventsClient.BeginReset method.
-func (client *LiveEventsClient) BeginReset(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, options *LiveEventsClientBeginResetOptions) (LiveEventsClientResetPollerResponse, error) {
-	resp, err := client.reset(ctx, resourceGroupName, accountName, liveEventName, options)
-	if err != nil {
-		return LiveEventsClientResetPollerResponse{}, err
+func (client *LiveEventsClient) BeginReset(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, options *LiveEventsClientBeginResetOptions) (*armruntime.Poller[LiveEventsClientResetResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.reset(ctx, resourceGroupName, accountName, liveEventName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[LiveEventsClientResetResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[LiveEventsClientResetResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := LiveEventsClientResetPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("LiveEventsClient.Reset", "", resp, client.pl)
-	if err != nil {
-		return LiveEventsClientResetPollerResponse{}, err
-	}
-	result.Poller = &LiveEventsClientResetPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Reset - Resets an existing live event. All live outputs for the live event are deleted and the live event is stopped and
@@ -461,22 +458,16 @@ func (client *LiveEventsClient) resetCreateRequest(ctx context.Context, resource
 // accountName - The Media Services account name.
 // liveEventName - The name of the live event, maximum length is 32.
 // options - LiveEventsClientBeginStartOptions contains the optional parameters for the LiveEventsClient.BeginStart method.
-func (client *LiveEventsClient) BeginStart(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, options *LiveEventsClientBeginStartOptions) (LiveEventsClientStartPollerResponse, error) {
-	resp, err := client.start(ctx, resourceGroupName, accountName, liveEventName, options)
-	if err != nil {
-		return LiveEventsClientStartPollerResponse{}, err
+func (client *LiveEventsClient) BeginStart(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, options *LiveEventsClientBeginStartOptions) (*armruntime.Poller[LiveEventsClientStartResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.start(ctx, resourceGroupName, accountName, liveEventName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[LiveEventsClientStartResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[LiveEventsClientStartResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := LiveEventsClientStartPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("LiveEventsClient.Start", "", resp, client.pl)
-	if err != nil {
-		return LiveEventsClientStartPollerResponse{}, err
-	}
-	result.Poller = &LiveEventsClientStartPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Start - A live event in Stopped or StandBy state will be in Running state after the start operation completes.
@@ -533,22 +524,16 @@ func (client *LiveEventsClient) startCreateRequest(ctx context.Context, resource
 // liveEventName - The name of the live event, maximum length is 32.
 // parameters - LiveEvent stop parameters
 // options - LiveEventsClientBeginStopOptions contains the optional parameters for the LiveEventsClient.BeginStop method.
-func (client *LiveEventsClient) BeginStop(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, parameters LiveEventActionInput, options *LiveEventsClientBeginStopOptions) (LiveEventsClientStopPollerResponse, error) {
-	resp, err := client.stop(ctx, resourceGroupName, accountName, liveEventName, parameters, options)
-	if err != nil {
-		return LiveEventsClientStopPollerResponse{}, err
+func (client *LiveEventsClient) BeginStop(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, parameters LiveEventActionInput, options *LiveEventsClientBeginStopOptions) (*armruntime.Poller[LiveEventsClientStopResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.stop(ctx, resourceGroupName, accountName, liveEventName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[LiveEventsClientStopResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[LiveEventsClientStopResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := LiveEventsClientStopPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("LiveEventsClient.Stop", "", resp, client.pl)
-	if err != nil {
-		return LiveEventsClientStopPollerResponse{}, err
-	}
-	result.Poller = &LiveEventsClientStopPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Stop - Stops a running live event.
@@ -605,22 +590,16 @@ func (client *LiveEventsClient) stopCreateRequest(ctx context.Context, resourceG
 // liveEventName - The name of the live event, maximum length is 32.
 // parameters - Live event properties needed for patch.
 // options - LiveEventsClientBeginUpdateOptions contains the optional parameters for the LiveEventsClient.BeginUpdate method.
-func (client *LiveEventsClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, parameters LiveEvent, options *LiveEventsClientBeginUpdateOptions) (LiveEventsClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, accountName, liveEventName, parameters, options)
-	if err != nil {
-		return LiveEventsClientUpdatePollerResponse{}, err
+func (client *LiveEventsClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, parameters LiveEvent, options *LiveEventsClientBeginUpdateOptions) (*armruntime.Poller[LiveEventsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, accountName, liveEventName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[LiveEventsClientUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[LiveEventsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := LiveEventsClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("LiveEventsClient.Update", "", resp, client.pl)
-	if err != nil {
-		return LiveEventsClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &LiveEventsClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Updates settings on an existing live event.

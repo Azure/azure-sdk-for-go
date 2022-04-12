@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -30,29 +31,32 @@ type MaintenanceConfigurationsClient struct {
 }
 
 // NewMaintenanceConfigurationsClient creates a new instance of MaintenanceConfigurationsClient with the specified values.
-// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-// part of the URI for every service call.
+// subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewMaintenanceConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *MaintenanceConfigurationsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewMaintenanceConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MaintenanceConfigurationsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &MaintenanceConfigurationsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates a maintenance configuration in the specified managed cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
-// resourceGroupName - The name of the resource group.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the managed cluster resource.
 // configName - The name of the maintenance configuration.
 // parameters - The maintenance configuration to create or update.
@@ -97,7 +101,7 @@ func (client *MaintenanceConfigurationsClient) createOrUpdateCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01-preview")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -105,7 +109,7 @@ func (client *MaintenanceConfigurationsClient) createOrUpdateCreateRequest(ctx c
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *MaintenanceConfigurationsClient) createOrUpdateHandleResponse(resp *http.Response) (MaintenanceConfigurationsClientCreateOrUpdateResponse, error) {
-	result := MaintenanceConfigurationsClientCreateOrUpdateResponse{RawResponse: resp}
+	result := MaintenanceConfigurationsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MaintenanceConfiguration); err != nil {
 		return MaintenanceConfigurationsClientCreateOrUpdateResponse{}, err
 	}
@@ -114,7 +118,7 @@ func (client *MaintenanceConfigurationsClient) createOrUpdateHandleResponse(resp
 
 // Delete - Deletes a maintenance configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
-// resourceGroupName - The name of the resource group.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the managed cluster resource.
 // configName - The name of the maintenance configuration.
 // options - MaintenanceConfigurationsClientDeleteOptions contains the optional parameters for the MaintenanceConfigurationsClient.Delete
@@ -131,7 +135,7 @@ func (client *MaintenanceConfigurationsClient) Delete(ctx context.Context, resou
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return MaintenanceConfigurationsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return MaintenanceConfigurationsClientDeleteResponse{RawResponse: resp}, nil
+	return MaintenanceConfigurationsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -158,7 +162,7 @@ func (client *MaintenanceConfigurationsClient) deleteCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01-preview")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -166,7 +170,7 @@ func (client *MaintenanceConfigurationsClient) deleteCreateRequest(ctx context.C
 
 // Get - Gets the specified maintenance configuration of a managed cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
-// resourceGroupName - The name of the resource group.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the managed cluster resource.
 // configName - The name of the maintenance configuration.
 // options - MaintenanceConfigurationsClientGetOptions contains the optional parameters for the MaintenanceConfigurationsClient.Get
@@ -210,7 +214,7 @@ func (client *MaintenanceConfigurationsClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01-preview")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -218,7 +222,7 @@ func (client *MaintenanceConfigurationsClient) getCreateRequest(ctx context.Cont
 
 // getHandleResponse handles the Get response.
 func (client *MaintenanceConfigurationsClient) getHandleResponse(resp *http.Response) (MaintenanceConfigurationsClientGetResponse, error) {
-	result := MaintenanceConfigurationsClientGetResponse{RawResponse: resp}
+	result := MaintenanceConfigurationsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MaintenanceConfiguration); err != nil {
 		return MaintenanceConfigurationsClientGetResponse{}, err
 	}
@@ -227,20 +231,36 @@ func (client *MaintenanceConfigurationsClient) getHandleResponse(resp *http.Resp
 
 // ListByManagedCluster - Gets a list of maintenance configurations in the specified managed cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
-// resourceGroupName - The name of the resource group.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the managed cluster resource.
 // options - MaintenanceConfigurationsClientListByManagedClusterOptions contains the optional parameters for the MaintenanceConfigurationsClient.ListByManagedCluster
 // method.
-func (client *MaintenanceConfigurationsClient) ListByManagedCluster(resourceGroupName string, resourceName string, options *MaintenanceConfigurationsClientListByManagedClusterOptions) *MaintenanceConfigurationsClientListByManagedClusterPager {
-	return &MaintenanceConfigurationsClientListByManagedClusterPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByManagedClusterCreateRequest(ctx, resourceGroupName, resourceName, options)
+func (client *MaintenanceConfigurationsClient) ListByManagedCluster(resourceGroupName string, resourceName string, options *MaintenanceConfigurationsClientListByManagedClusterOptions) *runtime.Pager[MaintenanceConfigurationsClientListByManagedClusterResponse] {
+	return runtime.NewPager(runtime.PageProcessor[MaintenanceConfigurationsClientListByManagedClusterResponse]{
+		More: func(page MaintenanceConfigurationsClientListByManagedClusterResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp MaintenanceConfigurationsClientListByManagedClusterResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.MaintenanceConfigurationListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *MaintenanceConfigurationsClientListByManagedClusterResponse) (MaintenanceConfigurationsClientListByManagedClusterResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByManagedClusterCreateRequest(ctx, resourceGroupName, resourceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return MaintenanceConfigurationsClientListByManagedClusterResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return MaintenanceConfigurationsClientListByManagedClusterResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return MaintenanceConfigurationsClientListByManagedClusterResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByManagedClusterHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByManagedClusterCreateRequest creates the ListByManagedCluster request.
@@ -263,7 +283,7 @@ func (client *MaintenanceConfigurationsClient) listByManagedClusterCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01-preview")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -271,7 +291,7 @@ func (client *MaintenanceConfigurationsClient) listByManagedClusterCreateRequest
 
 // listByManagedClusterHandleResponse handles the ListByManagedCluster response.
 func (client *MaintenanceConfigurationsClient) listByManagedClusterHandleResponse(resp *http.Response) (MaintenanceConfigurationsClientListByManagedClusterResponse, error) {
-	result := MaintenanceConfigurationsClientListByManagedClusterResponse{RawResponse: resp}
+	result := MaintenanceConfigurationsClientListByManagedClusterResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MaintenanceConfigurationListResult); err != nil {
 		return MaintenanceConfigurationsClientListByManagedClusterResponse{}, err
 	}

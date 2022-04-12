@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ConfigurationsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ConfigurationsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConfigurationsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ConfigurationsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Updates a configuration of a server.
@@ -57,22 +62,16 @@ func NewConfigurationsClient(subscriptionID string, credential azcore.TokenCrede
 // parameters - The required parameters for updating a server configuration.
 // options - ConfigurationsClientBeginCreateOrUpdateOptions contains the optional parameters for the ConfigurationsClient.BeginCreateOrUpdate
 // method.
-func (client *ConfigurationsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, configurationName string, parameters Configuration, options *ConfigurationsClientBeginCreateOrUpdateOptions) (ConfigurationsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, configurationName, parameters, options)
-	if err != nil {
-		return ConfigurationsClientCreateOrUpdatePollerResponse{}, err
+func (client *ConfigurationsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, configurationName string, parameters Configuration, options *ConfigurationsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[ConfigurationsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, configurationName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ConfigurationsClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ConfigurationsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ConfigurationsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ConfigurationsClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return ConfigurationsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &ConfigurationsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Updates a configuration of a server.
@@ -175,7 +174,7 @@ func (client *ConfigurationsClient) getCreateRequest(ctx context.Context, resour
 
 // getHandleResponse handles the Get response.
 func (client *ConfigurationsClient) getHandleResponse(resp *http.Response) (ConfigurationsClientGetResponse, error) {
-	result := ConfigurationsClientGetResponse{RawResponse: resp}
+	result := ConfigurationsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Configuration); err != nil {
 		return ConfigurationsClientGetResponse{}, err
 	}
@@ -188,19 +187,26 @@ func (client *ConfigurationsClient) getHandleResponse(resp *http.Response) (Conf
 // serverName - The name of the server.
 // options - ConfigurationsClientListByServerOptions contains the optional parameters for the ConfigurationsClient.ListByServer
 // method.
-func (client *ConfigurationsClient) ListByServer(ctx context.Context, resourceGroupName string, serverName string, options *ConfigurationsClientListByServerOptions) (ConfigurationsClientListByServerResponse, error) {
-	req, err := client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
-	if err != nil {
-		return ConfigurationsClientListByServerResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return ConfigurationsClientListByServerResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ConfigurationsClientListByServerResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listByServerHandleResponse(resp)
+func (client *ConfigurationsClient) ListByServer(resourceGroupName string, serverName string, options *ConfigurationsClientListByServerOptions) *runtime.Pager[ConfigurationsClientListByServerResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ConfigurationsClientListByServerResponse]{
+		More: func(page ConfigurationsClientListByServerResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *ConfigurationsClientListByServerResponse) (ConfigurationsClientListByServerResponse, error) {
+			req, err := client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
+			if err != nil {
+				return ConfigurationsClientListByServerResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ConfigurationsClientListByServerResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ConfigurationsClientListByServerResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByServerHandleResponse(resp)
+		},
+	})
 }
 
 // listByServerCreateRequest creates the ListByServer request.
@@ -231,7 +237,7 @@ func (client *ConfigurationsClient) listByServerCreateRequest(ctx context.Contex
 
 // listByServerHandleResponse handles the ListByServer response.
 func (client *ConfigurationsClient) listByServerHandleResponse(resp *http.Response) (ConfigurationsClientListByServerResponse, error) {
-	result := ConfigurationsClientListByServerResponse{RawResponse: resp}
+	result := ConfigurationsClientListByServerResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConfigurationListResult); err != nil {
 		return ConfigurationsClientListByServerResponse{}, err
 	}

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ServerKeysClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewServerKeysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServerKeysClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewServerKeysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ServerKeysClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ServerKeysClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates a PostgreSQL Server key.
@@ -57,22 +62,16 @@ func NewServerKeysClient(subscriptionID string, credential azcore.TokenCredentia
 // parameters - The requested PostgreSQL Server key resource state.
 // options - ServerKeysClientBeginCreateOrUpdateOptions contains the optional parameters for the ServerKeysClient.BeginCreateOrUpdate
 // method.
-func (client *ServerKeysClient) BeginCreateOrUpdate(ctx context.Context, serverName string, keyName string, resourceGroupName string, parameters ServerKey, options *ServerKeysClientBeginCreateOrUpdateOptions) (ServerKeysClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, serverName, keyName, resourceGroupName, parameters, options)
-	if err != nil {
-		return ServerKeysClientCreateOrUpdatePollerResponse{}, err
+func (client *ServerKeysClient) BeginCreateOrUpdate(ctx context.Context, serverName string, keyName string, resourceGroupName string, parameters ServerKey, options *ServerKeysClientBeginCreateOrUpdateOptions) (*armruntime.Poller[ServerKeysClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, serverName, keyName, resourceGroupName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ServerKeysClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ServerKeysClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ServerKeysClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ServerKeysClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return ServerKeysClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &ServerKeysClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a PostgreSQL Server key.
@@ -128,22 +127,16 @@ func (client *ServerKeysClient) createOrUpdateCreateRequest(ctx context.Context,
 // keyName - The name of the PostgreSQL Server key to be deleted.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - ServerKeysClientBeginDeleteOptions contains the optional parameters for the ServerKeysClient.BeginDelete method.
-func (client *ServerKeysClient) BeginDelete(ctx context.Context, serverName string, keyName string, resourceGroupName string, options *ServerKeysClientBeginDeleteOptions) (ServerKeysClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, serverName, keyName, resourceGroupName, options)
-	if err != nil {
-		return ServerKeysClientDeletePollerResponse{}, err
+func (client *ServerKeysClient) BeginDelete(ctx context.Context, serverName string, keyName string, resourceGroupName string, options *ServerKeysClientBeginDeleteOptions) (*armruntime.Poller[ServerKeysClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, serverName, keyName, resourceGroupName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ServerKeysClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ServerKeysClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ServerKeysClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ServerKeysClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return ServerKeysClientDeletePollerResponse{}, err
-	}
-	result.Poller = &ServerKeysClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes the PostgreSQL Server key with the given name.
@@ -246,7 +239,7 @@ func (client *ServerKeysClient) getCreateRequest(ctx context.Context, resourceGr
 
 // getHandleResponse handles the Get response.
 func (client *ServerKeysClient) getHandleResponse(resp *http.Response) (ServerKeysClientGetResponse, error) {
-	result := ServerKeysClientGetResponse{RawResponse: resp}
+	result := ServerKeysClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerKey); err != nil {
 		return ServerKeysClientGetResponse{}, err
 	}
@@ -258,16 +251,32 @@ func (client *ServerKeysClient) getHandleResponse(resp *http.Response) (ServerKe
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverName - The name of the server.
 // options - ServerKeysClientListOptions contains the optional parameters for the ServerKeysClient.List method.
-func (client *ServerKeysClient) List(resourceGroupName string, serverName string, options *ServerKeysClientListOptions) *ServerKeysClientListPager {
-	return &ServerKeysClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, serverName, options)
+func (client *ServerKeysClient) List(resourceGroupName string, serverName string, options *ServerKeysClientListOptions) *runtime.Pager[ServerKeysClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ServerKeysClientListResponse]{
+		More: func(page ServerKeysClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ServerKeysClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ServerKeyListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ServerKeysClientListResponse) (ServerKeysClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, serverName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ServerKeysClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ServerKeysClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ServerKeysClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -298,7 +307,7 @@ func (client *ServerKeysClient) listCreateRequest(ctx context.Context, resourceG
 
 // listHandleResponse handles the List response.
 func (client *ServerKeysClient) listHandleResponse(resp *http.Response) (ServerKeysClientListResponse, error) {
-	result := ServerKeysClientListResponse{RawResponse: resp}
+	result := ServerKeysClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerKeyListResult); err != nil {
 		return ServerKeysClientListResponse{}, err
 	}

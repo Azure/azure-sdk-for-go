@@ -16,20 +16,20 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoOperationResultsGet.json
-func ExampleOperationsResultsClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoOperationResultsOperationResultResponseTypeGet.json
+func ExampleOperationsResultsLocationClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 		return
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewOperationsResultsClient("<subscription-id>", cred, nil)
+	client, err := armkusto.NewOperationsResultsLocationClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	res, err := client.Get(ctx,
+	_, err = client.Get(ctx,
 		"<location>",
 		"<operation-id>",
 		nil)
@@ -37,6 +37,4 @@ func ExampleOperationsResultsClient_Get() {
 		log.Fatalf("failed to finish the request: %v", err)
 		return
 	}
-	// TODO: use response item
-	_ = res
 }

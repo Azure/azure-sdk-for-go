@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,85 +19,129 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto"
 )
 
-// x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoDataConnectionsListByDatabase.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoDataConnectionsListByDatabase.json
 func ExampleDataConnectionsClient_ListByDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armkusto.NewDataConnectionsClient("<subscription-id>", cred, nil)
-	res, err := client.ListByDatabase(ctx,
-		"<resource-group-name>",
+	client, err := armkusto.NewDataConnectionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
+	pager := client.ListByDatabase("<resource-group-name>",
 		"<cluster-name>",
 		"<database-name>",
 		nil)
-	if err != nil {
-		log.Fatal(err)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+			return
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
 	}
-	log.Printf("Response result: %#v\n", res.DataConnectionsClientListByDatabaseResult)
 }
 
-// x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoDataConnectionValidationAsync.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoDataConnectionEventGridValidationAsync.json
 func ExampleDataConnectionsClient_BeginDataConnectionValidation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armkusto.NewDataConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armkusto.NewDataConnectionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginDataConnectionValidation(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
 		"<database-name>",
 		armkusto.DataConnectionValidation{
-			DataConnectionName: to.StringPtr("<data-connection-name>"),
-			Properties: &armkusto.EventHubDataConnection{
-				Kind: armkusto.DataConnectionKind("EventHub").ToPtr(),
+			DataConnectionName: to.Ptr("<data-connection-name>"),
+			Properties: &armkusto.EventGridDataConnection{
+				Kind: to.Ptr(armkusto.DataConnectionKindEventGrid),
+				Properties: &armkusto.EventGridConnectionProperties{
+					BlobStorageEventType:      to.Ptr(armkusto.BlobStorageEventTypeMicrosoftStorageBlobCreated),
+					ConsumerGroup:             to.Ptr("<consumer-group>"),
+					DataFormat:                to.Ptr(armkusto.EventGridDataFormatJSON),
+					DatabaseRouting:           to.Ptr(armkusto.DatabaseRoutingSingle),
+					EventGridResourceID:       to.Ptr("<event-grid-resource-id>"),
+					EventHubResourceID:        to.Ptr("<event-hub-resource-id>"),
+					IgnoreFirstRecord:         to.Ptr(false),
+					ManagedIdentityResourceID: to.Ptr("<managed-identity-resource-id>"),
+					MappingRuleName:           to.Ptr("<mapping-rule-name>"),
+					StorageAccountResourceID:  to.Ptr("<storage-account-resource-id>"),
+					TableName:                 to.Ptr("<table-name>"),
+				},
 			},
 		},
-		nil)
+		&armkusto.DataConnectionsClientBeginDataConnectionValidationOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.DataConnectionsClientDataConnectionValidationResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoDataConnectionsCheckNameAvailability.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoDataConnectionsCheckNameAvailability.json
 func ExampleDataConnectionsClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armkusto.NewDataConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armkusto.NewDataConnectionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.CheckNameAvailability(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
 		"<database-name>",
 		armkusto.DataConnectionCheckNameRequest{
-			Name: to.StringPtr("<name>"),
-			Type: to.StringPtr("<type>"),
+			Name: to.Ptr("<name>"),
+			Type: to.Ptr("<type>"),
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.DataConnectionsClientCheckNameAvailabilityResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoDataConnectionsGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoDataConnectionsEventGridGet.json
 func ExampleDataConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armkusto.NewDataConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armkusto.NewDataConnectionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
@@ -105,96 +149,129 @@ func ExampleDataConnectionsClient_Get() {
 		"<data-connection-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.DataConnectionsClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoDataConnectionsCreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoDataConnectionsCreateOrUpdate.json
 func ExampleDataConnectionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armkusto.NewDataConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armkusto.NewDataConnectionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
 		"<database-name>",
 		"<data-connection-name>",
 		&armkusto.EventHubDataConnection{
-			Kind:     armkusto.DataConnectionKind("EventHub").ToPtr(),
-			Location: to.StringPtr("<location>"),
+			Kind:     to.Ptr(armkusto.DataConnectionKindEventHub),
+			Location: to.Ptr("<location>"),
 			Properties: &armkusto.EventHubConnectionProperties{
-				ConsumerGroup:             to.StringPtr("<consumer-group>"),
-				EventHubResourceID:        to.StringPtr("<event-hub-resource-id>"),
-				ManagedIdentityResourceID: to.StringPtr("<managed-identity-resource-id>"),
+				ConsumerGroup:             to.Ptr("<consumer-group>"),
+				EventHubResourceID:        to.Ptr("<event-hub-resource-id>"),
+				ManagedIdentityResourceID: to.Ptr("<managed-identity-resource-id>"),
 			},
 		},
-		nil)
+		&armkusto.DataConnectionsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.DataConnectionsClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoDataConnectionsUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoDataConnectionsEventGridUpdate.json
 func ExampleDataConnectionsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armkusto.NewDataConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armkusto.NewDataConnectionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginUpdate(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
 		"<database-name>",
 		"<data-connection-name>",
-		&armkusto.EventHubDataConnection{
-			Kind:     armkusto.DataConnectionKind("EventHub").ToPtr(),
-			Location: to.StringPtr("<location>"),
-			Properties: &armkusto.EventHubConnectionProperties{
-				ConsumerGroup:             to.StringPtr("<consumer-group>"),
-				EventHubResourceID:        to.StringPtr("<event-hub-resource-id>"),
-				ManagedIdentityResourceID: to.StringPtr("<managed-identity-resource-id>"),
+		&armkusto.EventGridDataConnection{
+			Kind:     to.Ptr(armkusto.DataConnectionKindEventGrid),
+			Location: to.Ptr("<location>"),
+			Properties: &armkusto.EventGridConnectionProperties{
+				BlobStorageEventType:      to.Ptr(armkusto.BlobStorageEventTypeMicrosoftStorageBlobCreated),
+				ConsumerGroup:             to.Ptr("<consumer-group>"),
+				DataFormat:                to.Ptr(armkusto.EventGridDataFormatJSON),
+				DatabaseRouting:           to.Ptr(armkusto.DatabaseRoutingSingle),
+				EventGridResourceID:       to.Ptr("<event-grid-resource-id>"),
+				EventHubResourceID:        to.Ptr("<event-hub-resource-id>"),
+				IgnoreFirstRecord:         to.Ptr(false),
+				ManagedIdentityResourceID: to.Ptr("<managed-identity-resource-id>"),
+				MappingRuleName:           to.Ptr("<mapping-rule-name>"),
+				StorageAccountResourceID:  to.Ptr("<storage-account-resource-id>"),
+				TableName:                 to.Ptr("<table-name>"),
 			},
 		},
-		nil)
+		&armkusto.DataConnectionsClientBeginUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.DataConnectionsClientUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoDataConnectionsDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoDataConnectionsDelete.json
 func ExampleDataConnectionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armkusto.NewDataConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armkusto.NewDataConnectionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
 		"<database-name>",
 		"<data-connection-name>",
-		nil)
+		&armkusto.DataConnectionsClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }

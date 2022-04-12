@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armrecoveryservicesbackup
 
 const (
 	moduleName    = "armrecoveryservicesbackup"
-	moduleVersion = "v0.3.1"
+	moduleVersion = "v0.4.0"
 )
 
 // AcquireStorageAccountLock - Whether storage account lock is to be acquired for this container or not.
@@ -27,11 +27,6 @@ func PossibleAcquireStorageAccountLockValues() []AcquireStorageAccountLock {
 		AcquireStorageAccountLockAcquire,
 		AcquireStorageAccountLockNotAcquire,
 	}
-}
-
-// ToPtr returns a *AcquireStorageAccountLock pointing to the current value.
-func (c AcquireStorageAccountLock) ToPtr() *AcquireStorageAccountLock {
-	return &c
 }
 
 // AzureFileShareType - File Share type XSync or XSMB.
@@ -52,11 +47,6 @@ func PossibleAzureFileShareTypeValues() []AzureFileShareType {
 	}
 }
 
-// ToPtr returns a *AzureFileShareType pointing to the current value.
-func (c AzureFileShareType) ToPtr() *AzureFileShareType {
-	return &c
-}
-
 // BackupEngineType - Type of the backup engine.
 type BackupEngineType string
 
@@ -73,11 +63,6 @@ func PossibleBackupEngineTypeValues() []BackupEngineType {
 		BackupEngineTypeDpmBackupEngine,
 		BackupEngineTypeInvalid,
 	}
-}
-
-// ToPtr returns a *BackupEngineType pointing to the current value.
-func (c BackupEngineType) ToPtr() *BackupEngineType {
-	return &c
 }
 
 // BackupItemType - Type of backup items associated with this container.
@@ -122,11 +107,6 @@ func PossibleBackupItemTypeValues() []BackupItemType {
 	}
 }
 
-// ToPtr returns a *BackupItemType pointing to the current value.
-func (c BackupItemType) ToPtr() *BackupItemType {
-	return &c
-}
-
 // BackupManagementType - Backup management type to execute the current job.
 type BackupManagementType string
 
@@ -157,11 +137,6 @@ func PossibleBackupManagementTypeValues() []BackupManagementType {
 	}
 }
 
-// ToPtr returns a *BackupManagementType pointing to the current value.
-func (c BackupManagementType) ToPtr() *BackupManagementType {
-	return &c
-}
-
 // BackupType - Type of backup, viz. Full, Differential, Log or CopyOnlyFull
 type BackupType string
 
@@ -184,11 +159,6 @@ func PossibleBackupTypeValues() []BackupType {
 		BackupTypeInvalid,
 		BackupTypeLog,
 	}
-}
-
-// ToPtr returns a *BackupType pointing to the current value.
-func (c BackupType) ToPtr() *BackupType {
-	return &c
 }
 
 // ContainerType - Type of container for filter
@@ -239,11 +209,6 @@ func PossibleContainerTypeValues() []ContainerType {
 	}
 }
 
-// ToPtr returns a *ContainerType pointing to the current value.
-func (c ContainerType) ToPtr() *ContainerType {
-	return &c
-}
-
 // CopyOptions - Options to resolve copy conflicts.
 type CopyOptions string
 
@@ -266,11 +231,6 @@ func PossibleCopyOptionsValues() []CopyOptions {
 	}
 }
 
-// ToPtr returns a *CopyOptions pointing to the current value.
-func (c CopyOptions) ToPtr() *CopyOptions {
-	return &c
-}
-
 // CreateMode - Create mode to indicate recovery of existing soft deleted data source or creation of new data source.
 type CreateMode string
 
@@ -289,11 +249,6 @@ func PossibleCreateModeValues() []CreateMode {
 	}
 }
 
-// ToPtr returns a *CreateMode pointing to the current value.
-func (c CreateMode) ToPtr() *CreateMode {
-	return &c
-}
-
 // DataMoveLevel - DataMove Level
 type DataMoveLevel string
 
@@ -310,11 +265,6 @@ func PossibleDataMoveLevelValues() []DataMoveLevel {
 		DataMoveLevelInvalid,
 		DataMoveLevelVault,
 	}
-}
-
-// ToPtr returns a *DataMoveLevel pointing to the current value.
-func (c DataMoveLevel) ToPtr() *DataMoveLevel {
-	return &c
 }
 
 // DataSourceType - Type of workload this item represents.
@@ -359,11 +309,6 @@ func PossibleDataSourceTypeValues() []DataSourceType {
 	}
 }
 
-// ToPtr returns a *DataSourceType pointing to the current value.
-func (c DataSourceType) ToPtr() *DataSourceType {
-	return &c
-}
-
 type DayOfWeek string
 
 const (
@@ -389,11 +334,6 @@ func PossibleDayOfWeekValues() []DayOfWeek {
 	}
 }
 
-// ToPtr returns a *DayOfWeek pointing to the current value.
-func (c DayOfWeek) ToPtr() *DayOfWeek {
-	return &c
-}
-
 // DedupState - Vault Dedup state
 type DedupState string
 
@@ -410,11 +350,6 @@ func PossibleDedupStateValues() []DedupState {
 		DedupStateEnabled,
 		DedupStateInvalid,
 	}
-}
-
-// ToPtr returns a *DedupState pointing to the current value.
-func (c DedupState) ToPtr() *DedupState {
-	return &c
 }
 
 // EncryptionAtRestType - Encryption At Rest Type
@@ -435,11 +370,6 @@ func PossibleEncryptionAtRestTypeValues() []EncryptionAtRestType {
 	}
 }
 
-// ToPtr returns a *EncryptionAtRestType pointing to the current value.
-func (c EncryptionAtRestType) ToPtr() *EncryptionAtRestType {
-	return &c
-}
-
 // EnhancedSecurityState - Enabled or Disabled.
 type EnhancedSecurityState string
 
@@ -458,11 +388,6 @@ func PossibleEnhancedSecurityStateValues() []EnhancedSecurityState {
 	}
 }
 
-// ToPtr returns a *EnhancedSecurityState pointing to the current value.
-func (c EnhancedSecurityState) ToPtr() *EnhancedSecurityState {
-	return &c
-}
-
 // FabricName - Specifies the fabric name - Azure or AD
 type FabricName string
 
@@ -477,11 +402,6 @@ func PossibleFabricNameValues() []FabricName {
 		FabricNameAzure,
 		FabricNameInvalid,
 	}
-}
-
-// ToPtr returns a *FabricName pointing to the current value.
-func (c FabricName) ToPtr() *FabricName {
-	return &c
 }
 
 // HTTPStatusCode - HTTP Status Code of the operation.
@@ -590,11 +510,6 @@ func PossibleHTTPStatusCodeValues() []HTTPStatusCode {
 	}
 }
 
-// ToPtr returns a *HTTPStatusCode pointing to the current value.
-func (c HTTPStatusCode) ToPtr() *HTTPStatusCode {
-	return &c
-}
-
 // HealthState - Health State for the backed up item.
 type HealthState string
 
@@ -613,11 +528,6 @@ func PossibleHealthStateValues() []HealthState {
 		HealthStateInvalid,
 		HealthStatePassed,
 	}
-}
-
-// ToPtr returns a *HealthState pointing to the current value.
-func (c HealthState) ToPtr() *HealthState {
-	return &c
 }
 
 // HealthStatus - Health status of protected item.
@@ -640,11 +550,6 @@ func PossibleHealthStatusValues() []HealthStatus {
 	}
 }
 
-// ToPtr returns a *HealthStatus pointing to the current value.
-func (c HealthStatus) ToPtr() *HealthStatus {
-	return &c
-}
-
 type IAASVMPolicyType string
 
 const (
@@ -662,11 +567,6 @@ func PossibleIAASVMPolicyTypeValues() []IAASVMPolicyType {
 	}
 }
 
-// ToPtr returns a *IAASVMPolicyType pointing to the current value.
-func (c IAASVMPolicyType) ToPtr() *IAASVMPolicyType {
-	return &c
-}
-
 type InfrastructureEncryptionState string
 
 const (
@@ -682,11 +582,6 @@ func PossibleInfrastructureEncryptionStateValues() []InfrastructureEncryptionSta
 		InfrastructureEncryptionStateEnabled,
 		InfrastructureEncryptionStateInvalid,
 	}
-}
-
-// ToPtr returns a *InfrastructureEncryptionState pointing to the current value.
-func (c InfrastructureEncryptionState) ToPtr() *InfrastructureEncryptionState {
-	return &c
 }
 
 // InquiryStatus - Status of protectable item, i.e. InProgress,Succeeded,Failed
@@ -707,11 +602,6 @@ func PossibleInquiryStatusValues() []InquiryStatus {
 	}
 }
 
-// ToPtr returns a *InquiryStatus pointing to the current value.
-func (c InquiryStatus) ToPtr() *InquiryStatus {
-	return &c
-}
-
 // IntentItemType - Type of workload this item represents
 type IntentItemType string
 
@@ -728,11 +618,6 @@ func PossibleIntentItemTypeValues() []IntentItemType {
 		IntentItemTypeSQLAvailabilityGroupContainer,
 		IntentItemTypeSQLInstance,
 	}
-}
-
-// ToPtr returns a *IntentItemType pointing to the current value.
-func (c IntentItemType) ToPtr() *IntentItemType {
-	return &c
 }
 
 // JobOperationType - Type of operation.
@@ -769,11 +654,6 @@ func PossibleJobOperationTypeValues() []JobOperationType {
 	}
 }
 
-// ToPtr returns a *JobOperationType pointing to the current value.
-func (c JobOperationType) ToPtr() *JobOperationType {
-	return &c
-}
-
 // JobStatus - Status of the job.
 type JobStatus string
 
@@ -800,11 +680,6 @@ func PossibleJobStatusValues() []JobStatus {
 	}
 }
 
-// ToPtr returns a *JobStatus pointing to the current value.
-func (c JobStatus) ToPtr() *JobStatus {
-	return &c
-}
-
 type JobSupportedAction string
 
 const (
@@ -820,11 +695,6 @@ func PossibleJobSupportedActionValues() []JobSupportedAction {
 		JobSupportedActionCancellable,
 		JobSupportedActionRetriable,
 	}
-}
-
-// ToPtr returns a *JobSupportedAction pointing to the current value.
-func (c JobSupportedAction) ToPtr() *JobSupportedAction {
-	return &c
 }
 
 // LastBackupStatus - Last backup operation status. Possible values: Healthy, Unhealthy.
@@ -845,11 +715,6 @@ func PossibleLastBackupStatusValues() []LastBackupStatus {
 		LastBackupStatusInvalid,
 		LastBackupStatusUnhealthy,
 	}
-}
-
-// ToPtr returns a *LastBackupStatus pointing to the current value.
-func (c LastBackupStatus) ToPtr() *LastBackupStatus {
-	return &c
 }
 
 type LastUpdateStatus string
@@ -877,11 +742,6 @@ func PossibleLastUpdateStatusValues() []LastUpdateStatus {
 		LastUpdateStatusPartiallySucceeded,
 		LastUpdateStatusSucceeded,
 	}
-}
-
-// ToPtr returns a *LastUpdateStatus pointing to the current value.
-func (c LastUpdateStatus) ToPtr() *LastUpdateStatus {
-	return &c
 }
 
 // MabServerType - Server type of MAB container.
@@ -926,11 +786,6 @@ func PossibleMabServerTypeValues() []MabServerType {
 	}
 }
 
-// ToPtr returns a *MabServerType pointing to the current value.
-func (c MabServerType) ToPtr() *MabServerType {
-	return &c
-}
-
 type MonthOfYear string
 
 const (
@@ -968,11 +823,6 @@ func PossibleMonthOfYearValues() []MonthOfYear {
 	}
 }
 
-// ToPtr returns a *MonthOfYear pointing to the current value.
-func (c MonthOfYear) ToPtr() *MonthOfYear {
-	return &c
-}
-
 // OperationStatusValues - Operation status.
 type OperationStatusValues string
 
@@ -995,11 +845,6 @@ func PossibleOperationStatusValuesValues() []OperationStatusValues {
 	}
 }
 
-// ToPtr returns a *OperationStatusValues pointing to the current value.
-func (c OperationStatusValues) ToPtr() *OperationStatusValues {
-	return &c
-}
-
 // OperationType - Re-Do Operation
 type OperationType string
 
@@ -1018,11 +863,6 @@ func PossibleOperationTypeValues() []OperationType {
 	}
 }
 
-// ToPtr returns a *OperationType pointing to the current value.
-func (c OperationType) ToPtr() *OperationType {
-	return &c
-}
-
 // OverwriteOptions - Can Overwrite if Target DataBase already exists
 type OverwriteOptions string
 
@@ -1039,11 +879,6 @@ func PossibleOverwriteOptionsValues() []OverwriteOptions {
 		OverwriteOptionsInvalid,
 		OverwriteOptionsOverwrite,
 	}
-}
-
-// ToPtr returns a *OverwriteOptions pointing to the current value.
-func (c OverwriteOptions) ToPtr() *OverwriteOptions {
-	return &c
 }
 
 // PolicyType - Type of backup policy type
@@ -1070,11 +905,6 @@ func PossiblePolicyTypeValues() []PolicyType {
 	}
 }
 
-// ToPtr returns a *PolicyType pointing to the current value.
-func (c PolicyType) ToPtr() *PolicyType {
-	return &c
-}
-
 // PrivateEndpointConnectionStatus - Gets or sets the status
 type PrivateEndpointConnectionStatus string
 
@@ -1093,11 +923,6 @@ func PossiblePrivateEndpointConnectionStatusValues() []PrivateEndpointConnection
 		PrivateEndpointConnectionStatusPending,
 		PrivateEndpointConnectionStatusRejected,
 	}
-}
-
-// ToPtr returns a *PrivateEndpointConnectionStatus pointing to the current value.
-func (c PrivateEndpointConnectionStatus) ToPtr() *PrivateEndpointConnectionStatus {
-	return &c
 }
 
 // ProtectedItemHealthStatus - Health status of the backup item, evaluated based on last heartbeat received
@@ -1120,11 +945,6 @@ func PossibleProtectedItemHealthStatusValues() []ProtectedItemHealthStatus {
 		ProtectedItemHealthStatusNotReachable,
 		ProtectedItemHealthStatusUnhealthy,
 	}
-}
-
-// ToPtr returns a *ProtectedItemHealthStatus pointing to the current value.
-func (c ProtectedItemHealthStatus) ToPtr() *ProtectedItemHealthStatus {
-	return &c
 }
 
 // ProtectedItemState - Backup state of the backed up item.
@@ -1151,11 +971,6 @@ func PossibleProtectedItemStateValues() []ProtectedItemState {
 	}
 }
 
-// ToPtr returns a *ProtectedItemState pointing to the current value.
-func (c ProtectedItemState) ToPtr() *ProtectedItemState {
-	return &c
-}
-
 // ProtectionIntentItemType - backup protectionIntent type.
 type ProtectionIntentItemType string
 
@@ -1178,11 +993,6 @@ func PossibleProtectionIntentItemTypeValues() []ProtectionIntentItemType {
 		ProtectionIntentItemTypeInvalid,
 		ProtectionIntentItemTypeRecoveryServiceVaultItem,
 	}
-}
-
-// ToPtr returns a *ProtectionIntentItemType pointing to the current value.
-func (c ProtectionIntentItemType) ToPtr() *ProtectionIntentItemType {
-	return &c
 }
 
 // ProtectionState - Backup state of this backup item.
@@ -1209,11 +1019,6 @@ func PossibleProtectionStateValues() []ProtectionState {
 	}
 }
 
-// ToPtr returns a *ProtectionState pointing to the current value.
-func (c ProtectionState) ToPtr() *ProtectionState {
-	return &c
-}
-
 // ProtectionStatus - Specifies whether the container is registered or not
 type ProtectionStatus string
 
@@ -1236,11 +1041,6 @@ func PossibleProtectionStatusValues() []ProtectionStatus {
 	}
 }
 
-// ToPtr returns a *ProtectionStatus pointing to the current value.
-func (c ProtectionStatus) ToPtr() *ProtectionStatus {
-	return &c
-}
-
 // ProvisioningState - Gets or sets provisioning state of the private endpoint connection
 type ProvisioningState string
 
@@ -1261,11 +1061,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	}
 }
 
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
-}
-
 // RecoveryMode - Defines whether the current recovery mode is file restore or database restore
 type RecoveryMode string
 
@@ -1282,11 +1077,6 @@ func PossibleRecoveryModeValues() []RecoveryMode {
 		RecoveryModeInvalid,
 		RecoveryModeWorkloadRecovery,
 	}
-}
-
-// ToPtr returns a *RecoveryMode pointing to the current value.
-func (c RecoveryMode) ToPtr() *RecoveryMode {
-	return &c
 }
 
 // RecoveryPointTierStatus - Recovery point tier status.
@@ -1311,11 +1101,6 @@ func PossibleRecoveryPointTierStatusValues() []RecoveryPointTierStatus {
 	}
 }
 
-// ToPtr returns a *RecoveryPointTierStatus pointing to the current value.
-func (c RecoveryPointTierStatus) ToPtr() *RecoveryPointTierStatus {
-	return &c
-}
-
 // RecoveryPointTierType - Recovery point tier type.
 type RecoveryPointTierType string
 
@@ -1334,11 +1119,6 @@ func PossibleRecoveryPointTierTypeValues() []RecoveryPointTierType {
 		RecoveryPointTierTypeHardenedRP,
 		RecoveryPointTierTypeArchivedRP,
 	}
-}
-
-// ToPtr returns a *RecoveryPointTierType pointing to the current value.
-func (c RecoveryPointTierType) ToPtr() *RecoveryPointTierType {
-	return &c
 }
 
 // RecoveryType - Type of this recovery.
@@ -1363,11 +1143,6 @@ func PossibleRecoveryTypeValues() []RecoveryType {
 	}
 }
 
-// ToPtr returns a *RecoveryType pointing to the current value.
-func (c RecoveryType) ToPtr() *RecoveryType {
-	return &c
-}
-
 // RehydrationPriority - Rehydration Priority
 type RehydrationPriority string
 
@@ -1382,11 +1157,6 @@ func PossibleRehydrationPriorityValues() []RehydrationPriority {
 		RehydrationPriorityHigh,
 		RehydrationPriorityStandard,
 	}
-}
-
-// ToPtr returns a *RehydrationPriority pointing to the current value.
-func (c RehydrationPriority) ToPtr() *RehydrationPriority {
-	return &c
 }
 
 // ResourceHealthStatus - Resource Health Status
@@ -1411,11 +1181,6 @@ func PossibleResourceHealthStatusValues() []ResourceHealthStatus {
 		ResourceHealthStatusTransientDegraded,
 		ResourceHealthStatusTransientUnhealthy,
 	}
-}
-
-// ToPtr returns a *ResourceHealthStatus pointing to the current value.
-func (c ResourceHealthStatus) ToPtr() *ResourceHealthStatus {
-	return &c
 }
 
 // RestorePointQueryType - RestorePoint type
@@ -1444,11 +1209,6 @@ func PossibleRestorePointQueryTypeValues() []RestorePointQueryType {
 	}
 }
 
-// ToPtr returns a *RestorePointQueryType pointing to the current value.
-func (c RestorePointQueryType) ToPtr() *RestorePointQueryType {
-	return &c
-}
-
 // RestorePointType - Type of restore point
 type RestorePointType string
 
@@ -1471,11 +1231,6 @@ func PossibleRestorePointTypeValues() []RestorePointType {
 	}
 }
 
-// ToPtr returns a *RestorePointType pointing to the current value.
-func (c RestorePointType) ToPtr() *RestorePointType {
-	return &c
-}
-
 // RestoreRequestType - Restore Type (FullShareRestore or ItemLevelRestore)
 type RestoreRequestType string
 
@@ -1492,11 +1247,6 @@ func PossibleRestoreRequestTypeValues() []RestoreRequestType {
 		RestoreRequestTypeInvalid,
 		RestoreRequestTypeItemLevelRestore,
 	}
-}
-
-// ToPtr returns a *RestoreRequestType pointing to the current value.
-func (c RestoreRequestType) ToPtr() *RestoreRequestType {
-	return &c
 }
 
 // RetentionDurationType - Retention duration type of retention policy.
@@ -1521,11 +1271,6 @@ func PossibleRetentionDurationTypeValues() []RetentionDurationType {
 	}
 }
 
-// ToPtr returns a *RetentionDurationType pointing to the current value.
-func (c RetentionDurationType) ToPtr() *RetentionDurationType {
-	return &c
-}
-
 // RetentionScheduleFormat - Retention schedule format type for monthly retention policy.
 type RetentionScheduleFormat string
 
@@ -1544,11 +1289,6 @@ func PossibleRetentionScheduleFormatValues() []RetentionScheduleFormat {
 	}
 }
 
-// ToPtr returns a *RetentionScheduleFormat pointing to the current value.
-func (c RetentionScheduleFormat) ToPtr() *RetentionScheduleFormat {
-	return &c
-}
-
 // SQLDataDirectoryType - Type of data directory mapping
 type SQLDataDirectoryType string
 
@@ -1565,11 +1305,6 @@ func PossibleSQLDataDirectoryTypeValues() []SQLDataDirectoryType {
 		SQLDataDirectoryTypeInvalid,
 		SQLDataDirectoryTypeLog,
 	}
-}
-
-// ToPtr returns a *SQLDataDirectoryType pointing to the current value.
-func (c SQLDataDirectoryType) ToPtr() *SQLDataDirectoryType {
-	return &c
 }
 
 // ScheduleRunType - Frequency of the schedule operation of this policy.
@@ -1592,11 +1327,6 @@ func PossibleScheduleRunTypeValues() []ScheduleRunType {
 	}
 }
 
-// ToPtr returns a *ScheduleRunType pointing to the current value.
-func (c ScheduleRunType) ToPtr() *ScheduleRunType {
-	return &c
-}
-
 // SoftDeleteFeatureState - Soft Delete feature state
 type SoftDeleteFeatureState string
 
@@ -1613,11 +1343,6 @@ func PossibleSoftDeleteFeatureStateValues() []SoftDeleteFeatureState {
 		SoftDeleteFeatureStateEnabled,
 		SoftDeleteFeatureStateInvalid,
 	}
-}
-
-// ToPtr returns a *SoftDeleteFeatureState pointing to the current value.
-func (c SoftDeleteFeatureState) ToPtr() *SoftDeleteFeatureState {
-	return &c
 }
 
 // StorageType - Storage type
@@ -1642,11 +1367,6 @@ func PossibleStorageTypeValues() []StorageType {
 	}
 }
 
-// ToPtr returns a *StorageType pointing to the current value.
-func (c StorageType) ToPtr() *StorageType {
-	return &c
-}
-
 // StorageTypeState - Locked or Unlocked. Once a machine is registered against a resource, the storageTypeState is always
 // Locked.
 type StorageTypeState string
@@ -1664,11 +1384,6 @@ func PossibleStorageTypeStateValues() []StorageTypeState {
 		StorageTypeStateLocked,
 		StorageTypeStateUnlocked,
 	}
-}
-
-// ToPtr returns a *StorageTypeState pointing to the current value.
-func (c StorageTypeState) ToPtr() *StorageTypeState {
-	return &c
 }
 
 // SupportStatus - Support status of feature
@@ -1693,9 +1408,27 @@ func PossibleSupportStatusValues() []SupportStatus {
 	}
 }
 
-// ToPtr returns a *SupportStatus pointing to the current value.
-func (c SupportStatus) ToPtr() *SupportStatus {
-	return &c
+// TieringMode - Tiering Mode to control automatic tiering of recovery points. Supported values are:
+// 1. TierRecommended: Tier all recovery points recommended to be tiered
+// 2. TierAfter: Tier all recovery points after a fixed period, as specified in duration + durationType below.
+// 3. DoNotTier: Do not tier any recovery points
+type TieringMode string
+
+const (
+	TieringModeDoNotTier       TieringMode = "DoNotTier"
+	TieringModeInvalid         TieringMode = "Invalid"
+	TieringModeTierAfter       TieringMode = "TierAfter"
+	TieringModeTierRecommended TieringMode = "TierRecommended"
+)
+
+// PossibleTieringModeValues returns the possible values for the TieringMode const type.
+func PossibleTieringModeValues() []TieringMode {
+	return []TieringMode{
+		TieringModeDoNotTier,
+		TieringModeInvalid,
+		TieringModeTierAfter,
+		TieringModeTierRecommended,
+	}
 }
 
 // Type - Backup management type for this container.
@@ -1714,11 +1447,6 @@ func PossibleTypeValues() []Type {
 		TypeBackupProtectionContainerCountSummary,
 		TypeInvalid,
 	}
-}
-
-// ToPtr returns a *Type pointing to the current value.
-func (c Type) ToPtr() *Type {
-	return &c
 }
 
 // UsagesUnit - Unit of the usage.
@@ -1745,11 +1473,6 @@ func PossibleUsagesUnitValues() []UsagesUnit {
 	}
 }
 
-// ToPtr returns a *UsagesUnit pointing to the current value.
-func (c UsagesUnit) ToPtr() *UsagesUnit {
-	return &c
-}
-
 // ValidationStatus - Validation Status
 type ValidationStatus string
 
@@ -1766,11 +1489,6 @@ func PossibleValidationStatusValues() []ValidationStatus {
 		ValidationStatusInvalid,
 		ValidationStatusSucceeded,
 	}
-}
-
-// ToPtr returns a *ValidationStatus pointing to the current value.
-func (c ValidationStatus) ToPtr() *ValidationStatus {
-	return &c
 }
 
 type WeekOfMonth string
@@ -1794,11 +1512,6 @@ func PossibleWeekOfMonthValues() []WeekOfMonth {
 		WeekOfMonthLast,
 		WeekOfMonthInvalid,
 	}
-}
-
-// ToPtr returns a *WeekOfMonth pointing to the current value.
-func (c WeekOfMonth) ToPtr() *WeekOfMonth {
-	return &c
 }
 
 // WorkloadItemType - Workload item type of the item for which intent is to be set
@@ -1825,11 +1538,6 @@ func PossibleWorkloadItemTypeValues() []WorkloadItemType {
 		WorkloadItemTypeSQLDataBase,
 		WorkloadItemTypeSQLInstance,
 	}
-}
-
-// ToPtr returns a *WorkloadItemType pointing to the current value.
-func (c WorkloadItemType) ToPtr() *WorkloadItemType {
-	return &c
 }
 
 // WorkloadType - Type of workload for the backup management
@@ -1874,11 +1582,6 @@ func PossibleWorkloadTypeValues() []WorkloadType {
 	}
 }
 
-// ToPtr returns a *WorkloadType pointing to the current value.
-func (c WorkloadType) ToPtr() *WorkloadType {
-	return &c
-}
-
 // XcoolState - Vault x-cool state
 type XcoolState string
 
@@ -1895,9 +1598,4 @@ func PossibleXcoolStateValues() []XcoolState {
 		XcoolStateEnabled,
 		XcoolStateInvalid,
 	}
-}
-
-// ToPtr returns a *XcoolState pointing to the current value.
-func (c XcoolState) ToPtr() *XcoolState {
-	return &c
 }

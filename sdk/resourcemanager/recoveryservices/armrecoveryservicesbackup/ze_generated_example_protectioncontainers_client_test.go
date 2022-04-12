@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,14 +17,19 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup"
 )
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/AzureWorkload/ProtectionContainers_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/AzureWorkload/ProtectionContainers_Get.json
 func ExampleProtectionContainersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armrecoveryservicesbackup.NewProtectionContainersClient("<subscription-id>", cred, nil)
+	client, err := armrecoveryservicesbackup.NewProtectionContainersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<vault-name>",
 		"<resource-group-name>",
@@ -32,19 +37,26 @@ func ExampleProtectionContainersClient_Get() {
 		"<container-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ProtectionContainersClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/AzureStorage/ProtectionContainers_Register.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/AzureStorage/ProtectionContainers_Register.json
 func ExampleProtectionContainersClient_Register() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armrecoveryservicesbackup.NewProtectionContainersClient("<subscription-id>", cred, nil)
+	client, err := armrecoveryservicesbackup.NewProtectionContainersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Register(ctx,
 		"<vault-name>",
 		"<resource-group-name>",
@@ -52,28 +64,35 @@ func ExampleProtectionContainersClient_Register() {
 		"<container-name>",
 		armrecoveryservicesbackup.ProtectionContainerResource{
 			Properties: &armrecoveryservicesbackup.AzureStorageContainer{
-				BackupManagementType:      armrecoveryservicesbackup.BackupManagementType("AzureStorage").ToPtr(),
-				ContainerType:             armrecoveryservicesbackup.ContainerType("StorageContainer").ToPtr(),
-				FriendlyName:              to.StringPtr("<friendly-name>"),
-				AcquireStorageAccountLock: armrecoveryservicesbackup.AcquireStorageAccountLock("Acquire").ToPtr(),
-				SourceResourceID:          to.StringPtr("<source-resource-id>"),
+				BackupManagementType:      to.Ptr(armrecoveryservicesbackup.BackupManagementTypeAzureStorage),
+				ContainerType:             to.Ptr(armrecoveryservicesbackup.ContainerTypeStorageContainer),
+				FriendlyName:              to.Ptr("<friendly-name>"),
+				AcquireStorageAccountLock: to.Ptr(armrecoveryservicesbackup.AcquireStorageAccountLockAcquire),
+				SourceResourceID:          to.Ptr("<source-resource-id>"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ProtectionContainersClientRegisterResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/AzureWorkload/ProtectionContainers_Unregister.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/AzureWorkload/ProtectionContainers_Unregister.json
 func ExampleProtectionContainersClient_Unregister() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armrecoveryservicesbackup.NewProtectionContainersClient("<subscription-id>", cred, nil)
+	client, err := armrecoveryservicesbackup.NewProtectionContainersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Unregister(ctx,
 		"<vault-name>",
 		"<resource-group-name>",
@@ -81,18 +100,24 @@ func ExampleProtectionContainersClient_Unregister() {
 		"<container-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/AzureStorage/ProtectionContainers_Inquire.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/AzureStorage/ProtectionContainers_Inquire.json
 func ExampleProtectionContainersClient_Inquire() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armrecoveryservicesbackup.NewProtectionContainersClient("<subscription-id>", cred, nil)
+	client, err := armrecoveryservicesbackup.NewProtectionContainersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Inquire(ctx,
 		"<vault-name>",
 		"<resource-group-name>",
@@ -100,24 +125,31 @@ func ExampleProtectionContainersClient_Inquire() {
 		"<container-name>",
 		&armrecoveryservicesbackup.ProtectionContainersClientInquireOptions{Filter: nil})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/Common/RefreshContainers.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/Common/RefreshContainers.json
 func ExampleProtectionContainersClient_Refresh() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armrecoveryservicesbackup.NewProtectionContainersClient("<subscription-id>", cred, nil)
+	client, err := armrecoveryservicesbackup.NewProtectionContainersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Refresh(ctx,
 		"<vault-name>",
 		"<resource-group-name>",
 		"<fabric-name>",
 		&armrecoveryservicesbackup.ProtectionContainersClientRefreshOptions{Filter: nil})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armpostgresqlflexibleservers
 
 const (
 	moduleName    = "armpostgresqlflexibleservers"
-	moduleVersion = "v0.3.1"
+	moduleVersion = "v0.4.0"
 )
 
 // ConfigurationDataType - Data type of the configuration.
@@ -33,11 +33,6 @@ func PossibleConfigurationDataTypeValues() []ConfigurationDataType {
 	}
 }
 
-// ToPtr returns a *ConfigurationDataType pointing to the current value.
-func (c ConfigurationDataType) ToPtr() *ConfigurationDataType {
-	return &c
-}
-
 // CreateMode - The mode to create a new PostgreSQL server.
 type CreateMode string
 
@@ -58,11 +53,6 @@ func PossibleCreateModeValues() []CreateMode {
 	}
 }
 
-// ToPtr returns a *CreateMode pointing to the current value.
-func (c CreateMode) ToPtr() *CreateMode {
-	return &c
-}
-
 // CreateModeForUpdate - The mode to update a new PostgreSQL server.
 type CreateModeForUpdate string
 
@@ -77,11 +67,6 @@ func PossibleCreateModeForUpdateValues() []CreateModeForUpdate {
 		CreateModeForUpdateDefault,
 		CreateModeForUpdateUpdate,
 	}
-}
-
-// ToPtr returns a *CreateModeForUpdate pointing to the current value.
-func (c CreateModeForUpdate) ToPtr() *CreateModeForUpdate {
-	return &c
 }
 
 // CreatedByType - The type of identity that created the resource.
@@ -104,11 +89,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
-}
-
 // FailoverMode - Failover mode.
 type FailoverMode string
 
@@ -129,11 +109,6 @@ func PossibleFailoverModeValues() []FailoverMode {
 	}
 }
 
-// ToPtr returns a *FailoverMode pointing to the current value.
-func (c FailoverMode) ToPtr() *FailoverMode {
-	return &c
-}
-
 // GeoRedundantBackupEnum - A value indicating whether Geo-Redundant backup is enabled on the server.
 type GeoRedundantBackupEnum string
 
@@ -150,11 +125,6 @@ func PossibleGeoRedundantBackupEnumValues() []GeoRedundantBackupEnum {
 	}
 }
 
-// ToPtr returns a *GeoRedundantBackupEnum pointing to the current value.
-func (c GeoRedundantBackupEnum) ToPtr() *GeoRedundantBackupEnum {
-	return &c
-}
-
 // HighAvailabilityMode - The HA mode for the server.
 type HighAvailabilityMode string
 
@@ -169,11 +139,6 @@ func PossibleHighAvailabilityModeValues() []HighAvailabilityMode {
 		HighAvailabilityModeDisabled,
 		HighAvailabilityModeZoneRedundant,
 	}
-}
-
-// ToPtr returns a *HighAvailabilityMode pointing to the current value.
-func (c HighAvailabilityMode) ToPtr() *HighAvailabilityMode {
-	return &c
 }
 
 // OperationOrigin - The intended executor of the operation.
@@ -194,11 +159,6 @@ func PossibleOperationOriginValues() []OperationOrigin {
 	}
 }
 
-// ToPtr returns a *OperationOrigin pointing to the current value.
-func (c OperationOrigin) ToPtr() *OperationOrigin {
-	return &c
-}
-
 // Reason - The name availability reason.
 type Reason string
 
@@ -213,11 +173,6 @@ func PossibleReasonValues() []Reason {
 		ReasonAlreadyExists,
 		ReasonInvalid,
 	}
-}
-
-// ToPtr returns a *Reason pointing to the current value.
-func (c Reason) ToPtr() *Reason {
-	return &c
 }
 
 // SKUTier - The tier of the particular SKU, e.g. Burstable.
@@ -236,11 +191,6 @@ func PossibleSKUTierValues() []SKUTier {
 		SKUTierGeneralPurpose,
 		SKUTierMemoryOptimized,
 	}
-}
-
-// ToPtr returns a *SKUTier pointing to the current value.
-func (c SKUTier) ToPtr() *SKUTier {
-	return &c
 }
 
 // ServerHAState - A state of a HA server that is visible to user.
@@ -267,11 +217,6 @@ func PossibleServerHAStateValues() []ServerHAState {
 	}
 }
 
-// ToPtr returns a *ServerHAState pointing to the current value.
-func (c ServerHAState) ToPtr() *ServerHAState {
-	return &c
-}
-
 // ServerPublicNetworkAccessState - public network access is enabled or not
 type ServerPublicNetworkAccessState string
 
@@ -286,11 +231,6 @@ func PossibleServerPublicNetworkAccessStateValues() []ServerPublicNetworkAccessS
 		ServerPublicNetworkAccessStateDisabled,
 		ServerPublicNetworkAccessStateEnabled,
 	}
-}
-
-// ToPtr returns a *ServerPublicNetworkAccessState pointing to the current value.
-func (c ServerPublicNetworkAccessState) ToPtr() *ServerPublicNetworkAccessState {
-	return &c
 }
 
 // ServerState - A state of a server that is visible to user.
@@ -319,11 +259,6 @@ func PossibleServerStateValues() []ServerState {
 	}
 }
 
-// ToPtr returns a *ServerState pointing to the current value.
-func (c ServerState) ToPtr() *ServerState {
-	return &c
-}
-
 // ServerVersion - The version of a server.
 type ServerVersion string
 
@@ -340,9 +275,4 @@ func PossibleServerVersionValues() []ServerVersion {
 		ServerVersionThirteen,
 		ServerVersionTwelve,
 	}
-}
-
-// ToPtr returns a *ServerVersion pointing to the current value.
-func (c ServerVersion) ToPtr() *ServerVersion {
-	return &c
 }

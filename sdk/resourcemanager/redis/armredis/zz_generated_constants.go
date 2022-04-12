@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armredis
 
 const (
 	moduleName    = "armredis"
-	moduleVersion = "v0.3.1"
+	moduleVersion = "v0.4.0"
 )
 
 // DayOfWeek - Day of the week when a cache can be patched.
@@ -43,11 +43,6 @@ func PossibleDayOfWeekValues() []DayOfWeek {
 	}
 }
 
-// ToPtr returns a *DayOfWeek pointing to the current value.
-func (c DayOfWeek) ToPtr() *DayOfWeek {
-	return &c
-}
-
 type DefaultName string
 
 const (
@@ -59,11 +54,6 @@ func PossibleDefaultNameValues() []DefaultName {
 	return []DefaultName{
 		DefaultNameDefault,
 	}
-}
-
-// ToPtr returns a *DefaultName pointing to the current value.
-func (c DefaultName) ToPtr() *DefaultName {
-	return &c
 }
 
 // ManagedServiceIdentityType - Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
@@ -86,11 +76,6 @@ func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
 	}
 }
 
-// ToPtr returns a *ManagedServiceIdentityType pointing to the current value.
-func (c ManagedServiceIdentityType) ToPtr() *ManagedServiceIdentityType {
-	return &c
-}
-
 // PrivateEndpointConnectionProvisioningState - The current provisioning state.
 type PrivateEndpointConnectionProvisioningState string
 
@@ -111,11 +96,6 @@ func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpoin
 	}
 }
 
-// ToPtr returns a *PrivateEndpointConnectionProvisioningState pointing to the current value.
-func (c PrivateEndpointConnectionProvisioningState) ToPtr() *PrivateEndpointConnectionProvisioningState {
-	return &c
-}
-
 // PrivateEndpointServiceConnectionStatus - The private endpoint connection status.
 type PrivateEndpointServiceConnectionStatus string
 
@@ -132,11 +112,6 @@ func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointSer
 		PrivateEndpointServiceConnectionStatusPending,
 		PrivateEndpointServiceConnectionStatusRejected,
 	}
-}
-
-// ToPtr returns a *PrivateEndpointServiceConnectionStatus pointing to the current value.
-func (c PrivateEndpointServiceConnectionStatus) ToPtr() *PrivateEndpointServiceConnectionStatus {
-	return &c
 }
 
 // ProvisioningState - Redis instance provisioning status.
@@ -175,11 +150,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	}
 }
 
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
-}
-
 // PublicNetworkAccess - Whether or not public endpoint access is allowed for this cache. Value is optional but if passed
 // in, must be 'Enabled' or 'Disabled'. If 'Disabled', private endpoints are the exclusive access method.
 // Default value is 'Enabled'
@@ -196,11 +166,6 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 		PublicNetworkAccessDisabled,
 		PublicNetworkAccessEnabled,
 	}
-}
-
-// ToPtr returns a *PublicNetworkAccess pointing to the current value.
-func (c PublicNetworkAccess) ToPtr() *PublicNetworkAccess {
-	return &c
 }
 
 // RebootType - Which Redis node(s) to reboot. Depending on this value data loss is possible.
@@ -221,11 +186,6 @@ func PossibleRebootTypeValues() []RebootType {
 	}
 }
 
-// ToPtr returns a *RebootType pointing to the current value.
-func (c RebootType) ToPtr() *RebootType {
-	return &c
-}
-
 // RedisKeyType - The Redis access key to regenerate.
 type RedisKeyType string
 
@@ -240,11 +200,6 @@ func PossibleRedisKeyTypeValues() []RedisKeyType {
 		RedisKeyTypePrimary,
 		RedisKeyTypeSecondary,
 	}
-}
-
-// ToPtr returns a *RedisKeyType pointing to the current value.
-func (c RedisKeyType) ToPtr() *RedisKeyType {
-	return &c
 }
 
 // ReplicationRole - Role of the linked server.
@@ -263,11 +218,6 @@ func PossibleReplicationRoleValues() []ReplicationRole {
 	}
 }
 
-// ToPtr returns a *ReplicationRole pointing to the current value.
-func (c ReplicationRole) ToPtr() *ReplicationRole {
-	return &c
-}
-
 // SKUFamily - The SKU family to use. Valid values: (C, P). (C = Basic/Standard, P = Premium).
 type SKUFamily string
 
@@ -282,11 +232,6 @@ func PossibleSKUFamilyValues() []SKUFamily {
 		SKUFamilyC,
 		SKUFamilyP,
 	}
-}
-
-// ToPtr returns a *SKUFamily pointing to the current value.
-func (c SKUFamily) ToPtr() *SKUFamily {
-	return &c
 }
 
 // SKUName - The type of Redis cache to deploy. Valid values: (Basic, Standard, Premium)
@@ -307,11 +252,6 @@ func PossibleSKUNameValues() []SKUName {
 	}
 }
 
-// ToPtr returns a *SKUName pointing to the current value.
-func (c SKUName) ToPtr() *SKUName {
-	return &c
-}
-
 // TLSVersion - Optional: requires clients to use a specified TLS version (or higher) to connect (e,g, '1.0', '1.1', '1.2')
 type TLSVersion string
 
@@ -328,9 +268,4 @@ func PossibleTLSVersionValues() []TLSVersion {
 		TLSVersionOne1,
 		TLSVersionOne2,
 	}
-}
-
-// ToPtr returns a *TLSVersion pointing to the current value.
-func (c TLSVersion) ToPtr() *TLSVersion {
-	return &c
 }

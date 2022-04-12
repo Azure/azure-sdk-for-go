@@ -16,31 +16,27 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redis/resource-manager/Microsoft.Cache/stable/2021-06-01/examples/RedisCacheListPrivateLinkResources.json
-func ExamplePrivateLinkResourcesClient_ListByRedisCache() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redis/resource-manager/Microsoft.Cache/stable/2021-06-01/examples/RedisCacheAsyncOperationStatus.json
+func ExampleAsyncOperationStatusClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 		return
 	}
 	ctx := context.Background()
-	client, err := armredis.NewPrivateLinkResourcesClient("<subscription-id>", cred, nil)
+	client, err := armredis.NewAsyncOperationStatusClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByRedisCache("<resource-group-name>",
-		"<cache-name>",
+	res, err := client.Get(ctx,
+		"<location>",
+		"<operation-id>",
 		nil)
-	for pager.More() {
-		nextResult, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-			return
-		}
-		for _, v := range nextResult.Value {
-			// TODO: use page item
-			_ = v
-		}
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
+	// TODO: use response item
+	_ = res
 }

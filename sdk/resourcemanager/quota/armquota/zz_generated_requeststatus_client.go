@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -32,19 +33,23 @@ type RequestStatusClient struct {
 // NewRequestStatusClient creates a new instance of RequestStatusClient with the specified values.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewRequestStatusClient(credential azcore.TokenCredential, options *arm.ClientOptions) *RequestStatusClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewRequestStatusClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*RequestStatusClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &RequestStatusClient{
-		host: string(cp.Endpoint),
-		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host: ep,
+		pl:   pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Get the quota request details and status by quota request ID for the resources of the resource provider at a specific
@@ -93,7 +98,7 @@ func (client *RequestStatusClient) getCreateRequest(ctx context.Context, id stri
 
 // getHandleResponse handles the Get response.
 func (client *RequestStatusClient) getHandleResponse(resp *http.Response) (RequestStatusClientGetResponse, error) {
-	result := RequestStatusClientGetResponse{RawResponse: resp}
+	result := RequestStatusClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RequestDetails); err != nil {
 		return RequestStatusClientGetResponse{}, err
 	}
@@ -108,16 +113,32 @@ func (client *RequestStatusClient) getHandleResponse(resp *http.Response) (Reque
 // resource URI for the List GET operation. If a {resourceName} is added after /quotas, then it's the target Azure resource
 // URI in the GET operation for the specific resource.
 // options - RequestStatusClientListOptions contains the optional parameters for the RequestStatusClient.List method.
-func (client *RequestStatusClient) List(scope string, options *RequestStatusClientListOptions) *RequestStatusClientListPager {
-	return &RequestStatusClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, scope, options)
+func (client *RequestStatusClient) List(scope string, options *RequestStatusClientListOptions) *runtime.Pager[RequestStatusClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[RequestStatusClientListResponse]{
+		More: func(page RequestStatusClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp RequestStatusClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.RequestDetailsList.NextLink)
+		Fetcher: func(ctx context.Context, page *RequestStatusClientListResponse) (RequestStatusClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, scope, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return RequestStatusClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return RequestStatusClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return RequestStatusClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -146,7 +167,7 @@ func (client *RequestStatusClient) listCreateRequest(ctx context.Context, scope 
 
 // listHandleResponse handles the List response.
 func (client *RequestStatusClient) listHandleResponse(resp *http.Response) (RequestStatusClientListResponse, error) {
-	result := RequestStatusClientListResponse{RawResponse: resp}
+	result := RequestStatusClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RequestDetailsList); err != nil {
 		return RequestStatusClientListResponse{}, err
 	}

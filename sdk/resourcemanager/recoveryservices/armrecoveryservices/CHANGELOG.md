@@ -1,5 +1,150 @@
 # Release History
 
+## 0.4.0 (2022-04-12)
+### Breaking Changes
+
+- Function `NewPrivateLinkResourcesClient` return value(s) have been changed from `(*PrivateLinkResourcesClient)` to `(*PrivateLinkResourcesClient, error)`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `NewRegisteredIdentitiesClient` return value(s) have been changed from `(*RegisteredIdentitiesClient)` to `(*RegisteredIdentitiesClient, error)`
+- Function `NewUsagesClient` return value(s) have been changed from `(*UsagesClient)` to `(*UsagesClient, error)`
+- Function `NewClient` return value(s) have been changed from `(*Client)` to `(*Client, error)`
+- Function `NewReplicationUsagesClient` return value(s) have been changed from `(*ReplicationUsagesClient)` to `(*ReplicationUsagesClient, error)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `*UsagesClient.ListByVaults` parameter(s) have been changed from `(context.Context, string, string, *UsagesClientListByVaultsOptions)` to `(string, string, *UsagesClientListByVaultsOptions)`
+- Function `*UsagesClient.ListByVaults` return value(s) have been changed from `(UsagesClientListByVaultsResponse, error)` to `(*runtime.Pager[UsagesClientListByVaultsResponse])`
+- Function `*VaultsClient.BeginUpdate` return value(s) have been changed from `(VaultsClientUpdatePollerResponse, error)` to `(*armruntime.Poller[VaultsClientUpdateResponse], error)`
+- Function `*VaultsClient.ListBySubscriptionID` return value(s) have been changed from `(*VaultsClientListBySubscriptionIDPager)` to `(*runtime.Pager[VaultsClientListBySubscriptionIDResponse])`
+- Function `NewVaultsClient` return value(s) have been changed from `(*VaultsClient)` to `(*VaultsClient, error)`
+- Function `NewVaultCertificatesClient` return value(s) have been changed from `(*VaultCertificatesClient)` to `(*VaultCertificatesClient, error)`
+- Function `*VaultsClient.BeginCreateOrUpdate` return value(s) have been changed from `(VaultsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[VaultsClientCreateOrUpdateResponse], error)`
+- Function `*PrivateLinkResourcesClient.List` return value(s) have been changed from `(*PrivateLinkResourcesClientListPager)` to `(*runtime.Pager[PrivateLinkResourcesClientListResponse])`
+- Function `NewVaultExtendedInfoClient` return value(s) have been changed from `(*VaultExtendedInfoClient)` to `(*VaultExtendedInfoClient, error)`
+- Function `*VaultsClient.ListByResourceGroup` return value(s) have been changed from `(*VaultsClientListByResourceGroupPager)` to `(*runtime.Pager[VaultsClientListByResourceGroupResponse])`
+- Function `*ReplicationUsagesClient.List` parameter(s) have been changed from `(context.Context, string, string, *ReplicationUsagesClientListOptions)` to `(string, string, *ReplicationUsagesClientListOptions)`
+- Function `*ReplicationUsagesClient.List` return value(s) have been changed from `(ReplicationUsagesClientListResponse, error)` to `(*runtime.Pager[ReplicationUsagesClientListResponse])`
+- Type of `ErrorAdditionalInfo.Info` has been changed from `map[string]interface{}` to `interface{}`
+- Function `BackupStorageVersion.ToPtr` has been removed
+- Function `*VaultsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `ResourceMoveState.ToPtr` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `SKUName.ToPtr` has been removed
+- Function `*VaultsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*VaultsClientListByResourceGroupPager.PageResponse` has been removed
+- Function `ProvisioningState.ToPtr` has been removed
+- Function `*PrivateLinkResourcesClientListPager.NextPage` has been removed
+- Function `PrivateEndpointConnectionStatus.ToPtr` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Function `InfrastructureEncryptionState.ToPtr` has been removed
+- Function `AuthType.ToPtr` has been removed
+- Function `*VaultsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*VaultsClientUpdatePoller.Done` has been removed
+- Function `*PrivateLinkResourcesClientListPager.PageResponse` has been removed
+- Function `*PrivateLinkResourcesClientListPager.Err` has been removed
+- Function `*VaultsClientUpdatePoller.FinalResponse` has been removed
+- Function `*VaultsClientListByResourceGroupPager.Err` has been removed
+- Function `UsagesUnit.ToPtr` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `*VaultsClientUpdatePollerResponse.Resume` has been removed
+- Function `CreatedByType.ToPtr` has been removed
+- Function `*VaultsClientUpdatePoller.ResumeToken` has been removed
+- Function `*VaultsClientListBySubscriptionIDPager.NextPage` has been removed
+- Function `*VaultsClientUpdatePoller.Poll` has been removed
+- Function `ResourceIdentityType.ToPtr` has been removed
+- Function `*VaultsClientListBySubscriptionIDPager.PageResponse` has been removed
+- Function `*VaultsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `VaultPrivateEndpointState.ToPtr` has been removed
+- Function `VaultsClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `VaultsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `TriggerType.ToPtr` has been removed
+- Function `*VaultsClientListBySubscriptionIDPager.Err` has been removed
+- Function `*VaultsClientCreateOrUpdatePoller.Done` has been removed
+- Function `VaultUpgradeState.ToPtr` has been removed
+- Function `*VaultsClientListByResourceGroupPager.NextPage` has been removed
+- Struct `ClientCheckNameAvailabilityResult` has been removed
+- Struct `OperationsClientGetOperationResultResult` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `OperationsClientOperationStatusGetResult` has been removed
+- Struct `PrivateLinkResourcesClientGetResult` has been removed
+- Struct `PrivateLinkResourcesClientListPager` has been removed
+- Struct `PrivateLinkResourcesClientListResult` has been removed
+- Struct `ReplicationUsagesClientListResult` has been removed
+- Struct `UsagesClientListByVaultsResult` has been removed
+- Struct `VaultCertificatesClientCreateResult` has been removed
+- Struct `VaultExtendedInfoClientCreateOrUpdateResult` has been removed
+- Struct `VaultExtendedInfoClientGetResult` has been removed
+- Struct `VaultExtendedInfoClientUpdateResult` has been removed
+- Struct `VaultsClientCreateOrUpdatePoller` has been removed
+- Struct `VaultsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `VaultsClientCreateOrUpdateResult` has been removed
+- Struct `VaultsClientGetResult` has been removed
+- Struct `VaultsClientListByResourceGroupPager` has been removed
+- Struct `VaultsClientListByResourceGroupResult` has been removed
+- Struct `VaultsClientListBySubscriptionIDPager` has been removed
+- Struct `VaultsClientListBySubscriptionIDResult` has been removed
+- Struct `VaultsClientUpdatePoller` has been removed
+- Struct `VaultsClientUpdatePollerResponse` has been removed
+- Struct `VaultsClientUpdateResult` has been removed
+- Field `VaultExtendedInfoClientGetResult` of struct `VaultExtendedInfoClientGetResponse` has been removed
+- Field `RawResponse` of struct `VaultExtendedInfoClientGetResponse` has been removed
+- Field `VaultExtendedInfoClientUpdateResult` of struct `VaultExtendedInfoClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `VaultExtendedInfoClientUpdateResponse` has been removed
+- Field `PrivateLinkResourcesClientGetResult` of struct `PrivateLinkResourcesClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkResourcesClientGetResponse` has been removed
+- Field `VaultsClientUpdateResult` of struct `VaultsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `VaultsClientUpdateResponse` has been removed
+- Field `OperationsClientGetOperationResultResult` of struct `OperationsClientGetOperationResultResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientGetOperationResultResponse` has been removed
+- Field `RawResponse` of struct `RegisteredIdentitiesClientDeleteResponse` has been removed
+- Field `VaultsClientGetResult` of struct `VaultsClientGetResponse` has been removed
+- Field `RawResponse` of struct `VaultsClientGetResponse` has been removed
+- Field `PrivateLinkResourcesClientListResult` of struct `PrivateLinkResourcesClientListResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkResourcesClientListResponse` has been removed
+- Field `VaultExtendedInfoClientCreateOrUpdateResult` of struct `VaultExtendedInfoClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `VaultExtendedInfoClientCreateOrUpdateResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `ReplicationUsagesClientListResult` of struct `ReplicationUsagesClientListResponse` has been removed
+- Field `RawResponse` of struct `ReplicationUsagesClientListResponse` has been removed
+- Field `OperationsClientOperationStatusGetResult` of struct `OperationsClientOperationStatusGetResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientOperationStatusGetResponse` has been removed
+- Field `VaultCertificatesClientCreateResult` of struct `VaultCertificatesClientCreateResponse` has been removed
+- Field `RawResponse` of struct `VaultCertificatesClientCreateResponse` has been removed
+- Field `VaultsClientListByResourceGroupResult` of struct `VaultsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `VaultsClientListByResourceGroupResponse` has been removed
+- Field `ClientCheckNameAvailabilityResult` of struct `ClientCheckNameAvailabilityResponse` has been removed
+- Field `RawResponse` of struct `ClientCheckNameAvailabilityResponse` has been removed
+- Field `VaultsClientCreateOrUpdateResult` of struct `VaultsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `VaultsClientCreateOrUpdateResponse` has been removed
+- Field `UsagesClientListByVaultsResult` of struct `UsagesClientListByVaultsResponse` has been removed
+- Field `RawResponse` of struct `UsagesClientListByVaultsResponse` has been removed
+- Field `RawResponse` of struct `VaultsClientDeleteResponse` has been removed
+- Field `VaultsClientListBySubscriptionIDResult` of struct `VaultsClientListBySubscriptionIDResponse` has been removed
+- Field `RawResponse` of struct `VaultsClientListBySubscriptionIDResponse` has been removed
+
+### Features Added
+
+- New anonymous field `CheckNameAvailabilityResult` in struct `ClientCheckNameAvailabilityResponse`
+- New anonymous field `Vault` in struct `VaultsClientUpdateResponse`
+- New field `ResumeToken` in struct `VaultsClientBeginUpdateOptions`
+- New anonymous field `VaultList` in struct `VaultsClientListByResourceGroupResponse`
+- New anonymous field `VaultList` in struct `VaultsClientListBySubscriptionIDResponse`
+- New anonymous field `PrivateLinkResources` in struct `PrivateLinkResourcesClientListResponse`
+- New anonymous field `ClientDiscoveryResponse` in struct `OperationsClientListResponse`
+- New anonymous field `ReplicationUsageList` in struct `ReplicationUsagesClientListResponse`
+- New anonymous field `OperationResource` in struct `OperationsClientOperationStatusGetResponse`
+- New anonymous field `VaultCertificateResponse` in struct `VaultCertificatesClientCreateResponse`
+- New field `ResumeToken` in struct `VaultsClientBeginCreateOrUpdateOptions`
+- New anonymous field `Vault` in struct `VaultsClientGetResponse`
+- New anonymous field `PrivateLinkResource` in struct `PrivateLinkResourcesClientGetResponse`
+- New anonymous field `VaultExtendedInfoResource` in struct `VaultExtendedInfoClientUpdateResponse`
+- New anonymous field `VaultUsageList` in struct `UsagesClientListByVaultsResponse`
+- New anonymous field `VaultExtendedInfoResource` in struct `VaultExtendedInfoClientCreateOrUpdateResponse`
+- New anonymous field `VaultExtendedInfoResource` in struct `VaultExtendedInfoClientGetResponse`
+- New anonymous field `Vault` in struct `VaultsClientCreateOrUpdateResponse`
+- New anonymous field `Vault` in struct `OperationsClientGetOperationResultResponse`
+
+
 ## 0.3.1 (2022-02-22)
 
 ### Other Changes

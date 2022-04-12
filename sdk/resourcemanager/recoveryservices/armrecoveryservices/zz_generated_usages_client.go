@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type UsagesClient struct {
 // subscriptionID - The subscription Id.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewUsagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *UsagesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewUsagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*UsagesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &UsagesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // ListByVaults - Fetches the usages of the vault.
@@ -54,19 +59,26 @@ func NewUsagesClient(subscriptionID string, credential azcore.TokenCredential, o
 // resourceGroupName - The name of the resource group where the recovery services vault is present.
 // vaultName - The name of the recovery services vault.
 // options - UsagesClientListByVaultsOptions contains the optional parameters for the UsagesClient.ListByVaults method.
-func (client *UsagesClient) ListByVaults(ctx context.Context, resourceGroupName string, vaultName string, options *UsagesClientListByVaultsOptions) (UsagesClientListByVaultsResponse, error) {
-	req, err := client.listByVaultsCreateRequest(ctx, resourceGroupName, vaultName, options)
-	if err != nil {
-		return UsagesClientListByVaultsResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return UsagesClientListByVaultsResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return UsagesClientListByVaultsResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listByVaultsHandleResponse(resp)
+func (client *UsagesClient) ListByVaults(resourceGroupName string, vaultName string, options *UsagesClientListByVaultsOptions) *runtime.Pager[UsagesClientListByVaultsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[UsagesClientListByVaultsResponse]{
+		More: func(page UsagesClientListByVaultsResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *UsagesClientListByVaultsResponse) (UsagesClientListByVaultsResponse, error) {
+			req, err := client.listByVaultsCreateRequest(ctx, resourceGroupName, vaultName, options)
+			if err != nil {
+				return UsagesClientListByVaultsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return UsagesClientListByVaultsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return UsagesClientListByVaultsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByVaultsHandleResponse(resp)
+		},
+	})
 }
 
 // listByVaultsCreateRequest creates the ListByVaults request.
@@ -89,7 +101,7 @@ func (client *UsagesClient) listByVaultsCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01-preview")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -97,7 +109,7 @@ func (client *UsagesClient) listByVaultsCreateRequest(ctx context.Context, resou
 
 // listByVaultsHandleResponse handles the ListByVaults response.
 func (client *UsagesClient) listByVaultsHandleResponse(resp *http.Response) (UsagesClientListByVaultsResponse, error) {
-	result := UsagesClientListByVaultsResponse{RawResponse: resp}
+	result := UsagesClientListByVaultsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VaultUsageList); err != nil {
 		return UsagesClientListByVaultsResponse{}, err
 	}

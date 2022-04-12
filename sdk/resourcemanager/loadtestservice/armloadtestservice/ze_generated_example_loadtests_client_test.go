@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,142 +19,201 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/loadtestservice/armloadtestservice"
 )
 
-// x-ms-original-file: specification/loadtestservice/resource-manager/Microsoft.LoadTestService/preview/2021-12-01-preview/examples/LoadTests_ListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/loadtestservice/resource-manager/Microsoft.LoadTestService/preview/2022-04-15-preview/examples/LoadTests_ListBySubscription.json
 func ExampleLoadTestsClient_ListBySubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armloadtestservice.NewLoadTestsClient("<subscription-id>", cred, nil)
+	client, err := armloadtestservice.NewLoadTestsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListBySubscription(nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/loadtestservice/resource-manager/Microsoft.LoadTestService/preview/2021-12-01-preview/examples/LoadTests_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/loadtestservice/resource-manager/Microsoft.LoadTestService/preview/2022-04-15-preview/examples/LoadTests_ListByResourceGroup.json
 func ExampleLoadTestsClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armloadtestservice.NewLoadTestsClient("<subscription-id>", cred, nil)
+	client, err := armloadtestservice.NewLoadTestsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/loadtestservice/resource-manager/Microsoft.LoadTestService/preview/2021-12-01-preview/examples/LoadTests_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/loadtestservice/resource-manager/Microsoft.LoadTestService/preview/2022-04-15-preview/examples/LoadTests_Get.json
 func ExampleLoadTestsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armloadtestservice.NewLoadTestsClient("<subscription-id>", cred, nil)
+	client, err := armloadtestservice.NewLoadTestsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<load-test-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.LoadTestsClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/loadtestservice/resource-manager/Microsoft.LoadTestService/preview/2021-12-01-preview/examples/LoadTests_CreateOrUpdate.json
-func ExampleLoadTestsClient_CreateOrUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/loadtestservice/resource-manager/Microsoft.LoadTestService/preview/2022-04-15-preview/examples/LoadTests_CreateOrUpdate.json
+func ExampleLoadTestsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armloadtestservice.NewLoadTestsClient("<subscription-id>", cred, nil)
-	res, err := client.CreateOrUpdate(ctx,
+	client, err := armloadtestservice.NewLoadTestsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<load-test-name>",
 		armloadtestservice.LoadTestResource{
-			Location: to.StringPtr("<location>"),
+			Location: to.Ptr("<location>"),
 			Tags: map[string]*string{
-				"Team": to.StringPtr("Dev Exp"),
+				"Team": to.Ptr("Dev Exp"),
 			},
 			Properties: &armloadtestservice.LoadTestProperties{
-				Description: to.StringPtr("<description>"),
+				Description: to.Ptr("<description>"),
+				Encryption: &armloadtestservice.EncryptionProperties{
+					Identity: &armloadtestservice.EncryptionPropertiesIdentity{
+						Type:       to.Ptr(armloadtestservice.TypeUserAssigned),
+						ResourceID: to.Ptr("<resource-id>"),
+					},
+					KeyURL: to.Ptr("<key-url>"),
+				},
 			},
 		},
-		nil)
+		&armloadtestservice.LoadTestsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.LoadTestsClientCreateOrUpdateResult)
+	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+		return
+	}
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/loadtestservice/resource-manager/Microsoft.LoadTestService/preview/2021-12-01-preview/examples/LoadTests_Update.json
-func ExampleLoadTestsClient_Update() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/loadtestservice/resource-manager/Microsoft.LoadTestService/preview/2022-04-15-preview/examples/LoadTests_Update.json
+func ExampleLoadTestsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armloadtestservice.NewLoadTestsClient("<subscription-id>", cred, nil)
-	res, err := client.Update(ctx,
+	client, err := armloadtestservice.NewLoadTestsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
+	poller, err := client.BeginUpdate(ctx,
 		"<resource-group-name>",
 		"<load-test-name>",
 		armloadtestservice.LoadTestResourcePatchRequestBody{
 			Properties: &armloadtestservice.LoadTestResourcePatchRequestBodyProperties{
-				Description: to.StringPtr("<description>"),
+				Description: to.Ptr("<description>"),
+				Encryption: &armloadtestservice.EncryptionProperties{
+					Identity: &armloadtestservice.EncryptionPropertiesIdentity{
+						Type: to.Ptr(armloadtestservice.TypeSystemAssigned),
+					},
+					KeyURL: to.Ptr("<key-url>"),
+				},
 			},
 			Tags: map[string]interface{}{
 				"Division": "LT",
 				"Team":     "Dev Exp",
 			},
 		},
-		nil)
+		&armloadtestservice.LoadTestsClientBeginUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.LoadTestsClientUpdateResult)
+	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+		return
+	}
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/loadtestservice/resource-manager/Microsoft.LoadTestService/preview/2021-12-01-preview/examples/LoadTests_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/loadtestservice/resource-manager/Microsoft.LoadTestService/preview/2022-04-15-preview/examples/LoadTests_Delete.json
 func ExampleLoadTestsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armloadtestservice.NewLoadTestsClient("<subscription-id>", cred, nil)
+	client, err := armloadtestservice.NewLoadTestsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
 		"<load-test-name>",
-		nil)
+		&armloadtestservice.LoadTestsClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }

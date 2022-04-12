@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type WorkflowTriggersClient struct {
 // subscriptionID - The subscription id.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewWorkflowTriggersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *WorkflowTriggersClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewWorkflowTriggersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkflowTriggersClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &WorkflowTriggersClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Gets a workflow trigger.
@@ -103,7 +108,7 @@ func (client *WorkflowTriggersClient) getCreateRequest(ctx context.Context, reso
 
 // getHandleResponse handles the Get response.
 func (client *WorkflowTriggersClient) getHandleResponse(resp *http.Response) (WorkflowTriggersClientGetResponse, error) {
-	result := WorkflowTriggersClientGetResponse{RawResponse: resp}
+	result := WorkflowTriggersClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowTrigger); err != nil {
 		return WorkflowTriggersClientGetResponse{}, err
 	}
@@ -164,7 +169,7 @@ func (client *WorkflowTriggersClient) getSchemaJSONCreateRequest(ctx context.Con
 
 // getSchemaJSONHandleResponse handles the GetSchemaJSON response.
 func (client *WorkflowTriggersClient) getSchemaJSONHandleResponse(resp *http.Response) (WorkflowTriggersClientGetSchemaJSONResponse, error) {
-	result := WorkflowTriggersClientGetSchemaJSONResponse{RawResponse: resp}
+	result := WorkflowTriggersClientGetSchemaJSONResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JSONSchema); err != nil {
 		return WorkflowTriggersClientGetSchemaJSONResponse{}, err
 	}
@@ -176,16 +181,32 @@ func (client *WorkflowTriggersClient) getSchemaJSONHandleResponse(resp *http.Res
 // resourceGroupName - The resource group name.
 // workflowName - The workflow name.
 // options - WorkflowTriggersClientListOptions contains the optional parameters for the WorkflowTriggersClient.List method.
-func (client *WorkflowTriggersClient) List(resourceGroupName string, workflowName string, options *WorkflowTriggersClientListOptions) *WorkflowTriggersClientListPager {
-	return &WorkflowTriggersClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, workflowName, options)
+func (client *WorkflowTriggersClient) List(resourceGroupName string, workflowName string, options *WorkflowTriggersClientListOptions) *runtime.Pager[WorkflowTriggersClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[WorkflowTriggersClientListResponse]{
+		More: func(page WorkflowTriggersClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp WorkflowTriggersClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.WorkflowTriggerListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *WorkflowTriggersClientListResponse) (WorkflowTriggersClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, workflowName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return WorkflowTriggersClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return WorkflowTriggersClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return WorkflowTriggersClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -222,7 +243,7 @@ func (client *WorkflowTriggersClient) listCreateRequest(ctx context.Context, res
 
 // listHandleResponse handles the List response.
 func (client *WorkflowTriggersClient) listHandleResponse(resp *http.Response) (WorkflowTriggersClientListResponse, error) {
-	result := WorkflowTriggersClientListResponse{RawResponse: resp}
+	result := WorkflowTriggersClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowTriggerListResult); err != nil {
 		return WorkflowTriggersClientListResponse{}, err
 	}
@@ -283,7 +304,7 @@ func (client *WorkflowTriggersClient) listCallbackURLCreateRequest(ctx context.C
 
 // listCallbackURLHandleResponse handles the ListCallbackURL response.
 func (client *WorkflowTriggersClient) listCallbackURLHandleResponse(resp *http.Response) (WorkflowTriggersClientListCallbackURLResponse, error) {
-	result := WorkflowTriggersClientListCallbackURLResponse{RawResponse: resp}
+	result := WorkflowTriggersClientListCallbackURLResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowTriggerCallbackURL); err != nil {
 		return WorkflowTriggersClientListCallbackURLResponse{}, err
 	}
@@ -308,7 +329,7 @@ func (client *WorkflowTriggersClient) Reset(ctx context.Context, resourceGroupNa
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return WorkflowTriggersClientResetResponse{}, runtime.NewResponseError(resp)
 	}
-	return WorkflowTriggersClientResetResponse{RawResponse: resp}, nil
+	return WorkflowTriggersClientResetResponse{}, nil
 }
 
 // resetCreateRequest creates the Reset request.
@@ -359,7 +380,7 @@ func (client *WorkflowTriggersClient) Run(ctx context.Context, resourceGroupName
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return WorkflowTriggersClientRunResponse{}, runtime.NewResponseError(resp)
 	}
-	return WorkflowTriggersClientRunResponse{RawResponse: resp}, nil
+	return WorkflowTriggersClientRunResponse{}, nil
 }
 
 // runCreateRequest creates the Run request.
@@ -412,7 +433,7 @@ func (client *WorkflowTriggersClient) SetState(ctx context.Context, resourceGrou
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return WorkflowTriggersClientSetStateResponse{}, runtime.NewResponseError(resp)
 	}
-	return WorkflowTriggersClientSetStateResponse{RawResponse: resp}, nil
+	return WorkflowTriggersClientSetStateResponse{}, nil
 }
 
 // setStateCreateRequest creates the SetState request.

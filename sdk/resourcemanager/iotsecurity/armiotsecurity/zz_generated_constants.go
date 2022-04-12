@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,105 +10,8 @@ package armiotsecurity
 
 const (
 	moduleName    = "armiotsecurity"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
-
-// AlertIntent - Kill chain related intent behind the alert. Could contain multiple enum values (separated by commas)
-type AlertIntent string
-
-const (
-	AlertIntentCollection          AlertIntent = "Collection"
-	AlertIntentCommandAndControl   AlertIntent = "CommandAndControl"
-	AlertIntentCredentialAccess    AlertIntent = "CredentialAccess"
-	AlertIntentDefenseEvasion      AlertIntent = "DefenseEvasion"
-	AlertIntentDiscovery           AlertIntent = "Discovery"
-	AlertIntentExecution           AlertIntent = "Execution"
-	AlertIntentExfiltration        AlertIntent = "Exfiltration"
-	AlertIntentExploitation        AlertIntent = "Exploitation"
-	AlertIntentImpact              AlertIntent = "Impact"
-	AlertIntentInitialAccess       AlertIntent = "InitialAccess"
-	AlertIntentLateralMovement     AlertIntent = "LateralMovement"
-	AlertIntentPersistence         AlertIntent = "Persistence"
-	AlertIntentPreAttack           AlertIntent = "PreAttack"
-	AlertIntentPrivilegeEscalation AlertIntent = "PrivilegeEscalation"
-	AlertIntentProbing             AlertIntent = "Probing"
-	AlertIntentUnknown             AlertIntent = "Unknown"
-)
-
-// PossibleAlertIntentValues returns the possible values for the AlertIntent const type.
-func PossibleAlertIntentValues() []AlertIntent {
-	return []AlertIntent{
-		AlertIntentCollection,
-		AlertIntentCommandAndControl,
-		AlertIntentCredentialAccess,
-		AlertIntentDefenseEvasion,
-		AlertIntentDiscovery,
-		AlertIntentExecution,
-		AlertIntentExfiltration,
-		AlertIntentExploitation,
-		AlertIntentImpact,
-		AlertIntentInitialAccess,
-		AlertIntentLateralMovement,
-		AlertIntentPersistence,
-		AlertIntentPreAttack,
-		AlertIntentPrivilegeEscalation,
-		AlertIntentProbing,
-		AlertIntentUnknown,
-	}
-}
-
-// ToPtr returns a *AlertIntent pointing to the current value.
-func (c AlertIntent) ToPtr() *AlertIntent {
-	return &c
-}
-
-// AlertSeverity - Alert Severity
-type AlertSeverity string
-
-const (
-	AlertSeverityHigh          AlertSeverity = "High"
-	AlertSeverityInformational AlertSeverity = "Informational"
-	AlertSeverityLow           AlertSeverity = "Low"
-	AlertSeverityMedium        AlertSeverity = "Medium"
-)
-
-// PossibleAlertSeverityValues returns the possible values for the AlertSeverity const type.
-func PossibleAlertSeverityValues() []AlertSeverity {
-	return []AlertSeverity{
-		AlertSeverityHigh,
-		AlertSeverityInformational,
-		AlertSeverityLow,
-		AlertSeverityMedium,
-	}
-}
-
-// ToPtr returns a *AlertSeverity pointing to the current value.
-func (c AlertSeverity) ToPtr() *AlertSeverity {
-	return &c
-}
-
-// AlertStatus - Alert Status
-type AlertStatus string
-
-const (
-	AlertStatusClosed     AlertStatus = "Closed"
-	AlertStatusInProgress AlertStatus = "InProgress"
-	AlertStatusNew        AlertStatus = "New"
-)
-
-// PossibleAlertStatusValues returns the possible values for the AlertStatus const type.
-func PossibleAlertStatusValues() []AlertStatus {
-	return []AlertStatus{
-		AlertStatusClosed,
-		AlertStatusInProgress,
-		AlertStatusNew,
-	}
-}
-
-// ToPtr returns a *AlertStatus pointing to the current value.
-func (c AlertStatus) ToPtr() *AlertStatus {
-	return &c
-}
 
 // AuthorizedState - Authorized state of the device.
 type AuthorizedState string
@@ -124,11 +27,6 @@ func PossibleAuthorizedStateValues() []AuthorizedState {
 		AuthorizedStateAuthorized,
 		AuthorizedStateUnauthorized,
 	}
-}
-
-// ToPtr returns a *AuthorizedState pointing to the current value.
-func (c AuthorizedState) ToPtr() *AuthorizedState {
-	return &c
 }
 
 // CreatedByType - The type of identity that created the resource.
@@ -151,11 +49,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
-}
-
 // Criticality - Device criticality.
 type Criticality string
 
@@ -172,11 +65,6 @@ func PossibleCriticalityValues() []Criticality {
 		CriticalityLow,
 		CriticalityNormal,
 	}
-}
-
-// ToPtr returns a *Criticality pointing to the current value.
-func (c Criticality) ToPtr() *Criticality {
-	return &c
 }
 
 // DeviceDataSource - Device data source
@@ -201,11 +89,6 @@ func PossibleDeviceDataSourceValues() []DeviceDataSource {
 	}
 }
 
-// ToPtr returns a *DeviceDataSource pointing to the current value.
-func (c DeviceDataSource) ToPtr() *DeviceDataSource {
-	return &c
-}
-
 // DeviceStatus - Device status.
 type DeviceStatus string
 
@@ -226,11 +109,6 @@ func PossibleDeviceStatusValues() []DeviceStatus {
 	}
 }
 
-// ToPtr returns a *DeviceStatus pointing to the current value.
-func (c DeviceStatus) ToPtr() *DeviceStatus {
-	return &c
-}
-
 // MacCertainty - Indicates whether the association of the mac to the ip address is certain or a guess.
 type MacCertainty string
 
@@ -247,11 +125,6 @@ func PossibleMacCertaintyValues() []MacCertainty {
 	}
 }
 
-// ToPtr returns a *MacCertainty pointing to the current value.
-func (c MacCertainty) ToPtr() *MacCertainty {
-	return &c
-}
-
 // MdeIntegration - Integration status
 type MdeIntegration string
 
@@ -266,11 +139,6 @@ func PossibleMdeIntegrationValues() []MdeIntegration {
 		MdeIntegrationDisabled,
 		MdeIntegrationEnabled,
 	}
-}
-
-// ToPtr returns a *MdeIntegration pointing to the current value.
-func (c MdeIntegration) ToPtr() *MdeIntegration {
-	return &c
 }
 
 // OnboardingKind - The kind of onboarding for the subscription
@@ -293,11 +161,6 @@ func PossibleOnboardingKindValues() []OnboardingKind {
 	}
 }
 
-// ToPtr returns a *OnboardingKind pointing to the current value.
-func (c OnboardingKind) ToPtr() *OnboardingKind {
-	return &c
-}
-
 // OnboardingStatus - Device onboarding status.
 type OnboardingStatus string
 
@@ -318,11 +181,6 @@ func PossibleOnboardingStatusValues() []OnboardingStatus {
 	}
 }
 
-// ToPtr returns a *OnboardingStatus pointing to the current value.
-func (c OnboardingStatus) ToPtr() *OnboardingStatus {
-	return &c
-}
-
 // ProgrammingState - Indicates whether this device is programming
 type ProgrammingState string
 
@@ -337,11 +195,6 @@ func PossibleProgrammingStateValues() []ProgrammingState {
 		ProgrammingStateNotProgrammingDevice,
 		ProgrammingStateProgrammingDevice,
 	}
-}
-
-// ToPtr returns a *ProgrammingState pointing to the current value.
-func (c ProgrammingState) ToPtr() *ProgrammingState {
-	return &c
 }
 
 // PurdueLevel - Purdue level of the device.
@@ -362,42 +215,6 @@ func PossiblePurdueLevelValues() []PurdueLevel {
 	}
 }
 
-// ToPtr returns a *PurdueLevel pointing to the current value.
-func (c PurdueLevel) ToPtr() *PurdueLevel {
-	return &c
-}
-
-// RecommendationSeverity - The severity of the recommendation
-type RecommendationSeverity string
-
-const (
-	RecommendationSeverityHealthy       RecommendationSeverity = "Healthy"
-	RecommendationSeverityHigh          RecommendationSeverity = "High"
-	RecommendationSeverityLow           RecommendationSeverity = "Low"
-	RecommendationSeverityMedium        RecommendationSeverity = "Medium"
-	RecommendationSeverityNotApplicable RecommendationSeverity = "NotApplicable"
-	RecommendationSeverityOffByPolicy   RecommendationSeverity = "OffByPolicy"
-	RecommendationSeverityUnknown       RecommendationSeverity = "Unknown"
-)
-
-// PossibleRecommendationSeverityValues returns the possible values for the RecommendationSeverity const type.
-func PossibleRecommendationSeverityValues() []RecommendationSeverity {
-	return []RecommendationSeverity{
-		RecommendationSeverityHealthy,
-		RecommendationSeverityHigh,
-		RecommendationSeverityLow,
-		RecommendationSeverityMedium,
-		RecommendationSeverityNotApplicable,
-		RecommendationSeverityOffByPolicy,
-		RecommendationSeverityUnknown,
-	}
-}
-
-// ToPtr returns a *RecommendationSeverity pointing to the current value.
-func (c RecommendationSeverity) ToPtr() *RecommendationSeverity {
-	return &c
-}
-
 // SensorStatus - Status of the IoT sensor
 type SensorStatus string
 
@@ -416,11 +233,6 @@ func PossibleSensorStatusValues() []SensorStatus {
 	}
 }
 
-// ToPtr returns a *SensorStatus pointing to the current value.
-func (c SensorStatus) ToPtr() *SensorStatus {
-	return &c
-}
-
 // SensorType - Type of sensor
 type SensorType string
 
@@ -435,38 +247,6 @@ func PossibleSensorTypeValues() []SensorType {
 		SensorTypeEnterprise,
 		SensorTypeOt,
 	}
-}
-
-// ToPtr returns a *SensorType pointing to the current value.
-func (c SensorType) ToPtr() *SensorType {
-	return &c
-}
-
-// SeverityScore - The severity score of the vulnerability
-type SeverityScore string
-
-const (
-	SeverityScoreCritical SeverityScore = "Critical"
-	SeverityScoreHigh     SeverityScore = "High"
-	SeverityScoreLow      SeverityScore = "Low"
-	SeverityScoreMedium   SeverityScore = "Medium"
-	SeverityScoreNone     SeverityScore = "None"
-)
-
-// PossibleSeverityScoreValues returns the possible values for the SeverityScore const type.
-func PossibleSeverityScoreValues() []SeverityScore {
-	return []SeverityScore{
-		SeverityScoreCritical,
-		SeverityScoreHigh,
-		SeverityScoreLow,
-		SeverityScoreMedium,
-		SeverityScoreNone,
-	}
-}
-
-// ToPtr returns a *SeverityScore pointing to the current value.
-func (c SeverityScore) ToPtr() *SeverityScore {
-	return &c
 }
 
 // SlotType - Slot type.
@@ -495,11 +275,6 @@ func PossibleSlotTypeValues() []SlotType {
 	}
 }
 
-// ToPtr returns a *SlotType pointing to the current value.
-func (c SlotType) ToPtr() *SlotType {
-	return &c
-}
-
 // TiStatus - TI Status of the IoT sensor
 type TiStatus string
 
@@ -520,11 +295,6 @@ func PossibleTiStatusValues() []TiStatus {
 	}
 }
 
-// ToPtr returns a *TiStatus pointing to the current value.
-func (c TiStatus) ToPtr() *TiStatus {
-	return &c
-}
-
 // VersionKind - Kind of the version
 type VersionKind string
 
@@ -541,9 +311,4 @@ func PossibleVersionKindValues() []VersionKind {
 		VersionKindPreview,
 		VersionKindPrevious,
 	}
-}
-
-// ToPtr returns a *VersionKind pointing to the current value.
-func (c VersionKind) ToPtr() *VersionKind {
-	return &c
 }

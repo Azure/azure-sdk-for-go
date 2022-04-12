@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,374 +19,506 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto"
 )
 
-// x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoClustersGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoClustersGet.json
 func ExampleClustersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armkusto.NewClustersClient("<subscription-id>", cred, nil)
+	client, err := armkusto.NewClustersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ClustersClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoClustersCreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoClustersCreateOrUpdate.json
 func ExampleClustersClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armkusto.NewClustersClient("<subscription-id>", cred, nil)
+	client, err := armkusto.NewClustersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
 		armkusto.Cluster{
-			Location: to.StringPtr("<location>"),
+			Location: to.Ptr("<location>"),
 			Identity: &armkusto.Identity{
-				Type: armkusto.IdentityType("SystemAssigned").ToPtr(),
+				Type: to.Ptr(armkusto.IdentityTypeSystemAssigned),
 			},
 			Properties: &armkusto.ClusterProperties{
 				AllowedIPRangeList: []*string{
-					to.StringPtr("0.0.0.0/0")},
-				EnableAutoStop:         to.BoolPtr(true),
-				EnableDoubleEncryption: to.BoolPtr(false),
-				EnablePurge:            to.BoolPtr(true),
-				EnableStreamingIngest:  to.BoolPtr(true),
-				PublicNetworkAccess:    armkusto.PublicNetworkAccess("Enabled").ToPtr(),
+					to.Ptr("0.0.0.0/0")},
+				EnableAutoStop:         to.Ptr(true),
+				EnableDoubleEncryption: to.Ptr(false),
+				EnablePurge:            to.Ptr(true),
+				EnableStreamingIngest:  to.Ptr(true),
+				PublicIPType:           to.Ptr(armkusto.PublicIPTypeDualStack),
+				PublicNetworkAccess:    to.Ptr(armkusto.PublicNetworkAccessEnabled),
 			},
 			SKU: &armkusto.AzureSKU{
-				Name:     armkusto.AzureSKUName("Standard_L8s").ToPtr(),
-				Capacity: to.Int32Ptr(2),
-				Tier:     armkusto.AzureSKUTier("Standard").ToPtr(),
+				Name:     to.Ptr(armkusto.AzureSKUNameStandardL8S),
+				Capacity: to.Ptr[int32](2),
+				Tier:     to.Ptr(armkusto.AzureSKUTierStandard),
 			},
 		},
 		&armkusto.ClustersClientBeginCreateOrUpdateOptions{IfMatch: nil,
 			IfNoneMatch: nil,
+			ResumeToken: "",
 		})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ClustersClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoClustersUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoClustersUpdate.json
 func ExampleClustersClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armkusto.NewClustersClient("<subscription-id>", cred, nil)
+	client, err := armkusto.NewClustersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginUpdate(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
 		armkusto.ClusterUpdate{
-			Location: to.StringPtr("<location>"),
+			Location: to.Ptr("<location>"),
 		},
-		&armkusto.ClustersClientBeginUpdateOptions{IfMatch: to.StringPtr("<if-match>")})
+		&armkusto.ClustersClientBeginUpdateOptions{IfMatch: to.Ptr("<if-match>"),
+			ResumeToken: "",
+		})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ClustersClientUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoClustersDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoClustersDelete.json
 func ExampleClustersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armkusto.NewClustersClient("<subscription-id>", cred, nil)
+	client, err := armkusto.NewClustersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
-		nil)
+		&armkusto.ClustersClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoClustersStop.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoClustersStop.json
 func ExampleClustersClient_BeginStop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armkusto.NewClustersClient("<subscription-id>", cred, nil)
+	client, err := armkusto.NewClustersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginStop(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
-		nil)
+		&armkusto.ClustersClientBeginStopOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoClustersStart.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoClustersStart.json
 func ExampleClustersClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armkusto.NewClustersClient("<subscription-id>", cred, nil)
+	client, err := armkusto.NewClustersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginStart(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
-		nil)
+		&armkusto.ClustersClientBeginStartOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoClusterListFollowerDatabases.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoClusterListFollowerDatabases.json
 func ExampleClustersClient_ListFollowerDatabases() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armkusto.NewClustersClient("<subscription-id>", cred, nil)
-	res, err := client.ListFollowerDatabases(ctx,
-		"<resource-group-name>",
+	client, err := armkusto.NewClustersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
+	pager := client.ListFollowerDatabases("<resource-group-name>",
 		"<cluster-name>",
 		nil)
-	if err != nil {
-		log.Fatal(err)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+			return
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
 	}
-	log.Printf("Response result: %#v\n", res.ClustersClientListFollowerDatabasesResult)
 }
 
-// x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoClusterDetachFollowerDatabases.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoClusterDetachFollowerDatabases.json
 func ExampleClustersClient_BeginDetachFollowerDatabases() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armkusto.NewClustersClient("<subscription-id>", cred, nil)
+	client, err := armkusto.NewClustersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginDetachFollowerDatabases(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
 		armkusto.FollowerDatabaseDefinition{
-			AttachedDatabaseConfigurationName: to.StringPtr("<attached-database-configuration-name>"),
-			ClusterResourceID:                 to.StringPtr("<cluster-resource-id>"),
+			AttachedDatabaseConfigurationName: to.Ptr("<attached-database-configuration-name>"),
+			ClusterResourceID:                 to.Ptr("<cluster-resource-id>"),
 		},
-		nil)
+		&armkusto.ClustersClientBeginDetachFollowerDatabasesOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoClustersDiagnoseVirtualNetwork.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoClustersDiagnoseVirtualNetwork.json
 func ExampleClustersClient_BeginDiagnoseVirtualNetwork() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armkusto.NewClustersClient("<subscription-id>", cred, nil)
+	client, err := armkusto.NewClustersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginDiagnoseVirtualNetwork(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
-		nil)
+		&armkusto.ClustersClientBeginDiagnoseVirtualNetworkOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ClustersClientDiagnoseVirtualNetworkResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoClustersListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoClustersListByResourceGroup.json
 func ExampleClustersClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armkusto.NewClustersClient("<subscription-id>", cred, nil)
-	res, err := client.ListByResourceGroup(ctx,
-		"<resource-group-name>",
-		nil)
+	client, err := armkusto.NewClustersClient("<subscription-id>", cred, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to create client: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ClustersClientListByResourceGroupResult)
+	pager := client.ListByResourceGroup("<resource-group-name>",
+		nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+			return
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
+	}
 }
 
-// x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoClustersList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoClustersList.json
 func ExampleClustersClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armkusto.NewClustersClient("<subscription-id>", cred, nil)
-	res, err := client.List(ctx,
-		nil)
+	client, err := armkusto.NewClustersClient("<subscription-id>", cred, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to create client: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ClustersClientListResult)
+	pager := client.List(nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+			return
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
+	}
 }
 
-// x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoClustersCheckNameAvailability.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoClustersCheckNameAvailability.json
 func ExampleClustersClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armkusto.NewClustersClient("<subscription-id>", cred, nil)
+	client, err := armkusto.NewClustersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.CheckNameAvailability(ctx,
 		"<location>",
 		armkusto.ClusterCheckNameRequest{
-			Name: to.StringPtr("<name>"),
-			Type: to.StringPtr("<type>"),
+			Name: to.Ptr("<name>"),
+			Type: to.Ptr("<type>"),
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ClustersClientCheckNameAvailabilityResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoOutboundNetworkDependenciesList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoOutboundNetworkDependenciesList.json
 func ExampleClustersClient_ListOutboundNetworkDependenciesEndpoints() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armkusto.NewClustersClient("<subscription-id>", cred, nil)
+	client, err := armkusto.NewClustersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListOutboundNetworkDependenciesEndpoints("<resource-group-name>",
 		"<cluster-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoClusterListLanguageExtensions.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoClusterListLanguageExtensions.json
 func ExampleClustersClient_ListLanguageExtensions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armkusto.NewClustersClient("<subscription-id>", cred, nil)
-	res, err := client.ListLanguageExtensions(ctx,
-		"<resource-group-name>",
+	client, err := armkusto.NewClustersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
+	pager := client.ListLanguageExtensions("<resource-group-name>",
 		"<cluster-name>",
 		nil)
-	if err != nil {
-		log.Fatal(err)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+			return
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
 	}
-	log.Printf("Response result: %#v\n", res.ClustersClientListLanguageExtensionsResult)
 }
 
-// x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoClusterAddLanguageExtensions.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoClusterAddLanguageExtensions.json
 func ExampleClustersClient_BeginAddLanguageExtensions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armkusto.NewClustersClient("<subscription-id>", cred, nil)
+	client, err := armkusto.NewClustersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginAddLanguageExtensions(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
 		armkusto.LanguageExtensionsList{
 			Value: []*armkusto.LanguageExtension{
 				{
-					LanguageExtensionName: armkusto.LanguageExtensionName("PYTHON").ToPtr(),
+					LanguageExtensionName: to.Ptr(armkusto.LanguageExtensionNamePYTHON),
 				},
 				{
-					LanguageExtensionName: armkusto.LanguageExtensionName("R").ToPtr(),
+					LanguageExtensionName: to.Ptr(armkusto.LanguageExtensionNameR),
 				}},
 		},
-		nil)
+		&armkusto.ClustersClientBeginAddLanguageExtensionsOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoClusterRemoveLanguageExtensions.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoClusterRemoveLanguageExtensions.json
 func ExampleClustersClient_BeginRemoveLanguageExtensions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armkusto.NewClustersClient("<subscription-id>", cred, nil)
+	client, err := armkusto.NewClustersClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginRemoveLanguageExtensions(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
 		armkusto.LanguageExtensionsList{
 			Value: []*armkusto.LanguageExtension{
 				{
-					LanguageExtensionName: armkusto.LanguageExtensionName("PYTHON").ToPtr(),
+					LanguageExtensionName: to.Ptr(armkusto.LanguageExtensionNamePYTHON),
 				},
 				{
-					LanguageExtensionName: armkusto.LanguageExtensionName("R").ToPtr(),
+					LanguageExtensionName: to.Ptr(armkusto.LanguageExtensionNameR),
 				}},
 		},
-		nil)
+		&armkusto.ClustersClientBeginRemoveLanguageExtensionsOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }

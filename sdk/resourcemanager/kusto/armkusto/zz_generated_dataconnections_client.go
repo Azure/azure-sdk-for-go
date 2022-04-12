@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type DataConnectionsClient struct {
 // forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewDataConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DataConnectionsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewDataConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DataConnectionsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &DataConnectionsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CheckNameAvailability - Checks that the data connection name is valid and is not already in use.
@@ -97,7 +102,7 @@ func (client *DataConnectionsClient) checkNameAvailabilityCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, dataConnectionName)
@@ -105,7 +110,7 @@ func (client *DataConnectionsClient) checkNameAvailabilityCreateRequest(ctx cont
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
 func (client *DataConnectionsClient) checkNameAvailabilityHandleResponse(resp *http.Response) (DataConnectionsClientCheckNameAvailabilityResponse, error) {
-	result := DataConnectionsClientCheckNameAvailabilityResponse{RawResponse: resp}
+	result := DataConnectionsClientCheckNameAvailabilityResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameResult); err != nil {
 		return DataConnectionsClientCheckNameAvailabilityResponse{}, err
 	}
@@ -121,22 +126,16 @@ func (client *DataConnectionsClient) checkNameAvailabilityHandleResponse(resp *h
 // parameters - The data connection parameters supplied to the CreateOrUpdate operation.
 // options - DataConnectionsClientBeginCreateOrUpdateOptions contains the optional parameters for the DataConnectionsClient.BeginCreateOrUpdate
 // method.
-func (client *DataConnectionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, dataConnectionName string, parameters DataConnectionClassification, options *DataConnectionsClientBeginCreateOrUpdateOptions) (DataConnectionsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, clusterName, databaseName, dataConnectionName, parameters, options)
-	if err != nil {
-		return DataConnectionsClientCreateOrUpdatePollerResponse{}, err
+func (client *DataConnectionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, dataConnectionName string, parameters DataConnectionClassification, options *DataConnectionsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[DataConnectionsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, clusterName, databaseName, dataConnectionName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[DataConnectionsClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[DataConnectionsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DataConnectionsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DataConnectionsClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return DataConnectionsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &DataConnectionsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a data connection.
@@ -184,7 +183,7 @@ func (client *DataConnectionsClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -198,22 +197,18 @@ func (client *DataConnectionsClient) createOrUpdateCreateRequest(ctx context.Con
 // parameters - The data connection parameters supplied to the CreateOrUpdate operation.
 // options - DataConnectionsClientBeginDataConnectionValidationOptions contains the optional parameters for the DataConnectionsClient.BeginDataConnectionValidation
 // method.
-func (client *DataConnectionsClient) BeginDataConnectionValidation(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters DataConnectionValidation, options *DataConnectionsClientBeginDataConnectionValidationOptions) (DataConnectionsClientDataConnectionValidationPollerResponse, error) {
-	resp, err := client.dataConnectionValidation(ctx, resourceGroupName, clusterName, databaseName, parameters, options)
-	if err != nil {
-		return DataConnectionsClientDataConnectionValidationPollerResponse{}, err
+func (client *DataConnectionsClient) BeginDataConnectionValidation(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters DataConnectionValidation, options *DataConnectionsClientBeginDataConnectionValidationOptions) (*armruntime.Poller[DataConnectionsClientDataConnectionValidationResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.dataConnectionValidation(ctx, resourceGroupName, clusterName, databaseName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[DataConnectionsClientDataConnectionValidationResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[DataConnectionsClientDataConnectionValidationResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DataConnectionsClientDataConnectionValidationPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DataConnectionsClient.DataConnectionValidation", "location", resp, client.pl)
-	if err != nil {
-		return DataConnectionsClientDataConnectionValidationPollerResponse{}, err
-	}
-	result.Poller = &DataConnectionsClientDataConnectionValidationPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // DataConnectionValidation - Checks that the data connection parameters are valid.
@@ -257,7 +252,7 @@ func (client *DataConnectionsClient) dataConnectionValidationCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -271,22 +266,16 @@ func (client *DataConnectionsClient) dataConnectionValidationCreateRequest(ctx c
 // dataConnectionName - The name of the data connection.
 // options - DataConnectionsClientBeginDeleteOptions contains the optional parameters for the DataConnectionsClient.BeginDelete
 // method.
-func (client *DataConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, dataConnectionName string, options *DataConnectionsClientBeginDeleteOptions) (DataConnectionsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, clusterName, databaseName, dataConnectionName, options)
-	if err != nil {
-		return DataConnectionsClientDeletePollerResponse{}, err
+func (client *DataConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, dataConnectionName string, options *DataConnectionsClientBeginDeleteOptions) (*armruntime.Poller[DataConnectionsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, clusterName, databaseName, dataConnectionName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[DataConnectionsClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[DataConnectionsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DataConnectionsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DataConnectionsClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return DataConnectionsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &DataConnectionsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes the data connection with the given name.
@@ -334,7 +323,7 @@ func (client *DataConnectionsClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -390,7 +379,7 @@ func (client *DataConnectionsClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -398,7 +387,7 @@ func (client *DataConnectionsClient) getCreateRequest(ctx context.Context, resou
 
 // getHandleResponse handles the Get response.
 func (client *DataConnectionsClient) getHandleResponse(resp *http.Response) (DataConnectionsClientGetResponse, error) {
-	result := DataConnectionsClientGetResponse{RawResponse: resp}
+	result := DataConnectionsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
 		return DataConnectionsClientGetResponse{}, err
 	}
@@ -412,19 +401,26 @@ func (client *DataConnectionsClient) getHandleResponse(resp *http.Response) (Dat
 // databaseName - The name of the database in the Kusto cluster.
 // options - DataConnectionsClientListByDatabaseOptions contains the optional parameters for the DataConnectionsClient.ListByDatabase
 // method.
-func (client *DataConnectionsClient) ListByDatabase(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, options *DataConnectionsClientListByDatabaseOptions) (DataConnectionsClientListByDatabaseResponse, error) {
-	req, err := client.listByDatabaseCreateRequest(ctx, resourceGroupName, clusterName, databaseName, options)
-	if err != nil {
-		return DataConnectionsClientListByDatabaseResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return DataConnectionsClientListByDatabaseResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DataConnectionsClientListByDatabaseResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listByDatabaseHandleResponse(resp)
+func (client *DataConnectionsClient) ListByDatabase(resourceGroupName string, clusterName string, databaseName string, options *DataConnectionsClientListByDatabaseOptions) *runtime.Pager[DataConnectionsClientListByDatabaseResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DataConnectionsClientListByDatabaseResponse]{
+		More: func(page DataConnectionsClientListByDatabaseResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *DataConnectionsClientListByDatabaseResponse) (DataConnectionsClientListByDatabaseResponse, error) {
+			req, err := client.listByDatabaseCreateRequest(ctx, resourceGroupName, clusterName, databaseName, options)
+			if err != nil {
+				return DataConnectionsClientListByDatabaseResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DataConnectionsClientListByDatabaseResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DataConnectionsClientListByDatabaseResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByDatabaseHandleResponse(resp)
+		},
+	})
 }
 
 // listByDatabaseCreateRequest creates the ListByDatabase request.
@@ -451,7 +447,7 @@ func (client *DataConnectionsClient) listByDatabaseCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -459,7 +455,7 @@ func (client *DataConnectionsClient) listByDatabaseCreateRequest(ctx context.Con
 
 // listByDatabaseHandleResponse handles the ListByDatabase response.
 func (client *DataConnectionsClient) listByDatabaseHandleResponse(resp *http.Response) (DataConnectionsClientListByDatabaseResponse, error) {
-	result := DataConnectionsClientListByDatabaseResponse{RawResponse: resp}
+	result := DataConnectionsClientListByDatabaseResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataConnectionListResult); err != nil {
 		return DataConnectionsClientListByDatabaseResponse{}, err
 	}
@@ -475,22 +471,16 @@ func (client *DataConnectionsClient) listByDatabaseHandleResponse(resp *http.Res
 // parameters - The data connection parameters supplied to the Update operation.
 // options - DataConnectionsClientBeginUpdateOptions contains the optional parameters for the DataConnectionsClient.BeginUpdate
 // method.
-func (client *DataConnectionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, dataConnectionName string, parameters DataConnectionClassification, options *DataConnectionsClientBeginUpdateOptions) (DataConnectionsClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, clusterName, databaseName, dataConnectionName, parameters, options)
-	if err != nil {
-		return DataConnectionsClientUpdatePollerResponse{}, err
+func (client *DataConnectionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, dataConnectionName string, parameters DataConnectionClassification, options *DataConnectionsClientBeginUpdateOptions) (*armruntime.Poller[DataConnectionsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, clusterName, databaseName, dataConnectionName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[DataConnectionsClientUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[DataConnectionsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DataConnectionsClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DataConnectionsClient.Update", "", resp, client.pl)
-	if err != nil {
-		return DataConnectionsClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &DataConnectionsClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Updates a data connection.
@@ -538,7 +528,7 @@ func (client *DataConnectionsClient) updateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)

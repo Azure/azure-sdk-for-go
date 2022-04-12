@@ -1,5 +1,418 @@
 # Release History
 
+## 0.3.0 (2022-04-12)
+### Breaking Changes
+
+- Function `*LabsClient.BeginUpdate` return value(s) have been changed from `(LabsClientUpdatePollerResponse, error)` to `(*armruntime.Poller[LabsClientUpdateResponse], error)`
+- Function `*UsersClient.BeginInvite` return value(s) have been changed from `(UsersClientInvitePollerResponse, error)` to `(*armruntime.Poller[UsersClientInviteResponse], error)`
+- Function `*LabPlansClient.BeginCreateOrUpdate` return value(s) have been changed from `(LabPlansClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[LabPlansClientCreateOrUpdateResponse], error)`
+- Function `*SKUsClient.List` return value(s) have been changed from `(*SKUsClientListPager)` to `(*runtime.Pager[SKUsClientListResponse])`
+- Function `*LabsClient.BeginPublish` return value(s) have been changed from `(LabsClientPublishPollerResponse, error)` to `(*armruntime.Poller[LabsClientPublishResponse], error)`
+- Function `NewUsagesClient` return value(s) have been changed from `(*UsagesClient)` to `(*UsagesClient, error)`
+- Function `NewImagesClient` return value(s) have been changed from `(*ImagesClient)` to `(*ImagesClient, error)`
+- Function `*UsersClient.ListByLab` return value(s) have been changed from `(*UsersClientListByLabPager)` to `(*runtime.Pager[UsersClientListByLabResponse])`
+- Function `*LabPlansClient.BeginUpdate` return value(s) have been changed from `(LabPlansClientUpdatePollerResponse, error)` to `(*armruntime.Poller[LabPlansClientUpdateResponse], error)`
+- Function `NewSchedulesClient` return value(s) have been changed from `(*SchedulesClient)` to `(*SchedulesClient, error)`
+- Function `*LabsClient.BeginCreateOrUpdate` return value(s) have been changed from `(LabsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[LabsClientCreateOrUpdateResponse], error)`
+- Function `*SchedulesClient.ListByLab` return value(s) have been changed from `(*SchedulesClientListByLabPager)` to `(*runtime.Pager[SchedulesClientListByLabResponse])`
+- Function `NewUsersClient` return value(s) have been changed from `(*UsersClient)` to `(*UsersClient, error)`
+- Function `*LabsClient.BeginDelete` return value(s) have been changed from `(LabsClientDeletePollerResponse, error)` to `(*armruntime.Poller[LabsClientDeleteResponse], error)`
+- Function `*ImagesClient.ListByLabPlan` return value(s) have been changed from `(*ImagesClientListByLabPlanPager)` to `(*runtime.Pager[ImagesClientListByLabPlanResponse])`
+- Function `*LabPlansClient.ListBySubscription` return value(s) have been changed from `(*LabPlansClientListBySubscriptionPager)` to `(*runtime.Pager[LabPlansClientListBySubscriptionResponse])`
+- Function `NewLabPlansClient` return value(s) have been changed from `(*LabPlansClient)` to `(*LabPlansClient, error)`
+- Function `*VirtualMachinesClient.BeginReimage` return value(s) have been changed from `(VirtualMachinesClientReimagePollerResponse, error)` to `(*armruntime.Poller[VirtualMachinesClientReimageResponse], error)`
+- Function `*VirtualMachinesClient.ListByLab` return value(s) have been changed from `(*VirtualMachinesClientListByLabPager)` to `(*runtime.Pager[VirtualMachinesClientListByLabResponse])`
+- Function `*LabPlansClient.BeginDelete` return value(s) have been changed from `(LabPlansClientDeletePollerResponse, error)` to `(*armruntime.Poller[LabPlansClientDeleteResponse], error)`
+- Function `*LabsClient.BeginSyncGroup` return value(s) have been changed from `(LabsClientSyncGroupPollerResponse, error)` to `(*armruntime.Poller[LabsClientSyncGroupResponse], error)`
+- Function `*LabPlansClient.BeginSaveImage` return value(s) have been changed from `(LabPlansClientSaveImagePollerResponse, error)` to `(*armruntime.Poller[LabPlansClientSaveImageResponse], error)`
+- Function `*UsagesClient.ListByLocation` return value(s) have been changed from `(*UsagesClientListByLocationPager)` to `(*runtime.Pager[UsagesClientListByLocationResponse])`
+- Function `*SchedulesClient.BeginDelete` return value(s) have been changed from `(SchedulesClientDeletePollerResponse, error)` to `(*armruntime.Poller[SchedulesClientDeleteResponse], error)`
+- Function `*VirtualMachinesClient.BeginStop` return value(s) have been changed from `(VirtualMachinesClientStopPollerResponse, error)` to `(*armruntime.Poller[VirtualMachinesClientStopResponse], error)`
+- Function `*LabsClient.ListBySubscription` return value(s) have been changed from `(*LabsClientListBySubscriptionPager)` to `(*runtime.Pager[LabsClientListBySubscriptionResponse])`
+- Function `*UsersClient.BeginUpdate` return value(s) have been changed from `(UsersClientUpdatePollerResponse, error)` to `(*armruntime.Poller[UsersClientUpdateResponse], error)`
+- Function `NewLabsClient` return value(s) have been changed from `(*LabsClient)` to `(*LabsClient, error)`
+- Function `NewOperationResultsClient` return value(s) have been changed from `(*OperationResultsClient)` to `(*OperationResultsClient, error)`
+- Function `*UsersClient.BeginCreateOrUpdate` return value(s) have been changed from `(UsersClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[UsersClientCreateOrUpdateResponse], error)`
+- Function `*UsersClient.BeginDelete` return value(s) have been changed from `(UsersClientDeletePollerResponse, error)` to `(*armruntime.Poller[UsersClientDeleteResponse], error)`
+- Function `NewVirtualMachinesClient` return value(s) have been changed from `(*VirtualMachinesClient)` to `(*VirtualMachinesClient, error)`
+- Function `*VirtualMachinesClient.BeginRedeploy` return value(s) have been changed from `(VirtualMachinesClientRedeployPollerResponse, error)` to `(*armruntime.Poller[VirtualMachinesClientRedeployResponse], error)`
+- Function `*VirtualMachinesClient.BeginStart` return value(s) have been changed from `(VirtualMachinesClientStartPollerResponse, error)` to `(*armruntime.Poller[VirtualMachinesClientStartResponse], error)`
+- Function `NewSKUsClient` return value(s) have been changed from `(*SKUsClient)` to `(*SKUsClient, error)`
+- Function `*LabsClient.ListByResourceGroup` return value(s) have been changed from `(*LabsClientListByResourceGroupPager)` to `(*runtime.Pager[LabsClientListByResourceGroupResponse])`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `*VirtualMachinesClient.BeginResetPassword` return value(s) have been changed from `(VirtualMachinesClientResetPasswordPollerResponse, error)` to `(*armruntime.Poller[VirtualMachinesClientResetPasswordResponse], error)`
+- Function `*LabPlansClient.ListByResourceGroup` return value(s) have been changed from `(*LabPlansClientListByResourceGroupPager)` to `(*runtime.Pager[LabPlansClientListByResourceGroupResponse])`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `*VirtualMachinesClientResetPasswordPoller.ResumeToken` has been removed
+- Function `LabsClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*LabsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*UsersClientListByLabPager.NextPage` has been removed
+- Function `*LabPlansClientListByResourceGroupPager.NextPage` has been removed
+- Function `LabServicesSKUTier.ToPtr` has been removed
+- Function `*LabPlansClientSaveImagePoller.Done` has been removed
+- Function `*LabsClientDeletePoller.Poll` has been removed
+- Function `LabPlansClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*UsersClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `UsersClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*UsersClientDeletePollerResponse.Resume` has been removed
+- Function `*LabsClientSyncGroupPoller.FinalResponse` has been removed
+- Function `*UsersClientDeletePoller.Done` has been removed
+- Function `*LabsClientSyncGroupPoller.Poll` has been removed
+- Function `*UsersClientInvitePoller.Poll` has been removed
+- Function `*LabPlansClientUpdatePoller.ResumeToken` has been removed
+- Function `RegistrationState.ToPtr` has been removed
+- Function `RestrictionType.ToPtr` has been removed
+- Function `*UsersClientUpdatePoller.ResumeToken` has been removed
+- Function `LabPlansClientSaveImagePollerResponse.PollUntilDone` has been removed
+- Function `*UsersClientUpdatePoller.FinalResponse` has been removed
+- Function `*UsersClientInvitePoller.ResumeToken` has been removed
+- Function `*LabPlansClientDeletePoller.Done` has been removed
+- Function `*SKUsClientListPager.NextPage` has been removed
+- Function `*LabPlansClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*SchedulesClientDeletePoller.ResumeToken` has been removed
+- Function `*LabsClientPublishPoller.Poll` has been removed
+- Function `*LabPlansClientListByResourceGroupPager.Err` has been removed
+- Function `*VirtualMachinesClientRedeployPoller.FinalResponse` has been removed
+- Function `*LabsClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*LabPlansClientUpdatePoller.Done` has been removed
+- Function `*VirtualMachinesClientStopPollerResponse.Resume` has been removed
+- Function `*LabsClientSyncGroupPollerResponse.Resume` has been removed
+- Function `ShutdownOnIdleMode.ToPtr` has been removed
+- Function `ProvisioningState.ToPtr` has been removed
+- Function `RecurrenceFrequency.ToPtr` has been removed
+- Function `*LabsClientUpdatePollerResponse.Resume` has been removed
+- Function `*ImagesClientListByLabPlanPager.Err` has been removed
+- Function `*LabPlansClientDeletePoller.ResumeToken` has been removed
+- Function `*UsersClientDeletePoller.Poll` has been removed
+- Function `*UsagesClientListByLocationPager.NextPage` has been removed
+- Function `RestrictionReasonCode.ToPtr` has been removed
+- Function `VirtualMachinesClientStopPollerResponse.PollUntilDone` has been removed
+- Function `*SchedulesClientDeletePollerResponse.Resume` has been removed
+- Function `*SKUsClientListPager.Err` has been removed
+- Function `*VirtualMachinesClientReimagePoller.Done` has been removed
+- Function `CreatedByType.ToPtr` has been removed
+- Function `*VirtualMachinesClientStopPoller.FinalResponse` has been removed
+- Function `LabsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachinesClientStopPoller.Done` has been removed
+- Function `*VirtualMachinesClientStartPollerResponse.Resume` has been removed
+- Function `UsersClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachinesClientReimagePoller.ResumeToken` has been removed
+- Function `*VirtualMachinesClientRedeployPoller.ResumeToken` has been removed
+- Function `ConnectionType.ToPtr` has been removed
+- Function `*LabsClientPublishPoller.FinalResponse` has been removed
+- Function `*LabsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*UsersClientUpdatePoller.Done` has been removed
+- Function `*LabsClientListBySubscriptionPager.NextPage` has been removed
+- Function `*ImagesClientListByLabPlanPager.PageResponse` has been removed
+- Function `*VirtualMachinesClientReimagePoller.Poll` has been removed
+- Function `*LabPlansClientListBySubscriptionPager.Err` has been removed
+- Function `*UsersClientListByLabPager.PageResponse` has been removed
+- Function `*VirtualMachinesClientResetPasswordPoller.Poll` has been removed
+- Function `*UsersClientUpdatePoller.Poll` has been removed
+- Function `*LabsClientSyncGroupPoller.ResumeToken` has been removed
+- Function `*LabPlansClientUpdatePoller.FinalResponse` has been removed
+- Function `*UsagesClientListByLocationPager.PageResponse` has been removed
+- Function `*UsersClientInvitePoller.FinalResponse` has been removed
+- Function `*LabsClientUpdatePoller.Done` has been removed
+- Function `*LabsClientUpdatePoller.FinalResponse` has been removed
+- Function `VirtualMachinesClientReimagePollerResponse.PollUntilDone` has been removed
+- Function `VirtualMachinesClientRedeployPollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachinesClientListByLabPager.Err` has been removed
+- Function `*LabPlansClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*ImagesClientListByLabPlanPager.NextPage` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Function `*SchedulesClientListByLabPager.Err` has been removed
+- Function `SchedulesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*LabsClientListBySubscriptionPager.PageResponse` has been removed
+- Function `*SchedulesClientListByLabPager.PageResponse` has been removed
+- Function `*UsersClientInvitePoller.Done` has been removed
+- Function `*UsersClientCreateOrUpdatePoller.Done` has been removed
+- Function `EnableState.ToPtr` has been removed
+- Function `ActionType.ToPtr` has been removed
+- Function `*LabPlansClientSaveImagePollerResponse.Resume` has been removed
+- Function `*LabsClientDeletePoller.Done` has been removed
+- Function `*LabPlansClientDeletePollerResponse.Resume` has been removed
+- Function `OsState.ToPtr` has been removed
+- Function `LabPlansClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `LabsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*LabsClientPublishPollerResponse.Resume` has been removed
+- Function `*VirtualMachinesClientReimagePoller.FinalResponse` has been removed
+- Function `*VirtualMachinesClientStopPoller.Poll` has been removed
+- Function `*VirtualMachinesClientResetPasswordPoller.FinalResponse` has been removed
+- Function `*LabsClientDeletePoller.ResumeToken` has been removed
+- Function `*LabPlansClientDeletePoller.FinalResponse` has been removed
+- Function `LabPlansClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*LabsClientUpdatePoller.ResumeToken` has been removed
+- Function `UsersClientInvitePollerResponse.PollUntilDone` has been removed
+- Function `*LabPlansClientListBySubscriptionPager.PageResponse` has been removed
+- Function `*LabPlansClientSaveImagePoller.ResumeToken` has been removed
+- Function `LabsClientPublishPollerResponse.PollUntilDone` has been removed
+- Function `VirtualMachinesClientStartPollerResponse.PollUntilDone` has been removed
+- Function `*SchedulesClientDeletePoller.Done` has been removed
+- Function `*SKUsClientListPager.PageResponse` has been removed
+- Function `*UsersClientInvitePollerResponse.Resume` has been removed
+- Function `ScaleType.ToPtr` has been removed
+- Function `WeekDay.ToPtr` has been removed
+- Function `*VirtualMachinesClientRedeployPoller.Poll` has been removed
+- Function `Origin.ToPtr` has been removed
+- Function `InvitationState.ToPtr` has been removed
+- Function `*UsersClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*LabsClientPublishPoller.ResumeToken` has been removed
+- Function `*VirtualMachinesClientStartPoller.Done` has been removed
+- Function `*VirtualMachinesClientResetPasswordPollerResponse.Resume` has been removed
+- Function `*VirtualMachinesClientListByLabPager.PageResponse` has been removed
+- Function `*VirtualMachinesClientRedeployPoller.Done` has been removed
+- Function `VirtualMachinesClientResetPasswordPollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachinesClientStartPoller.FinalResponse` has been removed
+- Function `LabsClientSyncGroupPollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachinesClientStopPoller.ResumeToken` has been removed
+- Function `*LabPlansClientListBySubscriptionPager.NextPage` has been removed
+- Function `VirtualMachineState.ToPtr` has been removed
+- Function `VirtualMachineType.ToPtr` has been removed
+- Function `*VirtualMachinesClientRedeployPollerResponse.Resume` has been removed
+- Function `*LabPlansClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*LabsClientSyncGroupPoller.Done` has been removed
+- Function `*UsersClientDeletePoller.FinalResponse` has been removed
+- Function `*SchedulesClientDeletePoller.Poll` has been removed
+- Function `*LabPlansClientSaveImagePoller.FinalResponse` has been removed
+- Function `*LabsClientPublishPoller.Done` has been removed
+- Function `*UsersClientListByLabPager.Err` has been removed
+- Function `*LabsClientListByResourceGroupPager.Err` has been removed
+- Function `*UsersClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*LabsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `OperationStatus.ToPtr` has been removed
+- Function `*UsagesClientListByLocationPager.Err` has been removed
+- Function `*UsersClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualMachinesClientStartPoller.Poll` has been removed
+- Function `*SchedulesClientListByLabPager.NextPage` has been removed
+- Function `*LabsClientDeletePoller.FinalResponse` has been removed
+- Function `*LabsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*LabPlansClientSaveImagePoller.Poll` has been removed
+- Function `*LabsClientListByResourceGroupPager.NextPage` has been removed
+- Function `UsersClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*UsersClientUpdatePollerResponse.Resume` has been removed
+- Function `*LabPlansClientUpdatePollerResponse.Resume` has been removed
+- Function `*LabPlansClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `UsageUnit.ToPtr` has been removed
+- Function `*LabPlansClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `*VirtualMachinesClientResetPasswordPoller.Done` has been removed
+- Function `*LabsClientDeletePollerResponse.Resume` has been removed
+- Function `*LabPlansClientCreateOrUpdatePoller.Done` has been removed
+- Function `CreateOption.ToPtr` has been removed
+- Function `*LabsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `LabState.ToPtr` has been removed
+- Function `*VirtualMachinesClientListByLabPager.NextPage` has been removed
+- Function `*UsersClientDeletePoller.ResumeToken` has been removed
+- Function `*VirtualMachinesClientStartPoller.ResumeToken` has been removed
+- Function `*SchedulesClientDeletePoller.FinalResponse` has been removed
+- Function `OsType.ToPtr` has been removed
+- Function `SKUTier.ToPtr` has been removed
+- Function `*VirtualMachinesClientReimagePollerResponse.Resume` has been removed
+- Function `*LabsClientListBySubscriptionPager.Err` has been removed
+- Function `*LabPlansClientDeletePoller.Poll` has been removed
+- Function `*LabPlansClientUpdatePoller.Poll` has been removed
+- Function `*LabsClientUpdatePoller.Poll` has been removed
+- Struct `ImagesClientCreateOrUpdateResult` has been removed
+- Struct `ImagesClientGetResult` has been removed
+- Struct `ImagesClientListByLabPlanPager` has been removed
+- Struct `ImagesClientListByLabPlanResult` has been removed
+- Struct `ImagesClientUpdateResult` has been removed
+- Struct `LabPlansClientCreateOrUpdatePoller` has been removed
+- Struct `LabPlansClientCreateOrUpdatePollerResponse` has been removed
+- Struct `LabPlansClientCreateOrUpdateResult` has been removed
+- Struct `LabPlansClientDeletePoller` has been removed
+- Struct `LabPlansClientDeletePollerResponse` has been removed
+- Struct `LabPlansClientGetResult` has been removed
+- Struct `LabPlansClientListByResourceGroupPager` has been removed
+- Struct `LabPlansClientListByResourceGroupResult` has been removed
+- Struct `LabPlansClientListBySubscriptionPager` has been removed
+- Struct `LabPlansClientListBySubscriptionResult` has been removed
+- Struct `LabPlansClientSaveImagePoller` has been removed
+- Struct `LabPlansClientSaveImagePollerResponse` has been removed
+- Struct `LabPlansClientUpdatePoller` has been removed
+- Struct `LabPlansClientUpdatePollerResponse` has been removed
+- Struct `LabPlansClientUpdateResult` has been removed
+- Struct `LabsClientCreateOrUpdatePoller` has been removed
+- Struct `LabsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `LabsClientCreateOrUpdateResult` has been removed
+- Struct `LabsClientDeletePoller` has been removed
+- Struct `LabsClientDeletePollerResponse` has been removed
+- Struct `LabsClientGetResult` has been removed
+- Struct `LabsClientListByResourceGroupPager` has been removed
+- Struct `LabsClientListByResourceGroupResult` has been removed
+- Struct `LabsClientListBySubscriptionPager` has been removed
+- Struct `LabsClientListBySubscriptionResult` has been removed
+- Struct `LabsClientPublishPoller` has been removed
+- Struct `LabsClientPublishPollerResponse` has been removed
+- Struct `LabsClientSyncGroupPoller` has been removed
+- Struct `LabsClientSyncGroupPollerResponse` has been removed
+- Struct `LabsClientUpdatePoller` has been removed
+- Struct `LabsClientUpdatePollerResponse` has been removed
+- Struct `LabsClientUpdateResult` has been removed
+- Struct `OperationResultsClientGetResult` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `SKUsClientListPager` has been removed
+- Struct `SKUsClientListResult` has been removed
+- Struct `SchedulesClientCreateOrUpdateResult` has been removed
+- Struct `SchedulesClientDeletePoller` has been removed
+- Struct `SchedulesClientDeletePollerResponse` has been removed
+- Struct `SchedulesClientGetResult` has been removed
+- Struct `SchedulesClientListByLabPager` has been removed
+- Struct `SchedulesClientListByLabResult` has been removed
+- Struct `SchedulesClientUpdateResult` has been removed
+- Struct `UsagesClientListByLocationPager` has been removed
+- Struct `UsagesClientListByLocationResult` has been removed
+- Struct `UsersClientCreateOrUpdatePoller` has been removed
+- Struct `UsersClientCreateOrUpdatePollerResponse` has been removed
+- Struct `UsersClientCreateOrUpdateResult` has been removed
+- Struct `UsersClientDeletePoller` has been removed
+- Struct `UsersClientDeletePollerResponse` has been removed
+- Struct `UsersClientGetResult` has been removed
+- Struct `UsersClientInvitePoller` has been removed
+- Struct `UsersClientInvitePollerResponse` has been removed
+- Struct `UsersClientListByLabPager` has been removed
+- Struct `UsersClientListByLabResult` has been removed
+- Struct `UsersClientUpdatePoller` has been removed
+- Struct `UsersClientUpdatePollerResponse` has been removed
+- Struct `UsersClientUpdateResult` has been removed
+- Struct `VirtualMachinesClientGetResult` has been removed
+- Struct `VirtualMachinesClientListByLabPager` has been removed
+- Struct `VirtualMachinesClientListByLabResult` has been removed
+- Struct `VirtualMachinesClientRedeployPoller` has been removed
+- Struct `VirtualMachinesClientRedeployPollerResponse` has been removed
+- Struct `VirtualMachinesClientReimagePoller` has been removed
+- Struct `VirtualMachinesClientReimagePollerResponse` has been removed
+- Struct `VirtualMachinesClientResetPasswordPoller` has been removed
+- Struct `VirtualMachinesClientResetPasswordPollerResponse` has been removed
+- Struct `VirtualMachinesClientStartPoller` has been removed
+- Struct `VirtualMachinesClientStartPollerResponse` has been removed
+- Struct `VirtualMachinesClientStopPoller` has been removed
+- Struct `VirtualMachinesClientStopPollerResponse` has been removed
+- Field `LabsClientListBySubscriptionResult` of struct `LabsClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `LabsClientListBySubscriptionResponse` has been removed
+- Field `UsersClientUpdateResult` of struct `UsersClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `UsersClientUpdateResponse` has been removed
+- Field `LabsClientUpdateResult` of struct `LabsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `LabsClientUpdateResponse` has been removed
+- Field `UsersClientListByLabResult` of struct `UsersClientListByLabResponse` has been removed
+- Field `RawResponse` of struct `UsersClientListByLabResponse` has been removed
+- Field `SchedulesClientGetResult` of struct `SchedulesClientGetResponse` has been removed
+- Field `RawResponse` of struct `SchedulesClientGetResponse` has been removed
+- Field `ImagesClientListByLabPlanResult` of struct `ImagesClientListByLabPlanResponse` has been removed
+- Field `RawResponse` of struct `ImagesClientListByLabPlanResponse` has been removed
+- Field `LabsClientListByResourceGroupResult` of struct `LabsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `LabsClientListByResourceGroupResponse` has been removed
+- Field `LabsClientGetResult` of struct `LabsClientGetResponse` has been removed
+- Field `RawResponse` of struct `LabsClientGetResponse` has been removed
+- Field `LabPlansClientCreateOrUpdateResult` of struct `LabPlansClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `LabPlansClientCreateOrUpdateResponse` has been removed
+- Field `UsersClientGetResult` of struct `UsersClientGetResponse` has been removed
+- Field `RawResponse` of struct `UsersClientGetResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachinesClientStopResponse` has been removed
+- Field `OperationResultsClientGetResult` of struct `OperationResultsClientGetResponse` has been removed
+- Field `RawResponse` of struct `OperationResultsClientGetResponse` has been removed
+- Field `RawResponse` of struct `LabPlansClientSaveImageResponse` has been removed
+- Field `LabPlansClientListBySubscriptionResult` of struct `LabPlansClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `LabPlansClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `UsersClientInviteResponse` has been removed
+- Field `UsersClientCreateOrUpdateResult` of struct `UsersClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `UsersClientCreateOrUpdateResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `LabsClientCreateOrUpdateResult` of struct `LabsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `LabsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachinesClientReimageResponse` has been removed
+- Field `SchedulesClientListByLabResult` of struct `SchedulesClientListByLabResponse` has been removed
+- Field `RawResponse` of struct `SchedulesClientListByLabResponse` has been removed
+- Field `LabPlansClientUpdateResult` of struct `LabPlansClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `LabPlansClientUpdateResponse` has been removed
+- Field `ImagesClientGetResult` of struct `ImagesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ImagesClientGetResponse` has been removed
+- Field `RawResponse` of struct `LabPlansClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `LabsClientPublishResponse` has been removed
+- Field `RawResponse` of struct `UsersClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `SchedulesClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `LabsClientDeleteResponse` has been removed
+- Field `LabPlansClientListByResourceGroupResult` of struct `LabPlansClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `LabPlansClientListByResourceGroupResponse` has been removed
+- Field `SKUsClientListResult` of struct `SKUsClientListResponse` has been removed
+- Field `RawResponse` of struct `SKUsClientListResponse` has been removed
+- Field `VirtualMachinesClientListByLabResult` of struct `VirtualMachinesClientListByLabResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachinesClientListByLabResponse` has been removed
+- Field `RawResponse` of struct `LabsClientSyncGroupResponse` has been removed
+- Field `ImagesClientUpdateResult` of struct `ImagesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ImagesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachinesClientResetPasswordResponse` has been removed
+- Field `VirtualMachinesClientGetResult` of struct `VirtualMachinesClientGetResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachinesClientGetResponse` has been removed
+- Field `SchedulesClientCreateOrUpdateResult` of struct `SchedulesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `SchedulesClientCreateOrUpdateResponse` has been removed
+- Field `UsagesClientListByLocationResult` of struct `UsagesClientListByLocationResponse` has been removed
+- Field `RawResponse` of struct `UsagesClientListByLocationResponse` has been removed
+- Field `SchedulesClientUpdateResult` of struct `SchedulesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `SchedulesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachinesClientStartResponse` has been removed
+- Field `LabPlansClientGetResult` of struct `LabPlansClientGetResponse` has been removed
+- Field `RawResponse` of struct `LabPlansClientGetResponse` has been removed
+- Field `ImagesClientCreateOrUpdateResult` of struct `ImagesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ImagesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachinesClientRedeployResponse` has been removed
+
+### Features Added
+
+- New struct `ErrorResponse`
+- New anonymous field `Schedule` in struct `SchedulesClientCreateOrUpdateResponse`
+- New anonymous field `PagedLabPlans` in struct `LabPlansClientListByResourceGroupResponse`
+- New anonymous field `Image` in struct `ImagesClientCreateOrUpdateResponse`
+- New anonymous field `PagedImages` in struct `ImagesClientListByLabPlanResponse`
+- New field `ResumeToken` in struct `LabsClientBeginPublishOptions`
+- New field `ResumeToken` in struct `UsersClientBeginUpdateOptions`
+- New field `ResumeToken` in struct `VirtualMachinesClientBeginStartOptions`
+- New field `ResumeToken` in struct `LabPlansClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `LabsClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `UsersClientBeginInviteOptions`
+- New field `ResumeToken` in struct `LabPlansClientBeginDeleteOptions`
+- New anonymous field `PagedLabs` in struct `LabsClientListBySubscriptionResponse`
+- New anonymous field `PagedSKUInfos` in struct `SKUsClientListResponse`
+- New anonymous field `Lab` in struct `LabsClientCreateOrUpdateResponse`
+- New anonymous field `LabPlan` in struct `LabPlansClientUpdateResponse`
+- New field `ResumeToken` in struct `VirtualMachinesClientBeginStopOptions`
+- New anonymous field `Schedule` in struct `SchedulesClientUpdateResponse`
+- New anonymous field `PagedSchedules` in struct `SchedulesClientListByLabResponse`
+- New field `ResumeToken` in struct `UsersClientBeginDeleteOptions`
+- New anonymous field `Lab` in struct `LabsClientGetResponse`
+- New field `ResumeToken` in struct `VirtualMachinesClientBeginResetPasswordOptions`
+- New field `ResumeToken` in struct `LabsClientBeginSyncGroupOptions`
+- New field `ResumeToken` in struct `VirtualMachinesClientBeginRedeployOptions`
+- New anonymous field `VirtualMachine` in struct `VirtualMachinesClientGetResponse`
+- New anonymous field `User` in struct `UsersClientGetResponse`
+- New field `ResumeToken` in struct `LabPlansClientBeginSaveImageOptions`
+- New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
+- New field `ResumeToken` in struct `VirtualMachinesClientBeginReimageOptions`
+- New anonymous field `ListUsagesResult` in struct `UsagesClientListByLocationResponse`
+- New anonymous field `Lab` in struct `LabsClientUpdateResponse`
+- New anonymous field `Image` in struct `ImagesClientGetResponse`
+- New anonymous field `LabPlan` in struct `LabPlansClientGetResponse`
+- New anonymous field `PagedVirtualMachines` in struct `VirtualMachinesClientListByLabResponse`
+- New field `ResumeToken` in struct `SchedulesClientBeginDeleteOptions`
+- New anonymous field `Schedule` in struct `SchedulesClientGetResponse`
+- New anonymous field `PagedUsers` in struct `UsersClientListByLabResponse`
+- New anonymous field `PagedLabPlans` in struct `LabPlansClientListBySubscriptionResponse`
+- New anonymous field `User` in struct `UsersClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `LabsClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `LabPlansClientBeginUpdateOptions`
+- New anonymous field `LabPlan` in struct `LabPlansClientCreateOrUpdateResponse`
+- New anonymous field `Image` in struct `ImagesClientUpdateResponse`
+- New anonymous field `User` in struct `UsersClientUpdateResponse`
+- New field `ResumeToken` in struct `UsersClientBeginCreateOrUpdateOptions`
+- New anonymous field `PagedLabs` in struct `LabsClientListByResourceGroupResponse`
+- New anonymous field `OperationResult` in struct `OperationResultsClientGetResponse`
+- New field `ResumeToken` in struct `LabsClientBeginUpdateOptions`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

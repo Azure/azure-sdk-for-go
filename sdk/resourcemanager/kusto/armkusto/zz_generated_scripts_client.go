@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type ScriptsClient struct {
 // forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewScriptsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ScriptsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewScriptsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ScriptsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ScriptsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CheckNameAvailability - Checks that the script name is valid and is not already in use.
@@ -97,7 +102,7 @@ func (client *ScriptsClient) checkNameAvailabilityCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, scriptName)
@@ -105,7 +110,7 @@ func (client *ScriptsClient) checkNameAvailabilityCreateRequest(ctx context.Cont
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
 func (client *ScriptsClient) checkNameAvailabilityHandleResponse(resp *http.Response) (ScriptsClientCheckNameAvailabilityResponse, error) {
-	result := ScriptsClientCheckNameAvailabilityResponse{RawResponse: resp}
+	result := ScriptsClientCheckNameAvailabilityResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameResult); err != nil {
 		return ScriptsClientCheckNameAvailabilityResponse{}, err
 	}
@@ -121,22 +126,16 @@ func (client *ScriptsClient) checkNameAvailabilityHandleResponse(resp *http.Resp
 // parameters - The Kusto Script parameters contains the KQL to run.
 // options - ScriptsClientBeginCreateOrUpdateOptions contains the optional parameters for the ScriptsClient.BeginCreateOrUpdate
 // method.
-func (client *ScriptsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, scriptName string, parameters Script, options *ScriptsClientBeginCreateOrUpdateOptions) (ScriptsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, clusterName, databaseName, scriptName, parameters, options)
-	if err != nil {
-		return ScriptsClientCreateOrUpdatePollerResponse{}, err
+func (client *ScriptsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, scriptName string, parameters Script, options *ScriptsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[ScriptsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, clusterName, databaseName, scriptName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ScriptsClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ScriptsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ScriptsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ScriptsClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return ScriptsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &ScriptsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates a Kusto database script.
@@ -184,7 +183,7 @@ func (client *ScriptsClient) createOrUpdateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -197,22 +196,16 @@ func (client *ScriptsClient) createOrUpdateCreateRequest(ctx context.Context, re
 // databaseName - The name of the database in the Kusto cluster.
 // scriptName - The name of the Kusto database script.
 // options - ScriptsClientBeginDeleteOptions contains the optional parameters for the ScriptsClient.BeginDelete method.
-func (client *ScriptsClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, scriptName string, options *ScriptsClientBeginDeleteOptions) (ScriptsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, clusterName, databaseName, scriptName, options)
-	if err != nil {
-		return ScriptsClientDeletePollerResponse{}, err
+func (client *ScriptsClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, scriptName string, options *ScriptsClientBeginDeleteOptions) (*armruntime.Poller[ScriptsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, clusterName, databaseName, scriptName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ScriptsClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ScriptsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ScriptsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ScriptsClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return ScriptsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &ScriptsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes a Kusto principalAssignment.
@@ -260,7 +253,7 @@ func (client *ScriptsClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -316,7 +309,7 @@ func (client *ScriptsClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -324,7 +317,7 @@ func (client *ScriptsClient) getCreateRequest(ctx context.Context, resourceGroup
 
 // getHandleResponse handles the Get response.
 func (client *ScriptsClient) getHandleResponse(resp *http.Response) (ScriptsClientGetResponse, error) {
-	result := ScriptsClientGetResponse{RawResponse: resp}
+	result := ScriptsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Script); err != nil {
 		return ScriptsClientGetResponse{}, err
 	}
@@ -337,19 +330,26 @@ func (client *ScriptsClient) getHandleResponse(resp *http.Response) (ScriptsClie
 // clusterName - The name of the Kusto cluster.
 // databaseName - The name of the database in the Kusto cluster.
 // options - ScriptsClientListByDatabaseOptions contains the optional parameters for the ScriptsClient.ListByDatabase method.
-func (client *ScriptsClient) ListByDatabase(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, options *ScriptsClientListByDatabaseOptions) (ScriptsClientListByDatabaseResponse, error) {
-	req, err := client.listByDatabaseCreateRequest(ctx, resourceGroupName, clusterName, databaseName, options)
-	if err != nil {
-		return ScriptsClientListByDatabaseResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return ScriptsClientListByDatabaseResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ScriptsClientListByDatabaseResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listByDatabaseHandleResponse(resp)
+func (client *ScriptsClient) ListByDatabase(resourceGroupName string, clusterName string, databaseName string, options *ScriptsClientListByDatabaseOptions) *runtime.Pager[ScriptsClientListByDatabaseResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ScriptsClientListByDatabaseResponse]{
+		More: func(page ScriptsClientListByDatabaseResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *ScriptsClientListByDatabaseResponse) (ScriptsClientListByDatabaseResponse, error) {
+			req, err := client.listByDatabaseCreateRequest(ctx, resourceGroupName, clusterName, databaseName, options)
+			if err != nil {
+				return ScriptsClientListByDatabaseResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ScriptsClientListByDatabaseResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ScriptsClientListByDatabaseResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByDatabaseHandleResponse(resp)
+		},
+	})
 }
 
 // listByDatabaseCreateRequest creates the ListByDatabase request.
@@ -376,7 +376,7 @@ func (client *ScriptsClient) listByDatabaseCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -384,7 +384,7 @@ func (client *ScriptsClient) listByDatabaseCreateRequest(ctx context.Context, re
 
 // listByDatabaseHandleResponse handles the ListByDatabase response.
 func (client *ScriptsClient) listByDatabaseHandleResponse(resp *http.Response) (ScriptsClientListByDatabaseResponse, error) {
-	result := ScriptsClientListByDatabaseResponse{RawResponse: resp}
+	result := ScriptsClientListByDatabaseResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ScriptListResult); err != nil {
 		return ScriptsClientListByDatabaseResponse{}, err
 	}
@@ -399,22 +399,16 @@ func (client *ScriptsClient) listByDatabaseHandleResponse(resp *http.Response) (
 // scriptName - The name of the Kusto database script.
 // parameters - The Kusto Script parameters contains to the KQL to run.
 // options - ScriptsClientBeginUpdateOptions contains the optional parameters for the ScriptsClient.BeginUpdate method.
-func (client *ScriptsClient) BeginUpdate(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, scriptName string, parameters Script, options *ScriptsClientBeginUpdateOptions) (ScriptsClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, clusterName, databaseName, scriptName, parameters, options)
-	if err != nil {
-		return ScriptsClientUpdatePollerResponse{}, err
+func (client *ScriptsClient) BeginUpdate(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, scriptName string, parameters Script, options *ScriptsClientBeginUpdateOptions) (*armruntime.Poller[ScriptsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, clusterName, databaseName, scriptName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ScriptsClientUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ScriptsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ScriptsClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ScriptsClient.Update", "", resp, client.pl)
-	if err != nil {
-		return ScriptsClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &ScriptsClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Updates a database script.
@@ -462,7 +456,7 @@ func (client *ScriptsClient) updateCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)

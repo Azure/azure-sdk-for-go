@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type WorkflowRunActionsClient struct {
 // subscriptionID - The subscription id.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewWorkflowRunActionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *WorkflowRunActionsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewWorkflowRunActionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkflowRunActionsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &WorkflowRunActionsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Gets a workflow run action.
@@ -108,7 +113,7 @@ func (client *WorkflowRunActionsClient) getCreateRequest(ctx context.Context, re
 
 // getHandleResponse handles the Get response.
 func (client *WorkflowRunActionsClient) getHandleResponse(resp *http.Response) (WorkflowRunActionsClientGetResponse, error) {
-	result := WorkflowRunActionsClientGetResponse{RawResponse: resp}
+	result := WorkflowRunActionsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowRunAction); err != nil {
 		return WorkflowRunActionsClientGetResponse{}, err
 	}
@@ -121,16 +126,32 @@ func (client *WorkflowRunActionsClient) getHandleResponse(resp *http.Response) (
 // workflowName - The workflow name.
 // runName - The workflow run name.
 // options - WorkflowRunActionsClientListOptions contains the optional parameters for the WorkflowRunActionsClient.List method.
-func (client *WorkflowRunActionsClient) List(resourceGroupName string, workflowName string, runName string, options *WorkflowRunActionsClientListOptions) *WorkflowRunActionsClientListPager {
-	return &WorkflowRunActionsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, workflowName, runName, options)
+func (client *WorkflowRunActionsClient) List(resourceGroupName string, workflowName string, runName string, options *WorkflowRunActionsClientListOptions) *runtime.Pager[WorkflowRunActionsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[WorkflowRunActionsClientListResponse]{
+		More: func(page WorkflowRunActionsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp WorkflowRunActionsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.WorkflowRunActionListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *WorkflowRunActionsClientListResponse) (WorkflowRunActionsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, workflowName, runName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return WorkflowRunActionsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return WorkflowRunActionsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return WorkflowRunActionsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -171,7 +192,7 @@ func (client *WorkflowRunActionsClient) listCreateRequest(ctx context.Context, r
 
 // listHandleResponse handles the List response.
 func (client *WorkflowRunActionsClient) listHandleResponse(resp *http.Response) (WorkflowRunActionsClientListResponse, error) {
-	result := WorkflowRunActionsClientListResponse{RawResponse: resp}
+	result := WorkflowRunActionsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowRunActionListResult); err != nil {
 		return WorkflowRunActionsClientListResponse{}, err
 	}
@@ -186,19 +207,26 @@ func (client *WorkflowRunActionsClient) listHandleResponse(resp *http.Response) 
 // actionName - The workflow action name.
 // options - WorkflowRunActionsClientListExpressionTracesOptions contains the optional parameters for the WorkflowRunActionsClient.ListExpressionTraces
 // method.
-func (client *WorkflowRunActionsClient) ListExpressionTraces(ctx context.Context, resourceGroupName string, workflowName string, runName string, actionName string, options *WorkflowRunActionsClientListExpressionTracesOptions) (WorkflowRunActionsClientListExpressionTracesResponse, error) {
-	req, err := client.listExpressionTracesCreateRequest(ctx, resourceGroupName, workflowName, runName, actionName, options)
-	if err != nil {
-		return WorkflowRunActionsClientListExpressionTracesResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return WorkflowRunActionsClientListExpressionTracesResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return WorkflowRunActionsClientListExpressionTracesResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listExpressionTracesHandleResponse(resp)
+func (client *WorkflowRunActionsClient) ListExpressionTraces(resourceGroupName string, workflowName string, runName string, actionName string, options *WorkflowRunActionsClientListExpressionTracesOptions) *runtime.Pager[WorkflowRunActionsClientListExpressionTracesResponse] {
+	return runtime.NewPager(runtime.PageProcessor[WorkflowRunActionsClientListExpressionTracesResponse]{
+		More: func(page WorkflowRunActionsClientListExpressionTracesResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *WorkflowRunActionsClientListExpressionTracesResponse) (WorkflowRunActionsClientListExpressionTracesResponse, error) {
+			req, err := client.listExpressionTracesCreateRequest(ctx, resourceGroupName, workflowName, runName, actionName, options)
+			if err != nil {
+				return WorkflowRunActionsClientListExpressionTracesResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return WorkflowRunActionsClientListExpressionTracesResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return WorkflowRunActionsClientListExpressionTracesResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listExpressionTracesHandleResponse(resp)
+		},
+	})
 }
 
 // listExpressionTracesCreateRequest creates the ListExpressionTraces request.
@@ -237,7 +265,7 @@ func (client *WorkflowRunActionsClient) listExpressionTracesCreateRequest(ctx co
 
 // listExpressionTracesHandleResponse handles the ListExpressionTraces response.
 func (client *WorkflowRunActionsClient) listExpressionTracesHandleResponse(resp *http.Response) (WorkflowRunActionsClientListExpressionTracesResponse, error) {
-	result := WorkflowRunActionsClientListExpressionTracesResponse{RawResponse: resp}
+	result := WorkflowRunActionsClientListExpressionTracesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExpressionTraces); err != nil {
 		return WorkflowRunActionsClientListExpressionTracesResponse{}, err
 	}

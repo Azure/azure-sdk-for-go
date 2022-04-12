@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,35 +34,37 @@ type SourceControlConfigurationsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewSourceControlConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SourceControlConfigurationsClient {
+func NewSourceControlConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SourceControlConfigurationsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &SourceControlConfigurationsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Create a new Kubernetes Source Control Configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
-// clusterRp - The Kubernetes cluster RP - either Microsoft.ContainerService (for AKS clusters) or Microsoft.Kubernetes (for
-// OnPrem K8S clusters).
-// clusterResourceName - The Kubernetes cluster resource name - either managedClusters (for AKS clusters) or connectedClusters
-// (for OnPrem K8S clusters).
+// clusterRp - The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes, Microsoft.HybridContainerService.
+// clusterResourceName - The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters, provisionedClusters.
 // clusterName - The name of the kubernetes cluster.
 // sourceControlConfigurationName - Name of the Source Control Configuration.
 // sourceControlConfiguration - Properties necessary to Create KubernetesConfiguration.
 // options - SourceControlConfigurationsClientCreateOrUpdateOptions contains the optional parameters for the SourceControlConfigurationsClient.CreateOrUpdate
 // method.
-func (client *SourceControlConfigurationsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, clusterRp ExtensionsClusterRp, clusterResourceName ExtensionsClusterResourceName, clusterName string, sourceControlConfigurationName string, sourceControlConfiguration SourceControlConfiguration, options *SourceControlConfigurationsClientCreateOrUpdateOptions) (SourceControlConfigurationsClientCreateOrUpdateResponse, error) {
+func (client *SourceControlConfigurationsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, sourceControlConfigurationName string, sourceControlConfiguration SourceControlConfiguration, options *SourceControlConfigurationsClientCreateOrUpdateOptions) (SourceControlConfigurationsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName, sourceControlConfiguration, options)
 	if err != nil {
 		return SourceControlConfigurationsClientCreateOrUpdateResponse{}, err
@@ -77,7 +80,7 @@ func (client *SourceControlConfigurationsClient) CreateOrUpdate(ctx context.Cont
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *SourceControlConfigurationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, clusterRp ExtensionsClusterRp, clusterResourceName ExtensionsClusterResourceName, clusterName string, sourceControlConfigurationName string, sourceControlConfiguration SourceControlConfiguration, options *SourceControlConfigurationsClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *SourceControlConfigurationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, sourceControlConfigurationName string, sourceControlConfiguration SourceControlConfiguration, options *SourceControlConfigurationsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{clusterRp}/{clusterResourceName}/{clusterName}/providers/Microsoft.KubernetesConfiguration/sourceControlConfigurations/{sourceControlConfigurationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -90,11 +93,11 @@ func (client *SourceControlConfigurationsClient) createOrUpdateCreateRequest(ctx
 	if clusterRp == "" {
 		return nil, errors.New("parameter clusterRp cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterRp}", url.PathEscape(string(clusterRp)))
+	urlPath = strings.ReplaceAll(urlPath, "{clusterRp}", url.PathEscape(clusterRp))
 	if clusterResourceName == "" {
 		return nil, errors.New("parameter clusterResourceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterResourceName}", url.PathEscape(string(clusterResourceName)))
+	urlPath = strings.ReplaceAll(urlPath, "{clusterResourceName}", url.PathEscape(clusterResourceName))
 	if clusterName == "" {
 		return nil, errors.New("parameter clusterName cannot be empty")
 	}
@@ -108,7 +111,7 @@ func (client *SourceControlConfigurationsClient) createOrUpdateCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, sourceControlConfiguration)
@@ -116,7 +119,7 @@ func (client *SourceControlConfigurationsClient) createOrUpdateCreateRequest(ctx
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *SourceControlConfigurationsClient) createOrUpdateHandleResponse(resp *http.Response) (SourceControlConfigurationsClientCreateOrUpdateResponse, error) {
-	result := SourceControlConfigurationsClientCreateOrUpdateResponse{RawResponse: resp}
+	result := SourceControlConfigurationsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SourceControlConfiguration); err != nil {
 		return SourceControlConfigurationsClientCreateOrUpdateResponse{}, err
 	}
@@ -127,36 +130,28 @@ func (client *SourceControlConfigurationsClient) createOrUpdateHandleResponse(re
 // from the source repo.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
-// clusterRp - The Kubernetes cluster RP - either Microsoft.ContainerService (for AKS clusters) or Microsoft.Kubernetes (for
-// OnPrem K8S clusters).
-// clusterResourceName - The Kubernetes cluster resource name - either managedClusters (for AKS clusters) or connectedClusters
-// (for OnPrem K8S clusters).
+// clusterRp - The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes, Microsoft.HybridContainerService.
+// clusterResourceName - The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters, provisionedClusters.
 // clusterName - The name of the kubernetes cluster.
 // sourceControlConfigurationName - Name of the Source Control Configuration.
 // options - SourceControlConfigurationsClientBeginDeleteOptions contains the optional parameters for the SourceControlConfigurationsClient.BeginDelete
 // method.
-func (client *SourceControlConfigurationsClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterRp ExtensionsClusterRp, clusterResourceName ExtensionsClusterResourceName, clusterName string, sourceControlConfigurationName string, options *SourceControlConfigurationsClientBeginDeleteOptions) (SourceControlConfigurationsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName, options)
-	if err != nil {
-		return SourceControlConfigurationsClientDeletePollerResponse{}, err
+func (client *SourceControlConfigurationsClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, sourceControlConfigurationName string, options *SourceControlConfigurationsClientBeginDeleteOptions) (*armruntime.Poller[SourceControlConfigurationsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[SourceControlConfigurationsClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[SourceControlConfigurationsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SourceControlConfigurationsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SourceControlConfigurationsClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return SourceControlConfigurationsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &SourceControlConfigurationsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - This will delete the YAML file used to set up the Source control configuration, thus stopping future sync from
 // the source repo.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *SourceControlConfigurationsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterRp ExtensionsClusterRp, clusterResourceName ExtensionsClusterResourceName, clusterName string, sourceControlConfigurationName string, options *SourceControlConfigurationsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *SourceControlConfigurationsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, sourceControlConfigurationName string, options *SourceControlConfigurationsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName, options)
 	if err != nil {
 		return nil, err
@@ -172,7 +167,7 @@ func (client *SourceControlConfigurationsClient) deleteOperation(ctx context.Con
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *SourceControlConfigurationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterRp ExtensionsClusterRp, clusterResourceName ExtensionsClusterResourceName, clusterName string, sourceControlConfigurationName string, options *SourceControlConfigurationsClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *SourceControlConfigurationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, sourceControlConfigurationName string, options *SourceControlConfigurationsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{clusterRp}/{clusterResourceName}/{clusterName}/providers/Microsoft.KubernetesConfiguration/sourceControlConfigurations/{sourceControlConfigurationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -185,11 +180,11 @@ func (client *SourceControlConfigurationsClient) deleteCreateRequest(ctx context
 	if clusterRp == "" {
 		return nil, errors.New("parameter clusterRp cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterRp}", url.PathEscape(string(clusterRp)))
+	urlPath = strings.ReplaceAll(urlPath, "{clusterRp}", url.PathEscape(clusterRp))
 	if clusterResourceName == "" {
 		return nil, errors.New("parameter clusterResourceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterResourceName}", url.PathEscape(string(clusterResourceName)))
+	urlPath = strings.ReplaceAll(urlPath, "{clusterResourceName}", url.PathEscape(clusterResourceName))
 	if clusterName == "" {
 		return nil, errors.New("parameter clusterName cannot be empty")
 	}
@@ -203,7 +198,7 @@ func (client *SourceControlConfigurationsClient) deleteCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -212,15 +207,13 @@ func (client *SourceControlConfigurationsClient) deleteCreateRequest(ctx context
 // Get - Gets details of the Source Control Configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
-// clusterRp - The Kubernetes cluster RP - either Microsoft.ContainerService (for AKS clusters) or Microsoft.Kubernetes (for
-// OnPrem K8S clusters).
-// clusterResourceName - The Kubernetes cluster resource name - either managedClusters (for AKS clusters) or connectedClusters
-// (for OnPrem K8S clusters).
+// clusterRp - The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes, Microsoft.HybridContainerService.
+// clusterResourceName - The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters, provisionedClusters.
 // clusterName - The name of the kubernetes cluster.
 // sourceControlConfigurationName - Name of the Source Control Configuration.
 // options - SourceControlConfigurationsClientGetOptions contains the optional parameters for the SourceControlConfigurationsClient.Get
 // method.
-func (client *SourceControlConfigurationsClient) Get(ctx context.Context, resourceGroupName string, clusterRp ExtensionsClusterRp, clusterResourceName ExtensionsClusterResourceName, clusterName string, sourceControlConfigurationName string, options *SourceControlConfigurationsClientGetOptions) (SourceControlConfigurationsClientGetResponse, error) {
+func (client *SourceControlConfigurationsClient) Get(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, sourceControlConfigurationName string, options *SourceControlConfigurationsClientGetOptions) (SourceControlConfigurationsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName, options)
 	if err != nil {
 		return SourceControlConfigurationsClientGetResponse{}, err
@@ -236,7 +229,7 @@ func (client *SourceControlConfigurationsClient) Get(ctx context.Context, resour
 }
 
 // getCreateRequest creates the Get request.
-func (client *SourceControlConfigurationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterRp ExtensionsClusterRp, clusterResourceName ExtensionsClusterResourceName, clusterName string, sourceControlConfigurationName string, options *SourceControlConfigurationsClientGetOptions) (*policy.Request, error) {
+func (client *SourceControlConfigurationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, sourceControlConfigurationName string, options *SourceControlConfigurationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{clusterRp}/{clusterResourceName}/{clusterName}/providers/Microsoft.KubernetesConfiguration/sourceControlConfigurations/{sourceControlConfigurationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -249,11 +242,11 @@ func (client *SourceControlConfigurationsClient) getCreateRequest(ctx context.Co
 	if clusterRp == "" {
 		return nil, errors.New("parameter clusterRp cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterRp}", url.PathEscape(string(clusterRp)))
+	urlPath = strings.ReplaceAll(urlPath, "{clusterRp}", url.PathEscape(clusterRp))
 	if clusterResourceName == "" {
 		return nil, errors.New("parameter clusterResourceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterResourceName}", url.PathEscape(string(clusterResourceName)))
+	urlPath = strings.ReplaceAll(urlPath, "{clusterResourceName}", url.PathEscape(clusterResourceName))
 	if clusterName == "" {
 		return nil, errors.New("parameter clusterName cannot be empty")
 	}
@@ -267,7 +260,7 @@ func (client *SourceControlConfigurationsClient) getCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -275,7 +268,7 @@ func (client *SourceControlConfigurationsClient) getCreateRequest(ctx context.Co
 
 // getHandleResponse handles the Get response.
 func (client *SourceControlConfigurationsClient) getHandleResponse(resp *http.Response) (SourceControlConfigurationsClientGetResponse, error) {
-	result := SourceControlConfigurationsClientGetResponse{RawResponse: resp}
+	result := SourceControlConfigurationsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SourceControlConfiguration); err != nil {
 		return SourceControlConfigurationsClientGetResponse{}, err
 	}
@@ -285,27 +278,41 @@ func (client *SourceControlConfigurationsClient) getHandleResponse(resp *http.Re
 // List - List all Source Control Configurations.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
-// clusterRp - The Kubernetes cluster RP - either Microsoft.ContainerService (for AKS clusters) or Microsoft.Kubernetes (for
-// OnPrem K8S clusters).
-// clusterResourceName - The Kubernetes cluster resource name - either managedClusters (for AKS clusters) or connectedClusters
-// (for OnPrem K8S clusters).
+// clusterRp - The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes, Microsoft.HybridContainerService.
+// clusterResourceName - The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters, provisionedClusters.
 // clusterName - The name of the kubernetes cluster.
 // options - SourceControlConfigurationsClientListOptions contains the optional parameters for the SourceControlConfigurationsClient.List
 // method.
-func (client *SourceControlConfigurationsClient) List(resourceGroupName string, clusterRp ExtensionsClusterRp, clusterResourceName ExtensionsClusterResourceName, clusterName string, options *SourceControlConfigurationsClientListOptions) *SourceControlConfigurationsClientListPager {
-	return &SourceControlConfigurationsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, clusterRp, clusterResourceName, clusterName, options)
+func (client *SourceControlConfigurationsClient) List(resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, options *SourceControlConfigurationsClientListOptions) *runtime.Pager[SourceControlConfigurationsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SourceControlConfigurationsClientListResponse]{
+		More: func(page SourceControlConfigurationsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SourceControlConfigurationsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SourceControlConfigurationList.NextLink)
+		Fetcher: func(ctx context.Context, page *SourceControlConfigurationsClientListResponse) (SourceControlConfigurationsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, clusterRp, clusterResourceName, clusterName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SourceControlConfigurationsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SourceControlConfigurationsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SourceControlConfigurationsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
-func (client *SourceControlConfigurationsClient) listCreateRequest(ctx context.Context, resourceGroupName string, clusterRp ExtensionsClusterRp, clusterResourceName ExtensionsClusterResourceName, clusterName string, options *SourceControlConfigurationsClientListOptions) (*policy.Request, error) {
+func (client *SourceControlConfigurationsClient) listCreateRequest(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, options *SourceControlConfigurationsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{clusterRp}/{clusterResourceName}/{clusterName}/providers/Microsoft.KubernetesConfiguration/sourceControlConfigurations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -318,11 +325,11 @@ func (client *SourceControlConfigurationsClient) listCreateRequest(ctx context.C
 	if clusterRp == "" {
 		return nil, errors.New("parameter clusterRp cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterRp}", url.PathEscape(string(clusterRp)))
+	urlPath = strings.ReplaceAll(urlPath, "{clusterRp}", url.PathEscape(clusterRp))
 	if clusterResourceName == "" {
 		return nil, errors.New("parameter clusterResourceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterResourceName}", url.PathEscape(string(clusterResourceName)))
+	urlPath = strings.ReplaceAll(urlPath, "{clusterResourceName}", url.PathEscape(clusterResourceName))
 	if clusterName == "" {
 		return nil, errors.New("parameter clusterName cannot be empty")
 	}
@@ -332,7 +339,7 @@ func (client *SourceControlConfigurationsClient) listCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -340,7 +347,7 @@ func (client *SourceControlConfigurationsClient) listCreateRequest(ctx context.C
 
 // listHandleResponse handles the List response.
 func (client *SourceControlConfigurationsClient) listHandleResponse(resp *http.Response) (SourceControlConfigurationsClientListResponse, error) {
-	result := SourceControlConfigurationsClientListResponse{RawResponse: resp}
+	result := SourceControlConfigurationsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SourceControlConfigurationList); err != nil {
 		return SourceControlConfigurationsClientListResponse{}, err
 	}

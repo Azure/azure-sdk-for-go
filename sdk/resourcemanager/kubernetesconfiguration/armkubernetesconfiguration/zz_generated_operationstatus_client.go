@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,34 +34,36 @@ type OperationStatusClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewOperationStatusClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *OperationStatusClient {
+func NewOperationStatusClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OperationStatusClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &OperationStatusClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Get Async Operation status
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
-// clusterRp - The Kubernetes cluster RP - either Microsoft.ContainerService (for AKS clusters) or Microsoft.Kubernetes (for
-// OnPrem K8S clusters).
-// clusterResourceName - The Kubernetes cluster resource name - either managedClusters (for AKS clusters) or connectedClusters
-// (for OnPrem K8S clusters).
+// clusterRp - The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes, Microsoft.HybridContainerService.
+// clusterResourceName - The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters, provisionedClusters.
 // clusterName - The name of the kubernetes cluster.
 // extensionName - Name of the Extension.
 // operationID - operation Id
 // options - OperationStatusClientGetOptions contains the optional parameters for the OperationStatusClient.Get method.
-func (client *OperationStatusClient) Get(ctx context.Context, resourceGroupName string, clusterRp ExtensionsClusterRp, clusterResourceName ExtensionsClusterResourceName, clusterName string, extensionName string, operationID string, options *OperationStatusClientGetOptions) (OperationStatusClientGetResponse, error) {
+func (client *OperationStatusClient) Get(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, extensionName string, operationID string, options *OperationStatusClientGetOptions) (OperationStatusClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, clusterRp, clusterResourceName, clusterName, extensionName, operationID, options)
 	if err != nil {
 		return OperationStatusClientGetResponse{}, err
@@ -76,7 +79,7 @@ func (client *OperationStatusClient) Get(ctx context.Context, resourceGroupName 
 }
 
 // getCreateRequest creates the Get request.
-func (client *OperationStatusClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterRp ExtensionsClusterRp, clusterResourceName ExtensionsClusterResourceName, clusterName string, extensionName string, operationID string, options *OperationStatusClientGetOptions) (*policy.Request, error) {
+func (client *OperationStatusClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, extensionName string, operationID string, options *OperationStatusClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{clusterRp}/{clusterResourceName}/{clusterName}/providers/Microsoft.KubernetesConfiguration/extensions/{extensionName}/operations/{operationId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -89,11 +92,11 @@ func (client *OperationStatusClient) getCreateRequest(ctx context.Context, resou
 	if clusterRp == "" {
 		return nil, errors.New("parameter clusterRp cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterRp}", url.PathEscape(string(clusterRp)))
+	urlPath = strings.ReplaceAll(urlPath, "{clusterRp}", url.PathEscape(clusterRp))
 	if clusterResourceName == "" {
 		return nil, errors.New("parameter clusterResourceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterResourceName}", url.PathEscape(string(clusterResourceName)))
+	urlPath = strings.ReplaceAll(urlPath, "{clusterResourceName}", url.PathEscape(clusterResourceName))
 	if clusterName == "" {
 		return nil, errors.New("parameter clusterName cannot be empty")
 	}
@@ -111,7 +114,7 @@ func (client *OperationStatusClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -119,7 +122,7 @@ func (client *OperationStatusClient) getCreateRequest(ctx context.Context, resou
 
 // getHandleResponse handles the Get response.
 func (client *OperationStatusClient) getHandleResponse(resp *http.Response) (OperationStatusClientGetResponse, error) {
-	result := OperationStatusClientGetResponse{RawResponse: resp}
+	result := OperationStatusClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationStatusResult); err != nil {
 		return OperationStatusClientGetResponse{}, err
 	}
@@ -129,26 +132,40 @@ func (client *OperationStatusClient) getHandleResponse(resp *http.Response) (Ope
 // List - List Async Operations, currently in progress, in a cluster
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
-// clusterRp - The Kubernetes cluster RP - either Microsoft.ContainerService (for AKS clusters) or Microsoft.Kubernetes (for
-// OnPrem K8S clusters).
-// clusterResourceName - The Kubernetes cluster resource name - either managedClusters (for AKS clusters) or connectedClusters
-// (for OnPrem K8S clusters).
+// clusterRp - The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes, Microsoft.HybridContainerService.
+// clusterResourceName - The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters, provisionedClusters.
 // clusterName - The name of the kubernetes cluster.
 // options - OperationStatusClientListOptions contains the optional parameters for the OperationStatusClient.List method.
-func (client *OperationStatusClient) List(resourceGroupName string, clusterRp ExtensionsClusterRp, clusterResourceName ExtensionsClusterResourceName, clusterName string, options *OperationStatusClientListOptions) *OperationStatusClientListPager {
-	return &OperationStatusClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, clusterRp, clusterResourceName, clusterName, options)
+func (client *OperationStatusClient) List(resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, options *OperationStatusClientListOptions) *runtime.Pager[OperationStatusClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[OperationStatusClientListResponse]{
+		More: func(page OperationStatusClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp OperationStatusClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.OperationStatusList.NextLink)
+		Fetcher: func(ctx context.Context, page *OperationStatusClientListResponse) (OperationStatusClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, clusterRp, clusterResourceName, clusterName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return OperationStatusClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return OperationStatusClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return OperationStatusClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
-func (client *OperationStatusClient) listCreateRequest(ctx context.Context, resourceGroupName string, clusterRp ExtensionsClusterRp, clusterResourceName ExtensionsClusterResourceName, clusterName string, options *OperationStatusClientListOptions) (*policy.Request, error) {
+func (client *OperationStatusClient) listCreateRequest(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, options *OperationStatusClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{clusterRp}/{clusterResourceName}/{clusterName}/providers/Microsoft.KubernetesConfiguration/operations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -161,11 +178,11 @@ func (client *OperationStatusClient) listCreateRequest(ctx context.Context, reso
 	if clusterRp == "" {
 		return nil, errors.New("parameter clusterRp cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterRp}", url.PathEscape(string(clusterRp)))
+	urlPath = strings.ReplaceAll(urlPath, "{clusterRp}", url.PathEscape(clusterRp))
 	if clusterResourceName == "" {
 		return nil, errors.New("parameter clusterResourceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterResourceName}", url.PathEscape(string(clusterResourceName)))
+	urlPath = strings.ReplaceAll(urlPath, "{clusterResourceName}", url.PathEscape(clusterResourceName))
 	if clusterName == "" {
 		return nil, errors.New("parameter clusterName cannot be empty")
 	}
@@ -175,7 +192,7 @@ func (client *OperationStatusClient) listCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -183,7 +200,7 @@ func (client *OperationStatusClient) listCreateRequest(ctx context.Context, reso
 
 // listHandleResponse handles the List response.
 func (client *OperationStatusClient) listHandleResponse(resp *http.Response) (OperationStatusClientListResponse, error) {
-	result := OperationStatusClientListResponse{RawResponse: resp}
+	result := OperationStatusClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationStatusList); err != nil {
 		return OperationStatusClientListResponse{}, err
 	}

@@ -7,10 +7,15 @@
 package auth
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/stretchr/testify/require"
 )
 
@@ -88,4 +93,33 @@ func TestFindScopeAndTenant(t *testing.T) {
 	if *p.tenantID != fakeTenant {
 		t.Fatalf("tenant ID was not properly parsed, got %s, expected %s", *p.tenantID, fakeTenant)
 	}
+}
+
+type fakeCredential struct{}
+
+func (f fakeCredential) GetToken(ctx context.Context, options policy.TokenRequestOptions) (*azcore.AccessToken, error) {
+	return &azcore.AccessToken{}, nil
+}
+
+func TestDo(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+
+	fakeCred := fakeCredential{}
+	p := NewStorageChallengePolicy(fakeCred)
+
+	srv.SetResponse(mock.WithStatusCode(http.StatusUnauthorized), mock.WithHeader("WWW-Authenticate", fmt.Sprintf(authResourceScope, fakeTenant, resource, scope)))
+	pl := runtime.NewPipeline("test", "test", runtime.PipelineOptions{}, &policy.ClientOptions{
+		Transport:       srv,
+		PerCallPolicies: []policy.Policy{p},
+	})
+	req, err := runtime.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	require.NoError(t, err)
+
+	resp, err := pl.Do(req)
+	require.NoError(t, err)
+	require.Equal(t, resp.StatusCode, http.StatusUnauthorized)
+
+	require.Equal(t, *p.scope, scope)
+	require.Equal(t, *p.tenantID, fakeTenant)
 }

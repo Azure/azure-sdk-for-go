@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ResourcePoolsClient struct {
 // subscriptionID - The subscription ID.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewResourcePoolsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ResourcePoolsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewResourcePoolsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ResourcePoolsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ResourcePoolsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Returns resource pool templates by its name
@@ -102,7 +107,7 @@ func (client *ResourcePoolsClient) getCreateRequest(ctx context.Context, regionI
 
 // getHandleResponse handles the Get response.
 func (client *ResourcePoolsClient) getHandleResponse(resp *http.Response) (ResourcePoolsClientGetResponse, error) {
-	result := ResourcePoolsClientGetResponse{RawResponse: resp}
+	result := ResourcePoolsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourcePool); err != nil {
 		return ResourcePoolsClientGetResponse{}, err
 	}
@@ -114,16 +119,32 @@ func (client *ResourcePoolsClient) getHandleResponse(resp *http.Response) (Resou
 // regionID - The region Id (westus, eastus)
 // pcName - The private cloud name
 // options - ResourcePoolsClientListOptions contains the optional parameters for the ResourcePoolsClient.List method.
-func (client *ResourcePoolsClient) List(regionID string, pcName string, options *ResourcePoolsClientListOptions) *ResourcePoolsClientListPager {
-	return &ResourcePoolsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, regionID, pcName, options)
+func (client *ResourcePoolsClient) List(regionID string, pcName string, options *ResourcePoolsClientListOptions) *runtime.Pager[ResourcePoolsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ResourcePoolsClientListResponse]{
+		More: func(page ResourcePoolsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ResourcePoolsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ResourcePoolsListResponse.NextLink)
+		Fetcher: func(ctx context.Context, page *ResourcePoolsClientListResponse) (ResourcePoolsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, regionID, pcName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ResourcePoolsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ResourcePoolsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ResourcePoolsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -154,7 +175,7 @@ func (client *ResourcePoolsClient) listCreateRequest(ctx context.Context, region
 
 // listHandleResponse handles the List response.
 func (client *ResourcePoolsClient) listHandleResponse(resp *http.Response) (ResourcePoolsClientListResponse, error) {
-	result := ResourcePoolsClientListResponse{RawResponse: resp}
+	result := ResourcePoolsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourcePoolsListResponse); err != nil {
 		return ResourcePoolsClientListResponse{}, err
 	}

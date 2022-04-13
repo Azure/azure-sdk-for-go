@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armvmwarecloudsimple
 
 const (
 	moduleName    = "armvmwarecloudsimple"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // AggregationType - Metric's aggregation type for e.g. (Average, Total)
@@ -27,11 +27,6 @@ func PossibleAggregationTypeValues() []AggregationType {
 		AggregationTypeAverage,
 		AggregationTypeTotal,
 	}
-}
-
-// ToPtr returns a *AggregationType pointing to the current value.
-func (c AggregationType) ToPtr() *AggregationType {
-	return &c
 }
 
 // CustomizationHostNameType - Type of host name
@@ -56,11 +51,6 @@ func PossibleCustomizationHostNameTypeValues() []CustomizationHostNameType {
 	}
 }
 
-// ToPtr returns a *CustomizationHostNameType pointing to the current value.
-func (c CustomizationHostNameType) ToPtr() *CustomizationHostNameType {
-	return &c
-}
-
 // CustomizationIPAddressType - Customization Specification ip type
 type CustomizationIPAddressType string
 
@@ -81,11 +71,6 @@ func PossibleCustomizationIPAddressTypeValues() []CustomizationIPAddressType {
 	}
 }
 
-// ToPtr returns a *CustomizationIPAddressType pointing to the current value.
-func (c CustomizationIPAddressType) ToPtr() *CustomizationIPAddressType {
-	return &c
-}
-
 // CustomizationIdentityType - Identity type
 type CustomizationIdentityType string
 
@@ -104,11 +89,6 @@ func PossibleCustomizationIdentityTypeValues() []CustomizationIdentityType {
 	}
 }
 
-// ToPtr returns a *CustomizationIdentityType pointing to the current value.
-func (c CustomizationIdentityType) ToPtr() *CustomizationIdentityType {
-	return &c
-}
-
 // CustomizationPolicyPropertiesType - The type of customization (Linux or Windows)
 type CustomizationPolicyPropertiesType string
 
@@ -123,11 +103,6 @@ func PossibleCustomizationPolicyPropertiesTypeValues() []CustomizationPolicyProp
 		CustomizationPolicyPropertiesTypeLINUX,
 		CustomizationPolicyPropertiesTypeWINDOWS,
 	}
-}
-
-// ToPtr returns a *CustomizationPolicyPropertiesType pointing to the current value.
-func (c CustomizationPolicyPropertiesType) ToPtr() *CustomizationPolicyPropertiesType {
-	return &c
 }
 
 // DiskIndependenceMode - Disk's independence mode type
@@ -148,11 +123,6 @@ func PossibleDiskIndependenceModeValues() []DiskIndependenceMode {
 	}
 }
 
-// ToPtr returns a *DiskIndependenceMode pointing to the current value.
-func (c DiskIndependenceMode) ToPtr() *DiskIndependenceMode {
-	return &c
-}
-
 // GuestOSNICCustomizationAllocation - IP address allocation method
 type GuestOSNICCustomizationAllocation string
 
@@ -167,11 +137,6 @@ func PossibleGuestOSNICCustomizationAllocationValues() []GuestOSNICCustomization
 		GuestOSNICCustomizationAllocationDynamic,
 		GuestOSNICCustomizationAllocationStatic,
 	}
-}
-
-// ToPtr returns a *GuestOSNICCustomizationAllocation pointing to the current value.
-func (c GuestOSNICCustomizationAllocation) ToPtr() *GuestOSNICCustomizationAllocation {
-	return &c
 }
 
 // GuestOSType - The Guest OS type
@@ -190,11 +155,6 @@ func PossibleGuestOSTypeValues() []GuestOSType {
 		GuestOSTypeWindows,
 		GuestOSTypeOther,
 	}
-}
-
-// ToPtr returns a *GuestOSType pointing to the current value.
-func (c GuestOSType) ToPtr() *GuestOSType {
-	return &c
 }
 
 // NICType - NIC type
@@ -221,11 +181,6 @@ func PossibleNICTypeValues() []NICType {
 	}
 }
 
-// ToPtr returns a *NICType pointing to the current value.
-func (c NICType) ToPtr() *NICType {
-	return &c
-}
-
 // NodeStatus - Node status, indicates is private cloud set up on this node or not
 type NodeStatus string
 
@@ -240,11 +195,6 @@ func PossibleNodeStatusValues() []NodeStatus {
 		NodeStatusUnused,
 		NodeStatusUsed,
 	}
-}
-
-// ToPtr returns a *NodeStatus pointing to the current value.
-func (c NodeStatus) ToPtr() *NodeStatus {
-	return &c
 }
 
 // OnboardingStatus - indicates whether account onboarded or not in a given region
@@ -267,11 +217,6 @@ func PossibleOnboardingStatusValues() []OnboardingStatus {
 	}
 }
 
-// ToPtr returns a *OnboardingStatus pointing to the current value.
-func (c OnboardingStatus) ToPtr() *OnboardingStatus {
-	return &c
-}
-
 // OperationOrigin - The origin of operation
 type OperationOrigin string
 
@@ -288,11 +233,6 @@ func PossibleOperationOriginValues() []OperationOrigin {
 		OperationOriginSystem,
 		OperationOriginUserSystem,
 	}
-}
-
-// ToPtr returns a *OperationOrigin pointing to the current value.
-func (c OperationOrigin) ToPtr() *OperationOrigin {
-	return &c
 }
 
 // StopMode - mode indicates a type of stop operation - reboot, suspend, shutdown or power-off
@@ -313,11 +253,6 @@ func PossibleStopModeValues() []StopMode {
 		StopModeShutdown,
 		StopModePoweroff,
 	}
-}
-
-// ToPtr returns a *StopMode pointing to the current value.
-func (c StopMode) ToPtr() *StopMode {
-	return &c
 }
 
 // UsageCount - The usages' unit
@@ -344,11 +279,6 @@ func PossibleUsageCountValues() []UsageCount {
 	}
 }
 
-// ToPtr returns a *UsageCount pointing to the current value.
-func (c UsageCount) ToPtr() *UsageCount {
-	return &c
-}
-
 // VirtualMachineStatus - The status of Virtual machine
 type VirtualMachineStatus string
 
@@ -371,9 +301,4 @@ func PossibleVirtualMachineStatusValues() []VirtualMachineStatus {
 		VirtualMachineStatusDeallocating,
 		VirtualMachineStatusDeleting,
 	}
-}
-
-// ToPtr returns a *VirtualMachineStatus pointing to the current value.
-func (c VirtualMachineStatus) ToPtr() *VirtualMachineStatus {
-	return &c
 }

@@ -652,8 +652,11 @@ func (s *SetAccessPolicyOptions) toGenerated() *generated.TableClientSetAccessPo
 // If the service returns a non-successful HTTP status code, the function returns an *azcore.ResponseError type.
 // Specify nil for options if you want to use the default options.
 func (t *Client) SetAccessPolicy(ctx context.Context, options *SetAccessPolicyOptions) (SetAccessPolicyResponse, error) {
+	if options == nil {
+		options = &SetAccessPolicyOptions{}
+	}
 	response, err := t.client.SetAccessPolicy(ctx, t.name, generated.Enum4ACL, options.toGenerated())
-	if len(options.TableACL) > 5 {
+	if err != nil && len(options.TableACL) > 5 {
 		err = errTooManyAccessPoliciesError
 	}
 	return setAccessPolicyResponseFromGenerated(&response), err

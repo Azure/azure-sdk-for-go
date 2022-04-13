@@ -8,6 +8,8 @@
 * Renamed `PossibleGeoReplicationStatusTypeValues` to `PossibleGeoReplicationStatusValues`
 
 ### Bugs Fixed
+* Convert `Start` and `Expiry` times in `AccessPolicy` to UTC format as required by the service.
+* Fixed `moduleName` to report the module name as part of telemetry.
 
 ### Other Changes
 

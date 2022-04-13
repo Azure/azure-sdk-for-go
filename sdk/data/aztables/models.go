@@ -265,10 +265,20 @@ func toGeneratedAccessPolicy(a *AccessPolicy) *generated.AccessPolicy {
 		return nil
 	}
 
+	expiry := a.Expiry
+	if expiry != nil {
+		expiry = to.Ptr(expiry.UTC())
+	}
+
+	start := a.Start
+	if start != nil {
+		start = to.Ptr(start.UTC())
+	}
+
 	return &generated.AccessPolicy{
-		Expiry:     a.Expiry,
+		Expiry:     expiry,
 		Permission: a.Permission,
-		Start:      a.Start,
+		Start:      start,
 	}
 }
 

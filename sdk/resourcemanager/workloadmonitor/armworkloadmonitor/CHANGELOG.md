@@ -1,5 +1,55 @@
 # Release History
 
+## 0.3.0 (2022-04-13)
+### Breaking Changes
+
+- Function `NewHealthMonitorsClient` return value(s) have been changed from `(*HealthMonitorsClient)` to `(*HealthMonitorsClient, error)`
+- Function `*HealthMonitorsClient.List` return value(s) have been changed from `(*HealthMonitorsClientListPager)` to `(*runtime.Pager[HealthMonitorsClientListResponse])`
+- Function `*HealthMonitorsClient.ListStateChanges` return value(s) have been changed from `(*HealthMonitorsClientListStateChangesPager)` to `(*runtime.Pager[HealthMonitorsClientListStateChangesResponse])`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Type of `HealthMonitorProperties.MonitorConfiguration` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `HealthMonitorProperties.Evidence` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `HealthMonitorStateChangeProperties.Evidence` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `HealthMonitorStateChangeProperties.MonitorConfiguration` has been changed from `map[string]interface{}` to `interface{}`
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `HealthState.ToPtr` has been removed
+- Function `*HealthMonitorsClientListStateChangesPager.PageResponse` has been removed
+- Function `*HealthMonitorsClientListPager.Err` has been removed
+- Function `*HealthMonitorsClientListPager.NextPage` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Function `*HealthMonitorsClientListPager.PageResponse` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `*HealthMonitorsClientListStateChangesPager.NextPage` has been removed
+- Function `*HealthMonitorsClientListStateChangesPager.Err` has been removed
+- Struct `HealthMonitorsClientGetResult` has been removed
+- Struct `HealthMonitorsClientGetStateChangeResult` has been removed
+- Struct `HealthMonitorsClientListPager` has been removed
+- Struct `HealthMonitorsClientListResult` has been removed
+- Struct `HealthMonitorsClientListStateChangesPager` has been removed
+- Struct `HealthMonitorsClientListStateChangesResult` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Field `HealthMonitorsClientListStateChangesResult` of struct `HealthMonitorsClientListStateChangesResponse` has been removed
+- Field `RawResponse` of struct `HealthMonitorsClientListStateChangesResponse` has been removed
+- Field `HealthMonitorsClientListResult` of struct `HealthMonitorsClientListResponse` has been removed
+- Field `RawResponse` of struct `HealthMonitorsClientListResponse` has been removed
+- Field `HealthMonitorsClientGetStateChangeResult` of struct `HealthMonitorsClientGetStateChangeResponse` has been removed
+- Field `RawResponse` of struct `HealthMonitorsClientGetStateChangeResponse` has been removed
+- Field `HealthMonitorsClientGetResult` of struct `HealthMonitorsClientGetResponse` has been removed
+- Field `RawResponse` of struct `HealthMonitorsClientGetResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+
+### Features Added
+
+- New anonymous field `OperationList` in struct `OperationsClientListResponse`
+- New anonymous field `HealthMonitor` in struct `HealthMonitorsClientGetResponse`
+- New anonymous field `HealthMonitorStateChange` in struct `HealthMonitorsClientGetStateChangeResponse`
+- New anonymous field `HealthMonitorList` in struct `HealthMonitorsClientListResponse`
+- New anonymous field `HealthMonitorStateChangeList` in struct `HealthMonitorsClientListStateChangesResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

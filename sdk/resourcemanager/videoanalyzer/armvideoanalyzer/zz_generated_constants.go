@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armvideoanalyzer
 
 const (
 	moduleName    = "armvideoanalyzer"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // AccessPolicyEccAlgo - Elliptical curve algorithm to be used: ES256, ES384 or ES512.
@@ -34,11 +34,6 @@ func PossibleAccessPolicyEccAlgoValues() []AccessPolicyEccAlgo {
 	}
 }
 
-// ToPtr returns a *AccessPolicyEccAlgo pointing to the current value.
-func (c AccessPolicyEccAlgo) ToPtr() *AccessPolicyEccAlgo {
-	return &c
-}
-
 // AccessPolicyRole - Defines the access level granted by this policy.
 type AccessPolicyRole string
 
@@ -52,11 +47,6 @@ func PossibleAccessPolicyRoleValues() []AccessPolicyRole {
 	return []AccessPolicyRole{
 		AccessPolicyRoleReader,
 	}
-}
-
-// ToPtr returns a *AccessPolicyRole pointing to the current value.
-func (c AccessPolicyRole) ToPtr() *AccessPolicyRole {
-	return &c
 }
 
 // AccessPolicyRsaAlgo - RSA algorithm to be used: RS256, RS384 or RS512.
@@ -80,11 +70,6 @@ func PossibleAccessPolicyRsaAlgoValues() []AccessPolicyRsaAlgo {
 	}
 }
 
-// ToPtr returns a *AccessPolicyRsaAlgo pointing to the current value.
-func (c AccessPolicyRsaAlgo) ToPtr() *AccessPolicyRsaAlgo {
-	return &c
-}
-
 // AccountEncryptionKeyType - The type of key used to encrypt the Account Key.
 type AccountEncryptionKeyType string
 
@@ -103,11 +88,6 @@ func PossibleAccountEncryptionKeyTypeValues() []AccountEncryptionKeyType {
 	}
 }
 
-// ToPtr returns a *AccountEncryptionKeyType pointing to the current value.
-func (c AccountEncryptionKeyType) ToPtr() *AccountEncryptionKeyType {
-	return &c
-}
-
 // ActionType - Indicates the action type.
 type ActionType string
 
@@ -121,11 +101,6 @@ func PossibleActionTypeValues() []ActionType {
 	return []ActionType{
 		ActionTypeInternal,
 	}
-}
-
-// ToPtr returns a *ActionType pointing to the current value.
-func (c ActionType) ToPtr() *ActionType {
-	return &c
 }
 
 // CheckNameAvailabilityReason - The reason why the given name is not available.
@@ -142,11 +117,6 @@ func PossibleCheckNameAvailabilityReasonValues() []CheckNameAvailabilityReason {
 		CheckNameAvailabilityReasonAlreadyExists,
 		CheckNameAvailabilityReasonInvalid,
 	}
-}
-
-// ToPtr returns a *CheckNameAvailabilityReason pointing to the current value.
-func (c CheckNameAvailabilityReason) ToPtr() *CheckNameAvailabilityReason {
-	return &c
 }
 
 // CreatedByType - The type of identity that created the resource.
@@ -167,11 +137,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
 	}
-}
-
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
 }
 
 // EncoderSystemPresetType - Name of the built-in encoding preset.
@@ -210,11 +175,6 @@ func PossibleEncoderSystemPresetTypeValues() []EncoderSystemPresetType {
 	}
 }
 
-// ToPtr returns a *EncoderSystemPresetType pointing to the current value.
-func (c EncoderSystemPresetType) ToPtr() *EncoderSystemPresetType {
-	return &c
-}
-
 // Kind - Topology kind.
 type Kind string
 
@@ -231,11 +191,6 @@ func PossibleKindValues() []Kind {
 		KindBatch,
 		KindLive,
 	}
-}
-
-// ToPtr returns a *Kind pointing to the current value.
-func (c Kind) ToPtr() *Kind {
-	return &c
 }
 
 // LivePipelineState - Current state of the pipeline (read-only).
@@ -264,11 +219,6 @@ func PossibleLivePipelineStateValues() []LivePipelineState {
 	}
 }
 
-// ToPtr returns a *LivePipelineState pointing to the current value.
-func (c LivePipelineState) ToPtr() *LivePipelineState {
-	return &c
-}
-
 // MetricAggregationType - The metric aggregation type
 type MetricAggregationType string
 
@@ -290,11 +240,6 @@ func PossibleMetricAggregationTypeValues() []MetricAggregationType {
 	}
 }
 
-// ToPtr returns a *MetricAggregationType pointing to the current value.
-func (c MetricAggregationType) ToPtr() *MetricAggregationType {
-	return &c
-}
-
 // MetricUnit - The metric unit
 type MetricUnit string
 
@@ -314,11 +259,6 @@ func PossibleMetricUnitValues() []MetricUnit {
 		MetricUnitCount,
 		MetricUnitMilliseconds,
 	}
-}
-
-// ToPtr returns a *MetricUnit pointing to the current value.
-func (c MetricUnit) ToPtr() *MetricUnit {
-	return &c
 }
 
 // ParameterType - Type of the parameter.
@@ -348,11 +288,6 @@ func PossibleParameterTypeValues() []ParameterType {
 	}
 }
 
-// ToPtr returns a *ParameterType pointing to the current value.
-func (c ParameterType) ToPtr() *ParameterType {
-	return &c
-}
-
 // PipelineJobState - Current state of the pipeline (read-only).
 type PipelineJobState string
 
@@ -377,11 +312,6 @@ func PossiblePipelineJobStateValues() []PipelineJobState {
 	}
 }
 
-// ToPtr returns a *PipelineJobState pointing to the current value.
-func (c PipelineJobState) ToPtr() *PipelineJobState {
-	return &c
-}
-
 // PrivateEndpointConnectionProvisioningState - The current provisioning state.
 type PrivateEndpointConnectionProvisioningState string
 
@@ -402,11 +332,6 @@ func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpoin
 	}
 }
 
-// ToPtr returns a *PrivateEndpointConnectionProvisioningState pointing to the current value.
-func (c PrivateEndpointConnectionProvisioningState) ToPtr() *PrivateEndpointConnectionProvisioningState {
-	return &c
-}
-
 // PrivateEndpointServiceConnectionStatus - The private endpoint connection status.
 type PrivateEndpointServiceConnectionStatus string
 
@@ -423,11 +348,6 @@ func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointSer
 		PrivateEndpointServiceConnectionStatusPending,
 		PrivateEndpointServiceConnectionStatusRejected,
 	}
-}
-
-// ToPtr returns a *PrivateEndpointServiceConnectionStatus pointing to the current value.
-func (c PrivateEndpointServiceConnectionStatus) ToPtr() *PrivateEndpointServiceConnectionStatus {
-	return &c
 }
 
 // ProvisioningState - Provisioning state of the Video Analyzer account.
@@ -451,11 +371,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	}
 }
 
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
-}
-
 // PublicNetworkAccess - Whether or not public network access is allowed for resources under the Video Analyzer account.
 type PublicNetworkAccess string
 
@@ -472,11 +387,6 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 		PublicNetworkAccessDisabled,
 		PublicNetworkAccessEnabled,
 	}
-}
-
-// ToPtr returns a *PublicNetworkAccess pointing to the current value.
-func (c PublicNetworkAccess) ToPtr() *PublicNetworkAccess {
-	return &c
 }
 
 // RtspTransport - Network transport utilized by the RTSP and RTP exchange: TCP or HTTP. When using TCP, the RTP packets are
@@ -500,11 +410,6 @@ func PossibleRtspTransportValues() []RtspTransport {
 	}
 }
 
-// ToPtr returns a *RtspTransport pointing to the current value.
-func (c RtspTransport) ToPtr() *RtspTransport {
-	return &c
-}
-
 // SKUName - The SKU name.
 type SKUName string
 
@@ -524,11 +429,6 @@ func PossibleSKUNameValues() []SKUName {
 	}
 }
 
-// ToPtr returns a *SKUName pointing to the current value.
-func (c SKUName) ToPtr() *SKUName {
-	return &c
-}
-
 // SKUTier - The SKU tier.
 type SKUTier string
 
@@ -544,11 +444,6 @@ func PossibleSKUTierValues() []SKUTier {
 	}
 }
 
-// ToPtr returns a *SKUTier pointing to the current value.
-func (c SKUTier) ToPtr() *SKUTier {
-	return &c
-}
-
 // VideoAnalyzerEndpointType - The type of the endpoint.
 type VideoAnalyzerEndpointType string
 
@@ -562,11 +457,6 @@ func PossibleVideoAnalyzerEndpointTypeValues() []VideoAnalyzerEndpointType {
 	return []VideoAnalyzerEndpointType{
 		VideoAnalyzerEndpointTypeClientAPI,
 	}
-}
-
-// ToPtr returns a *VideoAnalyzerEndpointType pointing to the current value.
-func (c VideoAnalyzerEndpointType) ToPtr() *VideoAnalyzerEndpointType {
-	return &c
 }
 
 // VideoScaleMode - Describes the video scaling mode to be applied. Default mode is 'Pad'. If the mode is 'Pad' or 'Stretch'
@@ -595,11 +485,6 @@ func PossibleVideoScaleModeValues() []VideoScaleMode {
 	}
 }
 
-// ToPtr returns a *VideoScaleMode pointing to the current value.
-func (c VideoScaleMode) ToPtr() *VideoScaleMode {
-	return &c
-}
-
 // VideoType - Video content type. Different content types are suitable for different applications and scenarios.
 type VideoType string
 
@@ -622,9 +507,4 @@ func PossibleVideoTypeValues() []VideoType {
 		VideoTypeArchive,
 		VideoTypeFile,
 	}
-}
-
-// ToPtr returns a *VideoType pointing to the current value.
-func (c VideoType) ToPtr() *VideoType {
-	return &c
 }

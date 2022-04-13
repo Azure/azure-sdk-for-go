@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type PipelineTopologiesClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewPipelineTopologiesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PipelineTopologiesClient {
+func NewPipelineTopologiesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PipelineTopologiesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &PipelineTopologiesClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates a new pipeline topology or updates an existing one, with the given name. A pipeline topology describes
@@ -108,7 +113,7 @@ func (client *PipelineTopologiesClient) createOrUpdateCreateRequest(ctx context.
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *PipelineTopologiesClient) createOrUpdateHandleResponse(resp *http.Response) (PipelineTopologiesClientCreateOrUpdateResponse, error) {
-	result := PipelineTopologiesClientCreateOrUpdateResponse{RawResponse: resp}
+	result := PipelineTopologiesClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PipelineTopology); err != nil {
 		return PipelineTopologiesClientCreateOrUpdateResponse{}, err
 	}
@@ -135,7 +140,7 @@ func (client *PipelineTopologiesClient) Delete(ctx context.Context, resourceGrou
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return PipelineTopologiesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return PipelineTopologiesClientDeleteResponse{RawResponse: resp}, nil
+	return PipelineTopologiesClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -222,7 +227,7 @@ func (client *PipelineTopologiesClient) getCreateRequest(ctx context.Context, re
 
 // getHandleResponse handles the Get response.
 func (client *PipelineTopologiesClient) getHandleResponse(resp *http.Response) (PipelineTopologiesClientGetResponse, error) {
-	result := PipelineTopologiesClientGetResponse{RawResponse: resp}
+	result := PipelineTopologiesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PipelineTopology); err != nil {
 		return PipelineTopologiesClientGetResponse{}, err
 	}
@@ -234,16 +239,32 @@ func (client *PipelineTopologiesClient) getHandleResponse(resp *http.Response) (
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The Azure Video Analyzer account name.
 // options - PipelineTopologiesClientListOptions contains the optional parameters for the PipelineTopologiesClient.List method.
-func (client *PipelineTopologiesClient) List(resourceGroupName string, accountName string, options *PipelineTopologiesClientListOptions) *PipelineTopologiesClientListPager {
-	return &PipelineTopologiesClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, accountName, options)
+func (client *PipelineTopologiesClient) List(resourceGroupName string, accountName string, options *PipelineTopologiesClientListOptions) *runtime.Pager[PipelineTopologiesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PipelineTopologiesClientListResponse]{
+		More: func(page PipelineTopologiesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PipelineTopologiesClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PipelineTopologyCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *PipelineTopologiesClientListResponse) (PipelineTopologiesClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, accountName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return PipelineTopologiesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PipelineTopologiesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PipelineTopologiesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -280,7 +301,7 @@ func (client *PipelineTopologiesClient) listCreateRequest(ctx context.Context, r
 
 // listHandleResponse handles the List response.
 func (client *PipelineTopologiesClient) listHandleResponse(resp *http.Response) (PipelineTopologiesClientListResponse, error) {
-	result := PipelineTopologiesClientListResponse{RawResponse: resp}
+	result := PipelineTopologiesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PipelineTopologyCollection); err != nil {
 		return PipelineTopologiesClientListResponse{}, err
 	}
@@ -344,7 +365,7 @@ func (client *PipelineTopologiesClient) updateCreateRequest(ctx context.Context,
 
 // updateHandleResponse handles the Update response.
 func (client *PipelineTopologiesClient) updateHandleResponse(resp *http.Response) (PipelineTopologiesClientUpdateResponse, error) {
-	result := PipelineTopologiesClientUpdateResponse{RawResponse: resp}
+	result := PipelineTopologiesClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PipelineTopology); err != nil {
 		return PipelineTopologiesClientUpdateResponse{}, err
 	}

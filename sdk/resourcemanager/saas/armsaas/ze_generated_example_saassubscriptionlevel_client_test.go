@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,247 +19,312 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/saas/armsaas"
 )
 
-// x-ms-original-file: specification/saas/resource-manager/Microsoft.SaaS/preview/2018-03-01-beta/examples/saasSubscriptionLevel/SaasGetAllInAzureSubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/saas/resource-manager/Microsoft.SaaS/preview/2018-03-01-beta/examples/saasSubscriptionLevel/SaasGetAllInAzureSubscription.json
 func ExampleSubscriptionLevelClient_ListByAzureSubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsaas.NewSubscriptionLevelClient("<subscription-id>", cred, nil)
+	client, err := armsaas.NewSubscriptionLevelClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListByAzureSubscription(nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/saas/resource-manager/Microsoft.SaaS/preview/2018-03-01-beta/examples/saasSubscriptionLevel/SaasGetAllInResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/saas/resource-manager/Microsoft.SaaS/preview/2018-03-01-beta/examples/saasSubscriptionLevel/SaasGetAllInResourceGroup.json
 func ExampleSubscriptionLevelClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsaas.NewSubscriptionLevelClient("<subscription-id>", cred, nil)
+	client, err := armsaas.NewSubscriptionLevelClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/saas/resource-manager/Microsoft.SaaS/preview/2018-03-01-beta/examples/saasSubscriptionLevel/SaasGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/saas/resource-manager/Microsoft.SaaS/preview/2018-03-01-beta/examples/saasSubscriptionLevel/SaasGet.json
 func ExampleSubscriptionLevelClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsaas.NewSubscriptionLevelClient("<subscription-id>", cred, nil)
+	client, err := armsaas.NewSubscriptionLevelClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.SubscriptionLevelClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/saas/resource-manager/Microsoft.SaaS/preview/2018-03-01-beta/examples/saasSubscriptionLevel/SaasPut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/saas/resource-manager/Microsoft.SaaS/preview/2018-03-01-beta/examples/saasSubscriptionLevel/SaasPut.json
 func ExampleSubscriptionLevelClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsaas.NewSubscriptionLevelClient("<subscription-id>", cred, nil)
+	client, err := armsaas.NewSubscriptionLevelClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		armsaas.ResourceCreation{
-			Name:     to.StringPtr("<name>"),
-			Location: to.StringPtr("<location>"),
+			Name:     to.Ptr("<name>"),
+			Location: to.Ptr("<location>"),
 			Properties: &armsaas.CreationProperties{
-				OfferID: to.StringPtr("<offer-id>"),
+				OfferID: to.Ptr("<offer-id>"),
 				PaymentChannelMetadata: map[string]*string{
-					"AzureSubscriptionId": to.StringPtr("155af98a-3205-47e7-883b-a2ab9db9f88d"),
+					"AzureSubscriptionId": to.Ptr("155af98a-3205-47e7-883b-a2ab9db9f88d"),
 				},
-				PaymentChannelType: armsaas.PaymentChannelType("SubscriptionDelegated").ToPtr(),
-				PublisherID:        to.StringPtr("<publisher-id>"),
-				SaasResourceName:   to.StringPtr("<saas-resource-name>"),
-				SKUID:              to.StringPtr("<skuid>"),
-				TermID:             to.StringPtr("<term-id>"),
+				PaymentChannelType: to.Ptr(armsaas.PaymentChannelTypeSubscriptionDelegated),
+				PublisherID:        to.Ptr("<publisher-id>"),
+				SaasResourceName:   to.Ptr("<saas-resource-name>"),
+				SKUID:              to.Ptr("<skuid>"),
+				TermID:             to.Ptr("<term-id>"),
 			},
 		},
-		nil)
+		&armsaas.SubscriptionLevelClientBeginCreateOrUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.SubscriptionLevelClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/saas/resource-manager/Microsoft.SaaS/preview/2018-03-01-beta/examples/saasSubscriptionLevel/SaasPatch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/saas/resource-manager/Microsoft.SaaS/preview/2018-03-01-beta/examples/saasSubscriptionLevel/SaasPatch.json
 func ExampleSubscriptionLevelClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsaas.NewSubscriptionLevelClient("<subscription-id>", cred, nil)
+	client, err := armsaas.NewSubscriptionLevelClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginUpdate(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		armsaas.ResourceCreation{
 			Properties: &armsaas.CreationProperties{
-				SKUID: to.StringPtr("<skuid>"),
+				SKUID: to.Ptr("<skuid>"),
 			},
 			Tags: map[string]*string{},
 		},
-		nil)
+		&armsaas.SubscriptionLevelClientBeginUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.SubscriptionLevelClientUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/saas/resource-manager/Microsoft.SaaS/preview/2018-03-01-beta/examples/saasSubscriptionLevel/SaasDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/saas/resource-manager/Microsoft.SaaS/preview/2018-03-01-beta/examples/saasSubscriptionLevel/SaasDelete.json
 func ExampleSubscriptionLevelClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsaas.NewSubscriptionLevelClient("<subscription-id>", cred, nil)
+	client, err := armsaas.NewSubscriptionLevelClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
-		nil)
+		&armsaas.SubscriptionLevelClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/saas/resource-manager/Microsoft.SaaS/preview/2018-03-01-beta/examples/saasSubscriptionLevel/SaasUnsubscribe.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/saas/resource-manager/Microsoft.SaaS/preview/2018-03-01-beta/examples/saasSubscriptionLevel/SaasUnsubscribe.json
 func ExampleSubscriptionLevelClient_BeginUpdateToUnsubscribed() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsaas.NewSubscriptionLevelClient("<subscription-id>", cred, nil)
+	client, err := armsaas.NewSubscriptionLevelClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginUpdateToUnsubscribed(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		armsaas.DeleteOptions{
-			Feedback:        to.StringPtr("<feedback>"),
-			ReasonCode:      to.Float32Ptr(0),
-			UnsubscribeOnly: to.BoolPtr(true),
+			Feedback:        to.Ptr("<feedback>"),
+			ReasonCode:      to.Ptr[float32](0),
+			UnsubscribeOnly: to.Ptr(true),
 		},
-		nil)
+		&armsaas.SubscriptionLevelClientBeginUpdateToUnsubscribedOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/saas/resource-manager/Microsoft.SaaS/preview/2018-03-01-beta/examples/saasSubscriptionLevel/ListAccessTokenPost.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/saas/resource-manager/Microsoft.SaaS/preview/2018-03-01-beta/examples/saasSubscriptionLevel/ListAccessTokenPost.json
 func ExampleSubscriptionLevelClient_ListAccessToken() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsaas.NewSubscriptionLevelClient("<subscription-id>", cred, nil)
+	client, err := armsaas.NewSubscriptionLevelClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.ListAccessToken(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.SubscriptionLevelClientListAccessTokenResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/saas/resource-manager/Microsoft.SaaS/preview/2018-03-01-beta/examples/saasSubscriptionLevel/ValidateResourceMove.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/saas/resource-manager/Microsoft.SaaS/preview/2018-03-01-beta/examples/saasSubscriptionLevel/ValidateResourceMove.json
 func ExampleSubscriptionLevelClient_ValidateMoveResources() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsaas.NewSubscriptionLevelClient("<subscription-id>", cred, nil)
+	client, err := armsaas.NewSubscriptionLevelClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.ValidateMoveResources(ctx,
 		"<resource-group-name>",
 		armsaas.MoveResource{
 			Resources: []*string{
-				to.StringPtr("/subscriptions/c825645b-e31b-9cf4-1cee-2aba9e58bc7c/resourceGroups/my-saas-rg/providers/Microsoft.SaaS/resources/saas1"),
-				to.StringPtr("/subscriptions/c825645b-e31b-9cf4-1cee-2aba9e58bc7c/resourceGroups/my-saas-rg/providers/Microsoft.SaaS/resources/saas2"),
-				to.StringPtr("/subscriptions/c825645b-e31b-9cf4-1cee-2aba9e58bc7c/resourceGroups/my-saas-rg/providers/Microsoft.SaaS/resources/saas3")},
-			TargetResourceGroup: to.StringPtr("<target-resource-group>"),
+				to.Ptr("/subscriptions/c825645b-e31b-9cf4-1cee-2aba9e58bc7c/resourceGroups/my-saas-rg/providers/Microsoft.SaaS/resources/saas1"),
+				to.Ptr("/subscriptions/c825645b-e31b-9cf4-1cee-2aba9e58bc7c/resourceGroups/my-saas-rg/providers/Microsoft.SaaS/resources/saas2"),
+				to.Ptr("/subscriptions/c825645b-e31b-9cf4-1cee-2aba9e58bc7c/resourceGroups/my-saas-rg/providers/Microsoft.SaaS/resources/saas3")},
+			TargetResourceGroup: to.Ptr("<target-resource-group>"),
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/saas/resource-manager/Microsoft.SaaS/preview/2018-03-01-beta/examples/saasSubscriptionLevel/ResourceMove.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/saas/resource-manager/Microsoft.SaaS/preview/2018-03-01-beta/examples/saasSubscriptionLevel/ResourceMove.json
 func ExampleSubscriptionLevelClient_BeginMoveResources() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsaas.NewSubscriptionLevelClient("<subscription-id>", cred, nil)
+	client, err := armsaas.NewSubscriptionLevelClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginMoveResources(ctx,
 		"<resource-group-name>",
 		armsaas.MoveResource{
 			Resources: []*string{
-				to.StringPtr("/subscriptions/c825645b-e31b-9cf4-1cee-2aba9e58bc7c/resourceGroups/my-saas-rg/providers/Microsoft.SaaS/resources/saas1"),
-				to.StringPtr("/subscriptions/c825645b-e31b-9cf4-1cee-2aba9e58bc7c/resourceGroups/my-saas-rg/providers/Microsoft.SaaS/resources/saas2"),
-				to.StringPtr("/subscriptions/c825645b-e31b-9cf4-1cee-2aba9e58bc7c/resourceGroups/my-saas-rg/providers/Microsoft.SaaS/resources/saas3")},
-			TargetResourceGroup: to.StringPtr("<target-resource-group>"),
+				to.Ptr("/subscriptions/c825645b-e31b-9cf4-1cee-2aba9e58bc7c/resourceGroups/my-saas-rg/providers/Microsoft.SaaS/resources/saas1"),
+				to.Ptr("/subscriptions/c825645b-e31b-9cf4-1cee-2aba9e58bc7c/resourceGroups/my-saas-rg/providers/Microsoft.SaaS/resources/saas2"),
+				to.Ptr("/subscriptions/c825645b-e31b-9cf4-1cee-2aba9e58bc7c/resourceGroups/my-saas-rg/providers/Microsoft.SaaS/resources/saas3")},
+			TargetResourceGroup: to.Ptr("<target-resource-group>"),
 		},
-		nil)
+		&armsaas.SubscriptionLevelClientBeginMoveResourcesOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }

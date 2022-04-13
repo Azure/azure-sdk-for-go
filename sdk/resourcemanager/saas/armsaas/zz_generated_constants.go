@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armsaas
 
 const (
 	moduleName    = "armsaas"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // PaymentChannelType - The Payment channel for the SaasSubscription.
@@ -27,11 +27,6 @@ func PossiblePaymentChannelTypeValues() []PaymentChannelType {
 		PaymentChannelTypeCustomerDelegated,
 		PaymentChannelTypeSubscriptionDelegated,
 	}
-}
-
-// ToPtr returns a *PaymentChannelType pointing to the current value.
-func (c PaymentChannelType) ToPtr() *PaymentChannelType {
-	return &c
 }
 
 // SaasAppStatus - the Saas resource status.
@@ -56,11 +51,6 @@ func PossibleSaasAppStatusValues() []SaasAppStatus {
 	}
 }
 
-// ToPtr returns a *SaasAppStatus pointing to the current value.
-func (c SaasAppStatus) ToPtr() *SaasAppStatus {
-	return &c
-}
-
 // SaasResourceStatus - The SaaS Subscription Status.
 type SaasResourceStatus string
 
@@ -81,9 +71,4 @@ func PossibleSaasResourceStatusValues() []SaasResourceStatus {
 		SaasResourceStatusSuspended,
 		SaasResourceStatusUnsubscribed,
 	}
-}
-
-// ToPtr returns a *SaasResourceStatus pointing to the current value.
-func (c SaasResourceStatus) ToPtr() *SaasResourceStatus {
-	return &c
 }

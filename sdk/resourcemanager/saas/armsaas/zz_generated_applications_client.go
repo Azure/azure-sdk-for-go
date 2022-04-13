@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,36 +34,56 @@ type ApplicationsClient struct {
 // subscriptionID - The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000)
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewApplicationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ApplicationsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewApplicationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ApplicationsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ApplicationsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // List - Gets all SaaS resources by subscription id and resource group name.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - ApplicationsClientListOptions contains the optional parameters for the ApplicationsClient.List method.
-func (client *ApplicationsClient) List(resourceGroupName string, options *ApplicationsClientListOptions) *ApplicationsClientListPager {
-	return &ApplicationsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, options)
+func (client *ApplicationsClient) List(resourceGroupName string, options *ApplicationsClientListOptions) *runtime.Pager[ApplicationsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ApplicationsClientListResponse]{
+		More: func(page ApplicationsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ApplicationsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AppResponseWithContinuation.NextLink)
+		Fetcher: func(ctx context.Context, page *ApplicationsClientListResponse) (ApplicationsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ApplicationsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ApplicationsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ApplicationsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -89,7 +110,7 @@ func (client *ApplicationsClient) listCreateRequest(ctx context.Context, resourc
 
 // listHandleResponse handles the List response.
 func (client *ApplicationsClient) listHandleResponse(resp *http.Response) (ApplicationsClientListResponse, error) {
-	result := ApplicationsClientListResponse{RawResponse: resp}
+	result := ApplicationsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AppResponseWithContinuation); err != nil {
 		return ApplicationsClientListResponse{}, err
 	}

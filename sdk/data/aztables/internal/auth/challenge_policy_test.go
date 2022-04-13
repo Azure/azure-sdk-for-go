@@ -24,8 +24,8 @@ var fakeTenant = "00000000-0000-0000-0000-000000000000"
 var scope = "https://myaccountname.table.core.windows.net/.default"
 var resource = "https://table.core.windows.net"
 
-var authScope = "Bearer authorization_uri=\"https://login.microsoftonline.com/%s\", scope=\"%s\""
-var authResourceScope = "Bearer authorization_uri=\"https://login.microsoftonline.com/%s\", resource_id=\"%s\" scope=\"%s\""
+var authScope = "Bearer authorization_uri=https://login.microsoftonline.com/%s, scope=%s"
+var authResourceScope = "Bearer authorization_uri=https://login.microsoftonline.com/%s, resource_id=%s scope=%s"
 
 func TestParseTenantID(t *testing.T) {
 	sampleURL := "https://login.microsoftonline.com/00000000-0000-0000-0000-000000000000"
@@ -68,7 +68,7 @@ func TestFindScopeAndTenant(t *testing.T) {
 
 	resp.Header.Set(
 		"WWW-Authenticate",
-		"Bearer authorization_uri=\"https://login.microsoftonline.com/00000000-0000-0000-0000-000000000000\", unimportantkey=\"unimportantvalue\" resource_id=\"https://myaccountname.table.core.windows.net/.default\"",
+		"Bearer authorization_uri=https://login.microsoftonline.com/00000000-0000-0000-0000-000000000000, unimportantkey=unimportantvalue resource_id=https://myaccountname.table.core.windows.net/.default",
 	)
 	err = p.findScopeAndTenant(&resp)
 	require.NoError(t, err)
@@ -81,7 +81,7 @@ func TestFindScopeAndTenant(t *testing.T) {
 
 	resp.Header.Set(
 		"WWW-Authenticate",
-		"Bearer   authorization_uri=\"https://login.microsoftonline.com/00000000-0000-0000-0000-000000000000\",    unimportantkey=\"unimportantvalue\"   resource_id=\"https://myaccountname.table.core.windows.net/.default\"    fakekey=\"fakevalue\"			",
+		"Bearer   authorization_uri=https://login.microsoftonline.com/00000000-0000-0000-0000-000000000000,    unimportantkey=unimportantvalue   resource_id=https://myaccountname.table.core.windows.net/.default    fakekey=fakevalue			",
 	)
 	err = p.findScopeAndTenant(&resp)
 	require.NoError(t, err)

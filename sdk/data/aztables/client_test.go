@@ -559,7 +559,14 @@ func (f fakeTokenCred) GetToken(ctx context.Context, options policy.TokenRequest
 func TestMultiTenantAuth(t *testing.T) {
 	var cred azcore.TokenCredential
 	var err error
-	if recording.GetRecordMode() == "record" {
+	err = recording.Start(t, pathToPackage, nil)
+	require.NoError(t, err)
+	defer func() {
+		err = recording.Stop(t, nil)
+		require.NoError(t, err)
+	}()
+
+	if recording.GetRecordMode() == "playback" {
 		cred = fakeTokenCred{}
 	} else {
 		cred, err = azidentity.NewClientSecretCredential(
@@ -571,13 +578,19 @@ func TestMultiTenantAuth(t *testing.T) {
 	}
 	accountName := recording.GetEnvVariable("TABLES_STORAGE_ACCOUNT_NAME", "fakeaccount")
 
-	client, err := NewClient(fmt.Sprintf("https://%s.table.core.windows.net/MyTable", accountName), cred, nil)
+	transport, err := recording.NewRecordingHTTPClient(t, nil)
+	require.NoError(t, err)
+	client, err := NewClient(fmt.Sprintf("https://%s.table.core.windows.net/MyTable", accountName), cred, &ClientOptions{
+		ClientOptions: policy.ClientOptions{Transport: transport},
+	})
 	require.NoError(t, err)
 
 	_, err = client.CreateTable(context.Background(), nil)
 	require.NoError(t, err)
 	defer func() {
-		svc, err := NewServiceClient(fmt.Sprintf("https://%s.table.core.windows.net/", accountName), cred, nil)
+		svc, err := NewServiceClient(fmt.Sprintf("https://%s.table.core.windows.net/", accountName), cred, &ClientOptions{
+			ClientOptions: policy.ClientOptions{Transport: transport},
+		})
 		require.NoError(t, err)
 		_, err = svc.DeleteTable(context.Background(), "MyTable", nil)
 		require.NoError(t, err)

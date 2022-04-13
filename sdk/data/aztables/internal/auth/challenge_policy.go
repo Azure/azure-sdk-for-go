@@ -159,8 +159,8 @@ func (scp *TablesChallengePolicy) findScopeAndTenant(resp *http.Response) error 
 	}
 
 	// Strip down to auth and resource
-	// Format is "Bearer authorization=\"<site>\" resource=\"<site>\"" OR
-	// "Bearer authorization=\"<site>\" scope=\"<site>\" resource=\"<resource>\""
+	// Format is "Bearer authorization=<site> resource=<site>" OR
+	// "Bearer authorization=<site> scope=<site> resource=<resource>"
 	authHeader = strings.ReplaceAll(authHeader, "Bearer ", "")
 
 	parts := strings.Split(authHeader, " ")
@@ -208,7 +208,7 @@ func (k TablesChallengePolicy) getChallengeRequest(orig policy.Request) (*policy
 	if err != nil {
 		return nil, &challengePolicyError{err: err}
 	}
-	// copied.Raw().Header.Del("Content-Type")
+	copied.Raw().Header.Del("Content-Type")
 
 	return copied, err
 }

@@ -420,3 +420,31 @@ ERROR CODE UNAVAILABLE
 		t.Fatalf("\ngot:\n%s\nwant:\n%s\n", got, want)
 	}
 }
+
+func TestExtractErrorCodeFromJSON(t *testing.T) {
+	errorBody := []byte(`{"odata.error": {
+		"code": "ResourceNotFound",
+		"message": {
+		  "lang": "en-us",
+		  "value": "The specified resource does not exist.\nRequestID:b2437f3b-ca2d-47a1-95a7-92f73a768a1c\n"
+		}
+	  }
+	}`)
+	code := extractErrorCodeJSON(errorBody)
+	if code != "ResourceNotFound" {
+		t.Fatalf("expected %s got %s", "ResourceNotFound", code)
+	}
+
+	errorBody = []byte(`{"error": {
+		"code": "ResourceNotFound",
+		"message": {
+		  "lang": "en-us",
+		  "value": "The specified resource does not exist.\nRequestID:b2437f3b-ca2d-47a1-95a7-92f73a768a1c\n"
+		}
+	  }
+	}`)
+	code = extractErrorCodeJSON(errorBody)
+	if code != "ResourceNotFound" {
+		t.Fatalf("expected %s got %s", "ResourceNotFound", code)
+	}
+}

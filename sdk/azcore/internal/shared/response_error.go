@@ -59,6 +59,13 @@ func extractErrorCodeJSON(body []byte) string {
 			return ""
 		}
 		rawObj = unwrapped
+	} else if wrapped, ok := rawObj["odata.error"]; ok {
+		// check if this a wrapped odata error, i.e. { "odata.error": { ... } }
+		unwrapped, ok := wrapped.(map[string]any)
+		if !ok {
+			return ""
+		}
+		rawObj = unwrapped
 	}
 
 	// now check for the error code

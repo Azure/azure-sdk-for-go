@@ -1,5 +1,190 @@
 # Release History
 
+## 0.4.0 (2022-04-13)
+### Breaking Changes
+
+- Function `*PrivateEndpointConnectionsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *SearchManagementRequestOptions)` to `(context.Context, string, string, string, *SearchManagementRequestOptions, *PrivateEndpointConnectionsClientDeleteOptions)`
+- Function `*AdminKeysClient.Get` parameter(s) have been changed from `(context.Context, string, string, *SearchManagementRequestOptions)` to `(context.Context, string, string, *SearchManagementRequestOptions, *AdminKeysClientGetOptions)`
+- Function `NewAdminKeysClient` return value(s) have been changed from `(*AdminKeysClient)` to `(*AdminKeysClient, error)`
+- Function `*PrivateEndpointConnectionsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *SearchManagementRequestOptions)` to `(context.Context, string, string, string, *SearchManagementRequestOptions, *PrivateEndpointConnectionsClientGetOptions)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(context.Context, *OperationsClientListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(OperationsClientListResponse, error)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `*ServicesClient.ListByResourceGroup` parameter(s) have been changed from `(string, *SearchManagementRequestOptions)` to `(string, *SearchManagementRequestOptions, *ServicesClientListByResourceGroupOptions)`
+- Function `*ServicesClient.ListByResourceGroup` return value(s) have been changed from `(*ServicesClientListByResourceGroupPager)` to `(*runtime.Pager[ServicesClientListByResourceGroupResponse])`
+- Function `*ServicesClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, Service, *SearchManagementRequestOptions)` to `(context.Context, string, string, Service, *SearchManagementRequestOptions, *ServicesClientBeginCreateOrUpdateOptions)`
+- Function `*ServicesClient.BeginCreateOrUpdate` return value(s) have been changed from `(ServicesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ServicesClientCreateOrUpdateResponse], error)`
+- Function `NewQueryKeysClient` return value(s) have been changed from `(*QueryKeysClient)` to `(*QueryKeysClient, error)`
+- Function `*AdminKeysClient.Regenerate` parameter(s) have been changed from `(context.Context, string, string, AdminKeyKind, *SearchManagementRequestOptions)` to `(context.Context, string, string, AdminKeyKind, *SearchManagementRequestOptions, *AdminKeysClientRegenerateOptions)`
+- Function `*PrivateEndpointConnectionsClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, PrivateEndpointConnection, *SearchManagementRequestOptions)` to `(context.Context, string, string, string, PrivateEndpointConnection, *SearchManagementRequestOptions, *PrivateEndpointConnectionsClientUpdateOptions)`
+- Function `NewSharedPrivateLinkResourcesClient` return value(s) have been changed from `(*SharedPrivateLinkResourcesClient)` to `(*SharedPrivateLinkResourcesClient, error)`
+- Function `*QueryKeysClient.ListBySearchService` parameter(s) have been changed from `(string, string, *SearchManagementRequestOptions)` to `(string, string, *SearchManagementRequestOptions, *QueryKeysClientListBySearchServiceOptions)`
+- Function `*QueryKeysClient.ListBySearchService` return value(s) have been changed from `(*QueryKeysClientListBySearchServicePager)` to `(*runtime.Pager[QueryKeysClientListBySearchServiceResponse])`
+- Function `*SharedPrivateLinkResourcesClient.ListByService` parameter(s) have been changed from `(string, string, *SearchManagementRequestOptions)` to `(string, string, *SearchManagementRequestOptions, *SharedPrivateLinkResourcesClientListByServiceOptions)`
+- Function `*SharedPrivateLinkResourcesClient.ListByService` return value(s) have been changed from `(*SharedPrivateLinkResourcesClientListByServicePager)` to `(*runtime.Pager[SharedPrivateLinkResourcesClientListByServiceResponse])`
+- Function `*QueryKeysClient.Create` parameter(s) have been changed from `(context.Context, string, string, string, *SearchManagementRequestOptions)` to `(context.Context, string, string, string, *SearchManagementRequestOptions, *QueryKeysClientCreateOptions)`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `*SharedPrivateLinkResourcesClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *SearchManagementRequestOptions)` to `(context.Context, string, string, string, *SearchManagementRequestOptions, *SharedPrivateLinkResourcesClientBeginDeleteOptions)`
+- Function `*SharedPrivateLinkResourcesClient.BeginDelete` return value(s) have been changed from `(SharedPrivateLinkResourcesClientDeletePollerResponse, error)` to `(*armruntime.Poller[SharedPrivateLinkResourcesClientDeleteResponse], error)`
+- Function `*ServicesClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *SearchManagementRequestOptions)` to `(context.Context, string, string, *SearchManagementRequestOptions, *ServicesClientDeleteOptions)`
+- Function `*PrivateEndpointConnectionsClient.ListByService` parameter(s) have been changed from `(string, string, *SearchManagementRequestOptions)` to `(string, string, *SearchManagementRequestOptions, *PrivateEndpointConnectionsClientListByServiceOptions)`
+- Function `*PrivateEndpointConnectionsClient.ListByService` return value(s) have been changed from `(*PrivateEndpointConnectionsClientListByServicePager)` to `(*runtime.Pager[PrivateEndpointConnectionsClientListByServiceResponse])`
+- Function `NewServicesClient` return value(s) have been changed from `(*ServicesClient)` to `(*ServicesClient, error)`
+- Function `*SharedPrivateLinkResourcesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *SearchManagementRequestOptions)` to `(context.Context, string, string, string, *SearchManagementRequestOptions, *SharedPrivateLinkResourcesClientGetOptions)`
+- Function `*ServicesClient.ListBySubscription` parameter(s) have been changed from `(*SearchManagementRequestOptions)` to `(*SearchManagementRequestOptions, *ServicesClientListBySubscriptionOptions)`
+- Function `*ServicesClient.ListBySubscription` return value(s) have been changed from `(*ServicesClientListBySubscriptionPager)` to `(*runtime.Pager[ServicesClientListBySubscriptionResponse])`
+- Function `NewPrivateEndpointConnectionsClient` return value(s) have been changed from `(*PrivateEndpointConnectionsClient)` to `(*PrivateEndpointConnectionsClient, error)`
+- Function `*SharedPrivateLinkResourcesClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, SharedPrivateLinkResource, *SearchManagementRequestOptions)` to `(context.Context, string, string, string, SharedPrivateLinkResource, *SearchManagementRequestOptions, *SharedPrivateLinkResourcesClientBeginCreateOrUpdateOptions)`
+- Function `*SharedPrivateLinkResourcesClient.BeginCreateOrUpdate` return value(s) have been changed from `(SharedPrivateLinkResourcesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[SharedPrivateLinkResourcesClientCreateOrUpdateResponse], error)`
+- Function `*ServicesClient.Get` parameter(s) have been changed from `(context.Context, string, string, *SearchManagementRequestOptions)` to `(context.Context, string, string, *SearchManagementRequestOptions, *ServicesClientGetOptions)`
+- Function `*ServicesClient.Update` parameter(s) have been changed from `(context.Context, string, string, ServiceUpdate, *SearchManagementRequestOptions)` to `(context.Context, string, string, ServiceUpdate, *SearchManagementRequestOptions, *ServicesClientUpdateOptions)`
+- Function `*ServicesClient.CheckNameAvailability` parameter(s) have been changed from `(context.Context, CheckNameAvailabilityInput, *SearchManagementRequestOptions)` to `(context.Context, CheckNameAvailabilityInput, *SearchManagementRequestOptions, *ServicesClientCheckNameAvailabilityOptions)`
+- Function `*QueryKeysClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *SearchManagementRequestOptions)` to `(context.Context, string, string, string, *SearchManagementRequestOptions, *QueryKeysClientDeleteOptions)`
+- Function `NewPrivateLinkResourcesClient` return value(s) have been changed from `(*PrivateLinkResourcesClient)` to `(*PrivateLinkResourcesClient, error)`
+- Function `*PrivateLinkResourcesClient.ListSupported` parameter(s) have been changed from `(context.Context, string, string, *SearchManagementRequestOptions)` to `(string, string, *SearchManagementRequestOptions, *PrivateLinkResourcesClientListSupportedOptions)`
+- Function `*PrivateLinkResourcesClient.ListSupported` return value(s) have been changed from `(PrivateLinkResourcesClientListSupportedResponse, error)` to `(*runtime.Pager[PrivateLinkResourcesClientListSupportedResponse])`
+- Function `ProvisioningState.ToPtr` has been removed
+- Function `HostingMode.ToPtr` has been removed
+- Function `*SharedPrivateLinkResourcesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `PrivateLinkServiceConnectionStatus.ToPtr` has been removed
+- Function `UnavailableNameReason.ToPtr` has been removed
+- Function `*SharedPrivateLinkResourcesClientListByServicePager.Err` has been removed
+- Function `*PrivateEndpointConnectionsClientListByServicePager.Err` has been removed
+- Function `*SharedPrivateLinkResourcesClientDeletePoller.ResumeToken` has been removed
+- Function `*PrivateEndpointConnectionsClientListByServicePager.PageResponse` has been removed
+- Function `*ServicesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*SharedPrivateLinkResourcesClientDeletePoller.Done` has been removed
+- Function `SharedPrivateLinkResourcesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `SharedPrivateLinkResourceAsyncOperationResult.ToPtr` has been removed
+- Function `*ServicesClientListByResourceGroupPager.Err` has been removed
+- Function `PublicNetworkAccess.ToPtr` has been removed
+- Function `*QueryKeysClientListBySearchServicePager.PageResponse` has been removed
+- Function `*PrivateEndpointConnectionsClientListByServicePager.NextPage` has been removed
+- Function `*ServicesClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*SharedPrivateLinkResourcesClientDeletePollerResponse.Resume` has been removed
+- Function `*ServicesClientListBySubscriptionPager.NextPage` has been removed
+- Function `*SharedPrivateLinkResourcesClientDeletePoller.FinalResponse` has been removed
+- Function `*ServicesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*SharedPrivateLinkResourcesClientCreateOrUpdatePoller.Done` has been removed
+- Function `AdminKeyKind.ToPtr` has been removed
+- Function `*ServicesClientListBySubscriptionPager.Err` has been removed
+- Function `*ServicesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `ServicesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*SharedPrivateLinkResourcesClientListByServicePager.PageResponse` has been removed
+- Function `*ServicesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*SharedPrivateLinkResourcesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `SharedPrivateLinkResourcesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `SharedPrivateLinkResourceProvisioningState.ToPtr` has been removed
+- Function `*SharedPrivateLinkResourcesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ServicesClientListByResourceGroupPager.NextPage` has been removed
+- Function `*ServicesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `SharedPrivateLinkResourceStatus.ToPtr` has been removed
+- Function `*SharedPrivateLinkResourcesClientDeletePoller.Poll` has been removed
+- Function `IdentityType.ToPtr` has been removed
+- Function `SKUName.ToPtr` has been removed
+- Function `*ServicesClientListBySubscriptionPager.PageResponse` has been removed
+- Function `*QueryKeysClientListBySearchServicePager.Err` has been removed
+- Function `*SharedPrivateLinkResourcesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*QueryKeysClientListBySearchServicePager.NextPage` has been removed
+- Function `*SharedPrivateLinkResourcesClientListByServicePager.NextPage` has been removed
+- Function `SearchServiceStatus.ToPtr` has been removed
+- Struct `AdminKeysClientGetResult` has been removed
+- Struct `AdminKeysClientRegenerateResult` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `PrivateEndpointConnectionsClientDeleteResult` has been removed
+- Struct `PrivateEndpointConnectionsClientGetResult` has been removed
+- Struct `PrivateEndpointConnectionsClientListByServicePager` has been removed
+- Struct `PrivateEndpointConnectionsClientListByServiceResult` has been removed
+- Struct `PrivateEndpointConnectionsClientUpdateResult` has been removed
+- Struct `PrivateLinkResourcesClientListSupportedResult` has been removed
+- Struct `QueryKeysClientCreateResult` has been removed
+- Struct `QueryKeysClientListBySearchServicePager` has been removed
+- Struct `QueryKeysClientListBySearchServiceResult` has been removed
+- Struct `ServicesClientCheckNameAvailabilityResult` has been removed
+- Struct `ServicesClientCreateOrUpdatePoller` has been removed
+- Struct `ServicesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ServicesClientCreateOrUpdateResult` has been removed
+- Struct `ServicesClientGetResult` has been removed
+- Struct `ServicesClientListByResourceGroupPager` has been removed
+- Struct `ServicesClientListByResourceGroupResult` has been removed
+- Struct `ServicesClientListBySubscriptionPager` has been removed
+- Struct `ServicesClientListBySubscriptionResult` has been removed
+- Struct `ServicesClientUpdateResult` has been removed
+- Struct `SharedPrivateLinkResourcesClientCreateOrUpdatePoller` has been removed
+- Struct `SharedPrivateLinkResourcesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `SharedPrivateLinkResourcesClientCreateOrUpdateResult` has been removed
+- Struct `SharedPrivateLinkResourcesClientDeletePoller` has been removed
+- Struct `SharedPrivateLinkResourcesClientDeletePollerResponse` has been removed
+- Struct `SharedPrivateLinkResourcesClientGetResult` has been removed
+- Struct `SharedPrivateLinkResourcesClientListByServicePager` has been removed
+- Struct `SharedPrivateLinkResourcesClientListByServiceResult` has been removed
+- Field `RawResponse` of struct `QueryKeysClientDeleteResponse` has been removed
+- Field `ServicesClientListByResourceGroupResult` of struct `ServicesClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `ServicesClientListByResourceGroupResponse` has been removed
+- Field `QueryKeysClientCreateResult` of struct `QueryKeysClientCreateResponse` has been removed
+- Field `RawResponse` of struct `QueryKeysClientCreateResponse` has been removed
+- Field `PrivateEndpointConnectionsClientListByServiceResult` of struct `PrivateEndpointConnectionsClientListByServiceResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientListByServiceResponse` has been removed
+- Field `PrivateEndpointConnectionsClientUpdateResult` of struct `PrivateEndpointConnectionsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientUpdateResponse` has been removed
+- Field `PrivateLinkResourcesClientListSupportedResult` of struct `PrivateLinkResourcesClientListSupportedResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkResourcesClientListSupportedResponse` has been removed
+- Field `RawResponse` of struct `ServicesClientDeleteResponse` has been removed
+- Field `AdminKeysClientRegenerateResult` of struct `AdminKeysClientRegenerateResponse` has been removed
+- Field `RawResponse` of struct `AdminKeysClientRegenerateResponse` has been removed
+- Field `RawResponse` of struct `SharedPrivateLinkResourcesClientDeleteResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `PrivateEndpointConnectionsClientGetResult` of struct `PrivateEndpointConnectionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientGetResponse` has been removed
+- Field `ServicesClientCheckNameAvailabilityResult` of struct `ServicesClientCheckNameAvailabilityResponse` has been removed
+- Field `RawResponse` of struct `ServicesClientCheckNameAvailabilityResponse` has been removed
+- Field `SharedPrivateLinkResourcesClientCreateOrUpdateResult` of struct `SharedPrivateLinkResourcesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `SharedPrivateLinkResourcesClientCreateOrUpdateResponse` has been removed
+- Field `AdminKeysClientGetResult` of struct `AdminKeysClientGetResponse` has been removed
+- Field `RawResponse` of struct `AdminKeysClientGetResponse` has been removed
+- Field `SharedPrivateLinkResourcesClientGetResult` of struct `SharedPrivateLinkResourcesClientGetResponse` has been removed
+- Field `RawResponse` of struct `SharedPrivateLinkResourcesClientGetResponse` has been removed
+- Field `ServicesClientUpdateResult` of struct `ServicesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ServicesClientUpdateResponse` has been removed
+- Field `PrivateEndpointConnectionsClientDeleteResult` of struct `PrivateEndpointConnectionsClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientDeleteResponse` has been removed
+- Field `ServicesClientGetResult` of struct `ServicesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ServicesClientGetResponse` has been removed
+- Field `ServicesClientCreateOrUpdateResult` of struct `ServicesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ServicesClientCreateOrUpdateResponse` has been removed
+- Field `SharedPrivateLinkResourcesClientListByServiceResult` of struct `SharedPrivateLinkResourcesClientListByServiceResponse` has been removed
+- Field `RawResponse` of struct `SharedPrivateLinkResourcesClientListByServiceResponse` has been removed
+- Field `ServicesClientListBySubscriptionResult` of struct `ServicesClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `ServicesClientListBySubscriptionResponse` has been removed
+- Field `QueryKeysClientListBySearchServiceResult` of struct `QueryKeysClientListBySearchServiceResponse` has been removed
+- Field `RawResponse` of struct `QueryKeysClientListBySearchServiceResponse` has been removed
+
+### Features Added
+
+- New anonymous field `Service` in struct `ServicesClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `SharedPrivateLinkResourcesClientBeginCreateOrUpdateOptions`
+- New anonymous field `CheckNameAvailabilityOutput` in struct `ServicesClientCheckNameAvailabilityResponse`
+- New anonymous field `ServiceListResult` in struct `ServicesClientListBySubscriptionResponse`
+- New anonymous field `SharedPrivateLinkResource` in struct `SharedPrivateLinkResourcesClientCreateOrUpdateResponse`
+- New anonymous field `ListQueryKeysResult` in struct `QueryKeysClientListBySearchServiceResponse`
+- New anonymous field `PrivateEndpointConnection` in struct `PrivateEndpointConnectionsClientDeleteResponse`
+- New anonymous field `Service` in struct `ServicesClientGetResponse`
+- New anonymous field `PrivateEndpointConnectionListResult` in struct `PrivateEndpointConnectionsClientListByServiceResponse`
+- New anonymous field `PrivateLinkResourcesResult` in struct `PrivateLinkResourcesClientListSupportedResponse`
+- New field `ResumeToken` in struct `ServicesClientBeginCreateOrUpdateOptions`
+- New anonymous field `AdminKeyResult` in struct `AdminKeysClientGetResponse`
+- New anonymous field `PrivateEndpointConnection` in struct `PrivateEndpointConnectionsClientUpdateResponse`
+- New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
+- New field `ResumeToken` in struct `SharedPrivateLinkResourcesClientBeginDeleteOptions`
+- New anonymous field `SharedPrivateLinkResourceListResult` in struct `SharedPrivateLinkResourcesClientListByServiceResponse`
+- New anonymous field `QueryKey` in struct `QueryKeysClientCreateResponse`
+- New anonymous field `PrivateEndpointConnection` in struct `PrivateEndpointConnectionsClientGetResponse`
+- New anonymous field `Service` in struct `ServicesClientUpdateResponse`
+- New anonymous field `ServiceListResult` in struct `ServicesClientListByResourceGroupResponse`
+- New anonymous field `AdminKeyResult` in struct `AdminKeysClientRegenerateResponse`
+- New anonymous field `SharedPrivateLinkResource` in struct `SharedPrivateLinkResourcesClientGetResponse`
+
+
 ## 0.3.1 (2022-02-22)
 
 ### Other Changes

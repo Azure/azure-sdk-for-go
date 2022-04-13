@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type PrivateLinkResourcesClient struct {
 // Manager API or the portal.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PrivateLinkResourcesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateLinkResourcesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &PrivateLinkResourcesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // ListSupported - Gets a list of all supported private link resource types for the given service.
@@ -55,24 +60,34 @@ func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.Toke
 // resourceGroupName - The name of the resource group within the current subscription. You can obtain this value from the
 // Azure Resource Manager API or the portal.
 // searchServiceName - The name of the Azure Cognitive Search service associated with the specified resource group.
-// options - SearchManagementRequestOptions contains a group of parameters for the AdminKeysClient.Get method.
-func (client *PrivateLinkResourcesClient) ListSupported(ctx context.Context, resourceGroupName string, searchServiceName string, options *SearchManagementRequestOptions) (PrivateLinkResourcesClientListSupportedResponse, error) {
-	req, err := client.listSupportedCreateRequest(ctx, resourceGroupName, searchServiceName, options)
-	if err != nil {
-		return PrivateLinkResourcesClientListSupportedResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return PrivateLinkResourcesClientListSupportedResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PrivateLinkResourcesClientListSupportedResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listSupportedHandleResponse(resp)
+// SearchManagementRequestOptions - SearchManagementRequestOptions contains a group of parameters for the AdminKeysClient.Get
+// method.
+// options - PrivateLinkResourcesClientListSupportedOptions contains the optional parameters for the PrivateLinkResourcesClient.ListSupported
+// method.
+func (client *PrivateLinkResourcesClient) ListSupported(resourceGroupName string, searchServiceName string, searchManagementRequestOptions *SearchManagementRequestOptions, options *PrivateLinkResourcesClientListSupportedOptions) *runtime.Pager[PrivateLinkResourcesClientListSupportedResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PrivateLinkResourcesClientListSupportedResponse]{
+		More: func(page PrivateLinkResourcesClientListSupportedResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *PrivateLinkResourcesClientListSupportedResponse) (PrivateLinkResourcesClientListSupportedResponse, error) {
+			req, err := client.listSupportedCreateRequest(ctx, resourceGroupName, searchServiceName, searchManagementRequestOptions, options)
+			if err != nil {
+				return PrivateLinkResourcesClientListSupportedResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PrivateLinkResourcesClientListSupportedResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PrivateLinkResourcesClientListSupportedResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listSupportedHandleResponse(resp)
+		},
+	})
 }
 
 // listSupportedCreateRequest creates the ListSupported request.
-func (client *PrivateLinkResourcesClient) listSupportedCreateRequest(ctx context.Context, resourceGroupName string, searchServiceName string, options *SearchManagementRequestOptions) (*policy.Request, error) {
+func (client *PrivateLinkResourcesClient) listSupportedCreateRequest(ctx context.Context, resourceGroupName string, searchServiceName string, searchManagementRequestOptions *SearchManagementRequestOptions, options *PrivateLinkResourcesClientListSupportedOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{searchServiceName}/privateLinkResources"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -93,8 +108,8 @@ func (client *PrivateLinkResourcesClient) listSupportedCreateRequest(ctx context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header.Set("x-ms-client-request-id", *options.ClientRequestID)
+	if searchManagementRequestOptions != nil && searchManagementRequestOptions.ClientRequestID != nil {
+		req.Raw().Header.Set("x-ms-client-request-id", *searchManagementRequestOptions.ClientRequestID)
 	}
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -102,7 +117,7 @@ func (client *PrivateLinkResourcesClient) listSupportedCreateRequest(ctx context
 
 // listSupportedHandleResponse handles the ListSupported response.
 func (client *PrivateLinkResourcesClient) listSupportedHandleResponse(resp *http.Response) (PrivateLinkResourcesClientListSupportedResponse, error) {
-	result := PrivateLinkResourcesClientListSupportedResponse{RawResponse: resp}
+	result := PrivateLinkResourcesClientListSupportedResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResourcesResult); err != nil {
 		return PrivateLinkResourcesClientListSupportedResponse{}, err
 	}

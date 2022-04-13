@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armnetwork
 
 const (
 	moduleName    = "armnetwork"
-	moduleVersion = "v0.3.1"
+	moduleVersion = "v0.4.0"
 )
 
 // Access - Access to be allowed or denied.
@@ -27,11 +27,6 @@ func PossibleAccessValues() []Access {
 		AccessAllow,
 		AccessDeny,
 	}
-}
-
-// ToPtr returns a *Access pointing to the current value.
-func (c Access) ToPtr() *Access {
-	return &c
 }
 
 // ApplicationGatewayBackendHealthServerHealth - Health of backend server.
@@ -56,11 +51,6 @@ func PossibleApplicationGatewayBackendHealthServerHealthValues() []ApplicationGa
 	}
 }
 
-// ToPtr returns a *ApplicationGatewayBackendHealthServerHealth pointing to the current value.
-func (c ApplicationGatewayBackendHealthServerHealth) ToPtr() *ApplicationGatewayBackendHealthServerHealth {
-	return &c
-}
-
 // ApplicationGatewayCookieBasedAffinity - Cookie based affinity.
 type ApplicationGatewayCookieBasedAffinity string
 
@@ -75,11 +65,6 @@ func PossibleApplicationGatewayCookieBasedAffinityValues() []ApplicationGatewayC
 		ApplicationGatewayCookieBasedAffinityDisabled,
 		ApplicationGatewayCookieBasedAffinityEnabled,
 	}
-}
-
-// ToPtr returns a *ApplicationGatewayCookieBasedAffinity pointing to the current value.
-func (c ApplicationGatewayCookieBasedAffinity) ToPtr() *ApplicationGatewayCookieBasedAffinity {
-	return &c
 }
 
 // ApplicationGatewayCustomErrorStatusCode - Status code of the application gateway customer error.
@@ -98,11 +83,6 @@ func PossibleApplicationGatewayCustomErrorStatusCodeValues() []ApplicationGatewa
 	}
 }
 
-// ToPtr returns a *ApplicationGatewayCustomErrorStatusCode pointing to the current value.
-func (c ApplicationGatewayCustomErrorStatusCode) ToPtr() *ApplicationGatewayCustomErrorStatusCode {
-	return &c
-}
-
 // ApplicationGatewayFirewallMode - Web application firewall mode.
 type ApplicationGatewayFirewallMode string
 
@@ -117,11 +97,6 @@ func PossibleApplicationGatewayFirewallModeValues() []ApplicationGatewayFirewall
 		ApplicationGatewayFirewallModeDetection,
 		ApplicationGatewayFirewallModePrevention,
 	}
-}
-
-// ToPtr returns a *ApplicationGatewayFirewallMode pointing to the current value.
-func (c ApplicationGatewayFirewallMode) ToPtr() *ApplicationGatewayFirewallMode {
-	return &c
 }
 
 // ApplicationGatewayLoadDistributionAlgorithm - Load Distribution Algorithm enums.
@@ -140,11 +115,6 @@ func PossibleApplicationGatewayLoadDistributionAlgorithmValues() []ApplicationGa
 		ApplicationGatewayLoadDistributionAlgorithmLeastConnections,
 		ApplicationGatewayLoadDistributionAlgorithmRoundRobin,
 	}
-}
-
-// ToPtr returns a *ApplicationGatewayLoadDistributionAlgorithm pointing to the current value.
-func (c ApplicationGatewayLoadDistributionAlgorithm) ToPtr() *ApplicationGatewayLoadDistributionAlgorithm {
-	return &c
 }
 
 // ApplicationGatewayOperationalState - Operational state of the application gateway resource.
@@ -167,11 +137,6 @@ func PossibleApplicationGatewayOperationalStateValues() []ApplicationGatewayOper
 	}
 }
 
-// ToPtr returns a *ApplicationGatewayOperationalState pointing to the current value.
-func (c ApplicationGatewayOperationalState) ToPtr() *ApplicationGatewayOperationalState {
-	return &c
-}
-
 // ApplicationGatewayProtocol - Application Gateway protocol.
 type ApplicationGatewayProtocol string
 
@@ -186,11 +151,6 @@ func PossibleApplicationGatewayProtocolValues() []ApplicationGatewayProtocol {
 		ApplicationGatewayProtocolHTTP,
 		ApplicationGatewayProtocolHTTPS,
 	}
-}
-
-// ToPtr returns a *ApplicationGatewayProtocol pointing to the current value.
-func (c ApplicationGatewayProtocol) ToPtr() *ApplicationGatewayProtocol {
-	return &c
 }
 
 // ApplicationGatewayRedirectType - Redirect type enum.
@@ -213,11 +173,6 @@ func PossibleApplicationGatewayRedirectTypeValues() []ApplicationGatewayRedirect
 	}
 }
 
-// ToPtr returns a *ApplicationGatewayRedirectType pointing to the current value.
-func (c ApplicationGatewayRedirectType) ToPtr() *ApplicationGatewayRedirectType {
-	return &c
-}
-
 // ApplicationGatewayRequestRoutingRuleType - Rule type.
 type ApplicationGatewayRequestRoutingRuleType string
 
@@ -232,11 +187,6 @@ func PossibleApplicationGatewayRequestRoutingRuleTypeValues() []ApplicationGatew
 		ApplicationGatewayRequestRoutingRuleTypeBasic,
 		ApplicationGatewayRequestRoutingRuleTypePathBasedRouting,
 	}
-}
-
-// ToPtr returns a *ApplicationGatewayRequestRoutingRuleType pointing to the current value.
-func (c ApplicationGatewayRequestRoutingRuleType) ToPtr() *ApplicationGatewayRequestRoutingRuleType {
-	return &c
 }
 
 // ApplicationGatewaySKUName - Name of an application gateway SKU.
@@ -263,11 +213,6 @@ func PossibleApplicationGatewaySKUNameValues() []ApplicationGatewaySKUName {
 		ApplicationGatewaySKUNameWAFMedium,
 		ApplicationGatewaySKUNameWAFV2,
 	}
-}
-
-// ToPtr returns a *ApplicationGatewaySKUName pointing to the current value.
-func (c ApplicationGatewaySKUName) ToPtr() *ApplicationGatewaySKUName {
-	return &c
 }
 
 // ApplicationGatewaySSLCipherSuite - Ssl cipher suites enums.
@@ -338,11 +283,6 @@ func PossibleApplicationGatewaySSLCipherSuiteValues() []ApplicationGatewaySSLCip
 	}
 }
 
-// ToPtr returns a *ApplicationGatewaySSLCipherSuite pointing to the current value.
-func (c ApplicationGatewaySSLCipherSuite) ToPtr() *ApplicationGatewaySSLCipherSuite {
-	return &c
-}
-
 // ApplicationGatewaySSLPolicyName - Ssl predefined policy name enums.
 type ApplicationGatewaySSLPolicyName string
 
@@ -361,11 +301,6 @@ func PossibleApplicationGatewaySSLPolicyNameValues() []ApplicationGatewaySSLPoli
 	}
 }
 
-// ToPtr returns a *ApplicationGatewaySSLPolicyName pointing to the current value.
-func (c ApplicationGatewaySSLPolicyName) ToPtr() *ApplicationGatewaySSLPolicyName {
-	return &c
-}
-
 // ApplicationGatewaySSLPolicyType - Type of Ssl Policy.
 type ApplicationGatewaySSLPolicyType string
 
@@ -380,11 +315,6 @@ func PossibleApplicationGatewaySSLPolicyTypeValues() []ApplicationGatewaySSLPoli
 		ApplicationGatewaySSLPolicyTypeCustom,
 		ApplicationGatewaySSLPolicyTypePredefined,
 	}
-}
-
-// ToPtr returns a *ApplicationGatewaySSLPolicyType pointing to the current value.
-func (c ApplicationGatewaySSLPolicyType) ToPtr() *ApplicationGatewaySSLPolicyType {
-	return &c
 }
 
 // ApplicationGatewaySSLProtocol - Ssl protocol enums.
@@ -403,11 +333,6 @@ func PossibleApplicationGatewaySSLProtocolValues() []ApplicationGatewaySSLProtoc
 		ApplicationGatewaySSLProtocolTLSv11,
 		ApplicationGatewaySSLProtocolTLSv12,
 	}
-}
-
-// ToPtr returns a *ApplicationGatewaySSLProtocol pointing to the current value.
-func (c ApplicationGatewaySSLProtocol) ToPtr() *ApplicationGatewaySSLProtocol {
-	return &c
 }
 
 // ApplicationGatewayTier - Tier of an application gateway.
@@ -430,11 +355,6 @@ func PossibleApplicationGatewayTierValues() []ApplicationGatewayTier {
 	}
 }
 
-// ToPtr returns a *ApplicationGatewayTier pointing to the current value.
-func (c ApplicationGatewayTier) ToPtr() *ApplicationGatewayTier {
-	return &c
-}
-
 // AssociationType - The association type of the child resource to the parent resource.
 type AssociationType string
 
@@ -449,11 +369,6 @@ func PossibleAssociationTypeValues() []AssociationType {
 		AssociationTypeAssociated,
 		AssociationTypeContains,
 	}
-}
-
-// ToPtr returns a *AssociationType pointing to the current value.
-func (c AssociationType) ToPtr() *AssociationType {
-	return &c
 }
 
 // AuthenticationMethod - VPN client authentication method.
@@ -472,11 +387,6 @@ func PossibleAuthenticationMethodValues() []AuthenticationMethod {
 	}
 }
 
-// ToPtr returns a *AuthenticationMethod pointing to the current value.
-func (c AuthenticationMethod) ToPtr() *AuthenticationMethod {
-	return &c
-}
-
 // AuthorizationUseStatus - The authorization use status.
 type AuthorizationUseStatus string
 
@@ -491,11 +401,6 @@ func PossibleAuthorizationUseStatusValues() []AuthorizationUseStatus {
 		AuthorizationUseStatusAvailable,
 		AuthorizationUseStatusInUse,
 	}
-}
-
-// ToPtr returns a *AuthorizationUseStatus pointing to the current value.
-func (c AuthorizationUseStatus) ToPtr() *AuthorizationUseStatus {
-	return &c
 }
 
 // AzureFirewallApplicationRuleProtocolType - The protocol type of a Application Rule resource.
@@ -516,11 +421,6 @@ func PossibleAzureFirewallApplicationRuleProtocolTypeValues() []AzureFirewallApp
 	}
 }
 
-// ToPtr returns a *AzureFirewallApplicationRuleProtocolType pointing to the current value.
-func (c AzureFirewallApplicationRuleProtocolType) ToPtr() *AzureFirewallApplicationRuleProtocolType {
-	return &c
-}
-
 // AzureFirewallNatRCActionType - The action type of a NAT rule collection.
 type AzureFirewallNatRCActionType string
 
@@ -535,11 +435,6 @@ func PossibleAzureFirewallNatRCActionTypeValues() []AzureFirewallNatRCActionType
 		AzureFirewallNatRCActionTypeDnat,
 		AzureFirewallNatRCActionTypeSnat,
 	}
-}
-
-// ToPtr returns a *AzureFirewallNatRCActionType pointing to the current value.
-func (c AzureFirewallNatRCActionType) ToPtr() *AzureFirewallNatRCActionType {
-	return &c
 }
 
 // AzureFirewallNetworkRuleProtocol - The protocol of a Network Rule resource.
@@ -562,11 +457,6 @@ func PossibleAzureFirewallNetworkRuleProtocolValues() []AzureFirewallNetworkRule
 	}
 }
 
-// ToPtr returns a *AzureFirewallNetworkRuleProtocol pointing to the current value.
-func (c AzureFirewallNetworkRuleProtocol) ToPtr() *AzureFirewallNetworkRuleProtocol {
-	return &c
-}
-
 // AzureFirewallRCActionType - The action type of a rule collection.
 type AzureFirewallRCActionType string
 
@@ -583,11 +473,6 @@ func PossibleAzureFirewallRCActionTypeValues() []AzureFirewallRCActionType {
 	}
 }
 
-// ToPtr returns a *AzureFirewallRCActionType pointing to the current value.
-func (c AzureFirewallRCActionType) ToPtr() *AzureFirewallRCActionType {
-	return &c
-}
-
 // AzureFirewallSKUName - Name of an Azure Firewall SKU.
 type AzureFirewallSKUName string
 
@@ -602,11 +487,6 @@ func PossibleAzureFirewallSKUNameValues() []AzureFirewallSKUName {
 		AzureFirewallSKUNameAZFWHub,
 		AzureFirewallSKUNameAZFWVnet,
 	}
-}
-
-// ToPtr returns a *AzureFirewallSKUName pointing to the current value.
-func (c AzureFirewallSKUName) ToPtr() *AzureFirewallSKUName {
-	return &c
 }
 
 // AzureFirewallSKUTier - Tier of an Azure Firewall.
@@ -627,11 +507,6 @@ func PossibleAzureFirewallSKUTierValues() []AzureFirewallSKUTier {
 	}
 }
 
-// ToPtr returns a *AzureFirewallSKUTier pointing to the current value.
-func (c AzureFirewallSKUTier) ToPtr() *AzureFirewallSKUTier {
-	return &c
-}
-
 // AzureFirewallThreatIntelMode - The operation mode for Threat Intel.
 type AzureFirewallThreatIntelMode string
 
@@ -650,11 +525,6 @@ func PossibleAzureFirewallThreatIntelModeValues() []AzureFirewallThreatIntelMode
 	}
 }
 
-// ToPtr returns a *AzureFirewallThreatIntelMode pointing to the current value.
-func (c AzureFirewallThreatIntelMode) ToPtr() *AzureFirewallThreatIntelMode {
-	return &c
-}
-
 // BastionConnectProtocol - The protocol used to connect to the target.
 type BastionConnectProtocol string
 
@@ -671,11 +541,6 @@ func PossibleBastionConnectProtocolValues() []BastionConnectProtocol {
 	}
 }
 
-// ToPtr returns a *BastionConnectProtocol pointing to the current value.
-func (c BastionConnectProtocol) ToPtr() *BastionConnectProtocol {
-	return &c
-}
-
 // BastionHostSKUName - The name of this Bastion Host.
 type BastionHostSKUName string
 
@@ -690,11 +555,6 @@ func PossibleBastionHostSKUNameValues() []BastionHostSKUName {
 		BastionHostSKUNameBasic,
 		BastionHostSKUNameStandard,
 	}
-}
-
-// ToPtr returns a *BastionHostSKUName pointing to the current value.
-func (c BastionHostSKUName) ToPtr() *BastionHostSKUName {
-	return &c
 }
 
 // BgpPeerState - The BGP peer state.
@@ -719,11 +579,6 @@ func PossibleBgpPeerStateValues() []BgpPeerState {
 	}
 }
 
-// ToPtr returns a *BgpPeerState pointing to the current value.
-func (c BgpPeerState) ToPtr() *BgpPeerState {
-	return &c
-}
-
 // CircuitConnectionStatus - Express Route Circuit connection state.
 type CircuitConnectionStatus string
 
@@ -740,11 +595,6 @@ func PossibleCircuitConnectionStatusValues() []CircuitConnectionStatus {
 		CircuitConnectionStatusConnecting,
 		CircuitConnectionStatusDisconnected,
 	}
-}
-
-// ToPtr returns a *CircuitConnectionStatus pointing to the current value.
-func (c CircuitConnectionStatus) ToPtr() *CircuitConnectionStatus {
-	return &c
 }
 
 // CommissionedState - The commissioned state of the Custom IP Prefix.
@@ -771,11 +621,6 @@ func PossibleCommissionedStateValues() []CommissionedState {
 	}
 }
 
-// ToPtr returns a *CommissionedState pointing to the current value.
-func (c CommissionedState) ToPtr() *CommissionedState {
-	return &c
-}
-
 // ConnectionMonitorEndpointFilterItemType - The type of item included in the filter. Currently only 'AgentAddress' is supported.
 type ConnectionMonitorEndpointFilterItemType string
 
@@ -790,11 +635,6 @@ func PossibleConnectionMonitorEndpointFilterItemTypeValues() []ConnectionMonitor
 	}
 }
 
-// ToPtr returns a *ConnectionMonitorEndpointFilterItemType pointing to the current value.
-func (c ConnectionMonitorEndpointFilterItemType) ToPtr() *ConnectionMonitorEndpointFilterItemType {
-	return &c
-}
-
 // ConnectionMonitorEndpointFilterType - The behavior of the endpoint filter. Currently only 'Include' is supported.
 type ConnectionMonitorEndpointFilterType string
 
@@ -807,11 +647,6 @@ func PossibleConnectionMonitorEndpointFilterTypeValues() []ConnectionMonitorEndp
 	return []ConnectionMonitorEndpointFilterType{
 		ConnectionMonitorEndpointFilterTypeInclude,
 	}
-}
-
-// ToPtr returns a *ConnectionMonitorEndpointFilterType pointing to the current value.
-func (c ConnectionMonitorEndpointFilterType) ToPtr() *ConnectionMonitorEndpointFilterType {
-	return &c
 }
 
 // ConnectionMonitorSourceStatus - Status of connection monitor source.
@@ -832,11 +667,6 @@ func PossibleConnectionMonitorSourceStatusValues() []ConnectionMonitorSourceStat
 	}
 }
 
-// ToPtr returns a *ConnectionMonitorSourceStatus pointing to the current value.
-func (c ConnectionMonitorSourceStatus) ToPtr() *ConnectionMonitorSourceStatus {
-	return &c
-}
-
 // ConnectionMonitorTestConfigurationProtocol - The protocol to use in test evaluation.
 type ConnectionMonitorTestConfigurationProtocol string
 
@@ -855,11 +685,6 @@ func PossibleConnectionMonitorTestConfigurationProtocolValues() []ConnectionMoni
 	}
 }
 
-// ToPtr returns a *ConnectionMonitorTestConfigurationProtocol pointing to the current value.
-func (c ConnectionMonitorTestConfigurationProtocol) ToPtr() *ConnectionMonitorTestConfigurationProtocol {
-	return &c
-}
-
 // ConnectionMonitorType - Type of connection monitor.
 type ConnectionMonitorType string
 
@@ -874,11 +699,6 @@ func PossibleConnectionMonitorTypeValues() []ConnectionMonitorType {
 		ConnectionMonitorTypeMultiEndpoint,
 		ConnectionMonitorTypeSingleSourceDestination,
 	}
-}
-
-// ToPtr returns a *ConnectionMonitorType pointing to the current value.
-func (c ConnectionMonitorType) ToPtr() *ConnectionMonitorType {
-	return &c
 }
 
 // ConnectionState - The connection state.
@@ -899,11 +719,6 @@ func PossibleConnectionStateValues() []ConnectionState {
 	}
 }
 
-// ToPtr returns a *ConnectionState pointing to the current value.
-func (c ConnectionState) ToPtr() *ConnectionState {
-	return &c
-}
-
 // ConnectionStatus - The connection status.
 type ConnectionStatus string
 
@@ -922,11 +737,6 @@ func PossibleConnectionStatusValues() []ConnectionStatus {
 		ConnectionStatusDisconnected,
 		ConnectionStatusUnknown,
 	}
-}
-
-// ToPtr returns a *ConnectionStatus pointing to the current value.
-func (c ConnectionStatus) ToPtr() *ConnectionStatus {
-	return &c
 }
 
 // CoverageLevel - Test coverage for the endpoint.
@@ -953,11 +763,6 @@ func PossibleCoverageLevelValues() []CoverageLevel {
 	}
 }
 
-// ToPtr returns a *CoverageLevel pointing to the current value.
-func (c CoverageLevel) ToPtr() *CoverageLevel {
-	return &c
-}
-
 // DdosCustomPolicyProtocol - The protocol for which the DDoS protection policy is being customized.
 type DdosCustomPolicyProtocol string
 
@@ -974,11 +779,6 @@ func PossibleDdosCustomPolicyProtocolValues() []DdosCustomPolicyProtocol {
 		DdosCustomPolicyProtocolTCP,
 		DdosCustomPolicyProtocolUDP,
 	}
-}
-
-// ToPtr returns a *DdosCustomPolicyProtocol pointing to the current value.
-func (c DdosCustomPolicyProtocol) ToPtr() *DdosCustomPolicyProtocol {
-	return &c
 }
 
 // DdosCustomPolicyTriggerSensitivityOverride - The customized DDoS protection trigger rate sensitivity degrees. High: Trigger
@@ -1004,11 +804,6 @@ func PossibleDdosCustomPolicyTriggerSensitivityOverrideValues() []DdosCustomPoli
 	}
 }
 
-// ToPtr returns a *DdosCustomPolicyTriggerSensitivityOverride pointing to the current value.
-func (c DdosCustomPolicyTriggerSensitivityOverride) ToPtr() *DdosCustomPolicyTriggerSensitivityOverride {
-	return &c
-}
-
 // DdosSettingsProtectionCoverage - The DDoS protection policy customizability of the public IP. Only standard coverage will
 // have the ability to be customized.
 type DdosSettingsProtectionCoverage string
@@ -1024,11 +819,6 @@ func PossibleDdosSettingsProtectionCoverageValues() []DdosSettingsProtectionCove
 		DdosSettingsProtectionCoverageBasic,
 		DdosSettingsProtectionCoverageStandard,
 	}
-}
-
-// ToPtr returns a *DdosSettingsProtectionCoverage pointing to the current value.
-func (c DdosSettingsProtectionCoverage) ToPtr() *DdosSettingsProtectionCoverage {
-	return &c
 }
 
 // DeleteOptions - Specify what happens to the public IP address when the VM using it is deleted
@@ -1047,11 +837,6 @@ func PossibleDeleteOptionsValues() []DeleteOptions {
 	}
 }
 
-// ToPtr returns a *DeleteOptions pointing to the current value.
-func (c DeleteOptions) ToPtr() *DeleteOptions {
-	return &c
-}
-
 // DestinationPortBehavior - Destination port behavior.
 type DestinationPortBehavior string
 
@@ -1066,11 +851,6 @@ func PossibleDestinationPortBehaviorValues() []DestinationPortBehavior {
 		DestinationPortBehaviorListenIfAvailable,
 		DestinationPortBehaviorNone,
 	}
-}
-
-// ToPtr returns a *DestinationPortBehavior pointing to the current value.
-func (c DestinationPortBehavior) ToPtr() *DestinationPortBehavior {
-	return &c
 }
 
 // DhGroup - The DH Groups used in IKE Phase 1 for initial SA.
@@ -1101,11 +881,6 @@ func PossibleDhGroupValues() []DhGroup {
 	}
 }
 
-// ToPtr returns a *DhGroup pointing to the current value.
-func (c DhGroup) ToPtr() *DhGroup {
-	return &c
-}
-
 // Direction - The direction of the traffic.
 type Direction string
 
@@ -1120,11 +895,6 @@ func PossibleDirectionValues() []Direction {
 		DirectionInbound,
 		DirectionOutbound,
 	}
-}
-
-// ToPtr returns a *Direction pointing to the current value.
-func (c Direction) ToPtr() *Direction {
-	return &c
 }
 
 // EffectiveRouteSource - Who created the route.
@@ -1147,11 +917,6 @@ func PossibleEffectiveRouteSourceValues() []EffectiveRouteSource {
 	}
 }
 
-// ToPtr returns a *EffectiveRouteSource pointing to the current value.
-func (c EffectiveRouteSource) ToPtr() *EffectiveRouteSource {
-	return &c
-}
-
 // EffectiveRouteState - The value of effective route.
 type EffectiveRouteState string
 
@@ -1166,11 +931,6 @@ func PossibleEffectiveRouteStateValues() []EffectiveRouteState {
 		EffectiveRouteStateActive,
 		EffectiveRouteStateInvalid,
 	}
-}
-
-// ToPtr returns a *EffectiveRouteState pointing to the current value.
-func (c EffectiveRouteState) ToPtr() *EffectiveRouteState {
-	return &c
 }
 
 // EffectiveSecurityRuleProtocol - The network protocol this rule applies to.
@@ -1189,11 +949,6 @@ func PossibleEffectiveSecurityRuleProtocolValues() []EffectiveSecurityRuleProtoc
 		EffectiveSecurityRuleProtocolTCP,
 		EffectiveSecurityRuleProtocolUDP,
 	}
-}
-
-// ToPtr returns a *EffectiveSecurityRuleProtocol pointing to the current value.
-func (c EffectiveSecurityRuleProtocol) ToPtr() *EffectiveSecurityRuleProtocol {
-	return &c
 }
 
 // EndpointType - The endpoint type.
@@ -1220,11 +975,6 @@ func PossibleEndpointTypeValues() []EndpointType {
 	}
 }
 
-// ToPtr returns a *EndpointType pointing to the current value.
-func (c EndpointType) ToPtr() *EndpointType {
-	return &c
-}
-
 // EvaluationState - Connectivity analysis evaluation state.
 type EvaluationState string
 
@@ -1241,11 +991,6 @@ func PossibleEvaluationStateValues() []EvaluationState {
 		EvaluationStateInProgress,
 		EvaluationStateNotStarted,
 	}
-}
-
-// ToPtr returns a *EvaluationState pointing to the current value.
-func (c EvaluationState) ToPtr() *EvaluationState {
-	return &c
 }
 
 // ExpressRouteCircuitPeeringAdvertisedPublicPrefixState - The advertised public prefix state of the Peering resource.
@@ -1268,11 +1013,6 @@ func PossibleExpressRouteCircuitPeeringAdvertisedPublicPrefixStateValues() []Exp
 	}
 }
 
-// ToPtr returns a *ExpressRouteCircuitPeeringAdvertisedPublicPrefixState pointing to the current value.
-func (c ExpressRouteCircuitPeeringAdvertisedPublicPrefixState) ToPtr() *ExpressRouteCircuitPeeringAdvertisedPublicPrefixState {
-	return &c
-}
-
 // ExpressRouteCircuitPeeringState - The state of peering.
 type ExpressRouteCircuitPeeringState string
 
@@ -1289,11 +1029,6 @@ func PossibleExpressRouteCircuitPeeringStateValues() []ExpressRouteCircuitPeerin
 	}
 }
 
-// ToPtr returns a *ExpressRouteCircuitPeeringState pointing to the current value.
-func (c ExpressRouteCircuitPeeringState) ToPtr() *ExpressRouteCircuitPeeringState {
-	return &c
-}
-
 // ExpressRouteCircuitSKUFamily - The family of the SKU.
 type ExpressRouteCircuitSKUFamily string
 
@@ -1308,11 +1043,6 @@ func PossibleExpressRouteCircuitSKUFamilyValues() []ExpressRouteCircuitSKUFamily
 		ExpressRouteCircuitSKUFamilyMeteredData,
 		ExpressRouteCircuitSKUFamilyUnlimitedData,
 	}
-}
-
-// ToPtr returns a *ExpressRouteCircuitSKUFamily pointing to the current value.
-func (c ExpressRouteCircuitSKUFamily) ToPtr() *ExpressRouteCircuitSKUFamily {
-	return &c
 }
 
 // ExpressRouteCircuitSKUTier - The tier of the SKU.
@@ -1335,11 +1065,6 @@ func PossibleExpressRouteCircuitSKUTierValues() []ExpressRouteCircuitSKUTier {
 	}
 }
 
-// ToPtr returns a *ExpressRouteCircuitSKUTier pointing to the current value.
-func (c ExpressRouteCircuitSKUTier) ToPtr() *ExpressRouteCircuitSKUTier {
-	return &c
-}
-
 // ExpressRouteLinkAdminState - Administrative state of the physical port.
 type ExpressRouteLinkAdminState string
 
@@ -1356,11 +1081,6 @@ func PossibleExpressRouteLinkAdminStateValues() []ExpressRouteLinkAdminState {
 	}
 }
 
-// ToPtr returns a *ExpressRouteLinkAdminState pointing to the current value.
-func (c ExpressRouteLinkAdminState) ToPtr() *ExpressRouteLinkAdminState {
-	return &c
-}
-
 // ExpressRouteLinkConnectorType - Physical fiber port type.
 type ExpressRouteLinkConnectorType string
 
@@ -1375,11 +1095,6 @@ func PossibleExpressRouteLinkConnectorTypeValues() []ExpressRouteLinkConnectorTy
 		ExpressRouteLinkConnectorTypeLC,
 		ExpressRouteLinkConnectorTypeSC,
 	}
-}
-
-// ToPtr returns a *ExpressRouteLinkConnectorType pointing to the current value.
-func (c ExpressRouteLinkConnectorType) ToPtr() *ExpressRouteLinkConnectorType {
-	return &c
 }
 
 // ExpressRouteLinkMacSecCipher - Mac security cipher.
@@ -1402,11 +1117,6 @@ func PossibleExpressRouteLinkMacSecCipherValues() []ExpressRouteLinkMacSecCipher
 	}
 }
 
-// ToPtr returns a *ExpressRouteLinkMacSecCipher pointing to the current value.
-func (c ExpressRouteLinkMacSecCipher) ToPtr() *ExpressRouteLinkMacSecCipher {
-	return &c
-}
-
 // ExpressRouteLinkMacSecSciState - Sci mode enabled/disabled.
 type ExpressRouteLinkMacSecSciState string
 
@@ -1423,11 +1133,6 @@ func PossibleExpressRouteLinkMacSecSciStateValues() []ExpressRouteLinkMacSecSciS
 	}
 }
 
-// ToPtr returns a *ExpressRouteLinkMacSecSciState pointing to the current value.
-func (c ExpressRouteLinkMacSecSciState) ToPtr() *ExpressRouteLinkMacSecSciState {
-	return &c
-}
-
 // ExpressRoutePeeringState - The state of peering.
 type ExpressRoutePeeringState string
 
@@ -1442,11 +1147,6 @@ func PossibleExpressRoutePeeringStateValues() []ExpressRoutePeeringState {
 		ExpressRoutePeeringStateDisabled,
 		ExpressRoutePeeringStateEnabled,
 	}
-}
-
-// ToPtr returns a *ExpressRoutePeeringState pointing to the current value.
-func (c ExpressRoutePeeringState) ToPtr() *ExpressRoutePeeringState {
-	return &c
 }
 
 // ExpressRoutePeeringType - The peering type.
@@ -1467,11 +1167,6 @@ func PossibleExpressRoutePeeringTypeValues() []ExpressRoutePeeringType {
 	}
 }
 
-// ToPtr returns a *ExpressRoutePeeringType pointing to the current value.
-func (c ExpressRoutePeeringType) ToPtr() *ExpressRoutePeeringType {
-	return &c
-}
-
 // ExpressRoutePortsEncapsulation - Encapsulation method on physical ports.
 type ExpressRoutePortsEncapsulation string
 
@@ -1486,11 +1181,6 @@ func PossibleExpressRoutePortsEncapsulationValues() []ExpressRoutePortsEncapsula
 		ExpressRoutePortsEncapsulationDot1Q,
 		ExpressRoutePortsEncapsulationQinQ,
 	}
-}
-
-// ToPtr returns a *ExpressRoutePortsEncapsulation pointing to the current value.
-func (c ExpressRoutePortsEncapsulation) ToPtr() *ExpressRoutePortsEncapsulation {
-	return &c
 }
 
 // ExtendedLocationTypes - The supported ExtendedLocation types. Currently only EdgeZone is supported in Microsoft.Network
@@ -1508,11 +1198,6 @@ func PossibleExtendedLocationTypesValues() []ExtendedLocationTypes {
 	}
 }
 
-// ToPtr returns a *ExtendedLocationTypes pointing to the current value.
-func (c ExtendedLocationTypes) ToPtr() *ExtendedLocationTypes {
-	return &c
-}
-
 // FirewallPolicyFilterRuleCollectionActionType - The action type of a rule.
 type FirewallPolicyFilterRuleCollectionActionType string
 
@@ -1527,11 +1212,6 @@ func PossibleFirewallPolicyFilterRuleCollectionActionTypeValues() []FirewallPoli
 		FirewallPolicyFilterRuleCollectionActionTypeAllow,
 		FirewallPolicyFilterRuleCollectionActionTypeDeny,
 	}
-}
-
-// ToPtr returns a *FirewallPolicyFilterRuleCollectionActionType pointing to the current value.
-func (c FirewallPolicyFilterRuleCollectionActionType) ToPtr() *FirewallPolicyFilterRuleCollectionActionType {
-	return &c
 }
 
 // FirewallPolicyIntrusionDetectionProtocol - Possible intrusion detection bypass traffic protocols.
@@ -1554,11 +1234,6 @@ func PossibleFirewallPolicyIntrusionDetectionProtocolValues() []FirewallPolicyIn
 	}
 }
 
-// ToPtr returns a *FirewallPolicyIntrusionDetectionProtocol pointing to the current value.
-func (c FirewallPolicyIntrusionDetectionProtocol) ToPtr() *FirewallPolicyIntrusionDetectionProtocol {
-	return &c
-}
-
 // FirewallPolicyIntrusionDetectionStateType - Possible state values.
 type FirewallPolicyIntrusionDetectionStateType string
 
@@ -1577,11 +1252,6 @@ func PossibleFirewallPolicyIntrusionDetectionStateTypeValues() []FirewallPolicyI
 	}
 }
 
-// ToPtr returns a *FirewallPolicyIntrusionDetectionStateType pointing to the current value.
-func (c FirewallPolicyIntrusionDetectionStateType) ToPtr() *FirewallPolicyIntrusionDetectionStateType {
-	return &c
-}
-
 // FirewallPolicyNatRuleCollectionActionType - The action type of a rule.
 type FirewallPolicyNatRuleCollectionActionType string
 
@@ -1594,11 +1264,6 @@ func PossibleFirewallPolicyNatRuleCollectionActionTypeValues() []FirewallPolicyN
 	return []FirewallPolicyNatRuleCollectionActionType{
 		FirewallPolicyNatRuleCollectionActionTypeDNAT,
 	}
-}
-
-// ToPtr returns a *FirewallPolicyNatRuleCollectionActionType pointing to the current value.
-func (c FirewallPolicyNatRuleCollectionActionType) ToPtr() *FirewallPolicyNatRuleCollectionActionType {
-	return &c
 }
 
 // FirewallPolicyRuleApplicationProtocolType - The application protocol type of a Rule.
@@ -1617,11 +1282,6 @@ func PossibleFirewallPolicyRuleApplicationProtocolTypeValues() []FirewallPolicyR
 	}
 }
 
-// ToPtr returns a *FirewallPolicyRuleApplicationProtocolType pointing to the current value.
-func (c FirewallPolicyRuleApplicationProtocolType) ToPtr() *FirewallPolicyRuleApplicationProtocolType {
-	return &c
-}
-
 // FirewallPolicyRuleCollectionType - The type of the rule collection.
 type FirewallPolicyRuleCollectionType string
 
@@ -1636,11 +1296,6 @@ func PossibleFirewallPolicyRuleCollectionTypeValues() []FirewallPolicyRuleCollec
 		FirewallPolicyRuleCollectionTypeFirewallPolicyFilterRuleCollection,
 		FirewallPolicyRuleCollectionTypeFirewallPolicyNatRuleCollection,
 	}
-}
-
-// ToPtr returns a *FirewallPolicyRuleCollectionType pointing to the current value.
-func (c FirewallPolicyRuleCollectionType) ToPtr() *FirewallPolicyRuleCollectionType {
-	return &c
 }
 
 // FirewallPolicyRuleNetworkProtocol - The Network protocol of a Rule.
@@ -1663,11 +1318,6 @@ func PossibleFirewallPolicyRuleNetworkProtocolValues() []FirewallPolicyRuleNetwo
 	}
 }
 
-// ToPtr returns a *FirewallPolicyRuleNetworkProtocol pointing to the current value.
-func (c FirewallPolicyRuleNetworkProtocol) ToPtr() *FirewallPolicyRuleNetworkProtocol {
-	return &c
-}
-
 // FirewallPolicyRuleType - Rule Type.
 type FirewallPolicyRuleType string
 
@@ -1684,11 +1334,6 @@ func PossibleFirewallPolicyRuleTypeValues() []FirewallPolicyRuleType {
 		FirewallPolicyRuleTypeNatRule,
 		FirewallPolicyRuleTypeNetworkRule,
 	}
-}
-
-// ToPtr returns a *FirewallPolicyRuleType pointing to the current value.
-func (c FirewallPolicyRuleType) ToPtr() *FirewallPolicyRuleType {
-	return &c
 }
 
 // FirewallPolicySKUTier - Tier of Firewall Policy.
@@ -1709,11 +1354,6 @@ func PossibleFirewallPolicySKUTierValues() []FirewallPolicySKUTier {
 	}
 }
 
-// ToPtr returns a *FirewallPolicySKUTier pointing to the current value.
-func (c FirewallPolicySKUTier) ToPtr() *FirewallPolicySKUTier {
-	return &c
-}
-
 // FlowLogFormatType - The file type of flow log.
 type FlowLogFormatType string
 
@@ -1726,11 +1366,6 @@ func PossibleFlowLogFormatTypeValues() []FlowLogFormatType {
 	return []FlowLogFormatType{
 		FlowLogFormatTypeJSON,
 	}
-}
-
-// ToPtr returns a *FlowLogFormatType pointing to the current value.
-func (c FlowLogFormatType) ToPtr() *FlowLogFormatType {
-	return &c
 }
 
 // GatewayLoadBalancerTunnelInterfaceType - Traffic type of gateway load balancer tunnel interface.
@@ -1751,11 +1386,6 @@ func PossibleGatewayLoadBalancerTunnelInterfaceTypeValues() []GatewayLoadBalance
 	}
 }
 
-// ToPtr returns a *GatewayLoadBalancerTunnelInterfaceType pointing to the current value.
-func (c GatewayLoadBalancerTunnelInterfaceType) ToPtr() *GatewayLoadBalancerTunnelInterfaceType {
-	return &c
-}
-
 // GatewayLoadBalancerTunnelProtocol - Protocol of gateway load balancer tunnel interface.
 type GatewayLoadBalancerTunnelProtocol string
 
@@ -1774,11 +1404,6 @@ func PossibleGatewayLoadBalancerTunnelProtocolValues() []GatewayLoadBalancerTunn
 	}
 }
 
-// ToPtr returns a *GatewayLoadBalancerTunnelProtocol pointing to the current value.
-func (c GatewayLoadBalancerTunnelProtocol) ToPtr() *GatewayLoadBalancerTunnelProtocol {
-	return &c
-}
-
 // HTTPConfigurationMethod - The HTTP method to use.
 type HTTPConfigurationMethod string
 
@@ -1795,11 +1420,6 @@ func PossibleHTTPConfigurationMethodValues() []HTTPConfigurationMethod {
 	}
 }
 
-// ToPtr returns a *HTTPConfigurationMethod pointing to the current value.
-func (c HTTPConfigurationMethod) ToPtr() *HTTPConfigurationMethod {
-	return &c
-}
-
 // HTTPMethod - HTTP method.
 type HTTPMethod string
 
@@ -1812,11 +1432,6 @@ func PossibleHTTPMethodValues() []HTTPMethod {
 	return []HTTPMethod{
 		HTTPMethodGet,
 	}
-}
-
-// ToPtr returns a *HTTPMethod pointing to the current value.
-func (c HTTPMethod) ToPtr() *HTTPMethod {
-	return &c
 }
 
 // HubBgpConnectionStatus - The current state of the VirtualHub to Peer.
@@ -1839,11 +1454,6 @@ func PossibleHubBgpConnectionStatusValues() []HubBgpConnectionStatus {
 	}
 }
 
-// ToPtr returns a *HubBgpConnectionStatus pointing to the current value.
-func (c HubBgpConnectionStatus) ToPtr() *HubBgpConnectionStatus {
-	return &c
-}
-
 // HubVirtualNetworkConnectionStatus - The current state of the VirtualHub to vnet connection.
 type HubVirtualNetworkConnectionStatus string
 
@@ -1864,11 +1474,6 @@ func PossibleHubVirtualNetworkConnectionStatusValues() []HubVirtualNetworkConnec
 	}
 }
 
-// ToPtr returns a *HubVirtualNetworkConnectionStatus pointing to the current value.
-func (c HubVirtualNetworkConnectionStatus) ToPtr() *HubVirtualNetworkConnectionStatus {
-	return &c
-}
-
 // IPAllocationMethod - IP address allocation method.
 type IPAllocationMethod string
 
@@ -1883,11 +1488,6 @@ func PossibleIPAllocationMethodValues() []IPAllocationMethod {
 		IPAllocationMethodDynamic,
 		IPAllocationMethodStatic,
 	}
-}
-
-// ToPtr returns a *IPAllocationMethod pointing to the current value.
-func (c IPAllocationMethod) ToPtr() *IPAllocationMethod {
-	return &c
 }
 
 // IPAllocationType - IpAllocation type.
@@ -1906,11 +1506,6 @@ func PossibleIPAllocationTypeValues() []IPAllocationType {
 	}
 }
 
-// ToPtr returns a *IPAllocationType pointing to the current value.
-func (c IPAllocationType) ToPtr() *IPAllocationType {
-	return &c
-}
-
 // IPFlowProtocol - Protocol to be verified on.
 type IPFlowProtocol string
 
@@ -1925,11 +1520,6 @@ func PossibleIPFlowProtocolValues() []IPFlowProtocol {
 		IPFlowProtocolTCP,
 		IPFlowProtocolUDP,
 	}
-}
-
-// ToPtr returns a *IPFlowProtocol pointing to the current value.
-func (c IPFlowProtocol) ToPtr() *IPFlowProtocol {
-	return &c
 }
 
 // IPSecEncryption - The IPSec encryption algorithm (IKE phase 1).
@@ -1962,11 +1552,6 @@ func PossibleIPSecEncryptionValues() []IPSecEncryption {
 	}
 }
 
-// ToPtr returns a *IPSecEncryption pointing to the current value.
-func (c IPSecEncryption) ToPtr() *IPSecEncryption {
-	return &c
-}
-
 // IPSecIntegrity - The IPSec integrity algorithm (IKE phase 1).
 type IPSecIntegrity string
 
@@ -1991,11 +1576,6 @@ func PossibleIPSecIntegrityValues() []IPSecIntegrity {
 	}
 }
 
-// ToPtr returns a *IPSecIntegrity pointing to the current value.
-func (c IPSecIntegrity) ToPtr() *IPSecIntegrity {
-	return &c
-}
-
 // IPVersion - IP address version.
 type IPVersion string
 
@@ -2010,11 +1590,6 @@ func PossibleIPVersionValues() []IPVersion {
 		IPVersionIPv4,
 		IPVersionIPv6,
 	}
-}
-
-// ToPtr returns a *IPVersion pointing to the current value.
-func (c IPVersion) ToPtr() *IPVersion {
-	return &c
 }
 
 // IkeEncryption - The IKE encryption algorithm (IKE phase 2).
@@ -2043,11 +1618,6 @@ func PossibleIkeEncryptionValues() []IkeEncryption {
 	}
 }
 
-// ToPtr returns a *IkeEncryption pointing to the current value.
-func (c IkeEncryption) ToPtr() *IkeEncryption {
-	return &c
-}
-
 // IkeIntegrity - The IKE integrity algorithm (IKE phase 2).
 type IkeIntegrity string
 
@@ -2072,11 +1642,6 @@ func PossibleIkeIntegrityValues() []IkeIntegrity {
 	}
 }
 
-// ToPtr returns a *IkeIntegrity pointing to the current value.
-func (c IkeIntegrity) ToPtr() *IkeIntegrity {
-	return &c
-}
-
 // InboundSecurityRulesProtocol - Protocol. This should be either TCP or UDP.
 type InboundSecurityRulesProtocol string
 
@@ -2091,11 +1656,6 @@ func PossibleInboundSecurityRulesProtocolValues() []InboundSecurityRulesProtocol
 		InboundSecurityRulesProtocolTCP,
 		InboundSecurityRulesProtocolUDP,
 	}
-}
-
-// ToPtr returns a *InboundSecurityRulesProtocol pointing to the current value.
-func (c InboundSecurityRulesProtocol) ToPtr() *InboundSecurityRulesProtocol {
-	return &c
 }
 
 // IssueType - The type of issue.
@@ -2128,11 +1688,6 @@ func PossibleIssueTypeValues() []IssueType {
 	}
 }
 
-// ToPtr returns a *IssueType pointing to the current value.
-func (c IssueType) ToPtr() *IssueType {
-	return &c
-}
-
 // LoadBalancerOutboundRuleProtocol - The protocol for the outbound rule in load balancer.
 type LoadBalancerOutboundRuleProtocol string
 
@@ -2149,11 +1704,6 @@ func PossibleLoadBalancerOutboundRuleProtocolValues() []LoadBalancerOutboundRule
 		LoadBalancerOutboundRuleProtocolTCP,
 		LoadBalancerOutboundRuleProtocolUDP,
 	}
-}
-
-// ToPtr returns a *LoadBalancerOutboundRuleProtocol pointing to the current value.
-func (c LoadBalancerOutboundRuleProtocol) ToPtr() *LoadBalancerOutboundRuleProtocol {
-	return &c
 }
 
 // LoadBalancerSKUName - Name of a load balancer SKU.
@@ -2174,11 +1724,6 @@ func PossibleLoadBalancerSKUNameValues() []LoadBalancerSKUName {
 	}
 }
 
-// ToPtr returns a *LoadBalancerSKUName pointing to the current value.
-func (c LoadBalancerSKUName) ToPtr() *LoadBalancerSKUName {
-	return &c
-}
-
 // LoadBalancerSKUTier - Tier of a load balancer SKU.
 type LoadBalancerSKUTier string
 
@@ -2193,11 +1738,6 @@ func PossibleLoadBalancerSKUTierValues() []LoadBalancerSKUTier {
 		LoadBalancerSKUTierGlobal,
 		LoadBalancerSKUTierRegional,
 	}
-}
-
-// ToPtr returns a *LoadBalancerSKUTier pointing to the current value.
-func (c LoadBalancerSKUTier) ToPtr() *LoadBalancerSKUTier {
-	return &c
 }
 
 // LoadDistribution - The load distribution policy for this rule.
@@ -2218,11 +1758,6 @@ func PossibleLoadDistributionValues() []LoadDistribution {
 	}
 }
 
-// ToPtr returns a *LoadDistribution pointing to the current value.
-func (c LoadDistribution) ToPtr() *LoadDistribution {
-	return &c
-}
-
 // ManagedRuleEnabledState - The state of the managed rule. Defaults to Disabled if not specified.
 type ManagedRuleEnabledState string
 
@@ -2237,11 +1772,6 @@ func PossibleManagedRuleEnabledStateValues() []ManagedRuleEnabledState {
 	}
 }
 
-// ToPtr returns a *ManagedRuleEnabledState pointing to the current value.
-func (c ManagedRuleEnabledState) ToPtr() *ManagedRuleEnabledState {
-	return &c
-}
-
 // NatGatewaySKUName - Name of Nat Gateway SKU.
 type NatGatewaySKUName string
 
@@ -2254,11 +1784,6 @@ func PossibleNatGatewaySKUNameValues() []NatGatewaySKUName {
 	return []NatGatewaySKUName{
 		NatGatewaySKUNameStandard,
 	}
-}
-
-// ToPtr returns a *NatGatewaySKUName pointing to the current value.
-func (c NatGatewaySKUName) ToPtr() *NatGatewaySKUName {
-	return &c
 }
 
 // NetworkInterfaceMigrationPhase - Migration phase of Network Interface resource.
@@ -2283,11 +1808,6 @@ func PossibleNetworkInterfaceMigrationPhaseValues() []NetworkInterfaceMigrationP
 	}
 }
 
-// ToPtr returns a *NetworkInterfaceMigrationPhase pointing to the current value.
-func (c NetworkInterfaceMigrationPhase) ToPtr() *NetworkInterfaceMigrationPhase {
-	return &c
-}
-
 // NetworkInterfaceNicType - Type of Network Interface resource.
 type NetworkInterfaceNicType string
 
@@ -2302,11 +1822,6 @@ func PossibleNetworkInterfaceNicTypeValues() []NetworkInterfaceNicType {
 		NetworkInterfaceNicTypeElastic,
 		NetworkInterfaceNicTypeStandard,
 	}
-}
-
-// ToPtr returns a *NetworkInterfaceNicType pointing to the current value.
-func (c NetworkInterfaceNicType) ToPtr() *NetworkInterfaceNicType {
-	return &c
 }
 
 // NetworkOperationStatus - Status of the Azure async operation.
@@ -2325,11 +1840,6 @@ func PossibleNetworkOperationStatusValues() []NetworkOperationStatus {
 		NetworkOperationStatusInProgress,
 		NetworkOperationStatusSucceeded,
 	}
-}
-
-// ToPtr returns a *NetworkOperationStatus pointing to the current value.
-func (c NetworkOperationStatus) ToPtr() *NetworkOperationStatus {
-	return &c
 }
 
 // NextHopType - Next hop type.
@@ -2356,11 +1866,6 @@ func PossibleNextHopTypeValues() []NextHopType {
 	}
 }
 
-// ToPtr returns a *NextHopType pointing to the current value.
-func (c NextHopType) ToPtr() *NextHopType {
-	return &c
-}
-
 // OfficeTrafficCategory - The office traffic category.
 type OfficeTrafficCategory string
 
@@ -2381,11 +1886,6 @@ func PossibleOfficeTrafficCategoryValues() []OfficeTrafficCategory {
 	}
 }
 
-// ToPtr returns a *OfficeTrafficCategory pointing to the current value.
-func (c OfficeTrafficCategory) ToPtr() *OfficeTrafficCategory {
-	return &c
-}
-
 // OrderByOrder - Describes if results should be in ascending/descending order
 type OrderByOrder string
 
@@ -2400,11 +1900,6 @@ func PossibleOrderByOrderValues() []OrderByOrder {
 		OrderByOrderAscending,
 		OrderByOrderDescending,
 	}
-}
-
-// ToPtr returns a *OrderByOrder pointing to the current value.
-func (c OrderByOrder) ToPtr() *OrderByOrder {
-	return &c
 }
 
 // Origin - The origin of the issue.
@@ -2425,11 +1920,6 @@ func PossibleOriginValues() []Origin {
 	}
 }
 
-// ToPtr returns a *Origin pointing to the current value.
-func (c Origin) ToPtr() *Origin {
-	return &c
-}
-
 // OutputType - Connection monitor output destination type. Currently, only "Workspace" is supported.
 type OutputType string
 
@@ -2442,11 +1932,6 @@ func PossibleOutputTypeValues() []OutputType {
 	return []OutputType{
 		OutputTypeWorkspace,
 	}
-}
-
-// ToPtr returns a *OutputType pointing to the current value.
-func (c OutputType) ToPtr() *OutputType {
-	return &c
 }
 
 // OwaspCrsExclusionEntryMatchVariable - The variable to be excluded.
@@ -2479,11 +1964,6 @@ func PossibleOwaspCrsExclusionEntryMatchVariableValues() []OwaspCrsExclusionEntr
 	}
 }
 
-// ToPtr returns a *OwaspCrsExclusionEntryMatchVariable pointing to the current value.
-func (c OwaspCrsExclusionEntryMatchVariable) ToPtr() *OwaspCrsExclusionEntryMatchVariable {
-	return &c
-}
-
 // OwaspCrsExclusionEntrySelectorMatchOperator - When matchVariable is a collection, operate on the selector to specify which
 // elements in the collection this exclusion applies to.
 type OwaspCrsExclusionEntrySelectorMatchOperator string
@@ -2507,11 +1987,6 @@ func PossibleOwaspCrsExclusionEntrySelectorMatchOperatorValues() []OwaspCrsExclu
 	}
 }
 
-// ToPtr returns a *OwaspCrsExclusionEntrySelectorMatchOperator pointing to the current value.
-func (c OwaspCrsExclusionEntrySelectorMatchOperator) ToPtr() *OwaspCrsExclusionEntrySelectorMatchOperator {
-	return &c
-}
-
 type PcError string
 
 const (
@@ -2533,11 +2008,6 @@ func PossiblePcErrorValues() []PcError {
 	}
 }
 
-// ToPtr returns a *PcError pointing to the current value.
-func (c PcError) ToPtr() *PcError {
-	return &c
-}
-
 // PcProtocol - Protocol to be filtered on.
 type PcProtocol string
 
@@ -2554,11 +2024,6 @@ func PossiblePcProtocolValues() []PcProtocol {
 		PcProtocolTCP,
 		PcProtocolUDP,
 	}
-}
-
-// ToPtr returns a *PcProtocol pointing to the current value.
-func (c PcProtocol) ToPtr() *PcProtocol {
-	return &c
 }
 
 // PcStatus - The status of the packet capture session.
@@ -2581,11 +2046,6 @@ func PossiblePcStatusValues() []PcStatus {
 		PcStatusStopped,
 		PcStatusUnknown,
 	}
-}
-
-// ToPtr returns a *PcStatus pointing to the current value.
-func (c PcStatus) ToPtr() *PcStatus {
-	return &c
 }
 
 // PfsGroup - The Pfs Groups used in IKE Phase 2 for new child SA.
@@ -2618,11 +2078,6 @@ func PossiblePfsGroupValues() []PfsGroup {
 	}
 }
 
-// ToPtr returns a *PfsGroup pointing to the current value.
-func (c PfsGroup) ToPtr() *PfsGroup {
-	return &c
-}
-
 // PreferredIPVersion - The preferred IP version to use in test evaluation. The connection monitor may choose to use a different
 // version depending on other parameters.
 type PreferredIPVersion string
@@ -2638,11 +2093,6 @@ func PossiblePreferredIPVersionValues() []PreferredIPVersion {
 		PreferredIPVersionIPv4,
 		PreferredIPVersionIPv6,
 	}
-}
-
-// ToPtr returns a *PreferredIPVersion pointing to the current value.
-func (c PreferredIPVersion) ToPtr() *PreferredIPVersion {
-	return &c
 }
 
 // PreferredRoutingGateway - The preferred routing gateway types
@@ -2661,11 +2111,6 @@ func PossiblePreferredRoutingGatewayValues() []PreferredRoutingGateway {
 		PreferredRoutingGatewayNone,
 		PreferredRoutingGatewayVPNGateway,
 	}
-}
-
-// ToPtr returns a *PreferredRoutingGateway pointing to the current value.
-func (c PreferredRoutingGateway) ToPtr() *PreferredRoutingGateway {
-	return &c
 }
 
 // ProbeProtocol - The protocol of the end point. If 'Tcp' is specified, a received ACK is required for the probe to be successful.
@@ -2688,11 +2133,6 @@ func PossibleProbeProtocolValues() []ProbeProtocol {
 	}
 }
 
-// ToPtr returns a *ProbeProtocol pointing to the current value.
-func (c ProbeProtocol) ToPtr() *ProbeProtocol {
-	return &c
-}
-
 // ProcessorArchitecture - VPN client Processor Architecture.
 type ProcessorArchitecture string
 
@@ -2707,11 +2147,6 @@ func PossibleProcessorArchitectureValues() []ProcessorArchitecture {
 		ProcessorArchitectureAmd64,
 		ProcessorArchitectureX86,
 	}
-}
-
-// ToPtr returns a *ProcessorArchitecture pointing to the current value.
-func (c ProcessorArchitecture) ToPtr() *ProcessorArchitecture {
-	return &c
 }
 
 // Protocol - Network protocol.
@@ -2732,11 +2167,6 @@ func PossibleProtocolValues() []Protocol {
 		ProtocolIcmp,
 		ProtocolTCP,
 	}
-}
-
-// ToPtr returns a *Protocol pointing to the current value.
-func (c Protocol) ToPtr() *Protocol {
-	return &c
 }
 
 // ProtocolType - RNM supported protocol types.
@@ -2769,11 +2199,6 @@ func PossibleProtocolTypeValues() []ProtocolType {
 	}
 }
 
-// ToPtr returns a *ProtocolType pointing to the current value.
-func (c ProtocolType) ToPtr() *ProtocolType {
-	return &c
-}
-
 // ProvisioningState - The current provisioning state.
 type ProvisioningState string
 
@@ -2792,11 +2217,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 		ProvisioningStateSucceeded,
 		ProvisioningStateUpdating,
 	}
-}
-
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
 }
 
 // PublicIPAddressMigrationPhase - Migration phase of Public IP Address.
@@ -2821,11 +2241,6 @@ func PossiblePublicIPAddressMigrationPhaseValues() []PublicIPAddressMigrationPha
 	}
 }
 
-// ToPtr returns a *PublicIPAddressMigrationPhase pointing to the current value.
-func (c PublicIPAddressMigrationPhase) ToPtr() *PublicIPAddressMigrationPhase {
-	return &c
-}
-
 // PublicIPAddressSKUName - Name of a public IP address SKU.
 type PublicIPAddressSKUName string
 
@@ -2840,11 +2255,6 @@ func PossiblePublicIPAddressSKUNameValues() []PublicIPAddressSKUName {
 		PublicIPAddressSKUNameBasic,
 		PublicIPAddressSKUNameStandard,
 	}
-}
-
-// ToPtr returns a *PublicIPAddressSKUName pointing to the current value.
-func (c PublicIPAddressSKUName) ToPtr() *PublicIPAddressSKUName {
-	return &c
 }
 
 // PublicIPAddressSKUTier - Tier of a public IP address SKU.
@@ -2863,11 +2273,6 @@ func PossiblePublicIPAddressSKUTierValues() []PublicIPAddressSKUTier {
 	}
 }
 
-// ToPtr returns a *PublicIPAddressSKUTier pointing to the current value.
-func (c PublicIPAddressSKUTier) ToPtr() *PublicIPAddressSKUTier {
-	return &c
-}
-
 // PublicIPPrefixSKUName - Name of a public IP prefix SKU.
 type PublicIPPrefixSKUName string
 
@@ -2880,11 +2285,6 @@ func PossiblePublicIPPrefixSKUNameValues() []PublicIPPrefixSKUName {
 	return []PublicIPPrefixSKUName{
 		PublicIPPrefixSKUNameStandard,
 	}
-}
-
-// ToPtr returns a *PublicIPPrefixSKUName pointing to the current value.
-func (c PublicIPPrefixSKUName) ToPtr() *PublicIPPrefixSKUName {
-	return &c
 }
 
 // PublicIPPrefixSKUTier - Tier of a public IP prefix SKU.
@@ -2901,11 +2301,6 @@ func PossiblePublicIPPrefixSKUTierValues() []PublicIPPrefixSKUTier {
 		PublicIPPrefixSKUTierGlobal,
 		PublicIPPrefixSKUTierRegional,
 	}
-}
-
-// ToPtr returns a *PublicIPPrefixSKUTier pointing to the current value.
-func (c PublicIPPrefixSKUTier) ToPtr() *PublicIPPrefixSKUTier {
-	return &c
 }
 
 // ResourceIdentityType - The type of identity used for the resource. The type 'SystemAssigned, UserAssigned' includes both
@@ -2930,11 +2325,6 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	}
 }
 
-// ToPtr returns a *ResourceIdentityType pointing to the current value.
-func (c ResourceIdentityType) ToPtr() *ResourceIdentityType {
-	return &c
-}
-
 // RouteFilterRuleType - The rule type of the rule.
 type RouteFilterRuleType string
 
@@ -2947,11 +2337,6 @@ func PossibleRouteFilterRuleTypeValues() []RouteFilterRuleType {
 	return []RouteFilterRuleType{
 		RouteFilterRuleTypeCommunity,
 	}
-}
-
-// ToPtr returns a *RouteFilterRuleType pointing to the current value.
-func (c RouteFilterRuleType) ToPtr() *RouteFilterRuleType {
-	return &c
 }
 
 // RouteNextHopType - The type of Azure hop the packet should be sent to.
@@ -2976,11 +2361,6 @@ func PossibleRouteNextHopTypeValues() []RouteNextHopType {
 	}
 }
 
-// ToPtr returns a *RouteNextHopType pointing to the current value.
-func (c RouteNextHopType) ToPtr() *RouteNextHopType {
-	return &c
-}
-
 // RoutingState - The current routing state of the VirtualHub.
 type RoutingState string
 
@@ -2999,11 +2379,6 @@ func PossibleRoutingStateValues() []RoutingState {
 		RoutingStateProvisioned,
 		RoutingStateProvisioning,
 	}
-}
-
-// ToPtr returns a *RoutingState pointing to the current value.
-func (c RoutingState) ToPtr() *RoutingState {
-	return &c
 }
 
 // SecurityPartnerProviderConnectionStatus - The current state of the connection with Security Partner Provider.
@@ -3026,11 +2401,6 @@ func PossibleSecurityPartnerProviderConnectionStatusValues() []SecurityPartnerPr
 	}
 }
 
-// ToPtr returns a *SecurityPartnerProviderConnectionStatus pointing to the current value.
-func (c SecurityPartnerProviderConnectionStatus) ToPtr() *SecurityPartnerProviderConnectionStatus {
-	return &c
-}
-
 // SecurityProviderName - The Security Providers.
 type SecurityProviderName string
 
@@ -3049,11 +2419,6 @@ func PossibleSecurityProviderNameValues() []SecurityProviderName {
 	}
 }
 
-// ToPtr returns a *SecurityProviderName pointing to the current value.
-func (c SecurityProviderName) ToPtr() *SecurityProviderName {
-	return &c
-}
-
 // SecurityRuleAccess - Whether network traffic is allowed or denied.
 type SecurityRuleAccess string
 
@@ -3068,11 +2433,6 @@ func PossibleSecurityRuleAccessValues() []SecurityRuleAccess {
 		SecurityRuleAccessAllow,
 		SecurityRuleAccessDeny,
 	}
-}
-
-// ToPtr returns a *SecurityRuleAccess pointing to the current value.
-func (c SecurityRuleAccess) ToPtr() *SecurityRuleAccess {
-	return &c
 }
 
 // SecurityRuleDirection - The direction of the rule. The direction specifies if rule will be evaluated on incoming or outgoing
@@ -3090,11 +2450,6 @@ func PossibleSecurityRuleDirectionValues() []SecurityRuleDirection {
 		SecurityRuleDirectionInbound,
 		SecurityRuleDirectionOutbound,
 	}
-}
-
-// ToPtr returns a *SecurityRuleDirection pointing to the current value.
-func (c SecurityRuleDirection) ToPtr() *SecurityRuleDirection {
-	return &c
 }
 
 // SecurityRuleProtocol - Network protocol this rule applies to.
@@ -3121,11 +2476,6 @@ func PossibleSecurityRuleProtocolValues() []SecurityRuleProtocol {
 	}
 }
 
-// ToPtr returns a *SecurityRuleProtocol pointing to the current value.
-func (c SecurityRuleProtocol) ToPtr() *SecurityRuleProtocol {
-	return &c
-}
-
 // ServiceProviderProvisioningState - The ServiceProviderProvisioningState state of the resource.
 type ServiceProviderProvisioningState string
 
@@ -3146,11 +2496,6 @@ func PossibleServiceProviderProvisioningStateValues() []ServiceProviderProvision
 	}
 }
 
-// ToPtr returns a *ServiceProviderProvisioningState pointing to the current value.
-func (c ServiceProviderProvisioningState) ToPtr() *ServiceProviderProvisioningState {
-	return &c
-}
-
 // Severity - The severity of the issue.
 type Severity string
 
@@ -3165,11 +2510,6 @@ func PossibleSeverityValues() []Severity {
 		SeverityError,
 		SeverityWarning,
 	}
-}
-
-// ToPtr returns a *Severity pointing to the current value.
-func (c Severity) ToPtr() *Severity {
-	return &c
 }
 
 // SingleQueryResultDirection - Describes in which direction signature is being enforced: 0 - Inbound, 1 - OutBound, 2 - Bidirectional
@@ -3190,11 +2530,6 @@ func PossibleSingleQueryResultDirectionValues() []SingleQueryResultDirection {
 	}
 }
 
-// ToPtr returns a *SingleQueryResultDirection pointing to the current value.
-func (c SingleQueryResultDirection) ToPtr() *SingleQueryResultDirection {
-	return &c
-}
-
 // SingleQueryResultMode - The current mode enforced, 0 - Disabled, 1 - Alert, 2 -Deny
 type SingleQueryResultMode int32
 
@@ -3211,11 +2546,6 @@ func PossibleSingleQueryResultModeValues() []SingleQueryResultMode {
 		SingleQueryResultModeTwo,
 		SingleQueryResultModeZero,
 	}
-}
-
-// ToPtr returns a *SingleQueryResultMode pointing to the current value.
-func (c SingleQueryResultMode) ToPtr() *SingleQueryResultMode {
-	return &c
 }
 
 // SingleQueryResultSeverity - Describes the severity of signature: 1 - Low, 2 - Medium, 3 - High
@@ -3236,11 +2566,6 @@ func PossibleSingleQueryResultSeverityValues() []SingleQueryResultSeverity {
 	}
 }
 
-// ToPtr returns a *SingleQueryResultSeverity pointing to the current value.
-func (c SingleQueryResultSeverity) ToPtr() *SingleQueryResultSeverity {
-	return &c
-}
-
 type SyncRemoteAddressSpace string
 
 const (
@@ -3252,11 +2577,6 @@ func PossibleSyncRemoteAddressSpaceValues() []SyncRemoteAddressSpace {
 	return []SyncRemoteAddressSpace{
 		SyncRemoteAddressSpaceTrue,
 	}
-}
-
-// ToPtr returns a *SyncRemoteAddressSpace pointing to the current value.
-func (c SyncRemoteAddressSpace) ToPtr() *SyncRemoteAddressSpace {
-	return &c
 }
 
 // TransportProtocol - The transport protocol for the endpoint.
@@ -3275,11 +2595,6 @@ func PossibleTransportProtocolValues() []TransportProtocol {
 		TransportProtocolTCP,
 		TransportProtocolUDP,
 	}
-}
-
-// ToPtr returns a *TransportProtocol pointing to the current value.
-func (c TransportProtocol) ToPtr() *TransportProtocol {
-	return &c
 }
 
 // TunnelConnectionStatus - The current state of the tunnel.
@@ -3302,11 +2617,6 @@ func PossibleTunnelConnectionStatusValues() []TunnelConnectionStatus {
 	}
 }
 
-// ToPtr returns a *TunnelConnectionStatus pointing to the current value.
-func (c TunnelConnectionStatus) ToPtr() *TunnelConnectionStatus {
-	return &c
-}
-
 // UsageUnit - An enum describing the unit of measurement.
 type UsageUnit string
 
@@ -3319,11 +2629,6 @@ func PossibleUsageUnitValues() []UsageUnit {
 	return []UsageUnit{
 		UsageUnitCount,
 	}
-}
-
-// ToPtr returns a *UsageUnit pointing to the current value.
-func (c UsageUnit) ToPtr() *UsageUnit {
-	return &c
 }
 
 // VPNAuthenticationType - VPN authentication types enabled for the virtual network gateway.
@@ -3344,11 +2649,6 @@ func PossibleVPNAuthenticationTypeValues() []VPNAuthenticationType {
 	}
 }
 
-// ToPtr returns a *VPNAuthenticationType pointing to the current value.
-func (c VPNAuthenticationType) ToPtr() *VPNAuthenticationType {
-	return &c
-}
-
 // VPNClientProtocol - VPN client protocol enabled for the virtual network gateway.
 type VPNClientProtocol string
 
@@ -3365,11 +2665,6 @@ func PossibleVPNClientProtocolValues() []VPNClientProtocol {
 		VPNClientProtocolOpenVPN,
 		VPNClientProtocolSSTP,
 	}
-}
-
-// ToPtr returns a *VPNClientProtocol pointing to the current value.
-func (c VPNClientProtocol) ToPtr() *VPNClientProtocol {
-	return &c
 }
 
 // VPNConnectionStatus - The current state of the vpn connection.
@@ -3392,11 +2687,6 @@ func PossibleVPNConnectionStatusValues() []VPNConnectionStatus {
 	}
 }
 
-// ToPtr returns a *VPNConnectionStatus pointing to the current value.
-func (c VPNConnectionStatus) ToPtr() *VPNConnectionStatus {
-	return &c
-}
-
 // VPNGatewayGeneration - The generation for this VirtualNetworkGateway. Must be None if gatewayType is not VPN.
 type VPNGatewayGeneration string
 
@@ -3415,11 +2705,6 @@ func PossibleVPNGatewayGenerationValues() []VPNGatewayGeneration {
 	}
 }
 
-// ToPtr returns a *VPNGatewayGeneration pointing to the current value.
-func (c VPNGatewayGeneration) ToPtr() *VPNGatewayGeneration {
-	return &c
-}
-
 // VPNGatewayTunnelingProtocol - VPN protocol enabled for the VpnServerConfiguration.
 type VPNGatewayTunnelingProtocol string
 
@@ -3434,11 +2719,6 @@ func PossibleVPNGatewayTunnelingProtocolValues() []VPNGatewayTunnelingProtocol {
 		VPNGatewayTunnelingProtocolIkeV2,
 		VPNGatewayTunnelingProtocolOpenVPN,
 	}
-}
-
-// ToPtr returns a *VPNGatewayTunnelingProtocol pointing to the current value.
-func (c VPNGatewayTunnelingProtocol) ToPtr() *VPNGatewayTunnelingProtocol {
-	return &c
 }
 
 // VPNLinkConnectionMode - Vpn link connection mode.
@@ -3459,11 +2739,6 @@ func PossibleVPNLinkConnectionModeValues() []VPNLinkConnectionMode {
 	}
 }
 
-// ToPtr returns a *VPNLinkConnectionMode pointing to the current value.
-func (c VPNLinkConnectionMode) ToPtr() *VPNLinkConnectionMode {
-	return &c
-}
-
 // VPNNatRuleMode - The Source NAT direction of a VPN NAT.
 type VPNNatRuleMode string
 
@@ -3478,11 +2753,6 @@ func PossibleVPNNatRuleModeValues() []VPNNatRuleMode {
 		VPNNatRuleModeEgressSnat,
 		VPNNatRuleModeIngressSnat,
 	}
-}
-
-// ToPtr returns a *VPNNatRuleMode pointing to the current value.
-func (c VPNNatRuleMode) ToPtr() *VPNNatRuleMode {
-	return &c
 }
 
 // VPNNatRuleType - The type of NAT rule for VPN NAT.
@@ -3501,11 +2771,6 @@ func PossibleVPNNatRuleTypeValues() []VPNNatRuleType {
 	}
 }
 
-// ToPtr returns a *VPNNatRuleType pointing to the current value.
-func (c VPNNatRuleType) ToPtr() *VPNNatRuleType {
-	return &c
-}
-
 // VPNType - The type of this virtual network gateway.
 type VPNType string
 
@@ -3520,11 +2785,6 @@ func PossibleVPNTypeValues() []VPNType {
 		VPNTypePolicyBased,
 		VPNTypeRouteBased,
 	}
-}
-
-// ToPtr returns a *VPNType pointing to the current value.
-func (c VPNType) ToPtr() *VPNType {
-	return &c
 }
 
 // VerbosityLevel - Verbosity level.
@@ -3545,11 +2805,6 @@ func PossibleVerbosityLevelValues() []VerbosityLevel {
 	}
 }
 
-// ToPtr returns a *VerbosityLevel pointing to the current value.
-func (c VerbosityLevel) ToPtr() *VerbosityLevel {
-	return &c
-}
-
 // VirtualNetworkEncryptionEnforcement - If the encrypted VNet allows VM that does not support encryption
 type VirtualNetworkEncryptionEnforcement string
 
@@ -3564,11 +2819,6 @@ func PossibleVirtualNetworkEncryptionEnforcementValues() []VirtualNetworkEncrypt
 		VirtualNetworkEncryptionEnforcementAllowUnencrypted,
 		VirtualNetworkEncryptionEnforcementDropUnencrypted,
 	}
-}
-
-// ToPtr returns a *VirtualNetworkEncryptionEnforcement pointing to the current value.
-func (c VirtualNetworkEncryptionEnforcement) ToPtr() *VirtualNetworkEncryptionEnforcement {
-	return &c
 }
 
 // VirtualNetworkGatewayConnectionMode - Gateway connection type.
@@ -3589,11 +2839,6 @@ func PossibleVirtualNetworkGatewayConnectionModeValues() []VirtualNetworkGateway
 	}
 }
 
-// ToPtr returns a *VirtualNetworkGatewayConnectionMode pointing to the current value.
-func (c VirtualNetworkGatewayConnectionMode) ToPtr() *VirtualNetworkGatewayConnectionMode {
-	return &c
-}
-
 // VirtualNetworkGatewayConnectionProtocol - Gateway connection protocol.
 type VirtualNetworkGatewayConnectionProtocol string
 
@@ -3608,11 +2853,6 @@ func PossibleVirtualNetworkGatewayConnectionProtocolValues() []VirtualNetworkGat
 		VirtualNetworkGatewayConnectionProtocolIKEv1,
 		VirtualNetworkGatewayConnectionProtocolIKEv2,
 	}
-}
-
-// ToPtr returns a *VirtualNetworkGatewayConnectionProtocol pointing to the current value.
-func (c VirtualNetworkGatewayConnectionProtocol) ToPtr() *VirtualNetworkGatewayConnectionProtocol {
-	return &c
 }
 
 // VirtualNetworkGatewayConnectionStatus - Virtual Network Gateway connection status.
@@ -3635,11 +2875,6 @@ func PossibleVirtualNetworkGatewayConnectionStatusValues() []VirtualNetworkGatew
 	}
 }
 
-// ToPtr returns a *VirtualNetworkGatewayConnectionStatus pointing to the current value.
-func (c VirtualNetworkGatewayConnectionStatus) ToPtr() *VirtualNetworkGatewayConnectionStatus {
-	return &c
-}
-
 // VirtualNetworkGatewayConnectionType - Gateway connection type.
 type VirtualNetworkGatewayConnectionType string
 
@@ -3658,11 +2893,6 @@ func PossibleVirtualNetworkGatewayConnectionTypeValues() []VirtualNetworkGateway
 		VirtualNetworkGatewayConnectionTypeVPNClient,
 		VirtualNetworkGatewayConnectionTypeVnet2Vnet,
 	}
-}
-
-// ToPtr returns a *VirtualNetworkGatewayConnectionType pointing to the current value.
-func (c VirtualNetworkGatewayConnectionType) ToPtr() *VirtualNetworkGatewayConnectionType {
-	return &c
 }
 
 // VirtualNetworkGatewaySKUName - Gateway SKU name.
@@ -3711,11 +2941,6 @@ func PossibleVirtualNetworkGatewaySKUNameValues() []VirtualNetworkGatewaySKUName
 	}
 }
 
-// ToPtr returns a *VirtualNetworkGatewaySKUName pointing to the current value.
-func (c VirtualNetworkGatewaySKUName) ToPtr() *VirtualNetworkGatewaySKUName {
-	return &c
-}
-
 // VirtualNetworkGatewaySKUTier - Gateway SKU tier.
 type VirtualNetworkGatewaySKUTier string
 
@@ -3762,11 +2987,6 @@ func PossibleVirtualNetworkGatewaySKUTierValues() []VirtualNetworkGatewaySKUTier
 	}
 }
 
-// ToPtr returns a *VirtualNetworkGatewaySKUTier pointing to the current value.
-func (c VirtualNetworkGatewaySKUTier) ToPtr() *VirtualNetworkGatewaySKUTier {
-	return &c
-}
-
 // VirtualNetworkGatewayType - The type of this virtual network gateway.
 type VirtualNetworkGatewayType string
 
@@ -3783,11 +3003,6 @@ func PossibleVirtualNetworkGatewayTypeValues() []VirtualNetworkGatewayType {
 		VirtualNetworkGatewayTypeLocalGateway,
 		VirtualNetworkGatewayTypeVPN,
 	}
-}
-
-// ToPtr returns a *VirtualNetworkGatewayType pointing to the current value.
-func (c VirtualNetworkGatewayType) ToPtr() *VirtualNetworkGatewayType {
-	return &c
 }
 
 // VirtualNetworkPeeringLevel - The peering sync status of the virtual network peering.
@@ -3810,11 +3025,6 @@ func PossibleVirtualNetworkPeeringLevelValues() []VirtualNetworkPeeringLevel {
 	}
 }
 
-// ToPtr returns a *VirtualNetworkPeeringLevel pointing to the current value.
-func (c VirtualNetworkPeeringLevel) ToPtr() *VirtualNetworkPeeringLevel {
-	return &c
-}
-
 // VirtualNetworkPeeringState - The status of the virtual network peering.
 type VirtualNetworkPeeringState string
 
@@ -3833,11 +3043,6 @@ func PossibleVirtualNetworkPeeringStateValues() []VirtualNetworkPeeringState {
 	}
 }
 
-// ToPtr returns a *VirtualNetworkPeeringState pointing to the current value.
-func (c VirtualNetworkPeeringState) ToPtr() *VirtualNetworkPeeringState {
-	return &c
-}
-
 // VirtualNetworkPrivateEndpointNetworkPolicies - Enable or Disable apply network policies on private end point in the subnet.
 type VirtualNetworkPrivateEndpointNetworkPolicies string
 
@@ -3852,11 +3057,6 @@ func PossibleVirtualNetworkPrivateEndpointNetworkPoliciesValues() []VirtualNetwo
 		VirtualNetworkPrivateEndpointNetworkPoliciesDisabled,
 		VirtualNetworkPrivateEndpointNetworkPoliciesEnabled,
 	}
-}
-
-// ToPtr returns a *VirtualNetworkPrivateEndpointNetworkPolicies pointing to the current value.
-func (c VirtualNetworkPrivateEndpointNetworkPolicies) ToPtr() *VirtualNetworkPrivateEndpointNetworkPolicies {
-	return &c
 }
 
 // VirtualNetworkPrivateLinkServiceNetworkPolicies - Enable or Disable apply network policies on private link service in the
@@ -3876,11 +3076,6 @@ func PossibleVirtualNetworkPrivateLinkServiceNetworkPoliciesValues() []VirtualNe
 	}
 }
 
-// ToPtr returns a *VirtualNetworkPrivateLinkServiceNetworkPolicies pointing to the current value.
-func (c VirtualNetworkPrivateLinkServiceNetworkPolicies) ToPtr() *VirtualNetworkPrivateLinkServiceNetworkPolicies {
-	return &c
-}
-
 // VirtualWanSecurityProviderType - The virtual wan security provider type.
 type VirtualWanSecurityProviderType string
 
@@ -3895,11 +3090,6 @@ func PossibleVirtualWanSecurityProviderTypeValues() []VirtualWanSecurityProvider
 		VirtualWanSecurityProviderTypeExternal,
 		VirtualWanSecurityProviderTypeNative,
 	}
-}
-
-// ToPtr returns a *VirtualWanSecurityProviderType pointing to the current value.
-func (c VirtualWanSecurityProviderType) ToPtr() *VirtualWanSecurityProviderType {
-	return &c
 }
 
 // WebApplicationFirewallAction - Type of Actions.
@@ -3920,11 +3110,6 @@ func PossibleWebApplicationFirewallActionValues() []WebApplicationFirewallAction
 	}
 }
 
-// ToPtr returns a *WebApplicationFirewallAction pointing to the current value.
-func (c WebApplicationFirewallAction) ToPtr() *WebApplicationFirewallAction {
-	return &c
-}
-
 // WebApplicationFirewallEnabledState - The state of the policy.
 type WebApplicationFirewallEnabledState string
 
@@ -3939,11 +3124,6 @@ func PossibleWebApplicationFirewallEnabledStateValues() []WebApplicationFirewall
 		WebApplicationFirewallEnabledStateDisabled,
 		WebApplicationFirewallEnabledStateEnabled,
 	}
-}
-
-// ToPtr returns a *WebApplicationFirewallEnabledState pointing to the current value.
-func (c WebApplicationFirewallEnabledState) ToPtr() *WebApplicationFirewallEnabledState {
-	return &c
 }
 
 // WebApplicationFirewallMatchVariable - Match Variable.
@@ -3974,11 +3154,6 @@ func PossibleWebApplicationFirewallMatchVariableValues() []WebApplicationFirewal
 	}
 }
 
-// ToPtr returns a *WebApplicationFirewallMatchVariable pointing to the current value.
-func (c WebApplicationFirewallMatchVariable) ToPtr() *WebApplicationFirewallMatchVariable {
-	return &c
-}
-
 // WebApplicationFirewallMode - The mode of the policy.
 type WebApplicationFirewallMode string
 
@@ -3993,11 +3168,6 @@ func PossibleWebApplicationFirewallModeValues() []WebApplicationFirewallMode {
 		WebApplicationFirewallModeDetection,
 		WebApplicationFirewallModePrevention,
 	}
-}
-
-// ToPtr returns a *WebApplicationFirewallMode pointing to the current value.
-func (c WebApplicationFirewallMode) ToPtr() *WebApplicationFirewallMode {
-	return &c
 }
 
 // WebApplicationFirewallOperator - The operator to be matched.
@@ -4034,11 +3204,6 @@ func PossibleWebApplicationFirewallOperatorValues() []WebApplicationFirewallOper
 	}
 }
 
-// ToPtr returns a *WebApplicationFirewallOperator pointing to the current value.
-func (c WebApplicationFirewallOperator) ToPtr() *WebApplicationFirewallOperator {
-	return &c
-}
-
 // WebApplicationFirewallPolicyResourceState - Resource status of the policy.
 type WebApplicationFirewallPolicyResourceState string
 
@@ -4063,11 +3228,6 @@ func PossibleWebApplicationFirewallPolicyResourceStateValues() []WebApplicationF
 	}
 }
 
-// ToPtr returns a *WebApplicationFirewallPolicyResourceState pointing to the current value.
-func (c WebApplicationFirewallPolicyResourceState) ToPtr() *WebApplicationFirewallPolicyResourceState {
-	return &c
-}
-
 // WebApplicationFirewallRuleType - The rule type.
 type WebApplicationFirewallRuleType string
 
@@ -4082,11 +3242,6 @@ func PossibleWebApplicationFirewallRuleTypeValues() []WebApplicationFirewallRule
 		WebApplicationFirewallRuleTypeInvalid,
 		WebApplicationFirewallRuleTypeMatchRule,
 	}
-}
-
-// ToPtr returns a *WebApplicationFirewallRuleType pointing to the current value.
-func (c WebApplicationFirewallRuleType) ToPtr() *WebApplicationFirewallRuleType {
-	return &c
 }
 
 // WebApplicationFirewallTransform - Transforms applied before matching.
@@ -4111,9 +3266,4 @@ func PossibleWebApplicationFirewallTransformValues() []WebApplicationFirewallTra
 		WebApplicationFirewallTransformURLDecode,
 		WebApplicationFirewallTransformURLEncode,
 	}
-}
-
-// ToPtr returns a *WebApplicationFirewallTransform pointing to the current value.
-func (c WebApplicationFirewallTransform) ToPtr() *WebApplicationFirewallTransform {
-	return &c
 }

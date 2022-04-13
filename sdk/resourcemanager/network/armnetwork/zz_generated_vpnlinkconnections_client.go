@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type VPNLinkConnectionsClient struct {
 // ID forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewVPNLinkConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VPNLinkConnectionsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewVPNLinkConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VPNLinkConnectionsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &VPNLinkConnectionsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginGetIkeSas - Lists IKE Security Associations for Vpn Site Link Connection in the specified resource group.
@@ -58,22 +63,18 @@ func NewVPNLinkConnectionsClient(subscriptionID string, credential azcore.TokenC
 // linkConnectionName - The name of the vpn link connection.
 // options - VPNLinkConnectionsClientBeginGetIkeSasOptions contains the optional parameters for the VPNLinkConnectionsClient.BeginGetIkeSas
 // method.
-func (client *VPNLinkConnectionsClient) BeginGetIkeSas(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, linkConnectionName string, options *VPNLinkConnectionsClientBeginGetIkeSasOptions) (VPNLinkConnectionsClientGetIkeSasPollerResponse, error) {
-	resp, err := client.getIkeSas(ctx, resourceGroupName, gatewayName, connectionName, linkConnectionName, options)
-	if err != nil {
-		return VPNLinkConnectionsClientGetIkeSasPollerResponse{}, err
+func (client *VPNLinkConnectionsClient) BeginGetIkeSas(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, linkConnectionName string, options *VPNLinkConnectionsClientBeginGetIkeSasOptions) (*armruntime.Poller[VPNLinkConnectionsClientGetIkeSasResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.getIkeSas(ctx, resourceGroupName, gatewayName, connectionName, linkConnectionName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[VPNLinkConnectionsClientGetIkeSasResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[VPNLinkConnectionsClientGetIkeSasResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := VPNLinkConnectionsClientGetIkeSasPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("VPNLinkConnectionsClient.GetIkeSas", "location", resp, client.pl)
-	if err != nil {
-		return VPNLinkConnectionsClientGetIkeSasPollerResponse{}, err
-	}
-	result.Poller = &VPNLinkConnectionsClientGetIkeSasPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // GetIkeSas - Lists IKE Security Associations for Vpn Site Link Connection in the specified resource group.
@@ -134,16 +135,32 @@ func (client *VPNLinkConnectionsClient) getIkeSasCreateRequest(ctx context.Conte
 // connectionName - The name of the vpn connection.
 // options - VPNLinkConnectionsClientListByVPNConnectionOptions contains the optional parameters for the VPNLinkConnectionsClient.ListByVPNConnection
 // method.
-func (client *VPNLinkConnectionsClient) ListByVPNConnection(resourceGroupName string, gatewayName string, connectionName string, options *VPNLinkConnectionsClientListByVPNConnectionOptions) *VPNLinkConnectionsClientListByVPNConnectionPager {
-	return &VPNLinkConnectionsClientListByVPNConnectionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByVPNConnectionCreateRequest(ctx, resourceGroupName, gatewayName, connectionName, options)
+func (client *VPNLinkConnectionsClient) ListByVPNConnection(resourceGroupName string, gatewayName string, connectionName string, options *VPNLinkConnectionsClientListByVPNConnectionOptions) *runtime.Pager[VPNLinkConnectionsClientListByVPNConnectionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[VPNLinkConnectionsClientListByVPNConnectionResponse]{
+		More: func(page VPNLinkConnectionsClientListByVPNConnectionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp VPNLinkConnectionsClientListByVPNConnectionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ListVPNSiteLinkConnectionsResult.NextLink)
+		Fetcher: func(ctx context.Context, page *VPNLinkConnectionsClientListByVPNConnectionResponse) (VPNLinkConnectionsClientListByVPNConnectionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByVPNConnectionCreateRequest(ctx, resourceGroupName, gatewayName, connectionName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return VPNLinkConnectionsClientListByVPNConnectionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return VPNLinkConnectionsClientListByVPNConnectionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return VPNLinkConnectionsClientListByVPNConnectionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByVPNConnectionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByVPNConnectionCreateRequest creates the ListByVPNConnection request.
@@ -178,7 +195,7 @@ func (client *VPNLinkConnectionsClient) listByVPNConnectionCreateRequest(ctx con
 
 // listByVPNConnectionHandleResponse handles the ListByVPNConnection response.
 func (client *VPNLinkConnectionsClient) listByVPNConnectionHandleResponse(resp *http.Response) (VPNLinkConnectionsClientListByVPNConnectionResponse, error) {
-	result := VPNLinkConnectionsClientListByVPNConnectionResponse{RawResponse: resp}
+	result := VPNLinkConnectionsClientListByVPNConnectionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListVPNSiteLinkConnectionsResult); err != nil {
 		return VPNLinkConnectionsClientListByVPNConnectionResponse{}, err
 	}
@@ -193,22 +210,18 @@ func (client *VPNLinkConnectionsClient) listByVPNConnectionHandleResponse(resp *
 // linkConnectionName - The name of the vpn link connection.
 // options - VPNLinkConnectionsClientBeginResetConnectionOptions contains the optional parameters for the VPNLinkConnectionsClient.BeginResetConnection
 // method.
-func (client *VPNLinkConnectionsClient) BeginResetConnection(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, linkConnectionName string, options *VPNLinkConnectionsClientBeginResetConnectionOptions) (VPNLinkConnectionsClientResetConnectionPollerResponse, error) {
-	resp, err := client.resetConnection(ctx, resourceGroupName, gatewayName, connectionName, linkConnectionName, options)
-	if err != nil {
-		return VPNLinkConnectionsClientResetConnectionPollerResponse{}, err
+func (client *VPNLinkConnectionsClient) BeginResetConnection(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, linkConnectionName string, options *VPNLinkConnectionsClientBeginResetConnectionOptions) (*armruntime.Poller[VPNLinkConnectionsClientResetConnectionResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.resetConnection(ctx, resourceGroupName, gatewayName, connectionName, linkConnectionName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[VPNLinkConnectionsClientResetConnectionResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[VPNLinkConnectionsClientResetConnectionResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := VPNLinkConnectionsClientResetConnectionPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("VPNLinkConnectionsClient.ResetConnection", "location", resp, client.pl)
-	if err != nil {
-		return VPNLinkConnectionsClientResetConnectionPollerResponse{}, err
-	}
-	result.Poller = &VPNLinkConnectionsClientResetConnectionPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // ResetConnection - Resets the VpnLink connection specified.

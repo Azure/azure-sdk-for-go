@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type RouteFilterRulesClient struct {
 // ID forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewRouteFilterRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RouteFilterRulesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewRouteFilterRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RouteFilterRulesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &RouteFilterRulesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates a route in the specified route filter.
@@ -58,22 +63,18 @@ func NewRouteFilterRulesClient(subscriptionID string, credential azcore.TokenCre
 // routeFilterRuleParameters - Parameters supplied to the create or update route filter rule operation.
 // options - RouteFilterRulesClientBeginCreateOrUpdateOptions contains the optional parameters for the RouteFilterRulesClient.BeginCreateOrUpdate
 // method.
-func (client *RouteFilterRulesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, routeFilterName string, ruleName string, routeFilterRuleParameters RouteFilterRule, options *RouteFilterRulesClientBeginCreateOrUpdateOptions) (RouteFilterRulesClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, routeFilterName, ruleName, routeFilterRuleParameters, options)
-	if err != nil {
-		return RouteFilterRulesClientCreateOrUpdatePollerResponse{}, err
+func (client *RouteFilterRulesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, routeFilterName string, ruleName string, routeFilterRuleParameters RouteFilterRule, options *RouteFilterRulesClientBeginCreateOrUpdateOptions) (*armruntime.Poller[RouteFilterRulesClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, routeFilterName, ruleName, routeFilterRuleParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[RouteFilterRulesClientCreateOrUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[RouteFilterRulesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := RouteFilterRulesClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("RouteFilterRulesClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return RouteFilterRulesClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &RouteFilterRulesClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a route in the specified route filter.
@@ -130,22 +131,18 @@ func (client *RouteFilterRulesClient) createOrUpdateCreateRequest(ctx context.Co
 // ruleName - The name of the rule.
 // options - RouteFilterRulesClientBeginDeleteOptions contains the optional parameters for the RouteFilterRulesClient.BeginDelete
 // method.
-func (client *RouteFilterRulesClient) BeginDelete(ctx context.Context, resourceGroupName string, routeFilterName string, ruleName string, options *RouteFilterRulesClientBeginDeleteOptions) (RouteFilterRulesClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, routeFilterName, ruleName, options)
-	if err != nil {
-		return RouteFilterRulesClientDeletePollerResponse{}, err
+func (client *RouteFilterRulesClient) BeginDelete(ctx context.Context, resourceGroupName string, routeFilterName string, ruleName string, options *RouteFilterRulesClientBeginDeleteOptions) (*armruntime.Poller[RouteFilterRulesClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, routeFilterName, ruleName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[RouteFilterRulesClientDeleteResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[RouteFilterRulesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := RouteFilterRulesClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("RouteFilterRulesClient.Delete", "location", resp, client.pl)
-	if err != nil {
-		return RouteFilterRulesClientDeletePollerResponse{}, err
-	}
-	result.Poller = &RouteFilterRulesClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes the specified rule from a route filter.
@@ -248,7 +245,7 @@ func (client *RouteFilterRulesClient) getCreateRequest(ctx context.Context, reso
 
 // getHandleResponse handles the Get response.
 func (client *RouteFilterRulesClient) getHandleResponse(resp *http.Response) (RouteFilterRulesClientGetResponse, error) {
-	result := RouteFilterRulesClientGetResponse{RawResponse: resp}
+	result := RouteFilterRulesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RouteFilterRule); err != nil {
 		return RouteFilterRulesClientGetResponse{}, err
 	}
@@ -261,16 +258,32 @@ func (client *RouteFilterRulesClient) getHandleResponse(resp *http.Response) (Ro
 // routeFilterName - The name of the route filter.
 // options - RouteFilterRulesClientListByRouteFilterOptions contains the optional parameters for the RouteFilterRulesClient.ListByRouteFilter
 // method.
-func (client *RouteFilterRulesClient) ListByRouteFilter(resourceGroupName string, routeFilterName string, options *RouteFilterRulesClientListByRouteFilterOptions) *RouteFilterRulesClientListByRouteFilterPager {
-	return &RouteFilterRulesClientListByRouteFilterPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByRouteFilterCreateRequest(ctx, resourceGroupName, routeFilterName, options)
+func (client *RouteFilterRulesClient) ListByRouteFilter(resourceGroupName string, routeFilterName string, options *RouteFilterRulesClientListByRouteFilterOptions) *runtime.Pager[RouteFilterRulesClientListByRouteFilterResponse] {
+	return runtime.NewPager(runtime.PageProcessor[RouteFilterRulesClientListByRouteFilterResponse]{
+		More: func(page RouteFilterRulesClientListByRouteFilterResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp RouteFilterRulesClientListByRouteFilterResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.RouteFilterRuleListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *RouteFilterRulesClientListByRouteFilterResponse) (RouteFilterRulesClientListByRouteFilterResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByRouteFilterCreateRequest(ctx, resourceGroupName, routeFilterName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return RouteFilterRulesClientListByRouteFilterResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return RouteFilterRulesClientListByRouteFilterResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return RouteFilterRulesClientListByRouteFilterResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByRouteFilterHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByRouteFilterCreateRequest creates the ListByRouteFilter request.
@@ -301,7 +314,7 @@ func (client *RouteFilterRulesClient) listByRouteFilterCreateRequest(ctx context
 
 // listByRouteFilterHandleResponse handles the ListByRouteFilter response.
 func (client *RouteFilterRulesClient) listByRouteFilterHandleResponse(resp *http.Response) (RouteFilterRulesClientListByRouteFilterResponse, error) {
-	result := RouteFilterRulesClientListByRouteFilterResponse{RawResponse: resp}
+	result := RouteFilterRulesClientListByRouteFilterResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RouteFilterRuleListResult); err != nil {
 		return RouteFilterRulesClientListByRouteFilterResponse{}, err
 	}

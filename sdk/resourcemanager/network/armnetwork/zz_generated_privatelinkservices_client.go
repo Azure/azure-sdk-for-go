@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type PrivateLinkServicesClient struct {
 // ID forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewPrivateLinkServicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PrivateLinkServicesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewPrivateLinkServicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateLinkServicesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &PrivateLinkServicesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCheckPrivateLinkServiceVisibility - Checks whether the subscription is visible to private link service.
@@ -56,22 +61,18 @@ func NewPrivateLinkServicesClient(subscriptionID string, credential azcore.Token
 // parameters - The request body of CheckPrivateLinkService API call.
 // options - PrivateLinkServicesClientBeginCheckPrivateLinkServiceVisibilityOptions contains the optional parameters for the
 // PrivateLinkServicesClient.BeginCheckPrivateLinkServiceVisibility method.
-func (client *PrivateLinkServicesClient) BeginCheckPrivateLinkServiceVisibility(ctx context.Context, location string, parameters CheckPrivateLinkServiceVisibilityRequest, options *PrivateLinkServicesClientBeginCheckPrivateLinkServiceVisibilityOptions) (PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityPollerResponse, error) {
-	resp, err := client.checkPrivateLinkServiceVisibility(ctx, location, parameters, options)
-	if err != nil {
-		return PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityPollerResponse{}, err
+func (client *PrivateLinkServicesClient) BeginCheckPrivateLinkServiceVisibility(ctx context.Context, location string, parameters CheckPrivateLinkServiceVisibilityRequest, options *PrivateLinkServicesClientBeginCheckPrivateLinkServiceVisibilityOptions) (*armruntime.Poller[PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.checkPrivateLinkServiceVisibility(ctx, location, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("PrivateLinkServicesClient.CheckPrivateLinkServiceVisibility", "location", resp, client.pl)
-	if err != nil {
-		return PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityPollerResponse{}, err
-	}
-	result.Poller = &PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CheckPrivateLinkServiceVisibility - Checks whether the subscription is visible to private link service.
@@ -121,22 +122,18 @@ func (client *PrivateLinkServicesClient) checkPrivateLinkServiceVisibilityCreate
 // parameters - The request body of CheckPrivateLinkService API call.
 // options - PrivateLinkServicesClientBeginCheckPrivateLinkServiceVisibilityByResourceGroupOptions contains the optional parameters
 // for the PrivateLinkServicesClient.BeginCheckPrivateLinkServiceVisibilityByResourceGroup method.
-func (client *PrivateLinkServicesClient) BeginCheckPrivateLinkServiceVisibilityByResourceGroup(ctx context.Context, location string, resourceGroupName string, parameters CheckPrivateLinkServiceVisibilityRequest, options *PrivateLinkServicesClientBeginCheckPrivateLinkServiceVisibilityByResourceGroupOptions) (PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityByResourceGroupPollerResponse, error) {
-	resp, err := client.checkPrivateLinkServiceVisibilityByResourceGroup(ctx, location, resourceGroupName, parameters, options)
-	if err != nil {
-		return PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityByResourceGroupPollerResponse{}, err
+func (client *PrivateLinkServicesClient) BeginCheckPrivateLinkServiceVisibilityByResourceGroup(ctx context.Context, location string, resourceGroupName string, parameters CheckPrivateLinkServiceVisibilityRequest, options *PrivateLinkServicesClientBeginCheckPrivateLinkServiceVisibilityByResourceGroupOptions) (*armruntime.Poller[PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityByResourceGroupResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.checkPrivateLinkServiceVisibilityByResourceGroup(ctx, location, resourceGroupName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityByResourceGroupResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityByResourceGroupResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityByResourceGroupPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("PrivateLinkServicesClient.CheckPrivateLinkServiceVisibilityByResourceGroup", "location", resp, client.pl)
-	if err != nil {
-		return PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityByResourceGroupPollerResponse{}, err
-	}
-	result.Poller = &PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityByResourceGroupPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CheckPrivateLinkServiceVisibilityByResourceGroup - Checks whether the subscription is visible to private link service in
@@ -190,22 +187,18 @@ func (client *PrivateLinkServicesClient) checkPrivateLinkServiceVisibilityByReso
 // parameters - Parameters supplied to the create or update private link service operation.
 // options - PrivateLinkServicesClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateLinkServicesClient.BeginCreateOrUpdate
 // method.
-func (client *PrivateLinkServicesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, parameters PrivateLinkService, options *PrivateLinkServicesClientBeginCreateOrUpdateOptions) (PrivateLinkServicesClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, serviceName, parameters, options)
-	if err != nil {
-		return PrivateLinkServicesClientCreateOrUpdatePollerResponse{}, err
+func (client *PrivateLinkServicesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, parameters PrivateLinkService, options *PrivateLinkServicesClientBeginCreateOrUpdateOptions) (*armruntime.Poller[PrivateLinkServicesClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, serviceName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[PrivateLinkServicesClientCreateOrUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[PrivateLinkServicesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := PrivateLinkServicesClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("PrivateLinkServicesClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return PrivateLinkServicesClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &PrivateLinkServicesClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates an private link service in the specified resource group.
@@ -257,22 +250,18 @@ func (client *PrivateLinkServicesClient) createOrUpdateCreateRequest(ctx context
 // serviceName - The name of the private link service.
 // options - PrivateLinkServicesClientBeginDeleteOptions contains the optional parameters for the PrivateLinkServicesClient.BeginDelete
 // method.
-func (client *PrivateLinkServicesClient) BeginDelete(ctx context.Context, resourceGroupName string, serviceName string, options *PrivateLinkServicesClientBeginDeleteOptions) (PrivateLinkServicesClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, serviceName, options)
-	if err != nil {
-		return PrivateLinkServicesClientDeletePollerResponse{}, err
+func (client *PrivateLinkServicesClient) BeginDelete(ctx context.Context, resourceGroupName string, serviceName string, options *PrivateLinkServicesClientBeginDeleteOptions) (*armruntime.Poller[PrivateLinkServicesClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, serviceName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[PrivateLinkServicesClientDeleteResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[PrivateLinkServicesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := PrivateLinkServicesClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("PrivateLinkServicesClient.Delete", "location", resp, client.pl)
-	if err != nil {
-		return PrivateLinkServicesClientDeletePollerResponse{}, err
-	}
-	result.Poller = &PrivateLinkServicesClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes the specified private link service.
@@ -325,22 +314,18 @@ func (client *PrivateLinkServicesClient) deleteCreateRequest(ctx context.Context
 // peConnectionName - The name of the private end point connection.
 // options - PrivateLinkServicesClientBeginDeletePrivateEndpointConnectionOptions contains the optional parameters for the
 // PrivateLinkServicesClient.BeginDeletePrivateEndpointConnection method.
-func (client *PrivateLinkServicesClient) BeginDeletePrivateEndpointConnection(ctx context.Context, resourceGroupName string, serviceName string, peConnectionName string, options *PrivateLinkServicesClientBeginDeletePrivateEndpointConnectionOptions) (PrivateLinkServicesClientDeletePrivateEndpointConnectionPollerResponse, error) {
-	resp, err := client.deletePrivateEndpointConnection(ctx, resourceGroupName, serviceName, peConnectionName, options)
-	if err != nil {
-		return PrivateLinkServicesClientDeletePrivateEndpointConnectionPollerResponse{}, err
+func (client *PrivateLinkServicesClient) BeginDeletePrivateEndpointConnection(ctx context.Context, resourceGroupName string, serviceName string, peConnectionName string, options *PrivateLinkServicesClientBeginDeletePrivateEndpointConnectionOptions) (*armruntime.Poller[PrivateLinkServicesClientDeletePrivateEndpointConnectionResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deletePrivateEndpointConnection(ctx, resourceGroupName, serviceName, peConnectionName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[PrivateLinkServicesClientDeletePrivateEndpointConnectionResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[PrivateLinkServicesClientDeletePrivateEndpointConnectionResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := PrivateLinkServicesClientDeletePrivateEndpointConnectionPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("PrivateLinkServicesClient.DeletePrivateEndpointConnection", "location", resp, client.pl)
-	if err != nil {
-		return PrivateLinkServicesClientDeletePrivateEndpointConnectionPollerResponse{}, err
-	}
-	result.Poller = &PrivateLinkServicesClientDeletePrivateEndpointConnectionPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // DeletePrivateEndpointConnection - Delete private end point connection for a private link service in a subscription.
@@ -441,7 +426,7 @@ func (client *PrivateLinkServicesClient) getCreateRequest(ctx context.Context, r
 
 // getHandleResponse handles the Get response.
 func (client *PrivateLinkServicesClient) getHandleResponse(resp *http.Response) (PrivateLinkServicesClientGetResponse, error) {
-	result := PrivateLinkServicesClientGetResponse{RawResponse: resp}
+	result := PrivateLinkServicesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkService); err != nil {
 		return PrivateLinkServicesClientGetResponse{}, err
 	}
@@ -506,7 +491,7 @@ func (client *PrivateLinkServicesClient) getPrivateEndpointConnectionCreateReque
 
 // getPrivateEndpointConnectionHandleResponse handles the GetPrivateEndpointConnection response.
 func (client *PrivateLinkServicesClient) getPrivateEndpointConnectionHandleResponse(resp *http.Response) (PrivateLinkServicesClientGetPrivateEndpointConnectionResponse, error) {
-	result := PrivateLinkServicesClientGetPrivateEndpointConnectionResponse{RawResponse: resp}
+	result := PrivateLinkServicesClientGetPrivateEndpointConnectionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnection); err != nil {
 		return PrivateLinkServicesClientGetPrivateEndpointConnectionResponse{}, err
 	}
@@ -518,16 +503,32 @@ func (client *PrivateLinkServicesClient) getPrivateEndpointConnectionHandleRespo
 // resourceGroupName - The name of the resource group.
 // options - PrivateLinkServicesClientListOptions contains the optional parameters for the PrivateLinkServicesClient.List
 // method.
-func (client *PrivateLinkServicesClient) List(resourceGroupName string, options *PrivateLinkServicesClientListOptions) *PrivateLinkServicesClientListPager {
-	return &PrivateLinkServicesClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, options)
+func (client *PrivateLinkServicesClient) List(resourceGroupName string, options *PrivateLinkServicesClientListOptions) *runtime.Pager[PrivateLinkServicesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PrivateLinkServicesClientListResponse]{
+		More: func(page PrivateLinkServicesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PrivateLinkServicesClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PrivateLinkServiceListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *PrivateLinkServicesClientListResponse) (PrivateLinkServicesClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return PrivateLinkServicesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PrivateLinkServicesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PrivateLinkServicesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -554,7 +555,7 @@ func (client *PrivateLinkServicesClient) listCreateRequest(ctx context.Context, 
 
 // listHandleResponse handles the List response.
 func (client *PrivateLinkServicesClient) listHandleResponse(resp *http.Response) (PrivateLinkServicesClientListResponse, error) {
-	result := PrivateLinkServicesClientListResponse{RawResponse: resp}
+	result := PrivateLinkServicesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkServiceListResult); err != nil {
 		return PrivateLinkServicesClientListResponse{}, err
 	}
@@ -567,16 +568,32 @@ func (client *PrivateLinkServicesClient) listHandleResponse(resp *http.Response)
 // location - The location of the domain name.
 // options - PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesOptions contains the optional parameters for the
 // PrivateLinkServicesClient.ListAutoApprovedPrivateLinkServices method.
-func (client *PrivateLinkServicesClient) ListAutoApprovedPrivateLinkServices(location string, options *PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesOptions) *PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesPager {
-	return &PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listAutoApprovedPrivateLinkServicesCreateRequest(ctx, location, options)
+func (client *PrivateLinkServicesClient) ListAutoApprovedPrivateLinkServices(location string, options *PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesOptions) *runtime.Pager[PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesResponse]{
+		More: func(page PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AutoApprovedPrivateLinkServicesResult.NextLink)
+		Fetcher: func(ctx context.Context, page *PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesResponse) (PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listAutoApprovedPrivateLinkServicesCreateRequest(ctx, location, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listAutoApprovedPrivateLinkServicesHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listAutoApprovedPrivateLinkServicesCreateRequest creates the ListAutoApprovedPrivateLinkServices request.
@@ -603,7 +620,7 @@ func (client *PrivateLinkServicesClient) listAutoApprovedPrivateLinkServicesCrea
 
 // listAutoApprovedPrivateLinkServicesHandleResponse handles the ListAutoApprovedPrivateLinkServices response.
 func (client *PrivateLinkServicesClient) listAutoApprovedPrivateLinkServicesHandleResponse(resp *http.Response) (PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesResponse, error) {
-	result := PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesResponse{RawResponse: resp}
+	result := PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AutoApprovedPrivateLinkServicesResult); err != nil {
 		return PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesResponse{}, err
 	}
@@ -617,16 +634,32 @@ func (client *PrivateLinkServicesClient) listAutoApprovedPrivateLinkServicesHand
 // resourceGroupName - The name of the resource group.
 // options - PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupOptions contains the optional parameters
 // for the PrivateLinkServicesClient.ListAutoApprovedPrivateLinkServicesByResourceGroup method.
-func (client *PrivateLinkServicesClient) ListAutoApprovedPrivateLinkServicesByResourceGroup(location string, resourceGroupName string, options *PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupOptions) *PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupPager {
-	return &PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listAutoApprovedPrivateLinkServicesByResourceGroupCreateRequest(ctx, location, resourceGroupName, options)
+func (client *PrivateLinkServicesClient) ListAutoApprovedPrivateLinkServicesByResourceGroup(location string, resourceGroupName string, options *PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupOptions) *runtime.Pager[PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupResponse]{
+		More: func(page PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AutoApprovedPrivateLinkServicesResult.NextLink)
+		Fetcher: func(ctx context.Context, page *PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupResponse) (PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listAutoApprovedPrivateLinkServicesByResourceGroupCreateRequest(ctx, location, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listAutoApprovedPrivateLinkServicesByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listAutoApprovedPrivateLinkServicesByResourceGroupCreateRequest creates the ListAutoApprovedPrivateLinkServicesByResourceGroup request.
@@ -657,7 +690,7 @@ func (client *PrivateLinkServicesClient) listAutoApprovedPrivateLinkServicesByRe
 
 // listAutoApprovedPrivateLinkServicesByResourceGroupHandleResponse handles the ListAutoApprovedPrivateLinkServicesByResourceGroup response.
 func (client *PrivateLinkServicesClient) listAutoApprovedPrivateLinkServicesByResourceGroupHandleResponse(resp *http.Response) (PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupResponse, error) {
-	result := PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupResponse{RawResponse: resp}
+	result := PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AutoApprovedPrivateLinkServicesResult); err != nil {
 		return PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupResponse{}, err
 	}
@@ -668,16 +701,32 @@ func (client *PrivateLinkServicesClient) listAutoApprovedPrivateLinkServicesByRe
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - PrivateLinkServicesClientListBySubscriptionOptions contains the optional parameters for the PrivateLinkServicesClient.ListBySubscription
 // method.
-func (client *PrivateLinkServicesClient) ListBySubscription(options *PrivateLinkServicesClientListBySubscriptionOptions) *PrivateLinkServicesClientListBySubscriptionPager {
-	return &PrivateLinkServicesClientListBySubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySubscriptionCreateRequest(ctx, options)
+func (client *PrivateLinkServicesClient) ListBySubscription(options *PrivateLinkServicesClientListBySubscriptionOptions) *runtime.Pager[PrivateLinkServicesClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PrivateLinkServicesClientListBySubscriptionResponse]{
+		More: func(page PrivateLinkServicesClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PrivateLinkServicesClientListBySubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PrivateLinkServiceListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *PrivateLinkServicesClientListBySubscriptionResponse) (PrivateLinkServicesClientListBySubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySubscriptionCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return PrivateLinkServicesClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PrivateLinkServicesClientListBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PrivateLinkServicesClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
@@ -700,7 +749,7 @@ func (client *PrivateLinkServicesClient) listBySubscriptionCreateRequest(ctx con
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
 func (client *PrivateLinkServicesClient) listBySubscriptionHandleResponse(resp *http.Response) (PrivateLinkServicesClientListBySubscriptionResponse, error) {
-	result := PrivateLinkServicesClientListBySubscriptionResponse{RawResponse: resp}
+	result := PrivateLinkServicesClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkServiceListResult); err != nil {
 		return PrivateLinkServicesClientListBySubscriptionResponse{}, err
 	}
@@ -713,16 +762,32 @@ func (client *PrivateLinkServicesClient) listBySubscriptionHandleResponse(resp *
 // serviceName - The name of the private link service.
 // options - PrivateLinkServicesClientListPrivateEndpointConnectionsOptions contains the optional parameters for the PrivateLinkServicesClient.ListPrivateEndpointConnections
 // method.
-func (client *PrivateLinkServicesClient) ListPrivateEndpointConnections(resourceGroupName string, serviceName string, options *PrivateLinkServicesClientListPrivateEndpointConnectionsOptions) *PrivateLinkServicesClientListPrivateEndpointConnectionsPager {
-	return &PrivateLinkServicesClientListPrivateEndpointConnectionsPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listPrivateEndpointConnectionsCreateRequest(ctx, resourceGroupName, serviceName, options)
+func (client *PrivateLinkServicesClient) ListPrivateEndpointConnections(resourceGroupName string, serviceName string, options *PrivateLinkServicesClientListPrivateEndpointConnectionsOptions) *runtime.Pager[PrivateLinkServicesClientListPrivateEndpointConnectionsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PrivateLinkServicesClientListPrivateEndpointConnectionsResponse]{
+		More: func(page PrivateLinkServicesClientListPrivateEndpointConnectionsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PrivateLinkServicesClientListPrivateEndpointConnectionsResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PrivateEndpointConnectionListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *PrivateLinkServicesClientListPrivateEndpointConnectionsResponse) (PrivateLinkServicesClientListPrivateEndpointConnectionsResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listPrivateEndpointConnectionsCreateRequest(ctx, resourceGroupName, serviceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return PrivateLinkServicesClientListPrivateEndpointConnectionsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PrivateLinkServicesClientListPrivateEndpointConnectionsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PrivateLinkServicesClientListPrivateEndpointConnectionsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listPrivateEndpointConnectionsHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listPrivateEndpointConnectionsCreateRequest creates the ListPrivateEndpointConnections request.
@@ -753,7 +818,7 @@ func (client *PrivateLinkServicesClient) listPrivateEndpointConnectionsCreateReq
 
 // listPrivateEndpointConnectionsHandleResponse handles the ListPrivateEndpointConnections response.
 func (client *PrivateLinkServicesClient) listPrivateEndpointConnectionsHandleResponse(resp *http.Response) (PrivateLinkServicesClientListPrivateEndpointConnectionsResponse, error) {
-	result := PrivateLinkServicesClientListPrivateEndpointConnectionsResponse{RawResponse: resp}
+	result := PrivateLinkServicesClientListPrivateEndpointConnectionsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnectionListResult); err != nil {
 		return PrivateLinkServicesClientListPrivateEndpointConnectionsResponse{}, err
 	}
@@ -815,7 +880,7 @@ func (client *PrivateLinkServicesClient) updatePrivateEndpointConnectionCreateRe
 
 // updatePrivateEndpointConnectionHandleResponse handles the UpdatePrivateEndpointConnection response.
 func (client *PrivateLinkServicesClient) updatePrivateEndpointConnectionHandleResponse(resp *http.Response) (PrivateLinkServicesClientUpdatePrivateEndpointConnectionResponse, error) {
-	result := PrivateLinkServicesClientUpdatePrivateEndpointConnectionResponse{RawResponse: resp}
+	result := PrivateLinkServicesClientUpdatePrivateEndpointConnectionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnection); err != nil {
 		return PrivateLinkServicesClientUpdatePrivateEndpointConnectionResponse{}, err
 	}

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,122 +19,148 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
 )
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/FirewallPolicyRuleCollectionGroupDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/FirewallPolicyRuleCollectionGroupDelete.json
 func ExampleFirewallPolicyRuleCollectionGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewFirewallPolicyRuleCollectionGroupsClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewFirewallPolicyRuleCollectionGroupsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
 		"<firewall-policy-name>",
 		"<rule-collection-group-name>",
-		nil)
+		&armnetwork.FirewallPolicyRuleCollectionGroupsClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/FirewallPolicyNatRuleCollectionGroupGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/FirewallPolicyNatRuleCollectionGroupGet.json
 func ExampleFirewallPolicyRuleCollectionGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewFirewallPolicyRuleCollectionGroupsClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewFirewallPolicyRuleCollectionGroupsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<firewall-policy-name>",
 		"<rule-collection-group-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.FirewallPolicyRuleCollectionGroupsClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/FirewallPolicyNatRuleCollectionGroupPut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/FirewallPolicyNatRuleCollectionGroupPut.json
 func ExampleFirewallPolicyRuleCollectionGroupsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewFirewallPolicyRuleCollectionGroupsClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewFirewallPolicyRuleCollectionGroupsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<firewall-policy-name>",
 		"<rule-collection-group-name>",
 		armnetwork.FirewallPolicyRuleCollectionGroup{
 			Properties: &armnetwork.FirewallPolicyRuleCollectionGroupProperties{
-				Priority: to.Int32Ptr(100),
+				Priority: to.Ptr[int32](100),
 				RuleCollections: []armnetwork.FirewallPolicyRuleCollectionClassification{
 					&armnetwork.FirewallPolicyNatRuleCollection{
-						Name:               to.StringPtr("<name>"),
-						Priority:           to.Int32Ptr(100),
-						RuleCollectionType: armnetwork.FirewallPolicyRuleCollectionType("FirewallPolicyNatRuleCollection").ToPtr(),
+						Name:               to.Ptr("<name>"),
+						Priority:           to.Ptr[int32](100),
+						RuleCollectionType: to.Ptr(armnetwork.FirewallPolicyRuleCollectionTypeFirewallPolicyNatRuleCollection),
 						Action: &armnetwork.FirewallPolicyNatRuleCollectionAction{
-							Type: armnetwork.FirewallPolicyNatRuleCollectionActionType("DNAT").ToPtr(),
+							Type: to.Ptr(armnetwork.FirewallPolicyNatRuleCollectionActionTypeDNAT),
 						},
 						Rules: []armnetwork.FirewallPolicyRuleClassification{
 							&armnetwork.NatRule{
-								Name:     to.StringPtr("<name>"),
-								RuleType: armnetwork.FirewallPolicyRuleType("NatRule").ToPtr(),
+								Name:     to.Ptr("<name>"),
+								RuleType: to.Ptr(armnetwork.FirewallPolicyRuleTypeNatRule),
 								DestinationAddresses: []*string{
-									to.StringPtr("152.23.32.23")},
+									to.Ptr("152.23.32.23")},
 								DestinationPorts: []*string{
-									to.StringPtr("8080")},
+									to.Ptr("8080")},
 								IPProtocols: []*armnetwork.FirewallPolicyRuleNetworkProtocol{
-									armnetwork.FirewallPolicyRuleNetworkProtocol("TCP").ToPtr(),
-									armnetwork.FirewallPolicyRuleNetworkProtocol("UDP").ToPtr()},
+									to.Ptr(armnetwork.FirewallPolicyRuleNetworkProtocolTCP),
+									to.Ptr(armnetwork.FirewallPolicyRuleNetworkProtocolUDP)},
 								SourceAddresses: []*string{
-									to.StringPtr("2.2.2.2")},
+									to.Ptr("2.2.2.2")},
 								SourceIPGroups: []*string{},
-								TranslatedFqdn: to.StringPtr("<translated-fqdn>"),
-								TranslatedPort: to.StringPtr("<translated-port>"),
+								TranslatedFqdn: to.Ptr("<translated-fqdn>"),
+								TranslatedPort: to.Ptr("<translated-port>"),
 							}},
 					}},
 			},
 		},
-		nil)
+		&armnetwork.FirewallPolicyRuleCollectionGroupsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.FirewallPolicyRuleCollectionGroupsClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/FirewallPolicyRuleCollectionGroupWithWebCategoriesList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/FirewallPolicyRuleCollectionGroupWithWebCategoriesList.json
 func ExampleFirewallPolicyRuleCollectionGroupsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewFirewallPolicyRuleCollectionGroupsClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewFirewallPolicyRuleCollectionGroupsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.List("<resource-group-name>",
 		"<firewall-policy-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }

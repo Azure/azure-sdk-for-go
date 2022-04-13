@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type HubRouteTablesClient struct {
 // ID forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewHubRouteTablesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *HubRouteTablesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewHubRouteTablesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*HubRouteTablesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &HubRouteTablesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates a RouteTable resource if it doesn't exist else updates the existing RouteTable.
@@ -58,22 +63,18 @@ func NewHubRouteTablesClient(subscriptionID string, credential azcore.TokenCrede
 // routeTableParameters - Parameters supplied to create or update RouteTable.
 // options - HubRouteTablesClientBeginCreateOrUpdateOptions contains the optional parameters for the HubRouteTablesClient.BeginCreateOrUpdate
 // method.
-func (client *HubRouteTablesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, routeTableParameters HubRouteTable, options *HubRouteTablesClientBeginCreateOrUpdateOptions) (HubRouteTablesClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, virtualHubName, routeTableName, routeTableParameters, options)
-	if err != nil {
-		return HubRouteTablesClientCreateOrUpdatePollerResponse{}, err
+func (client *HubRouteTablesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, routeTableParameters HubRouteTable, options *HubRouteTablesClientBeginCreateOrUpdateOptions) (*armruntime.Poller[HubRouteTablesClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, virtualHubName, routeTableName, routeTableParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[HubRouteTablesClientCreateOrUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[HubRouteTablesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := HubRouteTablesClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("HubRouteTablesClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return HubRouteTablesClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &HubRouteTablesClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates a RouteTable resource if it doesn't exist else updates the existing RouteTable.
@@ -130,22 +131,18 @@ func (client *HubRouteTablesClient) createOrUpdateCreateRequest(ctx context.Cont
 // routeTableName - The name of the RouteTable.
 // options - HubRouteTablesClientBeginDeleteOptions contains the optional parameters for the HubRouteTablesClient.BeginDelete
 // method.
-func (client *HubRouteTablesClient) BeginDelete(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, options *HubRouteTablesClientBeginDeleteOptions) (HubRouteTablesClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, virtualHubName, routeTableName, options)
-	if err != nil {
-		return HubRouteTablesClientDeletePollerResponse{}, err
+func (client *HubRouteTablesClient) BeginDelete(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, options *HubRouteTablesClientBeginDeleteOptions) (*armruntime.Poller[HubRouteTablesClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, virtualHubName, routeTableName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[HubRouteTablesClientDeleteResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[HubRouteTablesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := HubRouteTablesClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("HubRouteTablesClient.Delete", "location", resp, client.pl)
-	if err != nil {
-		return HubRouteTablesClientDeletePollerResponse{}, err
-	}
-	result.Poller = &HubRouteTablesClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes a RouteTable.
@@ -248,7 +245,7 @@ func (client *HubRouteTablesClient) getCreateRequest(ctx context.Context, resour
 
 // getHandleResponse handles the Get response.
 func (client *HubRouteTablesClient) getHandleResponse(resp *http.Response) (HubRouteTablesClientGetResponse, error) {
-	result := HubRouteTablesClientGetResponse{RawResponse: resp}
+	result := HubRouteTablesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HubRouteTable); err != nil {
 		return HubRouteTablesClientGetResponse{}, err
 	}
@@ -260,16 +257,32 @@ func (client *HubRouteTablesClient) getHandleResponse(resp *http.Response) (HubR
 // resourceGroupName - The resource group name of the VirtualHub.
 // virtualHubName - The name of the VirtualHub.
 // options - HubRouteTablesClientListOptions contains the optional parameters for the HubRouteTablesClient.List method.
-func (client *HubRouteTablesClient) List(resourceGroupName string, virtualHubName string, options *HubRouteTablesClientListOptions) *HubRouteTablesClientListPager {
-	return &HubRouteTablesClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, virtualHubName, options)
+func (client *HubRouteTablesClient) List(resourceGroupName string, virtualHubName string, options *HubRouteTablesClientListOptions) *runtime.Pager[HubRouteTablesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[HubRouteTablesClientListResponse]{
+		More: func(page HubRouteTablesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp HubRouteTablesClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ListHubRouteTablesResult.NextLink)
+		Fetcher: func(ctx context.Context, page *HubRouteTablesClientListResponse) (HubRouteTablesClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, virtualHubName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return HubRouteTablesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return HubRouteTablesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return HubRouteTablesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -300,7 +313,7 @@ func (client *HubRouteTablesClient) listCreateRequest(ctx context.Context, resou
 
 // listHandleResponse handles the List response.
 func (client *HubRouteTablesClient) listHandleResponse(resp *http.Response) (HubRouteTablesClientListResponse, error) {
-	result := HubRouteTablesClientListResponse{RawResponse: resp}
+	result := HubRouteTablesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListHubRouteTablesResult); err != nil {
 		return HubRouteTablesClientListResponse{}, err
 	}

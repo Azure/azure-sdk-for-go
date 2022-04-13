@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,341 +19,420 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
 )
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/PrivateLinkServiceDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/PrivateLinkServiceDelete.json
 func ExamplePrivateLinkServicesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewPrivateLinkServicesClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewPrivateLinkServicesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
 		"<service-name>",
-		nil)
+		&armnetwork.PrivateLinkServicesClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/PrivateLinkServiceGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/PrivateLinkServiceGet.json
 func ExamplePrivateLinkServicesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewPrivateLinkServicesClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewPrivateLinkServicesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<service-name>",
 		&armnetwork.PrivateLinkServicesClientGetOptions{Expand: nil})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.PrivateLinkServicesClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/PrivateLinkServiceCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/PrivateLinkServiceCreate.json
 func ExamplePrivateLinkServicesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewPrivateLinkServicesClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewPrivateLinkServicesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<service-name>",
 		armnetwork.PrivateLinkService{
-			Location: to.StringPtr("<location>"),
+			Location: to.Ptr("<location>"),
 			Properties: &armnetwork.PrivateLinkServiceProperties{
 				AutoApproval: &armnetwork.PrivateLinkServicePropertiesAutoApproval{
 					Subscriptions: []*string{
-						to.StringPtr("subscription1"),
-						to.StringPtr("subscription2")},
+						to.Ptr("subscription1"),
+						to.Ptr("subscription2")},
 				},
 				Fqdns: []*string{
-					to.StringPtr("fqdn1"),
-					to.StringPtr("fqdn2"),
-					to.StringPtr("fqdn3")},
+					to.Ptr("fqdn1"),
+					to.Ptr("fqdn2"),
+					to.Ptr("fqdn3")},
 				IPConfigurations: []*armnetwork.PrivateLinkServiceIPConfiguration{
 					{
-						Name: to.StringPtr("<name>"),
+						Name: to.Ptr("<name>"),
 						Properties: &armnetwork.PrivateLinkServiceIPConfigurationProperties{
-							PrivateIPAddress:          to.StringPtr("<private-ipaddress>"),
-							PrivateIPAddressVersion:   armnetwork.IPVersion("IPv4").ToPtr(),
-							PrivateIPAllocationMethod: armnetwork.IPAllocationMethod("Static").ToPtr(),
+							PrivateIPAddress:          to.Ptr("<private-ipaddress>"),
+							PrivateIPAddressVersion:   to.Ptr(armnetwork.IPVersionIPv4),
+							PrivateIPAllocationMethod: to.Ptr(armnetwork.IPAllocationMethodStatic),
 							Subnet: &armnetwork.Subnet{
-								ID: to.StringPtr("<id>"),
+								ID: to.Ptr("<id>"),
 							},
 						},
 					}},
 				LoadBalancerFrontendIPConfigurations: []*armnetwork.FrontendIPConfiguration{
 					{
-						ID: to.StringPtr("<id>"),
+						ID: to.Ptr("<id>"),
 					}},
 				Visibility: &armnetwork.PrivateLinkServicePropertiesVisibility{
 					Subscriptions: []*string{
-						to.StringPtr("subscription1"),
-						to.StringPtr("subscription2"),
-						to.StringPtr("subscription3")},
+						to.Ptr("subscription1"),
+						to.Ptr("subscription2"),
+						to.Ptr("subscription3")},
 				},
 			},
 		},
-		nil)
+		&armnetwork.PrivateLinkServicesClientBeginCreateOrUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.PrivateLinkServicesClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/PrivateLinkServiceList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/PrivateLinkServiceList.json
 func ExamplePrivateLinkServicesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewPrivateLinkServicesClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewPrivateLinkServicesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.List("<resource-group-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/PrivateLinkServiceListAll.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/PrivateLinkServiceListAll.json
 func ExamplePrivateLinkServicesClient_ListBySubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewPrivateLinkServicesClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewPrivateLinkServicesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListBySubscription(nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/PrivateLinkServiceGetPrivateEndpointConnection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/PrivateLinkServiceGetPrivateEndpointConnection.json
 func ExamplePrivateLinkServicesClient_GetPrivateEndpointConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewPrivateLinkServicesClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewPrivateLinkServicesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GetPrivateEndpointConnection(ctx,
 		"<resource-group-name>",
 		"<service-name>",
 		"<pe-connection-name>",
 		&armnetwork.PrivateLinkServicesClientGetPrivateEndpointConnectionOptions{Expand: nil})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.PrivateLinkServicesClientGetPrivateEndpointConnectionResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/PrivateLinkServiceUpdatePrivateEndpointConnection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/PrivateLinkServiceUpdatePrivateEndpointConnection.json
 func ExamplePrivateLinkServicesClient_UpdatePrivateEndpointConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewPrivateLinkServicesClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewPrivateLinkServicesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.UpdatePrivateEndpointConnection(ctx,
 		"<resource-group-name>",
 		"<service-name>",
 		"<pe-connection-name>",
 		armnetwork.PrivateEndpointConnection{
-			Name: to.StringPtr("<name>"),
+			Name: to.Ptr("<name>"),
 			Properties: &armnetwork.PrivateEndpointConnectionProperties{
 				PrivateEndpoint: &armnetwork.PrivateEndpoint{
-					ID: to.StringPtr("<id>"),
+					ID: to.Ptr("<id>"),
 				},
 				PrivateLinkServiceConnectionState: &armnetwork.PrivateLinkServiceConnectionState{
-					Description: to.StringPtr("<description>"),
-					Status:      to.StringPtr("<status>"),
+					Description: to.Ptr("<description>"),
+					Status:      to.Ptr("<status>"),
 				},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.PrivateLinkServicesClientUpdatePrivateEndpointConnectionResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/PrivateLinkServiceDeletePrivateEndpointConnection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/PrivateLinkServiceDeletePrivateEndpointConnection.json
 func ExamplePrivateLinkServicesClient_BeginDeletePrivateEndpointConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewPrivateLinkServicesClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewPrivateLinkServicesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginDeletePrivateEndpointConnection(ctx,
 		"<resource-group-name>",
 		"<service-name>",
 		"<pe-connection-name>",
-		nil)
+		&armnetwork.PrivateLinkServicesClientBeginDeletePrivateEndpointConnectionOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/PrivateLinkServiceListPrivateEndpointConnection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/PrivateLinkServiceListPrivateEndpointConnection.json
 func ExamplePrivateLinkServicesClient_ListPrivateEndpointConnections() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewPrivateLinkServicesClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewPrivateLinkServicesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListPrivateEndpointConnections("<resource-group-name>",
 		"<service-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/CheckPrivateLinkServiceVisibility.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/CheckPrivateLinkServiceVisibility.json
 func ExamplePrivateLinkServicesClient_BeginCheckPrivateLinkServiceVisibility() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewPrivateLinkServicesClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewPrivateLinkServicesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCheckPrivateLinkServiceVisibility(ctx,
 		"<location>",
 		armnetwork.CheckPrivateLinkServiceVisibilityRequest{
-			PrivateLinkServiceAlias: to.StringPtr("<private-link-service-alias>"),
+			PrivateLinkServiceAlias: to.Ptr("<private-link-service-alias>"),
 		},
-		nil)
+		&armnetwork.PrivateLinkServicesClientBeginCheckPrivateLinkServiceVisibilityOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/CheckPrivateLinkServiceVisibilityByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/CheckPrivateLinkServiceVisibilityByResourceGroup.json
 func ExamplePrivateLinkServicesClient_BeginCheckPrivateLinkServiceVisibilityByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewPrivateLinkServicesClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewPrivateLinkServicesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCheckPrivateLinkServiceVisibilityByResourceGroup(ctx,
 		"<location>",
 		"<resource-group-name>",
 		armnetwork.CheckPrivateLinkServiceVisibilityRequest{
-			PrivateLinkServiceAlias: to.StringPtr("<private-link-service-alias>"),
+			PrivateLinkServiceAlias: to.Ptr("<private-link-service-alias>"),
 		},
-		nil)
+		&armnetwork.PrivateLinkServicesClientBeginCheckPrivateLinkServiceVisibilityByResourceGroupOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityByResourceGroupResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/AutoApprovedPrivateLinkServicesGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/AutoApprovedPrivateLinkServicesGet.json
 func ExamplePrivateLinkServicesClient_ListAutoApprovedPrivateLinkServices() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewPrivateLinkServicesClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewPrivateLinkServicesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListAutoApprovedPrivateLinkServices("<location>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/AutoApprovedPrivateLinkServicesResourceGroupGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/AutoApprovedPrivateLinkServicesResourceGroupGet.json
 func ExamplePrivateLinkServicesClient_ListAutoApprovedPrivateLinkServicesByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewPrivateLinkServicesClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewPrivateLinkServicesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListAutoApprovedPrivateLinkServicesByResourceGroup("<location>",
 		"<resource-group-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,36 +34,56 @@ type DiskPoolZonesClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewDiskPoolZonesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DiskPoolZonesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewDiskPoolZonesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DiskPoolZonesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &DiskPoolZonesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // List - Lists available Disk Pool Skus in an Azure location.
 // If the operation fails it returns an *azcore.ResponseError type.
 // location - The location of the resource.
 // options - DiskPoolZonesClientListOptions contains the optional parameters for the DiskPoolZonesClient.List method.
-func (client *DiskPoolZonesClient) List(location string, options *DiskPoolZonesClientListOptions) *DiskPoolZonesClientListPager {
-	return &DiskPoolZonesClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, location, options)
+func (client *DiskPoolZonesClient) List(location string, options *DiskPoolZonesClientListOptions) *runtime.Pager[DiskPoolZonesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DiskPoolZonesClientListResponse]{
+		More: func(page DiskPoolZonesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DiskPoolZonesClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DiskPoolZoneListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *DiskPoolZonesClientListResponse) (DiskPoolZonesClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, location, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DiskPoolZonesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DiskPoolZonesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DiskPoolZonesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -89,7 +110,7 @@ func (client *DiskPoolZonesClient) listCreateRequest(ctx context.Context, locati
 
 // listHandleResponse handles the List response.
 func (client *DiskPoolZonesClient) listHandleResponse(resp *http.Response) (DiskPoolZonesClientListResponse, error) {
-	result := DiskPoolZonesClientListResponse{RawResponse: resp}
+	result := DiskPoolZonesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiskPoolZoneListResult); err != nil {
 		return DiskPoolZonesClientListResponse{}, err
 	}

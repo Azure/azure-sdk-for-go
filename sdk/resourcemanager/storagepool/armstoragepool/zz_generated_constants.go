@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armstoragepool
 
 const (
 	moduleName    = "armstoragepool"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // CreatedByType - The type of identity that created the resource.
@@ -33,11 +33,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
-}
-
 // DiskPoolTier - SKU of the VM host part of the Disk Pool deployment
 type DiskPoolTier string
 
@@ -56,11 +51,6 @@ func PossibleDiskPoolTierValues() []DiskPoolTier {
 	}
 }
 
-// ToPtr returns a *DiskPoolTier pointing to the current value.
-func (c DiskPoolTier) ToPtr() *DiskPoolTier {
-	return &c
-}
-
 // IscsiTargetACLMode - ACL mode for iSCSI Target.
 type IscsiTargetACLMode string
 
@@ -75,11 +65,6 @@ func PossibleIscsiTargetACLModeValues() []IscsiTargetACLMode {
 		IscsiTargetACLModeDynamic,
 		IscsiTargetACLModeStatic,
 	}
-}
-
-// ToPtr returns a *IscsiTargetACLMode pointing to the current value.
-func (c IscsiTargetACLMode) ToPtr() *IscsiTargetACLMode {
-	return &c
 }
 
 // OperationalStatus - Operational status of the resource.
@@ -110,11 +95,6 @@ func PossibleOperationalStatusValues() []OperationalStatus {
 	}
 }
 
-// ToPtr returns a *OperationalStatus pointing to the current value.
-func (c OperationalStatus) ToPtr() *OperationalStatus {
-	return &c
-}
-
 // ProvisioningStates - Provisioning state of the iSCSI Target.
 type ProvisioningStates string
 
@@ -143,11 +123,6 @@ func PossibleProvisioningStatesValues() []ProvisioningStates {
 	}
 }
 
-// ToPtr returns a *ProvisioningStates pointing to the current value.
-func (c ProvisioningStates) ToPtr() *ProvisioningStates {
-	return &c
-}
-
 // ResourceSKURestrictionsReasonCode - The reason for restriction.
 type ResourceSKURestrictionsReasonCode string
 
@@ -164,11 +139,6 @@ func PossibleResourceSKURestrictionsReasonCodeValues() []ResourceSKURestrictions
 	}
 }
 
-// ToPtr returns a *ResourceSKURestrictionsReasonCode pointing to the current value.
-func (c ResourceSKURestrictionsReasonCode) ToPtr() *ResourceSKURestrictionsReasonCode {
-	return &c
-}
-
 // ResourceSKURestrictionsType - The type of restrictions.
 type ResourceSKURestrictionsType string
 
@@ -183,9 +153,4 @@ func PossibleResourceSKURestrictionsTypeValues() []ResourceSKURestrictionsType {
 		ResourceSKURestrictionsTypeLocation,
 		ResourceSKURestrictionsTypeZone,
 	}
-}
-
-// ToPtr returns a *ResourceSKURestrictionsType pointing to the current value.
-func (c ResourceSKURestrictionsType) ToPtr() *ResourceSKURestrictionsType {
-	return &c
 }

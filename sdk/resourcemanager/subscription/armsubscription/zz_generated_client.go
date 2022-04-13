@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -31,41 +32,39 @@ type Client struct {
 // NewClient creates a new instance of Client with the specified values.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewClient(credential azcore.TokenCredential, options *arm.ClientOptions) *Client {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*Client, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &Client{
-		host: string(cp.Endpoint),
-		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host: ep,
+		pl:   pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginAcceptOwnership - Accept subscription ownership.
 // If the operation fails it returns an *azcore.ResponseError type.
 // subscriptionID - Subscription Id.
 // options - ClientBeginAcceptOwnershipOptions contains the optional parameters for the Client.BeginAcceptOwnership method.
-func (client *Client) BeginAcceptOwnership(ctx context.Context, subscriptionID string, body AcceptOwnershipRequest, options *ClientBeginAcceptOwnershipOptions) (ClientAcceptOwnershipPollerResponse, error) {
-	resp, err := client.acceptOwnership(ctx, subscriptionID, body, options)
-	if err != nil {
-		return ClientAcceptOwnershipPollerResponse{}, err
+func (client *Client) BeginAcceptOwnership(ctx context.Context, subscriptionID string, body AcceptOwnershipRequest, options *ClientBeginAcceptOwnershipOptions) (*armruntime.Poller[ClientAcceptOwnershipResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.acceptOwnership(ctx, subscriptionID, body, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ClientAcceptOwnershipResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ClientAcceptOwnershipResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ClientAcceptOwnershipPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("Client.AcceptOwnership", "", resp, client.pl)
-	if err != nil {
-		return ClientAcceptOwnershipPollerResponse{}, err
-	}
-	result.Poller = &ClientAcceptOwnershipPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // AcceptOwnership - Accept subscription ownership.
@@ -142,7 +141,7 @@ func (client *Client) acceptOwnershipStatusCreateRequest(ctx context.Context, su
 
 // acceptOwnershipStatusHandleResponse handles the AcceptOwnershipStatus response.
 func (client *Client) acceptOwnershipStatusHandleResponse(resp *http.Response) (ClientAcceptOwnershipStatusResponse, error) {
-	result := ClientAcceptOwnershipStatusResponse{RawResponse: resp}
+	result := ClientAcceptOwnershipStatusResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AcceptOwnershipStatusResponse); err != nil {
 		return ClientAcceptOwnershipStatusResponse{}, err
 	}
@@ -188,7 +187,7 @@ func (client *Client) cancelCreateRequest(ctx context.Context, subscriptionID st
 
 // cancelHandleResponse handles the Cancel response.
 func (client *Client) cancelHandleResponse(resp *http.Response) (ClientCancelResponse, error) {
-	result := ClientCancelResponse{RawResponse: resp}
+	result := ClientCancelResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CanceledSubscriptionID); err != nil {
 		return ClientCancelResponse{}, err
 	}
@@ -234,7 +233,7 @@ func (client *Client) enableCreateRequest(ctx context.Context, subscriptionID st
 
 // enableHandleResponse handles the Enable response.
 func (client *Client) enableHandleResponse(resp *http.Response) (ClientEnableResponse, error) {
-	result := ClientEnableResponse{RawResponse: resp}
+	result := ClientEnableResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EnabledSubscriptionID); err != nil {
 		return ClientEnableResponse{}, err
 	}
@@ -281,7 +280,7 @@ func (client *Client) renameCreateRequest(ctx context.Context, subscriptionID st
 
 // renameHandleResponse handles the Rename response.
 func (client *Client) renameHandleResponse(resp *http.Response) (ClientRenameResponse, error) {
-	result := ClientRenameResponse{RawResponse: resp}
+	result := ClientRenameResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RenamedSubscriptionID); err != nil {
 		return ClientRenameResponse{}, err
 	}

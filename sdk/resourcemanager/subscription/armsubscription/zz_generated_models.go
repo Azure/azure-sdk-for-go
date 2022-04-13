@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,12 +8,7 @@
 
 package armsubscription
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
 
 // AcceptOwnershipRequest - The parameters required to accept subscription ownership.
 type AcceptOwnershipRequest struct {
@@ -31,15 +26,6 @@ type AcceptOwnershipRequestProperties struct {
 
 	// Tags for the subscription
 	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AcceptOwnershipRequestProperties.
-func (a AcceptOwnershipRequestProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "displayName", a.DisplayName)
-	populate(objectMap, "managementGroupId", a.ManagementGroupID)
-	populate(objectMap, "tags", a.Tags)
-	return json.Marshal(objectMap)
 }
 
 // AcceptOwnershipStatusResponse - Subscription Accept Ownership Response
@@ -63,21 +49,10 @@ type AcceptOwnershipStatusResponse struct {
 	SubscriptionID *string `json:"subscriptionId,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcceptOwnershipStatusResponse.
-func (a AcceptOwnershipStatusResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "acceptOwnershipState", a.AcceptOwnershipState)
-	populate(objectMap, "billingOwner", a.BillingOwner)
-	populate(objectMap, "displayName", a.DisplayName)
-	populate(objectMap, "subscriptionId", a.SubscriptionID)
-	populate(objectMap, "subscriptionTenantId", a.SubscriptionTenantID)
-	populate(objectMap, "tags", a.Tags)
-	return json.Marshal(objectMap)
-}
-
 // AliasClientBeginCreateOptions contains the optional parameters for the AliasClient.BeginCreate method.
 type AliasClientBeginCreateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // AliasClientDeleteOptions contains the optional parameters for the AliasClient.Delete method.
@@ -102,14 +77,6 @@ type AliasListResult struct {
 
 	// READ-ONLY; The list of alias.
 	Value []*AliasResponse `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AliasListResult.
-func (a AliasListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
 }
 
 // AliasResponse - Subscription Information with the alias.
@@ -171,24 +138,6 @@ type AliasResponseProperties struct {
 	SubscriptionID *string `json:"subscriptionId,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AliasResponseProperties.
-func (a AliasResponseProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "acceptOwnershipState", a.AcceptOwnershipState)
-	populate(objectMap, "acceptOwnershipUrl", a.AcceptOwnershipURL)
-	populate(objectMap, "billingScope", a.BillingScope)
-	populate(objectMap, "createdTime", a.CreatedTime)
-	populate(objectMap, "displayName", a.DisplayName)
-	populate(objectMap, "managementGroupId", a.ManagementGroupID)
-	populate(objectMap, "provisioningState", a.ProvisioningState)
-	populate(objectMap, "resellerId", a.ResellerID)
-	populate(objectMap, "subscriptionId", a.SubscriptionID)
-	populate(objectMap, "subscriptionOwnerId", a.SubscriptionOwnerID)
-	populate(objectMap, "tags", a.Tags)
-	populate(objectMap, "workload", a.Workload)
-	return json.Marshal(objectMap)
-}
-
 // BillingAccountClientGetPolicyOptions contains the optional parameters for the BillingAccountClient.GetPolicy method.
 type BillingAccountClientGetPolicyOptions struct {
 	// placeholder for future optional parameters
@@ -221,14 +170,6 @@ type BillingAccountPoliciesResponseProperties struct {
 	ServiceTenants []*ServiceTenantResponse `json:"serviceTenants,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type BillingAccountPoliciesResponseProperties.
-func (b BillingAccountPoliciesResponseProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "allowTransfers", b.AllowTransfers)
-	populate(objectMap, "serviceTenants", b.ServiceTenants)
-	return json.Marshal(objectMap)
-}
-
 // CanceledSubscriptionID - The ID of the canceled subscription
 type CanceledSubscriptionID struct {
 	// READ-ONLY; The ID of the canceled subscription
@@ -242,7 +183,8 @@ type ClientAcceptOwnershipStatusOptions struct {
 
 // ClientBeginAcceptOwnershipOptions contains the optional parameters for the Client.BeginAcceptOwnership method.
 type ClientBeginAcceptOwnershipOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ClientCancelOptions contains the optional parameters for the Client.Cancel method.
@@ -297,14 +239,6 @@ type GetTenantPolicyListResponse struct {
 	Value []*GetTenantPolicyResponse `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type GetTenantPolicyListResponse.
-func (g GetTenantPolicyListResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", g.NextLink)
-	populate(objectMap, "value", g.Value)
-	return json.Marshal(objectMap)
-}
-
 // GetTenantPolicyResponse - Tenant policy Information.
 type GetTenantPolicyResponse struct {
 	// Tenant policy properties.
@@ -325,19 +259,11 @@ type GetTenantPolicyResponse struct {
 
 // ListResult - Subscription list operation response.
 type ListResult struct {
-	// REQUIRED; The URL to get the next set of results.
+	// The URL to get the next set of results.
 	NextLink *string `json:"nextLink,omitempty"`
 
 	// An array of subscriptions.
 	Value []*Subscription `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ListResult.
-func (l ListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", l.NextLink)
-	populate(objectMap, "value", l.Value)
-	return json.Marshal(objectMap)
 }
 
 // Location information.
@@ -365,13 +291,6 @@ type Location struct {
 type LocationListResult struct {
 	// An array of locations.
 	Value []*Location `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type LocationListResult.
-func (l LocationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", l.Value)
-	return json.Marshal(objectMap)
 }
 
 // Name - The new name of the subscription.
@@ -415,14 +334,6 @@ type OperationListResult struct {
 
 	// List of operations.
 	Value []*Operation `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
-func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
@@ -481,16 +392,6 @@ type PutAliasRequestAdditionalProperties struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PutAliasRequestAdditionalProperties.
-func (p PutAliasRequestAdditionalProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "managementGroupId", p.ManagementGroupID)
-	populate(objectMap, "subscriptionOwnerId", p.SubscriptionOwnerID)
-	populate(objectMap, "subscriptionTenantId", p.SubscriptionTenantID)
-	populate(objectMap, "tags", p.Tags)
-	return json.Marshal(objectMap)
-}
-
 // PutAliasRequestProperties - Put subscription properties.
 type PutAliasRequestProperties struct {
 	// Put alias request additional properties.
@@ -524,15 +425,6 @@ type PutTenantPolicyRequestProperties struct {
 
 	// List of user objectIds that are exempted from the set subscription tenant policies for the user's tenant.
 	ExemptedPrincipals []*string `json:"exemptedPrincipals,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PutTenantPolicyRequestProperties.
-func (p PutTenantPolicyRequestProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "blockSubscriptionsIntoTenant", p.BlockSubscriptionsIntoTenant)
-	populate(objectMap, "blockSubscriptionsLeavingTenant", p.BlockSubscriptionsLeavingTenant)
-	populate(objectMap, "exemptedPrincipals", p.ExemptedPrincipals)
-	return json.Marshal(objectMap)
 }
 
 // RenamedSubscriptionID - The ID of the subscriptions that is being renamed
@@ -608,53 +500,6 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SystemData.
-func (s SystemData) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
-	populate(objectMap, "createdBy", s.CreatedBy)
-	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
-	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
-	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SystemData.
-func (s *SystemData) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdAt":
-			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
-			delete(rawMsg, key)
-		case "createdBy":
-			err = unpopulate(val, &s.CreatedBy)
-			delete(rawMsg, key)
-		case "createdByType":
-			err = unpopulate(val, &s.CreatedByType)
-			delete(rawMsg, key)
-		case "lastModifiedAt":
-			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
-			delete(rawMsg, key)
-		case "lastModifiedBy":
-			err = unpopulate(val, &s.LastModifiedBy)
-			delete(rawMsg, key)
-		case "lastModifiedByType":
-			err = unpopulate(val, &s.LastModifiedByType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // TenantIDDescription - Tenant Id information.
 type TenantIDDescription struct {
 	// READ-ONLY; The fully qualified ID of the tenant. For example, /tenants/00000000-0000-0000-0000-000000000000.
@@ -673,14 +518,6 @@ type TenantListResult struct {
 	Value []*TenantIDDescription `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type TenantListResult.
-func (t TenantListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", t.NextLink)
-	populate(objectMap, "value", t.Value)
-	return json.Marshal(objectMap)
-}
-
 // TenantPolicy - Tenant policy.
 type TenantPolicy struct {
 	// Blocks the entering of subscriptions into user's tenant.
@@ -696,34 +533,7 @@ type TenantPolicy struct {
 	PolicyID *string `json:"policyId,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type TenantPolicy.
-func (t TenantPolicy) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "blockSubscriptionsIntoTenant", t.BlockSubscriptionsIntoTenant)
-	populate(objectMap, "blockSubscriptionsLeavingTenant", t.BlockSubscriptionsLeavingTenant)
-	populate(objectMap, "exemptedPrincipals", t.ExemptedPrincipals)
-	populate(objectMap, "policyId", t.PolicyID)
-	return json.Marshal(objectMap)
-}
-
 // TenantsClientListOptions contains the optional parameters for the TenantsClient.List method.
 type TenantsClientListOptions struct {
 	// placeholder for future optional parameters
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

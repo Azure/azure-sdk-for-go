@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -13,6 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -28,34 +29,54 @@ type TenantsClient struct {
 // NewTenantsClient creates a new instance of TenantsClient with the specified values.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewTenantsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *TenantsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewTenantsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*TenantsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &TenantsClient{
-		host: string(cp.Endpoint),
-		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host: ep,
+		pl:   pl,
 	}
-	return client
+	return client, nil
 }
 
 // List - Gets the tenants for your account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - TenantsClientListOptions contains the optional parameters for the TenantsClient.List method.
-func (client *TenantsClient) List(options *TenantsClientListOptions) *TenantsClientListPager {
-	return &TenantsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *TenantsClient) List(options *TenantsClientListOptions) *runtime.Pager[TenantsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[TenantsClientListResponse]{
+		More: func(page TenantsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp TenantsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.TenantListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *TenantsClientListResponse) (TenantsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return TenantsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return TenantsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return TenantsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -74,7 +95,7 @@ func (client *TenantsClient) listCreateRequest(ctx context.Context, options *Ten
 
 // listHandleResponse handles the List response.
 func (client *TenantsClient) listHandleResponse(resp *http.Response) (TenantsClientListResponse, error) {
-	result := TenantsClientListResponse{RawResponse: resp}
+	result := TenantsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TenantListResult); err != nil {
 		return TenantsClientListResponse{}, err
 	}

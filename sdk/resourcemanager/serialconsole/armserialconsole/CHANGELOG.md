@@ -1,5 +1,44 @@
 # Release History
 
+## 0.3.0 (2022-04-13)
+### Breaking Changes
+
+- Function `NewSerialPortsClient` return value(s) have been changed from `(*SerialPortsClient)` to `(*SerialPortsClient, error)`
+- Function `NewMicrosoftSerialConsoleClient` return value(s) have been changed from `(*MicrosoftSerialConsoleClient)` to `(*MicrosoftSerialConsoleClient, error)`
+- Function `SerialPortState.ToPtr` has been removed
+- Struct `MicrosoftSerialConsoleClientListOperationsResult` has been removed
+- Struct `SerialPortsClientConnectResult` has been removed
+- Struct `SerialPortsClientCreateResult` has been removed
+- Struct `SerialPortsClientGetResult` has been removed
+- Struct `SerialPortsClientListBySubscriptionsResult` has been removed
+- Struct `SerialPortsClientListResult` has been removed
+- Field `SerialPortsClientListBySubscriptionsResult` of struct `SerialPortsClientListBySubscriptionsResponse` has been removed
+- Field `RawResponse` of struct `SerialPortsClientListBySubscriptionsResponse` has been removed
+- Field `SerialPortsClientGetResult` of struct `SerialPortsClientGetResponse` has been removed
+- Field `RawResponse` of struct `SerialPortsClientGetResponse` has been removed
+- Field `RawResponse` of struct `MicrosoftSerialConsoleClientGetConsoleStatusResponse` has been removed
+- Field `SerialPortsClientListResult` of struct `SerialPortsClientListResponse` has been removed
+- Field `RawResponse` of struct `SerialPortsClientListResponse` has been removed
+- Field `MicrosoftSerialConsoleClientListOperationsResult` of struct `MicrosoftSerialConsoleClientListOperationsResponse` has been removed
+- Field `RawResponse` of struct `MicrosoftSerialConsoleClientListOperationsResponse` has been removed
+- Field `SerialPortsClientCreateResult` of struct `SerialPortsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `SerialPortsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `SerialPortsClientDeleteResponse` has been removed
+- Field `SerialPortsClientConnectResult` of struct `SerialPortsClientConnectResponse` has been removed
+- Field `RawResponse` of struct `SerialPortsClientConnectResponse` has been removed
+- Field `RawResponse` of struct `MicrosoftSerialConsoleClientEnableConsoleResponse` has been removed
+- Field `RawResponse` of struct `MicrosoftSerialConsoleClientDisableConsoleResponse` has been removed
+
+### Features Added
+
+- New anonymous field `SerialPort` in struct `SerialPortsClientGetResponse`
+- New anonymous field `SerialPortListResult` in struct `SerialPortsClientListBySubscriptionsResponse`
+- New anonymous field `SerialPortListResult` in struct `SerialPortsClientListResponse`
+- New anonymous field `SerialPort` in struct `SerialPortsClientCreateResponse`
+- New anonymous field `SerialPortConnectResult` in struct `SerialPortsClientConnectResponse`
+- New anonymous field `Operations` in struct `MicrosoftSerialConsoleClientListOperationsResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

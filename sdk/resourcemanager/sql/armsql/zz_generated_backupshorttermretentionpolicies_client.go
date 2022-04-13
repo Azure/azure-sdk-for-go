@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type BackupShortTermRetentionPoliciesClient struct {
 // subscriptionID - The subscription ID that identifies an Azure subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewBackupShortTermRetentionPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *BackupShortTermRetentionPoliciesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewBackupShortTermRetentionPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BackupShortTermRetentionPoliciesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &BackupShortTermRetentionPoliciesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Updates a database's short term retention policy.
@@ -59,22 +64,16 @@ func NewBackupShortTermRetentionPoliciesClient(subscriptionID string, credential
 // parameters - The short term retention policy info.
 // options - BackupShortTermRetentionPoliciesClientBeginCreateOrUpdateOptions contains the optional parameters for the BackupShortTermRetentionPoliciesClient.BeginCreateOrUpdate
 // method.
-func (client *BackupShortTermRetentionPoliciesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, policyName ShortTermRetentionPolicyName, parameters BackupShortTermRetentionPolicy, options *BackupShortTermRetentionPoliciesClientBeginCreateOrUpdateOptions) (BackupShortTermRetentionPoliciesClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, databaseName, policyName, parameters, options)
-	if err != nil {
-		return BackupShortTermRetentionPoliciesClientCreateOrUpdatePollerResponse{}, err
+func (client *BackupShortTermRetentionPoliciesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, policyName ShortTermRetentionPolicyName, parameters BackupShortTermRetentionPolicy, options *BackupShortTermRetentionPoliciesClientBeginCreateOrUpdateOptions) (*armruntime.Poller[BackupShortTermRetentionPoliciesClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, databaseName, policyName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[BackupShortTermRetentionPoliciesClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[BackupShortTermRetentionPoliciesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := BackupShortTermRetentionPoliciesClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("BackupShortTermRetentionPoliciesClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return BackupShortTermRetentionPoliciesClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &BackupShortTermRetentionPoliciesClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Updates a database's short term retention policy.
@@ -188,7 +187,7 @@ func (client *BackupShortTermRetentionPoliciesClient) getCreateRequest(ctx conte
 
 // getHandleResponse handles the Get response.
 func (client *BackupShortTermRetentionPoliciesClient) getHandleResponse(resp *http.Response) (BackupShortTermRetentionPoliciesClientGetResponse, error) {
-	result := BackupShortTermRetentionPoliciesClientGetResponse{RawResponse: resp}
+	result := BackupShortTermRetentionPoliciesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackupShortTermRetentionPolicy); err != nil {
 		return BackupShortTermRetentionPoliciesClientGetResponse{}, err
 	}
@@ -203,16 +202,32 @@ func (client *BackupShortTermRetentionPoliciesClient) getHandleResponse(resp *ht
 // databaseName - The name of the database.
 // options - BackupShortTermRetentionPoliciesClientListByDatabaseOptions contains the optional parameters for the BackupShortTermRetentionPoliciesClient.ListByDatabase
 // method.
-func (client *BackupShortTermRetentionPoliciesClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string, options *BackupShortTermRetentionPoliciesClientListByDatabaseOptions) *BackupShortTermRetentionPoliciesClientListByDatabasePager {
-	return &BackupShortTermRetentionPoliciesClientListByDatabasePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByDatabaseCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
+func (client *BackupShortTermRetentionPoliciesClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string, options *BackupShortTermRetentionPoliciesClientListByDatabaseOptions) *runtime.Pager[BackupShortTermRetentionPoliciesClientListByDatabaseResponse] {
+	return runtime.NewPager(runtime.PageProcessor[BackupShortTermRetentionPoliciesClientListByDatabaseResponse]{
+		More: func(page BackupShortTermRetentionPoliciesClientListByDatabaseResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp BackupShortTermRetentionPoliciesClientListByDatabaseResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.BackupShortTermRetentionPolicyListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *BackupShortTermRetentionPoliciesClientListByDatabaseResponse) (BackupShortTermRetentionPoliciesClientListByDatabaseResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByDatabaseCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return BackupShortTermRetentionPoliciesClientListByDatabaseResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return BackupShortTermRetentionPoliciesClientListByDatabaseResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return BackupShortTermRetentionPoliciesClientListByDatabaseResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByDatabaseHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByDatabaseCreateRequest creates the ListByDatabase request.
@@ -247,7 +262,7 @@ func (client *BackupShortTermRetentionPoliciesClient) listByDatabaseCreateReques
 
 // listByDatabaseHandleResponse handles the ListByDatabase response.
 func (client *BackupShortTermRetentionPoliciesClient) listByDatabaseHandleResponse(resp *http.Response) (BackupShortTermRetentionPoliciesClientListByDatabaseResponse, error) {
-	result := BackupShortTermRetentionPoliciesClientListByDatabaseResponse{RawResponse: resp}
+	result := BackupShortTermRetentionPoliciesClientListByDatabaseResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackupShortTermRetentionPolicyListResult); err != nil {
 		return BackupShortTermRetentionPoliciesClientListByDatabaseResponse{}, err
 	}
@@ -264,22 +279,16 @@ func (client *BackupShortTermRetentionPoliciesClient) listByDatabaseHandleRespon
 // parameters - The short term retention policy info.
 // options - BackupShortTermRetentionPoliciesClientBeginUpdateOptions contains the optional parameters for the BackupShortTermRetentionPoliciesClient.BeginUpdate
 // method.
-func (client *BackupShortTermRetentionPoliciesClient) BeginUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, policyName ShortTermRetentionPolicyName, parameters BackupShortTermRetentionPolicy, options *BackupShortTermRetentionPoliciesClientBeginUpdateOptions) (BackupShortTermRetentionPoliciesClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, serverName, databaseName, policyName, parameters, options)
-	if err != nil {
-		return BackupShortTermRetentionPoliciesClientUpdatePollerResponse{}, err
+func (client *BackupShortTermRetentionPoliciesClient) BeginUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, policyName ShortTermRetentionPolicyName, parameters BackupShortTermRetentionPolicy, options *BackupShortTermRetentionPoliciesClientBeginUpdateOptions) (*armruntime.Poller[BackupShortTermRetentionPoliciesClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, serverName, databaseName, policyName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[BackupShortTermRetentionPoliciesClientUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[BackupShortTermRetentionPoliciesClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := BackupShortTermRetentionPoliciesClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("BackupShortTermRetentionPoliciesClient.Update", "", resp, client.pl)
-	if err != nil {
-		return BackupShortTermRetentionPoliciesClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &BackupShortTermRetentionPoliciesClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Updates a database's short term retention policy.

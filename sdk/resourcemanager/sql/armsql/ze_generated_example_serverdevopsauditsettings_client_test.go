@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,78 +19,97 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
 )
 
-// x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ServerDevOpsAuditGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ServerDevOpsAuditGet.json
 func ExampleServerDevOpsAuditSettingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsql.NewServerDevOpsAuditSettingsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewServerDevOpsAuditSettingsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<server-name>",
 		"<dev-ops-auditing-settings-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ServerDevOpsAuditSettingsClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ServerDevOpsAuditCreateMax.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ServerDevOpsAuditCreateMax.json
 func ExampleServerDevOpsAuditSettingsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsql.NewServerDevOpsAuditSettingsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewServerDevOpsAuditSettingsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<server-name>",
 		"<dev-ops-auditing-settings-name>",
 		armsql.ServerDevOpsAuditingSettings{
 			Properties: &armsql.ServerDevOpsAuditSettingsProperties{
-				IsAzureMonitorTargetEnabled:  to.BoolPtr(true),
-				State:                        armsql.BlobAuditingPolicyStateEnabled.ToPtr(),
-				StorageAccountAccessKey:      to.StringPtr("<storage-account-access-key>"),
-				StorageAccountSubscriptionID: to.StringPtr("<storage-account-subscription-id>"),
-				StorageEndpoint:              to.StringPtr("<storage-endpoint>"),
+				IsAzureMonitorTargetEnabled:  to.Ptr(true),
+				State:                        to.Ptr(armsql.BlobAuditingPolicyStateEnabled),
+				StorageAccountAccessKey:      to.Ptr("<storage-account-access-key>"),
+				StorageAccountSubscriptionID: to.Ptr("<storage-account-subscription-id>"),
+				StorageEndpoint:              to.Ptr("<storage-endpoint>"),
 			},
 		},
-		nil)
+		&armsql.ServerDevOpsAuditSettingsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ServerDevOpsAuditSettingsClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ServerDevOpsAuditSettingsList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ServerDevOpsAuditSettingsList.json
 func ExampleServerDevOpsAuditSettingsClient_ListByServer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsql.NewServerDevOpsAuditSettingsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewServerDevOpsAuditSettingsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListByServer("<resource-group-name>",
 		"<server-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }

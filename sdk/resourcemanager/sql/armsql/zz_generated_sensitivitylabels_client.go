@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type SensitivityLabelsClient struct {
 // subscriptionID - The subscription ID that identifies an Azure subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewSensitivityLabelsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SensitivityLabelsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewSensitivityLabelsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SensitivityLabelsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &SensitivityLabelsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates the sensitivity label of a given column
@@ -114,7 +119,7 @@ func (client *SensitivityLabelsClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-11-01-preview")
+	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -122,7 +127,7 @@ func (client *SensitivityLabelsClient) createOrUpdateCreateRequest(ctx context.C
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *SensitivityLabelsClient) createOrUpdateHandleResponse(resp *http.Response) (SensitivityLabelsClientCreateOrUpdateResponse, error) {
-	result := SensitivityLabelsClientCreateOrUpdateResponse{RawResponse: resp}
+	result := SensitivityLabelsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SensitivityLabel); err != nil {
 		return SensitivityLabelsClientCreateOrUpdateResponse{}, err
 	}
@@ -152,7 +157,7 @@ func (client *SensitivityLabelsClient) Delete(ctx context.Context, resourceGroup
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return SensitivityLabelsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return SensitivityLabelsClientDeleteResponse{RawResponse: resp}, nil
+	return SensitivityLabelsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -192,7 +197,7 @@ func (client *SensitivityLabelsClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-11-01-preview")
+	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -220,7 +225,7 @@ func (client *SensitivityLabelsClient) DisableRecommendation(ctx context.Context
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return SensitivityLabelsClientDisableRecommendationResponse{}, runtime.NewResponseError(resp)
 	}
-	return SensitivityLabelsClientDisableRecommendationResponse{RawResponse: resp}, nil
+	return SensitivityLabelsClientDisableRecommendationResponse{}, nil
 }
 
 // disableRecommendationCreateRequest creates the DisableRecommendation request.
@@ -260,7 +265,7 @@ func (client *SensitivityLabelsClient) disableRecommendationCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-11-01-preview")
+	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -289,7 +294,7 @@ func (client *SensitivityLabelsClient) EnableRecommendation(ctx context.Context,
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return SensitivityLabelsClientEnableRecommendationResponse{}, runtime.NewResponseError(resp)
 	}
-	return SensitivityLabelsClientEnableRecommendationResponse{RawResponse: resp}, nil
+	return SensitivityLabelsClientEnableRecommendationResponse{}, nil
 }
 
 // enableRecommendationCreateRequest creates the EnableRecommendation request.
@@ -329,7 +334,7 @@ func (client *SensitivityLabelsClient) enableRecommendationCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-11-01-preview")
+	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -400,7 +405,7 @@ func (client *SensitivityLabelsClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-11-01-preview")
+	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -408,9 +413,87 @@ func (client *SensitivityLabelsClient) getCreateRequest(ctx context.Context, res
 
 // getHandleResponse handles the Get response.
 func (client *SensitivityLabelsClient) getHandleResponse(resp *http.Response) (SensitivityLabelsClientGetResponse, error) {
-	result := SensitivityLabelsClientGetResponse{RawResponse: resp}
+	result := SensitivityLabelsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SensitivityLabel); err != nil {
 		return SensitivityLabelsClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// ListByDatabase - Gets the sensitivity labels of a given database
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// databaseName - The name of the database.
+// options - SensitivityLabelsClientListByDatabaseOptions contains the optional parameters for the SensitivityLabelsClient.ListByDatabase
+// method.
+func (client *SensitivityLabelsClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string, options *SensitivityLabelsClientListByDatabaseOptions) *runtime.Pager[SensitivityLabelsClientListByDatabaseResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SensitivityLabelsClientListByDatabaseResponse]{
+		More: func(page SensitivityLabelsClientListByDatabaseResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *SensitivityLabelsClientListByDatabaseResponse) (SensitivityLabelsClientListByDatabaseResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByDatabaseCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SensitivityLabelsClientListByDatabaseResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SensitivityLabelsClientListByDatabaseResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SensitivityLabelsClientListByDatabaseResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByDatabaseHandleResponse(resp)
+		},
+	})
+}
+
+// listByDatabaseCreateRequest creates the ListByDatabase request.
+func (client *SensitivityLabelsClient) listByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *SensitivityLabelsClientListByDatabaseOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/sensitivityLabels"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if serverName == "" {
+		return nil, errors.New("parameter serverName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
+	if databaseName == "" {
+		return nil, errors.New("parameter databaseName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	if options != nil && options.Filter != nil {
+		reqQP.Set("$filter", *options.Filter)
+	}
+	reqQP.Set("api-version", "2021-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, nil
+}
+
+// listByDatabaseHandleResponse handles the ListByDatabase response.
+func (client *SensitivityLabelsClient) listByDatabaseHandleResponse(resp *http.Response) (SensitivityLabelsClientListByDatabaseResponse, error) {
+	result := SensitivityLabelsClientListByDatabaseResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SensitivityLabelListResult); err != nil {
+		return SensitivityLabelsClientListByDatabaseResponse{}, err
 	}
 	return result, nil
 }
@@ -423,16 +506,32 @@ func (client *SensitivityLabelsClient) getHandleResponse(resp *http.Response) (S
 // databaseName - The name of the database.
 // options - SensitivityLabelsClientListCurrentByDatabaseOptions contains the optional parameters for the SensitivityLabelsClient.ListCurrentByDatabase
 // method.
-func (client *SensitivityLabelsClient) ListCurrentByDatabase(resourceGroupName string, serverName string, databaseName string, options *SensitivityLabelsClientListCurrentByDatabaseOptions) *SensitivityLabelsClientListCurrentByDatabasePager {
-	return &SensitivityLabelsClientListCurrentByDatabasePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCurrentByDatabaseCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
+func (client *SensitivityLabelsClient) ListCurrentByDatabase(resourceGroupName string, serverName string, databaseName string, options *SensitivityLabelsClientListCurrentByDatabaseOptions) *runtime.Pager[SensitivityLabelsClientListCurrentByDatabaseResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SensitivityLabelsClientListCurrentByDatabaseResponse]{
+		More: func(page SensitivityLabelsClientListCurrentByDatabaseResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SensitivityLabelsClientListCurrentByDatabaseResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SensitivityLabelListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *SensitivityLabelsClientListCurrentByDatabaseResponse) (SensitivityLabelsClientListCurrentByDatabaseResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCurrentByDatabaseCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SensitivityLabelsClientListCurrentByDatabaseResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SensitivityLabelsClientListCurrentByDatabaseResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SensitivityLabelsClientListCurrentByDatabaseResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listCurrentByDatabaseHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCurrentByDatabaseCreateRequest creates the ListCurrentByDatabase request.
@@ -468,7 +567,7 @@ func (client *SensitivityLabelsClient) listCurrentByDatabaseCreateRequest(ctx co
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2020-11-01-preview")
+	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -476,7 +575,7 @@ func (client *SensitivityLabelsClient) listCurrentByDatabaseCreateRequest(ctx co
 
 // listCurrentByDatabaseHandleResponse handles the ListCurrentByDatabase response.
 func (client *SensitivityLabelsClient) listCurrentByDatabaseHandleResponse(resp *http.Response) (SensitivityLabelsClientListCurrentByDatabaseResponse, error) {
-	result := SensitivityLabelsClientListCurrentByDatabaseResponse{RawResponse: resp}
+	result := SensitivityLabelsClientListCurrentByDatabaseResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SensitivityLabelListResult); err != nil {
 		return SensitivityLabelsClientListCurrentByDatabaseResponse{}, err
 	}
@@ -491,16 +590,32 @@ func (client *SensitivityLabelsClient) listCurrentByDatabaseHandleResponse(resp 
 // databaseName - The name of the database.
 // options - SensitivityLabelsClientListRecommendedByDatabaseOptions contains the optional parameters for the SensitivityLabelsClient.ListRecommendedByDatabase
 // method.
-func (client *SensitivityLabelsClient) ListRecommendedByDatabase(resourceGroupName string, serverName string, databaseName string, options *SensitivityLabelsClientListRecommendedByDatabaseOptions) *SensitivityLabelsClientListRecommendedByDatabasePager {
-	return &SensitivityLabelsClientListRecommendedByDatabasePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listRecommendedByDatabaseCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
+func (client *SensitivityLabelsClient) ListRecommendedByDatabase(resourceGroupName string, serverName string, databaseName string, options *SensitivityLabelsClientListRecommendedByDatabaseOptions) *runtime.Pager[SensitivityLabelsClientListRecommendedByDatabaseResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SensitivityLabelsClientListRecommendedByDatabaseResponse]{
+		More: func(page SensitivityLabelsClientListRecommendedByDatabaseResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SensitivityLabelsClientListRecommendedByDatabaseResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SensitivityLabelListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *SensitivityLabelsClientListRecommendedByDatabaseResponse) (SensitivityLabelsClientListRecommendedByDatabaseResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listRecommendedByDatabaseCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SensitivityLabelsClientListRecommendedByDatabaseResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SensitivityLabelsClientListRecommendedByDatabaseResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SensitivityLabelsClientListRecommendedByDatabaseResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listRecommendedByDatabaseHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listRecommendedByDatabaseCreateRequest creates the ListRecommendedByDatabase request.
@@ -536,7 +651,7 @@ func (client *SensitivityLabelsClient) listRecommendedByDatabaseCreateRequest(ct
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2020-11-01-preview")
+	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -544,7 +659,7 @@ func (client *SensitivityLabelsClient) listRecommendedByDatabaseCreateRequest(ct
 
 // listRecommendedByDatabaseHandleResponse handles the ListRecommendedByDatabase response.
 func (client *SensitivityLabelsClient) listRecommendedByDatabaseHandleResponse(resp *http.Response) (SensitivityLabelsClientListRecommendedByDatabaseResponse, error) {
-	result := SensitivityLabelsClientListRecommendedByDatabaseResponse{RawResponse: resp}
+	result := SensitivityLabelsClientListRecommendedByDatabaseResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SensitivityLabelListResult); err != nil {
 		return SensitivityLabelsClientListRecommendedByDatabaseResponse{}, err
 	}
@@ -571,7 +686,7 @@ func (client *SensitivityLabelsClient) Update(ctx context.Context, resourceGroup
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return SensitivityLabelsClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
-	return SensitivityLabelsClientUpdateResponse{RawResponse: resp}, nil
+	return SensitivityLabelsClientUpdateResponse{}, nil
 }
 
 // updateCreateRequest creates the Update request.
@@ -598,7 +713,7 @@ func (client *SensitivityLabelsClient) updateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-11-01-preview")
+	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, runtime.MarshalAsJSON(req, parameters)
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,156 +17,184 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabricmesh/armservicefabricmesh"
 )
 
-// x-ms-original-file: specification/servicefabricmesh/resource-manager/Microsoft.ServiceFabricMesh/preview/2018-09-01-preview/examples/gateways/create_update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/servicefabricmesh/resource-manager/Microsoft.ServiceFabricMesh/preview/2018-09-01-preview/examples/gateways/create_update.json
 func ExampleGatewayClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armservicefabricmesh.NewGatewayClient("<subscription-id>", cred, nil)
+	client, err := armservicefabricmesh.NewGatewayClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Create(ctx,
 		"<resource-group-name>",
 		"<gateway-resource-name>",
 		armservicefabricmesh.GatewayResourceDescription{
-			Location: to.StringPtr("<location>"),
+			Location: to.Ptr("<location>"),
 			Tags:     map[string]*string{},
 			Properties: &armservicefabricmesh.GatewayResourceProperties{
-				Description: to.StringPtr("<description>"),
+				Description: to.Ptr("<description>"),
 				DestinationNetwork: &armservicefabricmesh.NetworkRef{
-					Name: to.StringPtr("<name>"),
+					Name: to.Ptr("<name>"),
 				},
 				SourceNetwork: &armservicefabricmesh.NetworkRef{
-					Name: to.StringPtr("<name>"),
+					Name: to.Ptr("<name>"),
 				},
 				TCP: []*armservicefabricmesh.TCPConfig{
 					{
-						Name: to.StringPtr("<name>"),
+						Name: to.Ptr("<name>"),
 						Destination: &armservicefabricmesh.GatewayDestination{
-							ApplicationName: to.StringPtr("<application-name>"),
-							EndpointName:    to.StringPtr("<endpoint-name>"),
-							ServiceName:     to.StringPtr("<service-name>"),
+							ApplicationName: to.Ptr("<application-name>"),
+							EndpointName:    to.Ptr("<endpoint-name>"),
+							ServiceName:     to.Ptr("<service-name>"),
 						},
-						Port: to.Int32Ptr(80),
+						Port: to.Ptr[int32](80),
 					}},
 				HTTP: []*armservicefabricmesh.HTTPConfig{
 					{
-						Name: to.StringPtr("<name>"),
+						Name: to.Ptr("<name>"),
 						Hosts: []*armservicefabricmesh.HTTPHostConfig{
 							{
-								Name: to.StringPtr("<name>"),
+								Name: to.Ptr("<name>"),
 								Routes: []*armservicefabricmesh.HTTPRouteConfig{
 									{
-										Name: to.StringPtr("<name>"),
+										Name: to.Ptr("<name>"),
 										Destination: &armservicefabricmesh.GatewayDestination{
-											ApplicationName: to.StringPtr("<application-name>"),
-											EndpointName:    to.StringPtr("<endpoint-name>"),
-											ServiceName:     to.StringPtr("<service-name>"),
+											ApplicationName: to.Ptr("<application-name>"),
+											EndpointName:    to.Ptr("<endpoint-name>"),
+											ServiceName:     to.Ptr("<service-name>"),
 										},
 										Match: &armservicefabricmesh.HTTPRouteMatchRule{
 											Path: &armservicefabricmesh.HTTPRouteMatchPath{
-												Type:    armservicefabricmesh.PathMatchType("prefix").ToPtr(),
-												Rewrite: to.StringPtr("<rewrite>"),
-												Value:   to.StringPtr("<value>"),
+												Type:    to.Ptr(armservicefabricmesh.PathMatchTypePrefix),
+												Rewrite: to.Ptr("<rewrite>"),
+												Value:   to.Ptr("<value>"),
 											},
 											Headers: []*armservicefabricmesh.HTTPRouteMatchHeader{
 												{
-													Name:  to.StringPtr("<name>"),
-													Type:  armservicefabricmesh.HeaderMatchType("exact").ToPtr(),
-													Value: to.StringPtr("<value>"),
+													Name:  to.Ptr("<name>"),
+													Type:  to.Ptr(armservicefabricmesh.HeaderMatchTypeExact),
+													Value: to.Ptr("<value>"),
 												}},
 										},
 									}},
 							}},
-						Port: to.Int32Ptr(8081),
+						Port: to.Ptr[int32](8081),
 					}},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.GatewayClientCreateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/servicefabricmesh/resource-manager/Microsoft.ServiceFabricMesh/preview/2018-09-01-preview/examples/gateways/get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/servicefabricmesh/resource-manager/Microsoft.ServiceFabricMesh/preview/2018-09-01-preview/examples/gateways/get.json
 func ExampleGatewayClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armservicefabricmesh.NewGatewayClient("<subscription-id>", cred, nil)
+	client, err := armservicefabricmesh.NewGatewayClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<gateway-resource-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.GatewayClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/servicefabricmesh/resource-manager/Microsoft.ServiceFabricMesh/preview/2018-09-01-preview/examples/gateways/delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/servicefabricmesh/resource-manager/Microsoft.ServiceFabricMesh/preview/2018-09-01-preview/examples/gateways/delete.json
 func ExampleGatewayClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armservicefabricmesh.NewGatewayClient("<subscription-id>", cred, nil)
+	client, err := armservicefabricmesh.NewGatewayClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Delete(ctx,
 		"<resource-group-name>",
 		"<gateway-resource-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/servicefabricmesh/resource-manager/Microsoft.ServiceFabricMesh/preview/2018-09-01-preview/examples/gateways/list_byResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/servicefabricmesh/resource-manager/Microsoft.ServiceFabricMesh/preview/2018-09-01-preview/examples/gateways/list_byResourceGroup.json
 func ExampleGatewayClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armservicefabricmesh.NewGatewayClient("<subscription-id>", cred, nil)
+	client, err := armservicefabricmesh.NewGatewayClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/servicefabricmesh/resource-manager/Microsoft.ServiceFabricMesh/preview/2018-09-01-preview/examples/gateways/list_bySubscriptionId.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/servicefabricmesh/resource-manager/Microsoft.ServiceFabricMesh/preview/2018-09-01-preview/examples/gateways/list_bySubscriptionId.json
 func ExampleGatewayClient_ListBySubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armservicefabricmesh.NewGatewayClient("<subscription-id>", cred, nil)
+	client, err := armservicefabricmesh.NewGatewayClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListBySubscription(nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,58 +12,73 @@ import (
 	"context"
 	"log"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
 )
 
-// x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ServerAutomaticTuningGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ServerAutomaticTuningGet.json
 func ExampleServerAutomaticTuningClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsql.NewServerAutomaticTuningClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewServerAutomaticTuningClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<server-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ServerAutomaticTuningClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ServerAutomaticTuningUpdateMax.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ServerAutomaticTuningUpdateMax.json
 func ExampleServerAutomaticTuningClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsql.NewServerAutomaticTuningClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewServerAutomaticTuningClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Update(ctx,
 		"<resource-group-name>",
 		"<server-name>",
 		armsql.ServerAutomaticTuning{
 			Properties: &armsql.AutomaticTuningServerProperties{
-				DesiredState: armsql.AutomaticTuningServerModeAuto.ToPtr(),
+				DesiredState: to.Ptr(armsql.AutomaticTuningServerModeAuto),
 				Options: map[string]*armsql.AutomaticTuningServerOptions{
 					"createIndex": {
-						DesiredState: armsql.AutomaticTuningOptionModeDesiredOff.ToPtr(),
+						DesiredState: to.Ptr(armsql.AutomaticTuningOptionModeDesiredOff),
 					},
 					"dropIndex": {
-						DesiredState: armsql.AutomaticTuningOptionModeDesiredOn.ToPtr(),
+						DesiredState: to.Ptr(armsql.AutomaticTuningOptionModeDesiredOn),
 					},
 					"forceLastGoodPlan": {
-						DesiredState: armsql.AutomaticTuningOptionModeDesiredDefault.ToPtr(),
+						DesiredState: to.Ptr(armsql.AutomaticTuningOptionModeDesiredDefault),
 					},
 				},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ServerAutomaticTuningClientUpdateResult)
+	// TODO: use response item
+	_ = res
 }

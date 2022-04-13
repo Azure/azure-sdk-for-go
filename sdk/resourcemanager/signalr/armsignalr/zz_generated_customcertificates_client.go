@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type CustomCertificatesClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewCustomCertificatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CustomCertificatesClient {
+func NewCustomCertificatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CustomCertificatesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &CustomCertificatesClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Create or update a custom certificate.
@@ -58,22 +63,16 @@ func NewCustomCertificatesClient(subscriptionID string, credential azcore.TokenC
 // certificateName - Custom certificate name
 // options - CustomCertificatesClientBeginCreateOrUpdateOptions contains the optional parameters for the CustomCertificatesClient.BeginCreateOrUpdate
 // method.
-func (client *CustomCertificatesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, certificateName string, parameters CustomCertificate, options *CustomCertificatesClientBeginCreateOrUpdateOptions) (CustomCertificatesClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, resourceName, certificateName, parameters, options)
-	if err != nil {
-		return CustomCertificatesClientCreateOrUpdatePollerResponse{}, err
+func (client *CustomCertificatesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, certificateName string, parameters CustomCertificate, options *CustomCertificatesClientBeginCreateOrUpdateOptions) (*armruntime.Poller[CustomCertificatesClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, resourceName, certificateName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[CustomCertificatesClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[CustomCertificatesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := CustomCertificatesClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("CustomCertificatesClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return CustomCertificatesClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &CustomCertificatesClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Create or update a custom certificate.
@@ -143,7 +142,7 @@ func (client *CustomCertificatesClient) Delete(ctx context.Context, resourceGrou
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return CustomCertificatesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return CustomCertificatesClientDeleteResponse{RawResponse: resp}, nil
+	return CustomCertificatesClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -230,7 +229,7 @@ func (client *CustomCertificatesClient) getCreateRequest(ctx context.Context, re
 
 // getHandleResponse handles the Get response.
 func (client *CustomCertificatesClient) getHandleResponse(resp *http.Response) (CustomCertificatesClientGetResponse, error) {
-	result := CustomCertificatesClientGetResponse{RawResponse: resp}
+	result := CustomCertificatesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomCertificate); err != nil {
 		return CustomCertificatesClientGetResponse{}, err
 	}
@@ -243,16 +242,32 @@ func (client *CustomCertificatesClient) getHandleResponse(resp *http.Response) (
 // Resource Manager API or the portal.
 // resourceName - The name of the resource.
 // options - CustomCertificatesClientListOptions contains the optional parameters for the CustomCertificatesClient.List method.
-func (client *CustomCertificatesClient) List(resourceGroupName string, resourceName string, options *CustomCertificatesClientListOptions) *CustomCertificatesClientListPager {
-	return &CustomCertificatesClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, resourceName, options)
+func (client *CustomCertificatesClient) List(resourceGroupName string, resourceName string, options *CustomCertificatesClientListOptions) *runtime.Pager[CustomCertificatesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[CustomCertificatesClientListResponse]{
+		More: func(page CustomCertificatesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp CustomCertificatesClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.CustomCertificateList.NextLink)
+		Fetcher: func(ctx context.Context, page *CustomCertificatesClientListResponse) (CustomCertificatesClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, resourceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return CustomCertificatesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return CustomCertificatesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return CustomCertificatesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -283,7 +298,7 @@ func (client *CustomCertificatesClient) listCreateRequest(ctx context.Context, r
 
 // listHandleResponse handles the List response.
 func (client *CustomCertificatesClient) listHandleResponse(resp *http.Response) (CustomCertificatesClientListResponse, error) {
-	result := CustomCertificatesClientListResponse{RawResponse: resp}
+	result := CustomCertificatesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomCertificateList); err != nil {
 		return CustomCertificatesClientListResponse{}, err
 	}

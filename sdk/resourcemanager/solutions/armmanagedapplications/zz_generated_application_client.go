@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -13,6 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -28,35 +29,55 @@ type ApplicationClient struct {
 // NewApplicationClient creates a new instance of ApplicationClient with the specified values.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewApplicationClient(credential azcore.TokenCredential, options *arm.ClientOptions) *ApplicationClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewApplicationClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ApplicationClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ApplicationClient{
-		host: string(cp.Endpoint),
-		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host: ep,
+		pl:   pl,
 	}
-	return client
+	return client, nil
 }
 
 // ListOperations - Lists all of the available Microsoft.Solutions REST API operations.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ApplicationClientListOperationsOptions contains the optional parameters for the ApplicationClient.ListOperations
 // method.
-func (client *ApplicationClient) ListOperations(options *ApplicationClientListOperationsOptions) *ApplicationClientListOperationsPager {
-	return &ApplicationClientListOperationsPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listOperationsCreateRequest(ctx, options)
+func (client *ApplicationClient) ListOperations(options *ApplicationClientListOperationsOptions) *runtime.Pager[ApplicationClientListOperationsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ApplicationClientListOperationsResponse]{
+		More: func(page ApplicationClientListOperationsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ApplicationClientListOperationsResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.OperationListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ApplicationClientListOperationsResponse) (ApplicationClientListOperationsResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listOperationsCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ApplicationClientListOperationsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ApplicationClientListOperationsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ApplicationClientListOperationsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listOperationsHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listOperationsCreateRequest creates the ListOperations request.
@@ -75,7 +96,7 @@ func (client *ApplicationClient) listOperationsCreateRequest(ctx context.Context
 
 // listOperationsHandleResponse handles the ListOperations response.
 func (client *ApplicationClient) listOperationsHandleResponse(resp *http.Response) (ApplicationClientListOperationsResponse, error) {
-	result := ApplicationClientListOperationsResponse{RawResponse: resp}
+	result := ApplicationClientListOperationsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationListResult); err != nil {
 		return ApplicationClientListOperationsResponse{}, err
 	}

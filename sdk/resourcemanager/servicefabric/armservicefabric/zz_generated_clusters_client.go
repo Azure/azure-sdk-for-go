@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ClustersClient struct {
 // subscriptionID - The customer subscription identifier.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewClustersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ClustersClient {
+func NewClustersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClustersClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ClustersClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Create or update a Service Fabric cluster resource with the specified name.
@@ -56,22 +61,16 @@ func NewClustersClient(subscriptionID string, credential azcore.TokenCredential,
 // parameters - The cluster resource.
 // options - ClustersClientBeginCreateOrUpdateOptions contains the optional parameters for the ClustersClient.BeginCreateOrUpdate
 // method.
-func (client *ClustersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, parameters Cluster, options *ClustersClientBeginCreateOrUpdateOptions) (ClustersClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, clusterName, parameters, options)
-	if err != nil {
-		return ClustersClientCreateOrUpdatePollerResponse{}, err
+func (client *ClustersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, parameters Cluster, options *ClustersClientBeginCreateOrUpdateOptions) (*armruntime.Poller[ClustersClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, clusterName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ClustersClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ClustersClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ClustersClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ClustersClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return ClustersClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &ClustersClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Create or update a Service Fabric cluster resource with the specified name.
@@ -134,7 +133,7 @@ func (client *ClustersClient) Delete(ctx context.Context, resourceGroupName stri
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return ClustersClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ClustersClientDeleteResponse{RawResponse: resp}, nil
+	return ClustersClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -211,7 +210,7 @@ func (client *ClustersClient) getCreateRequest(ctx context.Context, resourceGrou
 
 // getHandleResponse handles the Get response.
 func (client *ClustersClient) getHandleResponse(resp *http.Response) (ClustersClientGetResponse, error) {
-	result := ClustersClientGetResponse{RawResponse: resp}
+	result := ClustersClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Cluster); err != nil {
 		return ClustersClientGetResponse{}, err
 	}
@@ -256,7 +255,7 @@ func (client *ClustersClient) listCreateRequest(ctx context.Context, options *Cl
 
 // listHandleResponse handles the List response.
 func (client *ClustersClient) listHandleResponse(resp *http.Response) (ClustersClientListResponse, error) {
-	result := ClustersClientListResponse{RawResponse: resp}
+	result := ClustersClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterListResult); err != nil {
 		return ClustersClientListResponse{}, err
 	}
@@ -308,7 +307,7 @@ func (client *ClustersClient) listByResourceGroupCreateRequest(ctx context.Conte
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *ClustersClient) listByResourceGroupHandleResponse(resp *http.Response) (ClustersClientListByResourceGroupResponse, error) {
-	result := ClustersClientListByResourceGroupResponse{RawResponse: resp}
+	result := ClustersClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterListResult); err != nil {
 		return ClustersClientListByResourceGroupResponse{}, err
 	}
@@ -369,7 +368,7 @@ func (client *ClustersClient) listUpgradableVersionsCreateRequest(ctx context.Co
 
 // listUpgradableVersionsHandleResponse handles the ListUpgradableVersions response.
 func (client *ClustersClient) listUpgradableVersionsHandleResponse(resp *http.Response) (ClustersClientListUpgradableVersionsResponse, error) {
-	result := ClustersClientListUpgradableVersionsResponse{RawResponse: resp}
+	result := ClustersClientListUpgradableVersionsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UpgradableVersionPathResult); err != nil {
 		return ClustersClientListUpgradableVersionsResponse{}, err
 	}
@@ -382,22 +381,16 @@ func (client *ClustersClient) listUpgradableVersionsHandleResponse(resp *http.Re
 // clusterName - The name of the cluster resource.
 // parameters - The parameters which contains the property value and property name which used to update the cluster configuration.
 // options - ClustersClientBeginUpdateOptions contains the optional parameters for the ClustersClient.BeginUpdate method.
-func (client *ClustersClient) BeginUpdate(ctx context.Context, resourceGroupName string, clusterName string, parameters ClusterUpdateParameters, options *ClustersClientBeginUpdateOptions) (ClustersClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, clusterName, parameters, options)
-	if err != nil {
-		return ClustersClientUpdatePollerResponse{}, err
+func (client *ClustersClient) BeginUpdate(ctx context.Context, resourceGroupName string, clusterName string, parameters ClusterUpdateParameters, options *ClustersClientBeginUpdateOptions) (*armruntime.Poller[ClustersClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, clusterName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ClustersClientUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ClustersClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ClustersClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ClustersClient.Update", "", resp, client.pl)
-	if err != nil {
-		return ClustersClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &ClustersClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Update the configuration of a Service Fabric cluster resource with the specified name.

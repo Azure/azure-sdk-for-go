@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ManagedInstanceOperationsClient struct {
 // subscriptionID - The subscription ID that identifies an Azure subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewManagedInstanceOperationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ManagedInstanceOperationsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewManagedInstanceOperationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedInstanceOperationsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ManagedInstanceOperationsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Cancel - Cancels the asynchronous operation on the managed instance.
@@ -68,7 +73,7 @@ func (client *ManagedInstanceOperationsClient) Cancel(ctx context.Context, resou
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return ManagedInstanceOperationsClientCancelResponse{}, runtime.NewResponseError(resp)
 	}
-	return ManagedInstanceOperationsClientCancelResponse{RawResponse: resp}, nil
+	return ManagedInstanceOperationsClientCancelResponse{}, nil
 }
 
 // cancelCreateRequest creates the Cancel request.
@@ -148,7 +153,7 @@ func (client *ManagedInstanceOperationsClient) getCreateRequest(ctx context.Cont
 
 // getHandleResponse handles the Get response.
 func (client *ManagedInstanceOperationsClient) getHandleResponse(resp *http.Response) (ManagedInstanceOperationsClientGetResponse, error) {
-	result := ManagedInstanceOperationsClientGetResponse{RawResponse: resp}
+	result := ManagedInstanceOperationsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstanceOperation); err != nil {
 		return ManagedInstanceOperationsClientGetResponse{}, err
 	}
@@ -162,16 +167,32 @@ func (client *ManagedInstanceOperationsClient) getHandleResponse(resp *http.Resp
 // managedInstanceName - The name of the managed instance.
 // options - ManagedInstanceOperationsClientListByManagedInstanceOptions contains the optional parameters for the ManagedInstanceOperationsClient.ListByManagedInstance
 // method.
-func (client *ManagedInstanceOperationsClient) ListByManagedInstance(resourceGroupName string, managedInstanceName string, options *ManagedInstanceOperationsClientListByManagedInstanceOptions) *ManagedInstanceOperationsClientListByManagedInstancePager {
-	return &ManagedInstanceOperationsClientListByManagedInstancePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByManagedInstanceCreateRequest(ctx, resourceGroupName, managedInstanceName, options)
+func (client *ManagedInstanceOperationsClient) ListByManagedInstance(resourceGroupName string, managedInstanceName string, options *ManagedInstanceOperationsClientListByManagedInstanceOptions) *runtime.Pager[ManagedInstanceOperationsClientListByManagedInstanceResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ManagedInstanceOperationsClientListByManagedInstanceResponse]{
+		More: func(page ManagedInstanceOperationsClientListByManagedInstanceResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ManagedInstanceOperationsClientListByManagedInstanceResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ManagedInstanceOperationListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ManagedInstanceOperationsClientListByManagedInstanceResponse) (ManagedInstanceOperationsClientListByManagedInstanceResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByManagedInstanceCreateRequest(ctx, resourceGroupName, managedInstanceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ManagedInstanceOperationsClientListByManagedInstanceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ManagedInstanceOperationsClientListByManagedInstanceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ManagedInstanceOperationsClientListByManagedInstanceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByManagedInstanceHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByManagedInstanceCreateRequest creates the ListByManagedInstance request.
@@ -202,7 +223,7 @@ func (client *ManagedInstanceOperationsClient) listByManagedInstanceCreateReques
 
 // listByManagedInstanceHandleResponse handles the ListByManagedInstance response.
 func (client *ManagedInstanceOperationsClient) listByManagedInstanceHandleResponse(resp *http.Response) (ManagedInstanceOperationsClientListByManagedInstanceResponse, error) {
-	result := ManagedInstanceOperationsClientListByManagedInstanceResponse{RawResponse: resp}
+	result := ManagedInstanceOperationsClientListByManagedInstanceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstanceOperationListResult); err != nil {
 		return ManagedInstanceOperationsClientListByManagedInstanceResponse{}, err
 	}

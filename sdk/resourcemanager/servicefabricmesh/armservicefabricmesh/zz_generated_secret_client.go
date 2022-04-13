@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type SecretClient struct {
 // subscriptionID - The customer subscription identifier
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewSecretClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SecretClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewSecretClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SecretClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &SecretClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Create - Creates a secret resource with the specified name, description and properties. If a secret resource with the same
@@ -96,7 +101,7 @@ func (client *SecretClient) createCreateRequest(ctx context.Context, resourceGro
 
 // createHandleResponse handles the Create response.
 func (client *SecretClient) createHandleResponse(resp *http.Response) (SecretClientCreateResponse, error) {
-	result := SecretClientCreateResponse{RawResponse: resp}
+	result := SecretClientCreateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecretResourceDescription); err != nil {
 		return SecretClientCreateResponse{}, err
 	}
@@ -120,7 +125,7 @@ func (client *SecretClient) Delete(ctx context.Context, resourceGroupName string
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return SecretClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return SecretClientDeleteResponse{RawResponse: resp}, nil
+	return SecretClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -192,7 +197,7 @@ func (client *SecretClient) getCreateRequest(ctx context.Context, resourceGroupN
 
 // getHandleResponse handles the Get response.
 func (client *SecretClient) getHandleResponse(resp *http.Response) (SecretClientGetResponse, error) {
-	result := SecretClientGetResponse{RawResponse: resp}
+	result := SecretClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecretResourceDescription); err != nil {
 		return SecretClientGetResponse{}, err
 	}
@@ -205,16 +210,32 @@ func (client *SecretClient) getHandleResponse(resp *http.Response) (SecretClient
 // resourceGroupName - Azure resource group name
 // options - SecretClientListByResourceGroupOptions contains the optional parameters for the SecretClient.ListByResourceGroup
 // method.
-func (client *SecretClient) ListByResourceGroup(resourceGroupName string, options *SecretClientListByResourceGroupOptions) *SecretClientListByResourceGroupPager {
-	return &SecretClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *SecretClient) ListByResourceGroup(resourceGroupName string, options *SecretClientListByResourceGroupOptions) *runtime.Pager[SecretClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SecretClientListByResourceGroupResponse]{
+		More: func(page SecretClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SecretClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SecretResourceDescriptionList.NextLink)
+		Fetcher: func(ctx context.Context, page *SecretClientListByResourceGroupResponse) (SecretClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SecretClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SecretClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SecretClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -241,7 +262,7 @@ func (client *SecretClient) listByResourceGroupCreateRequest(ctx context.Context
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *SecretClient) listByResourceGroupHandleResponse(resp *http.Response) (SecretClientListByResourceGroupResponse, error) {
-	result := SecretClientListByResourceGroupResponse{RawResponse: resp}
+	result := SecretClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecretResourceDescriptionList); err != nil {
 		return SecretClientListByResourceGroupResponse{}, err
 	}
@@ -253,16 +274,32 @@ func (client *SecretClient) listByResourceGroupHandleResponse(resp *http.Respons
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - SecretClientListBySubscriptionOptions contains the optional parameters for the SecretClient.ListBySubscription
 // method.
-func (client *SecretClient) ListBySubscription(options *SecretClientListBySubscriptionOptions) *SecretClientListBySubscriptionPager {
-	return &SecretClientListBySubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySubscriptionCreateRequest(ctx, options)
+func (client *SecretClient) ListBySubscription(options *SecretClientListBySubscriptionOptions) *runtime.Pager[SecretClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SecretClientListBySubscriptionResponse]{
+		More: func(page SecretClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SecretClientListBySubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SecretResourceDescriptionList.NextLink)
+		Fetcher: func(ctx context.Context, page *SecretClientListBySubscriptionResponse) (SecretClientListBySubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySubscriptionCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SecretClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SecretClientListBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SecretClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
@@ -285,7 +322,7 @@ func (client *SecretClient) listBySubscriptionCreateRequest(ctx context.Context,
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
 func (client *SecretClient) listBySubscriptionHandleResponse(resp *http.Response) (SecretClientListBySubscriptionResponse, error) {
-	result := SecretClientListBySubscriptionResponse{RawResponse: resp}
+	result := SecretClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecretResourceDescriptionList); err != nil {
 		return SecretClientListBySubscriptionResponse{}, err
 	}

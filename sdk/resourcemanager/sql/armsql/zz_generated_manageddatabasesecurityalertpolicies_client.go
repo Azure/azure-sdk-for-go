@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ManagedDatabaseSecurityAlertPoliciesClient struct {
 // subscriptionID - The subscription ID that identifies an Azure subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewManagedDatabaseSecurityAlertPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ManagedDatabaseSecurityAlertPoliciesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewManagedDatabaseSecurityAlertPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedDatabaseSecurityAlertPoliciesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ManagedDatabaseSecurityAlertPoliciesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates a database's security alert policy.
@@ -110,7 +115,7 @@ func (client *ManagedDatabaseSecurityAlertPoliciesClient) createOrUpdateCreateRe
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *ManagedDatabaseSecurityAlertPoliciesClient) createOrUpdateHandleResponse(resp *http.Response) (ManagedDatabaseSecurityAlertPoliciesClientCreateOrUpdateResponse, error) {
-	result := ManagedDatabaseSecurityAlertPoliciesClientCreateOrUpdateResponse{RawResponse: resp}
+	result := ManagedDatabaseSecurityAlertPoliciesClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedDatabaseSecurityAlertPolicy); err != nil {
 		return ManagedDatabaseSecurityAlertPoliciesClientCreateOrUpdateResponse{}, err
 	}
@@ -177,7 +182,7 @@ func (client *ManagedDatabaseSecurityAlertPoliciesClient) getCreateRequest(ctx c
 
 // getHandleResponse handles the Get response.
 func (client *ManagedDatabaseSecurityAlertPoliciesClient) getHandleResponse(resp *http.Response) (ManagedDatabaseSecurityAlertPoliciesClientGetResponse, error) {
-	result := ManagedDatabaseSecurityAlertPoliciesClientGetResponse{RawResponse: resp}
+	result := ManagedDatabaseSecurityAlertPoliciesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedDatabaseSecurityAlertPolicy); err != nil {
 		return ManagedDatabaseSecurityAlertPoliciesClientGetResponse{}, err
 	}
@@ -192,16 +197,32 @@ func (client *ManagedDatabaseSecurityAlertPoliciesClient) getHandleResponse(resp
 // databaseName - The name of the managed database for which the security alert policies are defined.
 // options - ManagedDatabaseSecurityAlertPoliciesClientListByDatabaseOptions contains the optional parameters for the ManagedDatabaseSecurityAlertPoliciesClient.ListByDatabase
 // method.
-func (client *ManagedDatabaseSecurityAlertPoliciesClient) ListByDatabase(resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabaseSecurityAlertPoliciesClientListByDatabaseOptions) *ManagedDatabaseSecurityAlertPoliciesClientListByDatabasePager {
-	return &ManagedDatabaseSecurityAlertPoliciesClientListByDatabasePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByDatabaseCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, options)
+func (client *ManagedDatabaseSecurityAlertPoliciesClient) ListByDatabase(resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabaseSecurityAlertPoliciesClientListByDatabaseOptions) *runtime.Pager[ManagedDatabaseSecurityAlertPoliciesClientListByDatabaseResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ManagedDatabaseSecurityAlertPoliciesClientListByDatabaseResponse]{
+		More: func(page ManagedDatabaseSecurityAlertPoliciesClientListByDatabaseResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ManagedDatabaseSecurityAlertPoliciesClientListByDatabaseResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ManagedDatabaseSecurityAlertPolicyListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ManagedDatabaseSecurityAlertPoliciesClientListByDatabaseResponse) (ManagedDatabaseSecurityAlertPoliciesClientListByDatabaseResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByDatabaseCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ManagedDatabaseSecurityAlertPoliciesClientListByDatabaseResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ManagedDatabaseSecurityAlertPoliciesClientListByDatabaseResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ManagedDatabaseSecurityAlertPoliciesClientListByDatabaseResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByDatabaseHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByDatabaseCreateRequest creates the ListByDatabase request.
@@ -236,7 +257,7 @@ func (client *ManagedDatabaseSecurityAlertPoliciesClient) listByDatabaseCreateRe
 
 // listByDatabaseHandleResponse handles the ListByDatabase response.
 func (client *ManagedDatabaseSecurityAlertPoliciesClient) listByDatabaseHandleResponse(resp *http.Response) (ManagedDatabaseSecurityAlertPoliciesClientListByDatabaseResponse, error) {
-	result := ManagedDatabaseSecurityAlertPoliciesClientListByDatabaseResponse{RawResponse: resp}
+	result := ManagedDatabaseSecurityAlertPoliciesClientListByDatabaseResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedDatabaseSecurityAlertPolicyListResult); err != nil {
 		return ManagedDatabaseSecurityAlertPoliciesClientListByDatabaseResponse{}, err
 	}

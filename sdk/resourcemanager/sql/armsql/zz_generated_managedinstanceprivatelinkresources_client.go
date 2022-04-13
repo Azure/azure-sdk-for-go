@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ManagedInstancePrivateLinkResourcesClient struct {
 // subscriptionID - The subscription ID that identifies an Azure subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewManagedInstancePrivateLinkResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ManagedInstancePrivateLinkResourcesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewManagedInstancePrivateLinkResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedInstancePrivateLinkResourcesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ManagedInstancePrivateLinkResourcesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Gets a private link resource for SQL server.
@@ -104,7 +109,7 @@ func (client *ManagedInstancePrivateLinkResourcesClient) getCreateRequest(ctx co
 
 // getHandleResponse handles the Get response.
 func (client *ManagedInstancePrivateLinkResourcesClient) getHandleResponse(resp *http.Response) (ManagedInstancePrivateLinkResourcesClientGetResponse, error) {
-	result := ManagedInstancePrivateLinkResourcesClientGetResponse{RawResponse: resp}
+	result := ManagedInstancePrivateLinkResourcesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstancePrivateLink); err != nil {
 		return ManagedInstancePrivateLinkResourcesClientGetResponse{}, err
 	}
@@ -118,16 +123,32 @@ func (client *ManagedInstancePrivateLinkResourcesClient) getHandleResponse(resp 
 // managedInstanceName - The name of the managed instance.
 // options - ManagedInstancePrivateLinkResourcesClientListByManagedInstanceOptions contains the optional parameters for the
 // ManagedInstancePrivateLinkResourcesClient.ListByManagedInstance method.
-func (client *ManagedInstancePrivateLinkResourcesClient) ListByManagedInstance(resourceGroupName string, managedInstanceName string, options *ManagedInstancePrivateLinkResourcesClientListByManagedInstanceOptions) *ManagedInstancePrivateLinkResourcesClientListByManagedInstancePager {
-	return &ManagedInstancePrivateLinkResourcesClientListByManagedInstancePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByManagedInstanceCreateRequest(ctx, resourceGroupName, managedInstanceName, options)
+func (client *ManagedInstancePrivateLinkResourcesClient) ListByManagedInstance(resourceGroupName string, managedInstanceName string, options *ManagedInstancePrivateLinkResourcesClientListByManagedInstanceOptions) *runtime.Pager[ManagedInstancePrivateLinkResourcesClientListByManagedInstanceResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ManagedInstancePrivateLinkResourcesClientListByManagedInstanceResponse]{
+		More: func(page ManagedInstancePrivateLinkResourcesClientListByManagedInstanceResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ManagedInstancePrivateLinkResourcesClientListByManagedInstanceResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ManagedInstancePrivateLinkListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ManagedInstancePrivateLinkResourcesClientListByManagedInstanceResponse) (ManagedInstancePrivateLinkResourcesClientListByManagedInstanceResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByManagedInstanceCreateRequest(ctx, resourceGroupName, managedInstanceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ManagedInstancePrivateLinkResourcesClientListByManagedInstanceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ManagedInstancePrivateLinkResourcesClientListByManagedInstanceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ManagedInstancePrivateLinkResourcesClientListByManagedInstanceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByManagedInstanceHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByManagedInstanceCreateRequest creates the ListByManagedInstance request.
@@ -158,7 +179,7 @@ func (client *ManagedInstancePrivateLinkResourcesClient) listByManagedInstanceCr
 
 // listByManagedInstanceHandleResponse handles the ListByManagedInstance response.
 func (client *ManagedInstancePrivateLinkResourcesClient) listByManagedInstanceHandleResponse(resp *http.Response) (ManagedInstancePrivateLinkResourcesClientListByManagedInstanceResponse, error) {
-	result := ManagedInstancePrivateLinkResourcesClientListByManagedInstanceResponse{RawResponse: resp}
+	result := ManagedInstancePrivateLinkResourcesClientListByManagedInstanceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstancePrivateLinkListResult); err != nil {
 		return ManagedInstancePrivateLinkResourcesClientListByManagedInstanceResponse{}, err
 	}

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,12 +8,7 @@
 
 package armmanagedapplications
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
 
 // Application - Information about managed application.
 type Application struct {
@@ -52,24 +47,6 @@ type Application struct {
 
 	// READ-ONLY; Resource type
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Application.
-func (a Application) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", a.ID)
-	populate(objectMap, "identity", a.Identity)
-	populate(objectMap, "kind", a.Kind)
-	populate(objectMap, "location", a.Location)
-	populate(objectMap, "managedBy", a.ManagedBy)
-	populate(objectMap, "name", a.Name)
-	populate(objectMap, "plan", a.Plan)
-	populate(objectMap, "properties", a.Properties)
-	populate(objectMap, "sku", a.SKU)
-	populate(objectMap, "systemData", a.SystemData)
-	populate(objectMap, "tags", a.Tags)
-	populate(objectMap, "type", a.Type)
-	return json.Marshal(objectMap)
 }
 
 // ApplicationArtifact - Managed application artifact.
@@ -149,21 +126,6 @@ type ApplicationDefinition struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ApplicationDefinition.
-func (a ApplicationDefinition) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", a.ID)
-	populate(objectMap, "location", a.Location)
-	populate(objectMap, "managedBy", a.ManagedBy)
-	populate(objectMap, "name", a.Name)
-	populate(objectMap, "properties", a.Properties)
-	populate(objectMap, "sku", a.SKU)
-	populate(objectMap, "systemData", a.SystemData)
-	populate(objectMap, "tags", a.Tags)
-	populate(objectMap, "type", a.Type)
-	return json.Marshal(objectMap)
-}
-
 // ApplicationDefinitionArtifact - Application definition artifact.
 type ApplicationDefinitionArtifact struct {
 	// REQUIRED; The managed application definition artifact name.
@@ -185,25 +147,10 @@ type ApplicationDefinitionListResult struct {
 	Value []*ApplicationDefinition `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ApplicationDefinitionListResult.
-func (a ApplicationDefinitionListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
-}
-
 // ApplicationDefinitionPatchable - Information about an application definition request.
 type ApplicationDefinitionPatchable struct {
 	// Application definition tags
 	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ApplicationDefinitionPatchable.
-func (a ApplicationDefinitionPatchable) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "tags", a.Tags)
-	return json.Marshal(objectMap)
 }
 
 // ApplicationDefinitionProperties - The managed application definition properties.
@@ -221,7 +168,7 @@ type ApplicationDefinitionProperties struct {
 
 	// The createUiDefinition json for the backing template with Microsoft.Solutions/applications resource. It can be a JObject
 	// or well-formed JSON string.
-	CreateUIDefinition map[string]interface{} `json:"createUiDefinition,omitempty"`
+	CreateUIDefinition interface{} `json:"createUiDefinition,omitempty"`
 
 	// The managed application deployment policy.
 	DeploymentPolicy *ApplicationDeploymentPolicy `json:"deploymentPolicy,omitempty"`
@@ -239,7 +186,7 @@ type ApplicationDefinitionProperties struct {
 	LockingPolicy *ApplicationPackageLockingPolicyDefinition `json:"lockingPolicy,omitempty"`
 
 	// The inline main template json which has resources to be provisioned. It can be a JObject or well-formed JSON string.
-	MainTemplate map[string]interface{} `json:"mainTemplate,omitempty"`
+	MainTemplate interface{} `json:"mainTemplate,omitempty"`
 
 	// The managed application management policy that determines publisher's access to the managed resource group.
 	ManagementPolicy *ApplicationManagementPolicy `json:"managementPolicy,omitempty"`
@@ -260,38 +207,18 @@ type ApplicationDefinitionProperties struct {
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ApplicationDefinitionProperties.
-func (a ApplicationDefinitionProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "artifacts", a.Artifacts)
-	populate(objectMap, "authorizations", a.Authorizations)
-	populate(objectMap, "createUiDefinition", a.CreateUIDefinition)
-	populate(objectMap, "deploymentPolicy", a.DeploymentPolicy)
-	populate(objectMap, "description", a.Description)
-	populate(objectMap, "displayName", a.DisplayName)
-	populate(objectMap, "isEnabled", a.IsEnabled)
-	populate(objectMap, "lockLevel", a.LockLevel)
-	populate(objectMap, "lockingPolicy", a.LockingPolicy)
-	populate(objectMap, "mainTemplate", a.MainTemplate)
-	populate(objectMap, "managementPolicy", a.ManagementPolicy)
-	populate(objectMap, "notificationPolicy", a.NotificationPolicy)
-	populate(objectMap, "packageFileUri", a.PackageFileURI)
-	populate(objectMap, "policies", a.Policies)
-	populate(objectMap, "provisioningState", a.ProvisioningState)
-	populate(objectMap, "storageAccountId", a.StorageAccountID)
-	return json.Marshal(objectMap)
-}
-
 // ApplicationDefinitionsClientBeginCreateOrUpdateOptions contains the optional parameters for the ApplicationDefinitionsClient.BeginCreateOrUpdate
 // method.
 type ApplicationDefinitionsClientBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ApplicationDefinitionsClientBeginDeleteOptions contains the optional parameters for the ApplicationDefinitionsClient.BeginDelete
 // method.
 type ApplicationDefinitionsClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ApplicationDefinitionsClientGetOptions contains the optional parameters for the ApplicationDefinitionsClient.Get method.
@@ -338,16 +265,6 @@ type ApplicationJitAccessPolicy struct {
 	MaximumJitAccessDuration *string `json:"maximumJitAccessDuration,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ApplicationJitAccessPolicy.
-func (a ApplicationJitAccessPolicy) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "jitAccessEnabled", a.JitAccessEnabled)
-	populate(objectMap, "jitApprovalMode", a.JitApprovalMode)
-	populate(objectMap, "jitApprovers", a.JitApprovers)
-	populate(objectMap, "maximumJitAccessDuration", a.MaximumJitAccessDuration)
-	return json.Marshal(objectMap)
-}
-
 // ApplicationListResult - List of managed applications.
 type ApplicationListResult struct {
 	// The URL to use for getting the next set of results.
@@ -355,14 +272,6 @@ type ApplicationListResult struct {
 
 	// The array of managed applications.
 	Value []*Application `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ApplicationListResult.
-func (a ApplicationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
 }
 
 // ApplicationManagementPolicy - Managed application management policy.
@@ -381,13 +290,6 @@ type ApplicationNotificationEndpoint struct {
 type ApplicationNotificationPolicy struct {
 	// REQUIRED; The managed application notification endpoint.
 	NotificationEndpoints []*ApplicationNotificationEndpoint `json:"notificationEndpoints,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ApplicationNotificationPolicy.
-func (a ApplicationNotificationPolicy) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "notificationEndpoints", a.NotificationEndpoints)
-	return json.Marshal(objectMap)
 }
 
 // ApplicationPackageContact - The application package contact information.
@@ -409,14 +311,6 @@ type ApplicationPackageLockingPolicyDefinition struct {
 
 	// The deny assignment excluded data actions.
 	AllowedDataActions []*string `json:"allowedDataActions,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ApplicationPackageLockingPolicyDefinition.
-func (a ApplicationPackageLockingPolicyDefinition) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "allowedActions", a.AllowedActions)
-	populate(objectMap, "allowedDataActions", a.AllowedDataActions)
-	return json.Marshal(objectMap)
 }
 
 // ApplicationPackageSupportUrls - The appliance package support URLs.
@@ -467,24 +361,6 @@ type ApplicationPatchable struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ApplicationPatchable.
-func (a ApplicationPatchable) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", a.ID)
-	populate(objectMap, "identity", a.Identity)
-	populate(objectMap, "kind", a.Kind)
-	populate(objectMap, "location", a.Location)
-	populate(objectMap, "managedBy", a.ManagedBy)
-	populate(objectMap, "name", a.Name)
-	populate(objectMap, "plan", a.Plan)
-	populate(objectMap, "properties", a.Properties)
-	populate(objectMap, "sku", a.SKU)
-	populate(objectMap, "systemData", a.SystemData)
-	populate(objectMap, "tags", a.Tags)
-	populate(objectMap, "type", a.Type)
-	return json.Marshal(objectMap)
-}
-
 // ApplicationPolicy - Managed application policy.
 type ApplicationPolicy struct {
 	// The policy name
@@ -509,7 +385,7 @@ type ApplicationProperties struct {
 	ManagedResourceGroupID *string `json:"managedResourceGroupId,omitempty"`
 
 	// Name and value pairs that define the managed application parameters. It can be a JObject or a well formed JSON string.
-	Parameters map[string]interface{} `json:"parameters,omitempty"`
+	Parameters interface{} `json:"parameters,omitempty"`
 
 	// READ-ONLY; The collection of managed application artifacts.
 	Artifacts []*ApplicationArtifact `json:"artifacts,omitempty" azure:"ro"`
@@ -530,7 +406,7 @@ type ApplicationProperties struct {
 	ManagementMode *ApplicationManagementMode `json:"managementMode,omitempty" azure:"ro"`
 
 	// READ-ONLY; Name and value pairs that define the managed application outputs.
-	Outputs map[string]interface{} `json:"outputs,omitempty" azure:"ro"`
+	Outputs interface{} `json:"outputs,omitempty" azure:"ro"`
 
 	// READ-ONLY; The managed application provisioning state.
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
@@ -545,27 +421,6 @@ type ApplicationProperties struct {
 	UpdatedBy *ApplicationClientDetails `json:"updatedBy,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ApplicationProperties.
-func (a ApplicationProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "applicationDefinitionId", a.ApplicationDefinitionID)
-	populate(objectMap, "artifacts", a.Artifacts)
-	populate(objectMap, "authorizations", a.Authorizations)
-	populate(objectMap, "billingDetails", a.BillingDetails)
-	populate(objectMap, "createdBy", a.CreatedBy)
-	populate(objectMap, "customerSupport", a.CustomerSupport)
-	populate(objectMap, "jitAccessPolicy", a.JitAccessPolicy)
-	populate(objectMap, "managedResourceGroupId", a.ManagedResourceGroupID)
-	populate(objectMap, "managementMode", a.ManagementMode)
-	populate(objectMap, "outputs", a.Outputs)
-	populate(objectMap, "parameters", a.Parameters)
-	populate(objectMap, "provisioningState", a.ProvisioningState)
-	populate(objectMap, "publisherTenantId", a.PublisherTenantID)
-	populate(objectMap, "supportUrls", a.SupportUrls)
-	populate(objectMap, "updatedBy", a.UpdatedBy)
-	return json.Marshal(objectMap)
-}
-
 // ApplicationPropertiesPatchable - The managed application properties.
 type ApplicationPropertiesPatchable struct {
 	// The fully qualified path of managed application definition Id.
@@ -575,10 +430,10 @@ type ApplicationPropertiesPatchable struct {
 	ManagedResourceGroupID *string `json:"managedResourceGroupId,omitempty"`
 
 	// Name and value pairs that define the managed application parameters. It can be a JObject or a well formed JSON string.
-	Parameters map[string]interface{} `json:"parameters,omitempty"`
+	Parameters interface{} `json:"parameters,omitempty"`
 
 	// READ-ONLY; Name and value pairs that define the managed application outputs.
-	Outputs map[string]interface{} `json:"outputs,omitempty" azure:"ro"`
+	Outputs interface{} `json:"outputs,omitempty" azure:"ro"`
 
 	// READ-ONLY; The managed application provisioning state.
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
@@ -587,18 +442,21 @@ type ApplicationPropertiesPatchable struct {
 // ApplicationsClientBeginCreateOrUpdateOptions contains the optional parameters for the ApplicationsClient.BeginCreateOrUpdate
 // method.
 type ApplicationsClientBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ApplicationsClientBeginDeleteOptions contains the optional parameters for the ApplicationsClient.BeginDelete method.
 type ApplicationsClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ApplicationsClientBeginRefreshPermissionsOptions contains the optional parameters for the ApplicationsClient.BeginRefreshPermissions
 // method.
 type ApplicationsClientBeginRefreshPermissionsOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ApplicationsClientGetOptions contains the optional parameters for the ApplicationsClient.Get method.
@@ -633,7 +491,7 @@ type ApplicationsClientUpdateOptions struct {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info map[string]interface{} `json:"info,omitempty" azure:"ro"`
+	Info interface{} `json:"info,omitempty" azure:"ro"`
 
 	// READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -655,17 +513,6 @@ type ErrorDetail struct {
 
 	// READ-ONLY; The error target.
 	Target *string `json:"target,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ErrorDetail.
-func (e ErrorDetail) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalInfo", e.AdditionalInfo)
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "message", e.Message)
-	populate(objectMap, "target", e.Target)
-	return json.Marshal(objectMap)
 }
 
 // ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
@@ -702,20 +549,6 @@ type GenericResource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type GenericResource.
-func (g GenericResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", g.ID)
-	populate(objectMap, "location", g.Location)
-	populate(objectMap, "managedBy", g.ManagedBy)
-	populate(objectMap, "name", g.Name)
-	populate(objectMap, "sku", g.SKU)
-	populate(objectMap, "systemData", g.SystemData)
-	populate(objectMap, "tags", g.Tags)
-	populate(objectMap, "type", g.Type)
-	return json.Marshal(objectMap)
-}
-
 // Identity for the resource.
 type Identity struct {
 	// The identity type.
@@ -731,16 +564,6 @@ type Identity struct {
 
 	// READ-ONLY; The tenant ID of resource.
 	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Identity.
-func (i Identity) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "principalId", i.PrincipalID)
-	populate(objectMap, "tenantId", i.TenantID)
-	populate(objectMap, "type", i.Type)
-	populate(objectMap, "userAssignedIdentities", i.UserAssignedIdentities)
-	return json.Marshal(objectMap)
 }
 
 // JitApproverDefinition - JIT approver definition.
@@ -788,19 +611,6 @@ type JitRequestDefinition struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type JitRequestDefinition.
-func (j JitRequestDefinition) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", j.ID)
-	populate(objectMap, "location", j.Location)
-	populate(objectMap, "name", j.Name)
-	populate(objectMap, "properties", j.Properties)
-	populate(objectMap, "systemData", j.SystemData)
-	populate(objectMap, "tags", j.Tags)
-	populate(objectMap, "type", j.Type)
-	return json.Marshal(objectMap)
-}
-
 // JitRequestDefinitionListResult - List of JIT requests.
 type JitRequestDefinitionListResult struct {
 	// The URL to use for getting the next set of results.
@@ -810,25 +620,10 @@ type JitRequestDefinitionListResult struct {
 	Value []*JitRequestDefinition `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type JitRequestDefinitionListResult.
-func (j JitRequestDefinitionListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", j.NextLink)
-	populate(objectMap, "value", j.Value)
-	return json.Marshal(objectMap)
-}
-
 // JitRequestPatchable - Information about JIT request.
 type JitRequestPatchable struct {
 	// Jit request tags
 	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type JitRequestPatchable.
-func (j JitRequestPatchable) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "tags", j.Tags)
-	return json.Marshal(objectMap)
 }
 
 // JitRequestProperties - Information about JIT request properties
@@ -858,24 +653,11 @@ type JitRequestProperties struct {
 	UpdatedBy *ApplicationClientDetails `json:"updatedBy,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type JitRequestProperties.
-func (j JitRequestProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "applicationResourceId", j.ApplicationResourceID)
-	populate(objectMap, "createdBy", j.CreatedBy)
-	populate(objectMap, "jitAuthorizationPolicies", j.JitAuthorizationPolicies)
-	populate(objectMap, "jitRequestState", j.JitRequestState)
-	populate(objectMap, "jitSchedulingPolicy", j.JitSchedulingPolicy)
-	populate(objectMap, "provisioningState", j.ProvisioningState)
-	populate(objectMap, "publisherTenantId", j.PublisherTenantID)
-	populate(objectMap, "updatedBy", j.UpdatedBy)
-	return json.Marshal(objectMap)
-}
-
 // JitRequestsClientBeginCreateOrUpdateOptions contains the optional parameters for the JitRequestsClient.BeginCreateOrUpdate
 // method.
 type JitRequestsClientBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // JitRequestsClientDeleteOptions contains the optional parameters for the JitRequestsClient.Delete method.
@@ -915,41 +697,6 @@ type JitSchedulingPolicy struct {
 
 	// REQUIRED; The type of JIT schedule.
 	Type *JitSchedulingType `json:"type,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type JitSchedulingPolicy.
-func (j JitSchedulingPolicy) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "duration", j.Duration)
-	populateTimeRFC3339(objectMap, "startTime", j.StartTime)
-	populate(objectMap, "type", j.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type JitSchedulingPolicy.
-func (j *JitSchedulingPolicy) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "duration":
-			err = unpopulate(val, &j.Duration)
-			delete(rawMsg, key)
-		case "startTime":
-			err = unpopulateTimeRFC3339(val, &j.StartTime)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &j.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // Operation - Details of a REST API operation, returned from the Resource Provider Operations API
@@ -999,14 +746,6 @@ type OperationListResult struct {
 
 	// READ-ONLY; List of operations supported by the resource provider
 	Value []*Operation `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
-func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
 }
 
 // Plan for the managed application.
@@ -1066,18 +805,6 @@ type Resource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "location", r.Location)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "systemData", r.SystemData)
-	populate(objectMap, "tags", r.Tags)
-	populate(objectMap, "type", r.Type)
-	return json.Marshal(objectMap)
-}
-
 // SKU for the resource.
 type SKU struct {
 	// REQUIRED; The SKU name.
@@ -1120,53 +847,6 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SystemData.
-func (s SystemData) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
-	populate(objectMap, "createdBy", s.CreatedBy)
-	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
-	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
-	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SystemData.
-func (s *SystemData) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdAt":
-			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
-			delete(rawMsg, key)
-		case "createdBy":
-			err = unpopulate(val, &s.CreatedBy)
-			delete(rawMsg, key)
-		case "createdByType":
-			err = unpopulate(val, &s.CreatedByType)
-			delete(rawMsg, key)
-		case "lastModifiedAt":
-			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
-			delete(rawMsg, key)
-		case "lastModifiedBy":
-			err = unpopulate(val, &s.LastModifiedBy)
-			delete(rawMsg, key)
-		case "lastModifiedByType":
-			err = unpopulate(val, &s.LastModifiedByType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // UserAssignedResourceIdentity - Represents the user assigned identity that is contained within the UserAssignedIdentities
 // dictionary on ResourceIdentity
 type UserAssignedResourceIdentity struct {
@@ -1175,21 +855,4 @@ type UserAssignedResourceIdentity struct {
 
 	// READ-ONLY; The tenant id of user assigned identity.
 	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

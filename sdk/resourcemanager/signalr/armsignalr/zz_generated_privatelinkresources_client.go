@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type PrivateLinkResourcesClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PrivateLinkResourcesClient {
+func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateLinkResourcesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &PrivateLinkResourcesClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // List - Get the private link resources that need to be created for a resource.
@@ -57,16 +62,32 @@ func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.Toke
 // resourceName - The name of the resource.
 // options - PrivateLinkResourcesClientListOptions contains the optional parameters for the PrivateLinkResourcesClient.List
 // method.
-func (client *PrivateLinkResourcesClient) List(resourceGroupName string, resourceName string, options *PrivateLinkResourcesClientListOptions) *PrivateLinkResourcesClientListPager {
-	return &PrivateLinkResourcesClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, resourceName, options)
+func (client *PrivateLinkResourcesClient) List(resourceGroupName string, resourceName string, options *PrivateLinkResourcesClientListOptions) *runtime.Pager[PrivateLinkResourcesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PrivateLinkResourcesClientListResponse]{
+		More: func(page PrivateLinkResourcesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PrivateLinkResourcesClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PrivateLinkResourceList.NextLink)
+		Fetcher: func(ctx context.Context, page *PrivateLinkResourcesClientListResponse) (PrivateLinkResourcesClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, resourceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return PrivateLinkResourcesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PrivateLinkResourcesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PrivateLinkResourcesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -97,7 +118,7 @@ func (client *PrivateLinkResourcesClient) listCreateRequest(ctx context.Context,
 
 // listHandleResponse handles the List response.
 func (client *PrivateLinkResourcesClient) listHandleResponse(resp *http.Response) (PrivateLinkResourcesClientListResponse, error) {
-	result := PrivateLinkResourcesClientListResponse{RawResponse: resp}
+	result := PrivateLinkResourcesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResourceList); err != nil {
 		return PrivateLinkResourcesClientListResponse{}, err
 	}

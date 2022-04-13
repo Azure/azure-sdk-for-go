@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,194 +19,252 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
 )
 
-// x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2014-04-01/examples/ElasticPoolMetricsListWithFilter.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/stable/2014-04-01/examples/ElasticPoolMetricsListWithFilter.json
 func ExampleElasticPoolsClient_ListMetrics() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsql.NewElasticPoolsClient("<subscription-id>", cred, nil)
-	res, err := client.ListMetrics(ctx,
-		"<resource-group-name>",
+	client, err := armsql.NewElasticPoolsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
+	pager := client.ListMetrics("<resource-group-name>",
 		"<server-name>",
 		"<elastic-pool-name>",
 		"<filter>",
 		nil)
-	if err != nil {
-		log.Fatal(err)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+			return
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
 	}
-	log.Printf("Response result: %#v\n", res.ElasticPoolsClientListMetricsResult)
 }
 
-// x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2014-04-01/examples/ElasticPoolMetricsDefinitionsList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/stable/2014-04-01/examples/ElasticPoolMetricsDefinitionsList.json
 func ExampleElasticPoolsClient_ListMetricDefinitions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsql.NewElasticPoolsClient("<subscription-id>", cred, nil)
-	res, err := client.ListMetricDefinitions(ctx,
-		"<resource-group-name>",
+	client, err := armsql.NewElasticPoolsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
+	pager := client.ListMetricDefinitions("<resource-group-name>",
 		"<server-name>",
 		"<elastic-pool-name>",
 		nil)
-	if err != nil {
-		log.Fatal(err)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+			return
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
 	}
-	log.Printf("Response result: %#v\n", res.ElasticPoolsClientListMetricDefinitionsResult)
 }
 
-// x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ElasticPoolListByServer.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2021-08-01-preview/examples/ElasticPoolListByServer.json
 func ExampleElasticPoolsClient_ListByServer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsql.NewElasticPoolsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewElasticPoolsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListByServer("<resource-group-name>",
 		"<server-name>",
 		&armsql.ElasticPoolsClientListByServerOptions{Skip: nil})
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ElasticPoolGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2021-08-01-preview/examples/HyperscaleElasticPoolGet.json
 func ExampleElasticPoolsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsql.NewElasticPoolsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewElasticPoolsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<server-name>",
 		"<elastic-pool-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ElasticPoolsClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ElasticPoolCreateOrUpdateMax.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2021-08-01-preview/examples/HyperscaleElasticPoolCreateOrUpdateSetHighAvailabilityReplicaCount.json
 func ExampleElasticPoolsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsql.NewElasticPoolsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewElasticPoolsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<server-name>",
 		"<elastic-pool-name>",
 		armsql.ElasticPool{
-			Location: to.StringPtr("<location>"),
+			Location: to.Ptr("<location>"),
 			Properties: &armsql.ElasticPoolProperties{
-				PerDatabaseSettings: &armsql.ElasticPoolPerDatabaseSettings{
-					MaxCapacity: to.Float64Ptr(2),
-					MinCapacity: to.Float64Ptr(0.25),
-				},
+				HighAvailabilityReplicaCount: to.Ptr[int32](2),
 			},
 			SKU: &armsql.SKU{
-				Name:     to.StringPtr("<name>"),
-				Capacity: to.Int32Ptr(2),
-				Tier:     to.StringPtr("<tier>"),
+				Name: to.Ptr("<name>"),
 			},
 		},
-		nil)
+		&armsql.ElasticPoolsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ElasticPoolsClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ElasticPoolDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2021-08-01-preview/examples/ElasticPoolDelete.json
 func ExampleElasticPoolsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsql.NewElasticPoolsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewElasticPoolsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
 		"<server-name>",
 		"<elastic-pool-name>",
-		nil)
+		&armsql.ElasticPoolsClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ElasticPoolUpdateAssignMaintenanceConfiguration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2021-08-01-preview/examples/ElasticPoolUpdateAssignMaintenanceConfiguration.json
 func ExampleElasticPoolsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsql.NewElasticPoolsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewElasticPoolsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginUpdate(ctx,
 		"<resource-group-name>",
 		"<server-name>",
 		"<elastic-pool-name>",
 		armsql.ElasticPoolUpdate{
 			Properties: &armsql.ElasticPoolUpdateProperties{
-				MaintenanceConfigurationID: to.StringPtr("<maintenance-configuration-id>"),
+				MaintenanceConfigurationID: to.Ptr("<maintenance-configuration-id>"),
 			},
 		},
-		nil)
+		&armsql.ElasticPoolsClientBeginUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ElasticPoolsClientUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/FailoverElasticPool.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2021-08-01-preview/examples/FailoverElasticPool.json
 func ExampleElasticPoolsClient_BeginFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsql.NewElasticPoolsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewElasticPoolsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginFailover(ctx,
 		"<resource-group-name>",
 		"<server-name>",
 		"<elastic-pool-name>",
-		nil)
+		&armsql.ElasticPoolsClientBeginFailoverOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }

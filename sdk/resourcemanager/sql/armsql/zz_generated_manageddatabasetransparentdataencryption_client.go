@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ManagedDatabaseTransparentDataEncryptionClient struct {
 // subscriptionID - The subscription ID that identifies an Azure subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewManagedDatabaseTransparentDataEncryptionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ManagedDatabaseTransparentDataEncryptionClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewManagedDatabaseTransparentDataEncryptionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedDatabaseTransparentDataEncryptionClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ManagedDatabaseTransparentDataEncryptionClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Updates a database's transparent data encryption configuration.
@@ -110,7 +115,7 @@ func (client *ManagedDatabaseTransparentDataEncryptionClient) createOrUpdateCrea
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *ManagedDatabaseTransparentDataEncryptionClient) createOrUpdateHandleResponse(resp *http.Response) (ManagedDatabaseTransparentDataEncryptionClientCreateOrUpdateResponse, error) {
-	result := ManagedDatabaseTransparentDataEncryptionClientCreateOrUpdateResponse{RawResponse: resp}
+	result := ManagedDatabaseTransparentDataEncryptionClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedTransparentDataEncryption); err != nil {
 		return ManagedDatabaseTransparentDataEncryptionClientCreateOrUpdateResponse{}, err
 	}
@@ -177,7 +182,7 @@ func (client *ManagedDatabaseTransparentDataEncryptionClient) getCreateRequest(c
 
 // getHandleResponse handles the Get response.
 func (client *ManagedDatabaseTransparentDataEncryptionClient) getHandleResponse(resp *http.Response) (ManagedDatabaseTransparentDataEncryptionClientGetResponse, error) {
-	result := ManagedDatabaseTransparentDataEncryptionClientGetResponse{RawResponse: resp}
+	result := ManagedDatabaseTransparentDataEncryptionClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedTransparentDataEncryption); err != nil {
 		return ManagedDatabaseTransparentDataEncryptionClientGetResponse{}, err
 	}
@@ -192,16 +197,32 @@ func (client *ManagedDatabaseTransparentDataEncryptionClient) getHandleResponse(
 // databaseName - The name of the managed database for which the transparent data encryption is defined.
 // options - ManagedDatabaseTransparentDataEncryptionClientListByDatabaseOptions contains the optional parameters for the
 // ManagedDatabaseTransparentDataEncryptionClient.ListByDatabase method.
-func (client *ManagedDatabaseTransparentDataEncryptionClient) ListByDatabase(resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabaseTransparentDataEncryptionClientListByDatabaseOptions) *ManagedDatabaseTransparentDataEncryptionClientListByDatabasePager {
-	return &ManagedDatabaseTransparentDataEncryptionClientListByDatabasePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByDatabaseCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, options)
+func (client *ManagedDatabaseTransparentDataEncryptionClient) ListByDatabase(resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabaseTransparentDataEncryptionClientListByDatabaseOptions) *runtime.Pager[ManagedDatabaseTransparentDataEncryptionClientListByDatabaseResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ManagedDatabaseTransparentDataEncryptionClientListByDatabaseResponse]{
+		More: func(page ManagedDatabaseTransparentDataEncryptionClientListByDatabaseResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ManagedDatabaseTransparentDataEncryptionClientListByDatabaseResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ManagedTransparentDataEncryptionListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ManagedDatabaseTransparentDataEncryptionClientListByDatabaseResponse) (ManagedDatabaseTransparentDataEncryptionClientListByDatabaseResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByDatabaseCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ManagedDatabaseTransparentDataEncryptionClientListByDatabaseResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ManagedDatabaseTransparentDataEncryptionClientListByDatabaseResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ManagedDatabaseTransparentDataEncryptionClientListByDatabaseResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByDatabaseHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByDatabaseCreateRequest creates the ListByDatabase request.
@@ -236,7 +257,7 @@ func (client *ManagedDatabaseTransparentDataEncryptionClient) listByDatabaseCrea
 
 // listByDatabaseHandleResponse handles the ListByDatabase response.
 func (client *ManagedDatabaseTransparentDataEncryptionClient) listByDatabaseHandleResponse(resp *http.Response) (ManagedDatabaseTransparentDataEncryptionClientListByDatabaseResponse, error) {
-	result := ManagedDatabaseTransparentDataEncryptionClientListByDatabaseResponse{RawResponse: resp}
+	result := ManagedDatabaseTransparentDataEncryptionClientListByDatabaseResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedTransparentDataEncryptionListResult); err != nil {
 		return ManagedDatabaseTransparentDataEncryptionClientListByDatabaseResponse{}, err
 	}

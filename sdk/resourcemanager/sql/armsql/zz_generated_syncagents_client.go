@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type SyncAgentsClient struct {
 // subscriptionID - The subscription ID that identifies an Azure subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewSyncAgentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SyncAgentsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewSyncAgentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SyncAgentsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &SyncAgentsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates a sync agent.
@@ -58,22 +63,16 @@ func NewSyncAgentsClient(subscriptionID string, credential azcore.TokenCredentia
 // parameters - The requested sync agent resource state.
 // options - SyncAgentsClientBeginCreateOrUpdateOptions contains the optional parameters for the SyncAgentsClient.BeginCreateOrUpdate
 // method.
-func (client *SyncAgentsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, syncAgentName string, parameters SyncAgent, options *SyncAgentsClientBeginCreateOrUpdateOptions) (SyncAgentsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, syncAgentName, parameters, options)
-	if err != nil {
-		return SyncAgentsClientCreateOrUpdatePollerResponse{}, err
+func (client *SyncAgentsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, syncAgentName string, parameters SyncAgent, options *SyncAgentsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[SyncAgentsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, syncAgentName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[SyncAgentsClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[SyncAgentsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SyncAgentsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SyncAgentsClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return SyncAgentsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &SyncAgentsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a sync agent.
@@ -130,22 +129,16 @@ func (client *SyncAgentsClient) createOrUpdateCreateRequest(ctx context.Context,
 // serverName - The name of the server on which the sync agent is hosted.
 // syncAgentName - The name of the sync agent.
 // options - SyncAgentsClientBeginDeleteOptions contains the optional parameters for the SyncAgentsClient.BeginDelete method.
-func (client *SyncAgentsClient) BeginDelete(ctx context.Context, resourceGroupName string, serverName string, syncAgentName string, options *SyncAgentsClientBeginDeleteOptions) (SyncAgentsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, serverName, syncAgentName, options)
-	if err != nil {
-		return SyncAgentsClientDeletePollerResponse{}, err
+func (client *SyncAgentsClient) BeginDelete(ctx context.Context, resourceGroupName string, serverName string, syncAgentName string, options *SyncAgentsClientBeginDeleteOptions) (*armruntime.Poller[SyncAgentsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, serverName, syncAgentName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[SyncAgentsClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[SyncAgentsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SyncAgentsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SyncAgentsClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return SyncAgentsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &SyncAgentsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes a sync agent.
@@ -248,7 +241,7 @@ func (client *SyncAgentsClient) generateKeyCreateRequest(ctx context.Context, re
 
 // generateKeyHandleResponse handles the GenerateKey response.
 func (client *SyncAgentsClient) generateKeyHandleResponse(resp *http.Response) (SyncAgentsClientGenerateKeyResponse, error) {
-	result := SyncAgentsClientGenerateKeyResponse{RawResponse: resp}
+	result := SyncAgentsClientGenerateKeyResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SyncAgentKeyProperties); err != nil {
 		return SyncAgentsClientGenerateKeyResponse{}, err
 	}
@@ -309,7 +302,7 @@ func (client *SyncAgentsClient) getCreateRequest(ctx context.Context, resourceGr
 
 // getHandleResponse handles the Get response.
 func (client *SyncAgentsClient) getHandleResponse(resp *http.Response) (SyncAgentsClientGetResponse, error) {
-	result := SyncAgentsClientGetResponse{RawResponse: resp}
+	result := SyncAgentsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SyncAgent); err != nil {
 		return SyncAgentsClientGetResponse{}, err
 	}
@@ -322,16 +315,32 @@ func (client *SyncAgentsClient) getHandleResponse(resp *http.Response) (SyncAgen
 // Resource Manager API or the portal.
 // serverName - The name of the server on which the sync agent is hosted.
 // options - SyncAgentsClientListByServerOptions contains the optional parameters for the SyncAgentsClient.ListByServer method.
-func (client *SyncAgentsClient) ListByServer(resourceGroupName string, serverName string, options *SyncAgentsClientListByServerOptions) *SyncAgentsClientListByServerPager {
-	return &SyncAgentsClientListByServerPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
+func (client *SyncAgentsClient) ListByServer(resourceGroupName string, serverName string, options *SyncAgentsClientListByServerOptions) *runtime.Pager[SyncAgentsClientListByServerResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SyncAgentsClientListByServerResponse]{
+		More: func(page SyncAgentsClientListByServerResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SyncAgentsClientListByServerResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SyncAgentListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *SyncAgentsClientListByServerResponse) (SyncAgentsClientListByServerResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SyncAgentsClientListByServerResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SyncAgentsClientListByServerResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SyncAgentsClientListByServerResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByServerHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByServerCreateRequest creates the ListByServer request.
@@ -362,7 +371,7 @@ func (client *SyncAgentsClient) listByServerCreateRequest(ctx context.Context, r
 
 // listByServerHandleResponse handles the ListByServer response.
 func (client *SyncAgentsClient) listByServerHandleResponse(resp *http.Response) (SyncAgentsClientListByServerResponse, error) {
-	result := SyncAgentsClientListByServerResponse{RawResponse: resp}
+	result := SyncAgentsClientListByServerResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SyncAgentListResult); err != nil {
 		return SyncAgentsClientListByServerResponse{}, err
 	}
@@ -377,16 +386,32 @@ func (client *SyncAgentsClient) listByServerHandleResponse(resp *http.Response) 
 // syncAgentName - The name of the sync agent.
 // options - SyncAgentsClientListLinkedDatabasesOptions contains the optional parameters for the SyncAgentsClient.ListLinkedDatabases
 // method.
-func (client *SyncAgentsClient) ListLinkedDatabases(resourceGroupName string, serverName string, syncAgentName string, options *SyncAgentsClientListLinkedDatabasesOptions) *SyncAgentsClientListLinkedDatabasesPager {
-	return &SyncAgentsClientListLinkedDatabasesPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listLinkedDatabasesCreateRequest(ctx, resourceGroupName, serverName, syncAgentName, options)
+func (client *SyncAgentsClient) ListLinkedDatabases(resourceGroupName string, serverName string, syncAgentName string, options *SyncAgentsClientListLinkedDatabasesOptions) *runtime.Pager[SyncAgentsClientListLinkedDatabasesResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SyncAgentsClientListLinkedDatabasesResponse]{
+		More: func(page SyncAgentsClientListLinkedDatabasesResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SyncAgentsClientListLinkedDatabasesResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SyncAgentLinkedDatabaseListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *SyncAgentsClientListLinkedDatabasesResponse) (SyncAgentsClientListLinkedDatabasesResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listLinkedDatabasesCreateRequest(ctx, resourceGroupName, serverName, syncAgentName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SyncAgentsClientListLinkedDatabasesResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SyncAgentsClientListLinkedDatabasesResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SyncAgentsClientListLinkedDatabasesResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listLinkedDatabasesHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listLinkedDatabasesCreateRequest creates the ListLinkedDatabases request.
@@ -421,7 +446,7 @@ func (client *SyncAgentsClient) listLinkedDatabasesCreateRequest(ctx context.Con
 
 // listLinkedDatabasesHandleResponse handles the ListLinkedDatabases response.
 func (client *SyncAgentsClient) listLinkedDatabasesHandleResponse(resp *http.Response) (SyncAgentsClientListLinkedDatabasesResponse, error) {
-	result := SyncAgentsClientListLinkedDatabasesResponse{RawResponse: resp}
+	result := SyncAgentsClientListLinkedDatabasesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SyncAgentLinkedDatabaseListResult); err != nil {
 		return SyncAgentsClientListLinkedDatabasesResponse{}, err
 	}

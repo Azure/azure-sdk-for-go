@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ManagedInstanceTdeCertificatesClient struct {
 // subscriptionID - The subscription ID that identifies an Azure subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewManagedInstanceTdeCertificatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ManagedInstanceTdeCertificatesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewManagedInstanceTdeCertificatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedInstanceTdeCertificatesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ManagedInstanceTdeCertificatesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreate - Creates a TDE certificate for a given server.
@@ -57,22 +62,16 @@ func NewManagedInstanceTdeCertificatesClient(subscriptionID string, credential a
 // parameters - The requested TDE certificate to be created or updated.
 // options - ManagedInstanceTdeCertificatesClientBeginCreateOptions contains the optional parameters for the ManagedInstanceTdeCertificatesClient.BeginCreate
 // method.
-func (client *ManagedInstanceTdeCertificatesClient) BeginCreate(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters TdeCertificate, options *ManagedInstanceTdeCertificatesClientBeginCreateOptions) (ManagedInstanceTdeCertificatesClientCreatePollerResponse, error) {
-	resp, err := client.create(ctx, resourceGroupName, managedInstanceName, parameters, options)
-	if err != nil {
-		return ManagedInstanceTdeCertificatesClientCreatePollerResponse{}, err
+func (client *ManagedInstanceTdeCertificatesClient) BeginCreate(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters TdeCertificate, options *ManagedInstanceTdeCertificatesClientBeginCreateOptions) (*armruntime.Poller[ManagedInstanceTdeCertificatesClientCreateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.create(ctx, resourceGroupName, managedInstanceName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ManagedInstanceTdeCertificatesClientCreateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ManagedInstanceTdeCertificatesClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ManagedInstanceTdeCertificatesClientCreatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ManagedInstanceTdeCertificatesClient.Create", "", resp, client.pl)
-	if err != nil {
-		return ManagedInstanceTdeCertificatesClientCreatePollerResponse{}, err
-	}
-	result.Poller = &ManagedInstanceTdeCertificatesClientCreatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Create - Creates a TDE certificate for a given server.

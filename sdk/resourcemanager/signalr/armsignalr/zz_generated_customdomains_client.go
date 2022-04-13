@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type CustomDomainsClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewCustomDomainsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CustomDomainsClient {
+func NewCustomDomainsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CustomDomainsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &CustomDomainsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Create or update a custom domain.
@@ -58,22 +63,16 @@ func NewCustomDomainsClient(subscriptionID string, credential azcore.TokenCreden
 // name - Custom domain name.
 // options - CustomDomainsClientBeginCreateOrUpdateOptions contains the optional parameters for the CustomDomainsClient.BeginCreateOrUpdate
 // method.
-func (client *CustomDomainsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, name string, parameters CustomDomain, options *CustomDomainsClientBeginCreateOrUpdateOptions) (CustomDomainsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, resourceName, name, parameters, options)
-	if err != nil {
-		return CustomDomainsClientCreateOrUpdatePollerResponse{}, err
+func (client *CustomDomainsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, name string, parameters CustomDomain, options *CustomDomainsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[CustomDomainsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, resourceName, name, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[CustomDomainsClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[CustomDomainsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := CustomDomainsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("CustomDomainsClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return CustomDomainsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &CustomDomainsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Create or update a custom domain.
@@ -131,22 +130,16 @@ func (client *CustomDomainsClient) createOrUpdateCreateRequest(ctx context.Conte
 // name - Custom domain name.
 // options - CustomDomainsClientBeginDeleteOptions contains the optional parameters for the CustomDomainsClient.BeginDelete
 // method.
-func (client *CustomDomainsClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, name string, options *CustomDomainsClientBeginDeleteOptions) (CustomDomainsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, resourceName, name, options)
-	if err != nil {
-		return CustomDomainsClientDeletePollerResponse{}, err
+func (client *CustomDomainsClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, name string, options *CustomDomainsClientBeginDeleteOptions) (*armruntime.Poller[CustomDomainsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, resourceName, name, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[CustomDomainsClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[CustomDomainsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := CustomDomainsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("CustomDomainsClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return CustomDomainsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &CustomDomainsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Delete a custom domain.
@@ -250,7 +243,7 @@ func (client *CustomDomainsClient) getCreateRequest(ctx context.Context, resourc
 
 // getHandleResponse handles the Get response.
 func (client *CustomDomainsClient) getHandleResponse(resp *http.Response) (CustomDomainsClientGetResponse, error) {
-	result := CustomDomainsClientGetResponse{RawResponse: resp}
+	result := CustomDomainsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomDomain); err != nil {
 		return CustomDomainsClientGetResponse{}, err
 	}
@@ -263,16 +256,32 @@ func (client *CustomDomainsClient) getHandleResponse(resp *http.Response) (Custo
 // Resource Manager API or the portal.
 // resourceName - The name of the resource.
 // options - CustomDomainsClientListOptions contains the optional parameters for the CustomDomainsClient.List method.
-func (client *CustomDomainsClient) List(resourceGroupName string, resourceName string, options *CustomDomainsClientListOptions) *CustomDomainsClientListPager {
-	return &CustomDomainsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, resourceName, options)
+func (client *CustomDomainsClient) List(resourceGroupName string, resourceName string, options *CustomDomainsClientListOptions) *runtime.Pager[CustomDomainsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[CustomDomainsClientListResponse]{
+		More: func(page CustomDomainsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp CustomDomainsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.CustomDomainList.NextLink)
+		Fetcher: func(ctx context.Context, page *CustomDomainsClientListResponse) (CustomDomainsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, resourceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return CustomDomainsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return CustomDomainsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return CustomDomainsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -303,7 +312,7 @@ func (client *CustomDomainsClient) listCreateRequest(ctx context.Context, resour
 
 // listHandleResponse handles the List response.
 func (client *CustomDomainsClient) listHandleResponse(resp *http.Response) (CustomDomainsClientListResponse, error) {
-	result := CustomDomainsClientListResponse{RawResponse: resp}
+	result := CustomDomainsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomDomainList); err != nil {
 		return CustomDomainsClientListResponse{}, err
 	}

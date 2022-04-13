@@ -8,10 +8,10 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"net/http"
 	"os"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos"
 )
 
@@ -501,9 +501,9 @@ func ExampleContainerClient_ReplaceItem_optimisticConcurrency() {
 		// Replace with Etag
 		etag := itemResponse.ETag
 		itemResponse, err = container.ReplaceItem(context.Background(), pk, id, marshalledReplace, &azcosmos.ItemOptions{IfMatchEtag: &etag})
-		var httpErr interface{ RawResponse() *http.Response }
+		var responseErr *azcore.ResponseError
 
-		return (errors.As(err, &httpErr) && itemResponse.RawResponse.StatusCode == 412), err
+		return (errors.As(err, &responseErr) && responseErr.StatusCode == 412), err
 	})
 	if err != nil {
 		panic(err)

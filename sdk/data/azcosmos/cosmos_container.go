@@ -7,6 +7,7 @@ import (
 	"context"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // A ContainerClient lets you perform read, update, change throughput, and delete container operations.
@@ -397,6 +398,10 @@ func (c *ContainerClient) DeleteItem(
 	}
 
 	return newItemResponse(azResponse)
+}
+
+func (t *ContainerClient) QueryItemsByPartitionKey(query string, partitionKey PartitionKey, listOptions *QueryOptions) *runtime.Pager[ListEntitiesResponse] {
+
 }
 
 func (c *ContainerClient) getRID(ctx context.Context) (string, error) {

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ConnectorsClient struct {
 // subscriptionID - Azure subscription ID
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewConnectorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ConnectorsClient {
+func NewConnectorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConnectorsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ConnectorsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates a security connector. If a security connector is already created and a subsequent request
@@ -100,7 +105,7 @@ func (client *ConnectorsClient) createOrUpdateCreateRequest(ctx context.Context,
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *ConnectorsClient) createOrUpdateHandleResponse(resp *http.Response) (ConnectorsClientCreateOrUpdateResponse, error) {
-	result := ConnectorsClientCreateOrUpdateResponse{RawResponse: resp}
+	result := ConnectorsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Connector); err != nil {
 		return ConnectorsClientCreateOrUpdateResponse{}, err
 	}
@@ -124,7 +129,7 @@ func (client *ConnectorsClient) Delete(ctx context.Context, resourceGroupName st
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return ConnectorsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ConnectorsClientDeleteResponse{RawResponse: resp}, nil
+	return ConnectorsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -201,7 +206,7 @@ func (client *ConnectorsClient) getCreateRequest(ctx context.Context, resourceGr
 
 // getHandleResponse handles the Get response.
 func (client *ConnectorsClient) getHandleResponse(resp *http.Response) (ConnectorsClientGetResponse, error) {
-	result := ConnectorsClientGetResponse{RawResponse: resp}
+	result := ConnectorsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Connector); err != nil {
 		return ConnectorsClientGetResponse{}, err
 	}
@@ -212,16 +217,32 @@ func (client *ConnectorsClient) getHandleResponse(resp *http.Response) (Connecto
 // get the next page of security connectors for the specified subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ConnectorsClientListOptions contains the optional parameters for the ConnectorsClient.List method.
-func (client *ConnectorsClient) List(options *ConnectorsClientListOptions) *ConnectorsClientListPager {
-	return &ConnectorsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *ConnectorsClient) List(options *ConnectorsClientListOptions) *runtime.Pager[ConnectorsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ConnectorsClientListResponse]{
+		More: func(page ConnectorsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ConnectorsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ConnectorsList.NextLink)
+		Fetcher: func(ctx context.Context, page *ConnectorsClientListResponse) (ConnectorsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ConnectorsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ConnectorsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ConnectorsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -244,7 +265,7 @@ func (client *ConnectorsClient) listCreateRequest(ctx context.Context, options *
 
 // listHandleResponse handles the List response.
 func (client *ConnectorsClient) listHandleResponse(resp *http.Response) (ConnectorsClientListResponse, error) {
-	result := ConnectorsClientListResponse{RawResponse: resp}
+	result := ConnectorsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectorsList); err != nil {
 		return ConnectorsClientListResponse{}, err
 	}
@@ -257,16 +278,32 @@ func (client *ConnectorsClient) listHandleResponse(resp *http.Response) (Connect
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // options - ConnectorsClientListByResourceGroupOptions contains the optional parameters for the ConnectorsClient.ListByResourceGroup
 // method.
-func (client *ConnectorsClient) ListByResourceGroup(resourceGroupName string, options *ConnectorsClientListByResourceGroupOptions) *ConnectorsClientListByResourceGroupPager {
-	return &ConnectorsClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *ConnectorsClient) ListByResourceGroup(resourceGroupName string, options *ConnectorsClientListByResourceGroupOptions) *runtime.Pager[ConnectorsClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ConnectorsClientListByResourceGroupResponse]{
+		More: func(page ConnectorsClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ConnectorsClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ConnectorsList.NextLink)
+		Fetcher: func(ctx context.Context, page *ConnectorsClientListByResourceGroupResponse) (ConnectorsClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ConnectorsClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ConnectorsClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ConnectorsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -293,7 +330,7 @@ func (client *ConnectorsClient) listByResourceGroupCreateRequest(ctx context.Con
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *ConnectorsClient) listByResourceGroupHandleResponse(resp *http.Response) (ConnectorsClientListByResourceGroupResponse, error) {
-	result := ConnectorsClientListByResourceGroupResponse{RawResponse: resp}
+	result := ConnectorsClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectorsList); err != nil {
 		return ConnectorsClientListByResourceGroupResponse{}, err
 	}
@@ -349,7 +386,7 @@ func (client *ConnectorsClient) updateCreateRequest(ctx context.Context, resourc
 
 // updateHandleResponse handles the Update response.
 func (client *ConnectorsClient) updateHandleResponse(resp *http.Response) (ConnectorsClientUpdateResponse, error) {
-	result := ConnectorsClientUpdateResponse{RawResponse: resp}
+	result := ConnectorsClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Connector); err != nil {
 		return ConnectorsClientUpdateResponse{}, err
 	}

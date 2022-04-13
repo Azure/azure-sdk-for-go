@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,24 +34,28 @@ type SecureScoresClient struct {
 // subscriptionID - Azure subscription ID
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewSecureScoresClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SecureScoresClient {
+func NewSecureScoresClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SecureScoresClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &SecureScoresClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
-// Get - Get secure score for a specific Security Center initiative within your current scope. For the ASC Default initiative,
-// use 'ascScore'.
+// Get - Get secure score for a specific Microsoft Defender for Cloud initiative within your current scope. For the ASC Default
+// initiative, use 'ascScore'.
 // If the operation fails it returns an *azcore.ResponseError type.
 // secureScoreName - The initiative name. For the ASC Default initiative, use 'ascScore' as in the sample request below.
 // options - SecureScoresClientGetOptions contains the optional parameters for the SecureScoresClient.Get method.
@@ -93,26 +98,42 @@ func (client *SecureScoresClient) getCreateRequest(ctx context.Context, secureSc
 
 // getHandleResponse handles the Get response.
 func (client *SecureScoresClient) getHandleResponse(resp *http.Response) (SecureScoresClientGetResponse, error) {
-	result := SecureScoresClientGetResponse{RawResponse: resp}
+	result := SecureScoresClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecureScoreItem); err != nil {
 		return SecureScoresClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// List - List secure scores for all your Security Center initiatives within your current scope.
+// List - List secure scores for all your Microsoft Defender for Cloud initiatives within your current scope.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - SecureScoresClientListOptions contains the optional parameters for the SecureScoresClient.List method.
-func (client *SecureScoresClient) List(options *SecureScoresClientListOptions) *SecureScoresClientListPager {
-	return &SecureScoresClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *SecureScoresClient) List(options *SecureScoresClientListOptions) *runtime.Pager[SecureScoresClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SecureScoresClientListResponse]{
+		More: func(page SecureScoresClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SecureScoresClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SecureScoresList.NextLink)
+		Fetcher: func(ctx context.Context, page *SecureScoresClientListResponse) (SecureScoresClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SecureScoresClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SecureScoresClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SecureScoresClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -135,7 +156,7 @@ func (client *SecureScoresClient) listCreateRequest(ctx context.Context, options
 
 // listHandleResponse handles the List response.
 func (client *SecureScoresClient) listHandleResponse(resp *http.Response) (SecureScoresClientListResponse, error) {
-	result := SecureScoresClientListResponse{RawResponse: resp}
+	result := SecureScoresClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecureScoresList); err != nil {
 		return SecureScoresClientListResponse{}, err
 	}

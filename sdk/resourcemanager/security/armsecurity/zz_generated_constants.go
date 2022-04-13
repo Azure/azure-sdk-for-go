@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armsecurity
 
 const (
 	moduleName    = "armsecurity"
-	moduleVersion = "v0.4.0"
+	moduleVersion = "v0.5.0"
 )
 
 // AADConnectivityState - The connectivity state of the external AAD solution
@@ -31,11 +31,6 @@ func PossibleAADConnectivityStateValues() []AADConnectivityState {
 	}
 }
 
-// ToPtr returns a *AADConnectivityState pointing to the current value.
-func (c AADConnectivityState) ToPtr() *AADConnectivityState {
-	return &c
-}
-
 // ActionType - The type of the action that will be triggered by the Automation
 type ActionType string
 
@@ -52,11 +47,6 @@ func PossibleActionTypeValues() []ActionType {
 		ActionTypeLogicApp,
 		ActionTypeWorkspace,
 	}
-}
-
-// ToPtr returns a *ActionType pointing to the current value.
-func (c ActionType) ToPtr() *ActionType {
-	return &c
 }
 
 // AdaptiveApplicationControlIssue - An alert that machines within a group can have
@@ -83,11 +73,6 @@ func PossibleAdaptiveApplicationControlIssueValues() []AdaptiveApplicationContro
 	}
 }
 
-// ToPtr returns a *AdaptiveApplicationControlIssue pointing to the current value.
-func (c AdaptiveApplicationControlIssue) ToPtr() *AdaptiveApplicationControlIssue {
-	return &c
-}
-
 // AdditionalWorkspaceDataType - Data types sent to workspace.
 type AdditionalWorkspaceDataType string
 
@@ -104,11 +89,6 @@ func PossibleAdditionalWorkspaceDataTypeValues() []AdditionalWorkspaceDataType {
 	}
 }
 
-// ToPtr returns a *AdditionalWorkspaceDataType pointing to the current value.
-func (c AdditionalWorkspaceDataType) ToPtr() *AdditionalWorkspaceDataType {
-	return &c
-}
-
 // AdditionalWorkspaceType - Workspace type.
 type AdditionalWorkspaceType string
 
@@ -121,11 +101,6 @@ func PossibleAdditionalWorkspaceTypeValues() []AdditionalWorkspaceType {
 	return []AdditionalWorkspaceType{
 		AdditionalWorkspaceTypeSentinel,
 	}
-}
-
-// ToPtr returns a *AdditionalWorkspaceType pointing to the current value.
-func (c AdditionalWorkspaceType) ToPtr() *AdditionalWorkspaceType {
-	return &c
 }
 
 // AlertNotifications - Whether to send security alerts notifications to the security contact
@@ -144,11 +119,6 @@ func PossibleAlertNotificationsValues() []AlertNotifications {
 		AlertNotificationsOff,
 		AlertNotificationsOn,
 	}
-}
-
-// ToPtr returns a *AlertNotifications pointing to the current value.
-func (c AlertNotifications) ToPtr() *AlertNotifications {
-	return &c
 }
 
 // AlertSeverity - The risk level of the threat that was detected. Learn more: https://docs.microsoft.com/en-us/azure/security-center/security-center-alerts-overview#how-are-alerts-classified.
@@ -175,11 +145,6 @@ func PossibleAlertSeverityValues() []AlertSeverity {
 	}
 }
 
-// ToPtr returns a *AlertSeverity pointing to the current value.
-func (c AlertSeverity) ToPtr() *AlertSeverity {
-	return &c
-}
-
 // AlertStatus - The life cycle status of the alert.
 type AlertStatus string
 
@@ -201,11 +166,6 @@ func PossibleAlertStatusValues() []AlertStatus {
 	}
 }
 
-// ToPtr returns a *AlertStatus pointing to the current value.
-func (c AlertStatus) ToPtr() *AlertStatus {
-	return &c
-}
-
 // AlertsToAdmins - Whether to send security alerts notifications to subscription admins
 type AlertsToAdmins string
 
@@ -224,11 +184,6 @@ func PossibleAlertsToAdminsValues() []AlertsToAdmins {
 	}
 }
 
-// ToPtr returns a *AlertsToAdmins pointing to the current value.
-func (c AlertsToAdmins) ToPtr() *AlertsToAdmins {
-	return &c
-}
-
 // AssessedResourceType - Sub-assessment resource type
 type AssessedResourceType string
 
@@ -245,11 +200,6 @@ func PossibleAssessedResourceTypeValues() []AssessedResourceType {
 		AssessedResourceTypeSQLServerVulnerability,
 		AssessedResourceTypeServerVulnerability,
 	}
-}
-
-// ToPtr returns a *AssessedResourceType pointing to the current value.
-func (c AssessedResourceType) ToPtr() *AssessedResourceType {
-	return &c
 }
 
 // AssessmentStatusCode - Programmatic code for the status of the assessment
@@ -273,22 +223,18 @@ func PossibleAssessmentStatusCodeValues() []AssessmentStatusCode {
 	}
 }
 
-// ToPtr returns a *AssessmentStatusCode pointing to the current value.
-func (c AssessmentStatusCode) ToPtr() *AssessmentStatusCode {
-	return &c
-}
-
 // AssessmentType - BuiltIn if the assessment based on built-in Azure Policy definition, Custom if the assessment based on
 // custom Azure Policy definition
 type AssessmentType string
 
 const (
-	// AssessmentTypeBuiltIn - Azure Security Center managed assessments
+	// AssessmentTypeBuiltIn - Microsoft Defender for Cloud managed assessments
 	AssessmentTypeBuiltIn AssessmentType = "BuiltIn"
-	// AssessmentTypeCustomPolicy - User defined policies that are automatically ingested from Azure Policy to Azure Security
-	// Center
+	// AssessmentTypeCustomPolicy - User defined policies that are automatically ingested from Azure Policy to Microsoft Defender
+	// for Cloud
 	AssessmentTypeCustomPolicy AssessmentType = "CustomPolicy"
-	// AssessmentTypeCustomerManaged - User assessments pushed directly by the user or other third party to Azure Security Center
+	// AssessmentTypeCustomerManaged - User assessments pushed directly by the user or other third party to Microsoft Defender
+	// for Cloud
 	AssessmentTypeCustomerManaged AssessmentType = "CustomerManaged"
 	// AssessmentTypeVerifiedPartner - An assessment that was created by a verified 3rd party if the user connected it to ASC
 	AssessmentTypeVerifiedPartner AssessmentType = "VerifiedPartner"
@@ -302,11 +248,6 @@ func PossibleAssessmentTypeValues() []AssessmentType {
 		AssessmentTypeCustomerManaged,
 		AssessmentTypeVerifiedPartner,
 	}
-}
-
-// ToPtr returns a *AssessmentType pointing to the current value.
-func (c AssessmentType) ToPtr() *AssessmentType {
-	return &c
 }
 
 // AuthenticationProvisioningState - State of the multi-cloud connector
@@ -333,11 +274,6 @@ func PossibleAuthenticationProvisioningStateValues() []AuthenticationProvisionin
 	}
 }
 
-// ToPtr returns a *AuthenticationProvisioningState pointing to the current value.
-func (c AuthenticationProvisioningState) ToPtr() *AuthenticationProvisioningState {
-	return &c
-}
-
 // AuthenticationType - Connect to your cloud account, for AWS use either account credentials or role-based authentication.
 // For GCP use account organization credentials.
 type AuthenticationType string
@@ -360,11 +296,6 @@ func PossibleAuthenticationTypeValues() []AuthenticationType {
 	}
 }
 
-// ToPtr returns a *AuthenticationType pointing to the current value.
-func (c AuthenticationType) ToPtr() *AuthenticationType {
-	return &c
-}
-
 // AutoProvision - Describes what kind of security agent provisioning action to take
 type AutoProvision string
 
@@ -381,11 +312,6 @@ func PossibleAutoProvisionValues() []AutoProvision {
 		AutoProvisionOff,
 		AutoProvisionOn,
 	}
-}
-
-// ToPtr returns a *AutoProvision pointing to the current value.
-func (c AutoProvision) ToPtr() *AutoProvision {
-	return &c
 }
 
 // BundleType - Alert Simulator supported bundles.
@@ -416,11 +342,6 @@ func PossibleBundleTypeValues() []BundleType {
 	}
 }
 
-// ToPtr returns a *BundleType pointing to the current value.
-func (c BundleType) ToPtr() *BundleType {
-	return &c
-}
-
 // Categories - The categories of resource that is at risk when the assessment is unhealthy
 type Categories string
 
@@ -443,11 +364,6 @@ func PossibleCategoriesValues() []Categories {
 	}
 }
 
-// ToPtr returns a *Categories pointing to the current value.
-func (c Categories) ToPtr() *Categories {
-	return &c
-}
-
 // CloudName - The multi cloud resource's cloud name.
 type CloudName string
 
@@ -464,11 +380,6 @@ func PossibleCloudNameValues() []CloudName {
 		CloudNameAzure,
 		CloudNameGCP,
 	}
-}
-
-// ToPtr returns a *CloudName pointing to the current value.
-func (c CloudName) ToPtr() *CloudName {
-	return &c
 }
 
 // ConfigurationStatus - The configuration status of the machines group or machine or rule
@@ -493,11 +404,6 @@ func PossibleConfigurationStatusValues() []ConfigurationStatus {
 	}
 }
 
-// ToPtr returns a *ConfigurationStatus pointing to the current value.
-func (c ConfigurationStatus) ToPtr() *ConfigurationStatus {
-	return &c
-}
-
 type ConnectionType string
 
 const (
@@ -513,18 +419,13 @@ func PossibleConnectionTypeValues() []ConnectionType {
 	}
 }
 
-// ToPtr returns a *ConnectionType pointing to the current value.
-func (c ConnectionType) ToPtr() *ConnectionType {
-	return &c
-}
-
 // ControlType - The type of security control (for example, BuiltIn)
 type ControlType string
 
 const (
-	// ControlTypeBuiltIn - Azure Security Center managed assessments
+	// ControlTypeBuiltIn - Microsoft Defender for Cloud managed assessments
 	ControlTypeBuiltIn ControlType = "BuiltIn"
-	// ControlTypeCustom - Non Azure Security Center managed assessments
+	// ControlTypeCustom - Non Microsoft Defender for Cloud managed assessments
 	ControlTypeCustom ControlType = "Custom"
 )
 
@@ -534,11 +435,6 @@ func PossibleControlTypeValues() []ControlType {
 		ControlTypeBuiltIn,
 		ControlTypeCustom,
 	}
-}
-
-// ToPtr returns a *ControlType pointing to the current value.
-func (c ControlType) ToPtr() *ControlType {
-	return &c
 }
 
 // CreatedByType - The type of identity that created the resource.
@@ -561,11 +457,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
-}
-
 type DataSource string
 
 const (
@@ -578,11 +469,6 @@ func PossibleDataSourceValues() []DataSource {
 	return []DataSource{
 		DataSourceTwinData,
 	}
-}
-
-// ToPtr returns a *DataSource pointing to the current value.
-func (c DataSource) ToPtr() *DataSource {
-	return &c
 }
 
 // Direction - The rule's direction
@@ -599,11 +485,6 @@ func PossibleDirectionValues() []Direction {
 		DirectionInbound,
 		DirectionOutbound,
 	}
-}
-
-// ToPtr returns a *Direction pointing to the current value.
-func (c Direction) ToPtr() *Direction {
-	return &c
 }
 
 // EndOfSupportStatus - End of support status.
@@ -628,11 +509,6 @@ func PossibleEndOfSupportStatusValues() []EndOfSupportStatus {
 	}
 }
 
-// ToPtr returns a *EndOfSupportStatus pointing to the current value.
-func (c EndOfSupportStatus) ToPtr() *EndOfSupportStatus {
-	return &c
-}
-
 // EnforcementMode - The application control policy enforcement/protection mode of the machine group
 type EnforcementMode string
 
@@ -651,11 +527,6 @@ func PossibleEnforcementModeValues() []EnforcementMode {
 	}
 }
 
-// ToPtr returns a *EnforcementMode pointing to the current value.
-func (c EnforcementMode) ToPtr() *EnforcementMode {
-	return &c
-}
-
 // EnforcementSupport - The machine supportability of Enforce feature
 type EnforcementSupport string
 
@@ -672,11 +543,6 @@ func PossibleEnforcementSupportValues() []EnforcementSupport {
 		EnforcementSupportSupported,
 		EnforcementSupportUnknown,
 	}
-}
-
-// ToPtr returns a *EnforcementSupport pointing to the current value.
-func (c EnforcementSupport) ToPtr() *EnforcementSupport {
-	return &c
 }
 
 // EventSource - A valid event source type.
@@ -713,11 +579,6 @@ func PossibleEventSourceValues() []EventSource {
 	}
 }
 
-// ToPtr returns a *EventSource pointing to the current value.
-func (c EventSource) ToPtr() *EventSource {
-	return &c
-}
-
 type ExpandControlsEnum string
 
 const (
@@ -730,11 +591,6 @@ func PossibleExpandControlsEnumValues() []ExpandControlsEnum {
 	return []ExpandControlsEnum{
 		ExpandControlsEnumDefinition,
 	}
-}
-
-// ToPtr returns a *ExpandControlsEnum pointing to the current value.
-func (c ExpandControlsEnum) ToPtr() *ExpandControlsEnum {
-	return &c
 }
 
 type ExpandEnum string
@@ -754,11 +610,6 @@ func PossibleExpandEnumValues() []ExpandEnum {
 	}
 }
 
-// ToPtr returns a *ExpandEnum pointing to the current value.
-func (c ExpandEnum) ToPtr() *ExpandEnum {
-	return &c
-}
-
 type ExportData string
 
 const (
@@ -771,11 +622,6 @@ func PossibleExportDataValues() []ExportData {
 	return []ExportData{
 		ExportDataRawEvents,
 	}
-}
-
-// ToPtr returns a *ExportData pointing to the current value.
-func (c ExportData) ToPtr() *ExportData {
-	return &c
 }
 
 // ExternalSecuritySolutionKind - The kind of the external solution
@@ -794,11 +640,6 @@ func PossibleExternalSecuritySolutionKindValues() []ExternalSecuritySolutionKind
 		ExternalSecuritySolutionKindATA,
 		ExternalSecuritySolutionKindCEF,
 	}
-}
-
-// ToPtr returns a *ExternalSecuritySolutionKind pointing to the current value.
-func (c ExternalSecuritySolutionKind) ToPtr() *ExternalSecuritySolutionKind {
-	return &c
 }
 
 // FileType - The type of the file (for Linux files - Executable is used)
@@ -825,11 +666,6 @@ func PossibleFileTypeValues() []FileType {
 	}
 }
 
-// ToPtr returns a *FileType pointing to the current value.
-func (c FileType) ToPtr() *FileType {
-	return &c
-}
-
 // HybridComputeProvisioningState - State of the service principal and its secret
 type HybridComputeProvisioningState string
 
@@ -851,11 +687,6 @@ func PossibleHybridComputeProvisioningStateValues() []HybridComputeProvisioningS
 	}
 }
 
-// ToPtr returns a *HybridComputeProvisioningState pointing to the current value.
-func (c HybridComputeProvisioningState) ToPtr() *HybridComputeProvisioningState {
-	return &c
-}
-
 // ImplementationEffort - The implementation effort required to remediate this assessment
 type ImplementationEffort string
 
@@ -874,11 +705,6 @@ func PossibleImplementationEffortValues() []ImplementationEffort {
 	}
 }
 
-// ToPtr returns a *ImplementationEffort pointing to the current value.
-func (c ImplementationEffort) ToPtr() *ImplementationEffort {
-	return &c
-}
-
 type InformationProtectionPolicyName string
 
 const (
@@ -892,11 +718,6 @@ func PossibleInformationProtectionPolicyNameValues() []InformationProtectionPoli
 		InformationProtectionPolicyNameCustom,
 		InformationProtectionPolicyNameEffective,
 	}
-}
-
-// ToPtr returns a *InformationProtectionPolicyName pointing to the current value.
-func (c InformationProtectionPolicyName) ToPtr() *InformationProtectionPolicyName {
-	return &c
 }
 
 // Intent - The kill chain related intent behind the alert. For list of supported values, and explanations of Azure Security
@@ -975,11 +796,6 @@ func PossibleIntentValues() []Intent {
 	}
 }
 
-// ToPtr returns a *Intent pointing to the current value.
-func (c Intent) ToPtr() *Intent {
-	return &c
-}
-
 // Kind - The kind of alert simulation.
 type Kind string
 
@@ -993,11 +809,6 @@ func PossibleKindValues() []Kind {
 	return []Kind{
 		KindBundles,
 	}
-}
-
-// ToPtr returns a *Kind pointing to the current value.
-func (c Kind) ToPtr() *Kind {
-	return &c
 }
 
 // OfferingType - The type of the security offering.
@@ -1018,11 +829,6 @@ func PossibleOfferingTypeValues() []OfferingType {
 		OfferingTypeDefenderForServersAws,
 		OfferingTypeInformationProtectionAws,
 	}
-}
-
-// ToPtr returns a *OfferingType pointing to the current value.
-func (c OfferingType) ToPtr() *OfferingType {
-	return &c
 }
 
 // Operator - A valid comparer operator to use. A case-insensitive comparison will be applied for String PropertyType.
@@ -1064,11 +870,6 @@ func PossibleOperatorValues() []Operator {
 	}
 }
 
-// ToPtr returns a *Operator pointing to the current value.
-func (c Operator) ToPtr() *Operator {
-	return &c
-}
-
 // OrganizationMembershipType - The multi cloud account's membership type in the organization
 type OrganizationMembershipType string
 
@@ -1083,11 +884,6 @@ func PossibleOrganizationMembershipTypeValues() []OrganizationMembershipType {
 		OrganizationMembershipTypeMember,
 		OrganizationMembershipTypeOrganization,
 	}
-}
-
-// ToPtr returns a *OrganizationMembershipType pointing to the current value.
-func (c OrganizationMembershipType) ToPtr() *OrganizationMembershipType {
-	return &c
 }
 
 // PermissionProperty - A permission detected in the cloud account.
@@ -1115,20 +911,15 @@ func PossiblePermissionPropertyValues() []PermissionProperty {
 	}
 }
 
-// ToPtr returns a *PermissionProperty pointing to the current value.
-func (c PermissionProperty) ToPtr() *PermissionProperty {
-	return &c
-}
-
-// PricingTier - The pricing tier value. Azure Security Center is provided in two pricing tiers: free and standard, with the
-// standard tier available with a trial period. The standard tier offers advanced security
-// capabilities, while the free tier offers basic security features.
+// PricingTier - The pricing tier value. Microsoft Defender for Cloud is provided in two pricing tiers: free and standard,
+// with the standard tier available with a trial period. The standard tier offers advanced
+// security capabilities, while the free tier offers basic security features.
 type PricingTier string
 
 const (
-	// PricingTierFree - Get free Azure security center experience with basic security features
+	// PricingTierFree - Get free Microsoft Defender for Cloud experience with basic security features
 	PricingTierFree PricingTier = "Free"
-	// PricingTierStandard - Get the standard Azure security center experience with advanced security features
+	// PricingTierStandard - Get the standard Microsoft Defender for Cloud experience with advanced security features
 	PricingTierStandard PricingTier = "Standard"
 )
 
@@ -1138,11 +929,6 @@ func PossiblePricingTierValues() []PricingTier {
 		PricingTierFree,
 		PricingTierStandard,
 	}
-}
-
-// ToPtr returns a *PricingTier pointing to the current value.
-func (c PricingTier) ToPtr() *PricingTier {
-	return &c
 }
 
 // PropertyType - The data type of the compared operands (string, integer, floating point number or a boolean [true/false]]
@@ -1165,11 +951,6 @@ func PossiblePropertyTypeValues() []PropertyType {
 	}
 }
 
-// ToPtr returns a *PropertyType pointing to the current value.
-func (c PropertyType) ToPtr() *PropertyType {
-	return &c
-}
-
 type Protocol string
 
 const (
@@ -1185,11 +966,6 @@ func PossibleProtocolValues() []Protocol {
 		ProtocolTCP,
 		ProtocolUDP,
 	}
-}
-
-// ToPtr returns a *Protocol pointing to the current value.
-func (c Protocol) ToPtr() *Protocol {
-	return &c
 }
 
 // ProvisioningState - The security family provisioning State
@@ -1208,11 +984,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 		ProvisioningStateSucceeded,
 		ProvisioningStateUpdating,
 	}
-}
-
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
 }
 
 // Rank - The rank of the sensitivity label.
@@ -1237,11 +1008,6 @@ func PossibleRankValues() []Rank {
 	}
 }
 
-// ToPtr returns a *Rank pointing to the current value.
-func (c Rank) ToPtr() *Rank {
-	return &c
-}
-
 // RecommendationAction - The recommendation action of the machine or rule
 type RecommendationAction string
 
@@ -1260,11 +1026,6 @@ func PossibleRecommendationActionValues() []RecommendationAction {
 	}
 }
 
-// ToPtr returns a *RecommendationAction pointing to the current value.
-func (c RecommendationAction) ToPtr() *RecommendationAction {
-	return &c
-}
-
 // RecommendationConfigStatus - Recommendation status. When the recommendation status is disabled recommendations are not
 // generated.
 type RecommendationConfigStatus string
@@ -1280,11 +1041,6 @@ func PossibleRecommendationConfigStatusValues() []RecommendationConfigStatus {
 		RecommendationConfigStatusDisabled,
 		RecommendationConfigStatusEnabled,
 	}
-}
-
-// ToPtr returns a *RecommendationConfigStatus pointing to the current value.
-func (c RecommendationConfigStatus) ToPtr() *RecommendationConfigStatus {
-	return &c
 }
 
 // RecommendationStatus - The initial recommendation status of the machine group or machine
@@ -1305,11 +1061,6 @@ func PossibleRecommendationStatusValues() []RecommendationStatus {
 		RecommendationStatusNotRecommended,
 		RecommendationStatusRecommended,
 	}
-}
-
-// ToPtr returns a *RecommendationStatus pointing to the current value.
-func (c RecommendationStatus) ToPtr() *RecommendationStatus {
-	return &c
 }
 
 // RecommendationType - The type of IoT Security recommendation.
@@ -1384,11 +1135,6 @@ func PossibleRecommendationTypeValues() []RecommendationType {
 	}
 }
 
-// ToPtr returns a *RecommendationType pointing to the current value.
-func (c RecommendationType) ToPtr() *RecommendationType {
-	return &c
-}
-
 // ReportedSeverity - Assessed alert severity.
 type ReportedSeverity string
 
@@ -1409,11 +1155,6 @@ func PossibleReportedSeverityValues() []ReportedSeverity {
 	}
 }
 
-// ToPtr returns a *ReportedSeverity pointing to the current value.
-func (c ReportedSeverity) ToPtr() *ReportedSeverity {
-	return &c
-}
-
 // ResourceIdentifierType - There can be multiple identifiers of different type per alert, this field specify the identifier
 // type.
 type ResourceIdentifierType string
@@ -1429,11 +1170,6 @@ func PossibleResourceIdentifierTypeValues() []ResourceIdentifierType {
 		ResourceIdentifierTypeAzureResource,
 		ResourceIdentifierTypeLogAnalytics,
 	}
-}
-
-// ToPtr returns a *ResourceIdentifierType pointing to the current value.
-func (c ResourceIdentifierType) ToPtr() *ResourceIdentifierType {
-	return &c
 }
 
 // ResourceStatus - The status of the resource regarding a single assessment
@@ -1458,11 +1194,6 @@ func PossibleResourceStatusValues() []ResourceStatus {
 		ResourceStatusNotHealthy,
 		ResourceStatusOffByPolicy,
 	}
-}
-
-// ToPtr returns a *ResourceStatus pointing to the current value.
-func (c ResourceStatus) ToPtr() *ResourceStatus {
-	return &c
 }
 
 // RuleSeverity - The rule severity.
@@ -1492,11 +1223,6 @@ func PossibleRuleSeverityValues() []RuleSeverity {
 	}
 }
 
-// ToPtr returns a *RuleSeverity pointing to the current value.
-func (c RuleSeverity) ToPtr() *RuleSeverity {
-	return &c
-}
-
 // RuleState - Possible states of the rule
 type RuleState string
 
@@ -1513,11 +1239,6 @@ func PossibleRuleStateValues() []RuleState {
 		RuleStateDisabled,
 		RuleStateExpired,
 	}
-}
-
-// ToPtr returns a *RuleState pointing to the current value.
-func (c RuleState) ToPtr() *RuleState {
-	return &c
 }
 
 // RuleStatus - The rule result status.
@@ -1539,11 +1260,6 @@ func PossibleRuleStatusValues() []RuleStatus {
 		RuleStatusInternalError,
 		RuleStatusNonFinding,
 	}
-}
-
-// ToPtr returns a *RuleStatus pointing to the current value.
-func (c RuleStatus) ToPtr() *RuleStatus {
-	return &c
 }
 
 // RuleType - The rule type.
@@ -1570,11 +1286,6 @@ func PossibleRuleTypeValues() []RuleType {
 	}
 }
 
-// ToPtr returns a *RuleType pointing to the current value.
-func (c RuleType) ToPtr() *RuleType {
-	return &c
-}
-
 // ScanState - The scan status.
 type ScanState string
 
@@ -1599,11 +1310,6 @@ func PossibleScanStateValues() []ScanState {
 	}
 }
 
-// ToPtr returns a *ScanState pointing to the current value.
-func (c ScanState) ToPtr() *ScanState {
-	return &c
-}
-
 // ScanTriggerType - The scan trigger type.
 type ScanTriggerType string
 
@@ -1620,11 +1326,6 @@ func PossibleScanTriggerTypeValues() []ScanTriggerType {
 		ScanTriggerTypeOnDemand,
 		ScanTriggerTypeRecurring,
 	}
-}
-
-// ToPtr returns a *ScanTriggerType pointing to the current value.
-func (c ScanTriggerType) ToPtr() *ScanTriggerType {
-	return &c
 }
 
 // SecurityFamily - The security family of the discovered solution
@@ -1647,11 +1348,6 @@ func PossibleSecurityFamilyValues() []SecurityFamily {
 	}
 }
 
-// ToPtr returns a *SecurityFamily pointing to the current value.
-func (c SecurityFamily) ToPtr() *SecurityFamily {
-	return &c
-}
-
 // SecuritySolutionStatus - Status of the IoT Security solution.
 type SecuritySolutionStatus string
 
@@ -1666,11 +1362,6 @@ func PossibleSecuritySolutionStatusValues() []SecuritySolutionStatus {
 		SecuritySolutionStatusDisabled,
 		SecuritySolutionStatusEnabled,
 	}
-}
-
-// ToPtr returns a *SecuritySolutionStatus pointing to the current value.
-func (c SecuritySolutionStatus) ToPtr() *SecuritySolutionStatus {
-	return &c
 }
 
 // ServerVulnerabilityAssessmentPropertiesProvisioningState - The provisioningState of the vulnerability assessment capability
@@ -1696,11 +1387,6 @@ func PossibleServerVulnerabilityAssessmentPropertiesProvisioningStateValues() []
 	}
 }
 
-// ToPtr returns a *ServerVulnerabilityAssessmentPropertiesProvisioningState pointing to the current value.
-func (c ServerVulnerabilityAssessmentPropertiesProvisioningState) ToPtr() *ServerVulnerabilityAssessmentPropertiesProvisioningState {
-	return &c
-}
-
 // SettingKind - the kind of the settings string
 type SettingKind string
 
@@ -1717,11 +1403,6 @@ func PossibleSettingKindValues() []SettingKind {
 		SettingKindAlertSyncSettings,
 		SettingKindDataExportSettings,
 	}
-}
-
-// ToPtr returns a *SettingKind pointing to the current value.
-func (c SettingKind) ToPtr() *SettingKind {
-	return &c
 }
 
 type SettingName string
@@ -1743,11 +1424,6 @@ func PossibleSettingNameValues() []SettingName {
 	}
 }
 
-// ToPtr returns a *SettingName pointing to the current value.
-func (c SettingName) ToPtr() *SettingName {
-	return &c
-}
-
 // Severity - The sub-assessment severity level
 type Severity string
 
@@ -1766,11 +1442,6 @@ func PossibleSeverityValues() []Severity {
 	}
 }
 
-// ToPtr returns a *Severity pointing to the current value.
-func (c Severity) ToPtr() *Severity {
-	return &c
-}
-
 // SeverityEnum - The severity to relate to the assessments generated by this assessment automation.
 type SeverityEnum string
 
@@ -1787,11 +1458,6 @@ func PossibleSeverityEnumValues() []SeverityEnum {
 		SeverityEnumLow,
 		SeverityEnumMedium,
 	}
-}
-
-// ToPtr returns a *SeverityEnum pointing to the current value.
-func (c SeverityEnum) ToPtr() *SeverityEnum {
-	return &c
 }
 
 // Source - The platform where the assessed resource resides
@@ -1815,11 +1481,6 @@ func PossibleSourceValues() []Source {
 	}
 }
 
-// ToPtr returns a *Source pointing to the current value.
-func (c Source) ToPtr() *Source {
-	return &c
-}
-
 // SourceSystem - The source type of the machine group
 type SourceSystem string
 
@@ -1840,11 +1501,6 @@ func PossibleSourceSystemValues() []SourceSystem {
 		SourceSystemNonAzureAuditD,
 		SourceSystemNone,
 	}
-}
-
-// ToPtr returns a *SourceSystem pointing to the current value.
-func (c SourceSystem) ToPtr() *SourceSystem {
-	return &c
 }
 
 // State - Aggregative state based on the standard's supported controls states
@@ -1871,11 +1527,6 @@ func PossibleStateValues() []State {
 	}
 }
 
-// ToPtr returns a *State pointing to the current value.
-func (c State) ToPtr() *State {
-	return &c
-}
-
 // Status - The status of the port
 type Status string
 
@@ -1890,11 +1541,6 @@ func PossibleStatusValues() []Status {
 		StatusInitiated,
 		StatusRevoked,
 	}
-}
-
-// ToPtr returns a *Status pointing to the current value.
-func (c Status) ToPtr() *Status {
-	return &c
 }
 
 // StatusReason - A description of why the status has its value
@@ -1913,11 +1559,6 @@ func PossibleStatusReasonValues() []StatusReason {
 		StatusReasonNewerRequestInitiated,
 		StatusReasonUserRequested,
 	}
-}
-
-// ToPtr returns a *StatusReason pointing to the current value.
-func (c StatusReason) ToPtr() *StatusReason {
-	return &c
 }
 
 // SubAssessmentStatusCode - Programmatic code for the status of the assessment
@@ -1941,11 +1582,6 @@ func PossibleSubAssessmentStatusCodeValues() []SubAssessmentStatusCode {
 	}
 }
 
-// ToPtr returns a *SubAssessmentStatusCode pointing to the current value.
-func (c SubAssessmentStatusCode) ToPtr() *SubAssessmentStatusCode {
-	return &c
-}
-
 // SupportedCloudEnum - Relevant cloud for the custom assessment automation.
 type SupportedCloudEnum string
 
@@ -1960,11 +1596,6 @@ func PossibleSupportedCloudEnumValues() []SupportedCloudEnum {
 		SupportedCloudEnumAWS,
 		SupportedCloudEnumGCP,
 	}
-}
-
-// ToPtr returns a *SupportedCloudEnum pointing to the current value.
-func (c SupportedCloudEnum) ToPtr() *SupportedCloudEnum {
-	return &c
 }
 
 // Tactics - Tactic of the assessment
@@ -2007,11 +1638,6 @@ func PossibleTacticsValues() []Tactics {
 	}
 }
 
-// ToPtr returns a *Tactics pointing to the current value.
-func (c Tactics) ToPtr() *Tactics {
-	return &c
-}
-
 type TaskUpdateActionType string
 
 const (
@@ -2031,11 +1657,6 @@ func PossibleTaskUpdateActionTypeValues() []TaskUpdateActionType {
 		TaskUpdateActionTypeResolve,
 		TaskUpdateActionTypeStart,
 	}
-}
-
-// ToPtr returns a *TaskUpdateActionType pointing to the current value.
-func (c TaskUpdateActionType) ToPtr() *TaskUpdateActionType {
-	return &c
 }
 
 // Techniques - Techniques of the assessment
@@ -2258,11 +1879,6 @@ func PossibleTechniquesValues() []Techniques {
 	}
 }
 
-// ToPtr returns a *Techniques pointing to the current value.
-func (c Techniques) ToPtr() *Techniques {
-	return &c
-}
-
 // Threats - Threats impact of the assessment
 type Threats string
 
@@ -2291,11 +1907,6 @@ func PossibleThreatsValues() []Threats {
 	}
 }
 
-// ToPtr returns a *Threats pointing to the current value.
-func (c Threats) ToPtr() *Threats {
-	return &c
-}
-
 type TransportProtocol string
 
 const (
@@ -2309,11 +1920,6 @@ func PossibleTransportProtocolValues() []TransportProtocol {
 		TransportProtocolTCP,
 		TransportProtocolUDP,
 	}
-}
-
-// ToPtr returns a *TransportProtocol pointing to the current value.
-func (c TransportProtocol) ToPtr() *TransportProtocol {
-	return &c
 }
 
 // UnmaskedIPLoggingStatus - Unmasked IP address logging status
@@ -2334,11 +1940,6 @@ func PossibleUnmaskedIPLoggingStatusValues() []UnmaskedIPLoggingStatus {
 	}
 }
 
-// ToPtr returns a *UnmaskedIPLoggingStatus pointing to the current value.
-func (c UnmaskedIPLoggingStatus) ToPtr() *UnmaskedIPLoggingStatus {
-	return &c
-}
-
 // UserImpact - The user impact of the assessment
 type UserImpact string
 
@@ -2357,11 +1958,6 @@ func PossibleUserImpactValues() []UserImpact {
 	}
 }
 
-// ToPtr returns a *UserImpact pointing to the current value.
-func (c UserImpact) ToPtr() *UserImpact {
-	return &c
-}
-
 // ValueType - The value type of the items in the list.
 type ValueType string
 
@@ -2378,9 +1974,4 @@ func PossibleValueTypeValues() []ValueType {
 		ValueTypeIPCidr,
 		ValueTypeString,
 	}
-}
-
-// ToPtr returns a *ValueType pointing to the current value.
-func (c ValueType) ToPtr() *ValueType {
-	return &c
 }

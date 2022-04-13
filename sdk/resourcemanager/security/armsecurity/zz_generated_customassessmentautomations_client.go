@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type CustomAssessmentAutomationsClient struct {
 // subscriptionID - Azure subscription ID
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewCustomAssessmentAutomationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CustomAssessmentAutomationsClient {
+func NewCustomAssessmentAutomationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CustomAssessmentAutomationsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &CustomAssessmentAutomationsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Create - Creates or updates a custom assessment automation for the provided subscription. Please note that providing an
@@ -100,7 +105,7 @@ func (client *CustomAssessmentAutomationsClient) createCreateRequest(ctx context
 
 // createHandleResponse handles the Create response.
 func (client *CustomAssessmentAutomationsClient) createHandleResponse(resp *http.Response) (CustomAssessmentAutomationsClientCreateResponse, error) {
-	result := CustomAssessmentAutomationsClientCreateResponse{RawResponse: resp}
+	result := CustomAssessmentAutomationsClientCreateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomAssessmentAutomation); err != nil {
 		return CustomAssessmentAutomationsClientCreateResponse{}, err
 	}
@@ -125,7 +130,7 @@ func (client *CustomAssessmentAutomationsClient) Delete(ctx context.Context, res
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return CustomAssessmentAutomationsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return CustomAssessmentAutomationsClientDeleteResponse{RawResponse: resp}, nil
+	return CustomAssessmentAutomationsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -203,7 +208,7 @@ func (client *CustomAssessmentAutomationsClient) getCreateRequest(ctx context.Co
 
 // getHandleResponse handles the Get response.
 func (client *CustomAssessmentAutomationsClient) getHandleResponse(resp *http.Response) (CustomAssessmentAutomationsClientGetResponse, error) {
-	result := CustomAssessmentAutomationsClientGetResponse{RawResponse: resp}
+	result := CustomAssessmentAutomationsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomAssessmentAutomation); err != nil {
 		return CustomAssessmentAutomationsClientGetResponse{}, err
 	}
@@ -215,16 +220,32 @@ func (client *CustomAssessmentAutomationsClient) getHandleResponse(resp *http.Re
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // options - CustomAssessmentAutomationsClientListByResourceGroupOptions contains the optional parameters for the CustomAssessmentAutomationsClient.ListByResourceGroup
 // method.
-func (client *CustomAssessmentAutomationsClient) ListByResourceGroup(resourceGroupName string, options *CustomAssessmentAutomationsClientListByResourceGroupOptions) *CustomAssessmentAutomationsClientListByResourceGroupPager {
-	return &CustomAssessmentAutomationsClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *CustomAssessmentAutomationsClient) ListByResourceGroup(resourceGroupName string, options *CustomAssessmentAutomationsClientListByResourceGroupOptions) *runtime.Pager[CustomAssessmentAutomationsClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[CustomAssessmentAutomationsClientListByResourceGroupResponse]{
+		More: func(page CustomAssessmentAutomationsClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp CustomAssessmentAutomationsClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.CustomAssessmentAutomationsListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *CustomAssessmentAutomationsClientListByResourceGroupResponse) (CustomAssessmentAutomationsClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return CustomAssessmentAutomationsClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return CustomAssessmentAutomationsClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return CustomAssessmentAutomationsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -251,7 +272,7 @@ func (client *CustomAssessmentAutomationsClient) listByResourceGroupCreateReques
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *CustomAssessmentAutomationsClient) listByResourceGroupHandleResponse(resp *http.Response) (CustomAssessmentAutomationsClientListByResourceGroupResponse, error) {
-	result := CustomAssessmentAutomationsClientListByResourceGroupResponse{RawResponse: resp}
+	result := CustomAssessmentAutomationsClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomAssessmentAutomationsListResult); err != nil {
 		return CustomAssessmentAutomationsClientListByResourceGroupResponse{}, err
 	}
@@ -262,16 +283,32 @@ func (client *CustomAssessmentAutomationsClient) listByResourceGroupHandleRespon
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - CustomAssessmentAutomationsClientListBySubscriptionOptions contains the optional parameters for the CustomAssessmentAutomationsClient.ListBySubscription
 // method.
-func (client *CustomAssessmentAutomationsClient) ListBySubscription(options *CustomAssessmentAutomationsClientListBySubscriptionOptions) *CustomAssessmentAutomationsClientListBySubscriptionPager {
-	return &CustomAssessmentAutomationsClientListBySubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySubscriptionCreateRequest(ctx, options)
+func (client *CustomAssessmentAutomationsClient) ListBySubscription(options *CustomAssessmentAutomationsClientListBySubscriptionOptions) *runtime.Pager[CustomAssessmentAutomationsClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[CustomAssessmentAutomationsClientListBySubscriptionResponse]{
+		More: func(page CustomAssessmentAutomationsClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp CustomAssessmentAutomationsClientListBySubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.CustomAssessmentAutomationsListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *CustomAssessmentAutomationsClientListBySubscriptionResponse) (CustomAssessmentAutomationsClientListBySubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySubscriptionCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return CustomAssessmentAutomationsClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return CustomAssessmentAutomationsClientListBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return CustomAssessmentAutomationsClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
@@ -294,7 +331,7 @@ func (client *CustomAssessmentAutomationsClient) listBySubscriptionCreateRequest
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
 func (client *CustomAssessmentAutomationsClient) listBySubscriptionHandleResponse(resp *http.Response) (CustomAssessmentAutomationsClientListBySubscriptionResponse, error) {
-	result := CustomAssessmentAutomationsClientListBySubscriptionResponse{RawResponse: resp}
+	result := CustomAssessmentAutomationsClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomAssessmentAutomationsListResult); err != nil {
 		return CustomAssessmentAutomationsClientListBySubscriptionResponse{}, err
 	}

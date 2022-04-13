@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type AssessmentsMetadataClient struct {
 // subscriptionID - Azure subscription ID
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewAssessmentsMetadataClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AssessmentsMetadataClient {
+func NewAssessmentsMetadataClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AssessmentsMetadataClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &AssessmentsMetadataClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateInSubscription - Create metadata information on an assessment type in a specific subscription
@@ -94,7 +99,7 @@ func (client *AssessmentsMetadataClient) createInSubscriptionCreateRequest(ctx c
 
 // createInSubscriptionHandleResponse handles the CreateInSubscription response.
 func (client *AssessmentsMetadataClient) createInSubscriptionHandleResponse(resp *http.Response) (AssessmentsMetadataClientCreateInSubscriptionResponse, error) {
-	result := AssessmentsMetadataClientCreateInSubscriptionResponse{RawResponse: resp}
+	result := AssessmentsMetadataClientCreateInSubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssessmentMetadataResponse); err != nil {
 		return AssessmentsMetadataClientCreateInSubscriptionResponse{}, err
 	}
@@ -119,7 +124,7 @@ func (client *AssessmentsMetadataClient) DeleteInSubscription(ctx context.Contex
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return AssessmentsMetadataClientDeleteInSubscriptionResponse{}, runtime.NewResponseError(resp)
 	}
-	return AssessmentsMetadataClientDeleteInSubscriptionResponse{RawResponse: resp}, nil
+	return AssessmentsMetadataClientDeleteInSubscriptionResponse{}, nil
 }
 
 // deleteInSubscriptionCreateRequest creates the DeleteInSubscription request.
@@ -183,7 +188,7 @@ func (client *AssessmentsMetadataClient) getCreateRequest(ctx context.Context, a
 
 // getHandleResponse handles the Get response.
 func (client *AssessmentsMetadataClient) getHandleResponse(resp *http.Response) (AssessmentsMetadataClientGetResponse, error) {
-	result := AssessmentsMetadataClientGetResponse{RawResponse: resp}
+	result := AssessmentsMetadataClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssessmentMetadataResponse); err != nil {
 		return AssessmentsMetadataClientGetResponse{}, err
 	}
@@ -234,7 +239,7 @@ func (client *AssessmentsMetadataClient) getInSubscriptionCreateRequest(ctx cont
 
 // getInSubscriptionHandleResponse handles the GetInSubscription response.
 func (client *AssessmentsMetadataClient) getInSubscriptionHandleResponse(resp *http.Response) (AssessmentsMetadataClientGetInSubscriptionResponse, error) {
-	result := AssessmentsMetadataClientGetInSubscriptionResponse{RawResponse: resp}
+	result := AssessmentsMetadataClientGetInSubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssessmentMetadataResponse); err != nil {
 		return AssessmentsMetadataClientGetInSubscriptionResponse{}, err
 	}
@@ -245,16 +250,32 @@ func (client *AssessmentsMetadataClient) getInSubscriptionHandleResponse(resp *h
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AssessmentsMetadataClientListOptions contains the optional parameters for the AssessmentsMetadataClient.List
 // method.
-func (client *AssessmentsMetadataClient) List(options *AssessmentsMetadataClientListOptions) *AssessmentsMetadataClientListPager {
-	return &AssessmentsMetadataClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *AssessmentsMetadataClient) List(options *AssessmentsMetadataClientListOptions) *runtime.Pager[AssessmentsMetadataClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AssessmentsMetadataClientListResponse]{
+		More: func(page AssessmentsMetadataClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AssessmentsMetadataClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AssessmentMetadataResponseList.NextLink)
+		Fetcher: func(ctx context.Context, page *AssessmentsMetadataClientListResponse) (AssessmentsMetadataClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AssessmentsMetadataClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AssessmentsMetadataClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AssessmentsMetadataClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -273,7 +294,7 @@ func (client *AssessmentsMetadataClient) listCreateRequest(ctx context.Context, 
 
 // listHandleResponse handles the List response.
 func (client *AssessmentsMetadataClient) listHandleResponse(resp *http.Response) (AssessmentsMetadataClientListResponse, error) {
-	result := AssessmentsMetadataClientListResponse{RawResponse: resp}
+	result := AssessmentsMetadataClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssessmentMetadataResponseList); err != nil {
 		return AssessmentsMetadataClientListResponse{}, err
 	}
@@ -284,16 +305,32 @@ func (client *AssessmentsMetadataClient) listHandleResponse(resp *http.Response)
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AssessmentsMetadataClientListBySubscriptionOptions contains the optional parameters for the AssessmentsMetadataClient.ListBySubscription
 // method.
-func (client *AssessmentsMetadataClient) ListBySubscription(options *AssessmentsMetadataClientListBySubscriptionOptions) *AssessmentsMetadataClientListBySubscriptionPager {
-	return &AssessmentsMetadataClientListBySubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySubscriptionCreateRequest(ctx, options)
+func (client *AssessmentsMetadataClient) ListBySubscription(options *AssessmentsMetadataClientListBySubscriptionOptions) *runtime.Pager[AssessmentsMetadataClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AssessmentsMetadataClientListBySubscriptionResponse]{
+		More: func(page AssessmentsMetadataClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AssessmentsMetadataClientListBySubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AssessmentMetadataResponseList.NextLink)
+		Fetcher: func(ctx context.Context, page *AssessmentsMetadataClientListBySubscriptionResponse) (AssessmentsMetadataClientListBySubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySubscriptionCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AssessmentsMetadataClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AssessmentsMetadataClientListBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AssessmentsMetadataClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
@@ -316,7 +353,7 @@ func (client *AssessmentsMetadataClient) listBySubscriptionCreateRequest(ctx con
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
 func (client *AssessmentsMetadataClient) listBySubscriptionHandleResponse(resp *http.Response) (AssessmentsMetadataClientListBySubscriptionResponse, error) {
-	result := AssessmentsMetadataClientListBySubscriptionResponse{RawResponse: resp}
+	result := AssessmentsMetadataClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssessmentMetadataResponseList); err != nil {
 		return AssessmentsMetadataClientListBySubscriptionResponse{}, err
 	}

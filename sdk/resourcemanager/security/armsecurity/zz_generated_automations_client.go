@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type AutomationsClient struct {
 // subscriptionID - Azure subscription ID
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewAutomationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AutomationsClient {
+func NewAutomationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AutomationsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &AutomationsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates a security automation. If a security automation is already created and a subsequent
@@ -100,7 +105,7 @@ func (client *AutomationsClient) createOrUpdateCreateRequest(ctx context.Context
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *AutomationsClient) createOrUpdateHandleResponse(resp *http.Response) (AutomationsClientCreateOrUpdateResponse, error) {
-	result := AutomationsClientCreateOrUpdateResponse{RawResponse: resp}
+	result := AutomationsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Automation); err != nil {
 		return AutomationsClientCreateOrUpdateResponse{}, err
 	}
@@ -124,7 +129,7 @@ func (client *AutomationsClient) Delete(ctx context.Context, resourceGroupName s
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return AutomationsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return AutomationsClientDeleteResponse{RawResponse: resp}, nil
+	return AutomationsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -201,7 +206,7 @@ func (client *AutomationsClient) getCreateRequest(ctx context.Context, resourceG
 
 // getHandleResponse handles the Get response.
 func (client *AutomationsClient) getHandleResponse(resp *http.Response) (AutomationsClientGetResponse, error) {
-	result := AutomationsClientGetResponse{RawResponse: resp}
+	result := AutomationsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Automation); err != nil {
 		return AutomationsClientGetResponse{}, err
 	}
@@ -212,16 +217,32 @@ func (client *AutomationsClient) getHandleResponse(resp *http.Response) (Automat
 // get the next page of security automations for the specified subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AutomationsClientListOptions contains the optional parameters for the AutomationsClient.List method.
-func (client *AutomationsClient) List(options *AutomationsClientListOptions) *AutomationsClientListPager {
-	return &AutomationsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *AutomationsClient) List(options *AutomationsClientListOptions) *runtime.Pager[AutomationsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AutomationsClientListResponse]{
+		More: func(page AutomationsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AutomationsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AutomationList.NextLink)
+		Fetcher: func(ctx context.Context, page *AutomationsClientListResponse) (AutomationsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AutomationsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AutomationsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AutomationsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -244,7 +265,7 @@ func (client *AutomationsClient) listCreateRequest(ctx context.Context, options 
 
 // listHandleResponse handles the List response.
 func (client *AutomationsClient) listHandleResponse(resp *http.Response) (AutomationsClientListResponse, error) {
-	result := AutomationsClientListResponse{RawResponse: resp}
+	result := AutomationsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AutomationList); err != nil {
 		return AutomationsClientListResponse{}, err
 	}
@@ -257,16 +278,32 @@ func (client *AutomationsClient) listHandleResponse(resp *http.Response) (Automa
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // options - AutomationsClientListByResourceGroupOptions contains the optional parameters for the AutomationsClient.ListByResourceGroup
 // method.
-func (client *AutomationsClient) ListByResourceGroup(resourceGroupName string, options *AutomationsClientListByResourceGroupOptions) *AutomationsClientListByResourceGroupPager {
-	return &AutomationsClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *AutomationsClient) ListByResourceGroup(resourceGroupName string, options *AutomationsClientListByResourceGroupOptions) *runtime.Pager[AutomationsClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AutomationsClientListByResourceGroupResponse]{
+		More: func(page AutomationsClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AutomationsClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AutomationList.NextLink)
+		Fetcher: func(ctx context.Context, page *AutomationsClientListByResourceGroupResponse) (AutomationsClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AutomationsClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AutomationsClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AutomationsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -293,7 +330,7 @@ func (client *AutomationsClient) listByResourceGroupCreateRequest(ctx context.Co
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *AutomationsClient) listByResourceGroupHandleResponse(resp *http.Response) (AutomationsClientListByResourceGroupResponse, error) {
-	result := AutomationsClientListByResourceGroupResponse{RawResponse: resp}
+	result := AutomationsClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AutomationList); err != nil {
 		return AutomationsClientListByResourceGroupResponse{}, err
 	}
@@ -349,7 +386,7 @@ func (client *AutomationsClient) validateCreateRequest(ctx context.Context, reso
 
 // validateHandleResponse handles the Validate response.
 func (client *AutomationsClient) validateHandleResponse(resp *http.Response) (AutomationsClientValidateResponse, error) {
-	result := AutomationsClientValidateResponse{RawResponse: resp}
+	result := AutomationsClientValidateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AutomationValidationStatus); err != nil {
 		return AutomationsClientValidateResponse{}, err
 	}

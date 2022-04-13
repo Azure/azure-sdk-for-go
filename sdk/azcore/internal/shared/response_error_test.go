@@ -348,6 +348,43 @@ ERROR CODE: ContainerAlreadyExists
 	}
 }
 
+func TestNewResponseErrorErrorCodeHeaderXMLWithNamespace(t *testing.T) {
+	fakeURL, err := url.Parse("https://fakeurl.com/the/path?qp=removed")
+	if err != nil {
+		t.Fatal(err)
+	}
+	respHeader := http.Header{}
+	respHeader.Set("x-ms-error-code", "ContainerAlreadyExists")
+	err = NewResponseError(&http.Response{
+		Status:     "the system is down",
+		StatusCode: http.StatusInternalServerError,
+		Header:     respHeader,
+		Body:       io.NopCloser(strings.NewReader(`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><m:Error xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"><m:Code>ContainerAlreadyExists</m:Code><m:Message>The specified container already exists.\nRequestId:73b2473b-c1c8-4162-97bb-dc171bff61c9\nTime:2021-12-13T19:45:40.679Z</m:Message></m:Error>`)),
+		Request: &http.Request{
+			Method: http.MethodGet,
+			URL:    fakeURL,
+		},
+	})
+	re, ok := err.(*ResponseError)
+	if !ok {
+		t.Fatalf("unexpected error type %T", err)
+	}
+	if c := re.StatusCode; c != http.StatusInternalServerError {
+		t.Fatalf("unexpected status code %d", c)
+	}
+	const want = `GET https://fakeurl.com/the/path
+--------------------------------------------------------------------------------
+RESPONSE 500: the system is down
+ERROR CODE: ContainerAlreadyExists
+--------------------------------------------------------------------------------
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?><m:Error xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"><m:Code>ContainerAlreadyExists</m:Code><m:Message>The specified container already exists.\nRequestId:73b2473b-c1c8-4162-97bb-dc171bff61c9\nTime:2021-12-13T19:45:40.679Z</m:Message></m:Error>
+--------------------------------------------------------------------------------
+`
+	if got := re.Error(); got != want {
+		t.Fatalf("\ngot:\n%s\nwant:\n%s\n", got, want)
+	}
+}
+
 func TestNewResponseErrorAllMissingXML(t *testing.T) {
 	fakeURL, err := url.Parse("https://fakeurl.com/the/path?qp=removed")
 	if err != nil {

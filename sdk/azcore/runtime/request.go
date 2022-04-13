@@ -106,6 +106,8 @@ func MarshalAsXML(req *policy.Request, v interface{}) error {
 	if err != nil {
 		return fmt.Errorf("error marshalling type %T: %s", v, err)
 	}
+	// inclue the XML header as some services require it
+	b = []byte(xml.Header + string(b))
 	return req.SetBody(shared.NopCloser(bytes.NewReader(b)), shared.ContentTypeAppXML)
 }
 

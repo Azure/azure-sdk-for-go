@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type UnresolvedDependenciesClient struct {
 // subscriptionID - The Subscription ID.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewUnresolvedDependenciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *UnresolvedDependenciesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewUnresolvedDependenciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*UnresolvedDependenciesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &UnresolvedDependenciesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Gets a list of unresolved dependencies.
@@ -55,16 +60,32 @@ func NewUnresolvedDependenciesClient(subscriptionID string, credential azcore.To
 // moveCollectionName - The Move Collection Name.
 // options - UnresolvedDependenciesClientGetOptions contains the optional parameters for the UnresolvedDependenciesClient.Get
 // method.
-func (client *UnresolvedDependenciesClient) Get(resourceGroupName string, moveCollectionName string, options *UnresolvedDependenciesClientGetOptions) *UnresolvedDependenciesClientGetPager {
-	return &UnresolvedDependenciesClientGetPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.getCreateRequest(ctx, resourceGroupName, moveCollectionName, options)
+func (client *UnresolvedDependenciesClient) Get(resourceGroupName string, moveCollectionName string, options *UnresolvedDependenciesClientGetOptions) *runtime.Pager[UnresolvedDependenciesClientGetResponse] {
+	return runtime.NewPager(runtime.PageProcessor[UnresolvedDependenciesClientGetResponse]{
+		More: func(page UnresolvedDependenciesClientGetResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp UnresolvedDependenciesClientGetResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.UnresolvedDependencyCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *UnresolvedDependenciesClientGetResponse) (UnresolvedDependenciesClientGetResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.getCreateRequest(ctx, resourceGroupName, moveCollectionName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return UnresolvedDependenciesClientGetResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return UnresolvedDependenciesClientGetResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return UnresolvedDependenciesClientGetResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.getHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // getCreateRequest creates the Get request.
@@ -104,7 +125,7 @@ func (client *UnresolvedDependenciesClient) getCreateRequest(ctx context.Context
 
 // getHandleResponse handles the Get response.
 func (client *UnresolvedDependenciesClient) getHandleResponse(resp *http.Response) (UnresolvedDependenciesClientGetResponse, error) {
-	result := UnresolvedDependenciesClientGetResponse{RawResponse: resp}
+	result := UnresolvedDependenciesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UnresolvedDependencyCollection); err != nil {
 		return UnresolvedDependenciesClientGetResponse{}, err
 	}

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type MoveCollectionsClient struct {
 // subscriptionID - The Subscription ID.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewMoveCollectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *MoveCollectionsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewMoveCollectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MoveCollectionsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &MoveCollectionsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginBulkRemove - Removes the set of move resources included in the request body from move collection. The orchestration
@@ -55,22 +60,18 @@ func NewMoveCollectionsClient(subscriptionID string, credential azcore.TokenCred
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - MoveCollectionsClientBeginBulkRemoveOptions contains the optional parameters for the MoveCollectionsClient.BeginBulkRemove
 // method.
-func (client *MoveCollectionsClient) BeginBulkRemove(ctx context.Context, resourceGroupName string, moveCollectionName string, options *MoveCollectionsClientBeginBulkRemoveOptions) (MoveCollectionsClientBulkRemovePollerResponse, error) {
-	resp, err := client.bulkRemove(ctx, resourceGroupName, moveCollectionName, options)
-	if err != nil {
-		return MoveCollectionsClientBulkRemovePollerResponse{}, err
+func (client *MoveCollectionsClient) BeginBulkRemove(ctx context.Context, resourceGroupName string, moveCollectionName string, options *MoveCollectionsClientBeginBulkRemoveOptions) (*armruntime.Poller[MoveCollectionsClientBulkRemoveResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.bulkRemove(ctx, resourceGroupName, moveCollectionName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[MoveCollectionsClientBulkRemoveResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[MoveCollectionsClientBulkRemoveResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := MoveCollectionsClientBulkRemovePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("MoveCollectionsClient.BulkRemove", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return MoveCollectionsClientBulkRemovePollerResponse{}, err
-	}
-	result.Poller = &MoveCollectionsClientBulkRemovePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // BulkRemove - Removes the set of move resources included in the request body from move collection. The orchestration is
@@ -130,22 +131,18 @@ func (client *MoveCollectionsClient) bulkRemoveCreateRequest(ctx context.Context
 // moveCollectionName - The Move Collection Name.
 // options - MoveCollectionsClientBeginCommitOptions contains the optional parameters for the MoveCollectionsClient.BeginCommit
 // method.
-func (client *MoveCollectionsClient) BeginCommit(ctx context.Context, resourceGroupName string, moveCollectionName string, options *MoveCollectionsClientBeginCommitOptions) (MoveCollectionsClientCommitPollerResponse, error) {
-	resp, err := client.commit(ctx, resourceGroupName, moveCollectionName, options)
-	if err != nil {
-		return MoveCollectionsClientCommitPollerResponse{}, err
+func (client *MoveCollectionsClient) BeginCommit(ctx context.Context, resourceGroupName string, moveCollectionName string, options *MoveCollectionsClientBeginCommitOptions) (*armruntime.Poller[MoveCollectionsClientCommitResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.commit(ctx, resourceGroupName, moveCollectionName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[MoveCollectionsClientCommitResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[MoveCollectionsClientCommitResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := MoveCollectionsClientCommitPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("MoveCollectionsClient.Commit", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return MoveCollectionsClientCommitPollerResponse{}, err
-	}
-	result.Poller = &MoveCollectionsClientCommitPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Commit - Commits the set of resources included in the request body. The commit operation is triggered on the moveResources
@@ -248,7 +245,7 @@ func (client *MoveCollectionsClient) createCreateRequest(ctx context.Context, re
 
 // createHandleResponse handles the Create response.
 func (client *MoveCollectionsClient) createHandleResponse(resp *http.Response) (MoveCollectionsClientCreateResponse, error) {
-	result := MoveCollectionsClientCreateResponse{RawResponse: resp}
+	result := MoveCollectionsClientCreateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MoveCollection); err != nil {
 		return MoveCollectionsClientCreateResponse{}, err
 	}
@@ -261,22 +258,18 @@ func (client *MoveCollectionsClient) createHandleResponse(resp *http.Response) (
 // moveCollectionName - The Move Collection Name.
 // options - MoveCollectionsClientBeginDeleteOptions contains the optional parameters for the MoveCollectionsClient.BeginDelete
 // method.
-func (client *MoveCollectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, moveCollectionName string, options *MoveCollectionsClientBeginDeleteOptions) (MoveCollectionsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, moveCollectionName, options)
-	if err != nil {
-		return MoveCollectionsClientDeletePollerResponse{}, err
+func (client *MoveCollectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, moveCollectionName string, options *MoveCollectionsClientBeginDeleteOptions) (*armruntime.Poller[MoveCollectionsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, moveCollectionName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[MoveCollectionsClientDeleteResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[MoveCollectionsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := MoveCollectionsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("MoveCollectionsClient.Delete", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return MoveCollectionsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &MoveCollectionsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes a move collection.
@@ -331,22 +324,18 @@ func (client *MoveCollectionsClient) deleteCreateRequest(ctx context.Context, re
 // moveCollectionName - The Move Collection Name.
 // options - MoveCollectionsClientBeginDiscardOptions contains the optional parameters for the MoveCollectionsClient.BeginDiscard
 // method.
-func (client *MoveCollectionsClient) BeginDiscard(ctx context.Context, resourceGroupName string, moveCollectionName string, options *MoveCollectionsClientBeginDiscardOptions) (MoveCollectionsClientDiscardPollerResponse, error) {
-	resp, err := client.discard(ctx, resourceGroupName, moveCollectionName, options)
-	if err != nil {
-		return MoveCollectionsClientDiscardPollerResponse{}, err
+func (client *MoveCollectionsClient) BeginDiscard(ctx context.Context, resourceGroupName string, moveCollectionName string, options *MoveCollectionsClientBeginDiscardOptions) (*armruntime.Poller[MoveCollectionsClientDiscardResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.discard(ctx, resourceGroupName, moveCollectionName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[MoveCollectionsClientDiscardResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[MoveCollectionsClientDiscardResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := MoveCollectionsClientDiscardPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("MoveCollectionsClient.Discard", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return MoveCollectionsClientDiscardPollerResponse{}, err
-	}
-	result.Poller = &MoveCollectionsClientDiscardPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Discard - Discards the set of resources included in the request body. The discard operation is triggered on the moveResources
@@ -446,7 +435,7 @@ func (client *MoveCollectionsClient) getCreateRequest(ctx context.Context, resou
 
 // getHandleResponse handles the Get response.
 func (client *MoveCollectionsClient) getHandleResponse(resp *http.Response) (MoveCollectionsClientGetResponse, error) {
-	result := MoveCollectionsClientGetResponse{RawResponse: resp}
+	result := MoveCollectionsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MoveCollection); err != nil {
 		return MoveCollectionsClientGetResponse{}, err
 	}
@@ -462,22 +451,18 @@ func (client *MoveCollectionsClient) getHandleResponse(resp *http.Response) (Mov
 // moveCollectionName - The Move Collection Name.
 // options - MoveCollectionsClientBeginInitiateMoveOptions contains the optional parameters for the MoveCollectionsClient.BeginInitiateMove
 // method.
-func (client *MoveCollectionsClient) BeginInitiateMove(ctx context.Context, resourceGroupName string, moveCollectionName string, options *MoveCollectionsClientBeginInitiateMoveOptions) (MoveCollectionsClientInitiateMovePollerResponse, error) {
-	resp, err := client.initiateMove(ctx, resourceGroupName, moveCollectionName, options)
-	if err != nil {
-		return MoveCollectionsClientInitiateMovePollerResponse{}, err
+func (client *MoveCollectionsClient) BeginInitiateMove(ctx context.Context, resourceGroupName string, moveCollectionName string, options *MoveCollectionsClientBeginInitiateMoveOptions) (*armruntime.Poller[MoveCollectionsClientInitiateMoveResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.initiateMove(ctx, resourceGroupName, moveCollectionName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[MoveCollectionsClientInitiateMoveResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[MoveCollectionsClientInitiateMoveResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := MoveCollectionsClientInitiateMovePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("MoveCollectionsClient.InitiateMove", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return MoveCollectionsClientInitiateMovePollerResponse{}, err
-	}
-	result.Poller = &MoveCollectionsClientInitiateMovePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // InitiateMove - Moves the set of resources included in the request body. The move operation is triggered after the moveResources
@@ -534,16 +519,32 @@ func (client *MoveCollectionsClient) initiateMoveCreateRequest(ctx context.Conte
 // resourceGroupName - The Resource Group Name.
 // options - MoveCollectionsClientListMoveCollectionsByResourceGroupOptions contains the optional parameters for the MoveCollectionsClient.ListMoveCollectionsByResourceGroup
 // method.
-func (client *MoveCollectionsClient) ListMoveCollectionsByResourceGroup(resourceGroupName string, options *MoveCollectionsClientListMoveCollectionsByResourceGroupOptions) *MoveCollectionsClientListMoveCollectionsByResourceGroupPager {
-	return &MoveCollectionsClientListMoveCollectionsByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listMoveCollectionsByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *MoveCollectionsClient) ListMoveCollectionsByResourceGroup(resourceGroupName string, options *MoveCollectionsClientListMoveCollectionsByResourceGroupOptions) *runtime.Pager[MoveCollectionsClientListMoveCollectionsByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[MoveCollectionsClientListMoveCollectionsByResourceGroupResponse]{
+		More: func(page MoveCollectionsClientListMoveCollectionsByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp MoveCollectionsClientListMoveCollectionsByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.MoveCollectionResultList.NextLink)
+		Fetcher: func(ctx context.Context, page *MoveCollectionsClientListMoveCollectionsByResourceGroupResponse) (MoveCollectionsClientListMoveCollectionsByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listMoveCollectionsByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return MoveCollectionsClientListMoveCollectionsByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return MoveCollectionsClientListMoveCollectionsByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return MoveCollectionsClientListMoveCollectionsByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listMoveCollectionsByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listMoveCollectionsByResourceGroupCreateRequest creates the ListMoveCollectionsByResourceGroup request.
@@ -570,7 +571,7 @@ func (client *MoveCollectionsClient) listMoveCollectionsByResourceGroupCreateReq
 
 // listMoveCollectionsByResourceGroupHandleResponse handles the ListMoveCollectionsByResourceGroup response.
 func (client *MoveCollectionsClient) listMoveCollectionsByResourceGroupHandleResponse(resp *http.Response) (MoveCollectionsClientListMoveCollectionsByResourceGroupResponse, error) {
-	result := MoveCollectionsClientListMoveCollectionsByResourceGroupResponse{RawResponse: resp}
+	result := MoveCollectionsClientListMoveCollectionsByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MoveCollectionResultList); err != nil {
 		return MoveCollectionsClientListMoveCollectionsByResourceGroupResponse{}, err
 	}
@@ -581,16 +582,32 @@ func (client *MoveCollectionsClient) listMoveCollectionsByResourceGroupHandleRes
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - MoveCollectionsClientListMoveCollectionsBySubscriptionOptions contains the optional parameters for the MoveCollectionsClient.ListMoveCollectionsBySubscription
 // method.
-func (client *MoveCollectionsClient) ListMoveCollectionsBySubscription(options *MoveCollectionsClientListMoveCollectionsBySubscriptionOptions) *MoveCollectionsClientListMoveCollectionsBySubscriptionPager {
-	return &MoveCollectionsClientListMoveCollectionsBySubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listMoveCollectionsBySubscriptionCreateRequest(ctx, options)
+func (client *MoveCollectionsClient) ListMoveCollectionsBySubscription(options *MoveCollectionsClientListMoveCollectionsBySubscriptionOptions) *runtime.Pager[MoveCollectionsClientListMoveCollectionsBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[MoveCollectionsClientListMoveCollectionsBySubscriptionResponse]{
+		More: func(page MoveCollectionsClientListMoveCollectionsBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp MoveCollectionsClientListMoveCollectionsBySubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.MoveCollectionResultList.NextLink)
+		Fetcher: func(ctx context.Context, page *MoveCollectionsClientListMoveCollectionsBySubscriptionResponse) (MoveCollectionsClientListMoveCollectionsBySubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listMoveCollectionsBySubscriptionCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return MoveCollectionsClientListMoveCollectionsBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return MoveCollectionsClientListMoveCollectionsBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return MoveCollectionsClientListMoveCollectionsBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listMoveCollectionsBySubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listMoveCollectionsBySubscriptionCreateRequest creates the ListMoveCollectionsBySubscription request.
@@ -613,7 +630,7 @@ func (client *MoveCollectionsClient) listMoveCollectionsBySubscriptionCreateRequ
 
 // listMoveCollectionsBySubscriptionHandleResponse handles the ListMoveCollectionsBySubscription response.
 func (client *MoveCollectionsClient) listMoveCollectionsBySubscriptionHandleResponse(resp *http.Response) (MoveCollectionsClientListMoveCollectionsBySubscriptionResponse, error) {
-	result := MoveCollectionsClientListMoveCollectionsBySubscriptionResponse{RawResponse: resp}
+	result := MoveCollectionsClientListMoveCollectionsBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MoveCollectionResultList); err != nil {
 		return MoveCollectionsClientListMoveCollectionsBySubscriptionResponse{}, err
 	}
@@ -671,7 +688,7 @@ func (client *MoveCollectionsClient) listRequiredForCreateRequest(ctx context.Co
 
 // listRequiredForHandleResponse handles the ListRequiredFor response.
 func (client *MoveCollectionsClient) listRequiredForHandleResponse(resp *http.Response) (MoveCollectionsClientListRequiredForResponse, error) {
-	result := MoveCollectionsClientListRequiredForResponse{RawResponse: resp}
+	result := MoveCollectionsClientListRequiredForResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RequiredForResourcesCollection); err != nil {
 		return MoveCollectionsClientListRequiredForResponse{}, err
 	}
@@ -687,22 +704,18 @@ func (client *MoveCollectionsClient) listRequiredForHandleResponse(resp *http.Re
 // moveCollectionName - The Move Collection Name.
 // options - MoveCollectionsClientBeginPrepareOptions contains the optional parameters for the MoveCollectionsClient.BeginPrepare
 // method.
-func (client *MoveCollectionsClient) BeginPrepare(ctx context.Context, resourceGroupName string, moveCollectionName string, options *MoveCollectionsClientBeginPrepareOptions) (MoveCollectionsClientPreparePollerResponse, error) {
-	resp, err := client.prepare(ctx, resourceGroupName, moveCollectionName, options)
-	if err != nil {
-		return MoveCollectionsClientPreparePollerResponse{}, err
+func (client *MoveCollectionsClient) BeginPrepare(ctx context.Context, resourceGroupName string, moveCollectionName string, options *MoveCollectionsClientBeginPrepareOptions) (*armruntime.Poller[MoveCollectionsClientPrepareResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.prepare(ctx, resourceGroupName, moveCollectionName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[MoveCollectionsClientPrepareResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[MoveCollectionsClientPrepareResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := MoveCollectionsClientPreparePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("MoveCollectionsClient.Prepare", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return MoveCollectionsClientPreparePollerResponse{}, err
-	}
-	result.Poller = &MoveCollectionsClientPreparePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Prepare - Initiates prepare for the set of resources included in the request body. The prepare operation is on the moveResources
@@ -760,22 +773,18 @@ func (client *MoveCollectionsClient) prepareCreateRequest(ctx context.Context, r
 // moveCollectionName - The Move Collection Name.
 // options - MoveCollectionsClientBeginResolveDependenciesOptions contains the optional parameters for the MoveCollectionsClient.BeginResolveDependencies
 // method.
-func (client *MoveCollectionsClient) BeginResolveDependencies(ctx context.Context, resourceGroupName string, moveCollectionName string, options *MoveCollectionsClientBeginResolveDependenciesOptions) (MoveCollectionsClientResolveDependenciesPollerResponse, error) {
-	resp, err := client.resolveDependencies(ctx, resourceGroupName, moveCollectionName, options)
-	if err != nil {
-		return MoveCollectionsClientResolveDependenciesPollerResponse{}, err
+func (client *MoveCollectionsClient) BeginResolveDependencies(ctx context.Context, resourceGroupName string, moveCollectionName string, options *MoveCollectionsClientBeginResolveDependenciesOptions) (*armruntime.Poller[MoveCollectionsClientResolveDependenciesResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.resolveDependencies(ctx, resourceGroupName, moveCollectionName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[MoveCollectionsClientResolveDependenciesResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[MoveCollectionsClientResolveDependenciesResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := MoveCollectionsClientResolveDependenciesPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("MoveCollectionsClient.ResolveDependencies", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return MoveCollectionsClientResolveDependenciesPollerResponse{}, err
-	}
-	result.Poller = &MoveCollectionsClientResolveDependenciesPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // ResolveDependencies - Computes, resolves and validate the dependencies of the moveResources in the move collection.
@@ -872,7 +881,7 @@ func (client *MoveCollectionsClient) updateCreateRequest(ctx context.Context, re
 
 // updateHandleResponse handles the Update response.
 func (client *MoveCollectionsClient) updateHandleResponse(resp *http.Response) (MoveCollectionsClientUpdateResponse, error) {
-	result := MoveCollectionsClientUpdateResponse{RawResponse: resp}
+	result := MoveCollectionsClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MoveCollection); err != nil {
 		return MoveCollectionsClientUpdateResponse{}, err
 	}

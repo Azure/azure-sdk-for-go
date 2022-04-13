@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,35 +10,16 @@ package armmobilenetwork
 
 const (
 	moduleName    = "armmobilenetwork"
-	moduleVersion = "v0.1.0"
+	moduleVersion = "v0.3.0"
 )
-
-// ConfigurationState - The configuration state of the resource - complete or incomplete.
-type ConfigurationState string
-
-const (
-	ConfigurationStateComplete   ConfigurationState = "Complete"
-	ConfigurationStateIncomplete ConfigurationState = "Incomplete"
-)
-
-// PossibleConfigurationStateValues returns the possible values for the ConfigurationState const type.
-func PossibleConfigurationStateValues() []ConfigurationState {
-	return []ConfigurationState{
-		ConfigurationStateComplete,
-		ConfigurationStateIncomplete,
-	}
-}
-
-// ToPtr returns a *ConfigurationState pointing to the current value.
-func (c ConfigurationState) ToPtr() *ConfigurationState {
-	return &c
-}
 
 // CoreNetworkType - Core network type.
 type CoreNetworkType string
 
 const (
-	CoreNetworkTypeEPC    CoreNetworkType = "EPC"
+	// CoreNetworkTypeEPC - EPC / 4G core
+	CoreNetworkTypeEPC CoreNetworkType = "EPC"
+	// CoreNetworkTypeFiveGC - 5G core
 	CoreNetworkTypeFiveGC CoreNetworkType = "5GC"
 )
 
@@ -48,11 +29,6 @@ func PossibleCoreNetworkTypeValues() []CoreNetworkType {
 		CoreNetworkTypeEPC,
 		CoreNetworkTypeFiveGC,
 	}
-}
-
-// ToPtr returns a *CoreNetworkType pointing to the current value.
-func (c CoreNetworkType) ToPtr() *CoreNetworkType {
-	return &c
 }
 
 // CreatedByType - The type of identity that created the resource.
@@ -75,17 +51,14 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
-}
-
 // NaptEnabled - Whether Network Address and Port Translation is enabled.
 type NaptEnabled string
 
 const (
+	// NaptEnabledDisabled - NAPT is disabled
 	NaptEnabledDisabled NaptEnabled = "Disabled"
-	NaptEnabledEnabled  NaptEnabled = "Enabled"
+	// NaptEnabledEnabled - NAPT is enabled
+	NaptEnabledEnabled NaptEnabled = "Enabled"
 )
 
 // PossibleNaptEnabledValues returns the possible values for the NaptEnabled const type.
@@ -94,11 +67,6 @@ func PossibleNaptEnabledValues() []NaptEnabled {
 		NaptEnabledDisabled,
 		NaptEnabledEnabled,
 	}
-}
-
-// ToPtr returns a *NaptEnabled pointing to the current value.
-func (c NaptEnabled) ToPtr() *NaptEnabled {
-	return &c
 }
 
 // PduSessionType - PDU session type (IPv4/IPv6).
@@ -117,16 +85,13 @@ func PossiblePduSessionTypeValues() []PduSessionType {
 	}
 }
 
-// ToPtr returns a *PduSessionType pointing to the current value.
-func (c PduSessionType) ToPtr() *PduSessionType {
-	return &c
-}
-
 // PreemptionCapability - Preemption capability.
 type PreemptionCapability string
 
 const (
+	// PreemptionCapabilityMayPreempt - May preempt
 	PreemptionCapabilityMayPreempt PreemptionCapability = "MayPreempt"
+	// PreemptionCapabilityNotPreempt - Cannot preempt
 	PreemptionCapabilityNotPreempt PreemptionCapability = "NotPreempt"
 )
 
@@ -138,17 +103,14 @@ func PossiblePreemptionCapabilityValues() []PreemptionCapability {
 	}
 }
 
-// ToPtr returns a *PreemptionCapability pointing to the current value.
-func (c PreemptionCapability) ToPtr() *PreemptionCapability {
-	return &c
-}
-
 // PreemptionVulnerability - Preemption vulnerability.
 type PreemptionVulnerability string
 
 const (
+	// PreemptionVulnerabilityNotPreemptable - Cannot be preempted
 	PreemptionVulnerabilityNotPreemptable PreemptionVulnerability = "NotPreemptable"
-	PreemptionVulnerabilityPreemptable    PreemptionVulnerability = "Preemptable"
+	// PreemptionVulnerabilityPreemptable - May be preempted
+	PreemptionVulnerabilityPreemptable PreemptionVulnerability = "Preemptable"
 )
 
 // PossiblePreemptionVulnerabilityValues returns the possible values for the PreemptionVulnerability const type.
@@ -157,11 +119,6 @@ func PossiblePreemptionVulnerabilityValues() []PreemptionVulnerability {
 		PreemptionVulnerabilityNotPreemptable,
 		PreemptionVulnerabilityPreemptable,
 	}
-}
-
-// ToPtr returns a *PreemptionVulnerability pointing to the current value.
-func (c PreemptionVulnerability) ToPtr() *PreemptionVulnerability {
-	return &c
 }
 
 // ProvisioningState - The current provisioning state.
@@ -190,18 +147,16 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	}
 }
 
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
-}
-
 // SdfDirection - Service data flow direction.
 type SdfDirection string
 
 const (
+	// SdfDirectionBidirectional - Traffic flowing both to and from the UE.
 	SdfDirectionBidirectional SdfDirection = "Bidirectional"
-	SdfDirectionDownlink      SdfDirection = "Downlink"
-	SdfDirectionUplink        SdfDirection = "Uplink"
+	// SdfDirectionDownlink - Traffic flowing from the data network to the UE.
+	SdfDirectionDownlink SdfDirection = "Downlink"
+	// SdfDirectionUplink - Traffic flowing from the UE to the data network.
+	SdfDirectionUplink SdfDirection = "Uplink"
 )
 
 // PossibleSdfDirectionValues returns the possible values for the SdfDirection const type.
@@ -213,16 +168,34 @@ func PossibleSdfDirectionValues() []SdfDirection {
 	}
 }
 
-// ToPtr returns a *SdfDirection pointing to the current value.
-func (c SdfDirection) ToPtr() *SdfDirection {
-	return &c
+// SimState - The state of the sim resource.
+type SimState string
+
+const (
+	// SimStateDisabled - The sim is disabled because not all configuration required for enabling is present.
+	SimStateDisabled SimState = "Disabled"
+	// SimStateEnabled - The sim is enabled.
+	SimStateEnabled SimState = "Enabled"
+	// SimStateInvalid - The sim cannot be enabled because some of the associated configuration is invalid.
+	SimStateInvalid SimState = "Invalid"
+)
+
+// PossibleSimStateValues returns the possible values for the SimState const type.
+func PossibleSimStateValues() []SimState {
+	return []SimState{
+		SimStateDisabled,
+		SimStateEnabled,
+		SimStateInvalid,
+	}
 }
 
 // TrafficControlPermission - Traffic control permission.
 type TrafficControlPermission string
 
 const (
+	// TrafficControlPermissionBlocked - Traffic matching this rule is not allowed to flow.
 	TrafficControlPermissionBlocked TrafficControlPermission = "Blocked"
+	// TrafficControlPermissionEnabled - Traffic matching this rule is allowed to flow.
 	TrafficControlPermissionEnabled TrafficControlPermission = "Enabled"
 )
 
@@ -232,9 +205,4 @@ func PossibleTrafficControlPermissionValues() []TrafficControlPermission {
 		TrafficControlPermissionBlocked,
 		TrafficControlPermissionEnabled,
 	}
-}
-
-// ToPtr returns a *TrafficControlPermission pointing to the current value.
-func (c TrafficControlPermission) ToPtr() *TrafficControlPermission {
-	return &c
 }

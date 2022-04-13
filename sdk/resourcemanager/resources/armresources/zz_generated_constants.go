@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armresources
 
 const (
 	moduleName    = "armresources"
-	moduleVersion = "v0.3.1"
+	moduleVersion = "v0.4.0"
 )
 
 // AliasPathAttributes - The attributes of the token that the alias path is referring to.
@@ -29,11 +29,6 @@ func PossibleAliasPathAttributesValues() []AliasPathAttributes {
 		AliasPathAttributesModifiable,
 		AliasPathAttributesNone,
 	}
-}
-
-// ToPtr returns a *AliasPathAttributes pointing to the current value.
-func (c AliasPathAttributes) ToPtr() *AliasPathAttributes {
-	return &c
 }
 
 // AliasPathTokenType - The type of the token that the alias path is referring to.
@@ -72,11 +67,6 @@ func PossibleAliasPathTokenTypeValues() []AliasPathTokenType {
 	}
 }
 
-// ToPtr returns a *AliasPathTokenType pointing to the current value.
-func (c AliasPathTokenType) ToPtr() *AliasPathTokenType {
-	return &c
-}
-
 // AliasPatternType - The type of alias pattern
 type AliasPatternType string
 
@@ -93,11 +83,6 @@ func PossibleAliasPatternTypeValues() []AliasPatternType {
 		AliasPatternTypeNotSpecified,
 		AliasPatternTypeExtract,
 	}
-}
-
-// ToPtr returns a *AliasPatternType pointing to the current value.
-func (c AliasPatternType) ToPtr() *AliasPatternType {
-	return &c
 }
 
 // AliasType - The type of the alias.
@@ -119,11 +104,6 @@ func PossibleAliasTypeValues() []AliasType {
 		AliasTypePlainText,
 		AliasTypeMask,
 	}
-}
-
-// ToPtr returns a *AliasType pointing to the current value.
-func (c AliasType) ToPtr() *AliasType {
-	return &c
 }
 
 // ChangeType - Type of change that will be made to the resource when the deployment is executed.
@@ -165,11 +145,6 @@ func PossibleChangeTypeValues() []ChangeType {
 	}
 }
 
-// ToPtr returns a *ChangeType pointing to the current value.
-func (c ChangeType) ToPtr() *ChangeType {
-	return &c
-}
-
 // DeploymentMode - The mode that is used to deploy resources. This value can be either Incremental or Complete. In Incremental
 // mode, resources are deployed without deleting existing resources that are not included in
 // the template. In Complete mode, resources are deployed and existing resources in the resource group that are not included
@@ -188,11 +163,6 @@ func PossibleDeploymentModeValues() []DeploymentMode {
 		DeploymentModeIncremental,
 		DeploymentModeComplete,
 	}
-}
-
-// ToPtr returns a *DeploymentMode pointing to the current value.
-func (c DeploymentMode) ToPtr() *DeploymentMode {
-	return &c
 }
 
 // ExpressionEvaluationOptionsScopeType - The scope to be used for evaluation of parameters, variables and functions in a
@@ -214,11 +184,6 @@ func PossibleExpressionEvaluationOptionsScopeTypeValues() []ExpressionEvaluation
 	}
 }
 
-// ToPtr returns a *ExpressionEvaluationOptionsScopeType pointing to the current value.
-func (c ExpressionEvaluationOptionsScopeType) ToPtr() *ExpressionEvaluationOptionsScopeType {
-	return &c
-}
-
 // ExtendedLocationType - The extended location type.
 type ExtendedLocationType string
 
@@ -231,11 +196,6 @@ func PossibleExtendedLocationTypeValues() []ExtendedLocationType {
 	return []ExtendedLocationType{
 		ExtendedLocationTypeEdgeZone,
 	}
-}
-
-// ToPtr returns a *ExtendedLocationType pointing to the current value.
-func (c ExtendedLocationType) ToPtr() *ExtendedLocationType {
-	return &c
 }
 
 // OnErrorDeploymentType - The deployment on error behavior type. Possible values are LastSuccessful and SpecificDeployment.
@@ -252,11 +212,6 @@ func PossibleOnErrorDeploymentTypeValues() []OnErrorDeploymentType {
 		OnErrorDeploymentTypeLastSuccessful,
 		OnErrorDeploymentTypeSpecificDeployment,
 	}
-}
-
-// ToPtr returns a *OnErrorDeploymentType pointing to the current value.
-func (c OnErrorDeploymentType) ToPtr() *OnErrorDeploymentType {
-	return &c
 }
 
 // PropertyChangeType - The type of property change.
@@ -289,11 +244,6 @@ func PossiblePropertyChangeTypeValues() []PropertyChangeType {
 	}
 }
 
-// ToPtr returns a *PropertyChangeType pointing to the current value.
-func (c PropertyChangeType) ToPtr() *PropertyChangeType {
-	return &c
-}
-
 // ProviderAuthorizationConsentState - The provider authorization consent state.
 type ProviderAuthorizationConsentState string
 
@@ -312,11 +262,6 @@ func PossibleProviderAuthorizationConsentStateValues() []ProviderAuthorizationCo
 		ProviderAuthorizationConsentStateNotSpecified,
 		ProviderAuthorizationConsentStateRequired,
 	}
-}
-
-// ToPtr returns a *ProviderAuthorizationConsentState pointing to the current value.
-func (c ProviderAuthorizationConsentState) ToPtr() *ProviderAuthorizationConsentState {
-	return &c
 }
 
 // ProvisioningOperation - The name of the current provisioning operation.
@@ -362,11 +307,6 @@ func PossibleProvisioningOperationValues() []ProvisioningOperation {
 	}
 }
 
-// ToPtr returns a *ProvisioningOperation pointing to the current value.
-func (c ProvisioningOperation) ToPtr() *ProvisioningOperation {
-	return &c
-}
-
 // ProvisioningState - Denotes the state of provisioning.
 type ProvisioningState string
 
@@ -403,11 +343,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	}
 }
 
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
-}
-
 // ResourceIdentityType - The identity type.
 type ResourceIdentityType string
 
@@ -426,11 +361,6 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 		ResourceIdentityTypeSystemAssignedUserAssigned,
 		ResourceIdentityTypeNone,
 	}
-}
-
-// ToPtr returns a *ResourceIdentityType pointing to the current value.
-func (c ResourceIdentityType) ToPtr() *ResourceIdentityType {
-	return &c
 }
 
 // TagsPatchOperation - The operation type for the patch API.
@@ -455,11 +385,6 @@ func PossibleTagsPatchOperationValues() []TagsPatchOperation {
 	}
 }
 
-// ToPtr returns a *TagsPatchOperation pointing to the current value.
-func (c TagsPatchOperation) ToPtr() *TagsPatchOperation {
-	return &c
-}
-
 // WhatIfResultFormat - The format of the What-If results
 type WhatIfResultFormat string
 
@@ -474,9 +399,4 @@ func PossibleWhatIfResultFormatValues() []WhatIfResultFormat {
 		WhatIfResultFormatResourceIDOnly,
 		WhatIfResultFormatFullResourcePayloads,
 	}
-}
-
-// ToPtr returns a *WhatIfResultFormat pointing to the current value.
-func (c WhatIfResultFormat) ToPtr() *WhatIfResultFormat {
-	return &c
 }

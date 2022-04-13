@@ -1,5 +1,316 @@
 # Release History
 
+## 0.4.0 (2022-04-12)
+### Breaking Changes
+
+- Function `*ResourceClient.BeginUpdate` return value(s) have been changed from `(ResourceClientUpdatePollerResponse, error)` to `(*armruntime.Poller[ResourceClientUpdateResponse], error)`
+- Function `NewResourceProviderCommonClient` return value(s) have been changed from `(*ResourceProviderCommonClient)` to `(*ResourceProviderCommonClient, error)`
+- Function `*ResourceClient.BeginCreateOrUpdate` return value(s) have been changed from `(ResourceClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ResourceClientCreateOrUpdateResponse], error)`
+- Function `NewClient` return value(s) have been changed from `(*Client)` to `(*Client, error)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `NewCertificatesClient` return value(s) have been changed from `(*CertificatesClient)` to `(*CertificatesClient, error)`
+- Function `*PrivateEndpointConnectionsClient.BeginUpdate` return value(s) have been changed from `(PrivateEndpointConnectionsClientUpdatePollerResponse, error)` to `(*armruntime.Poller[PrivateEndpointConnectionsClientUpdateResponse], error)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(PrivateEndpointConnectionsClientDeletePollerResponse, error)` to `(*armruntime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)`
+- Function `NewResourceClient` return value(s) have been changed from `(*ResourceClient)` to `(*ResourceClient, error)`
+- Function `NewPrivateEndpointConnectionsClient` return value(s) have been changed from `(*PrivateEndpointConnectionsClient)` to `(*PrivateEndpointConnectionsClient, error)`
+- Function `*ResourceClient.ListJobs` return value(s) have been changed from `(*ResourceClientListJobsPager)` to `(*runtime.Pager[ResourceClientListJobsResponse])`
+- Function `*ResourceClient.ListBySubscription` return value(s) have been changed from `(*ResourceClientListBySubscriptionPager)` to `(*runtime.Pager[ResourceClientListBySubscriptionResponse])`
+- Function `*Client.BeginManualFailover` return value(s) have been changed from `(ClientManualFailoverPollerResponse, error)` to `(*armruntime.Poller[ClientManualFailoverResponse], error)`
+- Function `*ResourceClient.ListEventHubConsumerGroups` return value(s) have been changed from `(*ResourceClientListEventHubConsumerGroupsPager)` to `(*runtime.Pager[ResourceClientListEventHubConsumerGroupsResponse])`
+- Function `*ResourceClient.ListByResourceGroup` return value(s) have been changed from `(*ResourceClientListByResourceGroupPager)` to `(*runtime.Pager[ResourceClientListByResourceGroupResponse])`
+- Function `*ResourceClient.GetEndpointHealth` return value(s) have been changed from `(*ResourceClientGetEndpointHealthPager)` to `(*runtime.Pager[ResourceClientGetEndpointHealthResponse])`
+- Function `*ResourceClient.GetValidSKUs` return value(s) have been changed from `(*ResourceClientGetValidSKUsPager)` to `(*runtime.Pager[ResourceClientGetValidSKUsResponse])`
+- Function `*ResourceClient.ListKeys` return value(s) have been changed from `(*ResourceClientListKeysPager)` to `(*runtime.Pager[ResourceClientListKeysResponse])`
+- Function `NewPrivateLinkResourcesClient` return value(s) have been changed from `(*PrivateLinkResourcesClient)` to `(*PrivateLinkResourcesClient, error)`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `*ResourceClient.BeginDelete` return value(s) have been changed from `(ResourceClientDeletePollerResponse, error)` to `(*armruntime.Poller[ResourceClientDeleteResponse], error)`
+- Function `*ResourceClient.GetQuotaMetrics` return value(s) have been changed from `(*ResourceClientGetQuotaMetricsPager)` to `(*runtime.Pager[ResourceClientGetQuotaMetricsResponse])`
+- Type of `RoutingTwin.Tags` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `RoutingTwinProperties.Desired` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `RoutingTwinProperties.Reported` has been changed from `map[string]interface{}` to `interface{}`
+- Const `RoutingSourceDigitalTwinChangeEvents` has been removed
+- Const `RoutingSourceMqttBrokerMessages` has been removed
+- Function `*ResourceClientDeletePoller.FinalResponse` has been removed
+- Function `PropertiesDeviceStreams.MarshalJSON` has been removed
+- Function `*ResourceClientListBySubscriptionPager.Err` has been removed
+- Function `EndpointHealthStatus.ToPtr` has been removed
+- Function `*ResourceClientUpdatePoller.Done` has been removed
+- Function `*ResourceClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*ResourceClientListByResourceGroupPager.Err` has been removed
+- Function `*ResourceClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*ResourceClientGetQuotaMetricsPager.PageResponse` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePoller.ResumeToken` has been removed
+- Function `*ResourceClientGetQuotaMetricsPager.Err` has been removed
+- Function `PrivateLinkServiceConnectionStatus.ToPtr` has been removed
+- Function `IotHubSKUTier.ToPtr` has been removed
+- Function `ResourceIdentityType.ToPtr` has been removed
+- Function `RoutingSource.ToPtr` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `*ResourceClientListJobsPager.NextPage` has been removed
+- Function `ResourceClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ClientManualFailoverPoller.Done` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Function `*ResourceClientCreateOrUpdatePoller.Done` has been removed
+- Function `IotHubNameUnavailabilityReason.ToPtr` has been removed
+- Function `AccessRights.ToPtr` has been removed
+- Function `*ResourceClientDeletePoller.ResumeToken` has been removed
+- Function `*ResourceClientListBySubscriptionPager.PageResponse` has been removed
+- Function `IotHubSKU.ToPtr` has been removed
+- Function `*ResourceClientDeletePoller.Done` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePoller.FinalResponse` has been removed
+- Function `AuthenticationType.ToPtr` has been removed
+- Function `*ResourceClientUpdatePollerResponse.Resume` has been removed
+- Function `*ResourceClientListEventHubConsumerGroupsPager.PageResponse` has been removed
+- Function `JobType.ToPtr` has been removed
+- Function `PrivateEndpointConnectionsClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ClientManualFailoverPoller.FinalResponse` has been removed
+- Function `*ResourceClientDeletePoller.Poll` has been removed
+- Function `ClientManualFailoverPollerResponse.PollUntilDone` has been removed
+- Function `*ResourceClientListByResourceGroupPager.NextPage` has been removed
+- Function `*PrivateEndpointConnectionsClientUpdatePollerResponse.Resume` has been removed
+- Function `*ResourceClientUpdatePoller.FinalResponse` has been removed
+- Function `*ClientManualFailoverPoller.ResumeToken` has been removed
+- Function `PublicNetworkAccess.ToPtr` has been removed
+- Function `*PrivateEndpointConnectionsClientUpdatePoller.Poll` has been removed
+- Function `NetworkRuleIPAction.ToPtr` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePoller.Poll` has been removed
+- Function `Capabilities.ToPtr` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePollerResponse.Resume` has been removed
+- Function `RouteErrorSeverity.ToPtr` has been removed
+- Function `*ResourceClientListKeysPager.PageResponse` has been removed
+- Function `*ResourceClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `RoutingStorageContainerPropertiesEncoding.ToPtr` has been removed
+- Function `EncryptionPropertiesDescription.MarshalJSON` has been removed
+- Function `TestResultStatus.ToPtr` has been removed
+- Function `ResourceClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ClientManualFailoverPollerResponse.Resume` has been removed
+- Function `*ResourceClientUpdatePoller.Poll` has been removed
+- Function `*ResourceClientDeletePollerResponse.Resume` has been removed
+- Function `*ResourceClientListKeysPager.Err` has been removed
+- Function `IotHubScaleType.ToPtr` has been removed
+- Function `JobStatus.ToPtr` has been removed
+- Function `*ResourceClientGetValidSKUsPager.PageResponse` has been removed
+- Function `*PrivateEndpointConnectionsClientUpdatePoller.Done` has been removed
+- Function `*PrivateEndpointConnectionsClientUpdatePoller.ResumeToken` has been removed
+- Function `*ClientManualFailoverPoller.Poll` has been removed
+- Function `*ResourceClientGetValidSKUsPager.Err` has been removed
+- Function `IotHubReplicaRoleType.ToPtr` has been removed
+- Function `*ResourceClientListEventHubConsumerGroupsPager.NextPage` has been removed
+- Function `*ResourceClientGetEndpointHealthPager.NextPage` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePoller.Done` has been removed
+- Function `*ResourceClientListJobsPager.Err` has been removed
+- Function `*ResourceClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `DefaultAction.ToPtr` has been removed
+- Function `*ResourceClientGetQuotaMetricsPager.NextPage` has been removed
+- Function `*ResourceClientListBySubscriptionPager.NextPage` has been removed
+- Function `*ResourceClientGetEndpointHealthPager.Err` has been removed
+- Function `IPFilterActionType.ToPtr` has been removed
+- Function `*ResourceClientListJobsPager.PageResponse` has been removed
+- Function `*ResourceClientListKeysPager.NextPage` has been removed
+- Function `ResourceClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `PrivateEndpointConnectionsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ResourceClientGetValidSKUsPager.NextPage` has been removed
+- Function `*ResourceClientUpdatePoller.ResumeToken` has been removed
+- Function `*ResourceClientListEventHubConsumerGroupsPager.Err` has been removed
+- Function `*ResourceClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ResourceClientGetEndpointHealthPager.PageResponse` has been removed
+- Function `*PrivateEndpointConnectionsClientUpdatePoller.FinalResponse` has been removed
+- Struct `CertificatesClientCreateOrUpdateResult` has been removed
+- Struct `CertificatesClientGenerateVerificationCodeResult` has been removed
+- Struct `CertificatesClientGetResult` has been removed
+- Struct `CertificatesClientListByIotHubResult` has been removed
+- Struct `CertificatesClientVerifyResult` has been removed
+- Struct `ClientManualFailoverPoller` has been removed
+- Struct `ClientManualFailoverPollerResponse` has been removed
+- Struct `EncryptionPropertiesDescription` has been removed
+- Struct `KeyVaultKeyProperties` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `PrivateEndpointConnectionsClientDeletePoller` has been removed
+- Struct `PrivateEndpointConnectionsClientDeletePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsClientDeleteResult` has been removed
+- Struct `PrivateEndpointConnectionsClientGetResult` has been removed
+- Struct `PrivateEndpointConnectionsClientListResult` has been removed
+- Struct `PrivateEndpointConnectionsClientUpdatePoller` has been removed
+- Struct `PrivateEndpointConnectionsClientUpdatePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsClientUpdateResult` has been removed
+- Struct `PrivateLinkResourcesClientGetResult` has been removed
+- Struct `PrivateLinkResourcesClientListResult` has been removed
+- Struct `PropertiesDeviceStreams` has been removed
+- Struct `ResourceClientCheckNameAvailabilityResult` has been removed
+- Struct `ResourceClientCreateEventHubConsumerGroupResult` has been removed
+- Struct `ResourceClientCreateOrUpdatePoller` has been removed
+- Struct `ResourceClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ResourceClientCreateOrUpdateResult` has been removed
+- Struct `ResourceClientDeletePoller` has been removed
+- Struct `ResourceClientDeletePollerResponse` has been removed
+- Struct `ResourceClientDeleteResult` has been removed
+- Struct `ResourceClientExportDevicesResult` has been removed
+- Struct `ResourceClientGetEndpointHealthPager` has been removed
+- Struct `ResourceClientGetEndpointHealthResult` has been removed
+- Struct `ResourceClientGetEventHubConsumerGroupResult` has been removed
+- Struct `ResourceClientGetJobResult` has been removed
+- Struct `ResourceClientGetKeysForKeyNameResult` has been removed
+- Struct `ResourceClientGetQuotaMetricsPager` has been removed
+- Struct `ResourceClientGetQuotaMetricsResult` has been removed
+- Struct `ResourceClientGetResult` has been removed
+- Struct `ResourceClientGetStatsResult` has been removed
+- Struct `ResourceClientGetValidSKUsPager` has been removed
+- Struct `ResourceClientGetValidSKUsResult` has been removed
+- Struct `ResourceClientImportDevicesResult` has been removed
+- Struct `ResourceClientListByResourceGroupPager` has been removed
+- Struct `ResourceClientListByResourceGroupResult` has been removed
+- Struct `ResourceClientListBySubscriptionPager` has been removed
+- Struct `ResourceClientListBySubscriptionResult` has been removed
+- Struct `ResourceClientListEventHubConsumerGroupsPager` has been removed
+- Struct `ResourceClientListEventHubConsumerGroupsResult` has been removed
+- Struct `ResourceClientListJobsPager` has been removed
+- Struct `ResourceClientListJobsResult` has been removed
+- Struct `ResourceClientListKeysPager` has been removed
+- Struct `ResourceClientListKeysResult` has been removed
+- Struct `ResourceClientTestAllRoutesResult` has been removed
+- Struct `ResourceClientTestRouteResult` has been removed
+- Struct `ResourceClientUpdatePoller` has been removed
+- Struct `ResourceClientUpdatePollerResponse` has been removed
+- Struct `ResourceClientUpdateResult` has been removed
+- Struct `ResourceProviderCommonClientGetSubscriptionQuotaResult` has been removed
+- Field `ResourceClientCreateEventHubConsumerGroupResult` of struct `ResourceClientCreateEventHubConsumerGroupResponse` has been removed
+- Field `RawResponse` of struct `ResourceClientCreateEventHubConsumerGroupResponse` has been removed
+- Field `ResourceClientCreateOrUpdateResult` of struct `ResourceClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ResourceClientCreateOrUpdateResponse` has been removed
+- Field `CertificatesClientCreateOrUpdateResult` of struct `CertificatesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `CertificatesClientCreateOrUpdateResponse` has been removed
+- Field `ResourceClientListByResourceGroupResult` of struct `ResourceClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `ResourceClientListByResourceGroupResponse` has been removed
+- Field `ResourceClientListBySubscriptionResult` of struct `ResourceClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `ResourceClientListBySubscriptionResponse` has been removed
+- Field `ResourceClientTestAllRoutesResult` of struct `ResourceClientTestAllRoutesResponse` has been removed
+- Field `RawResponse` of struct `ResourceClientTestAllRoutesResponse` has been removed
+- Field `PrivateEndpointConnectionsClientUpdateResult` of struct `PrivateEndpointConnectionsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientUpdateResponse` has been removed
+- Field `ResourceClientExportDevicesResult` of struct `ResourceClientExportDevicesResponse` has been removed
+- Field `RawResponse` of struct `ResourceClientExportDevicesResponse` has been removed
+- Field `RawResponse` of struct `CertificatesClientDeleteResponse` has been removed
+- Field `ResourceClientTestRouteResult` of struct `ResourceClientTestRouteResponse` has been removed
+- Field `RawResponse` of struct `ResourceClientTestRouteResponse` has been removed
+- Field `ResourceClientGetEndpointHealthResult` of struct `ResourceClientGetEndpointHealthResponse` has been removed
+- Field `RawResponse` of struct `ResourceClientGetEndpointHealthResponse` has been removed
+- Field `CertificatesClientGenerateVerificationCodeResult` of struct `CertificatesClientGenerateVerificationCodeResponse` has been removed
+- Field `RawResponse` of struct `CertificatesClientGenerateVerificationCodeResponse` has been removed
+- Field `ResourceClientImportDevicesResult` of struct `ResourceClientImportDevicesResponse` has been removed
+- Field `RawResponse` of struct `ResourceClientImportDevicesResponse` has been removed
+- Field `Encryption` of struct `Properties` has been removed
+- Field `DeviceStreams` of struct `Properties` has been removed
+- Field `ResourceProviderCommonClientGetSubscriptionQuotaResult` of struct `ResourceProviderCommonClientGetSubscriptionQuotaResponse` has been removed
+- Field `RawResponse` of struct `ResourceProviderCommonClientGetSubscriptionQuotaResponse` has been removed
+- Field `ResourceClientGetValidSKUsResult` of struct `ResourceClientGetValidSKUsResponse` has been removed
+- Field `RawResponse` of struct `ResourceClientGetValidSKUsResponse` has been removed
+- Field `ResourceClientGetStatsResult` of struct `ResourceClientGetStatsResponse` has been removed
+- Field `RawResponse` of struct `ResourceClientGetStatsResponse` has been removed
+- Field `ResourceClientGetKeysForKeyNameResult` of struct `ResourceClientGetKeysForKeyNameResponse` has been removed
+- Field `RawResponse` of struct `ResourceClientGetKeysForKeyNameResponse` has been removed
+- Field `CertificatesClientGetResult` of struct `CertificatesClientGetResponse` has been removed
+- Field `RawResponse` of struct `CertificatesClientGetResponse` has been removed
+- Field `ResourceClientGetEventHubConsumerGroupResult` of struct `ResourceClientGetEventHubConsumerGroupResponse` has been removed
+- Field `RawResponse` of struct `ResourceClientGetEventHubConsumerGroupResponse` has been removed
+- Field `ResourceClientListEventHubConsumerGroupsResult` of struct `ResourceClientListEventHubConsumerGroupsResponse` has been removed
+- Field `RawResponse` of struct `ResourceClientListEventHubConsumerGroupsResponse` has been removed
+- Field `ResourceClientCheckNameAvailabilityResult` of struct `ResourceClientCheckNameAvailabilityResponse` has been removed
+- Field `RawResponse` of struct `ResourceClientCheckNameAvailabilityResponse` has been removed
+- Field `PrivateEndpointConnectionsClientDeleteResult` of struct `PrivateEndpointConnectionsClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientDeleteResponse` has been removed
+- Field `ResourceClientGetJobResult` of struct `ResourceClientGetJobResponse` has been removed
+- Field `RawResponse` of struct `ResourceClientGetJobResponse` has been removed
+- Field `ResourceClientListKeysResult` of struct `ResourceClientListKeysResponse` has been removed
+- Field `RawResponse` of struct `ResourceClientListKeysResponse` has been removed
+- Field `PrivateLinkResourcesClientListResult` of struct `PrivateLinkResourcesClientListResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkResourcesClientListResponse` has been removed
+- Field `ResourceClientGetResult` of struct `ResourceClientGetResponse` has been removed
+- Field `RawResponse` of struct `ResourceClientGetResponse` has been removed
+- Field `RawResponse` of struct `ResourceClientDeleteEventHubConsumerGroupResponse` has been removed
+- Field `RawResponse` of struct `ClientManualFailoverResponse` has been removed
+- Field `ResourceClientGetQuotaMetricsResult` of struct `ResourceClientGetQuotaMetricsResponse` has been removed
+- Field `RawResponse` of struct `ResourceClientGetQuotaMetricsResponse` has been removed
+- Field `PrivateEndpointConnectionsClientListResult` of struct `PrivateEndpointConnectionsClientListResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientListResponse` has been removed
+- Field `PrivateLinkResourcesClientGetResult` of struct `PrivateLinkResourcesClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkResourcesClientGetResponse` has been removed
+- Field `ResourceClientUpdateResult` of struct `ResourceClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ResourceClientUpdateResponse` has been removed
+- Field `CertificatesClientListByIotHubResult` of struct `CertificatesClientListByIotHubResponse` has been removed
+- Field `RawResponse` of struct `CertificatesClientListByIotHubResponse` has been removed
+- Field `CertificatesClientVerifyResult` of struct `CertificatesClientVerifyResponse` has been removed
+- Field `RawResponse` of struct `CertificatesClientVerifyResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `ResourceClientDeleteResult` of struct `ResourceClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `ResourceClientDeleteResponse` has been removed
+- Field `PrivateEndpointConnectionsClientGetResult` of struct `PrivateEndpointConnectionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientGetResponse` has been removed
+- Field `ResourceClientListJobsResult` of struct `ResourceClientListJobsResponse` has been removed
+- Field `RawResponse` of struct `ResourceClientListJobsResponse` has been removed
+
+### Features Added
+
+- New const `CreatedByTypeApplication`
+- New const `CreatedByTypeUser`
+- New const `CreatedByTypeKey`
+- New const `CreatedByTypeManagedIdentity`
+- New function `timeRFC3339.MarshalJSON() ([]byte, error)`
+- New function `*timeRFC3339.UnmarshalText([]byte) error`
+- New function `SystemData.MarshalJSON() ([]byte, error)`
+- New function `*timeRFC3339.UnmarshalJSON([]byte) error`
+- New function `*SystemData.UnmarshalJSON([]byte) error`
+- New function `timeRFC3339.MarshalText() ([]byte, error)`
+- New function `*timeRFC3339.Parse(string) error`
+- New function `PossibleCreatedByTypeValues() []CreatedByType`
+- New struct `SystemData`
+- New anonymous field `Description` in struct `ResourceClientDeleteResponse`
+- New anonymous field `DescriptionListResult` in struct `ResourceClientListByResourceGroupResponse`
+- New anonymous field `CertificateDescription` in struct `CertificatesClientGetResponse`
+- New anonymous field `RegistryStatistics` in struct `ResourceClientGetStatsResponse`
+- New anonymous field `TestAllRoutesResult` in struct `ResourceClientTestAllRoutesResponse`
+- New anonymous field `SharedAccessSignatureAuthorizationRuleListResult` in struct `ResourceClientListKeysResponse`
+- New field `EnableDataResidency` in struct `Properties`
+- New anonymous field `CertificateDescription` in struct `CertificatesClientVerifyResponse`
+- New field `ResumeToken` in struct `PrivateEndpointConnectionsClientBeginDeleteOptions`
+- New field `PrivateEndpointConnectionArray` in struct `PrivateEndpointConnectionsClientListResponse`
+- New anonymous field `EndpointHealthDataListResult` in struct `ResourceClientGetEndpointHealthResponse`
+- New anonymous field `JobResponse` in struct `ResourceClientExportDevicesResponse`
+- New anonymous field `EventHubConsumerGroupsListResult` in struct `ResourceClientListEventHubConsumerGroupsResponse`
+- New anonymous field `PrivateLinkResources` in struct `PrivateLinkResourcesClientListResponse`
+- New anonymous field `TestRouteResult` in struct `ResourceClientTestRouteResponse`
+- New anonymous field `QuotaMetricInfoListResult` in struct `ResourceClientGetQuotaMetricsResponse`
+- New anonymous field `PrivateEndpointConnection` in struct `PrivateEndpointConnectionsClientDeleteResponse`
+- New field `ResumeToken` in struct `ResourceClientBeginCreateOrUpdateOptions`
+- New anonymous field `EventHubConsumerGroupInfo` in struct `ResourceClientGetEventHubConsumerGroupResponse`
+- New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
+- New anonymous field `PrivateEndpointConnection` in struct `PrivateEndpointConnectionsClientUpdateResponse`
+- New field `ResumeToken` in struct `ResourceClientBeginDeleteOptions`
+- New field `SystemData` in struct `Description`
+- New anonymous field `DescriptionListResult` in struct `ResourceClientListBySubscriptionResponse`
+- New anonymous field `Description` in struct `ResourceClientCreateOrUpdateResponse`
+- New anonymous field `EventHubConsumerGroupInfo` in struct `ResourceClientCreateEventHubConsumerGroupResponse`
+- New anonymous field `SharedAccessSignatureAuthorizationRule` in struct `ResourceClientGetKeysForKeyNameResponse`
+- New anonymous field `GroupIDInformation` in struct `PrivateLinkResourcesClientGetResponse`
+- New field `ResumeToken` in struct `PrivateEndpointConnectionsClientBeginUpdateOptions`
+- New anonymous field `UserSubscriptionQuotaListResult` in struct `ResourceProviderCommonClientGetSubscriptionQuotaResponse`
+- New field `ResumeToken` in struct `ClientBeginManualFailoverOptions`
+- New anonymous field `CertificateListDescription` in struct `CertificatesClientListByIotHubResponse`
+- New anonymous field `JobResponse` in struct `ResourceClientImportDevicesResponse`
+- New anonymous field `JobResponse` in struct `ResourceClientGetJobResponse`
+- New field `ResumeToken` in struct `ResourceClientBeginUpdateOptions`
+- New anonymous field `Description` in struct `ResourceClientGetResponse`
+- New anonymous field `CertificateWithNonceDescription` in struct `CertificatesClientGenerateVerificationCodeResponse`
+- New anonymous field `SKUDescriptionListResult` in struct `ResourceClientGetValidSKUsResponse`
+- New anonymous field `NameAvailabilityInfo` in struct `ResourceClientCheckNameAvailabilityResponse`
+- New anonymous field `PrivateEndpointConnection` in struct `PrivateEndpointConnectionsClientGetResponse`
+- New anonymous field `JobResponseListResult` in struct `ResourceClientListJobsResponse`
+- New anonymous field `CertificateDescription` in struct `CertificatesClientCreateOrUpdateResponse`
+- New anonymous field `Description` in struct `ResourceClientUpdateResponse`
+
+
 ## 0.3.1 (2022-02-22)
 
 ### Other Changes

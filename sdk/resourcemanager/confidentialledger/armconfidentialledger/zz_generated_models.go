@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,12 +8,7 @@
 
 package armconfidentialledger
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
 
 // AADBasedSecurityPrincipal - AAD based security principal with associated Ledger RoleName
 type AADBasedSecurityPrincipal struct {
@@ -29,7 +24,7 @@ type AADBasedSecurityPrincipal struct {
 
 // CertBasedSecurityPrincipal - Cert based security principal with Ledger RoleName
 type CertBasedSecurityPrincipal struct {
-	// Base64 encoded public key of the user cert (.pem or .cer)
+	// Public key of the user cert (.pem or .cer)
 	Cert *string `json:"cert,omitempty"`
 
 	// LedgerRole associated with the Security Principal of Ledger
@@ -86,23 +81,10 @@ type ConfidentialLedger struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ConfidentialLedger.
-func (c ConfidentialLedger) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", c.ID)
-	populate(objectMap, "location", c.Location)
-	populate(objectMap, "name", c.Name)
-	populate(objectMap, "properties", c.Properties)
-	populate(objectMap, "systemData", c.SystemData)
-	populate(objectMap, "tags", c.Tags)
-	populate(objectMap, "type", c.Type)
-	return json.Marshal(objectMap)
-}
-
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info map[string]interface{} `json:"info,omitempty" azure:"ro"`
+	Info interface{} `json:"info,omitempty" azure:"ro"`
 
 	// READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -126,17 +108,6 @@ type ErrorDetail struct {
 	Target *string `json:"target,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ErrorDetail.
-func (e ErrorDetail) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalInfo", e.AdditionalInfo)
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "message", e.Message)
-	populate(objectMap, "target", e.Target)
-	return json.Marshal(objectMap)
-}
-
 // ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
 // (This also follows the OData error response format.).
 type ErrorResponse struct {
@@ -146,17 +117,20 @@ type ErrorResponse struct {
 
 // LedgerClientBeginCreateOptions contains the optional parameters for the LedgerClient.BeginCreate method.
 type LedgerClientBeginCreateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // LedgerClientBeginDeleteOptions contains the optional parameters for the LedgerClient.BeginDelete method.
 type LedgerClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // LedgerClientBeginUpdateOptions contains the optional parameters for the LedgerClient.BeginUpdate method.
 type LedgerClientBeginUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // LedgerClientGetOptions contains the optional parameters for the LedgerClient.Get method.
@@ -203,20 +177,6 @@ type LedgerProperties struct {
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type LedgerProperties.
-func (l LedgerProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "aadBasedSecurityPrincipals", l.AADBasedSecurityPrincipals)
-	populate(objectMap, "certBasedSecurityPrincipals", l.CertBasedSecurityPrincipals)
-	populate(objectMap, "identityServiceUri", l.IdentityServiceURI)
-	populate(objectMap, "ledgerInternalNamespace", l.LedgerInternalNamespace)
-	populate(objectMap, "ledgerName", l.LedgerName)
-	populate(objectMap, "ledgerType", l.LedgerType)
-	populate(objectMap, "ledgerUri", l.LedgerURI)
-	populate(objectMap, "provisioningState", l.ProvisioningState)
-	return json.Marshal(objectMap)
-}
-
 // List - Object that includes an array of Confidential Ledgers and a possible link for next set.
 type List struct {
 	// The URL the client should use to fetch the next page (per server side paging).
@@ -224,20 +184,6 @@ type List struct {
 
 	// List of Confidential Ledgers
 	Value []*ConfidentialLedger `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type List.
-func (l List) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", l.NextLink)
-	populate(objectMap, "value", l.Value)
-	return json.Marshal(objectMap)
-}
-
-// Location of the ARM Resource
-type Location struct {
-	// The Azure location where the Confidential Ledger is running.
-	Location *string `json:"location,omitempty"`
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
@@ -258,6 +204,12 @@ type Resource struct {
 
 	// READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// ResourceLocation - Location of the ARM Resource
+type ResourceLocation struct {
+	// The Azure location where the Confidential Ledger is running.
+	Location *string `json:"location,omitempty"`
 }
 
 // ResourceProviderOperationDefinition - Describes the Resource Provider Operation.
@@ -296,14 +248,6 @@ type ResourceProviderOperationList struct {
 	Value []*ResourceProviderOperationDefinition `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ResourceProviderOperationList.
-func (r ResourceProviderOperationList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", r.NextLink)
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
-}
-
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
@@ -325,79 +269,8 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SystemData.
-func (s SystemData) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
-	populate(objectMap, "createdBy", s.CreatedBy)
-	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
-	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
-	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SystemData.
-func (s *SystemData) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdAt":
-			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
-			delete(rawMsg, key)
-		case "createdBy":
-			err = unpopulate(val, &s.CreatedBy)
-			delete(rawMsg, key)
-		case "createdByType":
-			err = unpopulate(val, &s.CreatedByType)
-			delete(rawMsg, key)
-		case "lastModifiedAt":
-			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
-			delete(rawMsg, key)
-		case "lastModifiedBy":
-			err = unpopulate(val, &s.LastModifiedBy)
-			delete(rawMsg, key)
-		case "lastModifiedByType":
-			err = unpopulate(val, &s.LastModifiedByType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // Tags for Confidential Ledger Resource
 type Tags struct {
 	// Additional tags for Confidential Ledger
 	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Tags.
-func (t Tags) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "tags", t.Tags)
-	return json.Marshal(objectMap)
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

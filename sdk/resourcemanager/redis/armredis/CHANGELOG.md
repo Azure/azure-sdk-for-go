@@ -1,5 +1,251 @@
 # Release History
 
+## 0.4.0 (2022-04-12)
+### Breaking Changes
+
+- Function `*Client.BeginDelete` return value(s) have been changed from `(ClientDeletePollerResponse, error)` to `(*armruntime.Poller[ClientDeleteResponse], error)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `*Client.ListByResourceGroup` return value(s) have been changed from `(*ClientListByResourceGroupPager)` to `(*runtime.Pager[ClientListByResourceGroupResponse])`
+- Function `NewFirewallRulesClient` return value(s) have been changed from `(*FirewallRulesClient)` to `(*FirewallRulesClient, error)`
+- Function `*Client.ListBySubscription` return value(s) have been changed from `(*ClientListBySubscriptionPager)` to `(*runtime.Pager[ClientListBySubscriptionResponse])`
+- Function `*Client.BeginImportData` return value(s) have been changed from `(ClientImportDataPollerResponse, error)` to `(*armruntime.Poller[ClientImportDataResponse], error)`
+- Function `*PrivateEndpointConnectionsClient.List` parameter(s) have been changed from `(context.Context, string, string, *PrivateEndpointConnectionsClientListOptions)` to `(string, string, *PrivateEndpointConnectionsClientListOptions)`
+- Function `*PrivateEndpointConnectionsClient.List` return value(s) have been changed from `(PrivateEndpointConnectionsClientListResponse, error)` to `(*runtime.Pager[PrivateEndpointConnectionsClientListResponse])`
+- Function `NewPatchSchedulesClient` return value(s) have been changed from `(*PatchSchedulesClient)` to `(*PatchSchedulesClient, error)`
+- Function `*FirewallRulesClient.List` return value(s) have been changed from `(*FirewallRulesClientListPager)` to `(*runtime.Pager[FirewallRulesClientListResponse])`
+- Function `NewPrivateLinkResourcesClient` return value(s) have been changed from `(*PrivateLinkResourcesClient)` to `(*PrivateLinkResourcesClient, error)`
+- Function `*LinkedServerClient.List` return value(s) have been changed from `(*LinkedServerClientListPager)` to `(*runtime.Pager[LinkedServerClientListResponse])`
+- Function `*Client.ListUpgradeNotifications` return value(s) have been changed from `(*ClientListUpgradeNotificationsPager)` to `(*runtime.Pager[ClientListUpgradeNotificationsResponse])`
+- Function `*Client.BeginCreate` return value(s) have been changed from `(ClientCreatePollerResponse, error)` to `(*armruntime.Poller[ClientCreateResponse], error)`
+- Function `*LinkedServerClient.BeginCreate` return value(s) have been changed from `(LinkedServerClientCreatePollerResponse, error)` to `(*armruntime.Poller[LinkedServerClientCreateResponse], error)`
+- Function `*Client.BeginExportData` return value(s) have been changed from `(ClientExportDataPollerResponse, error)` to `(*armruntime.Poller[ClientExportDataResponse], error)`
+- Function `*PrivateEndpointConnectionsClient.BeginPut` return value(s) have been changed from `(PrivateEndpointConnectionsClientPutPollerResponse, error)` to `(*armruntime.Poller[PrivateEndpointConnectionsClientPutResponse], error)`
+- Function `NewClient` return value(s) have been changed from `(*Client)` to `(*Client, error)`
+- Function `NewPrivateEndpointConnectionsClient` return value(s) have been changed from `(*PrivateEndpointConnectionsClient)` to `(*PrivateEndpointConnectionsClient, error)`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `*PatchSchedulesClient.ListByRedisResource` return value(s) have been changed from `(*PatchSchedulesClientListByRedisResourcePager)` to `(*runtime.Pager[PatchSchedulesClientListByRedisResourceResponse])`
+- Function `NewLinkedServerClient` return value(s) have been changed from `(*LinkedServerClient)` to `(*LinkedServerClient, error)`
+- Function `*PrivateLinkResourcesClient.ListByRedisCache` parameter(s) have been changed from `(context.Context, string, string, *PrivateLinkResourcesClientListByRedisCacheOptions)` to `(string, string, *PrivateLinkResourcesClientListByRedisCacheOptions)`
+- Function `*PrivateLinkResourcesClient.ListByRedisCache` return value(s) have been changed from `(PrivateLinkResourcesClientListByRedisCacheResponse, error)` to `(*runtime.Pager[PrivateLinkResourcesClientListByRedisCacheResponse])`
+- Function `ManagedServiceIdentityType.ToPtr` has been removed
+- Function `*ClientListByResourceGroupPager.Err` has been removed
+- Function `*PrivateEndpointConnectionsClientPutPoller.Done` has been removed
+- Function `*LinkedServerClientCreatePoller.FinalResponse` has been removed
+- Function `PrivateEndpointConnectionProvisioningState.ToPtr` has been removed
+- Function `TLSVersion.ToPtr` has been removed
+- Function `PrivateEndpointConnectionsClientPutPollerResponse.PollUntilDone` has been removed
+- Function `*ClientImportDataPoller.FinalResponse` has been removed
+- Function `ProvisioningState.ToPtr` has been removed
+- Function `ClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `*ClientImportDataPoller.Poll` has been removed
+- Function `*ClientListBySubscriptionPager.NextPage` has been removed
+- Function `*ClientCreatePoller.ResumeToken` has been removed
+- Function `*ClientCreatePollerResponse.Resume` has been removed
+- Function `*ClientDeletePoller.ResumeToken` has been removed
+- Function `LinkedServerClientCreatePollerResponse.PollUntilDone` has been removed
+- Function `PublicNetworkAccess.ToPtr` has been removed
+- Function `*ClientExportDataPoller.Poll` has been removed
+- Function `*ClientListByResourceGroupPager.NextPage` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Function `*LinkedServerClientCreatePoller.Done` has been removed
+- Function `ClientImportDataPollerResponse.PollUntilDone` has been removed
+- Function `*PrivateEndpointConnectionsClientPutPollerResponse.Resume` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `*PatchSchedulesClientListByRedisResourcePager.PageResponse` has been removed
+- Function `*ClientDeletePoller.FinalResponse` has been removed
+- Function `*ClientListUpgradeNotificationsPager.NextPage` has been removed
+- Function `*FirewallRulesClientListPager.PageResponse` has been removed
+- Function `*LinkedServerClientCreatePollerResponse.Resume` has been removed
+- Function `*ClientCreatePoller.Poll` has been removed
+- Function `*PrivateEndpointConnectionsClientPutPoller.ResumeToken` has been removed
+- Function `DayOfWeek.ToPtr` has been removed
+- Function `SKUName.ToPtr` has been removed
+- Function `*ClientCreatePoller.Done` has been removed
+- Function `*LinkedServerClientListPager.NextPage` has been removed
+- Function `PrivateEndpointServiceConnectionStatus.ToPtr` has been removed
+- Function `*ClientImportDataPoller.ResumeToken` has been removed
+- Function `*ClientListUpgradeNotificationsPager.PageResponse` has been removed
+- Function `*ClientImportDataPollerResponse.Resume` has been removed
+- Function `ClientExportDataPollerResponse.PollUntilDone` has been removed
+- Function `*PrivateEndpointConnectionsClientPutPoller.FinalResponse` has been removed
+- Function `RedisKeyType.ToPtr` has been removed
+- Function `ClientCreatePollerResponse.PollUntilDone` has been removed
+- Function `*ClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*LinkedServerClientCreatePoller.Poll` has been removed
+- Function `*ClientExportDataPoller.FinalResponse` has been removed
+- Function `*LinkedServerClientListPager.Err` has been removed
+- Function `*LinkedServerClientCreatePoller.ResumeToken` has been removed
+- Function `*ClientImportDataPoller.Done` has been removed
+- Function `*ClientListUpgradeNotificationsPager.Err` has been removed
+- Function `*PatchSchedulesClientListByRedisResourcePager.Err` has been removed
+- Function `*ClientExportDataPoller.ResumeToken` has been removed
+- Function `*LinkedServerClientListPager.PageResponse` has been removed
+- Function `*ClientDeletePoller.Poll` has been removed
+- Function `*PrivateEndpointConnectionsClientPutPoller.Poll` has been removed
+- Function `*FirewallRulesClientListPager.NextPage` has been removed
+- Function `DefaultName.ToPtr` has been removed
+- Function `*ClientListBySubscriptionPager.PageResponse` has been removed
+- Function `*ClientExportDataPoller.Done` has been removed
+- Function `*ClientDeletePoller.Done` has been removed
+- Function `*FirewallRulesClientListPager.Err` has been removed
+- Function `*ClientListBySubscriptionPager.Err` has been removed
+- Function `*ClientExportDataPollerResponse.Resume` has been removed
+- Function `RebootType.ToPtr` has been removed
+- Function `*ClientDeletePollerResponse.Resume` has been removed
+- Function `SKUFamily.ToPtr` has been removed
+- Function `*PatchSchedulesClientListByRedisResourcePager.NextPage` has been removed
+- Function `ReplicationRole.ToPtr` has been removed
+- Function `*ClientCreatePoller.FinalResponse` has been removed
+- Struct `ClientCreatePoller` has been removed
+- Struct `ClientCreatePollerResponse` has been removed
+- Struct `ClientCreateResult` has been removed
+- Struct `ClientDeletePoller` has been removed
+- Struct `ClientDeletePollerResponse` has been removed
+- Struct `ClientExportDataPoller` has been removed
+- Struct `ClientExportDataPollerResponse` has been removed
+- Struct `ClientForceRebootResult` has been removed
+- Struct `ClientGetResult` has been removed
+- Struct `ClientImportDataPoller` has been removed
+- Struct `ClientImportDataPollerResponse` has been removed
+- Struct `ClientListByResourceGroupPager` has been removed
+- Struct `ClientListByResourceGroupResult` has been removed
+- Struct `ClientListBySubscriptionPager` has been removed
+- Struct `ClientListBySubscriptionResult` has been removed
+- Struct `ClientListKeysResult` has been removed
+- Struct `ClientListUpgradeNotificationsPager` has been removed
+- Struct `ClientListUpgradeNotificationsResult` has been removed
+- Struct `ClientRegenerateKeyResult` has been removed
+- Struct `ClientUpdateResult` has been removed
+- Struct `FirewallRulesClientCreateOrUpdateResult` has been removed
+- Struct `FirewallRulesClientGetResult` has been removed
+- Struct `FirewallRulesClientListPager` has been removed
+- Struct `FirewallRulesClientListResult` has been removed
+- Struct `LinkedServerClientCreatePoller` has been removed
+- Struct `LinkedServerClientCreatePollerResponse` has been removed
+- Struct `LinkedServerClientCreateResult` has been removed
+- Struct `LinkedServerClientGetResult` has been removed
+- Struct `LinkedServerClientListPager` has been removed
+- Struct `LinkedServerClientListResult` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `PatchSchedulesClientCreateOrUpdateResult` has been removed
+- Struct `PatchSchedulesClientGetResult` has been removed
+- Struct `PatchSchedulesClientListByRedisResourcePager` has been removed
+- Struct `PatchSchedulesClientListByRedisResourceResult` has been removed
+- Struct `PrivateEndpointConnectionsClientGetResult` has been removed
+- Struct `PrivateEndpointConnectionsClientListResult` has been removed
+- Struct `PrivateEndpointConnectionsClientPutPoller` has been removed
+- Struct `PrivateEndpointConnectionsClientPutPollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsClientPutResult` has been removed
+- Struct `PrivateLinkResourcesClientListByRedisCacheResult` has been removed
+- Field `PatchSchedulesClientGetResult` of struct `PatchSchedulesClientGetResponse` has been removed
+- Field `RawResponse` of struct `PatchSchedulesClientGetResponse` has been removed
+- Field `FirewallRulesClientListResult` of struct `FirewallRulesClientListResponse` has been removed
+- Field `RawResponse` of struct `FirewallRulesClientListResponse` has been removed
+- Field `ClientListUpgradeNotificationsResult` of struct `ClientListUpgradeNotificationsResponse` has been removed
+- Field `RawResponse` of struct `ClientListUpgradeNotificationsResponse` has been removed
+- Field `ClientUpdateResult` of struct `ClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ClientUpdateResponse` has been removed
+- Field `ClientCreateResult` of struct `ClientCreateResponse` has been removed
+- Field `RawResponse` of struct `ClientCreateResponse` has been removed
+- Field `RawResponse` of struct `PatchSchedulesClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `FirewallRulesClientDeleteResponse` has been removed
+- Field `LinkedServerClientGetResult` of struct `LinkedServerClientGetResponse` has been removed
+- Field `RawResponse` of struct `LinkedServerClientGetResponse` has been removed
+- Field `RawResponse` of struct `ClientImportDataResponse` has been removed
+- Field `ClientListBySubscriptionResult` of struct `ClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `ClientListBySubscriptionResponse` has been removed
+- Field `PatchSchedulesClientListByRedisResourceResult` of struct `PatchSchedulesClientListByRedisResourceResponse` has been removed
+- Field `RawResponse` of struct `PatchSchedulesClientListByRedisResourceResponse` has been removed
+- Field `PatchSchedulesClientCreateOrUpdateResult` of struct `PatchSchedulesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `PatchSchedulesClientCreateOrUpdateResponse` has been removed
+- Field `FirewallRulesClientCreateOrUpdateResult` of struct `FirewallRulesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `FirewallRulesClientCreateOrUpdateResponse` has been removed
+- Field `ClientListByResourceGroupResult` of struct `ClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `ClientListByResourceGroupResponse` has been removed
+- Field `PrivateLinkResourcesClientListByRedisCacheResult` of struct `PrivateLinkResourcesClientListByRedisCacheResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkResourcesClientListByRedisCacheResponse` has been removed
+- Field `ClientListKeysResult` of struct `ClientListKeysResponse` has been removed
+- Field `RawResponse` of struct `ClientListKeysResponse` has been removed
+- Field `PrivateEndpointConnectionsClientListResult` of struct `PrivateEndpointConnectionsClientListResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientListResponse` has been removed
+- Field `FirewallRulesClientGetResult` of struct `FirewallRulesClientGetResponse` has been removed
+- Field `RawResponse` of struct `FirewallRulesClientGetResponse` has been removed
+- Field `ClientRegenerateKeyResult` of struct `ClientRegenerateKeyResponse` has been removed
+- Field `RawResponse` of struct `ClientRegenerateKeyResponse` has been removed
+- Field `RawResponse` of struct `LinkedServerClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `ClientCheckNameAvailabilityResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `LinkedServerClientCreateResult` of struct `LinkedServerClientCreateResponse` has been removed
+- Field `RawResponse` of struct `LinkedServerClientCreateResponse` has been removed
+- Field `PrivateEndpointConnectionsClientPutResult` of struct `PrivateEndpointConnectionsClientPutResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientPutResponse` has been removed
+- Field `ClientForceRebootResult` of struct `ClientForceRebootResponse` has been removed
+- Field `RawResponse` of struct `ClientForceRebootResponse` has been removed
+- Field `PrivateEndpointConnectionsClientGetResult` of struct `PrivateEndpointConnectionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientGetResponse` has been removed
+- Field `LinkedServerClientListResult` of struct `LinkedServerClientListResponse` has been removed
+- Field `RawResponse` of struct `LinkedServerClientListResponse` has been removed
+- Field `ClientGetResult` of struct `ClientGetResponse` has been removed
+- Field `RawResponse` of struct `ClientGetResponse` has been removed
+- Field `RawResponse` of struct `ClientExportDataResponse` has been removed
+- Field `RawResponse` of struct `ClientDeleteResponse` has been removed
+
+### Features Added
+
+- New function `ErrorDetailAutoGenerated.MarshalJSON() ([]byte, error)`
+- New function `*OperationStatus.UnmarshalJSON([]byte) error`
+- New function `*AsyncOperationStatusClient.Get(context.Context, string, string, *AsyncOperationStatusClientGetOptions) (AsyncOperationStatusClientGetResponse, error)`
+- New function `*OperationStatusResult.UnmarshalJSON([]byte) error`
+- New function `ErrorDetail.MarshalJSON() ([]byte, error)`
+- New function `NewAsyncOperationStatusClient(string, azcore.TokenCredential, *arm.ClientOptions) (*AsyncOperationStatusClient, error)`
+- New function `OperationStatusResult.MarshalJSON() ([]byte, error)`
+- New function `OperationStatus.MarshalJSON() ([]byte, error)`
+- New struct `AsyncOperationStatusClient`
+- New struct `AsyncOperationStatusClientGetOptions`
+- New struct `AsyncOperationStatusClientGetResponse`
+- New struct `ErrorAdditionalInfo`
+- New struct `ErrorDetail`
+- New struct `ErrorDetailAutoGenerated`
+- New struct `ErrorResponse`
+- New struct `OperationStatus`
+- New struct `OperationStatusResult`
+- New anonymous field `ForceRebootResponse` in struct `ClientForceRebootResponse`
+- New anonymous field `FirewallRule` in struct `FirewallRulesClientGetResponse`
+- New anonymous field `PrivateLinkResourceListResult` in struct `PrivateLinkResourcesClientListByRedisCacheResponse`
+- New field `ResumeToken` in struct `LinkedServerClientBeginCreateOptions`
+- New field `ResumeToken` in struct `PrivateEndpointConnectionsClientBeginPutOptions`
+- New anonymous field `ResourceInfo` in struct `ClientCreateResponse`
+- New anonymous field `PrivateEndpointConnection` in struct `PrivateEndpointConnectionsClientGetResponse`
+- New field `ResumeToken` in struct `ClientBeginImportDataOptions`
+- New field `ZonalConfiguration` in struct `CommonPropertiesRedisConfiguration`
+- New anonymous field `ListResult` in struct `ClientListByResourceGroupResponse`
+- New anonymous field `ResourceInfo` in struct `ClientGetResponse`
+- New anonymous field `ResourceInfo` in struct `ClientUpdateResponse`
+- New anonymous field `FirewallRuleListResult` in struct `FirewallRulesClientListResponse`
+- New anonymous field `PatchScheduleListResult` in struct `PatchSchedulesClientListByRedisResourceResponse`
+- New anonymous field `AccessKeys` in struct `ClientRegenerateKeyResponse`
+- New anonymous field `AccessKeys` in struct `ClientListKeysResponse`
+- New field `Location` in struct `PatchSchedule`
+- New anonymous field `PatchSchedule` in struct `PatchSchedulesClientGetResponse`
+- New anonymous field `LinkedServerWithProperties` in struct `LinkedServerClientCreateResponse`
+- New anonymous field `LinkedServerWithPropertiesList` in struct `LinkedServerClientListResponse`
+- New anonymous field `FirewallRule` in struct `FirewallRulesClientCreateOrUpdateResponse`
+- New anonymous field `NotificationListResponse` in struct `ClientListUpgradeNotificationsResponse`
+- New anonymous field `LinkedServerWithProperties` in struct `LinkedServerClientGetResponse`
+- New anonymous field `PatchSchedule` in struct `PatchSchedulesClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `ClientBeginExportDataOptions`
+- New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
+- New field `ResumeToken` in struct `ClientBeginCreateOptions`
+- New anonymous field `PrivateEndpointConnectionListResult` in struct `PrivateEndpointConnectionsClientListResponse`
+- New anonymous field `ListResult` in struct `ClientListBySubscriptionResponse`
+- New field `ResumeToken` in struct `ClientBeginDeleteOptions`
+- New anonymous field `PrivateEndpointConnection` in struct `PrivateEndpointConnectionsClientPutResponse`
+
+
 ## 0.3.1 (2022-02-22)
 
 ### Other Changes

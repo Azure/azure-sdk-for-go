@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -464,6 +464,28 @@ func unmarshalPresetClassification(rawMsg json.RawMessage) (PresetClassification
 		b = &VideoAnalyzerPreset{}
 	default:
 		b = &Preset{}
+	}
+	return b, json.Unmarshal(rawMsg, b)
+}
+
+func unmarshalTrackBaseClassification(rawMsg json.RawMessage) (TrackBaseClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var m map[string]interface{}
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b TrackBaseClassification
+	switch m["@odata.type"] {
+	case "#Microsoft.Media.AudioTrack":
+		b = &AudioTrack{}
+	case "#Microsoft.Media.TextTrack":
+		b = &TextTrack{}
+	case "#Microsoft.Media.VideoTrack":
+		b = &VideoTrack{}
+	default:
+		b = &TrackBase{}
 	}
 	return b, json.Unmarshal(rawMsg, b)
 }

@@ -1,5 +1,812 @@
 # Release History
 
+## 0.3.0 (2022-04-11)
+### Breaking Changes
+
+- Function `NewContainersClient` return value(s) have been changed from `(*ContainersClient)` to `(*ContainersClient, error)`
+- Function `*DevicesClient.BeginScanForUpdates` return value(s) have been changed from `(DevicesClientScanForUpdatesPollerResponse, error)` to `(*armruntime.Poller[DevicesClientScanForUpdatesResponse], error)`
+- Function `NewSharesClient` return value(s) have been changed from `(*SharesClient)` to `(*SharesClient, error)`
+- Function `*StorageAccountCredentialsClient.BeginDelete` return value(s) have been changed from `(StorageAccountCredentialsClientDeletePollerResponse, error)` to `(*armruntime.Poller[StorageAccountCredentialsClientDeleteResponse], error)`
+- Function `*RolesClient.BeginCreateOrUpdate` return value(s) have been changed from `(RolesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[RolesClientCreateOrUpdateResponse], error)`
+- Function `*SharesClient.BeginDelete` return value(s) have been changed from `(SharesClientDeletePollerResponse, error)` to `(*armruntime.Poller[SharesClientDeleteResponse], error)`
+- Function `NewJobsClient` return value(s) have been changed from `(*JobsClient)` to `(*JobsClient, error)`
+- Function `*DevicesClient.BeginDownloadUpdates` return value(s) have been changed from `(DevicesClientDownloadUpdatesPollerResponse, error)` to `(*armruntime.Poller[DevicesClientDownloadUpdatesResponse], error)`
+- Function `NewOperationsStatusClient` return value(s) have been changed from `(*OperationsStatusClient)` to `(*OperationsStatusClient, error)`
+- Function `*AvailableSKUsClient.List` return value(s) have been changed from `(*AvailableSKUsClientListPager)` to `(*runtime.Pager[AvailableSKUsClientListResponse])`
+- Function `NewStorageAccountCredentialsClient` return value(s) have been changed from `(*StorageAccountCredentialsClient)` to `(*StorageAccountCredentialsClient, error)`
+- Function `*TriggersClient.BeginDelete` return value(s) have been changed from `(TriggersClientDeletePollerResponse, error)` to `(*armruntime.Poller[TriggersClientDeleteResponse], error)`
+- Function `*UsersClient.BeginDelete` return value(s) have been changed from `(UsersClientDeletePollerResponse, error)` to `(*armruntime.Poller[UsersClientDeleteResponse], error)`
+- Function `*UsersClient.BeginCreateOrUpdate` return value(s) have been changed from `(UsersClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[UsersClientCreateOrUpdateResponse], error)`
+- Function `*SharesClient.ListByDataBoxEdgeDevice` return value(s) have been changed from `(*SharesClientListByDataBoxEdgeDevicePager)` to `(*runtime.Pager[SharesClientListByDataBoxEdgeDeviceResponse])`
+- Function `*DevicesClient.BeginDelete` return value(s) have been changed from `(DevicesClientDeletePollerResponse, error)` to `(*armruntime.Poller[DevicesClientDeleteResponse], error)`
+- Function `*TriggersClient.BeginCreateOrUpdate` return value(s) have been changed from `(TriggersClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[TriggersClientCreateOrUpdateResponse], error)`
+- Function `*StorageAccountCredentialsClient.BeginCreateOrUpdate` return value(s) have been changed from `(StorageAccountCredentialsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[StorageAccountCredentialsClientCreateOrUpdateResponse], error)`
+- Function `*AddonsClient.BeginDelete` return value(s) have been changed from `(AddonsClientDeletePollerResponse, error)` to `(*armruntime.Poller[AddonsClientDeleteResponse], error)`
+- Function `NewMonitoringConfigClient` return value(s) have been changed from `(*MonitoringConfigClient)` to `(*MonitoringConfigClient, error)`
+- Function `*ContainersClient.ListByStorageAccount` return value(s) have been changed from `(*ContainersClientListByStorageAccountPager)` to `(*runtime.Pager[ContainersClientListByStorageAccountResponse])`
+- Function `*MonitoringConfigClient.List` return value(s) have been changed from `(*MonitoringConfigClientListPager)` to `(*runtime.Pager[MonitoringConfigClientListResponse])`
+- Function `*TriggersClient.ListByDataBoxEdgeDevice` return value(s) have been changed from `(*TriggersClientListByDataBoxEdgeDevicePager)` to `(*runtime.Pager[TriggersClientListByDataBoxEdgeDeviceResponse])`
+- Function `*DevicesClient.BeginCreateOrUpdateSecuritySettings` return value(s) have been changed from `(DevicesClientCreateOrUpdateSecuritySettingsPollerResponse, error)` to `(*armruntime.Poller[DevicesClientCreateOrUpdateSecuritySettingsResponse], error)`
+- Function `*DevicesClient.BeginInstallUpdates` return value(s) have been changed from `(DevicesClientInstallUpdatesPollerResponse, error)` to `(*armruntime.Poller[DevicesClientInstallUpdatesResponse], error)`
+- Function `*DevicesClient.ListByResourceGroup` return value(s) have been changed from `(*DevicesClientListByResourceGroupPager)` to `(*runtime.Pager[DevicesClientListByResourceGroupResponse])`
+- Function `*OrdersClient.BeginCreateOrUpdate` return value(s) have been changed from `(OrdersClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[OrdersClientCreateOrUpdateResponse], error)`
+- Function `*SupportPackagesClient.BeginTriggerSupportPackage` return value(s) have been changed from `(SupportPackagesClientTriggerSupportPackagePollerResponse, error)` to `(*armruntime.Poller[SupportPackagesClientTriggerSupportPackageResponse], error)`
+- Function `*SharesClient.BeginCreateOrUpdate` return value(s) have been changed from `(SharesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[SharesClientCreateOrUpdateResponse], error)`
+- Function `NewAlertsClient` return value(s) have been changed from `(*AlertsClient)` to `(*AlertsClient, error)`
+- Function `*AddonsClient.ListByRole` return value(s) have been changed from `(*AddonsClientListByRolePager)` to `(*runtime.Pager[AddonsClientListByRoleResponse])`
+- Function `*MonitoringConfigClient.BeginCreateOrUpdate` return value(s) have been changed from `(MonitoringConfigClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[MonitoringConfigClientCreateOrUpdateResponse], error)`
+- Function `*BandwidthSchedulesClient.BeginCreateOrUpdate` return value(s) have been changed from `(BandwidthSchedulesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[BandwidthSchedulesClientCreateOrUpdateResponse], error)`
+- Function `*StorageAccountsClient.BeginDelete` return value(s) have been changed from `(StorageAccountsClientDeletePollerResponse, error)` to `(*armruntime.Poller[StorageAccountsClientDeleteResponse], error)`
+- Function `NewTriggersClient` return value(s) have been changed from `(*TriggersClient)` to `(*TriggersClient, error)`
+- Function `*ContainersClient.BeginRefresh` return value(s) have been changed from `(ContainersClientRefreshPollerResponse, error)` to `(*armruntime.Poller[ContainersClientRefreshResponse], error)`
+- Function `*DevicesClient.ListBySubscription` return value(s) have been changed from `(*DevicesClientListBySubscriptionPager)` to `(*runtime.Pager[DevicesClientListBySubscriptionResponse])`
+- Function `*UsersClient.ListByDataBoxEdgeDevice` return value(s) have been changed from `(*UsersClientListByDataBoxEdgeDevicePager)` to `(*runtime.Pager[UsersClientListByDataBoxEdgeDeviceResponse])`
+- Function `*DiagnosticSettingsClient.BeginUpdateDiagnosticRemoteSupportSettings` return value(s) have been changed from `(DiagnosticSettingsClientUpdateDiagnosticRemoteSupportSettingsPollerResponse, error)` to `(*armruntime.Poller[DiagnosticSettingsClientUpdateDiagnosticRemoteSupportSettingsResponse], error)`
+- Function `*RolesClient.ListByDataBoxEdgeDevice` return value(s) have been changed from `(*RolesClientListByDataBoxEdgeDevicePager)` to `(*runtime.Pager[RolesClientListByDataBoxEdgeDeviceResponse])`
+- Function `*StorageAccountsClient.BeginCreateOrUpdate` return value(s) have been changed from `(StorageAccountsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[StorageAccountsClientCreateOrUpdateResponse], error)`
+- Function `*SharesClient.BeginRefresh` return value(s) have been changed from `(SharesClientRefreshPollerResponse, error)` to `(*armruntime.Poller[SharesClientRefreshResponse], error)`
+- Function `NewAddonsClient` return value(s) have been changed from `(*AddonsClient)` to `(*AddonsClient, error)`
+- Function `*BandwidthSchedulesClient.BeginDelete` return value(s) have been changed from `(BandwidthSchedulesClientDeletePollerResponse, error)` to `(*armruntime.Poller[BandwidthSchedulesClientDeleteResponse], error)`
+- Function `*OrdersClient.ListByDataBoxEdgeDevice` return value(s) have been changed from `(*OrdersClientListByDataBoxEdgeDevicePager)` to `(*runtime.Pager[OrdersClientListByDataBoxEdgeDeviceResponse])`
+- Function `*NodesClient.ListByDataBoxEdgeDevice` return value(s) have been changed from `(*NodesClientListByDataBoxEdgeDevicePager)` to `(*runtime.Pager[NodesClientListByDataBoxEdgeDeviceResponse])`
+- Function `NewOrdersClient` return value(s) have been changed from `(*OrdersClient)` to `(*OrdersClient, error)`
+- Function `NewRolesClient` return value(s) have been changed from `(*RolesClient)` to `(*RolesClient, error)`
+- Function `NewStorageAccountsClient` return value(s) have been changed from `(*StorageAccountsClient)` to `(*StorageAccountsClient, error)`
+- Function `*AlertsClient.ListByDataBoxEdgeDevice` return value(s) have been changed from `(*AlertsClientListByDataBoxEdgeDevicePager)` to `(*runtime.Pager[AlertsClientListByDataBoxEdgeDeviceResponse])`
+- Function `NewAvailableSKUsClient` return value(s) have been changed from `(*AvailableSKUsClient)` to `(*AvailableSKUsClient, error)`
+- Function `NewDevicesClient` return value(s) have been changed from `(*DevicesClient)` to `(*DevicesClient, error)`
+- Function `NewSupportPackagesClient` return value(s) have been changed from `(*SupportPackagesClient)` to `(*SupportPackagesClient, error)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `NewNodesClient` return value(s) have been changed from `(*NodesClient)` to `(*NodesClient, error)`
+- Function `*OrdersClient.BeginDelete` return value(s) have been changed from `(OrdersClientDeletePollerResponse, error)` to `(*armruntime.Poller[OrdersClientDeleteResponse], error)`
+- Function `*MonitoringConfigClient.BeginDelete` return value(s) have been changed from `(MonitoringConfigClientDeletePollerResponse, error)` to `(*armruntime.Poller[MonitoringConfigClientDeleteResponse], error)`
+- Function `*DiagnosticSettingsClient.BeginUpdateDiagnosticProactiveLogCollectionSettings` return value(s) have been changed from `(DiagnosticSettingsClientUpdateDiagnosticProactiveLogCollectionSettingsPollerResponse, error)` to `(*armruntime.Poller[DiagnosticSettingsClientUpdateDiagnosticProactiveLogCollectionSettingsResponse], error)`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `NewDiagnosticSettingsClient` return value(s) have been changed from `(*DiagnosticSettingsClient)` to `(*DiagnosticSettingsClient, error)`
+- Function `*ContainersClient.BeginDelete` return value(s) have been changed from `(ContainersClientDeletePollerResponse, error)` to `(*armruntime.Poller[ContainersClientDeleteResponse], error)`
+- Function `*StorageAccountsClient.ListByDataBoxEdgeDevice` return value(s) have been changed from `(*StorageAccountsClientListByDataBoxEdgeDevicePager)` to `(*runtime.Pager[StorageAccountsClientListByDataBoxEdgeDeviceResponse])`
+- Function `NewUsersClient` return value(s) have been changed from `(*UsersClient)` to `(*UsersClient, error)`
+- Function `*AddonsClient.BeginCreateOrUpdate` return value(s) have been changed from `(AddonsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[AddonsClientCreateOrUpdateResponse], error)`
+- Function `*RolesClient.BeginDelete` return value(s) have been changed from `(RolesClientDeletePollerResponse, error)` to `(*armruntime.Poller[RolesClientDeleteResponse], error)`
+- Function `NewBandwidthSchedulesClient` return value(s) have been changed from `(*BandwidthSchedulesClient)` to `(*BandwidthSchedulesClient, error)`
+- Function `*StorageAccountCredentialsClient.ListByDataBoxEdgeDevice` return value(s) have been changed from `(*StorageAccountCredentialsClientListByDataBoxEdgeDevicePager)` to `(*runtime.Pager[StorageAccountCredentialsClientListByDataBoxEdgeDeviceResponse])`
+- Function `*BandwidthSchedulesClient.ListByDataBoxEdgeDevice` return value(s) have been changed from `(*BandwidthSchedulesClientListByDataBoxEdgeDevicePager)` to `(*runtime.Pager[BandwidthSchedulesClientListByDataBoxEdgeDeviceResponse])`
+- Function `*ContainersClient.BeginCreateOrUpdate` return value(s) have been changed from `(ContainersClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ContainersClientCreateOrUpdateResponse], error)`
+- Function `*ContainersClientListByStorageAccountPager.Err` has been removed
+- Function `UsersClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*StorageAccountCredentialsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `SharesClientRefreshPollerResponse.PollUntilDone` has been removed
+- Function `*StorageAccountCredentialsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*DevicesClientScanForUpdatesPoller.Done` has been removed
+- Function `NetworkAdapterDHCPStatus.ToPtr` has been removed
+- Function `MountType.ToPtr` has been removed
+- Function `*DevicesClientListBySubscriptionPager.NextPage` has been removed
+- Function `*DevicesClientDeletePoller.ResumeToken` has been removed
+- Function `DiagnosticSettingsClientUpdateDiagnosticRemoteSupportSettingsPollerResponse.PollUntilDone` has been removed
+- Function `*RolesClientDeletePollerResponse.Resume` has been removed
+- Function `*SupportPackagesClientTriggerSupportPackagePoller.Poll` has been removed
+- Function `*StorageAccountsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*AddonsClientListByRolePager.PageResponse` has been removed
+- Function `*DevicesClientListByResourceGroupPager.NextPage` has been removed
+- Function `RoleStatus.ToPtr` has been removed
+- Function `InstallRebootBehavior.ToPtr` has been removed
+- Function `*DevicesClientCreateOrUpdateSecuritySettingsPollerResponse.Resume` has been removed
+- Function `ContainersClientRefreshPollerResponse.PollUntilDone` has been removed
+- Function `*SharesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*DiagnosticSettingsClientUpdateDiagnosticRemoteSupportSettingsPoller.Poll` has been removed
+- Function `*SharesClientRefreshPoller.Poll` has been removed
+- Function `*SharesClientRefreshPoller.ResumeToken` has been removed
+- Function `MetricCategory.ToPtr` has been removed
+- Function `*DevicesClientInstallUpdatesPoller.Done` has been removed
+- Function `*BandwidthSchedulesClientDeletePoller.Poll` has been removed
+- Function `RemoteApplicationType.ToPtr` has been removed
+- Function `*AddonsClientGetResult.UnmarshalJSON` has been removed
+- Function `*MonitoringConfigClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `CreatedByType.ToPtr` has been removed
+- Function `*ContainersClientListByStorageAccountPager.PageResponse` has been removed
+- Function `StorageAccountStatus.ToPtr` has been removed
+- Function `*SharesClientListByDataBoxEdgeDevicePager.Err` has been removed
+- Function `NetworkGroup.ToPtr` has been removed
+- Function `ShareAccessType.ToPtr` has been removed
+- Function `*MonitoringConfigClientDeletePoller.Poll` has been removed
+- Function `OrderState.ToPtr` has been removed
+- Function `*DiagnosticSettingsClientUpdateDiagnosticProactiveLogCollectionSettingsPollerResponse.Resume` has been removed
+- Function `MonitoringConfigClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `AddonsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ContainersClientDeletePoller.FinalResponse` has been removed
+- Function `*StorageAccountsClientDeletePoller.Poll` has been removed
+- Function `DeviceType.ToPtr` has been removed
+- Function `*DevicesClientScanForUpdatesPoller.ResumeToken` has been removed
+- Function `DataPolicy.ToPtr` has been removed
+- Function `PlatformType.ToPtr` has been removed
+- Function `*AddonsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `SKUAvailability.ToPtr` has been removed
+- Function `*TriggersClientListByDataBoxEdgeDevicePager.PageResponse` has been removed
+- Function `SKUSignupOption.ToPtr` has been removed
+- Function `*DevicesClientListBySubscriptionPager.Err` has been removed
+- Function `DataBoxEdgeDeviceKind.ToPtr` has been removed
+- Function `*UsersClientListByDataBoxEdgeDevicePager.NextPage` has been removed
+- Function `OrdersClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*RolesClientListByDataBoxEdgeDevicePager.Err` has been removed
+- Function `*OrdersClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*MonitoringConfigClientDeletePollerResponse.Resume` has been removed
+- Function `*UsersClientDeletePoller.Poll` has been removed
+- Function `AccountType.ToPtr` has been removed
+- Function `MetricUnit.ToPtr` has been removed
+- Function `RolesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ContainersClientListByStorageAccountPager.NextPage` has been removed
+- Function `*DevicesClientDeletePoller.FinalResponse` has been removed
+- Function `*OrdersClientListByDataBoxEdgeDevicePager.Err` has been removed
+- Function `SKUTier.ToPtr` has been removed
+- Function `*DiagnosticSettingsClientUpdateDiagnosticProactiveLogCollectionSettingsPoller.ResumeToken` has been removed
+- Function `*OrdersClientListByDataBoxEdgeDevicePager.NextPage` has been removed
+- Function `*MonitoringConfigClientListPager.NextPage` has been removed
+- Function `SharesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Function `DevicesClientDownloadUpdatesPollerResponse.PollUntilDone` has been removed
+- Function `DevicesClientScanForUpdatesPollerResponse.PollUntilDone` has been removed
+- Function `UpdateStatus.ToPtr` has been removed
+- Function `*RolesClientCreateOrUpdateResult.UnmarshalJSON` has been removed
+- Function `*StorageAccountsClientDeletePoller.FinalResponse` has been removed
+- Function `*RolesClientListByDataBoxEdgeDevicePager.PageResponse` has been removed
+- Function `*StorageAccountsClientListByDataBoxEdgeDevicePager.Err` has been removed
+- Function `*TriggersClientCreateOrUpdateResult.UnmarshalJSON` has been removed
+- Function `SubscriptionState.ToPtr` has been removed
+- Function `*SharesClientRefreshPoller.Done` has been removed
+- Function `*RolesClientDeletePoller.Poll` has been removed
+- Function `*UsersClientDeletePoller.FinalResponse` has been removed
+- Function `AddonState.ToPtr` has been removed
+- Function `*NodesClientListByDataBoxEdgeDevicePager.PageResponse` has been removed
+- Function `*SharesClientDeletePoller.FinalResponse` has been removed
+- Function `SKUName.ToPtr` has been removed
+- Function `OrdersClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*MonitoringConfigClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*BandwidthSchedulesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*StorageAccountCredentialsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*StorageAccountsClientDeletePoller.ResumeToken` has been removed
+- Function `*MonitoringConfigClientDeletePoller.FinalResponse` has been removed
+- Function `*UsersClientListByDataBoxEdgeDevicePager.Err` has been removed
+- Function `*BandwidthSchedulesClientListByDataBoxEdgeDevicePager.Err` has been removed
+- Function `*OrdersClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*BandwidthSchedulesClientListByDataBoxEdgeDevicePager.PageResponse` has been removed
+- Function `*ContainersClientDeletePoller.Poll` has been removed
+- Function `ResourceMoveStatus.ToPtr` has been removed
+- Function `*SharesClientCreateOrUpdatePoller.Done` has been removed
+- Function `AlertSeverity.ToPtr` has been removed
+- Function `*TriggersClientCreateOrUpdatePoller.Done` has been removed
+- Function `ShareAccessProtocol.ToPtr` has been removed
+- Function `*MonitoringConfigClientCreateOrUpdatePoller.Poll` has been removed
+- Function `TimeGrain.ToPtr` has been removed
+- Function `*SharesClientDeletePoller.Done` has been removed
+- Function `*RolesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*StorageAccountCredentialsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*UsersClientCreateOrUpdatePoller.Done` has been removed
+- Function `*MonitoringConfigClientListPager.PageResponse` has been removed
+- Function `*RolesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*OrdersClientDeletePoller.Done` has been removed
+- Function `ShareStatus.ToPtr` has been removed
+- Function `NetworkAdapterRDMAStatus.ToPtr` has been removed
+- Function `*StorageAccountsClientListByDataBoxEdgeDevicePager.NextPage` has been removed
+- Function `*TriggersClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `NodeStatus.ToPtr` has been removed
+- Function `*BandwidthSchedulesClientDeletePoller.Done` has been removed
+- Function `*SharesClientDeletePoller.ResumeToken` has been removed
+- Function `*OrdersClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*AddonsClientDeletePoller.FinalResponse` has been removed
+- Function `*StorageAccountsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*DevicesClientDownloadUpdatesPollerResponse.Resume` has been removed
+- Function `*ContainersClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*AddonsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*AddonsClientDeletePollerResponse.Resume` has been removed
+- Function `*OrdersClientCreateOrUpdatePoller.Done` has been removed
+- Function `*RolesClientGetResult.UnmarshalJSON` has been removed
+- Function `*AlertsClientListByDataBoxEdgeDevicePager.NextPage` has been removed
+- Function `*DevicesClientDeletePollerResponse.Resume` has been removed
+- Function `*StorageAccountCredentialsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*RolesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*UsersClientDeletePollerResponse.Resume` has been removed
+- Function `*OrdersClientDeletePollerResponse.Resume` has been removed
+- Function `DayOfWeek.ToPtr` has been removed
+- Function `*TriggersClientListByDataBoxEdgeDevicePager.NextPage` has been removed
+- Function `*TriggersClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*BandwidthSchedulesClientDeletePollerResponse.Resume` has been removed
+- Function `PosixComplianceStatus.ToPtr` has been removed
+- Function `*DevicesClientDownloadUpdatesPoller.Done` has been removed
+- Function `*OrdersClientListByDataBoxEdgeDevicePager.PageResponse` has been removed
+- Function `*AddonsClientListByRolePager.NextPage` has been removed
+- Function `*DiagnosticSettingsClientUpdateDiagnosticProactiveLogCollectionSettingsPoller.Poll` has been removed
+- Function `*DevicesClientCreateOrUpdateSecuritySettingsPoller.ResumeToken` has been removed
+- Function `*UsersClientListByDataBoxEdgeDevicePager.PageResponse` has been removed
+- Function `AuthenticationType.ToPtr` has been removed
+- Function `*UsersClientDeletePoller.ResumeToken` has been removed
+- Function `*ContainersClientRefreshPollerResponse.Resume` has been removed
+- Function `*DevicesClientDownloadUpdatesPoller.Poll` has been removed
+- Function `*AlertsClientListByDataBoxEdgeDevicePager.PageResponse` has been removed
+- Function `*TriggersClientDeletePollerResponse.Resume` has been removed
+- Function `AzureContainerDataFormat.ToPtr` has been removed
+- Function `*AddonsClientDeletePoller.Poll` has been removed
+- Function `*SharesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `InstallationImpact.ToPtr` has been removed
+- Function `RoleTypes.ToPtr` has been removed
+- Function `*BandwidthSchedulesClientCreateOrUpdatePoller.Done` has been removed
+- Function `MsiIdentityType.ToPtr` has been removed
+- Function `*SharesClientRefreshPollerResponse.Resume` has been removed
+- Function `KeyVaultSyncStatus.ToPtr` has been removed
+- Function `*TriggersClientGetResult.UnmarshalJSON` has been removed
+- Function `*StorageAccountCredentialsClientListByDataBoxEdgeDevicePager.NextPage` has been removed
+- Function `*StorageAccountCredentialsClientDeletePoller.Done` has been removed
+- Function `*StorageAccountsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*OrdersClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `SSLStatus.ToPtr` has been removed
+- Function `ContainersClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*RolesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `*BandwidthSchedulesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*RolesClientDeletePoller.ResumeToken` has been removed
+- Function `*StorageAccountCredentialsClientDeletePoller.FinalResponse` has been removed
+- Function `BandwidthSchedulesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*DevicesClientScanForUpdatesPoller.FinalResponse` has been removed
+- Function `*NodesClientListByDataBoxEdgeDevicePager.NextPage` has been removed
+- Function `*BandwidthSchedulesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*DevicesClientInstallUpdatesPoller.ResumeToken` has been removed
+- Function `*BandwidthSchedulesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*OrdersClientDeletePoller.Poll` has been removed
+- Function `*SharesClientListByDataBoxEdgeDevicePager.PageResponse` has been removed
+- Function `*AddonsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*SharesClientDeletePollerResponse.Resume` has been removed
+- Function `TriggersClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `ShipmentType.ToPtr` has been removed
+- Function `DownloadPhase.ToPtr` has been removed
+- Function `*AddonsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `ContainersClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `UsersClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*RolesClientDeletePoller.FinalResponse` has been removed
+- Function `*DevicesClientInstallUpdatesPollerResponse.Resume` has been removed
+- Function `*StorageAccountCredentialsClientDeletePoller.ResumeToken` has been removed
+- Function `*DevicesClientListBySubscriptionPager.PageResponse` has been removed
+- Function `*StorageAccountsClientDeletePollerResponse.Resume` has been removed
+- Function `*DiagnosticSettingsClientUpdateDiagnosticRemoteSupportSettingsPoller.Done` has been removed
+- Function `*ContainersClientRefreshPoller.FinalResponse` has been removed
+- Function `AddonsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `SupportPackagesClientTriggerSupportPackagePollerResponse.PollUntilDone` has been removed
+- Function `*UsersClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*DevicesClientDeletePoller.Poll` has been removed
+- Function `*BandwidthSchedulesClientListByDataBoxEdgeDevicePager.NextPage` has been removed
+- Function `*SharesClientDeletePoller.Poll` has been removed
+- Function `*SharesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*StorageAccountCredentialsClientDeletePollerResponse.Resume` has been removed
+- Function `StorageAccountsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*AddonsClientDeletePoller.ResumeToken` has been removed
+- Function `*DevicesClientCreateOrUpdateSecuritySettingsPoller.Poll` has been removed
+- Function `*DiagnosticSettingsClientUpdateDiagnosticProactiveLogCollectionSettingsPoller.Done` has been removed
+- Function `NetworkAdapterStatus.ToPtr` has been removed
+- Function `EncryptionAlgorithm.ToPtr` has been removed
+- Function `*DevicesClientDownloadUpdatesPoller.FinalResponse` has been removed
+- Function `DevicesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*UsersClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*RolesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*SupportPackagesClientTriggerSupportPackagePoller.FinalResponse` has been removed
+- Function `*TriggersClientDeletePoller.Poll` has been removed
+- Function `*ContainersClientCreateOrUpdatePoller.Done` has been removed
+- Function `*RolesClientListByDataBoxEdgeDevicePager.NextPage` has been removed
+- Function `JobStatus.ToPtr` has been removed
+- Function `HostPlatformType.ToPtr` has been removed
+- Function `BandwidthSchedulesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `JobType.ToPtr` has been removed
+- Function `*AddonsClientDeletePoller.Done` has been removed
+- Function `*DevicesClientDeletePoller.Done` has been removed
+- Function `*TriggersClientDeletePoller.ResumeToken` has been removed
+- Function `UpdateType.ToPtr` has been removed
+- Function `*TriggersClientCreateOrUpdatePoller.Poll` has been removed
+- Function `DevicesClientInstallUpdatesPollerResponse.PollUntilDone` has been removed
+- Function `*DiagnosticSettingsClientUpdateDiagnosticRemoteSupportSettingsPoller.FinalResponse` has been removed
+- Function `*OrdersClientDeletePoller.FinalResponse` has been removed
+- Function `*AvailableSKUsClientListPager.Err` has been removed
+- Function `*TriggersClientDeletePoller.Done` has been removed
+- Function `*AddonsClientListByRolePager.Err` has been removed
+- Function `*StorageAccountsClientDeletePoller.Done` has been removed
+- Function `*DiagnosticSettingsClientUpdateDiagnosticProactiveLogCollectionSettingsPoller.FinalResponse` has been removed
+- Function `*DiagnosticSettingsClientUpdateDiagnosticRemoteSupportSettingsPollerResponse.Resume` has been removed
+- Function `*StorageAccountsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*MonitoringConfigClientDeletePoller.ResumeToken` has been removed
+- Function `*DevicesClientScanForUpdatesPollerResponse.Resume` has been removed
+- Function `AddonType.ToPtr` has been removed
+- Function `MetricAggregationType.ToPtr` has been removed
+- Function `*StorageAccountsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*ContainersClientRefreshPoller.Poll` has been removed
+- Function `*TriggersClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `DataResidencyType.ToPtr` has been removed
+- Function `*BandwidthSchedulesClientDeletePoller.FinalResponse` has been removed
+- Function `*UsersClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*OrdersClientDeletePoller.ResumeToken` has been removed
+- Function `*StorageAccountCredentialsClientDeletePoller.Poll` has been removed
+- Function `*DevicesClientInstallUpdatesPoller.Poll` has been removed
+- Function `*RolesClientDeletePoller.Done` has been removed
+- Function `*ContainersClientRefreshPoller.Done` has been removed
+- Function `*MonitoringConfigClientDeletePoller.Done` has been removed
+- Function `*AddonsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `DataBoxEdgeDeviceStatus.ToPtr` has been removed
+- Function `*SupportPackagesClientTriggerSupportPackagePoller.ResumeToken` has been removed
+- Function `DiagnosticSettingsClientUpdateDiagnosticProactiveLogCollectionSettingsPollerResponse.PollUntilDone` has been removed
+- Function `*DevicesClientDownloadUpdatesPoller.ResumeToken` has been removed
+- Function `*StorageAccountCredentialsClientListByDataBoxEdgeDevicePager.PageResponse` has been removed
+- Function `*MonitoringConfigClientCreateOrUpdatePoller.Done` has been removed
+- Function `*AvailableSKUsClientListPager.PageResponse` has been removed
+- Function `*ContainersClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*DevicesClientListByResourceGroupPager.Err` has been removed
+- Function `*AlertsClientListByDataBoxEdgeDevicePager.Err` has been removed
+- Function `*SupportPackagesClientTriggerSupportPackagePollerResponse.Resume` has been removed
+- Function `*SharesClientListByDataBoxEdgeDevicePager.NextPage` has been removed
+- Function `*DevicesClientScanForUpdatesPoller.Poll` has been removed
+- Function `KubernetesNodeType.ToPtr` has been removed
+- Function `MonitoringConfigClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*SupportPackagesClientTriggerSupportPackagePoller.Done` has been removed
+- Function `*ContainersClientDeletePoller.Done` has been removed
+- Function `*DiagnosticSettingsClientUpdateDiagnosticRemoteSupportSettingsPoller.ResumeToken` has been removed
+- Function `UserType.ToPtr` has been removed
+- Function `ProactiveDiagnosticsConsent.ToPtr` has been removed
+- Function `ContainerStatus.ToPtr` has been removed
+- Function `StorageAccountCredentialsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `UpdateOperation.ToPtr` has been removed
+- Function `*ContainersClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*NodesClientListByDataBoxEdgeDevicePager.Err` has been removed
+- Function `*DevicesClientInstallUpdatesPoller.FinalResponse` has been removed
+- Function `SharesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ContainersClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `KubernetesState.ToPtr` has been removed
+- Function `DevicesClientCreateOrUpdateSecuritySettingsPollerResponse.PollUntilDone` has been removed
+- Function `*BandwidthSchedulesClientDeletePoller.ResumeToken` has been removed
+- Function `*ContainersClientRefreshPoller.ResumeToken` has been removed
+- Function `StorageAccountsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*TriggersClientDeletePoller.FinalResponse` has been removed
+- Function `*ContainersClientDeletePollerResponse.Resume` has been removed
+- Function `*DevicesClientCreateOrUpdateSecuritySettingsPoller.FinalResponse` has been removed
+- Function `TriggerEventType.ToPtr` has been removed
+- Function `*MonitoringConfigClientListPager.Err` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `*UsersClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ContainersClientDeletePoller.ResumeToken` has been removed
+- Function `*StorageAccountsClientListByDataBoxEdgeDevicePager.PageResponse` has been removed
+- Function `*DevicesClientCreateOrUpdateSecuritySettingsPoller.Done` has been removed
+- Function `UpdateOperationStage.ToPtr` has been removed
+- Function `SKUVersion.ToPtr` has been removed
+- Function `ClientPermissionType.ToPtr` has been removed
+- Function `StorageAccountCredentialsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*SharesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*TriggersClientListByDataBoxEdgeDevicePager.Err` has been removed
+- Function `TriggersClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*UsersClientDeletePoller.Done` has been removed
+- Function `*AddonsClientCreateOrUpdateResult.UnmarshalJSON` has been removed
+- Function `RolesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `MonitoringStatus.ToPtr` has been removed
+- Function `*SharesClientRefreshPoller.FinalResponse` has been removed
+- Function `*AvailableSKUsClientListPager.NextPage` has been removed
+- Function `*DevicesClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*MonitoringConfigClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `AccessLevel.ToPtr` has been removed
+- Function `*StorageAccountCredentialsClientListByDataBoxEdgeDevicePager.Err` has been removed
+- Struct `AddonsClientCreateOrUpdatePoller` has been removed
+- Struct `AddonsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `AddonsClientCreateOrUpdateResult` has been removed
+- Struct `AddonsClientDeletePoller` has been removed
+- Struct `AddonsClientDeletePollerResponse` has been removed
+- Struct `AddonsClientGetResult` has been removed
+- Struct `AddonsClientListByRolePager` has been removed
+- Struct `AddonsClientListByRoleResult` has been removed
+- Struct `AlertsClientGetResult` has been removed
+- Struct `AlertsClientListByDataBoxEdgeDevicePager` has been removed
+- Struct `AlertsClientListByDataBoxEdgeDeviceResult` has been removed
+- Struct `AvailableSKUsClientListPager` has been removed
+- Struct `AvailableSKUsClientListResult` has been removed
+- Struct `BandwidthSchedulesClientCreateOrUpdatePoller` has been removed
+- Struct `BandwidthSchedulesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `BandwidthSchedulesClientCreateOrUpdateResult` has been removed
+- Struct `BandwidthSchedulesClientDeletePoller` has been removed
+- Struct `BandwidthSchedulesClientDeletePollerResponse` has been removed
+- Struct `BandwidthSchedulesClientGetResult` has been removed
+- Struct `BandwidthSchedulesClientListByDataBoxEdgeDevicePager` has been removed
+- Struct `BandwidthSchedulesClientListByDataBoxEdgeDeviceResult` has been removed
+- Struct `ContainersClientCreateOrUpdatePoller` has been removed
+- Struct `ContainersClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ContainersClientCreateOrUpdateResult` has been removed
+- Struct `ContainersClientDeletePoller` has been removed
+- Struct `ContainersClientDeletePollerResponse` has been removed
+- Struct `ContainersClientGetResult` has been removed
+- Struct `ContainersClientListByStorageAccountPager` has been removed
+- Struct `ContainersClientListByStorageAccountResult` has been removed
+- Struct `ContainersClientRefreshPoller` has been removed
+- Struct `ContainersClientRefreshPollerResponse` has been removed
+- Struct `DevicesClientCreateOrUpdateResult` has been removed
+- Struct `DevicesClientCreateOrUpdateSecuritySettingsPoller` has been removed
+- Struct `DevicesClientCreateOrUpdateSecuritySettingsPollerResponse` has been removed
+- Struct `DevicesClientDeletePoller` has been removed
+- Struct `DevicesClientDeletePollerResponse` has been removed
+- Struct `DevicesClientDownloadUpdatesPoller` has been removed
+- Struct `DevicesClientDownloadUpdatesPollerResponse` has been removed
+- Struct `DevicesClientGenerateCertificateResult` has been removed
+- Struct `DevicesClientGetExtendedInformationResult` has been removed
+- Struct `DevicesClientGetNetworkSettingsResult` has been removed
+- Struct `DevicesClientGetResult` has been removed
+- Struct `DevicesClientGetUpdateSummaryResult` has been removed
+- Struct `DevicesClientInstallUpdatesPoller` has been removed
+- Struct `DevicesClientInstallUpdatesPollerResponse` has been removed
+- Struct `DevicesClientListByResourceGroupPager` has been removed
+- Struct `DevicesClientListByResourceGroupResult` has been removed
+- Struct `DevicesClientListBySubscriptionPager` has been removed
+- Struct `DevicesClientListBySubscriptionResult` has been removed
+- Struct `DevicesClientScanForUpdatesPoller` has been removed
+- Struct `DevicesClientScanForUpdatesPollerResponse` has been removed
+- Struct `DevicesClientUpdateExtendedInformationResult` has been removed
+- Struct `DevicesClientUpdateResult` has been removed
+- Struct `DevicesClientUploadCertificateResult` has been removed
+- Struct `DiagnosticSettingsClientGetDiagnosticProactiveLogCollectionSettingsResult` has been removed
+- Struct `DiagnosticSettingsClientGetDiagnosticRemoteSupportSettingsResult` has been removed
+- Struct `DiagnosticSettingsClientUpdateDiagnosticProactiveLogCollectionSettingsPoller` has been removed
+- Struct `DiagnosticSettingsClientUpdateDiagnosticProactiveLogCollectionSettingsPollerResponse` has been removed
+- Struct `DiagnosticSettingsClientUpdateDiagnosticProactiveLogCollectionSettingsResult` has been removed
+- Struct `DiagnosticSettingsClientUpdateDiagnosticRemoteSupportSettingsPoller` has been removed
+- Struct `DiagnosticSettingsClientUpdateDiagnosticRemoteSupportSettingsPollerResponse` has been removed
+- Struct `DiagnosticSettingsClientUpdateDiagnosticRemoteSupportSettingsResult` has been removed
+- Struct `JobsClientGetResult` has been removed
+- Struct `MonitoringConfigClientCreateOrUpdatePoller` has been removed
+- Struct `MonitoringConfigClientCreateOrUpdatePollerResponse` has been removed
+- Struct `MonitoringConfigClientCreateOrUpdateResult` has been removed
+- Struct `MonitoringConfigClientDeletePoller` has been removed
+- Struct `MonitoringConfigClientDeletePollerResponse` has been removed
+- Struct `MonitoringConfigClientGetResult` has been removed
+- Struct `MonitoringConfigClientListPager` has been removed
+- Struct `MonitoringConfigClientListResult` has been removed
+- Struct `NodesClientListByDataBoxEdgeDevicePager` has been removed
+- Struct `NodesClientListByDataBoxEdgeDeviceResult` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `OperationsStatusClientGetResult` has been removed
+- Struct `OrdersClientCreateOrUpdatePoller` has been removed
+- Struct `OrdersClientCreateOrUpdatePollerResponse` has been removed
+- Struct `OrdersClientCreateOrUpdateResult` has been removed
+- Struct `OrdersClientDeletePoller` has been removed
+- Struct `OrdersClientDeletePollerResponse` has been removed
+- Struct `OrdersClientGetResult` has been removed
+- Struct `OrdersClientListByDataBoxEdgeDevicePager` has been removed
+- Struct `OrdersClientListByDataBoxEdgeDeviceResult` has been removed
+- Struct `OrdersClientListDCAccessCodeResult` has been removed
+- Struct `RolesClientCreateOrUpdatePoller` has been removed
+- Struct `RolesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `RolesClientCreateOrUpdateResult` has been removed
+- Struct `RolesClientDeletePoller` has been removed
+- Struct `RolesClientDeletePollerResponse` has been removed
+- Struct `RolesClientGetResult` has been removed
+- Struct `RolesClientListByDataBoxEdgeDevicePager` has been removed
+- Struct `RolesClientListByDataBoxEdgeDeviceResult` has been removed
+- Struct `SharesClientCreateOrUpdatePoller` has been removed
+- Struct `SharesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `SharesClientCreateOrUpdateResult` has been removed
+- Struct `SharesClientDeletePoller` has been removed
+- Struct `SharesClientDeletePollerResponse` has been removed
+- Struct `SharesClientGetResult` has been removed
+- Struct `SharesClientListByDataBoxEdgeDevicePager` has been removed
+- Struct `SharesClientListByDataBoxEdgeDeviceResult` has been removed
+- Struct `SharesClientRefreshPoller` has been removed
+- Struct `SharesClientRefreshPollerResponse` has been removed
+- Struct `StorageAccountCredentialsClientCreateOrUpdatePoller` has been removed
+- Struct `StorageAccountCredentialsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `StorageAccountCredentialsClientCreateOrUpdateResult` has been removed
+- Struct `StorageAccountCredentialsClientDeletePoller` has been removed
+- Struct `StorageAccountCredentialsClientDeletePollerResponse` has been removed
+- Struct `StorageAccountCredentialsClientGetResult` has been removed
+- Struct `StorageAccountCredentialsClientListByDataBoxEdgeDevicePager` has been removed
+- Struct `StorageAccountCredentialsClientListByDataBoxEdgeDeviceResult` has been removed
+- Struct `StorageAccountsClientCreateOrUpdatePoller` has been removed
+- Struct `StorageAccountsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `StorageAccountsClientCreateOrUpdateResult` has been removed
+- Struct `StorageAccountsClientDeletePoller` has been removed
+- Struct `StorageAccountsClientDeletePollerResponse` has been removed
+- Struct `StorageAccountsClientGetResult` has been removed
+- Struct `StorageAccountsClientListByDataBoxEdgeDevicePager` has been removed
+- Struct `StorageAccountsClientListByDataBoxEdgeDeviceResult` has been removed
+- Struct `SupportPackagesClientTriggerSupportPackagePoller` has been removed
+- Struct `SupportPackagesClientTriggerSupportPackagePollerResponse` has been removed
+- Struct `TriggersClientCreateOrUpdatePoller` has been removed
+- Struct `TriggersClientCreateOrUpdatePollerResponse` has been removed
+- Struct `TriggersClientCreateOrUpdateResult` has been removed
+- Struct `TriggersClientDeletePoller` has been removed
+- Struct `TriggersClientDeletePollerResponse` has been removed
+- Struct `TriggersClientGetResult` has been removed
+- Struct `TriggersClientListByDataBoxEdgeDevicePager` has been removed
+- Struct `TriggersClientListByDataBoxEdgeDeviceResult` has been removed
+- Struct `UsersClientCreateOrUpdatePoller` has been removed
+- Struct `UsersClientCreateOrUpdatePollerResponse` has been removed
+- Struct `UsersClientCreateOrUpdateResult` has been removed
+- Struct `UsersClientDeletePoller` has been removed
+- Struct `UsersClientDeletePollerResponse` has been removed
+- Struct `UsersClientGetResult` has been removed
+- Struct `UsersClientListByDataBoxEdgeDevicePager` has been removed
+- Struct `UsersClientListByDataBoxEdgeDeviceResult` has been removed
+- Field `RawResponse` of struct `OrdersClientDeleteResponse` has been removed
+- Field `OrdersClientGetResult` of struct `OrdersClientGetResponse` has been removed
+- Field `RawResponse` of struct `OrdersClientGetResponse` has been removed
+- Field `DevicesClientListByResourceGroupResult` of struct `DevicesClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `DevicesClientListByResourceGroupResponse` has been removed
+- Field `MonitoringConfigClientListResult` of struct `MonitoringConfigClientListResponse` has been removed
+- Field `RawResponse` of struct `MonitoringConfigClientListResponse` has been removed
+- Field `OrdersClientListDCAccessCodeResult` of struct `OrdersClientListDCAccessCodeResponse` has been removed
+- Field `RawResponse` of struct `OrdersClientListDCAccessCodeResponse` has been removed
+- Field `ContainersClientListByStorageAccountResult` of struct `ContainersClientListByStorageAccountResponse` has been removed
+- Field `RawResponse` of struct `ContainersClientListByStorageAccountResponse` has been removed
+- Field `UsersClientGetResult` of struct `UsersClientGetResponse` has been removed
+- Field `RawResponse` of struct `UsersClientGetResponse` has been removed
+- Field `RawResponse` of struct `DevicesClientCreateOrUpdateSecuritySettingsResponse` has been removed
+- Field `TriggersClientListByDataBoxEdgeDeviceResult` of struct `TriggersClientListByDataBoxEdgeDeviceResponse` has been removed
+- Field `RawResponse` of struct `TriggersClientListByDataBoxEdgeDeviceResponse` has been removed
+- Field `RawResponse` of struct `DevicesClientInstallUpdatesResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `OrdersClientListByDataBoxEdgeDeviceResult` of struct `OrdersClientListByDataBoxEdgeDeviceResponse` has been removed
+- Field `RawResponse` of struct `OrdersClientListByDataBoxEdgeDeviceResponse` has been removed
+- Field `RawResponse` of struct `MonitoringConfigClientDeleteResponse` has been removed
+- Field `DevicesClientGetNetworkSettingsResult` of struct `DevicesClientGetNetworkSettingsResponse` has been removed
+- Field `RawResponse` of struct `DevicesClientGetNetworkSettingsResponse` has been removed
+- Field `ContainersClientCreateOrUpdateResult` of struct `ContainersClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ContainersClientCreateOrUpdateResponse` has been removed
+- Field `DevicesClientGenerateCertificateResult` of struct `DevicesClientGenerateCertificateResponse` has been removed
+- Field `RawResponse` of struct `DevicesClientGenerateCertificateResponse` has been removed
+- Field `StorageAccountsClientCreateOrUpdateResult` of struct `StorageAccountsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `StorageAccountsClientCreateOrUpdateResponse` has been removed
+- Field `SharesClientCreateOrUpdateResult` of struct `SharesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `SharesClientCreateOrUpdateResponse` has been removed
+- Field `AlertsClientGetResult` of struct `AlertsClientGetResponse` has been removed
+- Field `RawResponse` of struct `AlertsClientGetResponse` has been removed
+- Field `DevicesClientGetResult` of struct `DevicesClientGetResponse` has been removed
+- Field `RawResponse` of struct `DevicesClientGetResponse` has been removed
+- Field `RawResponse` of struct `SupportPackagesClientTriggerSupportPackageResponse` has been removed
+- Field `NodesClientListByDataBoxEdgeDeviceResult` of struct `NodesClientListByDataBoxEdgeDeviceResponse` has been removed
+- Field `RawResponse` of struct `NodesClientListByDataBoxEdgeDeviceResponse` has been removed
+- Field `StorageAccountCredentialsClientGetResult` of struct `StorageAccountCredentialsClientGetResponse` has been removed
+- Field `RawResponse` of struct `StorageAccountCredentialsClientGetResponse` has been removed
+- Field `DevicesClientUpdateResult` of struct `DevicesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `DevicesClientUpdateResponse` has been removed
+- Field `DiagnosticSettingsClientUpdateDiagnosticProactiveLogCollectionSettingsResult` of struct `DiagnosticSettingsClientUpdateDiagnosticProactiveLogCollectionSettingsResponse` has been removed
+- Field `RawResponse` of struct `DiagnosticSettingsClientUpdateDiagnosticProactiveLogCollectionSettingsResponse` has been removed
+- Field `BandwidthSchedulesClientCreateOrUpdateResult` of struct `BandwidthSchedulesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `BandwidthSchedulesClientCreateOrUpdateResponse` has been removed
+- Field `StorageAccountsClientGetResult` of struct `StorageAccountsClientGetResponse` has been removed
+- Field `RawResponse` of struct `StorageAccountsClientGetResponse` has been removed
+- Field `RawResponse` of struct `DevicesClientScanForUpdatesResponse` has been removed
+- Field `UsersClientCreateOrUpdateResult` of struct `UsersClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `UsersClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `StorageAccountCredentialsClientDeleteResponse` has been removed
+- Field `DevicesClientCreateOrUpdateResult` of struct `DevicesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `DevicesClientCreateOrUpdateResponse` has been removed
+- Field `TriggersClientGetResult` of struct `TriggersClientGetResponse` has been removed
+- Field `RawResponse` of struct `TriggersClientGetResponse` has been removed
+- Field `ContainersClientGetResult` of struct `ContainersClientGetResponse` has been removed
+- Field `RawResponse` of struct `ContainersClientGetResponse` has been removed
+- Field `StorageAccountCredentialsClientCreateOrUpdateResult` of struct `StorageAccountCredentialsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `StorageAccountCredentialsClientCreateOrUpdateResponse` has been removed
+- Field `AddonsClientCreateOrUpdateResult` of struct `AddonsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `AddonsClientCreateOrUpdateResponse` has been removed
+- Field `BandwidthSchedulesClientGetResult` of struct `BandwidthSchedulesClientGetResponse` has been removed
+- Field `RawResponse` of struct `BandwidthSchedulesClientGetResponse` has been removed
+- Field `RawResponse` of struct `AddonsClientDeleteResponse` has been removed
+- Field `DevicesClientGetUpdateSummaryResult` of struct `DevicesClientGetUpdateSummaryResponse` has been removed
+- Field `RawResponse` of struct `DevicesClientGetUpdateSummaryResponse` has been removed
+- Field `RawResponse` of struct `SharesClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `DevicesClientDeleteResponse` has been removed
+- Field `StorageAccountsClientListByDataBoxEdgeDeviceResult` of struct `StorageAccountsClientListByDataBoxEdgeDeviceResponse` has been removed
+- Field `RawResponse` of struct `StorageAccountsClientListByDataBoxEdgeDeviceResponse` has been removed
+- Field `DiagnosticSettingsClientGetDiagnosticRemoteSupportSettingsResult` of struct `DiagnosticSettingsClientGetDiagnosticRemoteSupportSettingsResponse` has been removed
+- Field `RawResponse` of struct `DiagnosticSettingsClientGetDiagnosticRemoteSupportSettingsResponse` has been removed
+- Field `RawResponse` of struct `ContainersClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `ContainersClientRefreshResponse` has been removed
+- Field `MonitoringConfigClientCreateOrUpdateResult` of struct `MonitoringConfigClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `MonitoringConfigClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `TriggersClientDeleteResponse` has been removed
+- Field `SharesClientListByDataBoxEdgeDeviceResult` of struct `SharesClientListByDataBoxEdgeDeviceResponse` has been removed
+- Field `RawResponse` of struct `SharesClientListByDataBoxEdgeDeviceResponse` has been removed
+- Field `RolesClientCreateOrUpdateResult` of struct `RolesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `RolesClientCreateOrUpdateResponse` has been removed
+- Field `JobsClientGetResult` of struct `JobsClientGetResponse` has been removed
+- Field `RawResponse` of struct `JobsClientGetResponse` has been removed
+- Field `RawResponse` of struct `SharesClientRefreshResponse` has been removed
+- Field `OrdersClientCreateOrUpdateResult` of struct `OrdersClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `OrdersClientCreateOrUpdateResponse` has been removed
+- Field `DiagnosticSettingsClientGetDiagnosticProactiveLogCollectionSettingsResult` of struct `DiagnosticSettingsClientGetDiagnosticProactiveLogCollectionSettingsResponse` has been removed
+- Field `RawResponse` of struct `DiagnosticSettingsClientGetDiagnosticProactiveLogCollectionSettingsResponse` has been removed
+- Field `RawResponse` of struct `BandwidthSchedulesClientDeleteResponse` has been removed
+- Field `RolesClientGetResult` of struct `RolesClientGetResponse` has been removed
+- Field `RawResponse` of struct `RolesClientGetResponse` has been removed
+- Field `StorageAccountCredentialsClientListByDataBoxEdgeDeviceResult` of struct `StorageAccountCredentialsClientListByDataBoxEdgeDeviceResponse` has been removed
+- Field `RawResponse` of struct `StorageAccountCredentialsClientListByDataBoxEdgeDeviceResponse` has been removed
+- Field `DevicesClientUpdateExtendedInformationResult` of struct `DevicesClientUpdateExtendedInformationResponse` has been removed
+- Field `RawResponse` of struct `DevicesClientUpdateExtendedInformationResponse` has been removed
+- Field `RolesClientListByDataBoxEdgeDeviceResult` of struct `RolesClientListByDataBoxEdgeDeviceResponse` has been removed
+- Field `RawResponse` of struct `RolesClientListByDataBoxEdgeDeviceResponse` has been removed
+- Field `RawResponse` of struct `StorageAccountsClientDeleteResponse` has been removed
+- Field `SharesClientGetResult` of struct `SharesClientGetResponse` has been removed
+- Field `RawResponse` of struct `SharesClientGetResponse` has been removed
+- Field `DevicesClientGetExtendedInformationResult` of struct `DevicesClientGetExtendedInformationResponse` has been removed
+- Field `RawResponse` of struct `DevicesClientGetExtendedInformationResponse` has been removed
+- Field `RawResponse` of struct `DevicesClientDownloadUpdatesResponse` has been removed
+- Field `AddonsClientListByRoleResult` of struct `AddonsClientListByRoleResponse` has been removed
+- Field `RawResponse` of struct `AddonsClientListByRoleResponse` has been removed
+- Field `TriggersClientCreateOrUpdateResult` of struct `TriggersClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `TriggersClientCreateOrUpdateResponse` has been removed
+- Field `DevicesClientUploadCertificateResult` of struct `DevicesClientUploadCertificateResponse` has been removed
+- Field `RawResponse` of struct `DevicesClientUploadCertificateResponse` has been removed
+- Field `AvailableSKUsClientListResult` of struct `AvailableSKUsClientListResponse` has been removed
+- Field `RawResponse` of struct `AvailableSKUsClientListResponse` has been removed
+- Field `BandwidthSchedulesClientListByDataBoxEdgeDeviceResult` of struct `BandwidthSchedulesClientListByDataBoxEdgeDeviceResponse` has been removed
+- Field `RawResponse` of struct `BandwidthSchedulesClientListByDataBoxEdgeDeviceResponse` has been removed
+- Field `DiagnosticSettingsClientUpdateDiagnosticRemoteSupportSettingsResult` of struct `DiagnosticSettingsClientUpdateDiagnosticRemoteSupportSettingsResponse` has been removed
+- Field `RawResponse` of struct `DiagnosticSettingsClientUpdateDiagnosticRemoteSupportSettingsResponse` has been removed
+- Field `MonitoringConfigClientGetResult` of struct `MonitoringConfigClientGetResponse` has been removed
+- Field `RawResponse` of struct `MonitoringConfigClientGetResponse` has been removed
+- Field `RawResponse` of struct `RolesClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `UsersClientDeleteResponse` has been removed
+- Field `UsersClientListByDataBoxEdgeDeviceResult` of struct `UsersClientListByDataBoxEdgeDeviceResponse` has been removed
+- Field `RawResponse` of struct `UsersClientListByDataBoxEdgeDeviceResponse` has been removed
+- Field `AddonsClientGetResult` of struct `AddonsClientGetResponse` has been removed
+- Field `RawResponse` of struct `AddonsClientGetResponse` has been removed
+- Field `OperationsStatusClientGetResult` of struct `OperationsStatusClientGetResponse` has been removed
+- Field `RawResponse` of struct `OperationsStatusClientGetResponse` has been removed
+- Field `DevicesClientListBySubscriptionResult` of struct `DevicesClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `DevicesClientListBySubscriptionResponse` has been removed
+- Field `AlertsClientListByDataBoxEdgeDeviceResult` of struct `AlertsClientListByDataBoxEdgeDeviceResponse` has been removed
+- Field `RawResponse` of struct `AlertsClientListByDataBoxEdgeDeviceResponse` has been removed
+
+### Features Added
+
+- New const `ClusterWitnessTypeFileShare`
+- New const `SKUNameEdgeMRTCP`
+- New const `SKUNameEP2256GPU2Mx1`
+- New const `ClusterWitnessTypeCloud`
+- New const `SKUNameEP2128GPU1Mx1W`
+- New const `ClusterWitnessTypeNone`
+- New const `SKUNameEP264Mx1W`
+- New function `NewDeviceCapacityInfoClient(string, azcore.TokenCredential, *arm.ClientOptions) (*DeviceCapacityInfoClient, error)`
+- New function `*DeviceCapacityCheckClient.BeginCheckResourceCreationFeasibility(context.Context, string, string, DeviceCapacityRequestInfo, *DeviceCapacityCheckClientBeginCheckResourceCreationFeasibilityOptions) (*armruntime.Poller[DeviceCapacityCheckClientCheckResourceCreationFeasibilityResponse], error)`
+- New function `VMPlacementRequestResult.MarshalJSON() ([]byte, error)`
+- New function `PossibleClusterWitnessTypeValues() []ClusterWitnessType`
+- New function `*DeviceCapacityInfoClient.GetDeviceCapacityInfo(context.Context, string, string, *DeviceCapacityInfoClientGetDeviceCapacityInfoOptions) (DeviceCapacityInfoClientGetDeviceCapacityInfoResponse, error)`
+- New function `*TriggersClientCreateOrUpdateResponse.UnmarshalJSON([]byte) error`
+- New function `*AddonsClientGetResponse.UnmarshalJSON([]byte) error`
+- New function `MoveRequest.MarshalJSON() ([]byte, error)`
+- New function `SystemDataAutoGenerated.MarshalJSON() ([]byte, error)`
+- New function `HostCapacity.MarshalJSON() ([]byte, error)`
+- New function `ClusterCapacityViewData.MarshalJSON() ([]byte, error)`
+- New function `*RolesClientGetResponse.UnmarshalJSON([]byte) error`
+- New function `*SystemDataAutoGenerated.UnmarshalJSON([]byte) error`
+- New function `*AddonsClientCreateOrUpdateResponse.UnmarshalJSON([]byte) error`
+- New function `DeviceCapacityInfoProperties.MarshalJSON() ([]byte, error)`
+- New function `NewDeviceCapacityCheckClient(string, azcore.TokenCredential, *arm.ClientOptions) (*DeviceCapacityCheckClient, error)`
+- New function `DeviceCapacityRequestInfoProperties.MarshalJSON() ([]byte, error)`
+- New function `*TriggersClientGetResponse.UnmarshalJSON([]byte) error`
+- New function `*ClusterCapacityViewData.UnmarshalJSON([]byte) error`
+- New function `CloudErrorBody.MarshalJSON() ([]byte, error)`
+- New function `*RolesClientCreateOrUpdateResponse.UnmarshalJSON([]byte) error`
+- New function `*DeviceCapacityInfoProperties.UnmarshalJSON([]byte) error`
+- New function `NumaNodeData.MarshalJSON() ([]byte, error)`
+- New struct `CloudError`
+- New struct `CloudErrorBody`
+- New struct `ClusterCapacityViewData`
+- New struct `ClusterGpuCapacity`
+- New struct `ClusterMemoryCapacity`
+- New struct `ClusterStorageViewData`
+- New struct `DeviceCapacityCheckClient`
+- New struct `DeviceCapacityCheckClientBeginCheckResourceCreationFeasibilityOptions`
+- New struct `DeviceCapacityCheckClientCheckResourceCreationFeasibilityResponse`
+- New struct `DeviceCapacityInfo`
+- New struct `DeviceCapacityInfoClient`
+- New struct `DeviceCapacityInfoClientGetDeviceCapacityInfoOptions`
+- New struct `DeviceCapacityInfoClientGetDeviceCapacityInfoResponse`
+- New struct `DeviceCapacityInfoProperties`
+- New struct `DeviceCapacityRequestInfo`
+- New struct `DeviceCapacityRequestInfoProperties`
+- New struct `HostCapacity`
+- New struct `MoveRequest`
+- New struct `NumaNodeData`
+- New struct `SystemDataAutoGenerated`
+- New struct `VMMemory`
+- New struct `VMPlacementRequestResult`
+- New anonymous field `TriggerClassification` in struct `TriggersClientGetResponse`
+- New anonymous field `AddonClassification` in struct `AddonsClientCreateOrUpdateResponse`
+- New anonymous field `ContainerList` in struct `ContainersClientListByStorageAccountResponse`
+- New anonymous field `ShareList` in struct `SharesClientListByDataBoxEdgeDeviceResponse`
+- New anonymous field `BandwidthSchedule` in struct `BandwidthSchedulesClientCreateOrUpdateResponse`
+- New anonymous field `StorageAccount` in struct `StorageAccountsClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `SharesClientBeginRefreshOptions`
+- New field `ResumeToken` in struct `UsersClientBeginDeleteOptions`
+- New anonymous field `DCAccessCode` in struct `OrdersClientListDCAccessCodeResponse`
+- New field `ResumeToken` in struct `OrdersClientBeginDeleteOptions`
+- New anonymous field `StorageAccountCredential` in struct `StorageAccountCredentialsClientGetResponse`
+- New anonymous field `DiagnosticRemoteSupportSettings` in struct `DiagnosticSettingsClientGetDiagnosticRemoteSupportSettingsResponse`
+- New anonymous field `SKUList` in struct `AvailableSKUsClientListResponse`
+- New field `ResumeToken` in struct `AddonsClientBeginCreateOrUpdateOptions`
+- New anonymous field `OperationsList` in struct `OperationsClientListResponse`
+- New anonymous field `DeviceExtendedInfo` in struct `DevicesClientGetExtendedInformationResponse`
+- New anonymous field `DeviceList` in struct `DevicesClientListByResourceGroupResponse`
+- New anonymous field `Share` in struct `SharesClientGetResponse`
+- New field `ClusterWitnessType` in struct `DeviceExtendedInfoProperties`
+- New field `CloudWitnessStorageEndpoint` in struct `DeviceExtendedInfoProperties`
+- New field `FileShareWitnessUsername` in struct `DeviceExtendedInfoProperties`
+- New field `CloudWitnessContainerName` in struct `DeviceExtendedInfoProperties`
+- New field `FileShareWitnessLocation` in struct `DeviceExtendedInfoProperties`
+- New field `CloudWitnessStorageAccountName` in struct `DeviceExtendedInfoProperties`
+- New field `ResumeToken` in struct `TriggersClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `ContainersClientBeginRefreshOptions`
+- New field `ResumeToken` in struct `StorageAccountsClientBeginDeleteOptions`
+- New anonymous field `Alert` in struct `AlertsClientGetResponse`
+- New anonymous field `AlertList` in struct `AlertsClientListByDataBoxEdgeDeviceResponse`
+- New anonymous field `UploadCertificateResponse` in struct `DevicesClientUploadCertificateResponse`
+- New anonymous field `NetworkSettings` in struct `DevicesClientGetNetworkSettingsResponse`
+- New anonymous field `Job` in struct `OperationsStatusClientGetResponse`
+- New anonymous field `RoleClassification` in struct `RolesClientCreateOrUpdateResponse`
+- New anonymous field `DiagnosticRemoteSupportSettings` in struct `DiagnosticSettingsClientUpdateDiagnosticRemoteSupportSettingsResponse`
+- New anonymous field `User` in struct `UsersClientGetResponse`
+- New anonymous field `StorageAccountCredentialList` in struct `StorageAccountCredentialsClientListByDataBoxEdgeDeviceResponse`
+- New anonymous field `Container` in struct `ContainersClientGetResponse`
+- New field `OrderID` in struct `OrderProperties`
+- New anonymous field `TriggerList` in struct `TriggersClientListByDataBoxEdgeDeviceResponse`
+- New field `ResumeToken` in struct `StorageAccountCredentialsClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `DevicesClientBeginInstallUpdatesOptions`
+- New anonymous field `UserList` in struct `UsersClientListByDataBoxEdgeDeviceResponse`
+- New anonymous field `BandwidthSchedulesList` in struct `BandwidthSchedulesClientListByDataBoxEdgeDeviceResponse`
+- New field `ResumeToken` in struct `ContainersClientBeginDeleteOptions`
+- New anonymous field `NodeList` in struct `NodesClientListByDataBoxEdgeDeviceResponse`
+- New field `ResumeToken` in struct `MonitoringConfigClientBeginDeleteOptions`
+- New anonymous field `RoleClassification` in struct `RolesClientGetResponse`
+- New anonymous field `StorageAccount` in struct `StorageAccountsClientGetResponse`
+- New field `ResumeToken` in struct `DiagnosticSettingsClientBeginUpdateDiagnosticRemoteSupportSettingsOptions`
+- New field `ResumeToken` in struct `DevicesClientBeginDownloadUpdatesOptions`
+- New field `ResumeToken` in struct `BandwidthSchedulesClientBeginDeleteOptions`
+- New anonymous field `DeviceExtendedInfo` in struct `DevicesClientUpdateExtendedInformationResponse`
+- New anonymous field `DiagnosticProactiveLogCollectionSettings` in struct `DiagnosticSettingsClientUpdateDiagnosticProactiveLogCollectionSettingsResponse`
+- New field `ResumeToken` in struct `TriggersClientBeginCreateOrUpdateOptions`
+- New anonymous field `DeviceList` in struct `DevicesClientListBySubscriptionResponse`
+- New anonymous field `BandwidthSchedule` in struct `BandwidthSchedulesClientGetResponse`
+- New anonymous field `OrderList` in struct `OrdersClientListByDataBoxEdgeDeviceResponse`
+- New anonymous field `Job` in struct `JobsClientGetResponse`
+- New anonymous field `Container` in struct `ContainersClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `ContainersClientBeginCreateOrUpdateOptions`
+- New anonymous field `GenerateCertResponse` in struct `DevicesClientGenerateCertificateResponse`
+- New field `ResumeToken` in struct `SupportPackagesClientBeginTriggerSupportPackageOptions`
+- New field `Kind` in struct `Order`
+- New anonymous field `DiagnosticProactiveLogCollectionSettings` in struct `DiagnosticSettingsClientGetDiagnosticProactiveLogCollectionSettingsResponse`
+- New field `SystemData` in struct `DeviceExtendedInfo`
+- New field `ResumeToken` in struct `BandwidthSchedulesClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `DevicesClientBeginCreateOrUpdateSecuritySettingsOptions`
+- New anonymous field `Device` in struct `DevicesClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `RolesClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `OrdersClientBeginCreateOrUpdateOptions`
+- New anonymous field `TriggerClassification` in struct `TriggersClientCreateOrUpdateResponse`
+- New anonymous field `MonitoringMetricConfiguration` in struct `MonitoringConfigClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `DevicesClientBeginScanForUpdatesOptions`
+- New field `ResumeToken` in struct `MonitoringConfigClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `DevicesClientBeginDeleteOptions`
+- New anonymous field `AddonClassification` in struct `AddonsClientGetResponse`
+- New anonymous field `UpdateSummary` in struct `DevicesClientGetUpdateSummaryResponse`
+- New field `ResumeToken` in struct `RolesClientBeginCreateOrUpdateOptions`
+- New anonymous field `MonitoringMetricConfigurationList` in struct `MonitoringConfigClientListResponse`
+- New anonymous field `Device` in struct `DevicesClientGetResponse`
+- New field `ResumeToken` in struct `SharesClientBeginDeleteOptions`
+- New anonymous field `AddonList` in struct `AddonsClientListByRoleResponse`
+- New anonymous field `Device` in struct `DevicesClientUpdateResponse`
+- New anonymous field `RoleList` in struct `RolesClientListByDataBoxEdgeDeviceResponse`
+- New anonymous field `User` in struct `UsersClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `DiagnosticSettingsClientBeginUpdateDiagnosticProactiveLogCollectionSettingsOptions`
+- New anonymous field `Order` in struct `OrdersClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `StorageAccountCredentialsClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `UsersClientBeginCreateOrUpdateOptions`
+- New anonymous field `StorageAccountCredential` in struct `StorageAccountCredentialsClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `SharesClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `StorageAccountsClientBeginCreateOrUpdateOptions`
+- New anonymous field `Order` in struct `OrdersClientGetResponse`
+- New anonymous field `StorageAccountList` in struct `StorageAccountsClientListByDataBoxEdgeDeviceResponse`
+- New field `ResumeToken` in struct `AddonsClientBeginDeleteOptions`
+- New anonymous field `MonitoringMetricConfiguration` in struct `MonitoringConfigClientGetResponse`
+- New anonymous field `Share` in struct `SharesClientCreateOrUpdateResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

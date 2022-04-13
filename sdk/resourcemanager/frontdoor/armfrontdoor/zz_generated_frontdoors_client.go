@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type FrontDoorsClient struct {
 // ID forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewFrontDoorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *FrontDoorsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewFrontDoorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FrontDoorsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &FrontDoorsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates a new Front Door with a Front Door name under the specified subscription and resource group.
@@ -57,22 +62,18 @@ func NewFrontDoorsClient(subscriptionID string, credential azcore.TokenCredentia
 // frontDoorParameters - Front Door properties needed to create a new Front Door.
 // options - FrontDoorsClientBeginCreateOrUpdateOptions contains the optional parameters for the FrontDoorsClient.BeginCreateOrUpdate
 // method.
-func (client *FrontDoorsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, frontDoorName string, frontDoorParameters FrontDoor, options *FrontDoorsClientBeginCreateOrUpdateOptions) (FrontDoorsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, frontDoorName, frontDoorParameters, options)
-	if err != nil {
-		return FrontDoorsClientCreateOrUpdatePollerResponse{}, err
+func (client *FrontDoorsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, frontDoorName string, frontDoorParameters FrontDoor, options *FrontDoorsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[FrontDoorsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, frontDoorName, frontDoorParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[FrontDoorsClientCreateOrUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[FrontDoorsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := FrontDoorsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("FrontDoorsClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return FrontDoorsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &FrontDoorsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates a new Front Door with a Front Door name under the specified subscription and resource group.
@@ -123,22 +124,18 @@ func (client *FrontDoorsClient) createOrUpdateCreateRequest(ctx context.Context,
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // frontDoorName - Name of the Front Door which is globally unique.
 // options - FrontDoorsClientBeginDeleteOptions contains the optional parameters for the FrontDoorsClient.BeginDelete method.
-func (client *FrontDoorsClient) BeginDelete(ctx context.Context, resourceGroupName string, frontDoorName string, options *FrontDoorsClientBeginDeleteOptions) (FrontDoorsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, frontDoorName, options)
-	if err != nil {
-		return FrontDoorsClientDeletePollerResponse{}, err
+func (client *FrontDoorsClient) BeginDelete(ctx context.Context, resourceGroupName string, frontDoorName string, options *FrontDoorsClientBeginDeleteOptions) (*armruntime.Poller[FrontDoorsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, frontDoorName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[FrontDoorsClientDeleteResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[FrontDoorsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := FrontDoorsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("FrontDoorsClient.Delete", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return FrontDoorsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &FrontDoorsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes an existing Front Door with the specified parameters.
@@ -232,7 +229,7 @@ func (client *FrontDoorsClient) getCreateRequest(ctx context.Context, resourceGr
 
 // getHandleResponse handles the Get response.
 func (client *FrontDoorsClient) getHandleResponse(resp *http.Response) (FrontDoorsClientGetResponse, error) {
-	result := FrontDoorsClientGetResponse{RawResponse: resp}
+	result := FrontDoorsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FrontDoor); err != nil {
 		return FrontDoorsClientGetResponse{}, err
 	}
@@ -242,16 +239,32 @@ func (client *FrontDoorsClient) getHandleResponse(resp *http.Response) (FrontDoo
 // List - Lists all of the Front Doors within an Azure subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - FrontDoorsClientListOptions contains the optional parameters for the FrontDoorsClient.List method.
-func (client *FrontDoorsClient) List(options *FrontDoorsClientListOptions) *FrontDoorsClientListPager {
-	return &FrontDoorsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *FrontDoorsClient) List(options *FrontDoorsClientListOptions) *runtime.Pager[FrontDoorsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[FrontDoorsClientListResponse]{
+		More: func(page FrontDoorsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp FrontDoorsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *FrontDoorsClientListResponse) (FrontDoorsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return FrontDoorsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return FrontDoorsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return FrontDoorsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -274,7 +287,7 @@ func (client *FrontDoorsClient) listCreateRequest(ctx context.Context, options *
 
 // listHandleResponse handles the List response.
 func (client *FrontDoorsClient) listHandleResponse(resp *http.Response) (FrontDoorsClientListResponse, error) {
-	result := FrontDoorsClientListResponse{RawResponse: resp}
+	result := FrontDoorsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListResult); err != nil {
 		return FrontDoorsClientListResponse{}, err
 	}
@@ -286,16 +299,32 @@ func (client *FrontDoorsClient) listHandleResponse(resp *http.Response) (FrontDo
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // options - FrontDoorsClientListByResourceGroupOptions contains the optional parameters for the FrontDoorsClient.ListByResourceGroup
 // method.
-func (client *FrontDoorsClient) ListByResourceGroup(resourceGroupName string, options *FrontDoorsClientListByResourceGroupOptions) *FrontDoorsClientListByResourceGroupPager {
-	return &FrontDoorsClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *FrontDoorsClient) ListByResourceGroup(resourceGroupName string, options *FrontDoorsClientListByResourceGroupOptions) *runtime.Pager[FrontDoorsClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[FrontDoorsClientListByResourceGroupResponse]{
+		More: func(page FrontDoorsClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp FrontDoorsClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *FrontDoorsClientListByResourceGroupResponse) (FrontDoorsClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return FrontDoorsClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return FrontDoorsClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return FrontDoorsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -322,7 +351,7 @@ func (client *FrontDoorsClient) listByResourceGroupCreateRequest(ctx context.Con
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *FrontDoorsClient) listByResourceGroupHandleResponse(resp *http.Response) (FrontDoorsClientListByResourceGroupResponse, error) {
-	result := FrontDoorsClientListByResourceGroupResponse{RawResponse: resp}
+	result := FrontDoorsClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListResult); err != nil {
 		return FrontDoorsClientListByResourceGroupResponse{}, err
 	}
@@ -379,7 +408,7 @@ func (client *FrontDoorsClient) validateCustomDomainCreateRequest(ctx context.Co
 
 // validateCustomDomainHandleResponse handles the ValidateCustomDomain response.
 func (client *FrontDoorsClient) validateCustomDomainHandleResponse(resp *http.Response) (FrontDoorsClientValidateCustomDomainResponse, error) {
-	result := FrontDoorsClientValidateCustomDomainResponse{RawResponse: resp}
+	result := FrontDoorsClientValidateCustomDomainResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ValidateCustomDomainOutput); err != nil {
 		return FrontDoorsClientValidateCustomDomainResponse{}, err
 	}

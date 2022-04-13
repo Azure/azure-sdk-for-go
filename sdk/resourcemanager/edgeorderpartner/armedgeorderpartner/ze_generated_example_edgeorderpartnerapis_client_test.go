@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,103 +19,124 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/edgeorderpartner/armedgeorderpartner"
 )
 
-// x-ms-original-file: specification/edgeorderpartner/resource-manager/Microsoft.EdgeOrderPartner/preview/2020-12-01-preview/examples/ListOperationsPartner.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/edgeorderpartner/resource-manager/Microsoft.EdgeOrderPartner/preview/2020-12-01-preview/examples/ListOperationsPartner.json
 func ExampleAPISClient_ListOperationsPartner() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armedgeorderpartner.NewAPISClient("<subscription-id>", cred, nil)
+	client, err := armedgeorderpartner.NewAPISClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListOperationsPartner(nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/edgeorderpartner/resource-manager/Microsoft.EdgeOrderPartner/preview/2020-12-01-preview/examples/ManageInventoryMetadata.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/edgeorderpartner/resource-manager/Microsoft.EdgeOrderPartner/preview/2020-12-01-preview/examples/ManageInventoryMetadata.json
 func ExampleAPISClient_BeginManageInventoryMetadata() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armedgeorderpartner.NewAPISClient("<subscription-id>", cred, nil)
+	client, err := armedgeorderpartner.NewAPISClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginManageInventoryMetadata(ctx,
 		"<family-identifier>",
 		"<location>",
 		"<serial-number>",
 		armedgeorderpartner.ManageInventoryMetadataRequest{
 			ConfigurationOnDevice: &armedgeorderpartner.ConfigurationOnDevice{
-				ConfigurationIdentifier: to.StringPtr("<configuration-identifier>"),
+				ConfigurationIdentifier: to.Ptr("<configuration-identifier>"),
 			},
-			InventoryMetadata: to.StringPtr("<inventory-metadata>"),
+			InventoryMetadata: to.Ptr("<inventory-metadata>"),
 		},
-		nil)
+		&armedgeorderpartner.APISClientBeginManageInventoryMetadataOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/edgeorderpartner/resource-manager/Microsoft.EdgeOrderPartner/preview/2020-12-01-preview/examples/ManageLink.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/edgeorderpartner/resource-manager/Microsoft.EdgeOrderPartner/preview/2020-12-01-preview/examples/ManageLink.json
 func ExampleAPISClient_ManageLink() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armedgeorderpartner.NewAPISClient("<subscription-id>", cred, nil)
+	client, err := armedgeorderpartner.NewAPISClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.ManageLink(ctx,
 		"<family-identifier>",
 		"<location>",
 		"<serial-number>",
 		armedgeorderpartner.ManageLinkRequest{
-			ManagementResourceArmID: to.StringPtr("<management-resource-arm-id>"),
-			Operation:               armedgeorderpartner.ManageLinkOperationLink.ToPtr(),
-			TenantID:                to.StringPtr("<tenant-id>"),
+			ManagementResourceArmID: to.Ptr("<management-resource-arm-id>"),
+			Operation:               to.Ptr(armedgeorderpartner.ManageLinkOperationLink),
+			TenantID:                to.Ptr("<tenant-id>"),
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/edgeorderpartner/resource-manager/Microsoft.EdgeOrderPartner/preview/2020-12-01-preview/examples/SearchInventories.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/edgeorderpartner/resource-manager/Microsoft.EdgeOrderPartner/preview/2020-12-01-preview/examples/SearchInventories.json
 func ExampleAPISClient_SearchInventories() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armedgeorderpartner.NewAPISClient("<subscription-id>", cred, nil)
+	client, err := armedgeorderpartner.NewAPISClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.SearchInventories(armedgeorderpartner.SearchInventoriesRequest{
-		FamilyIdentifier: to.StringPtr("<family-identifier>"),
-		SerialNumber:     to.StringPtr("<serial-number>"),
+		FamilyIdentifier: to.Ptr("<family-identifier>"),
+		SerialNumber:     to.Ptr("<serial-number>"),
 	},
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }

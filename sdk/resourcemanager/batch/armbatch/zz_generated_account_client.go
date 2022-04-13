@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type AccountClient struct {
 // subscriptionID - The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000)
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewAccountClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AccountClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewAccountClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AccountClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &AccountClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreate - Creates a new Batch account with the specified parameters. Existing accounts cannot be updated with this
@@ -59,22 +64,18 @@ func NewAccountClient(subscriptionID string, credential azcore.TokenCredential, 
 // example: http://accountname.region.batch.azure.com/.
 // parameters - Additional parameters for account creation.
 // options - AccountClientBeginCreateOptions contains the optional parameters for the AccountClient.BeginCreate method.
-func (client *AccountClient) BeginCreate(ctx context.Context, resourceGroupName string, accountName string, parameters AccountCreateParameters, options *AccountClientBeginCreateOptions) (AccountClientCreatePollerResponse, error) {
-	resp, err := client.create(ctx, resourceGroupName, accountName, parameters, options)
-	if err != nil {
-		return AccountClientCreatePollerResponse{}, err
+func (client *AccountClient) BeginCreate(ctx context.Context, resourceGroupName string, accountName string, parameters AccountCreateParameters, options *AccountClientBeginCreateOptions) (*armruntime.Poller[AccountClientCreateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.create(ctx, resourceGroupName, accountName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[AccountClientCreateResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[AccountClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := AccountClientCreatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("AccountClient.Create", "location", resp, client.pl)
-	if err != nil {
-		return AccountClientCreatePollerResponse{}, err
-	}
-	result.Poller = &AccountClientCreatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Create - Creates a new Batch account with the specified parameters. Existing accounts cannot be updated with this API and
@@ -115,7 +116,7 @@ func (client *AccountClient) createCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -126,22 +127,18 @@ func (client *AccountClient) createCreateRequest(ctx context.Context, resourceGr
 // resourceGroupName - The name of the resource group that contains the Batch account.
 // accountName - The name of the Batch account.
 // options - AccountClientBeginDeleteOptions contains the optional parameters for the AccountClient.BeginDelete method.
-func (client *AccountClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, options *AccountClientBeginDeleteOptions) (AccountClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, options)
-	if err != nil {
-		return AccountClientDeletePollerResponse{}, err
+func (client *AccountClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, options *AccountClientBeginDeleteOptions) (*armruntime.Poller[AccountClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[AccountClientDeleteResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[AccountClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := AccountClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("AccountClient.Delete", "location", resp, client.pl)
-	if err != nil {
-		return AccountClientDeletePollerResponse{}, err
-	}
-	result.Poller = &AccountClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes the specified Batch account.
@@ -181,7 +178,7 @@ func (client *AccountClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -227,7 +224,7 @@ func (client *AccountClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -235,9 +232,69 @@ func (client *AccountClient) getCreateRequest(ctx context.Context, resourceGroup
 
 // getHandleResponse handles the Get response.
 func (client *AccountClient) getHandleResponse(resp *http.Response) (AccountClientGetResponse, error) {
-	result := AccountClientGetResponse{RawResponse: resp}
+	result := AccountClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Account); err != nil {
 		return AccountClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// GetDetector - Gets information about the given detector for a given Batch account.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the Batch account.
+// accountName - The name of the Batch account.
+// detectorID - The name of the detector.
+// options - AccountClientGetDetectorOptions contains the optional parameters for the AccountClient.GetDetector method.
+func (client *AccountClient) GetDetector(ctx context.Context, resourceGroupName string, accountName string, detectorID string, options *AccountClientGetDetectorOptions) (AccountClientGetDetectorResponse, error) {
+	req, err := client.getDetectorCreateRequest(ctx, resourceGroupName, accountName, detectorID, options)
+	if err != nil {
+		return AccountClientGetDetectorResponse{}, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return AccountClientGetDetectorResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return AccountClientGetDetectorResponse{}, runtime.NewResponseError(resp)
+	}
+	return client.getDetectorHandleResponse(resp)
+}
+
+// getDetectorCreateRequest creates the GetDetector request.
+func (client *AccountClient) getDetectorCreateRequest(ctx context.Context, resourceGroupName string, accountName string, detectorID string, options *AccountClientGetDetectorOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/detectors/{detectorId}"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if detectorID == "" {
+		return nil, errors.New("parameter detectorID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{detectorId}", url.PathEscape(detectorID))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-01-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, nil
+}
+
+// getDetectorHandleResponse handles the GetDetector response.
+func (client *AccountClient) getDetectorHandleResponse(resp *http.Response) (AccountClientGetDetectorResponse, error) {
+	result := AccountClientGetDetectorResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DetectorResponse); err != nil {
+		return AccountClientGetDetectorResponse{}, err
 	}
 	return result, nil
 }
@@ -285,7 +342,7 @@ func (client *AccountClient) getKeysCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -293,7 +350,7 @@ func (client *AccountClient) getKeysCreateRequest(ctx context.Context, resourceG
 
 // getKeysHandleResponse handles the GetKeys response.
 func (client *AccountClient) getKeysHandleResponse(resp *http.Response) (AccountClientGetKeysResponse, error) {
-	result := AccountClientGetKeysResponse{RawResponse: resp}
+	result := AccountClientGetKeysResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccountKeys); err != nil {
 		return AccountClientGetKeysResponse{}, err
 	}
@@ -303,16 +360,32 @@ func (client *AccountClient) getKeysHandleResponse(resp *http.Response) (Account
 // List - Gets information about the Batch accounts associated with the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AccountClientListOptions contains the optional parameters for the AccountClient.List method.
-func (client *AccountClient) List(options *AccountClientListOptions) *AccountClientListPager {
-	return &AccountClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *AccountClient) List(options *AccountClientListOptions) *runtime.Pager[AccountClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AccountClientListResponse]{
+		More: func(page AccountClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AccountClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AccountListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *AccountClientListResponse) (AccountClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AccountClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AccountClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AccountClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -327,7 +400,7 @@ func (client *AccountClient) listCreateRequest(ctx context.Context, options *Acc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -335,7 +408,7 @@ func (client *AccountClient) listCreateRequest(ctx context.Context, options *Acc
 
 // listHandleResponse handles the List response.
 func (client *AccountClient) listHandleResponse(resp *http.Response) (AccountClientListResponse, error) {
-	result := AccountClientListResponse{RawResponse: resp}
+	result := AccountClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccountListResult); err != nil {
 		return AccountClientListResponse{}, err
 	}
@@ -347,16 +420,32 @@ func (client *AccountClient) listHandleResponse(resp *http.Response) (AccountCli
 // resourceGroupName - The name of the resource group that contains the Batch account.
 // options - AccountClientListByResourceGroupOptions contains the optional parameters for the AccountClient.ListByResourceGroup
 // method.
-func (client *AccountClient) ListByResourceGroup(resourceGroupName string, options *AccountClientListByResourceGroupOptions) *AccountClientListByResourceGroupPager {
-	return &AccountClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *AccountClient) ListByResourceGroup(resourceGroupName string, options *AccountClientListByResourceGroupOptions) *runtime.Pager[AccountClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AccountClientListByResourceGroupResponse]{
+		More: func(page AccountClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AccountClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AccountListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *AccountClientListByResourceGroupResponse) (AccountClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AccountClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AccountClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AccountClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -375,7 +464,7 @@ func (client *AccountClient) listByResourceGroupCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -383,9 +472,77 @@ func (client *AccountClient) listByResourceGroupCreateRequest(ctx context.Contex
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *AccountClient) listByResourceGroupHandleResponse(resp *http.Response) (AccountClientListByResourceGroupResponse, error) {
-	result := AccountClientListByResourceGroupResponse{RawResponse: resp}
+	result := AccountClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccountListResult); err != nil {
 		return AccountClientListByResourceGroupResponse{}, err
+	}
+	return result, nil
+}
+
+// ListDetectors - Gets information about the detectors available for a given Batch account.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the Batch account.
+// accountName - The name of the Batch account.
+// options - AccountClientListDetectorsOptions contains the optional parameters for the AccountClient.ListDetectors method.
+func (client *AccountClient) ListDetectors(resourceGroupName string, accountName string, options *AccountClientListDetectorsOptions) *runtime.Pager[AccountClientListDetectorsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AccountClientListDetectorsResponse]{
+		More: func(page AccountClientListDetectorsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *AccountClientListDetectorsResponse) (AccountClientListDetectorsResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listDetectorsCreateRequest(ctx, resourceGroupName, accountName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AccountClientListDetectorsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AccountClientListDetectorsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AccountClientListDetectorsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listDetectorsHandleResponse(resp)
+		},
+	})
+}
+
+// listDetectorsCreateRequest creates the ListDetectors request.
+func (client *AccountClient) listDetectorsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *AccountClientListDetectorsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/detectors"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-01-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, nil
+}
+
+// listDetectorsHandleResponse handles the ListDetectors response.
+func (client *AccountClient) listDetectorsHandleResponse(resp *http.Response) (AccountClientListDetectorsResponse, error) {
+	result := AccountClientListDetectorsResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DetectorListResult); err != nil {
+		return AccountClientListDetectorsResponse{}, err
 	}
 	return result, nil
 }
@@ -400,16 +557,32 @@ func (client *AccountClient) listByResourceGroupHandleResponse(resp *http.Respon
 // accountName - The name of the Batch account.
 // options - AccountClientListOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for the AccountClient.ListOutboundNetworkDependenciesEndpoints
 // method.
-func (client *AccountClient) ListOutboundNetworkDependenciesEndpoints(resourceGroupName string, accountName string, options *AccountClientListOutboundNetworkDependenciesEndpointsOptions) *AccountClientListOutboundNetworkDependenciesEndpointsPager {
-	return &AccountClientListOutboundNetworkDependenciesEndpointsPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listOutboundNetworkDependenciesEndpointsCreateRequest(ctx, resourceGroupName, accountName, options)
+func (client *AccountClient) ListOutboundNetworkDependenciesEndpoints(resourceGroupName string, accountName string, options *AccountClientListOutboundNetworkDependenciesEndpointsOptions) *runtime.Pager[AccountClientListOutboundNetworkDependenciesEndpointsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AccountClientListOutboundNetworkDependenciesEndpointsResponse]{
+		More: func(page AccountClientListOutboundNetworkDependenciesEndpointsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AccountClientListOutboundNetworkDependenciesEndpointsResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.OutboundEnvironmentEndpointCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *AccountClientListOutboundNetworkDependenciesEndpointsResponse) (AccountClientListOutboundNetworkDependenciesEndpointsResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listOutboundNetworkDependenciesEndpointsCreateRequest(ctx, resourceGroupName, accountName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AccountClientListOutboundNetworkDependenciesEndpointsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AccountClientListOutboundNetworkDependenciesEndpointsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AccountClientListOutboundNetworkDependenciesEndpointsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listOutboundNetworkDependenciesEndpointsHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listOutboundNetworkDependenciesEndpointsCreateRequest creates the ListOutboundNetworkDependenciesEndpoints request.
@@ -432,7 +605,7 @@ func (client *AccountClient) listOutboundNetworkDependenciesEndpointsCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -440,7 +613,7 @@ func (client *AccountClient) listOutboundNetworkDependenciesEndpointsCreateReque
 
 // listOutboundNetworkDependenciesEndpointsHandleResponse handles the ListOutboundNetworkDependenciesEndpoints response.
 func (client *AccountClient) listOutboundNetworkDependenciesEndpointsHandleResponse(resp *http.Response) (AccountClientListOutboundNetworkDependenciesEndpointsResponse, error) {
-	result := AccountClientListOutboundNetworkDependenciesEndpointsResponse{RawResponse: resp}
+	result := AccountClientListOutboundNetworkDependenciesEndpointsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OutboundEnvironmentEndpointCollection); err != nil {
 		return AccountClientListOutboundNetworkDependenciesEndpointsResponse{}, err
 	}
@@ -491,7 +664,7 @@ func (client *AccountClient) regenerateKeyCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -499,7 +672,7 @@ func (client *AccountClient) regenerateKeyCreateRequest(ctx context.Context, res
 
 // regenerateKeyHandleResponse handles the RegenerateKey response.
 func (client *AccountClient) regenerateKeyHandleResponse(resp *http.Response) (AccountClientRegenerateKeyResponse, error) {
-	result := AccountClientRegenerateKeyResponse{RawResponse: resp}
+	result := AccountClientRegenerateKeyResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccountKeys); err != nil {
 		return AccountClientRegenerateKeyResponse{}, err
 	}
@@ -525,7 +698,7 @@ func (client *AccountClient) SynchronizeAutoStorageKeys(ctx context.Context, res
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return AccountClientSynchronizeAutoStorageKeysResponse{}, runtime.NewResponseError(resp)
 	}
-	return AccountClientSynchronizeAutoStorageKeysResponse{RawResponse: resp}, nil
+	return AccountClientSynchronizeAutoStorageKeysResponse{}, nil
 }
 
 // synchronizeAutoStorageKeysCreateRequest creates the SynchronizeAutoStorageKeys request.
@@ -548,7 +721,7 @@ func (client *AccountClient) synchronizeAutoStorageKeysCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -595,7 +768,7 @@ func (client *AccountClient) updateCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -603,7 +776,7 @@ func (client *AccountClient) updateCreateRequest(ctx context.Context, resourceGr
 
 // updateHandleResponse handles the Update response.
 func (client *AccountClient) updateHandleResponse(resp *http.Response) (AccountClientUpdateResponse, error) {
-	result := AccountClientUpdateResponse{RawResponse: resp}
+	result := AccountClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Account); err != nil {
 		return AccountClientUpdateResponse{}, err
 	}

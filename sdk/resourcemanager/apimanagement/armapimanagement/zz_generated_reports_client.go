@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -35,20 +36,24 @@ type ReportsClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewReportsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ReportsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewReportsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ReportsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ReportsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // ListByAPI - Lists report records by API.
@@ -57,16 +62,32 @@ func NewReportsClient(subscriptionID string, credential azcore.TokenCredential, 
 // serviceName - The name of the API Management service.
 // filter - The filter to apply on the operation.
 // options - ReportsClientListByAPIOptions contains the optional parameters for the ReportsClient.ListByAPI method.
-func (client *ReportsClient) ListByAPI(resourceGroupName string, serviceName string, filter string, options *ReportsClientListByAPIOptions) *ReportsClientListByAPIPager {
-	return &ReportsClientListByAPIPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByAPICreateRequest(ctx, resourceGroupName, serviceName, filter, options)
+func (client *ReportsClient) ListByAPI(resourceGroupName string, serviceName string, filter string, options *ReportsClientListByAPIOptions) *runtime.Pager[ReportsClientListByAPIResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ReportsClientListByAPIResponse]{
+		More: func(page ReportsClientListByAPIResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ReportsClientListByAPIResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ReportCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *ReportsClientListByAPIResponse) (ReportsClientListByAPIResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByAPICreateRequest(ctx, resourceGroupName, serviceName, filter, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ReportsClientListByAPIResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ReportsClientListByAPIResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ReportsClientListByAPIResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByAPIHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByAPICreateRequest creates the ListByAPI request.
@@ -107,7 +128,7 @@ func (client *ReportsClient) listByAPICreateRequest(ctx context.Context, resourc
 
 // listByAPIHandleResponse handles the ListByAPI response.
 func (client *ReportsClient) listByAPIHandleResponse(resp *http.Response) (ReportsClientListByAPIResponse, error) {
-	result := ReportsClientListByAPIResponse{RawResponse: resp}
+	result := ReportsClientListByAPIResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReportCollection); err != nil {
 		return ReportsClientListByAPIResponse{}, err
 	}
@@ -144,16 +165,32 @@ func (client *ReportsClient) listByAPIHandleResponse(resp *http.Response) (Repor
 // | serviceTimeMin | select | | |
 // | serviceTimeMax | select | | |
 // options - ReportsClientListByGeoOptions contains the optional parameters for the ReportsClient.ListByGeo method.
-func (client *ReportsClient) ListByGeo(resourceGroupName string, serviceName string, filter string, options *ReportsClientListByGeoOptions) *ReportsClientListByGeoPager {
-	return &ReportsClientListByGeoPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByGeoCreateRequest(ctx, resourceGroupName, serviceName, filter, options)
+func (client *ReportsClient) ListByGeo(resourceGroupName string, serviceName string, filter string, options *ReportsClientListByGeoOptions) *runtime.Pager[ReportsClientListByGeoResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ReportsClientListByGeoResponse]{
+		More: func(page ReportsClientListByGeoResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ReportsClientListByGeoResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ReportCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *ReportsClientListByGeoResponse) (ReportsClientListByGeoResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByGeoCreateRequest(ctx, resourceGroupName, serviceName, filter, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ReportsClientListByGeoResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ReportsClientListByGeoResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ReportsClientListByGeoResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByGeoHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByGeoCreateRequest creates the ListByGeo request.
@@ -191,7 +228,7 @@ func (client *ReportsClient) listByGeoCreateRequest(ctx context.Context, resourc
 
 // listByGeoHandleResponse handles the ListByGeo response.
 func (client *ReportsClient) listByGeoHandleResponse(resp *http.Response) (ReportsClientListByGeoResponse, error) {
-	result := ReportsClientListByGeoResponse{RawResponse: resp}
+	result := ReportsClientListByGeoResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReportCollection); err != nil {
 		return ReportsClientListByGeoResponse{}, err
 	}
@@ -227,16 +264,32 @@ func (client *ReportsClient) listByGeoHandleResponse(resp *http.Response) (Repor
 // | serviceTimeMin | select | | |
 // | serviceTimeMax | select | | |
 // options - ReportsClientListByOperationOptions contains the optional parameters for the ReportsClient.ListByOperation method.
-func (client *ReportsClient) ListByOperation(resourceGroupName string, serviceName string, filter string, options *ReportsClientListByOperationOptions) *ReportsClientListByOperationPager {
-	return &ReportsClientListByOperationPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByOperationCreateRequest(ctx, resourceGroupName, serviceName, filter, options)
+func (client *ReportsClient) ListByOperation(resourceGroupName string, serviceName string, filter string, options *ReportsClientListByOperationOptions) *runtime.Pager[ReportsClientListByOperationResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ReportsClientListByOperationResponse]{
+		More: func(page ReportsClientListByOperationResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ReportsClientListByOperationResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ReportCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *ReportsClientListByOperationResponse) (ReportsClientListByOperationResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByOperationCreateRequest(ctx, resourceGroupName, serviceName, filter, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ReportsClientListByOperationResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ReportsClientListByOperationResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ReportsClientListByOperationResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByOperationHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByOperationCreateRequest creates the ListByOperation request.
@@ -277,7 +330,7 @@ func (client *ReportsClient) listByOperationCreateRequest(ctx context.Context, r
 
 // listByOperationHandleResponse handles the ListByOperation response.
 func (client *ReportsClient) listByOperationHandleResponse(resp *http.Response) (ReportsClientListByOperationResponse, error) {
-	result := ReportsClientListByOperationResponse{RawResponse: resp}
+	result := ReportsClientListByOperationResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReportCollection); err != nil {
 		return ReportsClientListByOperationResponse{}, err
 	}
@@ -311,16 +364,32 @@ func (client *ReportsClient) listByOperationHandleResponse(resp *http.Response) 
 // | serviceTimeMin | select | | |
 // | serviceTimeMax | select | | |
 // options - ReportsClientListByProductOptions contains the optional parameters for the ReportsClient.ListByProduct method.
-func (client *ReportsClient) ListByProduct(resourceGroupName string, serviceName string, filter string, options *ReportsClientListByProductOptions) *ReportsClientListByProductPager {
-	return &ReportsClientListByProductPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByProductCreateRequest(ctx, resourceGroupName, serviceName, filter, options)
+func (client *ReportsClient) ListByProduct(resourceGroupName string, serviceName string, filter string, options *ReportsClientListByProductOptions) *runtime.Pager[ReportsClientListByProductResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ReportsClientListByProductResponse]{
+		More: func(page ReportsClientListByProductResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ReportsClientListByProductResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ReportCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *ReportsClientListByProductResponse) (ReportsClientListByProductResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByProductCreateRequest(ctx, resourceGroupName, serviceName, filter, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ReportsClientListByProductResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ReportsClientListByProductResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ReportsClientListByProductResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByProductHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByProductCreateRequest creates the ListByProduct request.
@@ -361,7 +430,7 @@ func (client *ReportsClient) listByProductCreateRequest(ctx context.Context, res
 
 // listByProductHandleResponse handles the ListByProduct response.
 func (client *ReportsClient) listByProductHandleResponse(resp *http.Response) (ReportsClientListByProductResponse, error) {
-	result := ReportsClientListByProductResponse{RawResponse: resp}
+	result := ReportsClientListByProductResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReportCollection); err != nil {
 		return ReportsClientListByProductResponse{}, err
 	}
@@ -382,19 +451,26 @@ func (client *ReportsClient) listByProductHandleResponse(resp *http.Response) (R
 // | apiRegion | filter | eq | |
 // | subscriptionId | filter | eq | |
 // options - ReportsClientListByRequestOptions contains the optional parameters for the ReportsClient.ListByRequest method.
-func (client *ReportsClient) ListByRequest(ctx context.Context, resourceGroupName string, serviceName string, filter string, options *ReportsClientListByRequestOptions) (ReportsClientListByRequestResponse, error) {
-	req, err := client.listByRequestCreateRequest(ctx, resourceGroupName, serviceName, filter, options)
-	if err != nil {
-		return ReportsClientListByRequestResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return ReportsClientListByRequestResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ReportsClientListByRequestResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listByRequestHandleResponse(resp)
+func (client *ReportsClient) ListByRequest(resourceGroupName string, serviceName string, filter string, options *ReportsClientListByRequestOptions) *runtime.Pager[ReportsClientListByRequestResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ReportsClientListByRequestResponse]{
+		More: func(page ReportsClientListByRequestResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *ReportsClientListByRequestResponse) (ReportsClientListByRequestResponse, error) {
+			req, err := client.listByRequestCreateRequest(ctx, resourceGroupName, serviceName, filter, options)
+			if err != nil {
+				return ReportsClientListByRequestResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ReportsClientListByRequestResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ReportsClientListByRequestResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByRequestHandleResponse(resp)
+		},
+	})
 }
 
 // listByRequestCreateRequest creates the ListByRequest request.
@@ -432,7 +508,7 @@ func (client *ReportsClient) listByRequestCreateRequest(ctx context.Context, res
 
 // listByRequestHandleResponse handles the ListByRequest response.
 func (client *ReportsClient) listByRequestHandleResponse(resp *http.Response) (ReportsClientListByRequestResponse, error) {
-	result := ReportsClientListByRequestResponse{RawResponse: resp}
+	result := ReportsClientListByRequestResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RequestReportCollection); err != nil {
 		return ReportsClientListByRequestResponse{}, err
 	}
@@ -467,16 +543,32 @@ func (client *ReportsClient) listByRequestHandleResponse(resp *http.Response) (R
 // | serviceTimeMax | select | | |
 // options - ReportsClientListBySubscriptionOptions contains the optional parameters for the ReportsClient.ListBySubscription
 // method.
-func (client *ReportsClient) ListBySubscription(resourceGroupName string, serviceName string, filter string, options *ReportsClientListBySubscriptionOptions) *ReportsClientListBySubscriptionPager {
-	return &ReportsClientListBySubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySubscriptionCreateRequest(ctx, resourceGroupName, serviceName, filter, options)
+func (client *ReportsClient) ListBySubscription(resourceGroupName string, serviceName string, filter string, options *ReportsClientListBySubscriptionOptions) *runtime.Pager[ReportsClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ReportsClientListBySubscriptionResponse]{
+		More: func(page ReportsClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ReportsClientListBySubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ReportCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *ReportsClientListBySubscriptionResponse) (ReportsClientListBySubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySubscriptionCreateRequest(ctx, resourceGroupName, serviceName, filter, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ReportsClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ReportsClientListBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ReportsClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
@@ -517,7 +609,7 @@ func (client *ReportsClient) listBySubscriptionCreateRequest(ctx context.Context
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
 func (client *ReportsClient) listBySubscriptionHandleResponse(resp *http.Response) (ReportsClientListBySubscriptionResponse, error) {
-	result := ReportsClientListBySubscriptionResponse{RawResponse: resp}
+	result := ReportsClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReportCollection); err != nil {
 		return ReportsClientListBySubscriptionResponse{}, err
 	}
@@ -555,16 +647,32 @@ func (client *ReportsClient) listBySubscriptionHandleResponse(resp *http.Respons
 // format (http://en.wikipedia.org/wiki/ISO_8601#Durations).This code can be used to convert
 // TimeSpan to a valid interval string: XmlConvert.ToString(new TimeSpan(hours, minutes, seconds)).
 // options - ReportsClientListByTimeOptions contains the optional parameters for the ReportsClient.ListByTime method.
-func (client *ReportsClient) ListByTime(resourceGroupName string, serviceName string, filter string, interval string, options *ReportsClientListByTimeOptions) *ReportsClientListByTimePager {
-	return &ReportsClientListByTimePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByTimeCreateRequest(ctx, resourceGroupName, serviceName, filter, interval, options)
+func (client *ReportsClient) ListByTime(resourceGroupName string, serviceName string, filter string, interval string, options *ReportsClientListByTimeOptions) *runtime.Pager[ReportsClientListByTimeResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ReportsClientListByTimeResponse]{
+		More: func(page ReportsClientListByTimeResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ReportsClientListByTimeResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ReportCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *ReportsClientListByTimeResponse) (ReportsClientListByTimeResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByTimeCreateRequest(ctx, resourceGroupName, serviceName, filter, interval, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ReportsClientListByTimeResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ReportsClientListByTimeResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ReportsClientListByTimeResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByTimeHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByTimeCreateRequest creates the ListByTime request.
@@ -606,7 +714,7 @@ func (client *ReportsClient) listByTimeCreateRequest(ctx context.Context, resour
 
 // listByTimeHandleResponse handles the ListByTime response.
 func (client *ReportsClient) listByTimeHandleResponse(resp *http.Response) (ReportsClientListByTimeResponse, error) {
-	result := ReportsClientListByTimeResponse{RawResponse: resp}
+	result := ReportsClientListByTimeResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReportCollection); err != nil {
 		return ReportsClientListByTimeResponse{}, err
 	}
@@ -642,16 +750,32 @@ func (client *ReportsClient) listByTimeHandleResponse(resp *http.Response) (Repo
 // | serviceTimeMin | select | | |
 // | serviceTimeMax | select | | |
 // options - ReportsClientListByUserOptions contains the optional parameters for the ReportsClient.ListByUser method.
-func (client *ReportsClient) ListByUser(resourceGroupName string, serviceName string, filter string, options *ReportsClientListByUserOptions) *ReportsClientListByUserPager {
-	return &ReportsClientListByUserPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByUserCreateRequest(ctx, resourceGroupName, serviceName, filter, options)
+func (client *ReportsClient) ListByUser(resourceGroupName string, serviceName string, filter string, options *ReportsClientListByUserOptions) *runtime.Pager[ReportsClientListByUserResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ReportsClientListByUserResponse]{
+		More: func(page ReportsClientListByUserResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ReportsClientListByUserResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ReportCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *ReportsClientListByUserResponse) (ReportsClientListByUserResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByUserCreateRequest(ctx, resourceGroupName, serviceName, filter, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ReportsClientListByUserResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ReportsClientListByUserResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ReportsClientListByUserResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByUserHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByUserCreateRequest creates the ListByUser request.
@@ -692,7 +816,7 @@ func (client *ReportsClient) listByUserCreateRequest(ctx context.Context, resour
 
 // listByUserHandleResponse handles the ListByUser response.
 func (client *ReportsClient) listByUserHandleResponse(resp *http.Response) (ReportsClientListByUserResponse, error) {
-	result := ReportsClientListByUserResponse{RawResponse: resp}
+	result := ReportsClientListByUserResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReportCollection); err != nil {
 		return ReportsClientListByUserResponse{}, err
 	}

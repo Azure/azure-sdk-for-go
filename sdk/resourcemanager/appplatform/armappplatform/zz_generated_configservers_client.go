@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type ConfigServersClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewConfigServersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ConfigServersClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewConfigServersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConfigServersClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ConfigServersClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Get the config server and its properties.
@@ -91,7 +96,7 @@ func (client *ConfigServersClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -99,7 +104,7 @@ func (client *ConfigServersClient) getCreateRequest(ctx context.Context, resourc
 
 // getHandleResponse handles the Get response.
 func (client *ConfigServersClient) getHandleResponse(resp *http.Response) (ConfigServersClientGetResponse, error) {
-	result := ConfigServersClientGetResponse{RawResponse: resp}
+	result := ConfigServersClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConfigServerResource); err != nil {
 		return ConfigServersClientGetResponse{}, err
 	}
@@ -114,22 +119,18 @@ func (client *ConfigServersClient) getHandleResponse(resp *http.Response) (Confi
 // configServerResource - Parameters for the update operation
 // options - ConfigServersClientBeginUpdatePatchOptions contains the optional parameters for the ConfigServersClient.BeginUpdatePatch
 // method.
-func (client *ConfigServersClient) BeginUpdatePatch(ctx context.Context, resourceGroupName string, serviceName string, configServerResource ConfigServerResource, options *ConfigServersClientBeginUpdatePatchOptions) (ConfigServersClientUpdatePatchPollerResponse, error) {
-	resp, err := client.updatePatch(ctx, resourceGroupName, serviceName, configServerResource, options)
-	if err != nil {
-		return ConfigServersClientUpdatePatchPollerResponse{}, err
+func (client *ConfigServersClient) BeginUpdatePatch(ctx context.Context, resourceGroupName string, serviceName string, configServerResource ConfigServerResource, options *ConfigServersClientBeginUpdatePatchOptions) (*armruntime.Poller[ConfigServersClientUpdatePatchResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.updatePatch(ctx, resourceGroupName, serviceName, configServerResource, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ConfigServersClientUpdatePatchResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[ConfigServersClientUpdatePatchResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ConfigServersClientUpdatePatchPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ConfigServersClient.UpdatePatch", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return ConfigServersClientUpdatePatchPollerResponse{}, err
-	}
-	result.Poller = &ConfigServersClientUpdatePatchPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // UpdatePatch - Update the config server.
@@ -169,7 +170,7 @@ func (client *ConfigServersClient) updatePatchCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, configServerResource)
@@ -183,22 +184,18 @@ func (client *ConfigServersClient) updatePatchCreateRequest(ctx context.Context,
 // configServerResource - Parameters for the update operation
 // options - ConfigServersClientBeginUpdatePutOptions contains the optional parameters for the ConfigServersClient.BeginUpdatePut
 // method.
-func (client *ConfigServersClient) BeginUpdatePut(ctx context.Context, resourceGroupName string, serviceName string, configServerResource ConfigServerResource, options *ConfigServersClientBeginUpdatePutOptions) (ConfigServersClientUpdatePutPollerResponse, error) {
-	resp, err := client.updatePut(ctx, resourceGroupName, serviceName, configServerResource, options)
-	if err != nil {
-		return ConfigServersClientUpdatePutPollerResponse{}, err
+func (client *ConfigServersClient) BeginUpdatePut(ctx context.Context, resourceGroupName string, serviceName string, configServerResource ConfigServerResource, options *ConfigServersClientBeginUpdatePutOptions) (*armruntime.Poller[ConfigServersClientUpdatePutResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.updatePut(ctx, resourceGroupName, serviceName, configServerResource, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ConfigServersClientUpdatePutResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[ConfigServersClientUpdatePutResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ConfigServersClientUpdatePutPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ConfigServersClient.UpdatePut", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return ConfigServersClientUpdatePutPollerResponse{}, err
-	}
-	result.Poller = &ConfigServersClientUpdatePutPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // UpdatePut - Update the config server.
@@ -238,7 +235,7 @@ func (client *ConfigServersClient) updatePutCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, configServerResource)
@@ -252,22 +249,18 @@ func (client *ConfigServersClient) updatePutCreateRequest(ctx context.Context, r
 // configServerSettings - Config server settings to be validated
 // options - ConfigServersClientBeginValidateOptions contains the optional parameters for the ConfigServersClient.BeginValidate
 // method.
-func (client *ConfigServersClient) BeginValidate(ctx context.Context, resourceGroupName string, serviceName string, configServerSettings ConfigServerSettings, options *ConfigServersClientBeginValidateOptions) (ConfigServersClientValidatePollerResponse, error) {
-	resp, err := client.validate(ctx, resourceGroupName, serviceName, configServerSettings, options)
-	if err != nil {
-		return ConfigServersClientValidatePollerResponse{}, err
+func (client *ConfigServersClient) BeginValidate(ctx context.Context, resourceGroupName string, serviceName string, configServerSettings ConfigServerSettings, options *ConfigServersClientBeginValidateOptions) (*armruntime.Poller[ConfigServersClientValidateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.validate(ctx, resourceGroupName, serviceName, configServerSettings, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ConfigServersClientValidateResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[ConfigServersClientValidateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ConfigServersClientValidatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ConfigServersClient.Validate", "location", resp, client.pl)
-	if err != nil {
-		return ConfigServersClientValidatePollerResponse{}, err
-	}
-	result.Poller = &ConfigServersClientValidatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Validate - Check if the config server settings are valid.
@@ -307,7 +300,7 @@ func (client *ConfigServersClient) validateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, configServerSettings)

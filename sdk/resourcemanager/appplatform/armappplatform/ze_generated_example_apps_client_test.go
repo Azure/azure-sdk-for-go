@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,569 +19,301 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform"
 )
 
-// x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-01-01-preview/examples/Apps_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-03-01-preview/examples/Apps_Get.json
 func ExampleAppsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armappplatform.NewAppsClient("<subscription-id>", cred, nil)
+	client, err := armappplatform.NewAppsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<service-name>",
 		"<app-name>",
 		&armappplatform.AppsClientGetOptions{SyncStatus: nil})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.AppsClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-01-01-preview/examples/Apps_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-03-01-preview/examples/Apps_CreateOrUpdate.json
 func ExampleAppsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armappplatform.NewAppsClient("<subscription-id>", cred, nil)
+	client, err := armappplatform.NewAppsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<service-name>",
 		"<app-name>",
 		armappplatform.AppResource{
-			Location: to.StringPtr("<location>"),
+			Identity: &armappplatform.ManagedIdentityProperties{
+				Type: to.Ptr(armappplatform.ManagedIdentityTypeSystemAssignedUserAssigned),
+				UserAssignedIdentities: map[string]*armappplatform.UserAssignedManagedIdentity{
+					"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1": {},
+					"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id2": {},
+				},
+			},
+			Location: to.Ptr("<location>"),
 			Properties: &armappplatform.AppResourceProperties{
-				AddonConfigs: map[string]map[string]map[string]interface{}{
+				AddonConfigs: map[string]map[string]interface{}{
 					"ApplicationConfigurationService": {
-						"resourceId": {
-							"0":   "/",
-							"1":   "s",
-							"2":   "u",
-							"3":   "b",
-							"4":   "s",
-							"5":   "c",
-							"6":   "r",
-							"7":   "i",
-							"8":   "p",
-							"9":   "t",
-							"10":  "i",
-							"11":  "o",
-							"12":  "n",
-							"13":  "s",
-							"14":  "/",
-							"15":  "0",
-							"16":  "0",
-							"17":  "0",
-							"18":  "0",
-							"19":  "0",
-							"20":  "0",
-							"21":  "0",
-							"22":  "0",
-							"23":  "-",
-							"24":  "0",
-							"25":  "0",
-							"26":  "0",
-							"27":  "0",
-							"28":  "-",
-							"29":  "0",
-							"30":  "0",
-							"31":  "0",
-							"32":  "0",
-							"33":  "-",
-							"34":  "0",
-							"35":  "0",
-							"36":  "0",
-							"37":  "0",
-							"38":  "-",
-							"39":  "0",
-							"40":  "0",
-							"41":  "0",
-							"42":  "0",
-							"43":  "0",
-							"44":  "0",
-							"45":  "0",
-							"46":  "0",
-							"47":  "0",
-							"48":  "0",
-							"49":  "0",
-							"50":  "0",
-							"51":  "/",
-							"52":  "r",
-							"53":  "e",
-							"54":  "s",
-							"55":  "o",
-							"56":  "u",
-							"57":  "r",
-							"58":  "c",
-							"59":  "e",
-							"60":  "G",
-							"61":  "r",
-							"62":  "o",
-							"63":  "u",
-							"64":  "p",
-							"65":  "s",
-							"66":  "/",
-							"67":  "m",
-							"68":  "y",
-							"69":  "R",
-							"70":  "e",
-							"71":  "s",
-							"72":  "o",
-							"73":  "u",
-							"74":  "r",
-							"75":  "c",
-							"76":  "e",
-							"77":  "G",
-							"78":  "r",
-							"79":  "o",
-							"80":  "u",
-							"81":  "p",
-							"82":  "/",
-							"83":  "p",
-							"84":  "r",
-							"85":  "o",
-							"86":  "v",
-							"87":  "i",
-							"88":  "d",
-							"89":  "e",
-							"90":  "r",
-							"91":  "s",
-							"92":  "/",
-							"93":  "M",
-							"94":  "i",
-							"95":  "c",
-							"96":  "r",
-							"97":  "o",
-							"98":  "s",
-							"99":  "o",
-							"100": "f",
-							"101": "t",
-							"102": ".",
-							"103": "A",
-							"104": "p",
-							"105": "p",
-							"106": "P",
-							"107": "l",
-							"108": "a",
-							"109": "t",
-							"110": "f",
-							"111": "o",
-							"112": "r",
-							"113": "m",
-							"114": "/",
-							"115": "S",
-							"116": "p",
-							"117": "r",
-							"118": "i",
-							"119": "n",
-							"120": "g",
-							"121": "/",
-							"122": "m",
-							"123": "y",
-							"124": "s",
-							"125": "e",
-							"126": "r",
-							"127": "v",
-							"128": "i",
-							"129": "c",
-							"130": "e",
-							"131": "/",
-							"132": "c",
-							"133": "o",
-							"134": "n",
-							"135": "f",
-							"136": "i",
-							"137": "g",
-							"138": "u",
-							"139": "r",
-							"140": "a",
-							"141": "t",
-							"142": "i",
-							"143": "o",
-							"144": "n",
-							"145": "S",
-							"146": "e",
-							"147": "r",
-							"148": "v",
-							"149": "i",
-							"150": "c",
-							"151": "e",
-							"152": "s",
-							"153": "/",
-							"154": "m",
-							"155": "y",
-							"156": "a",
-							"157": "c",
-							"158": "s",
-						},
+						"resourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/configurationServices/myacs",
 					},
 					"ServiceRegistry": {
-						"resourceId": {
-							"0":   "/",
-							"1":   "s",
-							"2":   "u",
-							"3":   "b",
-							"4":   "s",
-							"5":   "c",
-							"6":   "r",
-							"7":   "i",
-							"8":   "p",
-							"9":   "t",
-							"10":  "i",
-							"11":  "o",
-							"12":  "n",
-							"13":  "s",
-							"14":  "/",
-							"15":  "0",
-							"16":  "0",
-							"17":  "0",
-							"18":  "0",
-							"19":  "0",
-							"20":  "0",
-							"21":  "0",
-							"22":  "0",
-							"23":  "-",
-							"24":  "0",
-							"25":  "0",
-							"26":  "0",
-							"27":  "0",
-							"28":  "-",
-							"29":  "0",
-							"30":  "0",
-							"31":  "0",
-							"32":  "0",
-							"33":  "-",
-							"34":  "0",
-							"35":  "0",
-							"36":  "0",
-							"37":  "0",
-							"38":  "-",
-							"39":  "0",
-							"40":  "0",
-							"41":  "0",
-							"42":  "0",
-							"43":  "0",
-							"44":  "0",
-							"45":  "0",
-							"46":  "0",
-							"47":  "0",
-							"48":  "0",
-							"49":  "0",
-							"50":  "0",
-							"51":  "/",
-							"52":  "r",
-							"53":  "e",
-							"54":  "s",
-							"55":  "o",
-							"56":  "u",
-							"57":  "r",
-							"58":  "c",
-							"59":  "e",
-							"60":  "G",
-							"61":  "r",
-							"62":  "o",
-							"63":  "u",
-							"64":  "p",
-							"65":  "s",
-							"66":  "/",
-							"67":  "m",
-							"68":  "y",
-							"69":  "R",
-							"70":  "e",
-							"71":  "s",
-							"72":  "o",
-							"73":  "u",
-							"74":  "r",
-							"75":  "c",
-							"76":  "e",
-							"77":  "G",
-							"78":  "r",
-							"79":  "o",
-							"80":  "u",
-							"81":  "p",
-							"82":  "/",
-							"83":  "p",
-							"84":  "r",
-							"85":  "o",
-							"86":  "v",
-							"87":  "i",
-							"88":  "d",
-							"89":  "e",
-							"90":  "r",
-							"91":  "s",
-							"92":  "/",
-							"93":  "M",
-							"94":  "i",
-							"95":  "c",
-							"96":  "r",
-							"97":  "o",
-							"98":  "s",
-							"99":  "o",
-							"100": "f",
-							"101": "t",
-							"102": ".",
-							"103": "A",
-							"104": "p",
-							"105": "p",
-							"106": "P",
-							"107": "l",
-							"108": "a",
-							"109": "t",
-							"110": "f",
-							"111": "o",
-							"112": "r",
-							"113": "m",
-							"114": "/",
-							"115": "S",
-							"116": "p",
-							"117": "r",
-							"118": "i",
-							"119": "n",
-							"120": "g",
-							"121": "/",
-							"122": "m",
-							"123": "y",
-							"124": "s",
-							"125": "e",
-							"126": "r",
-							"127": "v",
-							"128": "i",
-							"129": "c",
-							"130": "e",
-							"131": "/",
-							"132": "s",
-							"133": "e",
-							"134": "r",
-							"135": "v",
-							"136": "i",
-							"137": "c",
-							"138": "e",
-							"139": "R",
-							"140": "e",
-							"141": "g",
-							"142": "i",
-							"143": "s",
-							"144": "t",
-							"145": "r",
-							"146": "i",
-							"147": "e",
-							"148": "s",
-							"149": "/",
-							"150": "m",
-							"151": "y",
-							"152": "S",
-							"153": "e",
-							"154": "r",
-							"155": "v",
-							"156": "i",
-							"157": "c",
-							"158": "e",
-							"159": "R",
-							"160": "e",
-							"161": "g",
-							"162": "i",
-							"163": "s",
-							"164": "t",
-							"165": "r",
-							"166": "y",
-						},
+						"resourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/serviceRegistries/myServiceRegistry",
 					},
 				},
 				CustomPersistentDisks: []*armappplatform.CustomPersistentDiskResource{
 					{
 						CustomPersistentDiskProperties: &armappplatform.AzureFileVolume{
-							Type: armappplatform.CustomPersistentDiskPropertiesType("AzureFileVolume").ToPtr(),
+							Type: to.Ptr(armappplatform.TypeAzureFileVolume),
 							MountOptions: []*string{
-								to.StringPtr("uid=0"),
-								to.StringPtr("gid=0"),
-								to.StringPtr("dir_mode=0777"),
-								to.StringPtr("file_mode=0777")},
-							MountPath: to.StringPtr("<mount-path>"),
-							ShareName: to.StringPtr("<share-name>"),
+								to.Ptr("uid=0"),
+								to.Ptr("gid=0"),
+								to.Ptr("dir_mode=0777"),
+								to.Ptr("file_mode=0777")},
+							MountPath: to.Ptr("<mount-path>"),
+							ShareName: to.Ptr("<share-name>"),
 						},
-						StorageID: to.StringPtr("<storage-id>"),
+						StorageID: to.Ptr("<storage-id>"),
 					}},
-				EnableEndToEndTLS: to.BoolPtr(false),
-				Fqdn:              to.StringPtr("<fqdn>"),
-				HTTPSOnly:         to.BoolPtr(false),
+				EnableEndToEndTLS: to.Ptr(false),
+				Fqdn:              to.Ptr("<fqdn>"),
+				HTTPSOnly:         to.Ptr(false),
 				LoadedCertificates: []*armappplatform.LoadedCertificate{
 					{
-						LoadTrustStore: to.BoolPtr(false),
-						ResourceID:     to.StringPtr("<resource-id>"),
+						LoadTrustStore: to.Ptr(false),
+						ResourceID:     to.Ptr("<resource-id>"),
 					},
 					{
-						LoadTrustStore: to.BoolPtr(true),
-						ResourceID:     to.StringPtr("<resource-id>"),
+						LoadTrustStore: to.Ptr(true),
+						ResourceID:     to.Ptr("<resource-id>"),
 					}},
 				PersistentDisk: &armappplatform.PersistentDisk{
-					MountPath: to.StringPtr("<mount-path>"),
-					SizeInGB:  to.Int32Ptr(2),
+					MountPath: to.Ptr("<mount-path>"),
+					SizeInGB:  to.Ptr[int32](2),
 				},
-				Public: to.BoolPtr(true),
+				Public: to.Ptr(true),
 				TemporaryDisk: &armappplatform.TemporaryDisk{
-					MountPath: to.StringPtr("<mount-path>"),
-					SizeInGB:  to.Int32Ptr(2),
+					MountPath: to.Ptr("<mount-path>"),
+					SizeInGB:  to.Ptr[int32](2),
 				},
 			},
 		},
-		nil)
+		&armappplatform.AppsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.AppsClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-01-01-preview/examples/Apps_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-03-01-preview/examples/Apps_Delete.json
 func ExampleAppsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armappplatform.NewAppsClient("<subscription-id>", cred, nil)
+	client, err := armappplatform.NewAppsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
 		"<service-name>",
 		"<app-name>",
-		nil)
+		&armappplatform.AppsClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-01-01-preview/examples/Apps_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-03-01-preview/examples/Apps_Update.json
 func ExampleAppsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armappplatform.NewAppsClient("<subscription-id>", cred, nil)
+	client, err := armappplatform.NewAppsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginUpdate(ctx,
 		"<resource-group-name>",
 		"<service-name>",
 		"<app-name>",
 		armappplatform.AppResource{
 			Identity: &armappplatform.ManagedIdentityProperties{
-				Type: armappplatform.ManagedIdentityType("SystemAssigned").ToPtr(),
+				Type: to.Ptr(armappplatform.ManagedIdentityTypeSystemAssignedUserAssigned),
+				UserAssignedIdentities: map[string]*armappplatform.UserAssignedManagedIdentity{
+					"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1": {},
+					"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id2": {},
+				},
 			},
-			Location: to.StringPtr("<location>"),
+			Location: to.Ptr("<location>"),
 			Properties: &armappplatform.AppResourceProperties{
 				CustomPersistentDisks: []*armappplatform.CustomPersistentDiskResource{
 					{
 						CustomPersistentDiskProperties: &armappplatform.AzureFileVolume{
-							Type:         armappplatform.CustomPersistentDiskPropertiesType("AzureFileVolume").ToPtr(),
+							Type:         to.Ptr(armappplatform.TypeAzureFileVolume),
 							MountOptions: []*string{},
-							MountPath:    to.StringPtr("<mount-path>"),
-							ShareName:    to.StringPtr("<share-name>"),
+							MountPath:    to.Ptr("<mount-path>"),
+							ShareName:    to.Ptr("<share-name>"),
 						},
-						StorageID: to.StringPtr("<storage-id>"),
+						StorageID: to.Ptr("<storage-id>"),
 					}},
-				EnableEndToEndTLS: to.BoolPtr(false),
-				Fqdn:              to.StringPtr("<fqdn>"),
-				HTTPSOnly:         to.BoolPtr(false),
+				EnableEndToEndTLS: to.Ptr(false),
+				Fqdn:              to.Ptr("<fqdn>"),
+				HTTPSOnly:         to.Ptr(false),
 				PersistentDisk: &armappplatform.PersistentDisk{
-					MountPath: to.StringPtr("<mount-path>"),
-					SizeInGB:  to.Int32Ptr(2),
+					MountPath: to.Ptr("<mount-path>"),
+					SizeInGB:  to.Ptr[int32](2),
 				},
-				Public: to.BoolPtr(true),
+				Public: to.Ptr(true),
 				TemporaryDisk: &armappplatform.TemporaryDisk{
-					MountPath: to.StringPtr("<mount-path>"),
-					SizeInGB:  to.Int32Ptr(2),
+					MountPath: to.Ptr("<mount-path>"),
+					SizeInGB:  to.Ptr[int32](2),
 				},
 			},
 		},
-		nil)
+		&armappplatform.AppsClientBeginUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.AppsClientUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-01-01-preview/examples/Apps_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-03-01-preview/examples/Apps_List.json
 func ExampleAppsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armappplatform.NewAppsClient("<subscription-id>", cred, nil)
+	client, err := armappplatform.NewAppsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.List("<resource-group-name>",
 		"<service-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-01-01-preview/examples/Apps_SetActiveDeployments.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-03-01-preview/examples/Apps_SetActiveDeployments.json
 func ExampleAppsClient_BeginSetActiveDeployments() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armappplatform.NewAppsClient("<subscription-id>", cred, nil)
+	client, err := armappplatform.NewAppsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginSetActiveDeployments(ctx,
 		"<resource-group-name>",
 		"<service-name>",
 		"<app-name>",
 		armappplatform.ActiveDeploymentCollection{
 			ActiveDeploymentNames: []*string{
-				to.StringPtr("default")},
+				to.Ptr("default")},
 		},
-		nil)
+		&armappplatform.AppsClientBeginSetActiveDeploymentsOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.AppsClientSetActiveDeploymentsResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-01-01-preview/examples/Apps_ValidateDomain.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-03-01-preview/examples/Apps_ValidateDomain.json
 func ExampleAppsClient_ValidateDomain() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armappplatform.NewAppsClient("<subscription-id>", cred, nil)
+	client, err := armappplatform.NewAppsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.ValidateDomain(ctx,
 		"<resource-group-name>",
 		"<service-name>",
 		"<app-name>",
 		armappplatform.CustomDomainValidatePayload{
-			Name: to.StringPtr("<name>"),
+			Name: to.Ptr("<name>"),
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.AppsClientValidateDomainResult)
+	// TODO: use response item
+	_ = res
 }

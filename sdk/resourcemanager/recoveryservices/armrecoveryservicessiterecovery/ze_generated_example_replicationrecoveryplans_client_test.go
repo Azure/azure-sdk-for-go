@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,123 +19,154 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery"
 )
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationRecoveryPlans_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/ReplicationRecoveryPlans_List.json
 func ExampleReplicationRecoveryPlansClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armrecoveryservicessiterecovery.NewReplicationRecoveryPlansClient("<resource-name>",
+	client, err := armrecoveryservicessiterecovery.NewReplicationRecoveryPlansClient("<resource-name>",
 		"<resource-group-name>",
 		"<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.List(nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationRecoveryPlans_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/ReplicationRecoveryPlans_Get.json
 func ExampleReplicationRecoveryPlansClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armrecoveryservicessiterecovery.NewReplicationRecoveryPlansClient("<resource-name>",
+	client, err := armrecoveryservicessiterecovery.NewReplicationRecoveryPlansClient("<resource-name>",
 		"<resource-group-name>",
 		"<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<recovery-plan-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ReplicationRecoveryPlansClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationRecoveryPlans_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/ReplicationRecoveryPlans_Create.json
 func ExampleReplicationRecoveryPlansClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armrecoveryservicessiterecovery.NewReplicationRecoveryPlansClient("<resource-name>",
+	client, err := armrecoveryservicessiterecovery.NewReplicationRecoveryPlansClient("<resource-name>",
 		"<resource-group-name>",
 		"<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreate(ctx,
 		"<recovery-plan-name>",
 		armrecoveryservicessiterecovery.CreateRecoveryPlanInput{
 			Properties: &armrecoveryservicessiterecovery.CreateRecoveryPlanInputProperties{
-				FailoverDeploymentModel: armrecoveryservicessiterecovery.FailoverDeploymentModel("ResourceManager").ToPtr(),
+				FailoverDeploymentModel: to.Ptr(armrecoveryservicessiterecovery.FailoverDeploymentModelResourceManager),
 				Groups: []*armrecoveryservicessiterecovery.RecoveryPlanGroup{
 					{
 						EndGroupActions: []*armrecoveryservicessiterecovery.RecoveryPlanAction{},
-						GroupType:       armrecoveryservicessiterecovery.RecoveryPlanGroupType("Boot").ToPtr(),
+						GroupType:       to.Ptr(armrecoveryservicessiterecovery.RecoveryPlanGroupTypeBoot),
 						ReplicationProtectedItems: []*armrecoveryservicessiterecovery.RecoveryPlanProtectedItem{
 							{
-								ID:               to.StringPtr("<id>"),
-								VirtualMachineID: to.StringPtr("<virtual-machine-id>"),
+								ID:               to.Ptr("<id>"),
+								VirtualMachineID: to.Ptr("<virtual-machine-id>"),
 							}},
 						StartGroupActions: []*armrecoveryservicessiterecovery.RecoveryPlanAction{},
 					}},
-				PrimaryFabricID:  to.StringPtr("<primary-fabric-id>"),
-				RecoveryFabricID: to.StringPtr("<recovery-fabric-id>"),
+				PrimaryFabricID:  to.Ptr("<primary-fabric-id>"),
+				RecoveryFabricID: to.Ptr("<recovery-fabric-id>"),
 			},
 		},
-		nil)
+		&armrecoveryservicessiterecovery.ReplicationRecoveryPlansClientBeginCreateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ReplicationRecoveryPlansClientCreateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationRecoveryPlans_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/ReplicationRecoveryPlans_Delete.json
 func ExampleReplicationRecoveryPlansClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armrecoveryservicessiterecovery.NewReplicationRecoveryPlansClient("<resource-name>",
+	client, err := armrecoveryservicessiterecovery.NewReplicationRecoveryPlansClient("<resource-name>",
 		"<resource-group-name>",
 		"<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginDelete(ctx,
 		"<recovery-plan-name>",
-		nil)
+		&armrecoveryservicessiterecovery.ReplicationRecoveryPlansClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationRecoveryPlans_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/ReplicationRecoveryPlans_Update.json
 func ExampleReplicationRecoveryPlansClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armrecoveryservicessiterecovery.NewReplicationRecoveryPlansClient("<resource-name>",
+	client, err := armrecoveryservicessiterecovery.NewReplicationRecoveryPlansClient("<resource-name>",
 		"<resource-group-name>",
 		"<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginUpdate(ctx,
 		"<recovery-plan-name>",
 		armrecoveryservicessiterecovery.UpdateRecoveryPlanInput{
@@ -143,241 +174,300 @@ func ExampleReplicationRecoveryPlansClient_BeginUpdate() {
 				Groups: []*armrecoveryservicessiterecovery.RecoveryPlanGroup{
 					{
 						EndGroupActions:           []*armrecoveryservicessiterecovery.RecoveryPlanAction{},
-						GroupType:                 armrecoveryservicessiterecovery.RecoveryPlanGroupType("Shutdown").ToPtr(),
+						GroupType:                 to.Ptr(armrecoveryservicessiterecovery.RecoveryPlanGroupTypeShutdown),
 						ReplicationProtectedItems: []*armrecoveryservicessiterecovery.RecoveryPlanProtectedItem{},
 						StartGroupActions:         []*armrecoveryservicessiterecovery.RecoveryPlanAction{},
 					},
 					{
 						EndGroupActions:           []*armrecoveryservicessiterecovery.RecoveryPlanAction{},
-						GroupType:                 armrecoveryservicessiterecovery.RecoveryPlanGroupType("Failover").ToPtr(),
+						GroupType:                 to.Ptr(armrecoveryservicessiterecovery.RecoveryPlanGroupTypeFailover),
 						ReplicationProtectedItems: []*armrecoveryservicessiterecovery.RecoveryPlanProtectedItem{},
 						StartGroupActions:         []*armrecoveryservicessiterecovery.RecoveryPlanAction{},
 					},
 					{
 						EndGroupActions: []*armrecoveryservicessiterecovery.RecoveryPlanAction{},
-						GroupType:       armrecoveryservicessiterecovery.RecoveryPlanGroupType("Boot").ToPtr(),
+						GroupType:       to.Ptr(armrecoveryservicessiterecovery.RecoveryPlanGroupTypeBoot),
 						ReplicationProtectedItems: []*armrecoveryservicessiterecovery.RecoveryPlanProtectedItem{
 							{
-								ID:               to.StringPtr("<id>"),
-								VirtualMachineID: to.StringPtr("<virtual-machine-id>"),
+								ID:               to.Ptr("<id>"),
+								VirtualMachineID: to.Ptr("<virtual-machine-id>"),
 							}},
 						StartGroupActions: []*armrecoveryservicessiterecovery.RecoveryPlanAction{},
 					},
 					{
 						EndGroupActions: []*armrecoveryservicessiterecovery.RecoveryPlanAction{},
-						GroupType:       armrecoveryservicessiterecovery.RecoveryPlanGroupType("Boot").ToPtr(),
+						GroupType:       to.Ptr(armrecoveryservicessiterecovery.RecoveryPlanGroupTypeBoot),
 						ReplicationProtectedItems: []*armrecoveryservicessiterecovery.RecoveryPlanProtectedItem{
 							{
-								ID:               to.StringPtr("<id>"),
-								VirtualMachineID: to.StringPtr("<virtual-machine-id>"),
+								ID:               to.Ptr("<id>"),
+								VirtualMachineID: to.Ptr("<virtual-machine-id>"),
 							}},
 						StartGroupActions: []*armrecoveryservicessiterecovery.RecoveryPlanAction{},
 					}},
 			},
 		},
-		nil)
+		&armrecoveryservicessiterecovery.ReplicationRecoveryPlansClientBeginUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ReplicationRecoveryPlansClientUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationRecoveryPlans_FailoverCancel.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/ReplicationRecoveryPlans_FailoverCancel.json
 func ExampleReplicationRecoveryPlansClient_BeginFailoverCancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armrecoveryservicessiterecovery.NewReplicationRecoveryPlansClient("<resource-name>",
+	client, err := armrecoveryservicessiterecovery.NewReplicationRecoveryPlansClient("<resource-name>",
 		"<resource-group-name>",
 		"<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginFailoverCancel(ctx,
 		"<recovery-plan-name>",
-		nil)
+		&armrecoveryservicessiterecovery.ReplicationRecoveryPlansClientBeginFailoverCancelOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ReplicationRecoveryPlansClientFailoverCancelResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationRecoveryPlans_FailoverCommit.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/ReplicationRecoveryPlans_FailoverCommit.json
 func ExampleReplicationRecoveryPlansClient_BeginFailoverCommit() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armrecoveryservicessiterecovery.NewReplicationRecoveryPlansClient("<resource-name>",
+	client, err := armrecoveryservicessiterecovery.NewReplicationRecoveryPlansClient("<resource-name>",
 		"<resource-group-name>",
 		"<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginFailoverCommit(ctx,
 		"<recovery-plan-name>",
-		nil)
+		&armrecoveryservicessiterecovery.ReplicationRecoveryPlansClientBeginFailoverCommitOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ReplicationRecoveryPlansClientFailoverCommitResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationRecoveryPlans_PlannedFailover.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/ReplicationRecoveryPlans_PlannedFailover.json
 func ExampleReplicationRecoveryPlansClient_BeginPlannedFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armrecoveryservicessiterecovery.NewReplicationRecoveryPlansClient("<resource-name>",
+	client, err := armrecoveryservicessiterecovery.NewReplicationRecoveryPlansClient("<resource-name>",
 		"<resource-group-name>",
 		"<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginPlannedFailover(ctx,
 		"<recovery-plan-name>",
 		armrecoveryservicessiterecovery.RecoveryPlanPlannedFailoverInput{
 			Properties: &armrecoveryservicessiterecovery.RecoveryPlanPlannedFailoverInputProperties{
-				FailoverDirection: armrecoveryservicessiterecovery.PossibleOperationsDirections("PrimaryToRecovery").ToPtr(),
+				FailoverDirection: to.Ptr(armrecoveryservicessiterecovery.PossibleOperationsDirectionsPrimaryToRecovery),
 				ProviderSpecificDetails: []armrecoveryservicessiterecovery.RecoveryPlanProviderSpecificFailoverInputClassification{
 					&armrecoveryservicessiterecovery.RecoveryPlanHyperVReplicaAzureFailoverInput{
-						InstanceType: to.StringPtr("<instance-type>"),
+						InstanceType: to.Ptr("<instance-type>"),
 					}},
 			},
 		},
-		nil)
+		&armrecoveryservicessiterecovery.ReplicationRecoveryPlansClientBeginPlannedFailoverOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ReplicationRecoveryPlansClientPlannedFailoverResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationRecoveryPlans_Reprotect.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/ReplicationRecoveryPlans_Reprotect.json
 func ExampleReplicationRecoveryPlansClient_BeginReprotect() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armrecoveryservicessiterecovery.NewReplicationRecoveryPlansClient("<resource-name>",
+	client, err := armrecoveryservicessiterecovery.NewReplicationRecoveryPlansClient("<resource-name>",
 		"<resource-group-name>",
 		"<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginReprotect(ctx,
 		"<recovery-plan-name>",
-		nil)
+		&armrecoveryservicessiterecovery.ReplicationRecoveryPlansClientBeginReprotectOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ReplicationRecoveryPlansClientReprotectResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationRecoveryPlans_TestFailover.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/ReplicationRecoveryPlans_TestFailover.json
 func ExampleReplicationRecoveryPlansClient_BeginTestFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armrecoveryservicessiterecovery.NewReplicationRecoveryPlansClient("<resource-name>",
+	client, err := armrecoveryservicessiterecovery.NewReplicationRecoveryPlansClient("<resource-name>",
 		"<resource-group-name>",
 		"<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginTestFailover(ctx,
 		"<recovery-plan-name>",
 		armrecoveryservicessiterecovery.RecoveryPlanTestFailoverInput{
 			Properties: &armrecoveryservicessiterecovery.RecoveryPlanTestFailoverInputProperties{
-				FailoverDirection: armrecoveryservicessiterecovery.PossibleOperationsDirections("PrimaryToRecovery").ToPtr(),
-				NetworkID:         to.StringPtr("<network-id>"),
-				NetworkType:       to.StringPtr("<network-type>"),
+				FailoverDirection: to.Ptr(armrecoveryservicessiterecovery.PossibleOperationsDirectionsPrimaryToRecovery),
+				NetworkID:         to.Ptr("<network-id>"),
+				NetworkType:       to.Ptr("<network-type>"),
 				ProviderSpecificDetails: []armrecoveryservicessiterecovery.RecoveryPlanProviderSpecificFailoverInputClassification{
 					&armrecoveryservicessiterecovery.RecoveryPlanHyperVReplicaAzureFailoverInput{
-						InstanceType: to.StringPtr("<instance-type>"),
+						InstanceType: to.Ptr("<instance-type>"),
 					}},
 			},
 		},
-		nil)
+		&armrecoveryservicessiterecovery.ReplicationRecoveryPlansClientBeginTestFailoverOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ReplicationRecoveryPlansClientTestFailoverResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationRecoveryPlans_TestFailoverCleanup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/ReplicationRecoveryPlans_TestFailoverCleanup.json
 func ExampleReplicationRecoveryPlansClient_BeginTestFailoverCleanup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armrecoveryservicessiterecovery.NewReplicationRecoveryPlansClient("<resource-name>",
+	client, err := armrecoveryservicessiterecovery.NewReplicationRecoveryPlansClient("<resource-name>",
 		"<resource-group-name>",
 		"<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginTestFailoverCleanup(ctx,
 		"<recovery-plan-name>",
 		armrecoveryservicessiterecovery.RecoveryPlanTestFailoverCleanupInput{
 			Properties: &armrecoveryservicessiterecovery.RecoveryPlanTestFailoverCleanupInputProperties{
-				Comments: to.StringPtr("<comments>"),
+				Comments: to.Ptr("<comments>"),
 			},
 		},
-		nil)
+		&armrecoveryservicessiterecovery.ReplicationRecoveryPlansClientBeginTestFailoverCleanupOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ReplicationRecoveryPlansClientTestFailoverCleanupResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationRecoveryPlans_UnplannedFailover.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/ReplicationRecoveryPlans_UnplannedFailover.json
 func ExampleReplicationRecoveryPlansClient_BeginUnplannedFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armrecoveryservicessiterecovery.NewReplicationRecoveryPlansClient("<resource-name>",
+	client, err := armrecoveryservicessiterecovery.NewReplicationRecoveryPlansClient("<resource-name>",
 		"<resource-group-name>",
 		"<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginUnplannedFailover(ctx,
 		"<recovery-plan-name>",
 		armrecoveryservicessiterecovery.RecoveryPlanUnplannedFailoverInput{
 			Properties: &armrecoveryservicessiterecovery.RecoveryPlanUnplannedFailoverInputProperties{
-				FailoverDirection: armrecoveryservicessiterecovery.PossibleOperationsDirections("PrimaryToRecovery").ToPtr(),
+				FailoverDirection: to.Ptr(armrecoveryservicessiterecovery.PossibleOperationsDirectionsPrimaryToRecovery),
 				ProviderSpecificDetails: []armrecoveryservicessiterecovery.RecoveryPlanProviderSpecificFailoverInputClassification{
 					&armrecoveryservicessiterecovery.RecoveryPlanHyperVReplicaAzureFailoverInput{
-						InstanceType: to.StringPtr("<instance-type>"),
+						InstanceType: to.Ptr("<instance-type>"),
 					}},
-				SourceSiteOperations: armrecoveryservicessiterecovery.SourceSiteOperations("Required").ToPtr(),
+				SourceSiteOperations: to.Ptr(armrecoveryservicessiterecovery.SourceSiteOperationsRequired),
 			},
 		},
-		nil)
+		&armrecoveryservicessiterecovery.ReplicationRecoveryPlansClientBeginUnplannedFailoverOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ReplicationRecoveryPlansClientUnplannedFailoverResult)
+	// TODO: use response item
+	_ = res
 }

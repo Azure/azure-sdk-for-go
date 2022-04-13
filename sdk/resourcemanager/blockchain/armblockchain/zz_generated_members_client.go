@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type MembersClient struct {
 // ID is part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewMembersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *MembersClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewMembersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MembersClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &MembersClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreate - Create a blockchain member.
@@ -56,22 +61,16 @@ func NewMembersClient(subscriptionID string, credential azcore.TokenCredential, 
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // options - MembersClientBeginCreateOptions contains the optional parameters for the MembersClient.BeginCreate method.
-func (client *MembersClient) BeginCreate(ctx context.Context, blockchainMemberName string, resourceGroupName string, options *MembersClientBeginCreateOptions) (MembersClientCreatePollerResponse, error) {
-	resp, err := client.create(ctx, blockchainMemberName, resourceGroupName, options)
-	if err != nil {
-		return MembersClientCreatePollerResponse{}, err
+func (client *MembersClient) BeginCreate(ctx context.Context, blockchainMemberName string, resourceGroupName string, options *MembersClientBeginCreateOptions) (*armruntime.Poller[MembersClientCreateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.create(ctx, blockchainMemberName, resourceGroupName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[MembersClientCreateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[MembersClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := MembersClientCreatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("MembersClient.Create", "", resp, client.pl)
-	if err != nil {
-		return MembersClientCreatePollerResponse{}, err
-	}
-	result.Poller = &MembersClientCreatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Create - Create a blockchain member.
@@ -126,22 +125,16 @@ func (client *MembersClient) createCreateRequest(ctx context.Context, blockchain
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // options - MembersClientBeginDeleteOptions contains the optional parameters for the MembersClient.BeginDelete method.
-func (client *MembersClient) BeginDelete(ctx context.Context, blockchainMemberName string, resourceGroupName string, options *MembersClientBeginDeleteOptions) (MembersClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, blockchainMemberName, resourceGroupName, options)
-	if err != nil {
-		return MembersClientDeletePollerResponse{}, err
+func (client *MembersClient) BeginDelete(ctx context.Context, blockchainMemberName string, resourceGroupName string, options *MembersClientBeginDeleteOptions) (*armruntime.Poller[MembersClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, blockchainMemberName, resourceGroupName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[MembersClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[MembersClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := MembersClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("MembersClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return MembersClientDeletePollerResponse{}, err
-	}
-	result.Poller = &MembersClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Delete a blockchain member.
@@ -235,7 +228,7 @@ func (client *MembersClient) getCreateRequest(ctx context.Context, blockchainMem
 
 // getHandleResponse handles the Get response.
 func (client *MembersClient) getHandleResponse(resp *http.Response) (MembersClientGetResponse, error) {
-	result := MembersClientGetResponse{RawResponse: resp}
+	result := MembersClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Member); err != nil {
 		return MembersClientGetResponse{}, err
 	}
@@ -247,16 +240,32 @@ func (client *MembersClient) getHandleResponse(resp *http.Response) (MembersClie
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // options - MembersClientListOptions contains the optional parameters for the MembersClient.List method.
-func (client *MembersClient) List(resourceGroupName string, options *MembersClientListOptions) *MembersClientListPager {
-	return &MembersClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, options)
+func (client *MembersClient) List(resourceGroupName string, options *MembersClientListOptions) *runtime.Pager[MembersClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[MembersClientListResponse]{
+		More: func(page MembersClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp MembersClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.MemberCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *MembersClientListResponse) (MembersClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return MembersClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return MembersClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return MembersClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -283,7 +292,7 @@ func (client *MembersClient) listCreateRequest(ctx context.Context, resourceGrou
 
 // listHandleResponse handles the List response.
 func (client *MembersClient) listHandleResponse(resp *http.Response) (MembersClientListResponse, error) {
-	result := MembersClientListResponse{RawResponse: resp}
+	result := MembersClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MemberCollection); err != nil {
 		return MembersClientListResponse{}, err
 	}
@@ -339,7 +348,7 @@ func (client *MembersClient) listAPIKeysCreateRequest(ctx context.Context, block
 
 // listAPIKeysHandleResponse handles the ListAPIKeys response.
 func (client *MembersClient) listAPIKeysHandleResponse(resp *http.Response) (MembersClientListAPIKeysResponse, error) {
-	result := MembersClientListAPIKeysResponse{RawResponse: resp}
+	result := MembersClientListAPIKeysResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.APIKeyCollection); err != nil {
 		return MembersClientListAPIKeysResponse{}, err
 	}
@@ -349,16 +358,32 @@ func (client *MembersClient) listAPIKeysHandleResponse(resp *http.Response) (Mem
 // ListAll - Lists the blockchain members for a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - MembersClientListAllOptions contains the optional parameters for the MembersClient.ListAll method.
-func (client *MembersClient) ListAll(options *MembersClientListAllOptions) *MembersClientListAllPager {
-	return &MembersClientListAllPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listAllCreateRequest(ctx, options)
+func (client *MembersClient) ListAll(options *MembersClientListAllOptions) *runtime.Pager[MembersClientListAllResponse] {
+	return runtime.NewPager(runtime.PageProcessor[MembersClientListAllResponse]{
+		More: func(page MembersClientListAllResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp MembersClientListAllResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.MemberCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *MembersClientListAllResponse) (MembersClientListAllResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listAllCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return MembersClientListAllResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return MembersClientListAllResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return MembersClientListAllResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listAllHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listAllCreateRequest creates the ListAll request.
@@ -381,7 +406,7 @@ func (client *MembersClient) listAllCreateRequest(ctx context.Context, options *
 
 // listAllHandleResponse handles the ListAll response.
 func (client *MembersClient) listAllHandleResponse(resp *http.Response) (MembersClientListAllResponse, error) {
-	result := MembersClientListAllResponse{RawResponse: resp}
+	result := MembersClientListAllResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MemberCollection); err != nil {
 		return MembersClientListAllResponse{}, err
 	}
@@ -395,16 +420,32 @@ func (client *MembersClient) listAllHandleResponse(resp *http.Response) (Members
 // Resource Manager API or the portal.
 // options - MembersClientListConsortiumMembersOptions contains the optional parameters for the MembersClient.ListConsortiumMembers
 // method.
-func (client *MembersClient) ListConsortiumMembers(blockchainMemberName string, resourceGroupName string, options *MembersClientListConsortiumMembersOptions) *MembersClientListConsortiumMembersPager {
-	return &MembersClientListConsortiumMembersPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listConsortiumMembersCreateRequest(ctx, blockchainMemberName, resourceGroupName, options)
+func (client *MembersClient) ListConsortiumMembers(blockchainMemberName string, resourceGroupName string, options *MembersClientListConsortiumMembersOptions) *runtime.Pager[MembersClientListConsortiumMembersResponse] {
+	return runtime.NewPager(runtime.PageProcessor[MembersClientListConsortiumMembersResponse]{
+		More: func(page MembersClientListConsortiumMembersResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp MembersClientListConsortiumMembersResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ConsortiumMemberCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *MembersClientListConsortiumMembersResponse) (MembersClientListConsortiumMembersResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listConsortiumMembersCreateRequest(ctx, blockchainMemberName, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return MembersClientListConsortiumMembersResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return MembersClientListConsortiumMembersResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return MembersClientListConsortiumMembersResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listConsortiumMembersHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listConsortiumMembersCreateRequest creates the ListConsortiumMembers request.
@@ -435,7 +476,7 @@ func (client *MembersClient) listConsortiumMembersCreateRequest(ctx context.Cont
 
 // listConsortiumMembersHandleResponse handles the ListConsortiumMembers response.
 func (client *MembersClient) listConsortiumMembersHandleResponse(resp *http.Response) (MembersClientListConsortiumMembersResponse, error) {
-	result := MembersClientListConsortiumMembersResponse{RawResponse: resp}
+	result := MembersClientListConsortiumMembersResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConsortiumMemberCollection); err != nil {
 		return MembersClientListConsortiumMembersResponse{}, err
 	}
@@ -495,7 +536,7 @@ func (client *MembersClient) listRegenerateAPIKeysCreateRequest(ctx context.Cont
 
 // listRegenerateAPIKeysHandleResponse handles the ListRegenerateAPIKeys response.
 func (client *MembersClient) listRegenerateAPIKeysHandleResponse(resp *http.Response) (MembersClientListRegenerateAPIKeysResponse, error) {
-	result := MembersClientListRegenerateAPIKeysResponse{RawResponse: resp}
+	result := MembersClientListRegenerateAPIKeysResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.APIKeyCollection); err != nil {
 		return MembersClientListRegenerateAPIKeysResponse{}, err
 	}
@@ -554,7 +595,7 @@ func (client *MembersClient) updateCreateRequest(ctx context.Context, blockchain
 
 // updateHandleResponse handles the Update response.
 func (client *MembersClient) updateHandleResponse(resp *http.Response) (MembersClientUpdateResponse, error) {
-	result := MembersClientUpdateResponse{RawResponse: resp}
+	result := MembersClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Member); err != nil {
 		return MembersClientUpdateResponse{}, err
 	}

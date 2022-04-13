@@ -1,5 +1,962 @@
 # Release History
 
+## 0.3.0 (2022-04-11)
+### Breaking Changes
+
+- Function `NewScriptCmdletsClient` return value(s) have been changed from `(*ScriptCmdletsClient)` to `(*ScriptCmdletsClient, error)`
+- Function `NewScriptExecutionsClient` return value(s) have been changed from `(*ScriptExecutionsClient)` to `(*ScriptExecutionsClient, error)`
+- Function `*WorkloadNetworksClient.ListPortMirroring` return value(s) have been changed from `(*WorkloadNetworksClientListPortMirroringPager)` to `(*runtime.Pager[WorkloadNetworksClientListPortMirroringResponse])`
+- Function `*WorkloadNetworksClient.BeginCreatePublicIP` return value(s) have been changed from `(WorkloadNetworksClientCreatePublicIPPollerResponse, error)` to `(*armruntime.Poller[WorkloadNetworksClientCreatePublicIPResponse], error)`
+- Function `*ScriptExecutionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(ScriptExecutionsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ScriptExecutionsClientCreateOrUpdateResponse], error)`
+- Function `*DatastoresClient.BeginCreateOrUpdate` return value(s) have been changed from `(DatastoresClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[DatastoresClientCreateOrUpdateResponse], error)`
+- Function `*WorkloadNetworksClient.BeginDeletePortMirroring` return value(s) have been changed from `(WorkloadNetworksClientDeletePortMirroringPollerResponse, error)` to `(*armruntime.Poller[WorkloadNetworksClientDeletePortMirroringResponse], error)`
+- Function `*WorkloadNetworksClient.BeginCreatePortMirroring` return value(s) have been changed from `(WorkloadNetworksClientCreatePortMirroringPollerResponse, error)` to `(*armruntime.Poller[WorkloadNetworksClientCreatePortMirroringResponse], error)`
+- Function `NewLocationsClient` return value(s) have been changed from `(*LocationsClient)` to `(*LocationsClient, error)`
+- Function `*GlobalReachConnectionsClient.List` return value(s) have been changed from `(*GlobalReachConnectionsClientListPager)` to `(*runtime.Pager[GlobalReachConnectionsClientListResponse])`
+- Function `NewScriptPackagesClient` return value(s) have been changed from `(*ScriptPackagesClient)` to `(*ScriptPackagesClient, error)`
+- Function `*WorkloadNetworksClient.ListGateways` return value(s) have been changed from `(*WorkloadNetworksClientListGatewaysPager)` to `(*runtime.Pager[WorkloadNetworksClientListGatewaysResponse])`
+- Function `*GlobalReachConnectionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(GlobalReachConnectionsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[GlobalReachConnectionsClientCreateOrUpdateResponse], error)`
+- Function `*WorkloadNetworksClient.BeginCreateVMGroup` return value(s) have been changed from `(WorkloadNetworksClientCreateVMGroupPollerResponse, error)` to `(*armruntime.Poller[WorkloadNetworksClientCreateVMGroupResponse], error)`
+- Function `*WorkloadNetworksClient.BeginCreateDNSService` return value(s) have been changed from `(WorkloadNetworksClientCreateDNSServicePollerResponse, error)` to `(*armruntime.Poller[WorkloadNetworksClientCreateDNSServiceResponse], error)`
+- Function `*WorkloadNetworksClient.BeginCreateDhcp` return value(s) have been changed from `(WorkloadNetworksClientCreateDhcpPollerResponse, error)` to `(*armruntime.Poller[WorkloadNetworksClientCreateDhcpResponse], error)`
+- Function `*WorkloadNetworksClient.BeginDeleteSegment` return value(s) have been changed from `(WorkloadNetworksClientDeleteSegmentPollerResponse, error)` to `(*armruntime.Poller[WorkloadNetworksClientDeleteSegmentResponse], error)`
+- Function `NewWorkloadNetworksClient` return value(s) have been changed from `(*WorkloadNetworksClient)` to `(*WorkloadNetworksClient, error)`
+- Function `*WorkloadNetworksClient.ListVirtualMachines` return value(s) have been changed from `(*WorkloadNetworksClientListVirtualMachinesPager)` to `(*runtime.Pager[WorkloadNetworksClientListVirtualMachinesResponse])`
+- Function `*PrivateCloudsClient.BeginRotateVcenterPassword` return value(s) have been changed from `(PrivateCloudsClientRotateVcenterPasswordPollerResponse, error)` to `(*armruntime.Poller[PrivateCloudsClientRotateVcenterPasswordResponse], error)`
+- Function `*WorkloadNetworksClient.ListDhcp` return value(s) have been changed from `(*WorkloadNetworksClientListDhcpPager)` to `(*runtime.Pager[WorkloadNetworksClientListDhcpResponse])`
+- Function `*AddonsClient.BeginCreateOrUpdate` return value(s) have been changed from `(AddonsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[AddonsClientCreateOrUpdateResponse], error)`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `*PrivateCloudsClient.BeginDelete` return value(s) have been changed from `(PrivateCloudsClientDeletePollerResponse, error)` to `(*armruntime.Poller[PrivateCloudsClientDeleteResponse], error)`
+- Function `NewPlacementPoliciesClient` return value(s) have been changed from `(*PlacementPoliciesClient)` to `(*PlacementPoliciesClient, error)`
+- Function `*HcxEnterpriseSitesClient.List` return value(s) have been changed from `(*HcxEnterpriseSitesClientListPager)` to `(*runtime.Pager[HcxEnterpriseSitesClientListResponse])`
+- Function `*ScriptExecutionsClient.List` return value(s) have been changed from `(*ScriptExecutionsClientListPager)` to `(*runtime.Pager[ScriptExecutionsClientListResponse])`
+- Function `*PrivateCloudsClient.BeginCreateOrUpdate` return value(s) have been changed from `(PrivateCloudsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[PrivateCloudsClientCreateOrUpdateResponse], error)`
+- Function `*WorkloadNetworksClient.BeginCreateDNSZone` return value(s) have been changed from `(WorkloadNetworksClientCreateDNSZonePollerResponse, error)` to `(*armruntime.Poller[WorkloadNetworksClientCreateDNSZoneResponse], error)`
+- Function `*CloudLinksClient.List` return value(s) have been changed from `(*CloudLinksClientListPager)` to `(*runtime.Pager[CloudLinksClientListResponse])`
+- Function `*PlacementPoliciesClient.BeginCreateOrUpdate` return value(s) have been changed from `(PlacementPoliciesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[PlacementPoliciesClientCreateOrUpdateResponse], error)`
+- Function `*PlacementPoliciesClient.BeginDelete` return value(s) have been changed from `(PlacementPoliciesClientDeletePollerResponse, error)` to `(*armruntime.Poller[PlacementPoliciesClientDeleteResponse], error)`
+- Function `*WorkloadNetworksClient.BeginDeleteVMGroup` return value(s) have been changed from `(WorkloadNetworksClientDeleteVMGroupPollerResponse, error)` to `(*armruntime.Poller[WorkloadNetworksClientDeleteVMGroupResponse], error)`
+- Function `*VirtualMachinesClient.BeginRestrictMovement` return value(s) have been changed from `(VirtualMachinesClientRestrictMovementPollerResponse, error)` to `(*armruntime.Poller[VirtualMachinesClientRestrictMovementResponse], error)`
+- Function `*WorkloadNetworksClient.ListSegments` return value(s) have been changed from `(*WorkloadNetworksClientListSegmentsPager)` to `(*runtime.Pager[WorkloadNetworksClientListSegmentsResponse])`
+- Function `*CloudLinksClient.BeginDelete` return value(s) have been changed from `(CloudLinksClientDeletePollerResponse, error)` to `(*armruntime.Poller[CloudLinksClientDeleteResponse], error)`
+- Function `*WorkloadNetworksClient.BeginUpdateSegments` return value(s) have been changed from `(WorkloadNetworksClientUpdateSegmentsPollerResponse, error)` to `(*armruntime.Poller[WorkloadNetworksClientUpdateSegmentsResponse], error)`
+- Function `*WorkloadNetworksClient.BeginUpdateVMGroup` return value(s) have been changed from `(WorkloadNetworksClientUpdateVMGroupPollerResponse, error)` to `(*armruntime.Poller[WorkloadNetworksClientUpdateVMGroupResponse], error)`
+- Function `NewCloudLinksClient` return value(s) have been changed from `(*CloudLinksClient)` to `(*CloudLinksClient, error)`
+- Function `*PrivateCloudsClient.List` return value(s) have been changed from `(*PrivateCloudsClientListPager)` to `(*runtime.Pager[PrivateCloudsClientListResponse])`
+- Function `*WorkloadNetworksClient.BeginUpdatePortMirroring` return value(s) have been changed from `(WorkloadNetworksClientUpdatePortMirroringPollerResponse, error)` to `(*armruntime.Poller[WorkloadNetworksClientUpdatePortMirroringResponse], error)`
+- Function `*AuthorizationsClient.BeginDelete` return value(s) have been changed from `(AuthorizationsClientDeletePollerResponse, error)` to `(*armruntime.Poller[AuthorizationsClientDeleteResponse], error)`
+- Function `*AuthorizationsClient.List` return value(s) have been changed from `(*AuthorizationsClientListPager)` to `(*runtime.Pager[AuthorizationsClientListResponse])`
+- Function `*DatastoresClient.List` return value(s) have been changed from `(*DatastoresClientListPager)` to `(*runtime.Pager[DatastoresClientListResponse])`
+- Function `*PrivateCloudsClient.BeginRotateNsxtPassword` return value(s) have been changed from `(PrivateCloudsClientRotateNsxtPasswordPollerResponse, error)` to `(*armruntime.Poller[PrivateCloudsClientRotateNsxtPasswordResponse], error)`
+- Function `NewAddonsClient` return value(s) have been changed from `(*AddonsClient)` to `(*AddonsClient, error)`
+- Function `*WorkloadNetworksClient.BeginUpdateDNSZone` return value(s) have been changed from `(WorkloadNetworksClientUpdateDNSZonePollerResponse, error)` to `(*armruntime.Poller[WorkloadNetworksClientUpdateDNSZoneResponse], error)`
+- Function `*VirtualMachinesClient.List` return value(s) have been changed from `(*VirtualMachinesClientListPager)` to `(*runtime.Pager[VirtualMachinesClientListResponse])`
+- Function `*AuthorizationsClient.BeginCreateOrUpdate` return value(s) have been changed from `(AuthorizationsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[AuthorizationsClientCreateOrUpdateResponse], error)`
+- Function `NewPrivateCloudsClient` return value(s) have been changed from `(*PrivateCloudsClient)` to `(*PrivateCloudsClient, error)`
+- Function `NewVirtualMachinesClient` return value(s) have been changed from `(*VirtualMachinesClient)` to `(*VirtualMachinesClient, error)`
+- Function `*PrivateCloudsClient.ListInSubscription` return value(s) have been changed from `(*PrivateCloudsClientListInSubscriptionPager)` to `(*runtime.Pager[PrivateCloudsClientListInSubscriptionResponse])`
+- Function `NewAuthorizationsClient` return value(s) have been changed from `(*AuthorizationsClient)` to `(*AuthorizationsClient, error)`
+- Function `*WorkloadNetworksClient.BeginDeleteDNSZone` return value(s) have been changed from `(WorkloadNetworksClientDeleteDNSZonePollerResponse, error)` to `(*armruntime.Poller[WorkloadNetworksClientDeleteDNSZoneResponse], error)`
+- Function `*ScriptPackagesClient.List` return value(s) have been changed from `(*ScriptPackagesClientListPager)` to `(*runtime.Pager[ScriptPackagesClientListResponse])`
+- Function `*CloudLinksClient.BeginCreateOrUpdate` return value(s) have been changed from `(CloudLinksClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[CloudLinksClientCreateOrUpdateResponse], error)`
+- Function `*WorkloadNetworksClient.ListDNSServices` return value(s) have been changed from `(*WorkloadNetworksClientListDNSServicesPager)` to `(*runtime.Pager[WorkloadNetworksClientListDNSServicesResponse])`
+- Function `*ClustersClient.BeginUpdate` return value(s) have been changed from `(ClustersClientUpdatePollerResponse, error)` to `(*armruntime.Poller[ClustersClientUpdateResponse], error)`
+- Function `NewHcxEnterpriseSitesClient` return value(s) have been changed from `(*HcxEnterpriseSitesClient)` to `(*HcxEnterpriseSitesClient, error)`
+- Function `*PlacementPoliciesClient.BeginUpdate` return value(s) have been changed from `(PlacementPoliciesClientUpdatePollerResponse, error)` to `(*armruntime.Poller[PlacementPoliciesClientUpdateResponse], error)`
+- Function `NewClustersClient` return value(s) have been changed from `(*ClustersClient)` to `(*ClustersClient, error)`
+- Function `*ScriptCmdletsClient.List` return value(s) have been changed from `(*ScriptCmdletsClientListPager)` to `(*runtime.Pager[ScriptCmdletsClientListResponse])`
+- Function `*WorkloadNetworksClient.BeginDeleteDhcp` return value(s) have been changed from `(WorkloadNetworksClientDeleteDhcpPollerResponse, error)` to `(*armruntime.Poller[WorkloadNetworksClientDeleteDhcpResponse], error)`
+- Function `*AddonsClient.BeginDelete` return value(s) have been changed from `(AddonsClientDeletePollerResponse, error)` to `(*armruntime.Poller[AddonsClientDeleteResponse], error)`
+- Function `*WorkloadNetworksClient.BeginCreateSegments` return value(s) have been changed from `(WorkloadNetworksClientCreateSegmentsPollerResponse, error)` to `(*armruntime.Poller[WorkloadNetworksClientCreateSegmentsResponse], error)`
+- Function `*GlobalReachConnectionsClient.BeginDelete` return value(s) have been changed from `(GlobalReachConnectionsClientDeletePollerResponse, error)` to `(*armruntime.Poller[GlobalReachConnectionsClientDeleteResponse], error)`
+- Function `*WorkloadNetworksClient.BeginUpdateDNSService` return value(s) have been changed from `(WorkloadNetworksClientUpdateDNSServicePollerResponse, error)` to `(*armruntime.Poller[WorkloadNetworksClientUpdateDNSServiceResponse], error)`
+- Function `*ClustersClient.BeginCreateOrUpdate` return value(s) have been changed from `(ClustersClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ClustersClientCreateOrUpdateResponse], error)`
+- Function `*ScriptExecutionsClient.BeginDelete` return value(s) have been changed from `(ScriptExecutionsClientDeletePollerResponse, error)` to `(*armruntime.Poller[ScriptExecutionsClientDeleteResponse], error)`
+- Function `*PlacementPoliciesClient.List` return value(s) have been changed from `(*PlacementPoliciesClientListPager)` to `(*runtime.Pager[PlacementPoliciesClientListResponse])`
+- Function `*WorkloadNetworksClient.ListDNSZones` return value(s) have been changed from `(*WorkloadNetworksClientListDNSZonesPager)` to `(*runtime.Pager[WorkloadNetworksClientListDNSZonesResponse])`
+- Function `*ClustersClient.BeginDelete` return value(s) have been changed from `(ClustersClientDeletePollerResponse, error)` to `(*armruntime.Poller[ClustersClientDeleteResponse], error)`
+- Function `NewGlobalReachConnectionsClient` return value(s) have been changed from `(*GlobalReachConnectionsClient)` to `(*GlobalReachConnectionsClient, error)`
+- Function `*ClustersClient.List` return value(s) have been changed from `(*ClustersClientListPager)` to `(*runtime.Pager[ClustersClientListResponse])`
+- Function `*AddonsClient.List` return value(s) have been changed from `(*AddonsClientListPager)` to `(*runtime.Pager[AddonsClientListResponse])`
+- Function `*PrivateCloudsClient.BeginUpdate` return value(s) have been changed from `(PrivateCloudsClientUpdatePollerResponse, error)` to `(*armruntime.Poller[PrivateCloudsClientUpdateResponse], error)`
+- Function `*WorkloadNetworksClient.ListVMGroups` return value(s) have been changed from `(*WorkloadNetworksClientListVMGroupsPager)` to `(*runtime.Pager[WorkloadNetworksClientListVMGroupsResponse])`
+- Function `*WorkloadNetworksClient.BeginUpdateDhcp` return value(s) have been changed from `(WorkloadNetworksClientUpdateDhcpPollerResponse, error)` to `(*armruntime.Poller[WorkloadNetworksClientUpdateDhcpResponse], error)`
+- Function `NewDatastoresClient` return value(s) have been changed from `(*DatastoresClient)` to `(*DatastoresClient, error)`
+- Function `*DatastoresClient.BeginDelete` return value(s) have been changed from `(DatastoresClientDeletePollerResponse, error)` to `(*armruntime.Poller[DatastoresClientDeleteResponse], error)`
+- Function `*WorkloadNetworksClient.ListPublicIPs` return value(s) have been changed from `(*WorkloadNetworksClientListPublicIPsPager)` to `(*runtime.Pager[WorkloadNetworksClientListPublicIPsResponse])`
+- Function `*WorkloadNetworksClient.BeginDeleteDNSService` return value(s) have been changed from `(WorkloadNetworksClientDeleteDNSServicePollerResponse, error)` to `(*armruntime.Poller[WorkloadNetworksClientDeleteDNSServiceResponse], error)`
+- Function `*WorkloadNetworksClient.BeginDeletePublicIP` return value(s) have been changed from `(WorkloadNetworksClientDeletePublicIPPollerResponse, error)` to `(*armruntime.Poller[WorkloadNetworksClientDeletePublicIPResponse], error)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Type of `ScriptExecutionProperties.NamedOutputs` has been changed from `map[string]map[string]interface{}` to `map[string]interface{}`
+- Type of `ErrorAdditionalInfo.Info` has been changed from `map[string]interface{}` to `interface{}`
+- Function `*WorkloadNetworksClientCreateDNSZonePollerResponse.Resume` has been removed
+- Function `*ClustersClientUpdatePoller.ResumeToken` has been removed
+- Function `*WorkloadNetworksClientDeleteDhcpPoller.Poll` has been removed
+- Function `*ClustersClientUpdatePoller.Poll` has been removed
+- Function `*WorkloadNetworksClientCreateVMGroupPoller.FinalResponse` has been removed
+- Function `*WorkloadNetworksClientListDNSZonesPager.Err` has been removed
+- Function `MountOptionEnum.ToPtr` has been removed
+- Function `*CloudLinksClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*AuthorizationsClientListPager.Err` has been removed
+- Function `ClusterProvisioningState.ToPtr` has been removed
+- Function `*WorkloadNetworksClientDeleteDNSServicePollerResponse.Resume` has been removed
+- Function `*AddonsClientDeletePollerResponse.Resume` has been removed
+- Function `WorkloadNetworkDhcpProvisioningState.ToPtr` has been removed
+- Function `*AuthorizationsClientDeletePoller.ResumeToken` has been removed
+- Function `*ClustersClientListPager.NextPage` has been removed
+- Function `*WorkloadNetworksClientCreateSegmentsPoller.Poll` has been removed
+- Function `TrialStatus.ToPtr` has been removed
+- Function `*PrivateCloudsClientUpdatePoller.Done` has been removed
+- Function `*WorkloadNetworksClientDeleteVMGroupPoller.FinalResponse` has been removed
+- Function `*AuthorizationsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*CloudLinksClientCreateOrUpdatePoller.Done` has been removed
+- Function `DNSServiceStatusEnum.ToPtr` has been removed
+- Function `*DatastoresClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*WorkloadNetworksClientDeleteSegmentPoller.Done` has been removed
+- Function `*PrivateCloudsClientRotateNsxtPasswordPollerResponse.Resume` has been removed
+- Function `ClustersClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `DatastoresClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*CloudLinksClientListPager.NextPage` has been removed
+- Function `*AuthorizationsClientDeletePoller.Poll` has been removed
+- Function `AddonType.ToPtr` has been removed
+- Function `*WorkloadNetworksClientDeleteSegmentPoller.ResumeToken` has been removed
+- Function `SSLEnum.ToPtr` has been removed
+- Function `*ScriptExecutionsClientDeletePoller.Poll` has been removed
+- Function `*WorkloadNetworksClientCreatePortMirroringPoller.Done` has been removed
+- Function `*WorkloadNetworksClientCreateDNSServicePoller.Poll` has been removed
+- Function `*WorkloadNetworksClientListPublicIPsPager.NextPage` has been removed
+- Function `CloudLinkStatus.ToPtr` has been removed
+- Function `*WorkloadNetworksClientDeleteSegmentPollerResponse.Resume` has been removed
+- Function `PortMirroringStatusEnum.ToPtr` has been removed
+- Function `*HcxEnterpriseSitesClientListPager.NextPage` has been removed
+- Function `*ScriptExecutionsClientListPager.Err` has been removed
+- Function `*VirtualMachinesClientListPager.PageResponse` has been removed
+- Function `*PrivateCloudsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `WorkloadNetworksClientUpdateSegmentsPollerResponse.PollUntilDone` has been removed
+- Function `GlobalReachConnectionsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*WorkloadNetworksClientCreatePublicIPPollerResponse.Resume` has been removed
+- Function `ScriptExecutionParameterType.ToPtr` has been removed
+- Function `*ClustersClientDeletePollerResponse.Resume` has been removed
+- Function `*WorkloadNetworksClientListDNSServicesPager.Err` has been removed
+- Function `*WorkloadNetworksClientUpdateVMGroupPoller.ResumeToken` has been removed
+- Function `*PrivateCloudsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*CloudLinksClientListPager.PageResponse` has been removed
+- Function `*WorkloadNetworksClientUpdateVMGroupPoller.Poll` has been removed
+- Function `*ClustersClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*GlobalReachConnectionsClientListPager.NextPage` has been removed
+- Function `*WorkloadNetworksClientListDhcpPager.NextPage` has been removed
+- Function `*GlobalReachConnectionsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*WorkloadNetworksClientListDNSZonesPager.PageResponse` has been removed
+- Function `*PrivateCloudsClientDeletePoller.ResumeToken` has been removed
+- Function `*AddonsClientDeletePoller.ResumeToken` has been removed
+- Function `*GlobalReachConnectionsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*PrivateCloudsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `WorkloadNetworkSegmentProvisioningState.ToPtr` has been removed
+- Function `DatastoreProvisioningState.ToPtr` has been removed
+- Function `*ScriptCmdletsClientListPager.NextPage` has been removed
+- Function `*CloudLinksClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*ScriptExecutionsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*PrivateCloudsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*WorkloadNetworksClientUpdateDNSServicePoller.Poll` has been removed
+- Function `*WorkloadNetworksClientUpdateDhcpPoller.Done` has been removed
+- Function `*WorkloadNetworksClientCreatePublicIPPoller.ResumeToken` has been removed
+- Function `PlacementPoliciesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `ScriptExecutionsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ScriptExecutionsClientDeletePoller.ResumeToken` has been removed
+- Function `*WorkloadNetworksClientUpdatePortMirroringPoller.Done` has been removed
+- Function `PrivateCloudsClientRotateNsxtPasswordPollerResponse.PollUntilDone` has been removed
+- Function `*PrivateCloudsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*PlacementPoliciesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*PlacementPoliciesClientDeletePoller.ResumeToken` has been removed
+- Function `*PlacementPoliciesClientDeletePoller.Poll` has been removed
+- Function `*PrivateCloudsClientRotateNsxtPasswordPoller.Done` has been removed
+- Function `AuthorizationsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*WorkloadNetworksClientCreateVMGroupPollerResponse.Resume` has been removed
+- Function `*CloudLinksClientDeletePoller.FinalResponse` has been removed
+- Function `GlobalReachConnectionsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `ExpressRouteAuthorizationProvisioningState.ToPtr` has been removed
+- Function `*PlacementPoliciesClientUpdatePoller.Done` has been removed
+- Function `*AuthorizationsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*WorkloadNetworksClientUpdateDNSZonePollerResponse.Resume` has been removed
+- Function `*WorkloadNetworksClientUpdateDhcpPoller.Poll` has been removed
+- Function `*WorkloadNetworksClientCreateDNSZonePoller.FinalResponse` has been removed
+- Function `*WorkloadNetworksClientListDhcpPager.Err` has been removed
+- Function `PlacementPolicyType.ToPtr` has been removed
+- Function `AffinityType.ToPtr` has been removed
+- Function `*WorkloadNetworksClientListVirtualMachinesPager.NextPage` has been removed
+- Function `*WorkloadNetworksClientListPortMirroringPager.NextPage` has been removed
+- Function `ResourceIdentityType.ToPtr` has been removed
+- Function `*PlacementPoliciesClientUpdatePollerResponse.Resume` has been removed
+- Function `*GlobalReachConnectionsClientListPager.Err` has been removed
+- Function `*WorkloadNetworksClientDeleteDNSZonePollerResponse.Resume` has been removed
+- Function `QuotaEnabled.ToPtr` has been removed
+- Function `WorkloadNetworksClientDeleteDhcpPollerResponse.PollUntilDone` has been removed
+- Function `*WorkloadNetworksClientUpdateDNSZonePoller.Done` has been removed
+- Function `VirtualMachinesClientRestrictMovementPollerResponse.PollUntilDone` has been removed
+- Function `*PlacementPoliciesClientListPager.NextPage` has been removed
+- Function `PrivateCloudsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*WorkloadNetworksClientCreatePortMirroringPoller.Poll` has been removed
+- Function `ScriptParameterTypes.ToPtr` has been removed
+- Function `ClustersClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*WorkloadNetworksClientUpdateSegmentsPollerResponse.Resume` has been removed
+- Function `*WorkloadNetworksClientUpdatePortMirroringPoller.ResumeToken` has been removed
+- Function `*ClustersClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*WorkloadNetworksClientListPublicIPsPager.PageResponse` has been removed
+- Function `*WorkloadNetworksClientCreateDNSZonePoller.ResumeToken` has been removed
+- Function `*ScriptCmdletsClientListPager.Err` has been removed
+- Function `*WorkloadNetworksClientCreateDhcpPoller.Poll` has been removed
+- Function `*WorkloadNetworksClientCreateSegmentsPollerResponse.Resume` has been removed
+- Function `*GlobalReachConnectionsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `PlacementPoliciesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*AuthorizationsClientListPager.NextPage` has been removed
+- Function `*CloudLinksClientListPager.Err` has been removed
+- Function `*WorkloadNetworksClientListGatewaysPager.NextPage` has been removed
+- Function `*WorkloadNetworksClientUpdateDNSZonePoller.FinalResponse` has been removed
+- Function `*WorkloadNetworksClientUpdateDNSZonePoller.ResumeToken` has been removed
+- Function `*VirtualMachinesClientRestrictMovementPoller.Poll` has been removed
+- Function `*WorkloadNetworksClientUpdateVMGroupPoller.FinalResponse` has been removed
+- Function `*WorkloadNetworksClientListSegmentsPager.NextPage` has been removed
+- Function `*PrivateCloudsClientListPager.PageResponse` has been removed
+- Function `DatastoreStatus.ToPtr` has been removed
+- Function `*WorkloadNetworksClientListPublicIPsPager.Err` has been removed
+- Function `*WorkloadNetworksClientCreateDhcpPoller.Done` has been removed
+- Function `*WorkloadNetworksClientDeletePortMirroringPoller.FinalResponse` has been removed
+- Function `*WorkloadNetworksClientListDNSServicesPager.PageResponse` has been removed
+- Function `InternetEnum.ToPtr` has been removed
+- Function `DNSServiceLogLevelEnum.ToPtr` has been removed
+- Function `*PlacementPoliciesClientListPager.PageResponse` has been removed
+- Function `*PrivateCloudsClientDeletePoller.FinalResponse` has been removed
+- Function `*HcxEnterpriseSitesClientListPager.Err` has been removed
+- Function `*PrivateCloudsClientRotateNsxtPasswordPoller.FinalResponse` has been removed
+- Function `*WorkloadNetworksClientListPortMirroringPager.Err` has been removed
+- Function `*WorkloadNetworksClientListVirtualMachinesPager.Err` has been removed
+- Function `VisibilityParameterEnum.ToPtr` has been removed
+- Function `*ScriptPackagesClientListPager.NextPage` has been removed
+- Function `*WorkloadNetworksClientUpdateDhcpPollerResponse.Resume` has been removed
+- Function `*CloudLinksClientDeletePoller.Done` has been removed
+- Function `CloudLinksClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*PlacementPoliciesClientListPager.Err` has been removed
+- Function `*WorkloadNetworksClientUpdateSegmentsPoller.Poll` has been removed
+- Function `*ClustersClientDeletePoller.FinalResponse` has been removed
+- Function `*WorkloadNetworksClientCreateDhcpPollerResponse.Resume` has been removed
+- Function `WorkloadNetworksClientDeleteSegmentPollerResponse.PollUntilDone` has been removed
+- Function `*PlacementPoliciesClientDeletePollerResponse.Resume` has been removed
+- Function `PlacementPoliciesClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachinesClientListPager.NextPage` has been removed
+- Function `*PrivateCloudsClientRotateVcenterPasswordPoller.FinalResponse` has been removed
+- Function `*DatastoresClientListPager.PageResponse` has been removed
+- Function `*PrivateCloudsClientDeletePollerResponse.Resume` has been removed
+- Function `PrivateCloudsClientRotateVcenterPasswordPollerResponse.PollUntilDone` has been removed
+- Function `*AuthorizationsClientDeletePoller.FinalResponse` has been removed
+- Function `WorkloadNetworksClientCreatePortMirroringPollerResponse.PollUntilDone` has been removed
+- Function `*WorkloadNetworksClientListSegmentsPager.Err` has been removed
+- Function `PortMirroringDirectionEnum.ToPtr` has been removed
+- Function `*VirtualMachinesClientRestrictMovementPollerResponse.Resume` has been removed
+- Function `*VirtualMachinesClientRestrictMovementPoller.FinalResponse` has been removed
+- Function `*WorkloadNetworksClientDeleteDNSZonePoller.Done` has been removed
+- Function `*WorkloadNetworksClientCreatePortMirroringPollerResponse.Resume` has been removed
+- Function `*GlobalReachConnectionsClientDeletePoller.FinalResponse` has been removed
+- Function `*CloudLinksClientDeletePoller.ResumeToken` has been removed
+- Function `*CloudLinksClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `WorkloadNetworksClientDeleteDNSServicePollerResponse.PollUntilDone` has been removed
+- Function `*WorkloadNetworksClientDeleteDNSServicePoller.Poll` has been removed
+- Function `*GlobalReachConnectionsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*WorkloadNetworksClientUpdateSegmentsPoller.FinalResponse` has been removed
+- Function `*PrivateCloudsClientDeletePoller.Poll` has been removed
+- Function `*WorkloadNetworksClientDeleteVMGroupPoller.Poll` has been removed
+- Function `*WorkloadNetworksClientCreateSegmentsPoller.FinalResponse` has been removed
+- Function `*WorkloadNetworksClientCreatePortMirroringPoller.ResumeToken` has been removed
+- Function `DhcpTypeEnum.ToPtr` has been removed
+- Function `*WorkloadNetworksClientDeleteDNSServicePoller.ResumeToken` has been removed
+- Function `*WorkloadNetworksClientCreateDNSZonePoller.Done` has been removed
+- Function `*WorkloadNetworksClientCreateVMGroupPoller.Poll` has been removed
+- Function `*WorkloadNetworksClientUpdatePortMirroringPoller.Poll` has been removed
+- Function `*ScriptExecutionsClientDeletePoller.Done` has been removed
+- Function `*PlacementPoliciesClientDeletePoller.FinalResponse` has been removed
+- Function `CloudLinksClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `AddonProvisioningState.ToPtr` has been removed
+- Function `*PlacementPoliciesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*CloudLinksClientDeletePoller.Poll` has been removed
+- Function `VMGroupStatusEnum.ToPtr` has been removed
+- Function `*WorkloadNetworksClientListVMGroupsPager.PageResponse` has been removed
+- Function `*GlobalReachConnectionsClientCreateOrUpdatePoller.Done` has been removed
+- Function `WorkloadNetworksClientDeletePortMirroringPollerResponse.PollUntilDone` has been removed
+- Function `*WorkloadNetworksClientCreatePublicIPPoller.Done` has been removed
+- Function `*PrivateCloudsClientListInSubscriptionPager.Err` has been removed
+- Function `*WorkloadNetworksClientDeletePublicIPPoller.Poll` has been removed
+- Function `*PrivateCloudsClientListPager.NextPage` has been removed
+- Function `*AddonsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*AddonsClientListPager.PageResponse` has been removed
+- Function `PlacementPolicyProvisioningState.ToPtr` has been removed
+- Function `*ClustersClientListPager.Err` has been removed
+- Function `WorkloadNetworkPublicIPProvisioningState.ToPtr` has been removed
+- Function `VMTypeEnum.ToPtr` has been removed
+- Function `*ClustersClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `WorkloadNetworkDNSServiceProvisioningState.ToPtr` has been removed
+- Function `*WorkloadNetworksClientCreateVMGroupPoller.ResumeToken` has been removed
+- Function `EncryptionState.ToPtr` has been removed
+- Function `*WorkloadNetworksClientDeleteSegmentPoller.Poll` has been removed
+- Function `*WorkloadNetworksClientDeletePublicIPPoller.Done` has been removed
+- Function `*WorkloadNetworksClientDeletePortMirroringPollerResponse.Resume` has been removed
+- Function `*WorkloadNetworksClientUpdateDNSServicePoller.FinalResponse` has been removed
+- Function `*GlobalReachConnectionsClientDeletePoller.Done` has been removed
+- Function `*ScriptExecutionsClientListPager.NextPage` has been removed
+- Function `*DatastoresClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ScriptExecutionsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualMachinesClientRestrictMovementPoller.ResumeToken` has been removed
+- Function `*WorkloadNetworksClientCreatePublicIPPoller.Poll` has been removed
+- Function `*PlacementPoliciesClientUpdatePoller.Poll` has been removed
+- Function `*WorkloadNetworksClientDeletePortMirroringPoller.ResumeToken` has been removed
+- Function `*DatastoresClientCreateOrUpdatePoller.Done` has been removed
+- Function `*PrivateCloudsClientRotateVcenterPasswordPollerResponse.Resume` has been removed
+- Function `WorkloadNetworkPortMirroringProvisioningState.ToPtr` has been removed
+- Function `*WorkloadNetworksClientDeleteVMGroupPollerResponse.Resume` has been removed
+- Function `*PrivateCloudsClientUpdatePoller.Poll` has been removed
+- Function `*PrivateCloudsClientListPager.Err` has been removed
+- Function `*PrivateCloudsClientRotateVcenterPasswordPoller.ResumeToken` has been removed
+- Function `*WorkloadNetworksClientDeletePublicIPPoller.FinalResponse` has been removed
+- Function `*WorkloadNetworksClientDeletePublicIPPoller.ResumeToken` has been removed
+- Function `HcxEnterpriseSiteStatus.ToPtr` has been removed
+- Function `WorkloadNetworksClientCreateSegmentsPollerResponse.PollUntilDone` has been removed
+- Function `*ScriptExecutionsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*WorkloadNetworksClientDeleteDNSZonePoller.ResumeToken` has been removed
+- Function `WorkloadNetworksClientCreateDNSZonePollerResponse.PollUntilDone` has been removed
+- Function `*WorkloadNetworksClientCreateVMGroupPoller.Done` has been removed
+- Function `*WorkloadNetworksClientDeleteSegmentPoller.FinalResponse` has been removed
+- Function `*ScriptExecutionsClientListPager.PageResponse` has been removed
+- Function `*WorkloadNetworksClientDeleteVMGroupPoller.Done` has been removed
+- Function `*PrivateCloudsClientListInSubscriptionPager.NextPage` has been removed
+- Function `*ClustersClientUpdatePoller.FinalResponse` has been removed
+- Function `*WorkloadNetworksClientUpdateVMGroupPollerResponse.Resume` has been removed
+- Function `*DatastoresClientListPager.Err` has been removed
+- Function `*WorkloadNetworksClientDeleteDNSZonePoller.FinalResponse` has been removed
+- Function `*ScriptPackagesClientListPager.PageResponse` has been removed
+- Function `*DatastoresClientDeletePoller.FinalResponse` has been removed
+- Function `*ClustersClientListPager.PageResponse` has been removed
+- Function `*AddonsClientDeletePoller.Poll` has been removed
+- Function `*AddonsClientDeletePoller.FinalResponse` has been removed
+- Function `*WorkloadNetworksClientDeleteVMGroupPoller.ResumeToken` has been removed
+- Function `WorkloadNetworksClientCreateDNSServicePollerResponse.PollUntilDone` has been removed
+- Function `*WorkloadNetworksClientListDNSServicesPager.NextPage` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Function `*WorkloadNetworksClientUpdateDhcpPoller.ResumeToken` has been removed
+- Function `*PrivateCloudsClientUpdatePoller.FinalResponse` has been removed
+- Function `*WorkloadNetworksClientDeletePortMirroringPoller.Poll` has been removed
+- Function `*VirtualMachinesClientRestrictMovementPoller.Done` has been removed
+- Function `*CloudLinksClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*PlacementPoliciesClientUpdatePoller.ResumeToken` has been removed
+- Function `*DatastoresClientDeletePoller.ResumeToken` has been removed
+- Function `*WorkloadNetworksClientUpdateDhcpPoller.FinalResponse` has been removed
+- Function `*AddonsClientListPager.NextPage` has been removed
+- Function `WorkloadNetworksClientUpdateVMGroupPollerResponse.PollUntilDone` has been removed
+- Function `*WorkloadNetworksClientListVirtualMachinesPager.PageResponse` has been removed
+- Function `*PrivateCloudsClientRotateNsxtPasswordPoller.Poll` has been removed
+- Function `*ScriptCmdletsClientListPager.PageResponse` has been removed
+- Function `*WorkloadNetworksClientDeletePublicIPPollerResponse.Resume` has been removed
+- Function `*DatastoresClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*PrivateCloudsClientUpdatePoller.ResumeToken` has been removed
+- Function `*WorkloadNetworksClientCreateSegmentsPoller.Done` has been removed
+- Function `*PlacementPoliciesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*AddonsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*DatastoresClientDeletePoller.Done` has been removed
+- Function `AddonsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*CloudLinksClientDeletePollerResponse.Resume` has been removed
+- Function `WorkloadNetworkVMGroupProvisioningState.ToPtr` has been removed
+- Function `*WorkloadNetworksClientDeleteDhcpPoller.ResumeToken` has been removed
+- Function `*WorkloadNetworksClientUpdateDNSServicePoller.ResumeToken` has been removed
+- Function `*WorkloadNetworksClientDeleteDhcpPoller.FinalResponse` has been removed
+- Function `AddonsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*WorkloadNetworksClientCreatePublicIPPoller.FinalResponse` has been removed
+- Function `*WorkloadNetworksClientListDNSZonesPager.NextPage` has been removed
+- Function `*VirtualMachinesClientListPager.Err` has been removed
+- Function `*DatastoresClientDeletePoller.Poll` has been removed
+- Function `WorkloadNetworksClientDeletePublicIPPollerResponse.PollUntilDone` has been removed
+- Function `*AuthorizationsClientDeletePoller.Done` has been removed
+- Function `*WorkloadNetworksClientCreateSegmentsPoller.ResumeToken` has been removed
+- Function `*AuthorizationsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ScriptPackagesClientListPager.Err` has been removed
+- Function `*WorkloadNetworksClientCreateDNSServicePollerResponse.Resume` has been removed
+- Function `DatastoresClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*AddonsClientDeletePoller.Done` has been removed
+- Function `*WorkloadNetworksClientListGatewaysPager.PageResponse` has been removed
+- Function `*WorkloadNetworksClientUpdatePortMirroringPollerResponse.Resume` has been removed
+- Function `*AuthorizationsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*DatastoresClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*ScriptExecutionsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*WorkloadNetworksClientListGatewaysPager.Err` has been removed
+- Function `*WorkloadNetworksClientDeleteDNSServicePoller.Done` has been removed
+- Function `WorkloadNetworksClientUpdateDNSZonePollerResponse.PollUntilDone` has been removed
+- Function `*WorkloadNetworksClientUpdateDNSServicePollerResponse.Resume` has been removed
+- Function `*DatastoresClientDeletePollerResponse.Resume` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `*PlacementPoliciesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ClustersClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*PlacementPoliciesClientDeletePoller.Done` has been removed
+- Function `WorkloadNetworksClientCreatePublicIPPollerResponse.PollUntilDone` has been removed
+- Function `WorkloadNetworksClientUpdateDhcpPollerResponse.PollUntilDone` has been removed
+- Function `*ClustersClientCreateOrUpdatePoller.Done` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `*WorkloadNetworksClientListPortMirroringPager.PageResponse` has been removed
+- Function `*PrivateCloudsClientDeletePoller.Done` has been removed
+- Function `ScriptOutputStreamType.ToPtr` has been removed
+- Function `*AddonsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `ClustersClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `WorkloadNetworksClientDeleteDNSZonePollerResponse.PollUntilDone` has been removed
+- Function `*WorkloadNetworksClientUpdateSegmentsPoller.Done` has been removed
+- Function `*WorkloadNetworksClientCreateDhcpPoller.FinalResponse` has been removed
+- Function `PlacementPolicyState.ToPtr` has been removed
+- Function `*ScriptExecutionsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*DatastoresClientListPager.NextPage` has been removed
+- Function `AuthorizationsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*AuthorizationsClientListPager.PageResponse` has been removed
+- Function `*PrivateCloudsClientRotateVcenterPasswordPoller.Poll` has been removed
+- Function `*ClustersClientUpdatePollerResponse.Resume` has been removed
+- Function `OptionalParamEnum.ToPtr` has been removed
+- Function `WorkloadNetworksClientUpdatePortMirroringPollerResponse.PollUntilDone` has been removed
+- Function `*HcxEnterpriseSitesClientListPager.PageResponse` has been removed
+- Function `PrivateCloudsClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*WorkloadNetworksClientListSegmentsPager.PageResponse` has been removed
+- Function `*WorkloadNetworksClientDeleteDhcpPollerResponse.Resume` has been removed
+- Function `*WorkloadNetworksClientDeleteDNSZonePoller.Poll` has been removed
+- Function `*GlobalReachConnectionsClientListPager.PageResponse` has been removed
+- Function `*GlobalReachConnectionsClientDeletePollerResponse.Resume` has been removed
+- Function `*GlobalReachConnectionsClientDeletePoller.Poll` has been removed
+- Function `*WorkloadNetworksClientCreateDhcpPoller.ResumeToken` has been removed
+- Function `*PrivateCloudsClientRotateNsxtPasswordPoller.ResumeToken` has been removed
+- Function `*WorkloadNetworksClientListVMGroupsPager.Err` has been removed
+- Function `*WorkloadNetworksClientListVMGroupsPager.NextPage` has been removed
+- Function `*WorkloadNetworksClientCreateDNSServicePoller.Done` has been removed
+- Function `SegmentStatusEnum.ToPtr` has been removed
+- Function `*WorkloadNetworksClientListDhcpPager.PageResponse` has been removed
+- Function `PrivateCloudsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*WorkloadNetworksClientCreatePortMirroringPoller.FinalResponse` has been removed
+- Function `*ScriptExecutionsClientDeletePoller.FinalResponse` has been removed
+- Function `*ScriptExecutionsClientDeletePollerResponse.Resume` has been removed
+- Function `*WorkloadNetworksClientUpdateSegmentsPoller.ResumeToken` has been removed
+- Function `*PrivateCloudsClientListInSubscriptionPager.PageResponse` has been removed
+- Function `*PrivateCloudsClientRotateVcenterPasswordPoller.Done` has been removed
+- Function `WorkloadNetworkDNSZoneProvisioningState.ToPtr` has been removed
+- Function `GlobalReachConnectionProvisioningState.ToPtr` has been removed
+- Function `*WorkloadNetworksClientCreateDNSZonePoller.Poll` has been removed
+- Function `*WorkloadNetworksClientUpdateDNSZonePoller.Poll` has been removed
+- Function `WorkloadNetworksClientDeleteVMGroupPollerResponse.PollUntilDone` has been removed
+- Function `PrivateCloudProvisioningState.ToPtr` has been removed
+- Function `GlobalReachConnectionStatus.ToPtr` has been removed
+- Function `*WorkloadNetworksClientUpdateDNSServicePoller.Done` has been removed
+- Function `*AddonsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `VirtualMachineRestrictMovementState.ToPtr` has been removed
+- Function `ScriptExecutionProvisioningState.ToPtr` has been removed
+- Function `ScriptExecutionsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `WorkloadNetworksClientCreateVMGroupPollerResponse.PollUntilDone` has been removed
+- Function `*GlobalReachConnectionsClientDeletePoller.ResumeToken` has been removed
+- Function `*ClustersClientDeletePoller.Poll` has been removed
+- Function `*ClustersClientDeletePoller.ResumeToken` has been removed
+- Function `*PrivateCloudsClientUpdatePollerResponse.Resume` has been removed
+- Function `EncryptionKeyStatus.ToPtr` has been removed
+- Function `*ClustersClientUpdatePoller.Done` has been removed
+- Function `*WorkloadNetworksClientDeleteDhcpPoller.Done` has been removed
+- Function `AvailabilityStrategy.ToPtr` has been removed
+- Function `*AuthorizationsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*WorkloadNetworksClientCreateDNSServicePoller.ResumeToken` has been removed
+- Function `*PlacementPoliciesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*WorkloadNetworksClientUpdateVMGroupPoller.Done` has been removed
+- Function `*AuthorizationsClientDeletePollerResponse.Resume` has been removed
+- Function `*AddonsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*WorkloadNetworksClientDeletePortMirroringPoller.Done` has been removed
+- Function `*WorkloadNetworksClientCreateDNSServicePoller.FinalResponse` has been removed
+- Function `*WorkloadNetworksClientDeleteDNSServicePoller.FinalResponse` has been removed
+- Function `WorkloadNetworksClientCreateDhcpPollerResponse.PollUntilDone` has been removed
+- Function `*AddonsClientListPager.Err` has been removed
+- Function `WorkloadNetworksClientUpdateDNSServicePollerResponse.PollUntilDone` has been removed
+- Function `EncryptionVersionType.ToPtr` has been removed
+- Function `*ClustersClientDeletePoller.Done` has been removed
+- Function `*WorkloadNetworksClientUpdatePortMirroringPoller.FinalResponse` has been removed
+- Function `*PlacementPoliciesClientUpdatePoller.FinalResponse` has been removed
+- Struct `AddonsClientCreateOrUpdatePoller` has been removed
+- Struct `AddonsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `AddonsClientCreateOrUpdateResult` has been removed
+- Struct `AddonsClientDeletePoller` has been removed
+- Struct `AddonsClientDeletePollerResponse` has been removed
+- Struct `AddonsClientGetResult` has been removed
+- Struct `AddonsClientListPager` has been removed
+- Struct `AddonsClientListResult` has been removed
+- Struct `AuthorizationsClientCreateOrUpdatePoller` has been removed
+- Struct `AuthorizationsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `AuthorizationsClientCreateOrUpdateResult` has been removed
+- Struct `AuthorizationsClientDeletePoller` has been removed
+- Struct `AuthorizationsClientDeletePollerResponse` has been removed
+- Struct `AuthorizationsClientGetResult` has been removed
+- Struct `AuthorizationsClientListPager` has been removed
+- Struct `AuthorizationsClientListResult` has been removed
+- Struct `CloudLinksClientCreateOrUpdatePoller` has been removed
+- Struct `CloudLinksClientCreateOrUpdatePollerResponse` has been removed
+- Struct `CloudLinksClientCreateOrUpdateResult` has been removed
+- Struct `CloudLinksClientDeletePoller` has been removed
+- Struct `CloudLinksClientDeletePollerResponse` has been removed
+- Struct `CloudLinksClientGetResult` has been removed
+- Struct `CloudLinksClientListPager` has been removed
+- Struct `CloudLinksClientListResult` has been removed
+- Struct `ClustersClientCreateOrUpdatePoller` has been removed
+- Struct `ClustersClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ClustersClientCreateOrUpdateResult` has been removed
+- Struct `ClustersClientDeletePoller` has been removed
+- Struct `ClustersClientDeletePollerResponse` has been removed
+- Struct `ClustersClientGetResult` has been removed
+- Struct `ClustersClientListPager` has been removed
+- Struct `ClustersClientListResult` has been removed
+- Struct `ClustersClientUpdatePoller` has been removed
+- Struct `ClustersClientUpdatePollerResponse` has been removed
+- Struct `ClustersClientUpdateResult` has been removed
+- Struct `DatastoresClientCreateOrUpdatePoller` has been removed
+- Struct `DatastoresClientCreateOrUpdatePollerResponse` has been removed
+- Struct `DatastoresClientCreateOrUpdateResult` has been removed
+- Struct `DatastoresClientDeletePoller` has been removed
+- Struct `DatastoresClientDeletePollerResponse` has been removed
+- Struct `DatastoresClientGetResult` has been removed
+- Struct `DatastoresClientListPager` has been removed
+- Struct `DatastoresClientListResult` has been removed
+- Struct `GlobalReachConnectionsClientCreateOrUpdatePoller` has been removed
+- Struct `GlobalReachConnectionsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `GlobalReachConnectionsClientCreateOrUpdateResult` has been removed
+- Struct `GlobalReachConnectionsClientDeletePoller` has been removed
+- Struct `GlobalReachConnectionsClientDeletePollerResponse` has been removed
+- Struct `GlobalReachConnectionsClientGetResult` has been removed
+- Struct `GlobalReachConnectionsClientListPager` has been removed
+- Struct `GlobalReachConnectionsClientListResult` has been removed
+- Struct `HcxEnterpriseSitesClientCreateOrUpdateResult` has been removed
+- Struct `HcxEnterpriseSitesClientGetResult` has been removed
+- Struct `HcxEnterpriseSitesClientListPager` has been removed
+- Struct `HcxEnterpriseSitesClientListResult` has been removed
+- Struct `LocationsClientCheckQuotaAvailabilityResult` has been removed
+- Struct `LocationsClientCheckTrialAvailabilityResult` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `PlacementPoliciesClientCreateOrUpdatePoller` has been removed
+- Struct `PlacementPoliciesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `PlacementPoliciesClientCreateOrUpdateResult` has been removed
+- Struct `PlacementPoliciesClientDeletePoller` has been removed
+- Struct `PlacementPoliciesClientDeletePollerResponse` has been removed
+- Struct `PlacementPoliciesClientGetResult` has been removed
+- Struct `PlacementPoliciesClientListPager` has been removed
+- Struct `PlacementPoliciesClientListResult` has been removed
+- Struct `PlacementPoliciesClientUpdatePoller` has been removed
+- Struct `PlacementPoliciesClientUpdatePollerResponse` has been removed
+- Struct `PlacementPoliciesClientUpdateResult` has been removed
+- Struct `PrivateCloudsClientCreateOrUpdatePoller` has been removed
+- Struct `PrivateCloudsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `PrivateCloudsClientCreateOrUpdateResult` has been removed
+- Struct `PrivateCloudsClientDeletePoller` has been removed
+- Struct `PrivateCloudsClientDeletePollerResponse` has been removed
+- Struct `PrivateCloudsClientGetResult` has been removed
+- Struct `PrivateCloudsClientListAdminCredentialsResult` has been removed
+- Struct `PrivateCloudsClientListInSubscriptionPager` has been removed
+- Struct `PrivateCloudsClientListInSubscriptionResult` has been removed
+- Struct `PrivateCloudsClientListPager` has been removed
+- Struct `PrivateCloudsClientListResult` has been removed
+- Struct `PrivateCloudsClientRotateNsxtPasswordPoller` has been removed
+- Struct `PrivateCloudsClientRotateNsxtPasswordPollerResponse` has been removed
+- Struct `PrivateCloudsClientRotateVcenterPasswordPoller` has been removed
+- Struct `PrivateCloudsClientRotateVcenterPasswordPollerResponse` has been removed
+- Struct `PrivateCloudsClientUpdatePoller` has been removed
+- Struct `PrivateCloudsClientUpdatePollerResponse` has been removed
+- Struct `PrivateCloudsClientUpdateResult` has been removed
+- Struct `ScriptCmdletsClientGetResult` has been removed
+- Struct `ScriptCmdletsClientListPager` has been removed
+- Struct `ScriptCmdletsClientListResult` has been removed
+- Struct `ScriptExecutionsClientCreateOrUpdatePoller` has been removed
+- Struct `ScriptExecutionsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ScriptExecutionsClientCreateOrUpdateResult` has been removed
+- Struct `ScriptExecutionsClientDeletePoller` has been removed
+- Struct `ScriptExecutionsClientDeletePollerResponse` has been removed
+- Struct `ScriptExecutionsClientGetExecutionLogsResult` has been removed
+- Struct `ScriptExecutionsClientGetResult` has been removed
+- Struct `ScriptExecutionsClientListPager` has been removed
+- Struct `ScriptExecutionsClientListResult` has been removed
+- Struct `ScriptPackagesClientGetResult` has been removed
+- Struct `ScriptPackagesClientListPager` has been removed
+- Struct `ScriptPackagesClientListResult` has been removed
+- Struct `VirtualMachinesClientGetResult` has been removed
+- Struct `VirtualMachinesClientListPager` has been removed
+- Struct `VirtualMachinesClientListResult` has been removed
+- Struct `VirtualMachinesClientRestrictMovementPoller` has been removed
+- Struct `VirtualMachinesClientRestrictMovementPollerResponse` has been removed
+- Struct `WorkloadNetworksClientCreateDNSServicePoller` has been removed
+- Struct `WorkloadNetworksClientCreateDNSServicePollerResponse` has been removed
+- Struct `WorkloadNetworksClientCreateDNSServiceResult` has been removed
+- Struct `WorkloadNetworksClientCreateDNSZonePoller` has been removed
+- Struct `WorkloadNetworksClientCreateDNSZonePollerResponse` has been removed
+- Struct `WorkloadNetworksClientCreateDNSZoneResult` has been removed
+- Struct `WorkloadNetworksClientCreateDhcpPoller` has been removed
+- Struct `WorkloadNetworksClientCreateDhcpPollerResponse` has been removed
+- Struct `WorkloadNetworksClientCreateDhcpResult` has been removed
+- Struct `WorkloadNetworksClientCreatePortMirroringPoller` has been removed
+- Struct `WorkloadNetworksClientCreatePortMirroringPollerResponse` has been removed
+- Struct `WorkloadNetworksClientCreatePortMirroringResult` has been removed
+- Struct `WorkloadNetworksClientCreatePublicIPPoller` has been removed
+- Struct `WorkloadNetworksClientCreatePublicIPPollerResponse` has been removed
+- Struct `WorkloadNetworksClientCreatePublicIPResult` has been removed
+- Struct `WorkloadNetworksClientCreateSegmentsPoller` has been removed
+- Struct `WorkloadNetworksClientCreateSegmentsPollerResponse` has been removed
+- Struct `WorkloadNetworksClientCreateSegmentsResult` has been removed
+- Struct `WorkloadNetworksClientCreateVMGroupPoller` has been removed
+- Struct `WorkloadNetworksClientCreateVMGroupPollerResponse` has been removed
+- Struct `WorkloadNetworksClientCreateVMGroupResult` has been removed
+- Struct `WorkloadNetworksClientDeleteDNSServicePoller` has been removed
+- Struct `WorkloadNetworksClientDeleteDNSServicePollerResponse` has been removed
+- Struct `WorkloadNetworksClientDeleteDNSZonePoller` has been removed
+- Struct `WorkloadNetworksClientDeleteDNSZonePollerResponse` has been removed
+- Struct `WorkloadNetworksClientDeleteDhcpPoller` has been removed
+- Struct `WorkloadNetworksClientDeleteDhcpPollerResponse` has been removed
+- Struct `WorkloadNetworksClientDeletePortMirroringPoller` has been removed
+- Struct `WorkloadNetworksClientDeletePortMirroringPollerResponse` has been removed
+- Struct `WorkloadNetworksClientDeletePublicIPPoller` has been removed
+- Struct `WorkloadNetworksClientDeletePublicIPPollerResponse` has been removed
+- Struct `WorkloadNetworksClientDeleteSegmentPoller` has been removed
+- Struct `WorkloadNetworksClientDeleteSegmentPollerResponse` has been removed
+- Struct `WorkloadNetworksClientDeleteVMGroupPoller` has been removed
+- Struct `WorkloadNetworksClientDeleteVMGroupPollerResponse` has been removed
+- Struct `WorkloadNetworksClientGetDNSServiceResult` has been removed
+- Struct `WorkloadNetworksClientGetDNSZoneResult` has been removed
+- Struct `WorkloadNetworksClientGetDhcpResult` has been removed
+- Struct `WorkloadNetworksClientGetGatewayResult` has been removed
+- Struct `WorkloadNetworksClientGetPortMirroringResult` has been removed
+- Struct `WorkloadNetworksClientGetPublicIPResult` has been removed
+- Struct `WorkloadNetworksClientGetSegmentResult` has been removed
+- Struct `WorkloadNetworksClientGetVMGroupResult` has been removed
+- Struct `WorkloadNetworksClientGetVirtualMachineResult` has been removed
+- Struct `WorkloadNetworksClientListDNSServicesPager` has been removed
+- Struct `WorkloadNetworksClientListDNSServicesResult` has been removed
+- Struct `WorkloadNetworksClientListDNSZonesPager` has been removed
+- Struct `WorkloadNetworksClientListDNSZonesResult` has been removed
+- Struct `WorkloadNetworksClientListDhcpPager` has been removed
+- Struct `WorkloadNetworksClientListDhcpResult` has been removed
+- Struct `WorkloadNetworksClientListGatewaysPager` has been removed
+- Struct `WorkloadNetworksClientListGatewaysResult` has been removed
+- Struct `WorkloadNetworksClientListPortMirroringPager` has been removed
+- Struct `WorkloadNetworksClientListPortMirroringResult` has been removed
+- Struct `WorkloadNetworksClientListPublicIPsPager` has been removed
+- Struct `WorkloadNetworksClientListPublicIPsResult` has been removed
+- Struct `WorkloadNetworksClientListSegmentsPager` has been removed
+- Struct `WorkloadNetworksClientListSegmentsResult` has been removed
+- Struct `WorkloadNetworksClientListVMGroupsPager` has been removed
+- Struct `WorkloadNetworksClientListVMGroupsResult` has been removed
+- Struct `WorkloadNetworksClientListVirtualMachinesPager` has been removed
+- Struct `WorkloadNetworksClientListVirtualMachinesResult` has been removed
+- Struct `WorkloadNetworksClientUpdateDNSServicePoller` has been removed
+- Struct `WorkloadNetworksClientUpdateDNSServicePollerResponse` has been removed
+- Struct `WorkloadNetworksClientUpdateDNSServiceResult` has been removed
+- Struct `WorkloadNetworksClientUpdateDNSZonePoller` has been removed
+- Struct `WorkloadNetworksClientUpdateDNSZonePollerResponse` has been removed
+- Struct `WorkloadNetworksClientUpdateDNSZoneResult` has been removed
+- Struct `WorkloadNetworksClientUpdateDhcpPoller` has been removed
+- Struct `WorkloadNetworksClientUpdateDhcpPollerResponse` has been removed
+- Struct `WorkloadNetworksClientUpdateDhcpResult` has been removed
+- Struct `WorkloadNetworksClientUpdatePortMirroringPoller` has been removed
+- Struct `WorkloadNetworksClientUpdatePortMirroringPollerResponse` has been removed
+- Struct `WorkloadNetworksClientUpdatePortMirroringResult` has been removed
+- Struct `WorkloadNetworksClientUpdateSegmentsPoller` has been removed
+- Struct `WorkloadNetworksClientUpdateSegmentsPollerResponse` has been removed
+- Struct `WorkloadNetworksClientUpdateSegmentsResult` has been removed
+- Struct `WorkloadNetworksClientUpdateVMGroupPoller` has been removed
+- Struct `WorkloadNetworksClientUpdateVMGroupPollerResponse` has been removed
+- Struct `WorkloadNetworksClientUpdateVMGroupResult` has been removed
+- Field `DatastoresClientListResult` of struct `DatastoresClientListResponse` has been removed
+- Field `RawResponse` of struct `DatastoresClientListResponse` has been removed
+- Field `ClustersClientGetResult` of struct `ClustersClientGetResponse` has been removed
+- Field `RawResponse` of struct `ClustersClientGetResponse` has been removed
+- Field `ScriptExecutionsClientCreateOrUpdateResult` of struct `ScriptExecutionsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ScriptExecutionsClientCreateOrUpdateResponse` has been removed
+- Field `WorkloadNetworksClientListDNSServicesResult` of struct `WorkloadNetworksClientListDNSServicesResponse` has been removed
+- Field `RawResponse` of struct `WorkloadNetworksClientListDNSServicesResponse` has been removed
+- Field `WorkloadNetworksClientGetDhcpResult` of struct `WorkloadNetworksClientGetDhcpResponse` has been removed
+- Field `RawResponse` of struct `WorkloadNetworksClientGetDhcpResponse` has been removed
+- Field `RawResponse` of struct `WorkloadNetworksClientDeleteDhcpResponse` has been removed
+- Field `RawResponse` of struct `PrivateCloudsClientDeleteResponse` has been removed
+- Field `PlacementPoliciesClientUpdateResult` of struct `PlacementPoliciesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `PlacementPoliciesClientUpdateResponse` has been removed
+- Field `ClustersClientCreateOrUpdateResult` of struct `ClustersClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ClustersClientCreateOrUpdateResponse` has been removed
+- Field `GlobalReachConnectionsClientListResult` of struct `GlobalReachConnectionsClientListResponse` has been removed
+- Field `RawResponse` of struct `GlobalReachConnectionsClientListResponse` has been removed
+- Field `WorkloadNetworksClientCreatePortMirroringResult` of struct `WorkloadNetworksClientCreatePortMirroringResponse` has been removed
+- Field `RawResponse` of struct `WorkloadNetworksClientCreatePortMirroringResponse` has been removed
+- Field `WorkloadNetworksClientUpdateVMGroupResult` of struct `WorkloadNetworksClientUpdateVMGroupResponse` has been removed
+- Field `RawResponse` of struct `WorkloadNetworksClientUpdateVMGroupResponse` has been removed
+- Field `ScriptExecutionsClientListResult` of struct `ScriptExecutionsClientListResponse` has been removed
+- Field `RawResponse` of struct `ScriptExecutionsClientListResponse` has been removed
+- Field `CloudLinksClientGetResult` of struct `CloudLinksClientGetResponse` has been removed
+- Field `RawResponse` of struct `CloudLinksClientGetResponse` has been removed
+- Field `RawResponse` of struct `GlobalReachConnectionsClientDeleteResponse` has been removed
+- Field `WorkloadNetworksClientCreateDNSServiceResult` of struct `WorkloadNetworksClientCreateDNSServiceResponse` has been removed
+- Field `RawResponse` of struct `WorkloadNetworksClientCreateDNSServiceResponse` has been removed
+- Field `WorkloadNetworksClientCreateVMGroupResult` of struct `WorkloadNetworksClientCreateVMGroupResponse` has been removed
+- Field `RawResponse` of struct `WorkloadNetworksClientCreateVMGroupResponse` has been removed
+- Field `DatastoresClientCreateOrUpdateResult` of struct `DatastoresClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `DatastoresClientCreateOrUpdateResponse` has been removed
+- Field `WorkloadNetworksClientUpdateDNSZoneResult` of struct `WorkloadNetworksClientUpdateDNSZoneResponse` has been removed
+- Field `RawResponse` of struct `WorkloadNetworksClientUpdateDNSZoneResponse` has been removed
+- Field `RawResponse` of struct `PlacementPoliciesClientDeleteResponse` has been removed
+- Field `GlobalReachConnectionsClientGetResult` of struct `GlobalReachConnectionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `GlobalReachConnectionsClientGetResponse` has been removed
+- Field `CloudLinksClientListResult` of struct `CloudLinksClientListResponse` has been removed
+- Field `RawResponse` of struct `CloudLinksClientListResponse` has been removed
+- Field `HcxEnterpriseSitesClientGetResult` of struct `HcxEnterpriseSitesClientGetResponse` has been removed
+- Field `RawResponse` of struct `HcxEnterpriseSitesClientGetResponse` has been removed
+- Field `VirtualMachinesClientListResult` of struct `VirtualMachinesClientListResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachinesClientListResponse` has been removed
+- Field `RawResponse` of struct `WorkloadNetworksClientDeleteVMGroupResponse` has been removed
+- Field `WorkloadNetworksClientListVMGroupsResult` of struct `WorkloadNetworksClientListVMGroupsResponse` has been removed
+- Field `RawResponse` of struct `WorkloadNetworksClientListVMGroupsResponse` has been removed
+- Field `RawResponse` of struct `WorkloadNetworksClientDeleteSegmentResponse` has been removed
+- Field `RawResponse` of struct `WorkloadNetworksClientDeleteDNSZoneResponse` has been removed
+- Field `DatastoresClientGetResult` of struct `DatastoresClientGetResponse` has been removed
+- Field `RawResponse` of struct `DatastoresClientGetResponse` has been removed
+- Field `PlacementPoliciesClientListResult` of struct `PlacementPoliciesClientListResponse` has been removed
+- Field `RawResponse` of struct `PlacementPoliciesClientListResponse` has been removed
+- Field `PlacementPoliciesClientGetResult` of struct `PlacementPoliciesClientGetResponse` has been removed
+- Field `RawResponse` of struct `PlacementPoliciesClientGetResponse` has been removed
+- Field `VirtualMachinesClientGetResult` of struct `VirtualMachinesClientGetResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachinesClientGetResponse` has been removed
+- Field `AuthorizationsClientCreateOrUpdateResult` of struct `AuthorizationsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `AuthorizationsClientCreateOrUpdateResponse` has been removed
+- Field `ScriptPackagesClientGetResult` of struct `ScriptPackagesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ScriptPackagesClientGetResponse` has been removed
+- Field `WorkloadNetworksClientGetDNSZoneResult` of struct `WorkloadNetworksClientGetDNSZoneResponse` has been removed
+- Field `RawResponse` of struct `WorkloadNetworksClientGetDNSZoneResponse` has been removed
+- Field `WorkloadNetworksClientGetDNSServiceResult` of struct `WorkloadNetworksClientGetDNSServiceResponse` has been removed
+- Field `RawResponse` of struct `WorkloadNetworksClientGetDNSServiceResponse` has been removed
+- Field `LocationsClientCheckQuotaAvailabilityResult` of struct `LocationsClientCheckQuotaAvailabilityResponse` has been removed
+- Field `RawResponse` of struct `LocationsClientCheckQuotaAvailabilityResponse` has been removed
+- Field `GlobalReachConnectionsClientCreateOrUpdateResult` of struct `GlobalReachConnectionsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `GlobalReachConnectionsClientCreateOrUpdateResponse` has been removed
+- Field `PrivateCloudsClientCreateOrUpdateResult` of struct `PrivateCloudsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `PrivateCloudsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `CloudLinksClientDeleteResponse` has been removed
+- Field `WorkloadNetworksClientCreateSegmentsResult` of struct `WorkloadNetworksClientCreateSegmentsResponse` has been removed
+- Field `RawResponse` of struct `WorkloadNetworksClientCreateSegmentsResponse` has been removed
+- Field `RawResponse` of struct `PrivateCloudsClientRotateNsxtPasswordResponse` has been removed
+- Field `RawResponse` of struct `ClustersClientDeleteResponse` has been removed
+- Field `ScriptCmdletsClientGetResult` of struct `ScriptCmdletsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ScriptCmdletsClientGetResponse` has been removed
+- Field `WorkloadNetworksClientGetGatewayResult` of struct `WorkloadNetworksClientGetGatewayResponse` has been removed
+- Field `RawResponse` of struct `WorkloadNetworksClientGetGatewayResponse` has been removed
+- Field `WorkloadNetworksClientUpdatePortMirroringResult` of struct `WorkloadNetworksClientUpdatePortMirroringResponse` has been removed
+- Field `RawResponse` of struct `WorkloadNetworksClientUpdatePortMirroringResponse` has been removed
+- Field `AuthorizationsClientGetResult` of struct `AuthorizationsClientGetResponse` has been removed
+- Field `RawResponse` of struct `AuthorizationsClientGetResponse` has been removed
+- Field `WorkloadNetworksClientGetVMGroupResult` of struct `WorkloadNetworksClientGetVMGroupResponse` has been removed
+- Field `RawResponse` of struct `WorkloadNetworksClientGetVMGroupResponse` has been removed
+- Field `WorkloadNetworksClientListPublicIPsResult` of struct `WorkloadNetworksClientListPublicIPsResponse` has been removed
+- Field `RawResponse` of struct `WorkloadNetworksClientListPublicIPsResponse` has been removed
+- Field `WorkloadNetworksClientListVirtualMachinesResult` of struct `WorkloadNetworksClientListVirtualMachinesResponse` has been removed
+- Field `RawResponse` of struct `WorkloadNetworksClientListVirtualMachinesResponse` has been removed
+- Field `CloudLinksClientCreateOrUpdateResult` of struct `CloudLinksClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `CloudLinksClientCreateOrUpdateResponse` has been removed
+- Field `AuthorizationsClientListResult` of struct `AuthorizationsClientListResponse` has been removed
+- Field `RawResponse` of struct `AuthorizationsClientListResponse` has been removed
+- Field `RawResponse` of struct `AuthorizationsClientDeleteResponse` has been removed
+- Field `AddonsClientListResult` of struct `AddonsClientListResponse` has been removed
+- Field `RawResponse` of struct `AddonsClientListResponse` has been removed
+- Field `ScriptPackagesClientListResult` of struct `ScriptPackagesClientListResponse` has been removed
+- Field `RawResponse` of struct `ScriptPackagesClientListResponse` has been removed
+- Field `WorkloadNetworksClientListSegmentsResult` of struct `WorkloadNetworksClientListSegmentsResponse` has been removed
+- Field `RawResponse` of struct `WorkloadNetworksClientListSegmentsResponse` has been removed
+- Field `WorkloadNetworksClientUpdateDhcpResult` of struct `WorkloadNetworksClientUpdateDhcpResponse` has been removed
+- Field `RawResponse` of struct `WorkloadNetworksClientUpdateDhcpResponse` has been removed
+- Field `WorkloadNetworksClientListDhcpResult` of struct `WorkloadNetworksClientListDhcpResponse` has been removed
+- Field `RawResponse` of struct `WorkloadNetworksClientListDhcpResponse` has been removed
+- Field `PrivateCloudsClientUpdateResult` of struct `PrivateCloudsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `PrivateCloudsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `WorkloadNetworksClientDeletePublicIPResponse` has been removed
+- Field `PlacementPoliciesClientCreateOrUpdateResult` of struct `PlacementPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `PlacementPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `AddonsClientDeleteResponse` has been removed
+- Field `PrivateCloudsClientListResult` of struct `PrivateCloudsClientListResponse` has been removed
+- Field `RawResponse` of struct `PrivateCloudsClientListResponse` has been removed
+- Field `RawResponse` of struct `VirtualMachinesClientRestrictMovementResponse` has been removed
+- Field `ClustersClientListResult` of struct `ClustersClientListResponse` has been removed
+- Field `RawResponse` of struct `ClustersClientListResponse` has been removed
+- Field `RawResponse` of struct `DatastoresClientDeleteResponse` has been removed
+- Field `WorkloadNetworksClientCreatePublicIPResult` of struct `WorkloadNetworksClientCreatePublicIPResponse` has been removed
+- Field `RawResponse` of struct `WorkloadNetworksClientCreatePublicIPResponse` has been removed
+- Field `RawResponse` of struct `WorkloadNetworksClientDeleteDNSServiceResponse` has been removed
+- Field `LocationsClientCheckTrialAvailabilityResult` of struct `LocationsClientCheckTrialAvailabilityResponse` has been removed
+- Field `RawResponse` of struct `LocationsClientCheckTrialAvailabilityResponse` has been removed
+- Field `PrivateCloudsClientGetResult` of struct `PrivateCloudsClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateCloudsClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateCloudsClientRotateVcenterPasswordResponse` has been removed
+- Field `WorkloadNetworksClientCreateDhcpResult` of struct `WorkloadNetworksClientCreateDhcpResponse` has been removed
+- Field `RawResponse` of struct `WorkloadNetworksClientCreateDhcpResponse` has been removed
+- Field `WorkloadNetworksClientCreateDNSZoneResult` of struct `WorkloadNetworksClientCreateDNSZoneResponse` has been removed
+- Field `RawResponse` of struct `WorkloadNetworksClientCreateDNSZoneResponse` has been removed
+- Field `WorkloadNetworksClientGetPublicIPResult` of struct `WorkloadNetworksClientGetPublicIPResponse` has been removed
+- Field `RawResponse` of struct `WorkloadNetworksClientGetPublicIPResponse` has been removed
+- Field `WorkloadNetworksClientUpdateDNSServiceResult` of struct `WorkloadNetworksClientUpdateDNSServiceResponse` has been removed
+- Field `RawResponse` of struct `WorkloadNetworksClientUpdateDNSServiceResponse` has been removed
+- Field `PrivateCloudsClientListAdminCredentialsResult` of struct `PrivateCloudsClientListAdminCredentialsResponse` has been removed
+- Field `RawResponse` of struct `PrivateCloudsClientListAdminCredentialsResponse` has been removed
+- Field `WorkloadNetworksClientListPortMirroringResult` of struct `WorkloadNetworksClientListPortMirroringResponse` has been removed
+- Field `RawResponse` of struct `WorkloadNetworksClientListPortMirroringResponse` has been removed
+- Field `ScriptExecutionsClientGetResult` of struct `ScriptExecutionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ScriptExecutionsClientGetResponse` has been removed
+- Field `WorkloadNetworksClientListGatewaysResult` of struct `WorkloadNetworksClientListGatewaysResponse` has been removed
+- Field `RawResponse` of struct `WorkloadNetworksClientListGatewaysResponse` has been removed
+- Field `RawResponse` of struct `ScriptExecutionsClientDeleteResponse` has been removed
+- Field `ScriptExecutionsClientGetExecutionLogsResult` of struct `ScriptExecutionsClientGetExecutionLogsResponse` has been removed
+- Field `RawResponse` of struct `ScriptExecutionsClientGetExecutionLogsResponse` has been removed
+- Field `WorkloadNetworksClientGetVirtualMachineResult` of struct `WorkloadNetworksClientGetVirtualMachineResponse` has been removed
+- Field `RawResponse` of struct `WorkloadNetworksClientGetVirtualMachineResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `WorkloadNetworksClientUpdateSegmentsResult` of struct `WorkloadNetworksClientUpdateSegmentsResponse` has been removed
+- Field `RawResponse` of struct `WorkloadNetworksClientUpdateSegmentsResponse` has been removed
+- Field `WorkloadNetworksClientGetPortMirroringResult` of struct `WorkloadNetworksClientGetPortMirroringResponse` has been removed
+- Field `RawResponse` of struct `WorkloadNetworksClientGetPortMirroringResponse` has been removed
+- Field `WorkloadNetworksClientListDNSZonesResult` of struct `WorkloadNetworksClientListDNSZonesResponse` has been removed
+- Field `RawResponse` of struct `WorkloadNetworksClientListDNSZonesResponse` has been removed
+- Field `ClustersClientUpdateResult` of struct `ClustersClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ClustersClientUpdateResponse` has been removed
+- Field `AddonsClientCreateOrUpdateResult` of struct `AddonsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `AddonsClientCreateOrUpdateResponse` has been removed
+- Field `ScriptCmdletsClientListResult` of struct `ScriptCmdletsClientListResponse` has been removed
+- Field `RawResponse` of struct `ScriptCmdletsClientListResponse` has been removed
+- Field `RawResponse` of struct `WorkloadNetworksClientDeletePortMirroringResponse` has been removed
+- Field `PrivateCloudsClientListInSubscriptionResult` of struct `PrivateCloudsClientListInSubscriptionResponse` has been removed
+- Field `RawResponse` of struct `PrivateCloudsClientListInSubscriptionResponse` has been removed
+- Field `WorkloadNetworksClientGetSegmentResult` of struct `WorkloadNetworksClientGetSegmentResponse` has been removed
+- Field `RawResponse` of struct `WorkloadNetworksClientGetSegmentResponse` has been removed
+- Field `AddonsClientGetResult` of struct `AddonsClientGetResponse` has been removed
+- Field `RawResponse` of struct `AddonsClientGetResponse` has been removed
+- Field `HcxEnterpriseSitesClientCreateOrUpdateResult` of struct `HcxEnterpriseSitesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `HcxEnterpriseSitesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `HcxEnterpriseSitesClientDeleteResponse` has been removed
+- Field `HcxEnterpriseSitesClientListResult` of struct `HcxEnterpriseSitesClientListResponse` has been removed
+- Field `RawResponse` of struct `HcxEnterpriseSitesClientListResponse` has been removed
+
+### Features Added
+
+- New field `ResumeToken` in struct `DatastoresClientBeginCreateOrUpdateOptions`
+- New anonymous field `WorkloadNetworkPublicIP` in struct `WorkloadNetworksClientCreatePublicIPResponse`
+- New field `ResumeToken` in struct `ClustersClientBeginUpdateOptions`
+- New anonymous field `ClusterList` in struct `ClustersClientListResponse`
+- New anonymous field `WorkloadNetworkPortMirroring` in struct `WorkloadNetworksClientCreatePortMirroringResponse`
+- New anonymous field `ExpressRouteAuthorization` in struct `AuthorizationsClientGetResponse`
+- New field `ResumeToken` in struct `WorkloadNetworksClientBeginCreatePortMirroringOptions`
+- New anonymous field `GlobalReachConnection` in struct `GlobalReachConnectionsClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `GlobalReachConnectionsClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `WorkloadNetworksClientBeginDeleteDNSServiceOptions`
+- New field `ResumeToken` in struct `WorkloadNetworksClientBeginUpdateSegmentsOptions`
+- New anonymous field `WorkloadNetworkVMGroup` in struct `WorkloadNetworksClientCreateVMGroupResponse`
+- New field `ResumeToken` in struct `AuthorizationsClientBeginCreateOrUpdateOptions`
+- New anonymous field `Cluster` in struct `ClustersClientGetResponse`
+- New anonymous field `Cluster` in struct `ClustersClientUpdateResponse`
+- New anonymous field `ScriptExecution` in struct `ScriptExecutionsClientGetExecutionLogsResponse`
+- New anonymous field `WorkloadNetworkDhcp` in struct `WorkloadNetworksClientUpdateDhcpResponse`
+- New field `ResumeToken` in struct `WorkloadNetworksClientBeginCreateVMGroupOptions`
+- New anonymous field `WorkloadNetworkDNSZone` in struct `WorkloadNetworksClientUpdateDNSZoneResponse`
+- New anonymous field `HcxEnterpriseSite` in struct `HcxEnterpriseSitesClientGetResponse`
+- New anonymous field `ScriptPackagesList` in struct `ScriptPackagesClientListResponse`
+- New field `ResumeToken` in struct `WorkloadNetworksClientBeginUpdateDNSZoneOptions`
+- New anonymous field `GlobalReachConnectionList` in struct `GlobalReachConnectionsClientListResponse`
+- New anonymous field `Cluster` in struct `ClustersClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `WorkloadNetworksClientBeginCreatePublicIPOptions`
+- New anonymous field `PrivateCloudList` in struct `PrivateCloudsClientListInSubscriptionResponse`
+- New anonymous field `WorkloadNetworkDNSServicesList` in struct `WorkloadNetworksClientListDNSServicesResponse`
+- New anonymous field `DatastoreList` in struct `DatastoresClientListResponse`
+- New anonymous field `WorkloadNetworkVMGroupsList` in struct `WorkloadNetworksClientListVMGroupsResponse`
+- New anonymous field `CloudLink` in struct `CloudLinksClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `WorkloadNetworksClientBeginUpdateDNSServiceOptions`
+- New anonymous field `PrivateCloud` in struct `PrivateCloudsClientUpdateResponse`
+- New anonymous field `WorkloadNetworkDhcp` in struct `WorkloadNetworksClientCreateDhcpResponse`
+- New field `ResumeToken` in struct `WorkloadNetworksClientBeginCreateDhcpOptions`
+- New anonymous field `Datastore` in struct `DatastoresClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `PrivateCloudsClientBeginRotateVcenterPasswordOptions`
+- New anonymous field `ScriptExecution` in struct `ScriptExecutionsClientGetResponse`
+- New anonymous field `Addon` in struct `AddonsClientCreateOrUpdateResponse`
+- New anonymous field `PlacementPolicy` in struct `PlacementPoliciesClientGetResponse`
+- New anonymous field `WorkloadNetworkPortMirroring` in struct `WorkloadNetworksClientGetPortMirroringResponse`
+- New field `ResumeToken` in struct `AuthorizationsClientBeginDeleteOptions`
+- New anonymous field `ExpressRouteAuthorization` in struct `AuthorizationsClientCreateOrUpdateResponse`
+- New anonymous field `VirtualMachine` in struct `VirtualMachinesClientGetResponse`
+- New field `ResumeToken` in struct `PlacementPoliciesClientBeginDeleteOptions`
+- New anonymous field `ExpressRouteAuthorizationList` in struct `AuthorizationsClientListResponse`
+- New field `ResumeToken` in struct `AddonsClientBeginDeleteOptions`
+- New anonymous field `WorkloadNetworkDNSZone` in struct `WorkloadNetworksClientGetDNSZoneResponse`
+- New anonymous field `PlacementPoliciesList` in struct `PlacementPoliciesClientListResponse`
+- New field `ResumeToken` in struct `CloudLinksClientBeginDeleteOptions`
+- New anonymous field `WorkloadNetworkVirtualMachinesList` in struct `WorkloadNetworksClientListVirtualMachinesResponse`
+- New field `ResumeToken` in struct `PlacementPoliciesClientBeginCreateOrUpdateOptions`
+- New anonymous field `WorkloadNetworkGatewayList` in struct `WorkloadNetworksClientListGatewaysResponse`
+- New field `ResumeToken` in struct `ScriptExecutionsClientBeginCreateOrUpdateOptions`
+- New anonymous field `ScriptExecutionsList` in struct `ScriptExecutionsClientListResponse`
+- New anonymous field `Trial` in struct `LocationsClientCheckTrialAvailabilityResponse`
+- New anonymous field `Addon` in struct `AddonsClientGetResponse`
+- New field `ResumeToken` in struct `WorkloadNetworksClientBeginDeleteVMGroupOptions`
+- New anonymous field `ScriptCmdlet` in struct `ScriptCmdletsClientGetResponse`
+- New field `ResumeToken` in struct `WorkloadNetworksClientBeginDeleteDhcpOptions`
+- New field `ResumeToken` in struct `VirtualMachinesClientBeginRestrictMovementOptions`
+- New anonymous field `WorkloadNetworkVirtualMachine` in struct `WorkloadNetworksClientGetVirtualMachineResponse`
+- New anonymous field `PlacementPolicy` in struct `PlacementPoliciesClientCreateOrUpdateResponse`
+- New anonymous field `WorkloadNetworkPublicIP` in struct `WorkloadNetworksClientGetPublicIPResponse`
+- New anonymous field `WorkloadNetworkGateway` in struct `WorkloadNetworksClientGetGatewayResponse`
+- New field `ResumeToken` in struct `ClustersClientBeginCreateOrUpdateOptions`
+- New anonymous field `ScriptPackage` in struct `ScriptPackagesClientGetResponse`
+- New field `ResumeToken` in struct `WorkloadNetworksClientBeginCreateSegmentsOptions`
+- New anonymous field `GlobalReachConnection` in struct `GlobalReachConnectionsClientGetResponse`
+- New field `ResumeToken` in struct `WorkloadNetworksClientBeginCreateDNSServiceOptions`
+- New anonymous field `HcxEnterpriseSiteList` in struct `HcxEnterpriseSitesClientListResponse`
+- New anonymous field `AddonList` in struct `AddonsClientListResponse`
+- New anonymous field `PrivateCloud` in struct `PrivateCloudsClientGetResponse`
+- New field `ResumeToken` in struct `WorkloadNetworksClientBeginUpdateDhcpOptions`
+- New anonymous field `WorkloadNetworkDhcp` in struct `WorkloadNetworksClientGetDhcpResponse`
+- New field `ResumeToken` in struct `WorkloadNetworksClientBeginDeletePortMirroringOptions`
+- New field `ResumeToken` in struct `WorkloadNetworksClientBeginDeletePublicIPOptions`
+- New field `ResumeToken` in struct `WorkloadNetworksClientBeginDeleteSegmentOptions`
+- New field `ResumeToken` in struct `WorkloadNetworksClientBeginUpdateVMGroupOptions`
+- New field `ResumeToken` in struct `WorkloadNetworksClientBeginCreateDNSZoneOptions`
+- New anonymous field `WorkloadNetworkDhcpList` in struct `WorkloadNetworksClientListDhcpResponse`
+- New field `ResumeToken` in struct `DatastoresClientBeginDeleteOptions`
+- New anonymous field `WorkloadNetworkSegment` in struct `WorkloadNetworksClientGetSegmentResponse`
+- New anonymous field `WorkloadNetworkDNSZonesList` in struct `WorkloadNetworksClientListDNSZonesResponse`
+- New anonymous field `VirtualMachinesList` in struct `VirtualMachinesClientListResponse`
+- New field `ResumeToken` in struct `GlobalReachConnectionsClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `PrivateCloudsClientBeginRotateNsxtPasswordOptions`
+- New anonymous field `PrivateCloud` in struct `PrivateCloudsClientCreateOrUpdateResponse`
+- New anonymous field `WorkloadNetworkDNSService` in struct `WorkloadNetworksClientUpdateDNSServiceResponse`
+- New anonymous field `WorkloadNetworkPortMirroring` in struct `WorkloadNetworksClientUpdatePortMirroringResponse`
+- New field `ResumeToken` in struct `CloudLinksClientBeginCreateOrUpdateOptions`
+- New anonymous field `AdminCredentials` in struct `PrivateCloudsClientListAdminCredentialsResponse`
+- New anonymous field `Quota` in struct `LocationsClientCheckQuotaAvailabilityResponse`
+- New anonymous field `WorkloadNetworkVMGroup` in struct `WorkloadNetworksClientGetVMGroupResponse`
+- New field `ResumeToken` in struct `ScriptExecutionsClientBeginDeleteOptions`
+- New anonymous field `WorkloadNetworkDNSZone` in struct `WorkloadNetworksClientCreateDNSZoneResponse`
+- New anonymous field `ScriptExecution` in struct `ScriptExecutionsClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `PlacementPoliciesClientBeginUpdateOptions`
+- New field `ResumeToken` in struct `AddonsClientBeginCreateOrUpdateOptions`
+- New anonymous field `WorkloadNetworkSegmentsList` in struct `WorkloadNetworksClientListSegmentsResponse`
+- New field `ResumeToken` in struct `WorkloadNetworksClientBeginUpdatePortMirroringOptions`
+- New anonymous field `WorkloadNetworkPublicIPsList` in struct `WorkloadNetworksClientListPublicIPsResponse`
+- New anonymous field `WorkloadNetworkDNSService` in struct `WorkloadNetworksClientCreateDNSServiceResponse`
+- New anonymous field `CloudLinkList` in struct `CloudLinksClientListResponse`
+- New anonymous field `WorkloadNetworkDNSService` in struct `WorkloadNetworksClientGetDNSServiceResponse`
+- New anonymous field `Datastore` in struct `DatastoresClientGetResponse`
+- New field `ResumeToken` in struct `PrivateCloudsClientBeginCreateOrUpdateOptions`
+- New anonymous field `HcxEnterpriseSite` in struct `HcxEnterpriseSitesClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `ClustersClientBeginDeleteOptions`
+- New anonymous field `WorkloadNetworkSegment` in struct `WorkloadNetworksClientCreateSegmentsResponse`
+- New anonymous field `PlacementPolicy` in struct `PlacementPoliciesClientUpdateResponse`
+- New field `ResumeToken` in struct `PrivateCloudsClientBeginDeleteOptions`
+- New anonymous field `PrivateCloudList` in struct `PrivateCloudsClientListResponse`
+- New anonymous field `CloudLink` in struct `CloudLinksClientGetResponse`
+- New field `ResumeToken` in struct `WorkloadNetworksClientBeginDeleteDNSZoneOptions`
+- New anonymous field `OperationList` in struct `OperationsClientListResponse`
+- New field `ResumeToken` in struct `PrivateCloudsClientBeginUpdateOptions`
+- New anonymous field `WorkloadNetworkSegment` in struct `WorkloadNetworksClientUpdateSegmentsResponse`
+- New anonymous field `WorkloadNetworkVMGroup` in struct `WorkloadNetworksClientUpdateVMGroupResponse`
+- New anonymous field `ScriptCmdletsList` in struct `ScriptCmdletsClientListResponse`
+- New anonymous field `WorkloadNetworkPortMirroringList` in struct `WorkloadNetworksClientListPortMirroringResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type InvitationsClient struct {
 // subscriptionID - The subscription identifier
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewInvitationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *InvitationsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewInvitationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*InvitationsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &InvitationsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Create - Create an invitation
@@ -108,7 +113,7 @@ func (client *InvitationsClient) createCreateRequest(ctx context.Context, resour
 
 // createHandleResponse handles the Create response.
 func (client *InvitationsClient) createHandleResponse(resp *http.Response) (InvitationsClientCreateResponse, error) {
-	result := InvitationsClientCreateResponse{RawResponse: resp}
+	result := InvitationsClientCreateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Invitation); err != nil {
 		return InvitationsClientCreateResponse{}, err
 	}
@@ -134,7 +139,7 @@ func (client *InvitationsClient) Delete(ctx context.Context, resourceGroupName s
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return InvitationsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return InvitationsClientDeleteResponse{RawResponse: resp}, nil
+	return InvitationsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -229,7 +234,7 @@ func (client *InvitationsClient) getCreateRequest(ctx context.Context, resourceG
 
 // getHandleResponse handles the Get response.
 func (client *InvitationsClient) getHandleResponse(resp *http.Response) (InvitationsClientGetResponse, error) {
-	result := InvitationsClientGetResponse{RawResponse: resp}
+	result := InvitationsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Invitation); err != nil {
 		return InvitationsClientGetResponse{}, err
 	}
@@ -242,16 +247,32 @@ func (client *InvitationsClient) getHandleResponse(resp *http.Response) (Invitat
 // accountName - The name of the share account.
 // shareName - The name of the share.
 // options - InvitationsClientListByShareOptions contains the optional parameters for the InvitationsClient.ListByShare method.
-func (client *InvitationsClient) ListByShare(resourceGroupName string, accountName string, shareName string, options *InvitationsClientListByShareOptions) *InvitationsClientListBySharePager {
-	return &InvitationsClientListBySharePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByShareCreateRequest(ctx, resourceGroupName, accountName, shareName, options)
+func (client *InvitationsClient) ListByShare(resourceGroupName string, accountName string, shareName string, options *InvitationsClientListByShareOptions) *runtime.Pager[InvitationsClientListByShareResponse] {
+	return runtime.NewPager(runtime.PageProcessor[InvitationsClientListByShareResponse]{
+		More: func(page InvitationsClientListByShareResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp InvitationsClientListByShareResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.InvitationList.NextLink)
+		Fetcher: func(ctx context.Context, page *InvitationsClientListByShareResponse) (InvitationsClientListByShareResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByShareCreateRequest(ctx, resourceGroupName, accountName, shareName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return InvitationsClientListByShareResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return InvitationsClientListByShareResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return InvitationsClientListByShareResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByShareHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByShareCreateRequest creates the ListByShare request.
@@ -295,7 +316,7 @@ func (client *InvitationsClient) listByShareCreateRequest(ctx context.Context, r
 
 // listByShareHandleResponse handles the ListByShare response.
 func (client *InvitationsClient) listByShareHandleResponse(resp *http.Response) (InvitationsClientListByShareResponse, error) {
-	result := InvitationsClientListByShareResponse{RawResponse: resp}
+	result := InvitationsClientListByShareResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.InvitationList); err != nil {
 		return InvitationsClientListByShareResponse{}, err
 	}

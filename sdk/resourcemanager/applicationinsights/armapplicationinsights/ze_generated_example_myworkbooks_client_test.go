@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,158 +17,192 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsights/armapplicationinsights"
 )
 
-// x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-03-08/examples/MyWorkbooksList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-03-08/examples/MyWorkbooksList.json
 func ExampleMyWorkbooksClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armapplicationinsights.NewMyWorkbooksClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewMyWorkbooksClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListByResourceGroup("<resource-group-name>",
-		armapplicationinsights.CategoryType("workbook"),
+		armapplicationinsights.CategoryTypeWorkbook,
 		&armapplicationinsights.MyWorkbooksClientListByResourceGroupOptions{Tags: []string{},
 			SourceID:        nil,
 			CanFetchContent: nil,
 		})
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-03-08/examples/MyWorkbooksList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-03-08/examples/MyWorkbooksList.json
 func ExampleMyWorkbooksClient_ListBySubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armapplicationinsights.NewMyWorkbooksClient("<subscription-id>", cred, nil)
-	pager := client.ListBySubscription(armapplicationinsights.CategoryType("workbook"),
+	client, err := armapplicationinsights.NewMyWorkbooksClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
+	pager := client.ListBySubscription(armapplicationinsights.CategoryTypeWorkbook,
 		&armapplicationinsights.MyWorkbooksClientListBySubscriptionOptions{Tags: []string{},
 			CanFetchContent: nil,
 		})
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-03-08/examples/MyWorkbookGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-03-08/examples/MyWorkbookGet.json
 func ExampleMyWorkbooksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armapplicationinsights.NewMyWorkbooksClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewMyWorkbooksClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.MyWorkbooksClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-03-08/examples/MyWorkbookDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-03-08/examples/MyWorkbookDelete.json
 func ExampleMyWorkbooksClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armapplicationinsights.NewMyWorkbooksClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewMyWorkbooksClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Delete(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-03-08/examples/MyWorkbookAdd.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-03-08/examples/MyWorkbookAdd.json
 func ExampleMyWorkbooksClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armapplicationinsights.NewMyWorkbooksClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewMyWorkbooksClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.CreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		armapplicationinsights.MyWorkbook{
-			Name:     to.StringPtr("<name>"),
-			ID:       to.StringPtr("<id>"),
-			Location: to.StringPtr("<location>"),
+			Name:     to.Ptr("<name>"),
+			ID:       to.Ptr("<id>"),
+			Location: to.Ptr("<location>"),
 			Tags: map[string]*string{
-				"0": to.StringPtr("TagSample01"),
-				"1": to.StringPtr("TagSample02"),
+				"0": to.Ptr("TagSample01"),
+				"1": to.Ptr("TagSample02"),
 			},
-			Kind: armapplicationinsights.Kind("user").ToPtr(),
+			Kind: to.Ptr(armapplicationinsights.KindUser),
 			Properties: &armapplicationinsights.MyWorkbookProperties{
-				Category:       to.StringPtr("<category>"),
-				DisplayName:    to.StringPtr("<display-name>"),
-				SerializedData: to.StringPtr("<serialized-data>"),
-				SourceID:       to.StringPtr("<source-id>"),
+				Category:       to.Ptr("<category>"),
+				DisplayName:    to.Ptr("<display-name>"),
+				SerializedData: to.Ptr("<serialized-data>"),
+				SourceID:       to.Ptr("<source-id>"),
 			},
 		},
 		&armapplicationinsights.MyWorkbooksClientCreateOrUpdateOptions{SourceID: nil})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.MyWorkbooksClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-03-08/examples/MyWorkbookUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-03-08/examples/MyWorkbookUpdate.json
 func ExampleMyWorkbooksClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armapplicationinsights.NewMyWorkbooksClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewMyWorkbooksClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Update(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		armapplicationinsights.MyWorkbook{
-			Name:     to.StringPtr("<name>"),
-			Location: to.StringPtr("<location>"),
+			Name:     to.Ptr("<name>"),
+			Location: to.Ptr("<location>"),
 			Tags: map[string]*string{
-				"0": to.StringPtr("TagSample01"),
-				"1": to.StringPtr("TagSample02"),
+				"0": to.Ptr("TagSample01"),
+				"1": to.Ptr("TagSample02"),
 			},
-			Kind: armapplicationinsights.Kind("user").ToPtr(),
+			Kind: to.Ptr(armapplicationinsights.KindUser),
 			Properties: &armapplicationinsights.MyWorkbookProperties{
-				Category:       to.StringPtr("<category>"),
-				DisplayName:    to.StringPtr("<display-name>"),
-				SerializedData: to.StringPtr("<serialized-data>"),
-				SourceID:       to.StringPtr("<source-id>"),
-				Version:        to.StringPtr("<version>"),
+				Category:       to.Ptr("<category>"),
+				DisplayName:    to.Ptr("<display-name>"),
+				SerializedData: to.Ptr("<serialized-data>"),
+				SourceID:       to.Ptr("<source-id>"),
+				Version:        to.Ptr("<version>"),
 			},
 		},
 		&armapplicationinsights.MyWorkbooksClientUpdateOptions{SourceID: nil})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }

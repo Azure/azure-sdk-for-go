@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -35,20 +36,24 @@ type DscNodeConfigurationClient struct {
 // forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewDscNodeConfigurationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DscNodeConfigurationClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewDscNodeConfigurationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DscNodeConfigurationClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &DscNodeConfigurationClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Create the node configuration identified by node configuration name.
@@ -59,22 +64,16 @@ func NewDscNodeConfigurationClient(subscriptionID string, credential azcore.Toke
 // parameters - The create or update parameters for configuration.
 // options - DscNodeConfigurationClientBeginCreateOrUpdateOptions contains the optional parameters for the DscNodeConfigurationClient.BeginCreateOrUpdate
 // method.
-func (client *DscNodeConfigurationClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, automationAccountName string, nodeConfigurationName string, parameters DscNodeConfigurationCreateOrUpdateParameters, options *DscNodeConfigurationClientBeginCreateOrUpdateOptions) (DscNodeConfigurationClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, automationAccountName, nodeConfigurationName, parameters, options)
-	if err != nil {
-		return DscNodeConfigurationClientCreateOrUpdatePollerResponse{}, err
+func (client *DscNodeConfigurationClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, automationAccountName string, nodeConfigurationName string, parameters DscNodeConfigurationCreateOrUpdateParameters, options *DscNodeConfigurationClientBeginCreateOrUpdateOptions) (*armruntime.Poller[DscNodeConfigurationClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, automationAccountName, nodeConfigurationName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[DscNodeConfigurationClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[DscNodeConfigurationClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DscNodeConfigurationClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DscNodeConfigurationClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return DscNodeConfigurationClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &DscNodeConfigurationClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Create the node configuration identified by node configuration name.
@@ -143,7 +142,7 @@ func (client *DscNodeConfigurationClient) Delete(ctx context.Context, resourceGr
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return DscNodeConfigurationClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return DscNodeConfigurationClientDeleteResponse{RawResponse: resp}, nil
+	return DscNodeConfigurationClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -230,7 +229,7 @@ func (client *DscNodeConfigurationClient) getCreateRequest(ctx context.Context, 
 
 // getHandleResponse handles the Get response.
 func (client *DscNodeConfigurationClient) getHandleResponse(resp *http.Response) (DscNodeConfigurationClientGetResponse, error) {
-	result := DscNodeConfigurationClientGetResponse{RawResponse: resp}
+	result := DscNodeConfigurationClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DscNodeConfiguration); err != nil {
 		return DscNodeConfigurationClientGetResponse{}, err
 	}
@@ -243,16 +242,32 @@ func (client *DscNodeConfigurationClient) getHandleResponse(resp *http.Response)
 // automationAccountName - The name of the automation account.
 // options - DscNodeConfigurationClientListByAutomationAccountOptions contains the optional parameters for the DscNodeConfigurationClient.ListByAutomationAccount
 // method.
-func (client *DscNodeConfigurationClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *DscNodeConfigurationClientListByAutomationAccountOptions) *DscNodeConfigurationClientListByAutomationAccountPager {
-	return &DscNodeConfigurationClientListByAutomationAccountPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, options)
+func (client *DscNodeConfigurationClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *DscNodeConfigurationClientListByAutomationAccountOptions) *runtime.Pager[DscNodeConfigurationClientListByAutomationAccountResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DscNodeConfigurationClientListByAutomationAccountResponse]{
+		More: func(page DscNodeConfigurationClientListByAutomationAccountResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DscNodeConfigurationClientListByAutomationAccountResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DscNodeConfigurationListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *DscNodeConfigurationClientListByAutomationAccountResponse) (DscNodeConfigurationClientListByAutomationAccountResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DscNodeConfigurationClientListByAutomationAccountResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DscNodeConfigurationClientListByAutomationAccountResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DscNodeConfigurationClientListByAutomationAccountResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByAutomationAccountHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByAutomationAccountCreateRequest creates the ListByAutomationAccount request.
@@ -295,7 +310,7 @@ func (client *DscNodeConfigurationClient) listByAutomationAccountCreateRequest(c
 
 // listByAutomationAccountHandleResponse handles the ListByAutomationAccount response.
 func (client *DscNodeConfigurationClient) listByAutomationAccountHandleResponse(resp *http.Response) (DscNodeConfigurationClientListByAutomationAccountResponse, error) {
-	result := DscNodeConfigurationClientListByAutomationAccountResponse{RawResponse: resp}
+	result := DscNodeConfigurationClientListByAutomationAccountResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DscNodeConfigurationListResult); err != nil {
 		return DscNodeConfigurationClientListByAutomationAccountResponse{}, err
 	}

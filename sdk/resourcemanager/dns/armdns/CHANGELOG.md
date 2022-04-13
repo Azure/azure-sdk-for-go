@@ -1,5 +1,103 @@
 # Release History
 
+## 0.3.0 (2022-04-11)
+### Breaking Changes
+
+- Function `*ZonesClient.List` return value(s) have been changed from `(*ZonesClientListPager)` to `(*runtime.Pager[ZonesClientListResponse])`
+- Function `*ZonesClient.ListByResourceGroup` return value(s) have been changed from `(*ZonesClientListByResourceGroupPager)` to `(*runtime.Pager[ZonesClientListByResourceGroupResponse])`
+- Function `NewRecordSetsClient` return value(s) have been changed from `(*RecordSetsClient)` to `(*RecordSetsClient, error)`
+- Function `*RecordSetsClient.ListByDNSZone` return value(s) have been changed from `(*RecordSetsClientListByDNSZonePager)` to `(*runtime.Pager[RecordSetsClientListByDNSZoneResponse])`
+- Function `NewResourceReferenceClient` return value(s) have been changed from `(*ResourceReferenceClient)` to `(*ResourceReferenceClient, error)`
+- Function `*RecordSetsClient.ListAllByDNSZone` return value(s) have been changed from `(*RecordSetsClientListAllByDNSZonePager)` to `(*runtime.Pager[RecordSetsClientListAllByDNSZoneResponse])`
+- Function `NewZonesClient` return value(s) have been changed from `(*ZonesClient)` to `(*ZonesClient, error)`
+- Function `*ZonesClient.BeginDelete` return value(s) have been changed from `(ZonesClientDeletePollerResponse, error)` to `(*armruntime.Poller[ZonesClientDeleteResponse], error)`
+- Function `*RecordSetsClient.ListByType` return value(s) have been changed from `(*RecordSetsClientListByTypePager)` to `(*runtime.Pager[RecordSetsClientListByTypeResponse])`
+- Function `*RecordSetsClientListByDNSZonePager.PageResponse` has been removed
+- Function `*RecordSetsClientListByTypePager.PageResponse` has been removed
+- Function `ZoneType.ToPtr` has been removed
+- Function `*RecordSetsClientListAllByDNSZonePager.PageResponse` has been removed
+- Function `*RecordSetsClientListAllByDNSZonePager.NextPage` has been removed
+- Function `*RecordSetsClientListAllByDNSZonePager.Err` has been removed
+- Function `*ZonesClientDeletePoller.FinalResponse` has been removed
+- Function `*ZonesClientListPager.NextPage` has been removed
+- Function `*RecordSetsClientListByDNSZonePager.Err` has been removed
+- Function `*ZonesClientDeletePoller.ResumeToken` has been removed
+- Function `*ZonesClientDeletePoller.Poll` has been removed
+- Function `*ZonesClientDeletePoller.Done` has been removed
+- Function `*ZonesClientListByResourceGroupPager.NextPage` has been removed
+- Function `*ZonesClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*ZonesClientListPager.PageResponse` has been removed
+- Function `RecordType.ToPtr` has been removed
+- Function `*ZonesClientDeletePollerResponse.Resume` has been removed
+- Function `*RecordSetsClientListByTypePager.Err` has been removed
+- Function `*ZonesClientListPager.Err` has been removed
+- Function `ZonesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*RecordSetsClientListByDNSZonePager.NextPage` has been removed
+- Function `*ZonesClientListByResourceGroupPager.Err` has been removed
+- Function `*RecordSetsClientListByTypePager.NextPage` has been removed
+- Struct `RecordSetsClientCreateOrUpdateResult` has been removed
+- Struct `RecordSetsClientGetResult` has been removed
+- Struct `RecordSetsClientListAllByDNSZonePager` has been removed
+- Struct `RecordSetsClientListAllByDNSZoneResult` has been removed
+- Struct `RecordSetsClientListByDNSZonePager` has been removed
+- Struct `RecordSetsClientListByDNSZoneResult` has been removed
+- Struct `RecordSetsClientListByTypePager` has been removed
+- Struct `RecordSetsClientListByTypeResult` has been removed
+- Struct `RecordSetsClientUpdateResult` has been removed
+- Struct `ResourceReferenceClientGetByTargetResourcesResult` has been removed
+- Struct `ZonesClientCreateOrUpdateResult` has been removed
+- Struct `ZonesClientDeletePoller` has been removed
+- Struct `ZonesClientDeletePollerResponse` has been removed
+- Struct `ZonesClientGetResult` has been removed
+- Struct `ZonesClientListByResourceGroupPager` has been removed
+- Struct `ZonesClientListByResourceGroupResult` has been removed
+- Struct `ZonesClientListPager` has been removed
+- Struct `ZonesClientListResult` has been removed
+- Struct `ZonesClientUpdateResult` has been removed
+- Field `RecordSetsClientUpdateResult` of struct `RecordSetsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `RecordSetsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ZonesClientDeleteResponse` has been removed
+- Field `RecordSetsClientListByDNSZoneResult` of struct `RecordSetsClientListByDNSZoneResponse` has been removed
+- Field `RawResponse` of struct `RecordSetsClientListByDNSZoneResponse` has been removed
+- Field `RecordSetsClientGetResult` of struct `RecordSetsClientGetResponse` has been removed
+- Field `RawResponse` of struct `RecordSetsClientGetResponse` has been removed
+- Field `ZonesClientGetResult` of struct `ZonesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ZonesClientGetResponse` has been removed
+- Field `ZonesClientUpdateResult` of struct `ZonesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ZonesClientUpdateResponse` has been removed
+- Field `RecordSetsClientListAllByDNSZoneResult` of struct `RecordSetsClientListAllByDNSZoneResponse` has been removed
+- Field `RawResponse` of struct `RecordSetsClientListAllByDNSZoneResponse` has been removed
+- Field `RecordSetsClientCreateOrUpdateResult` of struct `RecordSetsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `RecordSetsClientCreateOrUpdateResponse` has been removed
+- Field `RecordSetsClientListByTypeResult` of struct `RecordSetsClientListByTypeResponse` has been removed
+- Field `RawResponse` of struct `RecordSetsClientListByTypeResponse` has been removed
+- Field `ZonesClientListResult` of struct `ZonesClientListResponse` has been removed
+- Field `RawResponse` of struct `ZonesClientListResponse` has been removed
+- Field `ResourceReferenceClientGetByTargetResourcesResult` of struct `ResourceReferenceClientGetByTargetResourcesResponse` has been removed
+- Field `RawResponse` of struct `ResourceReferenceClientGetByTargetResourcesResponse` has been removed
+- Field `ZonesClientCreateOrUpdateResult` of struct `ZonesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ZonesClientCreateOrUpdateResponse` has been removed
+- Field `ZonesClientListByResourceGroupResult` of struct `ZonesClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `ZonesClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `RecordSetsClientDeleteResponse` has been removed
+
+### Features Added
+
+- New anonymous field `RecordSet` in struct `RecordSetsClientGetResponse`
+- New anonymous field `RecordSetListResult` in struct `RecordSetsClientListAllByDNSZoneResponse`
+- New anonymous field `RecordSetListResult` in struct `RecordSetsClientListByDNSZoneResponse`
+- New anonymous field `Zone` in struct `ZonesClientGetResponse`
+- New anonymous field `ResourceReferenceResult` in struct `ResourceReferenceClientGetByTargetResourcesResponse`
+- New anonymous field `Zone` in struct `ZonesClientUpdateResponse`
+- New anonymous field `RecordSetListResult` in struct `RecordSetsClientListByTypeResponse`
+- New anonymous field `ZoneListResult` in struct `ZonesClientListByResourceGroupResponse`
+- New anonymous field `RecordSet` in struct `RecordSetsClientUpdateResponse`
+- New anonymous field `Zone` in struct `ZonesClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `ZonesClientBeginDeleteOptions`
+- New anonymous field `ZoneListResult` in struct `ZonesClientListResponse`
+- New anonymous field `RecordSet` in struct `RecordSetsClientCreateOrUpdateResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

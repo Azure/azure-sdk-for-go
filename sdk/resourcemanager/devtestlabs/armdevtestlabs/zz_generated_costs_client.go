@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type CostsClient struct {
 // subscriptionID - The subscription ID.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewCostsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CostsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewCostsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CostsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &CostsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Create or replace an existing cost.
@@ -103,7 +108,7 @@ func (client *CostsClient) createOrUpdateCreateRequest(ctx context.Context, reso
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *CostsClient) createOrUpdateHandleResponse(resp *http.Response) (CostsClientCreateOrUpdateResponse, error) {
-	result := CostsClientCreateOrUpdateResponse{RawResponse: resp}
+	result := CostsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LabCost); err != nil {
 		return CostsClientCreateOrUpdateResponse{}, err
 	}
@@ -166,7 +171,7 @@ func (client *CostsClient) getCreateRequest(ctx context.Context, resourceGroupNa
 
 // getHandleResponse handles the Get response.
 func (client *CostsClient) getHandleResponse(resp *http.Response) (CostsClientGetResponse, error) {
-	result := CostsClientGetResponse{RawResponse: resp}
+	result := CostsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LabCost); err != nil {
 		return CostsClientGetResponse{}, err
 	}

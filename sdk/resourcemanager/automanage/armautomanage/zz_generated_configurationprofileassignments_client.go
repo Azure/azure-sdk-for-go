@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ConfigurationProfileAssignmentsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewConfigurationProfileAssignmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ConfigurationProfileAssignmentsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewConfigurationProfileAssignmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConfigurationProfileAssignmentsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ConfigurationProfileAssignmentsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates an association between a VM and Automanage configuration profile
@@ -104,7 +109,7 @@ func (client *ConfigurationProfileAssignmentsClient) createOrUpdateCreateRequest
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *ConfigurationProfileAssignmentsClient) createOrUpdateHandleResponse(resp *http.Response) (ConfigurationProfileAssignmentsClientCreateOrUpdateResponse, error) {
-	result := ConfigurationProfileAssignmentsClientCreateOrUpdateResponse{RawResponse: resp}
+	result := ConfigurationProfileAssignmentsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConfigurationProfileAssignment); err != nil {
 		return ConfigurationProfileAssignmentsClientCreateOrUpdateResponse{}, err
 	}
@@ -130,7 +135,7 @@ func (client *ConfigurationProfileAssignmentsClient) Delete(ctx context.Context,
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return ConfigurationProfileAssignmentsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ConfigurationProfileAssignmentsClientDeleteResponse{RawResponse: resp}, nil
+	return ConfigurationProfileAssignmentsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -217,7 +222,7 @@ func (client *ConfigurationProfileAssignmentsClient) getCreateRequest(ctx contex
 
 // getHandleResponse handles the Get response.
 func (client *ConfigurationProfileAssignmentsClient) getHandleResponse(resp *http.Response) (ConfigurationProfileAssignmentsClientGetResponse, error) {
-	result := ConfigurationProfileAssignmentsClientGetResponse{RawResponse: resp}
+	result := ConfigurationProfileAssignmentsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConfigurationProfileAssignment); err != nil {
 		return ConfigurationProfileAssignmentsClientGetResponse{}, err
 	}
@@ -229,19 +234,26 @@ func (client *ConfigurationProfileAssignmentsClient) getHandleResponse(resp *htt
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - ConfigurationProfileAssignmentsClientListOptions contains the optional parameters for the ConfigurationProfileAssignmentsClient.List
 // method.
-func (client *ConfigurationProfileAssignmentsClient) List(ctx context.Context, resourceGroupName string, options *ConfigurationProfileAssignmentsClientListOptions) (ConfigurationProfileAssignmentsClientListResponse, error) {
-	req, err := client.listCreateRequest(ctx, resourceGroupName, options)
-	if err != nil {
-		return ConfigurationProfileAssignmentsClientListResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return ConfigurationProfileAssignmentsClientListResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ConfigurationProfileAssignmentsClientListResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listHandleResponse(resp)
+func (client *ConfigurationProfileAssignmentsClient) List(resourceGroupName string, options *ConfigurationProfileAssignmentsClientListOptions) *runtime.Pager[ConfigurationProfileAssignmentsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ConfigurationProfileAssignmentsClientListResponse]{
+		More: func(page ConfigurationProfileAssignmentsClientListResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *ConfigurationProfileAssignmentsClientListResponse) (ConfigurationProfileAssignmentsClientListResponse, error) {
+			req, err := client.listCreateRequest(ctx, resourceGroupName, options)
+			if err != nil {
+				return ConfigurationProfileAssignmentsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ConfigurationProfileAssignmentsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ConfigurationProfileAssignmentsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
+		},
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -268,7 +280,7 @@ func (client *ConfigurationProfileAssignmentsClient) listCreateRequest(ctx conte
 
 // listHandleResponse handles the List response.
 func (client *ConfigurationProfileAssignmentsClient) listHandleResponse(resp *http.Response) (ConfigurationProfileAssignmentsClientListResponse, error) {
-	result := ConfigurationProfileAssignmentsClientListResponse{RawResponse: resp}
+	result := ConfigurationProfileAssignmentsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConfigurationProfileAssignmentList); err != nil {
 		return ConfigurationProfileAssignmentsClientListResponse{}, err
 	}
@@ -279,19 +291,26 @@ func (client *ConfigurationProfileAssignmentsClient) listHandleResponse(resp *ht
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ConfigurationProfileAssignmentsClientListBySubscriptionOptions contains the optional parameters for the ConfigurationProfileAssignmentsClient.ListBySubscription
 // method.
-func (client *ConfigurationProfileAssignmentsClient) ListBySubscription(ctx context.Context, options *ConfigurationProfileAssignmentsClientListBySubscriptionOptions) (ConfigurationProfileAssignmentsClientListBySubscriptionResponse, error) {
-	req, err := client.listBySubscriptionCreateRequest(ctx, options)
-	if err != nil {
-		return ConfigurationProfileAssignmentsClientListBySubscriptionResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return ConfigurationProfileAssignmentsClientListBySubscriptionResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ConfigurationProfileAssignmentsClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listBySubscriptionHandleResponse(resp)
+func (client *ConfigurationProfileAssignmentsClient) ListBySubscription(options *ConfigurationProfileAssignmentsClientListBySubscriptionOptions) *runtime.Pager[ConfigurationProfileAssignmentsClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ConfigurationProfileAssignmentsClientListBySubscriptionResponse]{
+		More: func(page ConfigurationProfileAssignmentsClientListBySubscriptionResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *ConfigurationProfileAssignmentsClientListBySubscriptionResponse) (ConfigurationProfileAssignmentsClientListBySubscriptionResponse, error) {
+			req, err := client.listBySubscriptionCreateRequest(ctx, options)
+			if err != nil {
+				return ConfigurationProfileAssignmentsClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ConfigurationProfileAssignmentsClientListBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ConfigurationProfileAssignmentsClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionHandleResponse(resp)
+		},
+	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
@@ -314,7 +333,7 @@ func (client *ConfigurationProfileAssignmentsClient) listBySubscriptionCreateReq
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
 func (client *ConfigurationProfileAssignmentsClient) listBySubscriptionHandleResponse(resp *http.Response) (ConfigurationProfileAssignmentsClientListBySubscriptionResponse, error) {
-	result := ConfigurationProfileAssignmentsClientListBySubscriptionResponse{RawResponse: resp}
+	result := ConfigurationProfileAssignmentsClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConfigurationProfileAssignmentList); err != nil {
 		return ConfigurationProfileAssignmentsClientListBySubscriptionResponse{}, err
 	}

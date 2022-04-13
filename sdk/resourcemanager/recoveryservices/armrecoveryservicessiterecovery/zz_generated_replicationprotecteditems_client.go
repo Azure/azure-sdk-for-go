@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -37,22 +38,26 @@ type ReplicationProtectedItemsClient struct {
 // subscriptionID - The subscription Id.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewReplicationProtectedItemsClient(resourceName string, resourceGroupName string, subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ReplicationProtectedItemsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewReplicationProtectedItemsClient(resourceName string, resourceGroupName string, subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ReplicationProtectedItemsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ReplicationProtectedItemsClient{
 		resourceName:      resourceName,
 		resourceGroupName: resourceGroupName,
 		subscriptionID:    subscriptionID,
-		host:              string(cp.Endpoint),
-		pl:                armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:              ep,
+		pl:                pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginAddDisks - Operation to add disks(s) to the replication protected item.
@@ -63,22 +68,16 @@ func NewReplicationProtectedItemsClient(resourceName string, resourceGroupName s
 // addDisksInput - Add disks input.
 // options - ReplicationProtectedItemsClientBeginAddDisksOptions contains the optional parameters for the ReplicationProtectedItemsClient.BeginAddDisks
 // method.
-func (client *ReplicationProtectedItemsClient) BeginAddDisks(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, addDisksInput AddDisksInput, options *ReplicationProtectedItemsClientBeginAddDisksOptions) (ReplicationProtectedItemsClientAddDisksPollerResponse, error) {
-	resp, err := client.addDisks(ctx, fabricName, protectionContainerName, replicatedProtectedItemName, addDisksInput, options)
-	if err != nil {
-		return ReplicationProtectedItemsClientAddDisksPollerResponse{}, err
+func (client *ReplicationProtectedItemsClient) BeginAddDisks(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, addDisksInput AddDisksInput, options *ReplicationProtectedItemsClientBeginAddDisksOptions) (*armruntime.Poller[ReplicationProtectedItemsClientAddDisksResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.addDisks(ctx, fabricName, protectionContainerName, replicatedProtectedItemName, addDisksInput, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ReplicationProtectedItemsClientAddDisksResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ReplicationProtectedItemsClientAddDisksResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ReplicationProtectedItemsClientAddDisksPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ReplicationProtectedItemsClient.AddDisks", "", resp, client.pl)
-	if err != nil {
-		return ReplicationProtectedItemsClientAddDisksPollerResponse{}, err
-	}
-	result.Poller = &ReplicationProtectedItemsClientAddDisksPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // AddDisks - Operation to add disks(s) to the replication protected item.
@@ -130,7 +129,7 @@ func (client *ReplicationProtectedItemsClient) addDisksCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, addDisksInput)
@@ -144,22 +143,16 @@ func (client *ReplicationProtectedItemsClient) addDisksCreateRequest(ctx context
 // applyRecoveryPointInput - The ApplyRecoveryPointInput.
 // options - ReplicationProtectedItemsClientBeginApplyRecoveryPointOptions contains the optional parameters for the ReplicationProtectedItemsClient.BeginApplyRecoveryPoint
 // method.
-func (client *ReplicationProtectedItemsClient) BeginApplyRecoveryPoint(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, applyRecoveryPointInput ApplyRecoveryPointInput, options *ReplicationProtectedItemsClientBeginApplyRecoveryPointOptions) (ReplicationProtectedItemsClientApplyRecoveryPointPollerResponse, error) {
-	resp, err := client.applyRecoveryPoint(ctx, fabricName, protectionContainerName, replicatedProtectedItemName, applyRecoveryPointInput, options)
-	if err != nil {
-		return ReplicationProtectedItemsClientApplyRecoveryPointPollerResponse{}, err
+func (client *ReplicationProtectedItemsClient) BeginApplyRecoveryPoint(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, applyRecoveryPointInput ApplyRecoveryPointInput, options *ReplicationProtectedItemsClientBeginApplyRecoveryPointOptions) (*armruntime.Poller[ReplicationProtectedItemsClientApplyRecoveryPointResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.applyRecoveryPoint(ctx, fabricName, protectionContainerName, replicatedProtectedItemName, applyRecoveryPointInput, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ReplicationProtectedItemsClientApplyRecoveryPointResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ReplicationProtectedItemsClientApplyRecoveryPointResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ReplicationProtectedItemsClientApplyRecoveryPointPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ReplicationProtectedItemsClient.ApplyRecoveryPoint", "", resp, client.pl)
-	if err != nil {
-		return ReplicationProtectedItemsClientApplyRecoveryPointPollerResponse{}, err
-	}
-	result.Poller = &ReplicationProtectedItemsClientApplyRecoveryPointPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // ApplyRecoveryPoint - The operation to change the recovery point of a failed over replication protected item.
@@ -211,7 +204,7 @@ func (client *ReplicationProtectedItemsClient) applyRecoveryPointCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, applyRecoveryPointInput)
@@ -225,22 +218,16 @@ func (client *ReplicationProtectedItemsClient) applyRecoveryPointCreateRequest(c
 // input - Enable Protection Input.
 // options - ReplicationProtectedItemsClientBeginCreateOptions contains the optional parameters for the ReplicationProtectedItemsClient.BeginCreate
 // method.
-func (client *ReplicationProtectedItemsClient) BeginCreate(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, input EnableProtectionInput, options *ReplicationProtectedItemsClientBeginCreateOptions) (ReplicationProtectedItemsClientCreatePollerResponse, error) {
-	resp, err := client.create(ctx, fabricName, protectionContainerName, replicatedProtectedItemName, input, options)
-	if err != nil {
-		return ReplicationProtectedItemsClientCreatePollerResponse{}, err
+func (client *ReplicationProtectedItemsClient) BeginCreate(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, input EnableProtectionInput, options *ReplicationProtectedItemsClientBeginCreateOptions) (*armruntime.Poller[ReplicationProtectedItemsClientCreateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.create(ctx, fabricName, protectionContainerName, replicatedProtectedItemName, input, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ReplicationProtectedItemsClientCreateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ReplicationProtectedItemsClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ReplicationProtectedItemsClientCreatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ReplicationProtectedItemsClient.Create", "", resp, client.pl)
-	if err != nil {
-		return ReplicationProtectedItemsClientCreatePollerResponse{}, err
-	}
-	result.Poller = &ReplicationProtectedItemsClientCreatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Create - The operation to create an ASR replication protected item (Enable replication).
@@ -292,7 +279,7 @@ func (client *ReplicationProtectedItemsClient) createCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, input)
@@ -306,22 +293,16 @@ func (client *ReplicationProtectedItemsClient) createCreateRequest(ctx context.C
 // disableProtectionInput - Disable protection input.
 // options - ReplicationProtectedItemsClientBeginDeleteOptions contains the optional parameters for the ReplicationProtectedItemsClient.BeginDelete
 // method.
-func (client *ReplicationProtectedItemsClient) BeginDelete(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, disableProtectionInput DisableProtectionInput, options *ReplicationProtectedItemsClientBeginDeleteOptions) (ReplicationProtectedItemsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, fabricName, protectionContainerName, replicatedProtectedItemName, disableProtectionInput, options)
-	if err != nil {
-		return ReplicationProtectedItemsClientDeletePollerResponse{}, err
+func (client *ReplicationProtectedItemsClient) BeginDelete(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, disableProtectionInput DisableProtectionInput, options *ReplicationProtectedItemsClientBeginDeleteOptions) (*armruntime.Poller[ReplicationProtectedItemsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, fabricName, protectionContainerName, replicatedProtectedItemName, disableProtectionInput, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ReplicationProtectedItemsClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ReplicationProtectedItemsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ReplicationProtectedItemsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ReplicationProtectedItemsClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return ReplicationProtectedItemsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &ReplicationProtectedItemsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - The operation to disable replication on a replication protected item. This will also remove the item.
@@ -373,7 +354,7 @@ func (client *ReplicationProtectedItemsClient) deleteCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, runtime.MarshalAsJSON(req, disableProtectionInput)
 }
@@ -385,22 +366,16 @@ func (client *ReplicationProtectedItemsClient) deleteCreateRequest(ctx context.C
 // replicatedProtectedItemName - Replication protected item name.
 // options - ReplicationProtectedItemsClientBeginFailoverCancelOptions contains the optional parameters for the ReplicationProtectedItemsClient.BeginFailoverCancel
 // method.
-func (client *ReplicationProtectedItemsClient) BeginFailoverCancel(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, options *ReplicationProtectedItemsClientBeginFailoverCancelOptions) (ReplicationProtectedItemsClientFailoverCancelPollerResponse, error) {
-	resp, err := client.failoverCancel(ctx, fabricName, protectionContainerName, replicatedProtectedItemName, options)
-	if err != nil {
-		return ReplicationProtectedItemsClientFailoverCancelPollerResponse{}, err
+func (client *ReplicationProtectedItemsClient) BeginFailoverCancel(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, options *ReplicationProtectedItemsClientBeginFailoverCancelOptions) (*armruntime.Poller[ReplicationProtectedItemsClientFailoverCancelResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.failoverCancel(ctx, fabricName, protectionContainerName, replicatedProtectedItemName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ReplicationProtectedItemsClientFailoverCancelResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ReplicationProtectedItemsClientFailoverCancelResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ReplicationProtectedItemsClientFailoverCancelPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ReplicationProtectedItemsClient.FailoverCancel", "", resp, client.pl)
-	if err != nil {
-		return ReplicationProtectedItemsClientFailoverCancelPollerResponse{}, err
-	}
-	result.Poller = &ReplicationProtectedItemsClientFailoverCancelPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // FailoverCancel - Operation to cancel the failover of the replication protected item.
@@ -452,7 +427,7 @@ func (client *ReplicationProtectedItemsClient) failoverCancelCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -465,22 +440,16 @@ func (client *ReplicationProtectedItemsClient) failoverCancelCreateRequest(ctx c
 // replicatedProtectedItemName - Replication protected item name.
 // options - ReplicationProtectedItemsClientBeginFailoverCommitOptions contains the optional parameters for the ReplicationProtectedItemsClient.BeginFailoverCommit
 // method.
-func (client *ReplicationProtectedItemsClient) BeginFailoverCommit(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, options *ReplicationProtectedItemsClientBeginFailoverCommitOptions) (ReplicationProtectedItemsClientFailoverCommitPollerResponse, error) {
-	resp, err := client.failoverCommit(ctx, fabricName, protectionContainerName, replicatedProtectedItemName, options)
-	if err != nil {
-		return ReplicationProtectedItemsClientFailoverCommitPollerResponse{}, err
+func (client *ReplicationProtectedItemsClient) BeginFailoverCommit(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, options *ReplicationProtectedItemsClientBeginFailoverCommitOptions) (*armruntime.Poller[ReplicationProtectedItemsClientFailoverCommitResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.failoverCommit(ctx, fabricName, protectionContainerName, replicatedProtectedItemName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ReplicationProtectedItemsClientFailoverCommitResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ReplicationProtectedItemsClientFailoverCommitResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ReplicationProtectedItemsClientFailoverCommitPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ReplicationProtectedItemsClient.FailoverCommit", "", resp, client.pl)
-	if err != nil {
-		return ReplicationProtectedItemsClientFailoverCommitPollerResponse{}, err
-	}
-	result.Poller = &ReplicationProtectedItemsClientFailoverCommitPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // FailoverCommit - Operation to commit the failover of the replication protected item.
@@ -532,7 +501,7 @@ func (client *ReplicationProtectedItemsClient) failoverCommitCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -592,7 +561,7 @@ func (client *ReplicationProtectedItemsClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -600,7 +569,7 @@ func (client *ReplicationProtectedItemsClient) getCreateRequest(ctx context.Cont
 
 // getHandleResponse handles the Get response.
 func (client *ReplicationProtectedItemsClient) getHandleResponse(resp *http.Response) (ReplicationProtectedItemsClientGetResponse, error) {
-	result := ReplicationProtectedItemsClientGetResponse{RawResponse: resp}
+	result := ReplicationProtectedItemsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReplicationProtectedItem); err != nil {
 		return ReplicationProtectedItemsClientGetResponse{}, err
 	}
@@ -611,16 +580,32 @@ func (client *ReplicationProtectedItemsClient) getHandleResponse(resp *http.Resp
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ReplicationProtectedItemsClientListOptions contains the optional parameters for the ReplicationProtectedItemsClient.List
 // method.
-func (client *ReplicationProtectedItemsClient) List(options *ReplicationProtectedItemsClientListOptions) *ReplicationProtectedItemsClientListPager {
-	return &ReplicationProtectedItemsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *ReplicationProtectedItemsClient) List(options *ReplicationProtectedItemsClientListOptions) *runtime.Pager[ReplicationProtectedItemsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ReplicationProtectedItemsClientListResponse]{
+		More: func(page ReplicationProtectedItemsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ReplicationProtectedItemsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ReplicationProtectedItemCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *ReplicationProtectedItemsClientListResponse) (ReplicationProtectedItemsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ReplicationProtectedItemsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ReplicationProtectedItemsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ReplicationProtectedItemsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -643,7 +628,7 @@ func (client *ReplicationProtectedItemsClient) listCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-02-01")
 	if options != nil && options.SkipToken != nil {
 		reqQP.Set("skipToken", *options.SkipToken)
 	}
@@ -657,7 +642,7 @@ func (client *ReplicationProtectedItemsClient) listCreateRequest(ctx context.Con
 
 // listHandleResponse handles the List response.
 func (client *ReplicationProtectedItemsClient) listHandleResponse(resp *http.Response) (ReplicationProtectedItemsClientListResponse, error) {
-	result := ReplicationProtectedItemsClientListResponse{RawResponse: resp}
+	result := ReplicationProtectedItemsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReplicationProtectedItemCollection); err != nil {
 		return ReplicationProtectedItemsClientListResponse{}, err
 	}
@@ -670,16 +655,32 @@ func (client *ReplicationProtectedItemsClient) listHandleResponse(resp *http.Res
 // protectionContainerName - Protection container name.
 // options - ReplicationProtectedItemsClientListByReplicationProtectionContainersOptions contains the optional parameters
 // for the ReplicationProtectedItemsClient.ListByReplicationProtectionContainers method.
-func (client *ReplicationProtectedItemsClient) ListByReplicationProtectionContainers(fabricName string, protectionContainerName string, options *ReplicationProtectedItemsClientListByReplicationProtectionContainersOptions) *ReplicationProtectedItemsClientListByReplicationProtectionContainersPager {
-	return &ReplicationProtectedItemsClientListByReplicationProtectionContainersPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByReplicationProtectionContainersCreateRequest(ctx, fabricName, protectionContainerName, options)
+func (client *ReplicationProtectedItemsClient) ListByReplicationProtectionContainers(fabricName string, protectionContainerName string, options *ReplicationProtectedItemsClientListByReplicationProtectionContainersOptions) *runtime.Pager[ReplicationProtectedItemsClientListByReplicationProtectionContainersResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ReplicationProtectedItemsClientListByReplicationProtectionContainersResponse]{
+		More: func(page ReplicationProtectedItemsClientListByReplicationProtectionContainersResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ReplicationProtectedItemsClientListByReplicationProtectionContainersResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ReplicationProtectedItemCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *ReplicationProtectedItemsClientListByReplicationProtectionContainersResponse) (ReplicationProtectedItemsClientListByReplicationProtectionContainersResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByReplicationProtectionContainersCreateRequest(ctx, fabricName, protectionContainerName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ReplicationProtectedItemsClientListByReplicationProtectionContainersResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ReplicationProtectedItemsClientListByReplicationProtectionContainersResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ReplicationProtectedItemsClientListByReplicationProtectionContainersResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByReplicationProtectionContainersHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByReplicationProtectionContainersCreateRequest creates the ListByReplicationProtectionContainers request.
@@ -710,7 +711,7 @@ func (client *ReplicationProtectedItemsClient) listByReplicationProtectionContai
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -718,7 +719,7 @@ func (client *ReplicationProtectedItemsClient) listByReplicationProtectionContai
 
 // listByReplicationProtectionContainersHandleResponse handles the ListByReplicationProtectionContainers response.
 func (client *ReplicationProtectedItemsClient) listByReplicationProtectionContainersHandleResponse(resp *http.Response) (ReplicationProtectedItemsClientListByReplicationProtectionContainersResponse, error) {
-	result := ReplicationProtectedItemsClientListByReplicationProtectionContainersResponse{RawResponse: resp}
+	result := ReplicationProtectedItemsClientListByReplicationProtectionContainersResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReplicationProtectedItemCollection); err != nil {
 		return ReplicationProtectedItemsClientListByReplicationProtectionContainersResponse{}, err
 	}
@@ -733,22 +734,16 @@ func (client *ReplicationProtectedItemsClient) listByReplicationProtectionContai
 // failoverInput - Planned failover input.
 // options - ReplicationProtectedItemsClientBeginPlannedFailoverOptions contains the optional parameters for the ReplicationProtectedItemsClient.BeginPlannedFailover
 // method.
-func (client *ReplicationProtectedItemsClient) BeginPlannedFailover(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, failoverInput PlannedFailoverInput, options *ReplicationProtectedItemsClientBeginPlannedFailoverOptions) (ReplicationProtectedItemsClientPlannedFailoverPollerResponse, error) {
-	resp, err := client.plannedFailover(ctx, fabricName, protectionContainerName, replicatedProtectedItemName, failoverInput, options)
-	if err != nil {
-		return ReplicationProtectedItemsClientPlannedFailoverPollerResponse{}, err
+func (client *ReplicationProtectedItemsClient) BeginPlannedFailover(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, failoverInput PlannedFailoverInput, options *ReplicationProtectedItemsClientBeginPlannedFailoverOptions) (*armruntime.Poller[ReplicationProtectedItemsClientPlannedFailoverResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.plannedFailover(ctx, fabricName, protectionContainerName, replicatedProtectedItemName, failoverInput, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ReplicationProtectedItemsClientPlannedFailoverResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ReplicationProtectedItemsClientPlannedFailoverResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ReplicationProtectedItemsClientPlannedFailoverPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ReplicationProtectedItemsClient.PlannedFailover", "", resp, client.pl)
-	if err != nil {
-		return ReplicationProtectedItemsClientPlannedFailoverPollerResponse{}, err
-	}
-	result.Poller = &ReplicationProtectedItemsClientPlannedFailoverPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // PlannedFailover - Operation to initiate a planned failover of the replication protected item.
@@ -800,7 +795,7 @@ func (client *ReplicationProtectedItemsClient) plannedFailoverCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, failoverInput)
@@ -815,22 +810,16 @@ func (client *ReplicationProtectedItemsClient) plannedFailoverCreateRequest(ctx 
 // replicatedProtectedItemName - Replication protected item name.
 // options - ReplicationProtectedItemsClientBeginPurgeOptions contains the optional parameters for the ReplicationProtectedItemsClient.BeginPurge
 // method.
-func (client *ReplicationProtectedItemsClient) BeginPurge(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, options *ReplicationProtectedItemsClientBeginPurgeOptions) (ReplicationProtectedItemsClientPurgePollerResponse, error) {
-	resp, err := client.purge(ctx, fabricName, protectionContainerName, replicatedProtectedItemName, options)
-	if err != nil {
-		return ReplicationProtectedItemsClientPurgePollerResponse{}, err
+func (client *ReplicationProtectedItemsClient) BeginPurge(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, options *ReplicationProtectedItemsClientBeginPurgeOptions) (*armruntime.Poller[ReplicationProtectedItemsClientPurgeResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.purge(ctx, fabricName, protectionContainerName, replicatedProtectedItemName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ReplicationProtectedItemsClientPurgeResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ReplicationProtectedItemsClientPurgeResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ReplicationProtectedItemsClientPurgePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ReplicationProtectedItemsClient.Purge", "", resp, client.pl)
-	if err != nil {
-		return ReplicationProtectedItemsClientPurgePollerResponse{}, err
-	}
-	result.Poller = &ReplicationProtectedItemsClientPurgePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Purge - The operation to delete or purge a replication protected item. This operation will force delete the replication
@@ -884,7 +873,7 @@ func (client *ReplicationProtectedItemsClient) purgeCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -897,22 +886,16 @@ func (client *ReplicationProtectedItemsClient) purgeCreateRequest(ctx context.Co
 // removeDisksInput - Remove disks input.
 // options - ReplicationProtectedItemsClientBeginRemoveDisksOptions contains the optional parameters for the ReplicationProtectedItemsClient.BeginRemoveDisks
 // method.
-func (client *ReplicationProtectedItemsClient) BeginRemoveDisks(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, removeDisksInput RemoveDisksInput, options *ReplicationProtectedItemsClientBeginRemoveDisksOptions) (ReplicationProtectedItemsClientRemoveDisksPollerResponse, error) {
-	resp, err := client.removeDisks(ctx, fabricName, protectionContainerName, replicatedProtectedItemName, removeDisksInput, options)
-	if err != nil {
-		return ReplicationProtectedItemsClientRemoveDisksPollerResponse{}, err
+func (client *ReplicationProtectedItemsClient) BeginRemoveDisks(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, removeDisksInput RemoveDisksInput, options *ReplicationProtectedItemsClientBeginRemoveDisksOptions) (*armruntime.Poller[ReplicationProtectedItemsClientRemoveDisksResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.removeDisks(ctx, fabricName, protectionContainerName, replicatedProtectedItemName, removeDisksInput, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ReplicationProtectedItemsClientRemoveDisksResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ReplicationProtectedItemsClientRemoveDisksResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ReplicationProtectedItemsClientRemoveDisksPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ReplicationProtectedItemsClient.RemoveDisks", "", resp, client.pl)
-	if err != nil {
-		return ReplicationProtectedItemsClientRemoveDisksPollerResponse{}, err
-	}
-	result.Poller = &ReplicationProtectedItemsClientRemoveDisksPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // RemoveDisks - Operation to remove disk(s) from the replication protected item.
@@ -964,7 +947,7 @@ func (client *ReplicationProtectedItemsClient) removeDisksCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, removeDisksInput)
@@ -978,22 +961,16 @@ func (client *ReplicationProtectedItemsClient) removeDisksCreateRequest(ctx cont
 // replicatedProtectedItemName - The name of the replication protected item.
 // options - ReplicationProtectedItemsClientBeginRepairReplicationOptions contains the optional parameters for the ReplicationProtectedItemsClient.BeginRepairReplication
 // method.
-func (client *ReplicationProtectedItemsClient) BeginRepairReplication(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, options *ReplicationProtectedItemsClientBeginRepairReplicationOptions) (ReplicationProtectedItemsClientRepairReplicationPollerResponse, error) {
-	resp, err := client.repairReplication(ctx, fabricName, protectionContainerName, replicatedProtectedItemName, options)
-	if err != nil {
-		return ReplicationProtectedItemsClientRepairReplicationPollerResponse{}, err
+func (client *ReplicationProtectedItemsClient) BeginRepairReplication(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, options *ReplicationProtectedItemsClientBeginRepairReplicationOptions) (*armruntime.Poller[ReplicationProtectedItemsClientRepairReplicationResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.repairReplication(ctx, fabricName, protectionContainerName, replicatedProtectedItemName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ReplicationProtectedItemsClientRepairReplicationResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ReplicationProtectedItemsClientRepairReplicationResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ReplicationProtectedItemsClientRepairReplicationPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ReplicationProtectedItemsClient.RepairReplication", "", resp, client.pl)
-	if err != nil {
-		return ReplicationProtectedItemsClientRepairReplicationPollerResponse{}, err
-	}
-	result.Poller = &ReplicationProtectedItemsClientRepairReplicationPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // RepairReplication - The operation to start resynchronize/repair replication for a replication protected item requiring
@@ -1046,7 +1023,7 @@ func (client *ReplicationProtectedItemsClient) repairReplicationCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -1060,22 +1037,16 @@ func (client *ReplicationProtectedItemsClient) repairReplicationCreateRequest(ct
 // reprotectInput - Reverse replication input.
 // options - ReplicationProtectedItemsClientBeginReprotectOptions contains the optional parameters for the ReplicationProtectedItemsClient.BeginReprotect
 // method.
-func (client *ReplicationProtectedItemsClient) BeginReprotect(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, reprotectInput ReverseReplicationInput, options *ReplicationProtectedItemsClientBeginReprotectOptions) (ReplicationProtectedItemsClientReprotectPollerResponse, error) {
-	resp, err := client.reprotect(ctx, fabricName, protectionContainerName, replicatedProtectedItemName, reprotectInput, options)
-	if err != nil {
-		return ReplicationProtectedItemsClientReprotectPollerResponse{}, err
+func (client *ReplicationProtectedItemsClient) BeginReprotect(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, reprotectInput ReverseReplicationInput, options *ReplicationProtectedItemsClientBeginReprotectOptions) (*armruntime.Poller[ReplicationProtectedItemsClientReprotectResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.reprotect(ctx, fabricName, protectionContainerName, replicatedProtectedItemName, reprotectInput, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ReplicationProtectedItemsClientReprotectResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ReplicationProtectedItemsClientReprotectResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ReplicationProtectedItemsClientReprotectPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ReplicationProtectedItemsClient.Reprotect", "", resp, client.pl)
-	if err != nil {
-		return ReplicationProtectedItemsClientReprotectPollerResponse{}, err
-	}
-	result.Poller = &ReplicationProtectedItemsClientReprotectPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Reprotect - Operation to reprotect or reverse replicate a failed over replication protected item.
@@ -1127,7 +1098,7 @@ func (client *ReplicationProtectedItemsClient) reprotectCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, reprotectInput)
@@ -1141,22 +1112,16 @@ func (client *ReplicationProtectedItemsClient) reprotectCreateRequest(ctx contex
 // resolveHealthInput - Health issue input object.
 // options - ReplicationProtectedItemsClientBeginResolveHealthErrorsOptions contains the optional parameters for the ReplicationProtectedItemsClient.BeginResolveHealthErrors
 // method.
-func (client *ReplicationProtectedItemsClient) BeginResolveHealthErrors(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, resolveHealthInput ResolveHealthInput, options *ReplicationProtectedItemsClientBeginResolveHealthErrorsOptions) (ReplicationProtectedItemsClientResolveHealthErrorsPollerResponse, error) {
-	resp, err := client.resolveHealthErrors(ctx, fabricName, protectionContainerName, replicatedProtectedItemName, resolveHealthInput, options)
-	if err != nil {
-		return ReplicationProtectedItemsClientResolveHealthErrorsPollerResponse{}, err
+func (client *ReplicationProtectedItemsClient) BeginResolveHealthErrors(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, resolveHealthInput ResolveHealthInput, options *ReplicationProtectedItemsClientBeginResolveHealthErrorsOptions) (*armruntime.Poller[ReplicationProtectedItemsClientResolveHealthErrorsResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.resolveHealthErrors(ctx, fabricName, protectionContainerName, replicatedProtectedItemName, resolveHealthInput, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ReplicationProtectedItemsClientResolveHealthErrorsResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ReplicationProtectedItemsClientResolveHealthErrorsResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ReplicationProtectedItemsClientResolveHealthErrorsPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ReplicationProtectedItemsClient.ResolveHealthErrors", "", resp, client.pl)
-	if err != nil {
-		return ReplicationProtectedItemsClientResolveHealthErrorsPollerResponse{}, err
-	}
-	result.Poller = &ReplicationProtectedItemsClientResolveHealthErrorsPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // ResolveHealthErrors - Operation to resolve health issues of the replication protected item.
@@ -1208,7 +1173,7 @@ func (client *ReplicationProtectedItemsClient) resolveHealthErrorsCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, resolveHealthInput)
@@ -1222,22 +1187,18 @@ func (client *ReplicationProtectedItemsClient) resolveHealthErrorsCreateRequest(
 // switchProviderInput - Switch provider input.
 // options - ReplicationProtectedItemsClientBeginSwitchProviderOptions contains the optional parameters for the ReplicationProtectedItemsClient.BeginSwitchProvider
 // method.
-func (client *ReplicationProtectedItemsClient) BeginSwitchProvider(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, switchProviderInput SwitchProviderInput, options *ReplicationProtectedItemsClientBeginSwitchProviderOptions) (ReplicationProtectedItemsClientSwitchProviderPollerResponse, error) {
-	resp, err := client.switchProvider(ctx, fabricName, protectionContainerName, replicatedProtectedItemName, switchProviderInput, options)
-	if err != nil {
-		return ReplicationProtectedItemsClientSwitchProviderPollerResponse{}, err
+func (client *ReplicationProtectedItemsClient) BeginSwitchProvider(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, switchProviderInput SwitchProviderInput, options *ReplicationProtectedItemsClientBeginSwitchProviderOptions) (*armruntime.Poller[ReplicationProtectedItemsClientSwitchProviderResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.switchProvider(ctx, fabricName, protectionContainerName, replicatedProtectedItemName, switchProviderInput, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ReplicationProtectedItemsClientSwitchProviderResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[ReplicationProtectedItemsClientSwitchProviderResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ReplicationProtectedItemsClientSwitchProviderPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ReplicationProtectedItemsClient.SwitchProvider", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return ReplicationProtectedItemsClientSwitchProviderPollerResponse{}, err
-	}
-	result.Poller = &ReplicationProtectedItemsClientSwitchProviderPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // SwitchProvider - Operation to initiate a switch provider of the replication protected item.
@@ -1289,7 +1250,7 @@ func (client *ReplicationProtectedItemsClient) switchProviderCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, switchProviderInput)
@@ -1303,22 +1264,16 @@ func (client *ReplicationProtectedItemsClient) switchProviderCreateRequest(ctx c
 // testfailoverInput - Test failover input.
 // options - ReplicationProtectedItemsClientBeginTestFailoverOptions contains the optional parameters for the ReplicationProtectedItemsClient.BeginTestFailover
 // method.
-func (client *ReplicationProtectedItemsClient) BeginTestFailover(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, testfailoverInput TestFailoverInput, options *ReplicationProtectedItemsClientBeginTestFailoverOptions) (ReplicationProtectedItemsClientTestFailoverPollerResponse, error) {
-	resp, err := client.testFailover(ctx, fabricName, protectionContainerName, replicatedProtectedItemName, testfailoverInput, options)
-	if err != nil {
-		return ReplicationProtectedItemsClientTestFailoverPollerResponse{}, err
+func (client *ReplicationProtectedItemsClient) BeginTestFailover(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, testfailoverInput TestFailoverInput, options *ReplicationProtectedItemsClientBeginTestFailoverOptions) (*armruntime.Poller[ReplicationProtectedItemsClientTestFailoverResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.testFailover(ctx, fabricName, protectionContainerName, replicatedProtectedItemName, testfailoverInput, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ReplicationProtectedItemsClientTestFailoverResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ReplicationProtectedItemsClientTestFailoverResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ReplicationProtectedItemsClientTestFailoverPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ReplicationProtectedItemsClient.TestFailover", "", resp, client.pl)
-	if err != nil {
-		return ReplicationProtectedItemsClientTestFailoverPollerResponse{}, err
-	}
-	result.Poller = &ReplicationProtectedItemsClientTestFailoverPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // TestFailover - Operation to perform a test failover of the replication protected item.
@@ -1370,7 +1325,7 @@ func (client *ReplicationProtectedItemsClient) testFailoverCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, testfailoverInput)
@@ -1384,22 +1339,16 @@ func (client *ReplicationProtectedItemsClient) testFailoverCreateRequest(ctx con
 // cleanupInput - Test failover cleanup input.
 // options - ReplicationProtectedItemsClientBeginTestFailoverCleanupOptions contains the optional parameters for the ReplicationProtectedItemsClient.BeginTestFailoverCleanup
 // method.
-func (client *ReplicationProtectedItemsClient) BeginTestFailoverCleanup(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, cleanupInput TestFailoverCleanupInput, options *ReplicationProtectedItemsClientBeginTestFailoverCleanupOptions) (ReplicationProtectedItemsClientTestFailoverCleanupPollerResponse, error) {
-	resp, err := client.testFailoverCleanup(ctx, fabricName, protectionContainerName, replicatedProtectedItemName, cleanupInput, options)
-	if err != nil {
-		return ReplicationProtectedItemsClientTestFailoverCleanupPollerResponse{}, err
+func (client *ReplicationProtectedItemsClient) BeginTestFailoverCleanup(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, cleanupInput TestFailoverCleanupInput, options *ReplicationProtectedItemsClientBeginTestFailoverCleanupOptions) (*armruntime.Poller[ReplicationProtectedItemsClientTestFailoverCleanupResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.testFailoverCleanup(ctx, fabricName, protectionContainerName, replicatedProtectedItemName, cleanupInput, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ReplicationProtectedItemsClientTestFailoverCleanupResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ReplicationProtectedItemsClientTestFailoverCleanupResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ReplicationProtectedItemsClientTestFailoverCleanupPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ReplicationProtectedItemsClient.TestFailoverCleanup", "", resp, client.pl)
-	if err != nil {
-		return ReplicationProtectedItemsClientTestFailoverCleanupPollerResponse{}, err
-	}
-	result.Poller = &ReplicationProtectedItemsClientTestFailoverCleanupPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // TestFailoverCleanup - Operation to clean up the test failover of a replication protected item.
@@ -1451,7 +1400,7 @@ func (client *ReplicationProtectedItemsClient) testFailoverCleanupCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, cleanupInput)
@@ -1465,22 +1414,16 @@ func (client *ReplicationProtectedItemsClient) testFailoverCleanupCreateRequest(
 // failoverInput - Failover input.
 // options - ReplicationProtectedItemsClientBeginUnplannedFailoverOptions contains the optional parameters for the ReplicationProtectedItemsClient.BeginUnplannedFailover
 // method.
-func (client *ReplicationProtectedItemsClient) BeginUnplannedFailover(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, failoverInput UnplannedFailoverInput, options *ReplicationProtectedItemsClientBeginUnplannedFailoverOptions) (ReplicationProtectedItemsClientUnplannedFailoverPollerResponse, error) {
-	resp, err := client.unplannedFailover(ctx, fabricName, protectionContainerName, replicatedProtectedItemName, failoverInput, options)
-	if err != nil {
-		return ReplicationProtectedItemsClientUnplannedFailoverPollerResponse{}, err
+func (client *ReplicationProtectedItemsClient) BeginUnplannedFailover(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, failoverInput UnplannedFailoverInput, options *ReplicationProtectedItemsClientBeginUnplannedFailoverOptions) (*armruntime.Poller[ReplicationProtectedItemsClientUnplannedFailoverResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.unplannedFailover(ctx, fabricName, protectionContainerName, replicatedProtectedItemName, failoverInput, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ReplicationProtectedItemsClientUnplannedFailoverResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ReplicationProtectedItemsClientUnplannedFailoverResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ReplicationProtectedItemsClientUnplannedFailoverPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ReplicationProtectedItemsClient.UnplannedFailover", "", resp, client.pl)
-	if err != nil {
-		return ReplicationProtectedItemsClientUnplannedFailoverPollerResponse{}, err
-	}
-	result.Poller = &ReplicationProtectedItemsClientUnplannedFailoverPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // UnplannedFailover - Operation to initiate a failover of the replication protected item.
@@ -1532,7 +1475,7 @@ func (client *ReplicationProtectedItemsClient) unplannedFailoverCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, failoverInput)
@@ -1546,22 +1489,16 @@ func (client *ReplicationProtectedItemsClient) unplannedFailoverCreateRequest(ct
 // updateProtectionInput - Update protection input.
 // options - ReplicationProtectedItemsClientBeginUpdateOptions contains the optional parameters for the ReplicationProtectedItemsClient.BeginUpdate
 // method.
-func (client *ReplicationProtectedItemsClient) BeginUpdate(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, updateProtectionInput UpdateReplicationProtectedItemInput, options *ReplicationProtectedItemsClientBeginUpdateOptions) (ReplicationProtectedItemsClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, fabricName, protectionContainerName, replicatedProtectedItemName, updateProtectionInput, options)
-	if err != nil {
-		return ReplicationProtectedItemsClientUpdatePollerResponse{}, err
+func (client *ReplicationProtectedItemsClient) BeginUpdate(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, updateProtectionInput UpdateReplicationProtectedItemInput, options *ReplicationProtectedItemsClientBeginUpdateOptions) (*armruntime.Poller[ReplicationProtectedItemsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, fabricName, protectionContainerName, replicatedProtectedItemName, updateProtectionInput, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ReplicationProtectedItemsClientUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ReplicationProtectedItemsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ReplicationProtectedItemsClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ReplicationProtectedItemsClient.Update", "", resp, client.pl)
-	if err != nil {
-		return ReplicationProtectedItemsClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &ReplicationProtectedItemsClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - The operation to update the recovery settings of an ASR replication protected item.
@@ -1613,7 +1550,7 @@ func (client *ReplicationProtectedItemsClient) updateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, updateProtectionInput)
@@ -1627,22 +1564,16 @@ func (client *ReplicationProtectedItemsClient) updateCreateRequest(ctx context.C
 // applianceUpdateInput - Appliance update protection input.
 // options - ReplicationProtectedItemsClientBeginUpdateApplianceOptions contains the optional parameters for the ReplicationProtectedItemsClient.BeginUpdateAppliance
 // method.
-func (client *ReplicationProtectedItemsClient) BeginUpdateAppliance(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, applianceUpdateInput UpdateApplianceForReplicationProtectedItemInput, options *ReplicationProtectedItemsClientBeginUpdateApplianceOptions) (ReplicationProtectedItemsClientUpdateAppliancePollerResponse, error) {
-	resp, err := client.updateAppliance(ctx, fabricName, protectionContainerName, replicatedProtectedItemName, applianceUpdateInput, options)
-	if err != nil {
-		return ReplicationProtectedItemsClientUpdateAppliancePollerResponse{}, err
+func (client *ReplicationProtectedItemsClient) BeginUpdateAppliance(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, applianceUpdateInput UpdateApplianceForReplicationProtectedItemInput, options *ReplicationProtectedItemsClientBeginUpdateApplianceOptions) (*armruntime.Poller[ReplicationProtectedItemsClientUpdateApplianceResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.updateAppliance(ctx, fabricName, protectionContainerName, replicatedProtectedItemName, applianceUpdateInput, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ReplicationProtectedItemsClientUpdateApplianceResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ReplicationProtectedItemsClientUpdateApplianceResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ReplicationProtectedItemsClientUpdateAppliancePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ReplicationProtectedItemsClient.UpdateAppliance", "", resp, client.pl)
-	if err != nil {
-		return ReplicationProtectedItemsClientUpdateAppliancePollerResponse{}, err
-	}
-	result.Poller = &ReplicationProtectedItemsClientUpdateAppliancePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // UpdateAppliance - The operation to update appliance of an ASR replication protected item.
@@ -1694,7 +1625,7 @@ func (client *ReplicationProtectedItemsClient) updateApplianceCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, applianceUpdateInput)
@@ -1709,22 +1640,16 @@ func (client *ReplicationProtectedItemsClient) updateApplianceCreateRequest(ctx 
 // updateMobilityServiceRequest - Request to update the mobility service on the protected item.
 // options - ReplicationProtectedItemsClientBeginUpdateMobilityServiceOptions contains the optional parameters for the ReplicationProtectedItemsClient.BeginUpdateMobilityService
 // method.
-func (client *ReplicationProtectedItemsClient) BeginUpdateMobilityService(ctx context.Context, fabricName string, protectionContainerName string, replicationProtectedItemName string, updateMobilityServiceRequest UpdateMobilityServiceRequest, options *ReplicationProtectedItemsClientBeginUpdateMobilityServiceOptions) (ReplicationProtectedItemsClientUpdateMobilityServicePollerResponse, error) {
-	resp, err := client.updateMobilityService(ctx, fabricName, protectionContainerName, replicationProtectedItemName, updateMobilityServiceRequest, options)
-	if err != nil {
-		return ReplicationProtectedItemsClientUpdateMobilityServicePollerResponse{}, err
+func (client *ReplicationProtectedItemsClient) BeginUpdateMobilityService(ctx context.Context, fabricName string, protectionContainerName string, replicationProtectedItemName string, updateMobilityServiceRequest UpdateMobilityServiceRequest, options *ReplicationProtectedItemsClientBeginUpdateMobilityServiceOptions) (*armruntime.Poller[ReplicationProtectedItemsClientUpdateMobilityServiceResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.updateMobilityService(ctx, fabricName, protectionContainerName, replicationProtectedItemName, updateMobilityServiceRequest, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ReplicationProtectedItemsClientUpdateMobilityServiceResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ReplicationProtectedItemsClientUpdateMobilityServiceResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ReplicationProtectedItemsClientUpdateMobilityServicePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ReplicationProtectedItemsClient.UpdateMobilityService", "", resp, client.pl)
-	if err != nil {
-		return ReplicationProtectedItemsClientUpdateMobilityServicePollerResponse{}, err
-	}
-	result.Poller = &ReplicationProtectedItemsClientUpdateMobilityServicePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // UpdateMobilityService - The operation to update(push update) the installed mobility service software on a replication protected
@@ -1777,7 +1702,7 @@ func (client *ReplicationProtectedItemsClient) updateMobilityServiceCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, updateMobilityServiceRequest)

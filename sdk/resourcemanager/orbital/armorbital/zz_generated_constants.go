@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armorbital
 
 const (
 	moduleName    = "armorbital"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -25,11 +25,6 @@ func PossibleActionTypeValues() []ActionType {
 	return []ActionType{
 		ActionTypeInternal,
 	}
-}
-
-// ToPtr returns a *ActionType pointing to the current value.
-func (c ActionType) ToPtr() *ActionType {
-	return &c
 }
 
 // AuthorizationStatus - Authorization status of spacecraft.
@@ -50,11 +45,6 @@ func PossibleAuthorizationStatusValues() []AuthorizationStatus {
 	}
 }
 
-// ToPtr returns a *AuthorizationStatus pointing to the current value.
-func (c AuthorizationStatus) ToPtr() *AuthorizationStatus {
-	return &c
-}
-
 // AutoTrackingConfiguration - Auto track configuration.
 type AutoTrackingConfiguration string
 
@@ -73,11 +63,6 @@ func PossibleAutoTrackingConfigurationValues() []AutoTrackingConfiguration {
 	}
 }
 
-// ToPtr returns a *AutoTrackingConfiguration pointing to the current value.
-func (c AutoTrackingConfiguration) ToPtr() *AutoTrackingConfiguration {
-	return &c
-}
-
 // Capability - Capability of the Ground Station.
 type Capability string
 
@@ -94,11 +79,6 @@ func PossibleCapabilityValues() []Capability {
 	}
 }
 
-// ToPtr returns a *Capability pointing to the current value.
-func (c Capability) ToPtr() *Capability {
-	return &c
-}
-
 type CapabilityType string
 
 const (
@@ -112,11 +92,6 @@ func PossibleCapabilityTypeValues() []CapabilityType {
 		CapabilityTypeCommunication,
 		CapabilityTypeEarthObservation,
 	}
-}
-
-// ToPtr returns a *CapabilityType pointing to the current value.
-func (c CapabilityType) ToPtr() *CapabilityType {
-	return &c
 }
 
 // CreatedByType - The type of identity that created the resource.
@@ -139,11 +114,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
-}
-
 // Direction - Direction (uplink or downlink)
 type Direction string
 
@@ -158,11 +128,6 @@ func PossibleDirectionValues() []Direction {
 		DirectionDownlink,
 		DirectionUplink,
 	}
-}
-
-// ToPtr returns a *Direction pointing to the current value.
-func (c Direction) ToPtr() *Direction {
-	return &c
 }
 
 // Origin - The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
@@ -182,11 +147,6 @@ func PossibleOriginValues() []Origin {
 		OriginUser,
 		OriginUserSystem,
 	}
-}
-
-// ToPtr returns a *Origin pointing to the current value.
-func (c Origin) ToPtr() *Origin {
-	return &c
 }
 
 // Polarization - polarization. eg (RHCP, LHCP)
@@ -211,11 +171,6 @@ func PossiblePolarizationValues() []Polarization {
 	}
 }
 
-// ToPtr returns a *Polarization pointing to the current value.
-func (c Polarization) ToPtr() *Polarization {
-	return &c
-}
-
 // Protocol - Protocol either UDP or TCP.
 type Protocol string
 
@@ -230,11 +185,6 @@ func PossibleProtocolValues() []Protocol {
 		ProtocolTCP,
 		ProtocolUDP,
 	}
-}
-
-// ToPtr returns a *Protocol pointing to the current value.
-func (c Protocol) ToPtr() *Protocol {
-	return &c
 }
 
 // Status - Status of a contact.
@@ -257,9 +207,4 @@ func PossibleStatusValues() []Status {
 		StatusFailed,
 		StatusProviderCancelled,
 	}
-}
-
-// ToPtr returns a *Status pointing to the current value.
-func (c Status) ToPtr() *Status {
-	return &c
 }

@@ -1,5 +1,611 @@
 # Release History
 
+## 0.4.0 (2022-04-11)
+### Breaking Changes
+
+- Function `NewDatasetsClient` return value(s) have been changed from `(*DatasetsClient)` to `(*DatasetsClient, error)`
+- Function `*PrivateEndPointConnectionsClient.ListByFactory` return value(s) have been changed from `(*PrivateEndPointConnectionsClientListByFactoryPager)` to `(*runtime.Pager[PrivateEndPointConnectionsClientListByFactoryResponse])`
+- Function `NewDataFlowDebugSessionClient` return value(s) have been changed from `(*DataFlowDebugSessionClient)` to `(*DataFlowDebugSessionClient, error)`
+- Function `*TriggersClient.BeginSubscribeToEvents` return value(s) have been changed from `(TriggersClientSubscribeToEventsPollerResponse, error)` to `(*armruntime.Poller[TriggersClientSubscribeToEventsResponse], error)`
+- Function `NewFactoriesClient` return value(s) have been changed from `(*FactoriesClient)` to `(*FactoriesClient, error)`
+- Function `*LinkedServicesClient.ListByFactory` return value(s) have been changed from `(*LinkedServicesClientListByFactoryPager)` to `(*runtime.Pager[LinkedServicesClientListByFactoryResponse])`
+- Function `*DataFlowDebugSessionClient.QueryByFactory` return value(s) have been changed from `(*DataFlowDebugSessionClientQueryByFactoryPager)` to `(*runtime.Pager[DataFlowDebugSessionClientQueryByFactoryResponse])`
+- Function `*IntegrationRuntimesClient.BeginStop` return value(s) have been changed from `(IntegrationRuntimesClientStopPollerResponse, error)` to `(*armruntime.Poller[IntegrationRuntimesClientStopResponse], error)`
+- Function `NewIntegrationRuntimeObjectMetadataClient` return value(s) have been changed from `(*IntegrationRuntimeObjectMetadataClient)` to `(*IntegrationRuntimeObjectMetadataClient, error)`
+- Function `*ManagedPrivateEndpointsClient.ListByFactory` return value(s) have been changed from `(*ManagedPrivateEndpointsClientListByFactoryPager)` to `(*runtime.Pager[ManagedPrivateEndpointsClientListByFactoryResponse])`
+- Function `NewDataFlowsClient` return value(s) have been changed from `(*DataFlowsClient)` to `(*DataFlowsClient, error)`
+- Function `NewLinkedServicesClient` return value(s) have been changed from `(*LinkedServicesClient)` to `(*LinkedServicesClient, error)`
+- Function `*IntegrationRuntimesClient.ListByFactory` return value(s) have been changed from `(*IntegrationRuntimesClientListByFactoryPager)` to `(*runtime.Pager[IntegrationRuntimesClientListByFactoryResponse])`
+- Function `*IntegrationRuntimeObjectMetadataClient.BeginRefresh` return value(s) have been changed from `(IntegrationRuntimeObjectMetadataClientRefreshPollerResponse, error)` to `(*armruntime.Poller[IntegrationRuntimeObjectMetadataClientRefreshResponse], error)`
+- Function `*DataFlowDebugSessionClient.BeginCreate` return value(s) have been changed from `(DataFlowDebugSessionClientCreatePollerResponse, error)` to `(*armruntime.Poller[DataFlowDebugSessionClientCreateResponse], error)`
+- Function `*TriggersClient.ListByFactory` return value(s) have been changed from `(*TriggersClientListByFactoryPager)` to `(*runtime.Pager[TriggersClientListByFactoryResponse])`
+- Function `*ManagedVirtualNetworksClient.ListByFactory` return value(s) have been changed from `(*ManagedVirtualNetworksClientListByFactoryPager)` to `(*runtime.Pager[ManagedVirtualNetworksClientListByFactoryResponse])`
+- Function `*FactoriesClient.List` return value(s) have been changed from `(*FactoriesClientListPager)` to `(*runtime.Pager[FactoriesClientListResponse])`
+- Function `*DataFlowsClient.ListByFactory` return value(s) have been changed from `(*DataFlowsClientListByFactoryPager)` to `(*runtime.Pager[DataFlowsClientListByFactoryResponse])`
+- Function `*PipelinesClient.ListByFactory` return value(s) have been changed from `(*PipelinesClientListByFactoryPager)` to `(*runtime.Pager[PipelinesClientListByFactoryResponse])`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `*DatasetsClient.ListByFactory` return value(s) have been changed from `(*DatasetsClientListByFactoryPager)` to `(*runtime.Pager[DatasetsClientListByFactoryResponse])`
+- Function `NewPrivateEndpointConnectionClient` return value(s) have been changed from `(*PrivateEndpointConnectionClient)` to `(*PrivateEndpointConnectionClient, error)`
+- Function `*TriggersClient.BeginStop` return value(s) have been changed from `(TriggersClientStopPollerResponse, error)` to `(*armruntime.Poller[TriggersClientStopResponse], error)`
+- Function `*IntegrationRuntimesClient.BeginStart` return value(s) have been changed from `(IntegrationRuntimesClientStartPollerResponse, error)` to `(*armruntime.Poller[IntegrationRuntimesClientStartResponse], error)`
+- Function `*DataFlowDebugSessionClient.BeginExecuteCommand` return value(s) have been changed from `(DataFlowDebugSessionClientExecuteCommandPollerResponse, error)` to `(*armruntime.Poller[DataFlowDebugSessionClientExecuteCommandResponse], error)`
+- Function `*TriggersClient.BeginStart` return value(s) have been changed from `(TriggersClientStartPollerResponse, error)` to `(*armruntime.Poller[TriggersClientStartResponse], error)`
+- Function `NewActivityRunsClient` return value(s) have been changed from `(*ActivityRunsClient)` to `(*ActivityRunsClient, error)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `NewManagedVirtualNetworksClient` return value(s) have been changed from `(*ManagedVirtualNetworksClient)` to `(*ManagedVirtualNetworksClient, error)`
+- Function `NewTriggersClient` return value(s) have been changed from `(*TriggersClient)` to `(*TriggersClient, error)`
+- Function `NewPrivateLinkResourcesClient` return value(s) have been changed from `(*PrivateLinkResourcesClient)` to `(*PrivateLinkResourcesClient, error)`
+- Function `NewIntegrationRuntimeNodesClient` return value(s) have been changed from `(*IntegrationRuntimeNodesClient)` to `(*IntegrationRuntimeNodesClient, error)`
+- Function `NewIntegrationRuntimesClient` return value(s) have been changed from `(*IntegrationRuntimesClient)` to `(*IntegrationRuntimesClient, error)`
+- Function `NewExposureControlClient` return value(s) have been changed from `(*ExposureControlClient)` to `(*ExposureControlClient, error)`
+- Function `NewTriggerRunsClient` return value(s) have been changed from `(*TriggerRunsClient)` to `(*TriggerRunsClient, error)`
+- Function `NewPipelinesClient` return value(s) have been changed from `(*PipelinesClient)` to `(*PipelinesClient, error)`
+- Function `NewManagedPrivateEndpointsClient` return value(s) have been changed from `(*ManagedPrivateEndpointsClient)` to `(*ManagedPrivateEndpointsClient, error)`
+- Function `*FactoriesClient.ListByResourceGroup` return value(s) have been changed from `(*FactoriesClientListByResourceGroupPager)` to `(*runtime.Pager[FactoriesClientListByResourceGroupResponse])`
+- Function `NewPipelineRunsClient` return value(s) have been changed from `(*PipelineRunsClient)` to `(*PipelineRunsClient, error)`
+- Function `*TriggersClient.BeginUnsubscribeFromEvents` return value(s) have been changed from `(TriggersClientUnsubscribeFromEventsPollerResponse, error)` to `(*armruntime.Poller[TriggersClientUnsubscribeFromEventsResponse], error)`
+- Function `NewPrivateEndPointConnectionsClient` return value(s) have been changed from `(*PrivateEndPointConnectionsClient)` to `(*PrivateEndPointConnectionsClient, error)`
+- Type of `TypeConversionSettings.DateTimeOffsetFormat` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `TypeConversionSettings.TimeSpanFormat` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `TypeConversionSettings.TreatBooleanAsNumber` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `TypeConversionSettings.AllowDataTruncation` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `TypeConversionSettings.Culture` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `TypeConversionSettings.DateTimeFormat` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `SQLServerStoredProcedureActivityTypeProperties.StoredProcedureParameters` has been changed from `map[string]*StoredProcedureParameter` to `interface{}`
+- Function `TeradataPartitionOption.ToPtr` has been removed
+- Function `*TriggersClientStartPoller.ResumeToken` has been removed
+- Function `*LinkedServicesClientListByFactoryPager.PageResponse` has been removed
+- Function `ImpalaAuthenticationType.ToPtr` has been removed
+- Function `*ManagedVirtualNetworksClientListByFactoryPager.Err` has been removed
+- Function `MongoDbAuthenticationType.ToPtr` has been removed
+- Function `*DataFlowDebugSessionClientCreatePoller.FinalResponse` has been removed
+- Function `*PipelinesClientListByFactoryPager.PageResponse` has been removed
+- Function `*IntegrationRuntimesClientStartPoller.Poll` has been removed
+- Function `HiveThriftTransportProtocol.ToPtr` has been removed
+- Function `IntegrationRuntimeObjectMetadataClientRefreshPollerResponse.PollUntilDone` has been removed
+- Function `SQLPartitionOption.ToPtr` has been removed
+- Function `DynamicsDeploymentType.ToPtr` has been removed
+- Function `*IntegrationRuntimesClientStopPoller.Poll` has been removed
+- Function `*DataFlowsClientListByFactoryPager.PageResponse` has been removed
+- Function `*IntegrationRuntimesClientStopPollerResponse.Resume` has been removed
+- Function `IntegrationRuntimeInternalChannelEncryptionMode.ToPtr` has been removed
+- Function `GoogleAdWordsAuthenticationType.ToPtr` has been removed
+- Function `*TriggersClientSubscribeToEventsPoller.Poll` has been removed
+- Function `*FactoriesClientListPager.NextPage` has been removed
+- Function `SparkServerType.ToPtr` has been removed
+- Function `*DataFlowDebugSessionClientQueryByFactoryPager.PageResponse` has been removed
+- Function `CompressionCodec.ToPtr` has been removed
+- Function `*DatasetsClientListByFactoryPager.NextPage` has been removed
+- Function `AzureSearchIndexWriteBehaviorType.ToPtr` has been removed
+- Function `*TriggersClientListByFactoryPager.NextPage` has been removed
+- Function `*TriggersClientListByFactoryPager.PageResponse` has been removed
+- Function `OraclePartitionOption.ToPtr` has been removed
+- Function `ODataAADServicePrincipalCredentialType.ToPtr` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Function `WebAuthenticationType.ToPtr` has been removed
+- Function `*IntegrationRuntimesClientStartPoller.ResumeToken` has been removed
+- Function `PolybaseSettingsRejectType.ToPtr` has been removed
+- Function `ExpressionType.ToPtr` has been removed
+- Function `OrcCompressionCodec.ToPtr` has been removed
+- Function `HdiNodeTypes.ToPtr` has been removed
+- Function `TriggersClientStopPollerResponse.PollUntilDone` has been removed
+- Function `ODataAuthenticationType.ToPtr` has been removed
+- Function `*DataFlowDebugSessionClientCreatePollerResponse.Resume` has been removed
+- Function `JSONWriteFilePattern.ToPtr` has been removed
+- Function `TriggersClientSubscribeToEventsPollerResponse.PollUntilDone` has been removed
+- Function `IntegrationRuntimeLicenseType.ToPtr` has been removed
+- Function `*TriggersClientStartPoller.FinalResponse` has been removed
+- Function `DatasetReferenceType.ToPtr` has been removed
+- Function `*TriggersClientUnsubscribeFromEventsPollerResponse.Resume` has been removed
+- Function `*TriggersClientStartPollerResponse.Resume` has been removed
+- Function `SalesforceSinkWriteBehavior.ToPtr` has been removed
+- Function `TeradataAuthenticationType.ToPtr` has been removed
+- Function `*IntegrationRuntimesClientStartPollerResponse.Resume` has been removed
+- Function `ManagedVirtualNetworkReferenceType.ToPtr` has been removed
+- Function `SapCloudForCustomerSinkWriteBehavior.ToPtr` has been removed
+- Function `TriggerRunStatus.ToPtr` has been removed
+- Function `HTTPAuthenticationType.ToPtr` has been removed
+- Function `SparkAuthenticationType.ToPtr` has been removed
+- Function `*IntegrationRuntimesClientStopPoller.FinalResponse` has been removed
+- Function `*DataFlowDebugSessionClientCreatePoller.Done` has been removed
+- Function `*IntegrationRuntimesClientListByFactoryPager.NextPage` has been removed
+- Function `*IntegrationRuntimeObjectMetadataClientRefreshPoller.Done` has been removed
+- Function `*DataFlowDebugSessionClientExecuteCommandPoller.FinalResponse` has been removed
+- Function `ScriptActivityLogDestination.ToPtr` has been removed
+- Function `IntegrationRuntimeState.ToPtr` has been removed
+- Function `*IntegrationRuntimesClientStartPoller.Done` has been removed
+- Function `*TriggersClientSubscribeToEventsPollerResponse.Resume` has been removed
+- Function `*IntegrationRuntimeObjectMetadataClientRefreshPoller.Poll` has been removed
+- Function `IntegrationRuntimeAutoUpdate.ToPtr` has been removed
+- Function `*FactoriesClientListPager.PageResponse` has been removed
+- Function `*DataFlowsClientListByFactoryPager.Err` has been removed
+- Function `*TriggersClientStopPoller.ResumeToken` has been removed
+- Function `LinkedServiceReferenceType.ToPtr` has been removed
+- Function `WebActivityMethod.ToPtr` has been removed
+- Function `*TriggersClientStopPoller.Poll` has been removed
+- Function `RunQueryFilterOperand.ToPtr` has been removed
+- Function `CassandraSourceReadConsistencyLevels.ToPtr` has been removed
+- Function `SQLAlwaysEncryptedAkvAuthType.ToPtr` has been removed
+- Function `ScriptType.ToPtr` has been removed
+- Function `*TriggersClientListByFactoryPager.Err` has been removed
+- Function `RunQueryFilterOperator.ToPtr` has been removed
+- Function `CosmosDbConnectionMode.ToPtr` has been removed
+- Function `DataFlowDebugSessionClientExecuteCommandPollerResponse.PollUntilDone` has been removed
+- Function `SapHanaPartitionOption.ToPtr` has been removed
+- Function `PhoenixAuthenticationType.ToPtr` has been removed
+- Function `SapHanaAuthenticationType.ToPtr` has been removed
+- Function `IntegrationRuntimeEntityReferenceType.ToPtr` has been removed
+- Function `*TriggersClientSubscribeToEventsPoller.Done` has been removed
+- Function `SsisObjectMetadataType.ToPtr` has been removed
+- Function `PrestoAuthenticationType.ToPtr` has been removed
+- Function `IntegrationRuntimeSsisCatalogPricingTier.ToPtr` has been removed
+- Function `DaysOfWeek.ToPtr` has been removed
+- Function `HDInsightActivityDebugInfoOption.ToPtr` has been removed
+- Function `IntegrationRuntimeEdition.ToPtr` has been removed
+- Function `DataFlowDebugCommandType.ToPtr` has been removed
+- Function `ServicePrincipalCredentialType.ToPtr` has been removed
+- Function `*TriggersClientUnsubscribeFromEventsPoller.Poll` has been removed
+- Function `*DataFlowsClientListByFactoryPager.NextPage` has been removed
+- Function `*ManagedPrivateEndpointsClientListByFactoryPager.NextPage` has been removed
+- Function `*DataFlowDebugSessionClientCreatePoller.Poll` has been removed
+- Function `*DataFlowDebugSessionClientExecuteCommandPoller.Done` has been removed
+- Function `*LinkedServicesClientListByFactoryPager.Err` has been removed
+- Function `DataFlowDebugSessionClientCreatePollerResponse.PollUntilDone` has been removed
+- Function `*TriggersClientUnsubscribeFromEventsPoller.FinalResponse` has been removed
+- Function `RunQueryOrderByField.ToPtr` has been removed
+- Function `*LinkedServicesClientListByFactoryPager.NextPage` has been removed
+- Function `RecurrenceFrequency.ToPtr` has been removed
+- Function `SQLServerStoredProcedureActivityTypeProperties.MarshalJSON` has been removed
+- Function `AmazonRdsForOraclePartitionOption.ToPtr` has been removed
+- Function `HBaseAuthenticationType.ToPtr` has been removed
+- Function `IntegrationRuntimeReferenceType.ToPtr` has been removed
+- Function `HiveServerType.ToPtr` has been removed
+- Function `RestServiceAuthenticationType.ToPtr` has been removed
+- Function `*DataFlowDebugSessionClientExecuteCommandPoller.Poll` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `*IntegrationRuntimesClientStopPoller.Done` has been removed
+- Function `*IntegrationRuntimeObjectMetadataClientRefreshPoller.ResumeToken` has been removed
+- Function `*DataFlowDebugSessionClientCreatePoller.ResumeToken` has been removed
+- Function `*IntegrationRuntimesClientStartPoller.FinalResponse` has been removed
+- Function `ZendeskAuthenticationType.ToPtr` has been removed
+- Function `*DatasetsClientListByFactoryPager.PageResponse` has been removed
+- Function `*PrivateEndPointConnectionsClientListByFactoryPager.Err` has been removed
+- Function `SelfHostedIntegrationRuntimeNodeStatus.ToPtr` has been removed
+- Function `IntegrationRuntimeType.ToPtr` has been removed
+- Function `*DataFlowDebugSessionClientExecuteCommandPoller.ResumeToken` has been removed
+- Function `*ManagedVirtualNetworksClientListByFactoryPager.PageResponse` has been removed
+- Function `Db2AuthenticationType.ToPtr` has been removed
+- Function `IntegrationRuntimesClientStartPollerResponse.PollUntilDone` has been removed
+- Function `*TriggersClientStopPoller.Done` has been removed
+- Function `FtpAuthenticationType.ToPtr` has been removed
+- Function `*ManagedPrivateEndpointsClientListByFactoryPager.PageResponse` has been removed
+- Function `*TriggersClientStopPoller.FinalResponse` has been removed
+- Function `NetezzaPartitionOption.ToPtr` has been removed
+- Function `DataFlowReferenceType.ToPtr` has been removed
+- Function `*PrivateEndPointConnectionsClientListByFactoryPager.PageResponse` has been removed
+- Function `IntegrationRuntimesClientStopPollerResponse.PollUntilDone` has been removed
+- Function `*FactoriesClientListPager.Err` has been removed
+- Function `TumblingWindowFrequency.ToPtr` has been removed
+- Function `SybaseAuthenticationType.ToPtr` has been removed
+- Function `*TriggersClientStopPollerResponse.Resume` has been removed
+- Function `TriggerReferenceType.ToPtr` has been removed
+- Function `CosmosDbServicePrincipalCredentialType.ToPtr` has been removed
+- Function `EventSubscriptionStatus.ToPtr` has been removed
+- Function `*TriggersClientStartPoller.Poll` has been removed
+- Function `*TriggersClientSubscribeToEventsPoller.FinalResponse` has been removed
+- Function `*DataFlowDebugSessionClientExecuteCommandPollerResponse.Resume` has been removed
+- Function `*FactoriesClientListByResourceGroupPager.NextPage` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `*DatasetsClientListByFactoryPager.Err` has been removed
+- Function `*IntegrationRuntimesClientStopPoller.ResumeToken` has been removed
+- Function `SparkThriftTransportProtocol.ToPtr` has been removed
+- Function `GoogleBigQueryAuthenticationType.ToPtr` has been removed
+- Function `*PipelinesClientListByFactoryPager.NextPage` has been removed
+- Function `AzureFunctionActivityMethod.ToPtr` has been removed
+- Function `*PipelinesClientListByFactoryPager.Err` has been removed
+- Function `StoredProcedureParameterType.ToPtr` has been removed
+- Function `SapTablePartitionOption.ToPtr` has been removed
+- Function `ScriptActivityParameterType.ToPtr` has been removed
+- Function `SsisPackageLocationType.ToPtr` has been removed
+- Function `JSONFormatFilePattern.ToPtr` has been removed
+- Function `*ManagedPrivateEndpointsClientListByFactoryPager.Err` has been removed
+- Function `*PrivateEndPointConnectionsClientListByFactoryPager.NextPage` has been removed
+- Function `*TriggersClientUnsubscribeFromEventsPoller.Done` has been removed
+- Function `TriggerRuntimeState.ToPtr` has been removed
+- Function `SQLWriteBehaviorEnum.ToPtr` has been removed
+- Function `*DataFlowDebugSessionClientQueryByFactoryPager.NextPage` has been removed
+- Function `DataFlowComputeType.ToPtr` has been removed
+- Function `*FactoriesClientListByResourceGroupPager.Err` has been removed
+- Function `*IntegrationRuntimeObjectMetadataClientRefreshPollerResponse.Resume` has been removed
+- Function `*IntegrationRuntimesClientListByFactoryPager.Err` has been removed
+- Function `VariableType.ToPtr` has been removed
+- Function `DynamicsAuthenticationType.ToPtr` has been removed
+- Function `*IntegrationRuntimesClientListByFactoryPager.PageResponse` has been removed
+- Function `*TriggersClientStartPoller.Done` has been removed
+- Function `*IntegrationRuntimeObjectMetadataClientRefreshPoller.FinalResponse` has been removed
+- Function `RunQueryOrder.ToPtr` has been removed
+- Function `CredentialReferenceType.ToPtr` has been removed
+- Function `CopyBehaviorType.ToPtr` has been removed
+- Function `PublicNetworkAccess.ToPtr` has been removed
+- Function `SftpAuthenticationType.ToPtr` has been removed
+- Function `WebHookActivityMethod.ToPtr` has been removed
+- Function `AvroCompressionCodec.ToPtr` has been removed
+- Function `TeamDeskAuthenticationType.ToPtr` has been removed
+- Function `BlobEventTypes.ToPtr` has been removed
+- Function `SalesforceSourceReadBehavior.ToPtr` has been removed
+- Function `DependencyCondition.ToPtr` has been removed
+- Function `ParameterType.ToPtr` has been removed
+- Function `*DataFlowDebugSessionClientQueryByFactoryPager.Err` has been removed
+- Function `TriggersClientStartPollerResponse.PollUntilDone` has been removed
+- Function `*TriggersClientSubscribeToEventsPoller.ResumeToken` has been removed
+- Function `HiveAuthenticationType.ToPtr` has been removed
+- Function `FactoryIdentityType.ToPtr` has been removed
+- Function `SQLDWWriteBehaviorEnum.ToPtr` has been removed
+- Function `IntegrationRuntimeAuthKeyName.ToPtr` has been removed
+- Function `DatasetCompressionLevel.ToPtr` has been removed
+- Function `DayOfWeek.ToPtr` has been removed
+- Function `ScriptActivityParameterDirection.ToPtr` has been removed
+- Function `SsisLogLocationType.ToPtr` has been removed
+- Function `ManagedIntegrationRuntimeNodeStatus.ToPtr` has been removed
+- Function `GlobalParameterType.ToPtr` has been removed
+- Function `*TriggersClientUnsubscribeFromEventsPoller.ResumeToken` has been removed
+- Function `DynamicsSinkWriteBehavior.ToPtr` has been removed
+- Function `*ManagedVirtualNetworksClientListByFactoryPager.NextPage` has been removed
+- Function `*FactoriesClientListByResourceGroupPager.PageResponse` has been removed
+- Function `IntegrationRuntimeUpdateResult.ToPtr` has been removed
+- Function `TriggersClientUnsubscribeFromEventsPollerResponse.PollUntilDone` has been removed
+- Function `PipelineReferenceType.ToPtr` has been removed
+- Function `ServiceNowAuthenticationType.ToPtr` has been removed
+- Struct `ActivityRunsClientQueryByPipelineRunResult` has been removed
+- Struct `DataFlowDebugSessionClientAddDataFlowResult` has been removed
+- Struct `DataFlowDebugSessionClientCreatePoller` has been removed
+- Struct `DataFlowDebugSessionClientCreatePollerResponse` has been removed
+- Struct `DataFlowDebugSessionClientCreateResult` has been removed
+- Struct `DataFlowDebugSessionClientExecuteCommandPoller` has been removed
+- Struct `DataFlowDebugSessionClientExecuteCommandPollerResponse` has been removed
+- Struct `DataFlowDebugSessionClientExecuteCommandResult` has been removed
+- Struct `DataFlowDebugSessionClientQueryByFactoryPager` has been removed
+- Struct `DataFlowDebugSessionClientQueryByFactoryResult` has been removed
+- Struct `DataFlowsClientCreateOrUpdateResult` has been removed
+- Struct `DataFlowsClientGetResult` has been removed
+- Struct `DataFlowsClientListByFactoryPager` has been removed
+- Struct `DataFlowsClientListByFactoryResult` has been removed
+- Struct `DatasetsClientCreateOrUpdateResult` has been removed
+- Struct `DatasetsClientGetResult` has been removed
+- Struct `DatasetsClientListByFactoryPager` has been removed
+- Struct `DatasetsClientListByFactoryResult` has been removed
+- Struct `ExposureControlClientGetFeatureValueByFactoryResult` has been removed
+- Struct `ExposureControlClientGetFeatureValueResult` has been removed
+- Struct `ExposureControlClientQueryFeatureValuesByFactoryResult` has been removed
+- Struct `FactoriesClientConfigureFactoryRepoResult` has been removed
+- Struct `FactoriesClientCreateOrUpdateResult` has been removed
+- Struct `FactoriesClientGetDataPlaneAccessResult` has been removed
+- Struct `FactoriesClientGetGitHubAccessTokenResult` has been removed
+- Struct `FactoriesClientGetResult` has been removed
+- Struct `FactoriesClientListByResourceGroupPager` has been removed
+- Struct `FactoriesClientListByResourceGroupResult` has been removed
+- Struct `FactoriesClientListPager` has been removed
+- Struct `FactoriesClientListResult` has been removed
+- Struct `FactoriesClientUpdateResult` has been removed
+- Struct `IntegrationRuntimeNodesClientGetIPAddressResult` has been removed
+- Struct `IntegrationRuntimeNodesClientGetResult` has been removed
+- Struct `IntegrationRuntimeNodesClientUpdateResult` has been removed
+- Struct `IntegrationRuntimeObjectMetadataClientGetResult` has been removed
+- Struct `IntegrationRuntimeObjectMetadataClientRefreshPoller` has been removed
+- Struct `IntegrationRuntimeObjectMetadataClientRefreshPollerResponse` has been removed
+- Struct `IntegrationRuntimeObjectMetadataClientRefreshResult` has been removed
+- Struct `IntegrationRuntimesClientCreateLinkedIntegrationRuntimeResult` has been removed
+- Struct `IntegrationRuntimesClientCreateOrUpdateResult` has been removed
+- Struct `IntegrationRuntimesClientGetConnectionInfoResult` has been removed
+- Struct `IntegrationRuntimesClientGetMonitoringDataResult` has been removed
+- Struct `IntegrationRuntimesClientGetResult` has been removed
+- Struct `IntegrationRuntimesClientGetStatusResult` has been removed
+- Struct `IntegrationRuntimesClientListAuthKeysResult` has been removed
+- Struct `IntegrationRuntimesClientListByFactoryPager` has been removed
+- Struct `IntegrationRuntimesClientListByFactoryResult` has been removed
+- Struct `IntegrationRuntimesClientListOutboundNetworkDependenciesEndpointsResult` has been removed
+- Struct `IntegrationRuntimesClientRegenerateAuthKeyResult` has been removed
+- Struct `IntegrationRuntimesClientStartPoller` has been removed
+- Struct `IntegrationRuntimesClientStartPollerResponse` has been removed
+- Struct `IntegrationRuntimesClientStartResult` has been removed
+- Struct `IntegrationRuntimesClientStopPoller` has been removed
+- Struct `IntegrationRuntimesClientStopPollerResponse` has been removed
+- Struct `IntegrationRuntimesClientUpdateResult` has been removed
+- Struct `LinkedServicesClientCreateOrUpdateResult` has been removed
+- Struct `LinkedServicesClientGetResult` has been removed
+- Struct `LinkedServicesClientListByFactoryPager` has been removed
+- Struct `LinkedServicesClientListByFactoryResult` has been removed
+- Struct `ManagedPrivateEndpointsClientCreateOrUpdateResult` has been removed
+- Struct `ManagedPrivateEndpointsClientGetResult` has been removed
+- Struct `ManagedPrivateEndpointsClientListByFactoryPager` has been removed
+- Struct `ManagedPrivateEndpointsClientListByFactoryResult` has been removed
+- Struct `ManagedVirtualNetworksClientCreateOrUpdateResult` has been removed
+- Struct `ManagedVirtualNetworksClientGetResult` has been removed
+- Struct `ManagedVirtualNetworksClientListByFactoryPager` has been removed
+- Struct `ManagedVirtualNetworksClientListByFactoryResult` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `PipelineRunsClientGetResult` has been removed
+- Struct `PipelineRunsClientQueryByFactoryResult` has been removed
+- Struct `PipelinesClientCreateOrUpdateResult` has been removed
+- Struct `PipelinesClientCreateRunResult` has been removed
+- Struct `PipelinesClientGetResult` has been removed
+- Struct `PipelinesClientListByFactoryPager` has been removed
+- Struct `PipelinesClientListByFactoryResult` has been removed
+- Struct `PrivateEndPointConnectionsClientListByFactoryPager` has been removed
+- Struct `PrivateEndPointConnectionsClientListByFactoryResult` has been removed
+- Struct `PrivateEndpointConnectionClientCreateOrUpdateResult` has been removed
+- Struct `PrivateEndpointConnectionClientGetResult` has been removed
+- Struct `PrivateLinkResourcesClientGetResult` has been removed
+- Struct `TriggerRunsClientQueryByFactoryResult` has been removed
+- Struct `TriggersClientCreateOrUpdateResult` has been removed
+- Struct `TriggersClientGetEventSubscriptionStatusResult` has been removed
+- Struct `TriggersClientGetResult` has been removed
+- Struct `TriggersClientListByFactoryPager` has been removed
+- Struct `TriggersClientListByFactoryResult` has been removed
+- Struct `TriggersClientQueryByFactoryResult` has been removed
+- Struct `TriggersClientStartPoller` has been removed
+- Struct `TriggersClientStartPollerResponse` has been removed
+- Struct `TriggersClientStopPoller` has been removed
+- Struct `TriggersClientStopPollerResponse` has been removed
+- Struct `TriggersClientSubscribeToEventsPoller` has been removed
+- Struct `TriggersClientSubscribeToEventsPollerResponse` has been removed
+- Struct `TriggersClientSubscribeToEventsResult` has been removed
+- Struct `TriggersClientUnsubscribeFromEventsPoller` has been removed
+- Struct `TriggersClientUnsubscribeFromEventsPollerResponse` has been removed
+- Struct `TriggersClientUnsubscribeFromEventsResult` has been removed
+- Field `LinkedServicesClientListByFactoryResult` of struct `LinkedServicesClientListByFactoryResponse` has been removed
+- Field `RawResponse` of struct `LinkedServicesClientListByFactoryResponse` has been removed
+- Field `LinkedServicesClientGetResult` of struct `LinkedServicesClientGetResponse` has been removed
+- Field `RawResponse` of struct `LinkedServicesClientGetResponse` has been removed
+- Field `TriggersClientQueryByFactoryResult` of struct `TriggersClientQueryByFactoryResponse` has been removed
+- Field `RawResponse` of struct `TriggersClientQueryByFactoryResponse` has been removed
+- Field `ManagedPrivateEndpointsClientListByFactoryResult` of struct `ManagedPrivateEndpointsClientListByFactoryResponse` has been removed
+- Field `RawResponse` of struct `ManagedPrivateEndpointsClientListByFactoryResponse` has been removed
+- Field `RawResponse` of struct `IntegrationRuntimeNodesClientDeleteResponse` has been removed
+- Field `FactoriesClientGetDataPlaneAccessResult` of struct `FactoriesClientGetDataPlaneAccessResponse` has been removed
+- Field `RawResponse` of struct `FactoriesClientGetDataPlaneAccessResponse` has been removed
+- Field `RawResponse` of struct `FactoriesClientDeleteResponse` has been removed
+- Field `FactoriesClientListResult` of struct `FactoriesClientListResponse` has been removed
+- Field `RawResponse` of struct `FactoriesClientListResponse` has been removed
+- Field `IntegrationRuntimesClientGetMonitoringDataResult` of struct `IntegrationRuntimesClientGetMonitoringDataResponse` has been removed
+- Field `RawResponse` of struct `IntegrationRuntimesClientGetMonitoringDataResponse` has been removed
+- Field `TriggersClientListByFactoryResult` of struct `TriggersClientListByFactoryResponse` has been removed
+- Field `RawResponse` of struct `TriggersClientListByFactoryResponse` has been removed
+- Field `IntegrationRuntimesClientCreateLinkedIntegrationRuntimeResult` of struct `IntegrationRuntimesClientCreateLinkedIntegrationRuntimeResponse` has been removed
+- Field `RawResponse` of struct `IntegrationRuntimesClientCreateLinkedIntegrationRuntimeResponse` has been removed
+- Field `IntegrationRuntimesClientListOutboundNetworkDependenciesEndpointsResult` of struct `IntegrationRuntimesClientListOutboundNetworkDependenciesEndpointsResponse` has been removed
+- Field `RawResponse` of struct `IntegrationRuntimesClientListOutboundNetworkDependenciesEndpointsResponse` has been removed
+- Field `ExposureControlClientGetFeatureValueByFactoryResult` of struct `ExposureControlClientGetFeatureValueByFactoryResponse` has been removed
+- Field `RawResponse` of struct `ExposureControlClientGetFeatureValueByFactoryResponse` has been removed
+- Field `IntegrationRuntimesClientGetConnectionInfoResult` of struct `IntegrationRuntimesClientGetConnectionInfoResponse` has been removed
+- Field `RawResponse` of struct `IntegrationRuntimesClientGetConnectionInfoResponse` has been removed
+- Field `IntegrationRuntimesClientCreateOrUpdateResult` of struct `IntegrationRuntimesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `IntegrationRuntimesClientCreateOrUpdateResponse` has been removed
+- Field `IntegrationRuntimeObjectMetadataClientGetResult` of struct `IntegrationRuntimeObjectMetadataClientGetResponse` has been removed
+- Field `RawResponse` of struct `IntegrationRuntimeObjectMetadataClientGetResponse` has been removed
+- Field `IntegrationRuntimesClientRegenerateAuthKeyResult` of struct `IntegrationRuntimesClientRegenerateAuthKeyResponse` has been removed
+- Field `RawResponse` of struct `IntegrationRuntimesClientRegenerateAuthKeyResponse` has been removed
+- Field `RawResponse` of struct `TriggersClientStopResponse` has been removed
+- Field `RawResponse` of struct `LinkedServicesClientDeleteResponse` has been removed
+- Field `DataFlowsClientCreateOrUpdateResult` of struct `DataFlowsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `DataFlowsClientCreateOrUpdateResponse` has been removed
+- Field `TriggersClientSubscribeToEventsResult` of struct `TriggersClientSubscribeToEventsResponse` has been removed
+- Field `RawResponse` of struct `TriggersClientSubscribeToEventsResponse` has been removed
+- Field `ManagedVirtualNetworksClientGetResult` of struct `ManagedVirtualNetworksClientGetResponse` has been removed
+- Field `RawResponse` of struct `ManagedVirtualNetworksClientGetResponse` has been removed
+- Field `FactoriesClientGetGitHubAccessTokenResult` of struct `FactoriesClientGetGitHubAccessTokenResponse` has been removed
+- Field `RawResponse` of struct `FactoriesClientGetGitHubAccessTokenResponse` has been removed
+- Field `RawResponse` of struct `IntegrationRuntimesClientSyncCredentialsResponse` has been removed
+- Field `PipelinesClientListByFactoryResult` of struct `PipelinesClientListByFactoryResponse` has been removed
+- Field `RawResponse` of struct `PipelinesClientListByFactoryResponse` has been removed
+- Field `RawResponse` of struct `DataFlowsClientDeleteResponse` has been removed
+- Field `LinkedServicesClientCreateOrUpdateResult` of struct `LinkedServicesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `LinkedServicesClientCreateOrUpdateResponse` has been removed
+- Field `IntegrationRuntimeObjectMetadataClientRefreshResult` of struct `IntegrationRuntimeObjectMetadataClientRefreshResponse` has been removed
+- Field `RawResponse` of struct `IntegrationRuntimeObjectMetadataClientRefreshResponse` has been removed
+- Field `DatasetsClientListByFactoryResult` of struct `DatasetsClientListByFactoryResponse` has been removed
+- Field `RawResponse` of struct `DatasetsClientListByFactoryResponse` has been removed
+- Field `DataFlowDebugSessionClientExecuteCommandResult` of struct `DataFlowDebugSessionClientExecuteCommandResponse` has been removed
+- Field `RawResponse` of struct `DataFlowDebugSessionClientExecuteCommandResponse` has been removed
+- Field `TriggersClientUnsubscribeFromEventsResult` of struct `TriggersClientUnsubscribeFromEventsResponse` has been removed
+- Field `RawResponse` of struct `TriggersClientUnsubscribeFromEventsResponse` has been removed
+- Field `DataFlowDebugSessionClientQueryByFactoryResult` of struct `DataFlowDebugSessionClientQueryByFactoryResponse` has been removed
+- Field `RawResponse` of struct `DataFlowDebugSessionClientQueryByFactoryResponse` has been removed
+- Field `RawResponse` of struct `TriggerRunsClientRerunResponse` has been removed
+- Field `PrivateLinkResourcesClientGetResult` of struct `PrivateLinkResourcesClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkResourcesClientGetResponse` has been removed
+- Field `IntegrationRuntimesClientUpdateResult` of struct `IntegrationRuntimesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `IntegrationRuntimesClientUpdateResponse` has been removed
+- Field `FactoriesClientUpdateResult` of struct `FactoriesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `FactoriesClientUpdateResponse` has been removed
+- Field `TriggerRunsClientQueryByFactoryResult` of struct `TriggerRunsClientQueryByFactoryResponse` has been removed
+- Field `RawResponse` of struct `TriggerRunsClientQueryByFactoryResponse` has been removed
+- Field `IntegrationRuntimesClientStartResult` of struct `IntegrationRuntimesClientStartResponse` has been removed
+- Field `RawResponse` of struct `IntegrationRuntimesClientStartResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `IntegrationRuntimesClientGetStatusResult` of struct `IntegrationRuntimesClientGetStatusResponse` has been removed
+- Field `RawResponse` of struct `IntegrationRuntimesClientGetStatusResponse` has been removed
+- Field `RawResponse` of struct `DatasetsClientDeleteResponse` has been removed
+- Field `PrivateEndpointConnectionClientCreateOrUpdateResult` of struct `PrivateEndpointConnectionClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionClientCreateOrUpdateResponse` has been removed
+- Field `IntegrationRuntimeNodesClientUpdateResult` of struct `IntegrationRuntimeNodesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `IntegrationRuntimeNodesClientUpdateResponse` has been removed
+- Field `ManagedPrivateEndpointsClientCreateOrUpdateResult` of struct `ManagedPrivateEndpointsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ManagedPrivateEndpointsClientCreateOrUpdateResponse` has been removed
+- Field `IntegrationRuntimesClientListAuthKeysResult` of struct `IntegrationRuntimesClientListAuthKeysResponse` has been removed
+- Field `RawResponse` of struct `IntegrationRuntimesClientListAuthKeysResponse` has been removed
+- Field `ManagedVirtualNetworksClientCreateOrUpdateResult` of struct `ManagedVirtualNetworksClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ManagedVirtualNetworksClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `DataFlowDebugSessionClientDeleteResponse` has been removed
+- Field `TriggersClientGetResult` of struct `TriggersClientGetResponse` has been removed
+- Field `RawResponse` of struct `TriggersClientGetResponse` has been removed
+- Field `PipelinesClientCreateOrUpdateResult` of struct `PipelinesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `PipelinesClientCreateOrUpdateResponse` has been removed
+- Field `IntegrationRuntimeNodesClientGetResult` of struct `IntegrationRuntimeNodesClientGetResponse` has been removed
+- Field `RawResponse` of struct `IntegrationRuntimeNodesClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionClientDeleteResponse` has been removed
+- Field `FactoriesClientGetResult` of struct `FactoriesClientGetResponse` has been removed
+- Field `RawResponse` of struct `FactoriesClientGetResponse` has been removed
+- Field `DataFlowDebugSessionClientCreateResult` of struct `DataFlowDebugSessionClientCreateResponse` has been removed
+- Field `RawResponse` of struct `DataFlowDebugSessionClientCreateResponse` has been removed
+- Field `DataFlowDebugSessionClientAddDataFlowResult` of struct `DataFlowDebugSessionClientAddDataFlowResponse` has been removed
+- Field `RawResponse` of struct `DataFlowDebugSessionClientAddDataFlowResponse` has been removed
+- Field `IntegrationRuntimesClientGetResult` of struct `IntegrationRuntimesClientGetResponse` has been removed
+- Field `RawResponse` of struct `IntegrationRuntimesClientGetResponse` has been removed
+- Field `PipelineRunsClientGetResult` of struct `PipelineRunsClientGetResponse` has been removed
+- Field `RawResponse` of struct `PipelineRunsClientGetResponse` has been removed
+- Field `DataFlowsClientGetResult` of struct `DataFlowsClientGetResponse` has been removed
+- Field `RawResponse` of struct `DataFlowsClientGetResponse` has been removed
+- Field `FactoriesClientListByResourceGroupResult` of struct `FactoriesClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `FactoriesClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `ManagedPrivateEndpointsClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `IntegrationRuntimesClientUpgradeResponse` has been removed
+- Field `PrivateEndPointConnectionsClientListByFactoryResult` of struct `PrivateEndPointConnectionsClientListByFactoryResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndPointConnectionsClientListByFactoryResponse` has been removed
+- Field `ManagedPrivateEndpointsClientGetResult` of struct `ManagedPrivateEndpointsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ManagedPrivateEndpointsClientGetResponse` has been removed
+- Field `ExposureControlClientQueryFeatureValuesByFactoryResult` of struct `ExposureControlClientQueryFeatureValuesByFactoryResponse` has been removed
+- Field `RawResponse` of struct `ExposureControlClientQueryFeatureValuesByFactoryResponse` has been removed
+- Field `DataFlowsClientListByFactoryResult` of struct `DataFlowsClientListByFactoryResponse` has been removed
+- Field `RawResponse` of struct `DataFlowsClientListByFactoryResponse` has been removed
+- Field `PrivateEndpointConnectionClientGetResult` of struct `PrivateEndpointConnectionClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionClientGetResponse` has been removed
+- Field `FactoriesClientConfigureFactoryRepoResult` of struct `FactoriesClientConfigureFactoryRepoResponse` has been removed
+- Field `RawResponse` of struct `FactoriesClientConfigureFactoryRepoResponse` has been removed
+- Field `RawResponse` of struct `TriggerRunsClientCancelResponse` has been removed
+- Field `RawResponse` of struct `PipelinesClientDeleteResponse` has been removed
+- Field `FactoriesClientCreateOrUpdateResult` of struct `FactoriesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `FactoriesClientCreateOrUpdateResponse` has been removed
+- Field `DatasetsClientCreateOrUpdateResult` of struct `DatasetsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `DatasetsClientCreateOrUpdateResponse` has been removed
+- Field `TriggersClientGetEventSubscriptionStatusResult` of struct `TriggersClientGetEventSubscriptionStatusResponse` has been removed
+- Field `RawResponse` of struct `TriggersClientGetEventSubscriptionStatusResponse` has been removed
+- Field `RawResponse` of struct `TriggersClientStartResponse` has been removed
+- Field `DatasetsClientGetResult` of struct `DatasetsClientGetResponse` has been removed
+- Field `RawResponse` of struct `DatasetsClientGetResponse` has been removed
+- Field `RawResponse` of struct `IntegrationRuntimesClientStopResponse` has been removed
+- Field `IntegrationRuntimeNodesClientGetIPAddressResult` of struct `IntegrationRuntimeNodesClientGetIPAddressResponse` has been removed
+- Field `RawResponse` of struct `IntegrationRuntimeNodesClientGetIPAddressResponse` has been removed
+- Field `ManagedVirtualNetworksClientListByFactoryResult` of struct `ManagedVirtualNetworksClientListByFactoryResponse` has been removed
+- Field `RawResponse` of struct `ManagedVirtualNetworksClientListByFactoryResponse` has been removed
+- Field `RawResponse` of struct `IntegrationRuntimesClientDeleteResponse` has been removed
+- Field `PipelineRunsClientQueryByFactoryResult` of struct `PipelineRunsClientQueryByFactoryResponse` has been removed
+- Field `RawResponse` of struct `PipelineRunsClientQueryByFactoryResponse` has been removed
+- Field `RawResponse` of struct `TriggersClientDeleteResponse` has been removed
+- Field `PipelinesClientCreateRunResult` of struct `PipelinesClientCreateRunResponse` has been removed
+- Field `RawResponse` of struct `PipelinesClientCreateRunResponse` has been removed
+- Field `RawResponse` of struct `IntegrationRuntimesClientRemoveLinksResponse` has been removed
+- Field `RawResponse` of struct `PipelineRunsClientCancelResponse` has been removed
+- Field `TriggersClientCreateOrUpdateResult` of struct `TriggersClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `TriggersClientCreateOrUpdateResponse` has been removed
+- Field `ActivityRunsClientQueryByPipelineRunResult` of struct `ActivityRunsClientQueryByPipelineRunResponse` has been removed
+- Field `RawResponse` of struct `ActivityRunsClientQueryByPipelineRunResponse` has been removed
+- Field `PipelinesClientGetResult` of struct `PipelinesClientGetResponse` has been removed
+- Field `RawResponse` of struct `PipelinesClientGetResponse` has been removed
+- Field `IntegrationRuntimesClientListByFactoryResult` of struct `IntegrationRuntimesClientListByFactoryResponse` has been removed
+- Field `RawResponse` of struct `IntegrationRuntimesClientListByFactoryResponse` has been removed
+- Field `ExposureControlClientGetFeatureValueResult` of struct `ExposureControlClientGetFeatureValueResponse` has been removed
+- Field `RawResponse` of struct `ExposureControlClientGetFeatureValueResponse` has been removed
+
+### Features Added
+
+- New function `ExecutePipelineActivityPolicy.MarshalJSON() ([]byte, error)`
+- New function `IntegrationRuntimeStatusListResponse.MarshalJSON() ([]byte, error)`
+- New function `GetDataFactoryOperationStatusResponse.MarshalJSON() ([]byte, error)`
+- New function `*ExecutePipelineActivityPolicy.UnmarshalJSON([]byte) error`
+- New function `*DatasetSchemaDataElement.UnmarshalJSON([]byte) error`
+- New function `CloudErrorBody.MarshalJSON() ([]byte, error)`
+- New function `DatasetSchemaDataElement.MarshalJSON() ([]byte, error)`
+- New function `*GetDataFactoryOperationStatusResponse.UnmarshalJSON([]byte) error`
+- New struct `AdditionalColumns`
+- New struct `CloudError`
+- New struct `CloudErrorBody`
+- New struct `DatasetDataElement`
+- New struct `DatasetSchemaDataElement`
+- New struct `ExecutePipelineActivityPolicy`
+- New struct `GetDataFactoryOperationStatusResponse`
+- New struct `IntegrationRuntimeStatusListResponse`
+- New anonymous field `SelfHostedIntegrationRuntimeNode` in struct `IntegrationRuntimeNodesClientUpdateResponse`
+- New field `ResumeToken` in struct `TriggersClientBeginSubscribeToEventsOptions`
+- New anonymous field `SsisObjectMetadataListResponse` in struct `IntegrationRuntimeObjectMetadataClientGetResponse`
+- New anonymous field `DatasetResource` in struct `DatasetsClientCreateOrUpdateResponse`
+- New anonymous field `AccessPolicyResponse` in struct `FactoriesClientGetDataPlaneAccessResponse`
+- New anonymous field `IntegrationRuntimeMonitoringData` in struct `IntegrationRuntimesClientGetMonitoringDataResponse`
+- New anonymous field `IntegrationRuntimeResource` in struct `IntegrationRuntimesClientGetResponse`
+- New anonymous field `IntegrationRuntimeStatusResponse` in struct `IntegrationRuntimesClientCreateLinkedIntegrationRuntimeResponse`
+- New anonymous field `GitHubAccessTokenResponse` in struct `FactoriesClientGetGitHubAccessTokenResponse`
+- New field `ResumeToken` in struct `IntegrationRuntimeObjectMetadataClientBeginRefreshOptions`
+- New anonymous field `IntegrationRuntimeResource` in struct `IntegrationRuntimesClientCreateOrUpdateResponse`
+- New anonymous field `TriggerRunsQueryResponse` in struct `TriggerRunsClientQueryByFactoryResponse`
+- New anonymous field `PrivateEndpointConnectionResource` in struct `PrivateEndpointConnectionClientCreateOrUpdateResponse`
+- New anonymous field `TriggerQueryResponse` in struct `TriggersClientQueryByFactoryResponse`
+- New anonymous field `ManagedPrivateEndpointListResponse` in struct `ManagedPrivateEndpointsClientListByFactoryResponse`
+- New anonymous field `IntegrationRuntimeStatusResponse` in struct `IntegrationRuntimesClientStartResponse`
+- New anonymous field `TriggerSubscriptionOperationStatus` in struct `TriggersClientGetEventSubscriptionStatusResponse`
+- New anonymous field `DataFlowListResponse` in struct `DataFlowsClientListByFactoryResponse`
+- New anonymous field `IntegrationRuntimeAuthKeys` in struct `IntegrationRuntimesClientRegenerateAuthKeyResponse`
+- New anonymous field `PrivateLinkResourcesWrapper` in struct `PrivateLinkResourcesClientGetResponse`
+- New field `ResumeToken` in struct `DataFlowDebugSessionClientBeginCreateOptions`
+- New anonymous field `ManagedVirtualNetworkResource` in struct `ManagedVirtualNetworksClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `TriggersClientBeginStopOptions`
+- New anonymous field `ExposureControlResponse` in struct `ExposureControlClientGetFeatureValueResponse`
+- New anonymous field `ManagedVirtualNetworkListResponse` in struct `ManagedVirtualNetworksClientListByFactoryResponse`
+- New anonymous field `DatasetResource` in struct `DatasetsClientGetResponse`
+- New anonymous field `TriggerListResponse` in struct `TriggersClientListByFactoryResponse`
+- New anonymous field `FactoryListResponse` in struct `FactoriesClientListResponse`
+- New anonymous field `TriggerResource` in struct `TriggersClientCreateOrUpdateResponse`
+- New anonymous field `LinkedServiceListResponse` in struct `LinkedServicesClientListByFactoryResponse`
+- New anonymous field `TriggerSubscriptionOperationStatus` in struct `TriggersClientSubscribeToEventsResponse`
+- New anonymous field `LinkedServiceResource` in struct `LinkedServicesClientGetResponse`
+- New anonymous field `DataFlowResource` in struct `DataFlowsClientCreateOrUpdateResponse`
+- New anonymous field `PrivateEndpointConnectionResource` in struct `PrivateEndpointConnectionClientGetResponse`
+- New anonymous field `QueryDataFlowDebugSessionsResponse` in struct `DataFlowDebugSessionClientQueryByFactoryResponse`
+- New anonymous field `ManagedPrivateEndpointResource` in struct `ManagedPrivateEndpointsClientCreateOrUpdateResponse`
+- New anonymous field `AddDataFlowToDebugSessionResponse` in struct `DataFlowDebugSessionClientAddDataFlowResponse`
+- New anonymous field `Factory` in struct `FactoriesClientCreateOrUpdateResponse`
+- New anonymous field `PipelineResource` in struct `PipelinesClientGetResponse`
+- New anonymous field `PipelineRunsQueryResponse` in struct `PipelineRunsClientQueryByFactoryResponse`
+- New anonymous field `PrivateEndpointConnectionListResponse` in struct `PrivateEndPointConnectionsClientListByFactoryResponse`
+- New anonymous field `Factory` in struct `FactoriesClientGetResponse`
+- New anonymous field `DatasetListResponse` in struct `DatasetsClientListByFactoryResponse`
+- New anonymous field `ActivityRunsQueryResponse` in struct `ActivityRunsClientQueryByPipelineRunResponse`
+- New anonymous field `ExposureControlBatchResponse` in struct `ExposureControlClientQueryFeatureValuesByFactoryResponse`
+- New field `ResumeToken` in struct `IntegrationRuntimesClientBeginStopOptions`
+- New anonymous field `ManagedVirtualNetworkResource` in struct `ManagedVirtualNetworksClientGetResponse`
+- New anonymous field `PipelineResource` in struct `PipelinesClientCreateOrUpdateResponse`
+- New anonymous field `IntegrationRuntimeAuthKeys` in struct `IntegrationRuntimesClientListAuthKeysResponse`
+- New anonymous field `CreateRunResponse` in struct `PipelinesClientCreateRunResponse`
+- New field `ResumeToken` in struct `TriggersClientBeginStartOptions`
+- New anonymous field `TriggerResource` in struct `TriggersClientGetResponse`
+- New anonymous field `IntegrationRuntimeListResponse` in struct `IntegrationRuntimesClientListByFactoryResponse`
+- New anonymous field `ManagedPrivateEndpointResource` in struct `ManagedPrivateEndpointsClientGetResponse`
+- New anonymous field `OperationListResponse` in struct `OperationsClientListResponse`
+- New anonymous field `Factory` in struct `FactoriesClientConfigureFactoryRepoResponse`
+- New anonymous field `IntegrationRuntimeResource` in struct `IntegrationRuntimesClientUpdateResponse`
+- New field `ResumeToken` in struct `DataFlowDebugSessionClientBeginExecuteCommandOptions`
+- New anonymous field `DataFlowResource` in struct `DataFlowsClientGetResponse`
+- New anonymous field `SelfHostedIntegrationRuntimeNode` in struct `IntegrationRuntimeNodesClientGetResponse`
+- New anonymous field `Factory` in struct `FactoriesClientUpdateResponse`
+- New field `Policy` in struct `ExecutePipelineActivity`
+- New anonymous field `TriggerSubscriptionOperationStatus` in struct `TriggersClientUnsubscribeFromEventsResponse`
+- New anonymous field `PipelineListResponse` in struct `PipelinesClientListByFactoryResponse`
+- New field `ResumeToken` in struct `IntegrationRuntimesClientBeginStartOptions`
+- New anonymous field `SsisObjectMetadataStatusResponse` in struct `IntegrationRuntimeObjectMetadataClientRefreshResponse`
+- New anonymous field `LinkedServiceResource` in struct `LinkedServicesClientCreateOrUpdateResponse`
+- New anonymous field `ExposureControlResponse` in struct `ExposureControlClientGetFeatureValueByFactoryResponse`
+- New anonymous field `PipelineRun` in struct `PipelineRunsClientGetResponse`
+- New anonymous field `IntegrationRuntimeNodeIPAddress` in struct `IntegrationRuntimeNodesClientGetIPAddressResponse`
+- New anonymous field `CreateDataFlowDebugSessionResponse` in struct `DataFlowDebugSessionClientCreateResponse`
+- New anonymous field `DataFlowDebugCommandResponse` in struct `DataFlowDebugSessionClientExecuteCommandResponse`
+- New field `ResumeToken` in struct `TriggersClientBeginUnsubscribeFromEventsOptions`
+- New anonymous field `FactoryListResponse` in struct `FactoriesClientListByResourceGroupResponse`
+- New anonymous field `IntegrationRuntimeStatusResponse` in struct `IntegrationRuntimesClientGetStatusResponse`
+- New anonymous field `IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponse` in struct `IntegrationRuntimesClientListOutboundNetworkDependenciesEndpointsResponse`
+- New anonymous field `IntegrationRuntimeConnectionInfo` in struct `IntegrationRuntimesClientGetConnectionInfoResponse`
+
+
 ## 0.3.0 (2022-03-22)
 ### Breaking Changes
 

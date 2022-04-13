@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type ConnectionClient struct {
 // forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewConnectionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ConnectionClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewConnectionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConnectionClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ConnectionClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Create or update a connection.
@@ -105,7 +110,7 @@ func (client *ConnectionClient) createOrUpdateCreateRequest(ctx context.Context,
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *ConnectionClient) createOrUpdateHandleResponse(resp *http.Response) (ConnectionClientCreateOrUpdateResponse, error) {
-	result := ConnectionClientCreateOrUpdateResponse{RawResponse: resp}
+	result := ConnectionClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Connection); err != nil {
 		return ConnectionClientCreateOrUpdateResponse{}, err
 	}
@@ -130,7 +135,7 @@ func (client *ConnectionClient) Delete(ctx context.Context, resourceGroupName st
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return ConnectionClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ConnectionClientDeleteResponse{RawResponse: resp}, nil
+	return ConnectionClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -216,7 +221,7 @@ func (client *ConnectionClient) getCreateRequest(ctx context.Context, resourceGr
 
 // getHandleResponse handles the Get response.
 func (client *ConnectionClient) getHandleResponse(resp *http.Response) (ConnectionClientGetResponse, error) {
-	result := ConnectionClientGetResponse{RawResponse: resp}
+	result := ConnectionClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Connection); err != nil {
 		return ConnectionClientGetResponse{}, err
 	}
@@ -229,16 +234,32 @@ func (client *ConnectionClient) getHandleResponse(resp *http.Response) (Connecti
 // automationAccountName - The name of the automation account.
 // options - ConnectionClientListByAutomationAccountOptions contains the optional parameters for the ConnectionClient.ListByAutomationAccount
 // method.
-func (client *ConnectionClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *ConnectionClientListByAutomationAccountOptions) *ConnectionClientListByAutomationAccountPager {
-	return &ConnectionClientListByAutomationAccountPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, options)
+func (client *ConnectionClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *ConnectionClientListByAutomationAccountOptions) *runtime.Pager[ConnectionClientListByAutomationAccountResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ConnectionClientListByAutomationAccountResponse]{
+		More: func(page ConnectionClientListByAutomationAccountResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ConnectionClientListByAutomationAccountResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ConnectionListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ConnectionClientListByAutomationAccountResponse) (ConnectionClientListByAutomationAccountResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ConnectionClientListByAutomationAccountResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ConnectionClientListByAutomationAccountResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ConnectionClientListByAutomationAccountResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByAutomationAccountHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByAutomationAccountCreateRequest creates the ListByAutomationAccount request.
@@ -269,7 +290,7 @@ func (client *ConnectionClient) listByAutomationAccountCreateRequest(ctx context
 
 // listByAutomationAccountHandleResponse handles the ListByAutomationAccount response.
 func (client *ConnectionClient) listByAutomationAccountHandleResponse(resp *http.Response) (ConnectionClientListByAutomationAccountResponse, error) {
-	result := ConnectionClientListByAutomationAccountResponse{RawResponse: resp}
+	result := ConnectionClientListByAutomationAccountResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectionListResult); err != nil {
 		return ConnectionClientListByAutomationAccountResponse{}, err
 	}
@@ -330,7 +351,7 @@ func (client *ConnectionClient) updateCreateRequest(ctx context.Context, resourc
 
 // updateHandleResponse handles the Update response.
 func (client *ConnectionClient) updateHandleResponse(resp *http.Response) (ConnectionClientUpdateResponse, error) {
-	result := ConnectionClientUpdateResponse{RawResponse: resp}
+	result := ConnectionClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Connection); err != nil {
 		return ConnectionClientUpdateResponse{}, err
 	}

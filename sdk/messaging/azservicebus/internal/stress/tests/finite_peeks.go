@@ -30,7 +30,7 @@ func FinitePeeks(remainingArgs []string) {
 
 	err = sender.SendMessage(sc.Context, &azservicebus.Message{
 		Body: []byte("peekable message"),
-	})
+	}, nil)
 	sc.PanicOnError("failed to send message", err)
 
 	_ = sender.Close(sc.Context)

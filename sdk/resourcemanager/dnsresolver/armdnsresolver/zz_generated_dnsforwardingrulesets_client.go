@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type DNSForwardingRulesetsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewDNSForwardingRulesetsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DNSForwardingRulesetsClient {
+func NewDNSForwardingRulesetsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DNSForwardingRulesetsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &DNSForwardingRulesetsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates a DNS forwarding ruleset.
@@ -57,22 +62,16 @@ func NewDNSForwardingRulesetsClient(subscriptionID string, credential azcore.Tok
 // parameters - Parameters supplied to the CreateOrUpdate operation.
 // options - DNSForwardingRulesetsClientBeginCreateOrUpdateOptions contains the optional parameters for the DNSForwardingRulesetsClient.BeginCreateOrUpdate
 // method.
-func (client *DNSForwardingRulesetsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, dnsForwardingRulesetName string, parameters DNSForwardingRuleset, options *DNSForwardingRulesetsClientBeginCreateOrUpdateOptions) (DNSForwardingRulesetsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, dnsForwardingRulesetName, parameters, options)
-	if err != nil {
-		return DNSForwardingRulesetsClientCreateOrUpdatePollerResponse{}, err
+func (client *DNSForwardingRulesetsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, dnsForwardingRulesetName string, parameters DNSForwardingRuleset, options *DNSForwardingRulesetsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[DNSForwardingRulesetsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, dnsForwardingRulesetName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[DNSForwardingRulesetsClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[DNSForwardingRulesetsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DNSForwardingRulesetsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DNSForwardingRulesetsClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return DNSForwardingRulesetsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &DNSForwardingRulesetsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a DNS forwarding ruleset.
@@ -131,22 +130,16 @@ func (client *DNSForwardingRulesetsClient) createOrUpdateCreateRequest(ctx conte
 // dnsForwardingRulesetName - The name of the DNS forwarding ruleset.
 // options - DNSForwardingRulesetsClientBeginDeleteOptions contains the optional parameters for the DNSForwardingRulesetsClient.BeginDelete
 // method.
-func (client *DNSForwardingRulesetsClient) BeginDelete(ctx context.Context, resourceGroupName string, dnsForwardingRulesetName string, options *DNSForwardingRulesetsClientBeginDeleteOptions) (DNSForwardingRulesetsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, dnsForwardingRulesetName, options)
-	if err != nil {
-		return DNSForwardingRulesetsClientDeletePollerResponse{}, err
+func (client *DNSForwardingRulesetsClient) BeginDelete(ctx context.Context, resourceGroupName string, dnsForwardingRulesetName string, options *DNSForwardingRulesetsClientBeginDeleteOptions) (*armruntime.Poller[DNSForwardingRulesetsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, dnsForwardingRulesetName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[DNSForwardingRulesetsClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[DNSForwardingRulesetsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DNSForwardingRulesetsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DNSForwardingRulesetsClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return DNSForwardingRulesetsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &DNSForwardingRulesetsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes a DNS forwarding ruleset. WARNING: This operation cannot be undone. All forwarding rules within the ruleset
@@ -245,7 +238,7 @@ func (client *DNSForwardingRulesetsClient) getCreateRequest(ctx context.Context,
 
 // getHandleResponse handles the Get response.
 func (client *DNSForwardingRulesetsClient) getHandleResponse(resp *http.Response) (DNSForwardingRulesetsClientGetResponse, error) {
-	result := DNSForwardingRulesetsClientGetResponse{RawResponse: resp}
+	result := DNSForwardingRulesetsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DNSForwardingRuleset); err != nil {
 		return DNSForwardingRulesetsClientGetResponse{}, err
 	}
@@ -256,16 +249,32 @@ func (client *DNSForwardingRulesetsClient) getHandleResponse(resp *http.Response
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - DNSForwardingRulesetsClientListOptions contains the optional parameters for the DNSForwardingRulesetsClient.List
 // method.
-func (client *DNSForwardingRulesetsClient) List(options *DNSForwardingRulesetsClientListOptions) *DNSForwardingRulesetsClientListPager {
-	return &DNSForwardingRulesetsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *DNSForwardingRulesetsClient) List(options *DNSForwardingRulesetsClientListOptions) *runtime.Pager[DNSForwardingRulesetsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DNSForwardingRulesetsClientListResponse]{
+		More: func(page DNSForwardingRulesetsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DNSForwardingRulesetsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DNSForwardingRulesetListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *DNSForwardingRulesetsClientListResponse) (DNSForwardingRulesetsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DNSForwardingRulesetsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DNSForwardingRulesetsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DNSForwardingRulesetsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -291,7 +300,7 @@ func (client *DNSForwardingRulesetsClient) listCreateRequest(ctx context.Context
 
 // listHandleResponse handles the List response.
 func (client *DNSForwardingRulesetsClient) listHandleResponse(resp *http.Response) (DNSForwardingRulesetsClientListResponse, error) {
-	result := DNSForwardingRulesetsClientListResponse{RawResponse: resp}
+	result := DNSForwardingRulesetsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DNSForwardingRulesetListResult); err != nil {
 		return DNSForwardingRulesetsClientListResponse{}, err
 	}
@@ -303,16 +312,32 @@ func (client *DNSForwardingRulesetsClient) listHandleResponse(resp *http.Respons
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - DNSForwardingRulesetsClientListByResourceGroupOptions contains the optional parameters for the DNSForwardingRulesetsClient.ListByResourceGroup
 // method.
-func (client *DNSForwardingRulesetsClient) ListByResourceGroup(resourceGroupName string, options *DNSForwardingRulesetsClientListByResourceGroupOptions) *DNSForwardingRulesetsClientListByResourceGroupPager {
-	return &DNSForwardingRulesetsClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *DNSForwardingRulesetsClient) ListByResourceGroup(resourceGroupName string, options *DNSForwardingRulesetsClientListByResourceGroupOptions) *runtime.Pager[DNSForwardingRulesetsClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DNSForwardingRulesetsClientListByResourceGroupResponse]{
+		More: func(page DNSForwardingRulesetsClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DNSForwardingRulesetsClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DNSForwardingRulesetListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *DNSForwardingRulesetsClientListByResourceGroupResponse) (DNSForwardingRulesetsClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DNSForwardingRulesetsClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DNSForwardingRulesetsClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DNSForwardingRulesetsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -342,7 +367,7 @@ func (client *DNSForwardingRulesetsClient) listByResourceGroupCreateRequest(ctx 
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *DNSForwardingRulesetsClient) listByResourceGroupHandleResponse(resp *http.Response) (DNSForwardingRulesetsClientListByResourceGroupResponse, error) {
-	result := DNSForwardingRulesetsClientListByResourceGroupResponse{RawResponse: resp}
+	result := DNSForwardingRulesetsClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DNSForwardingRulesetListResult); err != nil {
 		return DNSForwardingRulesetsClientListByResourceGroupResponse{}, err
 	}
@@ -355,16 +380,32 @@ func (client *DNSForwardingRulesetsClient) listByResourceGroupHandleResponse(res
 // virtualNetworkName - The name of the virtual network.
 // options - DNSForwardingRulesetsClientListByVirtualNetworkOptions contains the optional parameters for the DNSForwardingRulesetsClient.ListByVirtualNetwork
 // method.
-func (client *DNSForwardingRulesetsClient) ListByVirtualNetwork(resourceGroupName string, virtualNetworkName string, options *DNSForwardingRulesetsClientListByVirtualNetworkOptions) *DNSForwardingRulesetsClientListByVirtualNetworkPager {
-	return &DNSForwardingRulesetsClientListByVirtualNetworkPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByVirtualNetworkCreateRequest(ctx, resourceGroupName, virtualNetworkName, options)
+func (client *DNSForwardingRulesetsClient) ListByVirtualNetwork(resourceGroupName string, virtualNetworkName string, options *DNSForwardingRulesetsClientListByVirtualNetworkOptions) *runtime.Pager[DNSForwardingRulesetsClientListByVirtualNetworkResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DNSForwardingRulesetsClientListByVirtualNetworkResponse]{
+		More: func(page DNSForwardingRulesetsClientListByVirtualNetworkResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DNSForwardingRulesetsClientListByVirtualNetworkResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.VirtualNetworkDNSForwardingRulesetListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *DNSForwardingRulesetsClientListByVirtualNetworkResponse) (DNSForwardingRulesetsClientListByVirtualNetworkResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByVirtualNetworkCreateRequest(ctx, resourceGroupName, virtualNetworkName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DNSForwardingRulesetsClientListByVirtualNetworkResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DNSForwardingRulesetsClientListByVirtualNetworkResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DNSForwardingRulesetsClientListByVirtualNetworkResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByVirtualNetworkHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByVirtualNetworkCreateRequest creates the ListByVirtualNetwork request.
@@ -398,7 +439,7 @@ func (client *DNSForwardingRulesetsClient) listByVirtualNetworkCreateRequest(ctx
 
 // listByVirtualNetworkHandleResponse handles the ListByVirtualNetwork response.
 func (client *DNSForwardingRulesetsClient) listByVirtualNetworkHandleResponse(resp *http.Response) (DNSForwardingRulesetsClientListByVirtualNetworkResponse, error) {
-	result := DNSForwardingRulesetsClientListByVirtualNetworkResponse{RawResponse: resp}
+	result := DNSForwardingRulesetsClientListByVirtualNetworkResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualNetworkDNSForwardingRulesetListResult); err != nil {
 		return DNSForwardingRulesetsClientListByVirtualNetworkResponse{}, err
 	}
@@ -412,22 +453,16 @@ func (client *DNSForwardingRulesetsClient) listByVirtualNetworkHandleResponse(re
 // parameters - Parameters supplied to the Update operation.
 // options - DNSForwardingRulesetsClientBeginUpdateOptions contains the optional parameters for the DNSForwardingRulesetsClient.BeginUpdate
 // method.
-func (client *DNSForwardingRulesetsClient) BeginUpdate(ctx context.Context, resourceGroupName string, dnsForwardingRulesetName string, parameters DNSForwardingRulesetPatch, options *DNSForwardingRulesetsClientBeginUpdateOptions) (DNSForwardingRulesetsClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, dnsForwardingRulesetName, parameters, options)
-	if err != nil {
-		return DNSForwardingRulesetsClientUpdatePollerResponse{}, err
+func (client *DNSForwardingRulesetsClient) BeginUpdate(ctx context.Context, resourceGroupName string, dnsForwardingRulesetName string, parameters DNSForwardingRulesetPatch, options *DNSForwardingRulesetsClientBeginUpdateOptions) (*armruntime.Poller[DNSForwardingRulesetsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, dnsForwardingRulesetName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[DNSForwardingRulesetsClientUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[DNSForwardingRulesetsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DNSForwardingRulesetsClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DNSForwardingRulesetsClient.Update", "", resp, client.pl)
-	if err != nil {
-		return DNSForwardingRulesetsClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &DNSForwardingRulesetsClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Updates a DNS forwarding ruleset.

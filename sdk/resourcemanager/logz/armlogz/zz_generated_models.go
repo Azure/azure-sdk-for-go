@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,17 +8,12 @@
 
 package armlogz
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
 
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info map[string]interface{} `json:"info,omitempty" azure:"ro"`
+	Info interface{} `json:"info,omitempty" azure:"ro"`
 
 	// READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -40,17 +35,6 @@ type ErrorDetail struct {
 
 	// READ-ONLY; The error target.
 	Target *string `json:"target,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ErrorDetail.
-func (e ErrorDetail) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalInfo", e.AdditionalInfo)
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "message", e.Message)
-	populate(objectMap, "target", e.Target)
-	return json.Marshal(objectMap)
 }
 
 // ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
@@ -99,16 +83,6 @@ type LogRules struct {
 
 	// Flag specifying if subscription logs should be sent for the Monitor resource.
 	SendSubscriptionLogs *bool `json:"sendSubscriptionLogs,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type LogRules.
-func (l LogRules) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "filteringTags", l.FilteringTags)
-	populate(objectMap, "sendAadLogs", l.SendAADLogs)
-	populate(objectMap, "sendActivityLogs", l.SendActivityLogs)
-	populate(objectMap, "sendSubscriptionLogs", l.SendSubscriptionLogs)
-	return json.Marshal(objectMap)
 }
 
 // MonitorClientListVMHostUpdateOptions contains the optional parameters for the MonitorClient.ListVMHostUpdate method.
@@ -174,20 +148,6 @@ type MonitorResource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type MonitorResource.
-func (m MonitorResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", m.ID)
-	populate(objectMap, "identity", m.Identity)
-	populate(objectMap, "location", m.Location)
-	populate(objectMap, "name", m.Name)
-	populate(objectMap, "properties", m.Properties)
-	populate(objectMap, "systemData", m.SystemData)
-	populate(objectMap, "tags", m.Tags)
-	populate(objectMap, "type", m.Type)
-	return json.Marshal(objectMap)
-}
-
 // MonitorResourceListResponse - Response of a list operation.
 type MonitorResourceListResponse struct {
 	// Link to the next set of results, if any.
@@ -197,14 +157,6 @@ type MonitorResourceListResponse struct {
 	Value []*MonitorResource `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type MonitorResourceListResponse.
-func (m MonitorResourceListResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", m.NextLink)
-	populate(objectMap, "value", m.Value)
-	return json.Marshal(objectMap)
-}
-
 // MonitorResourceUpdateParameters - The parameters for a PATCH request to a monitor resource.
 type MonitorResourceUpdateParameters struct {
 	// The set of properties that can be update in a PATCH request to a monitor resource.
@@ -212,14 +164,6 @@ type MonitorResourceUpdateParameters struct {
 
 	// The new tags of the monitor resource.
 	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type MonitorResourceUpdateParameters.
-func (m MonitorResourceUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", m.Properties)
-	populate(objectMap, "tags", m.Tags)
-	return json.Marshal(objectMap)
 }
 
 // MonitorUpdateProperties - The set of properties that can be update in a PATCH request to a monitor resource.
@@ -258,14 +202,6 @@ type MonitoredResourceListResponse struct {
 	Value []*MonitoredResource `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type MonitoredResourceListResponse.
-func (m MonitoredResourceListResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", m.NextLink)
-	populate(objectMap, "value", m.Value)
-	return json.Marshal(objectMap)
-}
-
 // MonitoringTagRules - Capture logs and metrics of Azure resources based on ARM tags.
 type MonitoringTagRules struct {
 	// Definition of the properties for a TagRules resource.
@@ -293,14 +229,6 @@ type MonitoringTagRulesListResponse struct {
 	Value []*MonitoringTagRules `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type MonitoringTagRulesListResponse.
-func (m MonitoringTagRulesListResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", m.NextLink)
-	populate(objectMap, "value", m.Value)
-	return json.Marshal(objectMap)
-}
-
 // MonitoringTagRulesProperties - Definition of the properties for a TagRules resource.
 type MonitoringTagRulesProperties struct {
 	// Set of rules for sending logs for the Monitor resource.
@@ -316,11 +244,14 @@ type MonitoringTagRulesProperties struct {
 // MonitorsClientBeginCreateOptions contains the optional parameters for the MonitorsClient.BeginCreate method.
 type MonitorsClientBeginCreateOptions struct {
 	Body *MonitorResource
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // MonitorsClientBeginDeleteOptions contains the optional parameters for the MonitorsClient.BeginDelete method.
 type MonitorsClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // MonitorsClientGetOptions contains the optional parameters for the MonitorsClient.Get method.
@@ -378,14 +309,6 @@ type OperationListResult struct {
 	Value []*OperationResult `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
-func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
-}
-
 // OperationResult - A Microsoft.Logz REST API operation.
 type OperationResult struct {
 	// The object that represents the operation.
@@ -434,49 +357,12 @@ type PlanData struct {
 	UsageType *string `json:"usageType,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PlanData.
-func (p PlanData) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "billingCycle", p.BillingCycle)
-	populateTimeRFC3339(objectMap, "effectiveDate", p.EffectiveDate)
-	populate(objectMap, "planDetails", p.PlanDetails)
-	populate(objectMap, "usageType", p.UsageType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type PlanData.
-func (p *PlanData) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "billingCycle":
-			err = unpopulate(val, &p.BillingCycle)
-			delete(rawMsg, key)
-		case "effectiveDate":
-			err = unpopulateTimeRFC3339(val, &p.EffectiveDate)
-			delete(rawMsg, key)
-		case "planDetails":
-			err = unpopulate(val, &p.PlanDetails)
-			delete(rawMsg, key)
-		case "usageType":
-			err = unpopulate(val, &p.UsageType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // SingleSignOnClientBeginCreateOrUpdateOptions contains the optional parameters for the SingleSignOnClient.BeginCreateOrUpdate
 // method.
 type SingleSignOnClientBeginCreateOrUpdateOptions struct {
 	Body *SingleSignOnResource
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // SingleSignOnClientGetOptions contains the optional parameters for the SingleSignOnClient.Get method.
@@ -528,22 +414,17 @@ type SingleSignOnResourceListResponse struct {
 	Value []*SingleSignOnResource `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SingleSignOnResourceListResponse.
-func (s SingleSignOnResourceListResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
-}
-
 // SubAccountClientBeginCreateOptions contains the optional parameters for the SubAccountClient.BeginCreate method.
 type SubAccountClientBeginCreateOptions struct {
 	Body *MonitorResource
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // SubAccountClientBeginDeleteOptions contains the optional parameters for the SubAccountClient.BeginDelete method.
 type SubAccountClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // SubAccountClientGetOptions contains the optional parameters for the SubAccountClient.Get method.
@@ -625,53 +506,6 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SystemData.
-func (s SystemData) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
-	populate(objectMap, "createdBy", s.CreatedBy)
-	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
-	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
-	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SystemData.
-func (s *SystemData) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdAt":
-			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
-			delete(rawMsg, key)
-		case "createdBy":
-			err = unpopulate(val, &s.CreatedBy)
-			delete(rawMsg, key)
-		case "createdByType":
-			err = unpopulate(val, &s.CreatedByType)
-			delete(rawMsg, key)
-		case "lastModifiedAt":
-			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
-			delete(rawMsg, key)
-		case "lastModifiedBy":
-			err = unpopulate(val, &s.LastModifiedBy)
-			delete(rawMsg, key)
-		case "lastModifiedByType":
-			err = unpopulate(val, &s.LastModifiedByType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // TagRulesClientCreateOrUpdateOptions contains the optional parameters for the TagRulesClient.CreateOrUpdate method.
 type TagRulesClientCreateOrUpdateOptions struct {
 	Body *MonitoringTagRules
@@ -715,14 +549,6 @@ type UserRoleListResponse struct {
 	Value []*UserRoleResponse `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type UserRoleListResponse.
-func (u UserRoleListResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", u.NextLink)
-	populate(objectMap, "value", u.Value)
-	return json.Marshal(objectMap)
-}
-
 // UserRoleRequest - Request for checking user's role for Logz.io account.
 type UserRoleRequest struct {
 	// Email of the user used by Logz for contacting them if needed
@@ -753,14 +579,6 @@ type VMHostUpdateRequest struct {
 	VMResourceIDs []*VMResources `json:"vmResourceIds,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type VMHostUpdateRequest.
-func (v VMHostUpdateRequest) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "state", v.State)
-	populate(objectMap, "vmResourceIds", v.VMResourceIDs)
-	return json.Marshal(objectMap)
-}
-
 // VMResources - VM Resource Ids
 type VMResources struct {
 	// Version of the Logz agent installed on the VM.
@@ -777,29 +595,4 @@ type VMResourcesListResponse struct {
 
 	// Response of a list vm host update operation.
 	Value []*VMResources `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VMResourcesListResponse.
-func (v VMResourcesListResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", v.NextLink)
-	populate(objectMap, "value", v.Value)
-	return json.Marshal(objectMap)
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

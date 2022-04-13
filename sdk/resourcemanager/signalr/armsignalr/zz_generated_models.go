@@ -84,6 +84,145 @@ func (c CorsSettings) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// CustomCertificate - A custom certificate.
+type CustomCertificate struct {
+	// REQUIRED; Custom certificate properties.
+	Properties *CustomCertificateProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource - e.g. "Microsoft.SignalRService/SignalR"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// CustomCertificateList - Custom certificates list.
+type CustomCertificateList struct {
+	// The URL the client should use to fetch the next page (per server side paging). It's null for now, added for future use.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// List of custom certificates of this resource.
+	Value []*CustomCertificate `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type CustomCertificateList.
+func (c CustomCertificateList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", c.NextLink)
+	populate(objectMap, "value", c.Value)
+	return json.Marshal(objectMap)
+}
+
+// CustomCertificateProperties - Custom certificate properties.
+type CustomCertificateProperties struct {
+	// REQUIRED; Base uri of the KeyVault that stores certificate.
+	KeyVaultBaseURI *string `json:"keyVaultBaseUri,omitempty"`
+
+	// REQUIRED; Certificate secret name.
+	KeyVaultSecretName *string `json:"keyVaultSecretName,omitempty"`
+
+	// Certificate secret version.
+	KeyVaultSecretVersion *string `json:"keyVaultSecretVersion,omitempty"`
+
+	// READ-ONLY; Provisioning state of the resource.
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// CustomCertificatesClientBeginCreateOrUpdateOptions contains the optional parameters for the CustomCertificatesClient.BeginCreateOrUpdate
+// method.
+type CustomCertificatesClientBeginCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CustomCertificatesClientDeleteOptions contains the optional parameters for the CustomCertificatesClient.Delete method.
+type CustomCertificatesClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CustomCertificatesClientGetOptions contains the optional parameters for the CustomCertificatesClient.Get method.
+type CustomCertificatesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CustomCertificatesClientListOptions contains the optional parameters for the CustomCertificatesClient.List method.
+type CustomCertificatesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CustomDomain - A custom domain
+type CustomDomain struct {
+	// REQUIRED; Properties of a custom domain.
+	Properties *CustomDomainProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource - e.g. "Microsoft.SignalRService/SignalR"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// CustomDomainList - Custom domains list
+type CustomDomainList struct {
+	// The URL the client should use to fetch the next page (per server side paging). It's null for now, added for future use.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// List of custom domains that bind to this resource.
+	Value []*CustomDomain `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type CustomDomainList.
+func (c CustomDomainList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", c.NextLink)
+	populate(objectMap, "value", c.Value)
+	return json.Marshal(objectMap)
+}
+
+// CustomDomainProperties - Properties of a custom domain.
+type CustomDomainProperties struct {
+	// REQUIRED; Reference to a resource.
+	CustomCertificate *ResourceReference `json:"customCertificate,omitempty"`
+
+	// REQUIRED; The custom domain name.
+	DomainName *string `json:"domainName,omitempty"`
+
+	// READ-ONLY; Provisioning state of the resource.
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// CustomDomainsClientBeginCreateOrUpdateOptions contains the optional parameters for the CustomDomainsClient.BeginCreateOrUpdate
+// method.
+type CustomDomainsClientBeginCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CustomDomainsClientBeginDeleteOptions contains the optional parameters for the CustomDomainsClient.BeginDelete method.
+type CustomDomainsClientBeginDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CustomDomainsClientGetOptions contains the optional parameters for the CustomDomainsClient.Get method.
+type CustomDomainsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CustomDomainsClientListOptions contains the optional parameters for the CustomDomainsClient.List method.
+type CustomDomainsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // Dimension - Specifications of the Dimension of metrics.
 type Dimension struct {
 	// Localized friendly display name of the dimension.
@@ -144,6 +283,34 @@ type Keys struct {
 
 	// The secondary access key.
 	SecondaryKey *string `json:"secondaryKey,omitempty"`
+}
+
+// LiveTraceCategory - Live trace category configuration of a Microsoft.SignalRService resource.
+type LiveTraceCategory struct {
+	// Indicates whether or the live trace category is enabled. Available values: true, false. Case insensitive.
+	Enabled *string `json:"enabled,omitempty"`
+
+	// Gets or sets the live trace category's name. Available values: ConnectivityLogs, MessagingLogs. Case insensitive.
+	Name *string `json:"name,omitempty"`
+}
+
+// LiveTraceConfiguration - Live trace configuration of a Microsoft.SignalRService resource.
+type LiveTraceConfiguration struct {
+	// Gets or sets the list of category configurations.
+	Categories []*LiveTraceCategory `json:"categories,omitempty"`
+
+	// Indicates whether or not enable live trace. When it's set to true, live trace client can connect to the service. Otherwise,
+	// live trace client can't connect to the service, so that you are unable to
+	// receive any log, no matter what you configure in "categories". Available values: true, false. Case insensitive.
+	Enabled *string `json:"enabled,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type LiveTraceConfiguration.
+func (l LiveTraceConfiguration) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "categories", l.Categories)
+	populate(objectMap, "enabled", l.Enabled)
+	return json.Marshal(objectMap)
 }
 
 // LogSpecification - Specifications of the Logs for Azure Monitoring.
@@ -556,6 +723,9 @@ type Properties struct {
 	// in terms of different FeatureFlags.
 	Features []*Feature `json:"features,omitempty"`
 
+	// Live trace configuration of a Microsoft.SignalRService resource.
+	LiveTraceConfiguration *LiveTraceConfiguration `json:"liveTraceConfiguration,omitempty"`
+
 	// Network ACLs for the resource
 	NetworkACLs *NetworkACLs `json:"networkACLs,omitempty"`
 
@@ -611,6 +781,7 @@ func (p Properties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "features", p.Features)
 	populate(objectMap, "hostName", p.HostName)
 	populate(objectMap, "hostNamePrefix", p.HostNamePrefix)
+	populate(objectMap, "liveTraceConfiguration", p.LiveTraceConfiguration)
 	populate(objectMap, "networkACLs", p.NetworkACLs)
 	populate(objectMap, "privateEndpointConnections", p.PrivateEndpointConnections)
 	populate(objectMap, "provisioningState", p.ProvisioningState)
@@ -742,6 +913,12 @@ func (r ResourceLogConfiguration) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "categories", r.Categories)
 	return json.Marshal(objectMap)
+}
+
+// ResourceReference - Reference to a resource.
+type ResourceReference struct {
+	// Resource ID.
+	ID *string `json:"id,omitempty"`
 }
 
 // ResourceSKU - The billing information of the resource.
@@ -1081,20 +1258,21 @@ type UpstreamTemplate struct {
 	Auth *UpstreamAuthSettings `json:"auth,omitempty"`
 
 	// Gets or sets the matching pattern for category names. If not set, it matches any category. There are 3 kind of patterns
-	// supported: 1. "*", it to matches any category name 2. Combine multiple
-	// categories with ",", for example "connections,messages", it matches category "connections" and "messages" 3. The single
-	// category name, for example, "connections", it matches the category "connections"
+	// supported: 1. "*", it to matches any category name. 2. Combine multiple
+	// categories with ",", for example "connections,messages", it matches category "connections" and "messages". 3. The single
+	// category name, for example, "connections", it matches the category
+	// "connections".
 	CategoryPattern *string `json:"categoryPattern,omitempty"`
 
 	// Gets or sets the matching pattern for event names. If not set, it matches any event. There are 3 kind of patterns supported:
-	// 1. "*", it to matches any event name 2. Combine multiple events with ",",
-	// for example "connect,disconnect", it matches event "connect" and "disconnect" 3. The single event name, for example, "connect",
-	// it matches "connect"
+	// 1. "*", it to matches any event name. 2. Combine multiple events with ",",
+	// for example "connect,disconnect", it matches event "connect" and "disconnect". 3. The single event name, for example, "connect",
+	// it matches "connect".
 	EventPattern *string `json:"eventPattern,omitempty"`
 
 	// Gets or sets the matching pattern for hub names. If not set, it matches any hub. There are 3 kind of patterns supported:
-	// 1. "*", it to matches any hub name 2. Combine multiple hubs with ",", for
-	// example "hub1,hub2", it matches "hub1" and "hub2" 3. The single hub name, for example, "hub1", it matches "hub1"
+	// 1. "*", it to matches any hub name. 2. Combine multiple hubs with ",", for
+	// example "hub1,hub2", it matches "hub1" and "hub2". 3. The single hub name, for example, "hub1", it matches "hub1".
 	HubPattern *string `json:"hubPattern,omitempty"`
 }
 

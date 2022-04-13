@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ActivityLogAlertsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewActivityLogAlertsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ActivityLogAlertsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewActivityLogAlertsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ActivityLogAlertsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ActivityLogAlertsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Create a new Activity Log Alert rule or update an existing one.
@@ -99,7 +104,7 @@ func (client *ActivityLogAlertsClient) createOrUpdateCreateRequest(ctx context.C
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *ActivityLogAlertsClient) createOrUpdateHandleResponse(resp *http.Response) (ActivityLogAlertsClientCreateOrUpdateResponse, error) {
-	result := ActivityLogAlertsClientCreateOrUpdateResponse{RawResponse: resp}
+	result := ActivityLogAlertsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ActivityLogAlertResource); err != nil {
 		return ActivityLogAlertsClientCreateOrUpdateResponse{}, err
 	}
@@ -124,7 +129,7 @@ func (client *ActivityLogAlertsClient) Delete(ctx context.Context, resourceGroup
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return ActivityLogAlertsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ActivityLogAlertsClientDeleteResponse{RawResponse: resp}, nil
+	return ActivityLogAlertsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -201,7 +206,7 @@ func (client *ActivityLogAlertsClient) getCreateRequest(ctx context.Context, res
 
 // getHandleResponse handles the Get response.
 func (client *ActivityLogAlertsClient) getHandleResponse(resp *http.Response) (ActivityLogAlertsClientGetResponse, error) {
-	result := ActivityLogAlertsClientGetResponse{RawResponse: resp}
+	result := ActivityLogAlertsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ActivityLogAlertResource); err != nil {
 		return ActivityLogAlertsClientGetResponse{}, err
 	}
@@ -213,16 +218,32 @@ func (client *ActivityLogAlertsClient) getHandleResponse(resp *http.Response) (A
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - ActivityLogAlertsClientListByResourceGroupOptions contains the optional parameters for the ActivityLogAlertsClient.ListByResourceGroup
 // method.
-func (client *ActivityLogAlertsClient) ListByResourceGroup(resourceGroupName string, options *ActivityLogAlertsClientListByResourceGroupOptions) *ActivityLogAlertsClientListByResourceGroupPager {
-	return &ActivityLogAlertsClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *ActivityLogAlertsClient) ListByResourceGroup(resourceGroupName string, options *ActivityLogAlertsClientListByResourceGroupOptions) *runtime.Pager[ActivityLogAlertsClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ActivityLogAlertsClientListByResourceGroupResponse]{
+		More: func(page ActivityLogAlertsClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ActivityLogAlertsClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AlertRuleList.NextLink)
+		Fetcher: func(ctx context.Context, page *ActivityLogAlertsClientListByResourceGroupResponse) (ActivityLogAlertsClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ActivityLogAlertsClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ActivityLogAlertsClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ActivityLogAlertsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -249,7 +270,7 @@ func (client *ActivityLogAlertsClient) listByResourceGroupCreateRequest(ctx cont
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *ActivityLogAlertsClient) listByResourceGroupHandleResponse(resp *http.Response) (ActivityLogAlertsClientListByResourceGroupResponse, error) {
-	result := ActivityLogAlertsClientListByResourceGroupResponse{RawResponse: resp}
+	result := ActivityLogAlertsClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertRuleList); err != nil {
 		return ActivityLogAlertsClientListByResourceGroupResponse{}, err
 	}
@@ -260,16 +281,32 @@ func (client *ActivityLogAlertsClient) listByResourceGroupHandleResponse(resp *h
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ActivityLogAlertsClientListBySubscriptionIDOptions contains the optional parameters for the ActivityLogAlertsClient.ListBySubscriptionID
 // method.
-func (client *ActivityLogAlertsClient) ListBySubscriptionID(options *ActivityLogAlertsClientListBySubscriptionIDOptions) *ActivityLogAlertsClientListBySubscriptionIDPager {
-	return &ActivityLogAlertsClientListBySubscriptionIDPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySubscriptionIDCreateRequest(ctx, options)
+func (client *ActivityLogAlertsClient) ListBySubscriptionID(options *ActivityLogAlertsClientListBySubscriptionIDOptions) *runtime.Pager[ActivityLogAlertsClientListBySubscriptionIDResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ActivityLogAlertsClientListBySubscriptionIDResponse]{
+		More: func(page ActivityLogAlertsClientListBySubscriptionIDResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ActivityLogAlertsClientListBySubscriptionIDResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AlertRuleList.NextLink)
+		Fetcher: func(ctx context.Context, page *ActivityLogAlertsClientListBySubscriptionIDResponse) (ActivityLogAlertsClientListBySubscriptionIDResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySubscriptionIDCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ActivityLogAlertsClientListBySubscriptionIDResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ActivityLogAlertsClientListBySubscriptionIDResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ActivityLogAlertsClientListBySubscriptionIDResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionIDHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySubscriptionIDCreateRequest creates the ListBySubscriptionID request.
@@ -292,7 +329,7 @@ func (client *ActivityLogAlertsClient) listBySubscriptionIDCreateRequest(ctx con
 
 // listBySubscriptionIDHandleResponse handles the ListBySubscriptionID response.
 func (client *ActivityLogAlertsClient) listBySubscriptionIDHandleResponse(resp *http.Response) (ActivityLogAlertsClientListBySubscriptionIDResponse, error) {
-	result := ActivityLogAlertsClientListBySubscriptionIDResponse{RawResponse: resp}
+	result := ActivityLogAlertsClientListBySubscriptionIDResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertRuleList); err != nil {
 		return ActivityLogAlertsClientListBySubscriptionIDResponse{}, err
 	}
@@ -351,7 +388,7 @@ func (client *ActivityLogAlertsClient) updateCreateRequest(ctx context.Context, 
 
 // updateHandleResponse handles the Update response.
 func (client *ActivityLogAlertsClient) updateHandleResponse(resp *http.Response) (ActivityLogAlertsClientUpdateResponse, error) {
-	result := ActivityLogAlertsClientUpdateResponse{RawResponse: resp}
+	result := ActivityLogAlertsClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ActivityLogAlertResource); err != nil {
 		return ActivityLogAlertsClientUpdateResponse{}, err
 	}

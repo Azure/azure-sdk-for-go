@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armcosmos
 
 const (
 	moduleName    = "armcosmos"
-	moduleVersion = "v0.3.1"
+	moduleVersion = "v0.4.0"
 )
 
 // APIType - Enum to indicate the API type of the restorable database account.
@@ -37,11 +37,6 @@ func PossibleAPITypeValues() []APIType {
 	}
 }
 
-// ToPtr returns a *APIType pointing to the current value.
-func (c APIType) ToPtr() *APIType {
-	return &c
-}
-
 // AnalyticalStorageSchemaType - Describes the types of schema for analytical storage.
 type AnalyticalStorageSchemaType string
 
@@ -58,18 +53,14 @@ func PossibleAnalyticalStorageSchemaTypeValues() []AnalyticalStorageSchemaType {
 	}
 }
 
-// ToPtr returns a *AnalyticalStorageSchemaType pointing to the current value.
-func (c AnalyticalStorageSchemaType) ToPtr() *AnalyticalStorageSchemaType {
-	return &c
-}
-
 // AuthenticationMethod - Which authentication method Cassandra should use to authenticate clients. 'None' turns off authentication,
 // so should not be used except in emergencies. 'Cassandra' is the default password based
-// authentication. The default is 'Cassandra'.
+// authentication. The default is 'Cassandra'. 'Ldap' is in preview.
 type AuthenticationMethod string
 
 const (
 	AuthenticationMethodCassandra AuthenticationMethod = "Cassandra"
+	AuthenticationMethodLdap      AuthenticationMethod = "Ldap"
 	AuthenticationMethodNone      AuthenticationMethod = "None"
 )
 
@@ -77,13 +68,9 @@ const (
 func PossibleAuthenticationMethodValues() []AuthenticationMethod {
 	return []AuthenticationMethod{
 		AuthenticationMethodCassandra,
+		AuthenticationMethodLdap,
 		AuthenticationMethodNone,
 	}
-}
-
-// ToPtr returns a *AuthenticationMethod pointing to the current value.
-func (c AuthenticationMethod) ToPtr() *AuthenticationMethod {
-	return &c
 }
 
 // BackupPolicyMigrationStatus - Describes the status of migration between backup policy types.
@@ -106,11 +93,6 @@ func PossibleBackupPolicyMigrationStatusValues() []BackupPolicyMigrationStatus {
 	}
 }
 
-// ToPtr returns a *BackupPolicyMigrationStatus pointing to the current value.
-func (c BackupPolicyMigrationStatus) ToPtr() *BackupPolicyMigrationStatus {
-	return &c
-}
-
 // BackupPolicyType - Describes the mode of backups.
 type BackupPolicyType string
 
@@ -125,11 +107,6 @@ func PossibleBackupPolicyTypeValues() []BackupPolicyType {
 		BackupPolicyTypeContinuous,
 		BackupPolicyTypePeriodic,
 	}
-}
-
-// ToPtr returns a *BackupPolicyType pointing to the current value.
-func (c BackupPolicyType) ToPtr() *BackupPolicyType {
-	return &c
 }
 
 // BackupStorageRedundancy - Enum to indicate type of backup storage redundancy.
@@ -150,11 +127,6 @@ func PossibleBackupStorageRedundancyValues() []BackupStorageRedundancy {
 	}
 }
 
-// ToPtr returns a *BackupStorageRedundancy pointing to the current value.
-func (c BackupStorageRedundancy) ToPtr() *BackupStorageRedundancy {
-	return &c
-}
-
 // CompositePathSortOrder - Sort order for composite paths.
 type CompositePathSortOrder string
 
@@ -171,11 +143,6 @@ func PossibleCompositePathSortOrderValues() []CompositePathSortOrder {
 	}
 }
 
-// ToPtr returns a *CompositePathSortOrder pointing to the current value.
-func (c CompositePathSortOrder) ToPtr() *CompositePathSortOrder {
-	return &c
-}
-
 // ConflictResolutionMode - Indicates the conflict resolution mode.
 type ConflictResolutionMode string
 
@@ -190,11 +157,6 @@ func PossibleConflictResolutionModeValues() []ConflictResolutionMode {
 		ConflictResolutionModeCustom,
 		ConflictResolutionModeLastWriterWins,
 	}
-}
-
-// ToPtr returns a *ConflictResolutionMode pointing to the current value.
-func (c ConflictResolutionMode) ToPtr() *ConflictResolutionMode {
-	return &c
 }
 
 // ConnectionState - The kind of connection error that occurred.
@@ -221,11 +183,6 @@ func PossibleConnectionStateValues() []ConnectionState {
 	}
 }
 
-// ToPtr returns a *ConnectionState pointing to the current value.
-func (c ConnectionState) ToPtr() *ConnectionState {
-	return &c
-}
-
 // ConnectorOffer - The cassandra connector offer type for the Cosmos DB C* database account.
 type ConnectorOffer string
 
@@ -240,9 +197,20 @@ func PossibleConnectorOfferValues() []ConnectorOffer {
 	}
 }
 
-// ToPtr returns a *ConnectorOffer pointing to the current value.
-func (c ConnectorOffer) ToPtr() *ConnectorOffer {
-	return &c
+// ContinuousTier - Enum to indicate type of Continuous backup tier.
+type ContinuousTier string
+
+const (
+	ContinuousTierContinuous30Days ContinuousTier = "Continuous30Days"
+	ContinuousTierContinuous7Days  ContinuousTier = "Continuous7Days"
+)
+
+// PossibleContinuousTierValues returns the possible values for the ContinuousTier const type.
+func PossibleContinuousTierValues() []ContinuousTier {
+	return []ContinuousTier{
+		ContinuousTierContinuous30Days,
+		ContinuousTierContinuous7Days,
+	}
 }
 
 // CreateMode - Enum to indicate the mode of account creation.
@@ -259,11 +227,6 @@ func PossibleCreateModeValues() []CreateMode {
 		CreateModeDefault,
 		CreateModeRestore,
 	}
-}
-
-// ToPtr returns a *CreateMode pointing to the current value.
-func (c CreateMode) ToPtr() *CreateMode {
-	return &c
 }
 
 // CreatedByType - The type of identity that created the resource.
@@ -286,9 +249,21 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
+type DataTransferComponent string
+
+const (
+	DataTransferComponentAzureBlobStorage  DataTransferComponent = "AzureBlobStorage"
+	DataTransferComponentCosmosDBCassandra DataTransferComponent = "CosmosDBCassandra"
+	DataTransferComponentCosmosDBSQL       DataTransferComponent = "CosmosDBSql"
+)
+
+// PossibleDataTransferComponentValues returns the possible values for the DataTransferComponent const type.
+func PossibleDataTransferComponentValues() []DataTransferComponent {
+	return []DataTransferComponent{
+		DataTransferComponentAzureBlobStorage,
+		DataTransferComponentCosmosDBCassandra,
+		DataTransferComponentCosmosDBSQL,
+	}
 }
 
 // DataType - The datatype for which the indexing behavior is applied to.
@@ -315,11 +290,6 @@ func PossibleDataTypeValues() []DataType {
 	}
 }
 
-// ToPtr returns a *DataType pointing to the current value.
-func (c DataType) ToPtr() *DataType {
-	return &c
-}
-
 // DatabaseAccountKind - Indicates the type of database account. This can only be set at database account creation.
 type DatabaseAccountKind string
 
@@ -336,11 +306,6 @@ func PossibleDatabaseAccountKindValues() []DatabaseAccountKind {
 		DatabaseAccountKindMongoDB,
 		DatabaseAccountKindParse,
 	}
-}
-
-// ToPtr returns a *DatabaseAccountKind pointing to the current value.
-func (c DatabaseAccountKind) ToPtr() *DatabaseAccountKind {
-	return &c
 }
 
 // DefaultConsistencyLevel - The default consistency level and configuration settings of the Cosmos DB account.
@@ -365,9 +330,22 @@ func PossibleDefaultConsistencyLevelValues() []DefaultConsistencyLevel {
 	}
 }
 
-// ToPtr returns a *DefaultConsistencyLevel pointing to the current value.
-func (c DefaultConsistencyLevel) ToPtr() *DefaultConsistencyLevel {
-	return &c
+// EnableFullTextQuery - Describe the level of detail with which queries are to be logged.
+type EnableFullTextQuery string
+
+const (
+	EnableFullTextQueryNone  EnableFullTextQuery = "None"
+	EnableFullTextQueryTrue  EnableFullTextQuery = "True"
+	EnableFullTextQueryFalse EnableFullTextQuery = "False"
+)
+
+// PossibleEnableFullTextQueryValues returns the possible values for the EnableFullTextQuery const type.
+func PossibleEnableFullTextQueryValues() []EnableFullTextQuery {
+	return []EnableFullTextQuery{
+		EnableFullTextQueryNone,
+		EnableFullTextQueryTrue,
+		EnableFullTextQueryFalse,
+	}
 }
 
 // IndexKind - Indicates the type of index.
@@ -388,11 +366,6 @@ func PossibleIndexKindValues() []IndexKind {
 	}
 }
 
-// ToPtr returns a *IndexKind pointing to the current value.
-func (c IndexKind) ToPtr() *IndexKind {
-	return &c
-}
-
 // IndexingMode - Indicates the indexing mode.
 type IndexingMode string
 
@@ -409,11 +382,6 @@ func PossibleIndexingModeValues() []IndexingMode {
 		IndexingModeLazy,
 		IndexingModeNone,
 	}
-}
-
-// ToPtr returns a *IndexingMode pointing to the current value.
-func (c IndexingMode) ToPtr() *IndexingMode {
-	return &c
 }
 
 // KeyKind - The access key to regenerate.
@@ -434,11 +402,6 @@ func PossibleKeyKindValues() []KeyKind {
 		KeyKindSecondary,
 		KeyKindSecondaryReadonly,
 	}
-}
-
-// ToPtr returns a *KeyKind pointing to the current value.
-func (c KeyKind) ToPtr() *KeyKind {
-	return &c
 }
 
 // ManagedCassandraProvisioningState - The status of the resource at the time the operation was called.
@@ -465,11 +428,6 @@ func PossibleManagedCassandraProvisioningStateValues() []ManagedCassandraProvisi
 	}
 }
 
-// ToPtr returns a *ManagedCassandraProvisioningState pointing to the current value.
-func (c ManagedCassandraProvisioningState) ToPtr() *ManagedCassandraProvisioningState {
-	return &c
-}
-
 // ManagedCassandraResourceIdentityType - The type of the resource.
 type ManagedCassandraResourceIdentityType string
 
@@ -486,9 +444,20 @@ func PossibleManagedCassandraResourceIdentityTypeValues() []ManagedCassandraReso
 	}
 }
 
-// ToPtr returns a *ManagedCassandraResourceIdentityType pointing to the current value.
-func (c ManagedCassandraResourceIdentityType) ToPtr() *ManagedCassandraResourceIdentityType {
-	return &c
+// MongoRoleDefinitionType - Indicates whether the Role Definition was built-in or user created.
+type MongoRoleDefinitionType string
+
+const (
+	MongoRoleDefinitionTypeBuiltInRole MongoRoleDefinitionType = "BuiltInRole"
+	MongoRoleDefinitionTypeCustomRole  MongoRoleDefinitionType = "CustomRole"
+)
+
+// PossibleMongoRoleDefinitionTypeValues returns the possible values for the MongoRoleDefinitionType const type.
+func PossibleMongoRoleDefinitionTypeValues() []MongoRoleDefinitionType {
+	return []MongoRoleDefinitionType{
+		MongoRoleDefinitionTypeBuiltInRole,
+		MongoRoleDefinitionTypeCustomRole,
+	}
 }
 
 // NetworkACLBypass - Indicates what services are allowed to bypass firewall checks.
@@ -505,11 +474,6 @@ func PossibleNetworkACLBypassValues() []NetworkACLBypass {
 		NetworkACLBypassNone,
 		NetworkACLBypassAzureServices,
 	}
-}
-
-// ToPtr returns a *NetworkACLBypass pointing to the current value.
-func (c NetworkACLBypass) ToPtr() *NetworkACLBypass {
-	return &c
 }
 
 // NodeState - The state of the node in Cassandra ring.
@@ -534,11 +498,6 @@ func PossibleNodeStateValues() []NodeState {
 	}
 }
 
-// ToPtr returns a *NodeState pointing to the current value.
-func (c NodeState) ToPtr() *NodeState {
-	return &c
-}
-
 // NodeStatus - Indicates whether the node is functioning or not.
 type NodeStatus string
 
@@ -555,11 +514,6 @@ func PossibleNodeStatusValues() []NodeStatus {
 	}
 }
 
-// ToPtr returns a *NodeStatus pointing to the current value.
-func (c NodeStatus) ToPtr() *NodeStatus {
-	return &c
-}
-
 type NotebookWorkspaceName string
 
 const (
@@ -571,11 +525,6 @@ func PossibleNotebookWorkspaceNameValues() []NotebookWorkspaceName {
 	return []NotebookWorkspaceName{
 		NotebookWorkspaceNameDefault,
 	}
-}
-
-// ToPtr returns a *NotebookWorkspaceName pointing to the current value.
-func (c NotebookWorkspaceName) ToPtr() *NotebookWorkspaceName {
-	return &c
 }
 
 // OperationType - Enum to indicate the operation type of the event.
@@ -598,11 +547,6 @@ func PossibleOperationTypeValues() []OperationType {
 	}
 }
 
-// ToPtr returns a *OperationType pointing to the current value.
-func (c OperationType) ToPtr() *OperationType {
-	return &c
-}
-
 // PartitionKind - Indicates the kind of algorithm used for partitioning. For MultiHash, multiple partition keys (upto three
 // maximum) are supported for container create
 type PartitionKind string
@@ -620,11 +564,6 @@ func PossiblePartitionKindValues() []PartitionKind {
 		PartitionKindMultiHash,
 		PartitionKindRange,
 	}
-}
-
-// ToPtr returns a *PartitionKind pointing to the current value.
-func (c PartitionKind) ToPtr() *PartitionKind {
-	return &c
 }
 
 // PrimaryAggregationType - The primary aggregation type of the metric.
@@ -651,11 +590,6 @@ func PossiblePrimaryAggregationTypeValues() []PrimaryAggregationType {
 	}
 }
 
-// ToPtr returns a *PrimaryAggregationType pointing to the current value.
-func (c PrimaryAggregationType) ToPtr() *PrimaryAggregationType {
-	return &c
-}
-
 // PublicNetworkAccess - Whether requests from Public Network are allowed
 type PublicNetworkAccess string
 
@@ -670,11 +604,6 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 		PublicNetworkAccessDisabled,
 		PublicNetworkAccessEnabled,
 	}
-}
-
-// ToPtr returns a *PublicNetworkAccess pointing to the current value.
-func (c PublicNetworkAccess) ToPtr() *PublicNetworkAccess {
-	return &c
 }
 
 // ResourceIdentityType - The type of identity used for the resource. The type 'SystemAssigned,UserAssigned' includes both
@@ -699,11 +628,6 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	}
 }
 
-// ToPtr returns a *ResourceIdentityType pointing to the current value.
-func (c ResourceIdentityType) ToPtr() *ResourceIdentityType {
-	return &c
-}
-
 // RestoreMode - Describes the mode of the restore.
 type RestoreMode string
 
@@ -716,11 +640,6 @@ func PossibleRestoreModeValues() []RestoreMode {
 	return []RestoreMode{
 		RestoreModePointInTime,
 	}
-}
-
-// ToPtr returns a *RestoreMode pointing to the current value.
-func (c RestoreMode) ToPtr() *RestoreMode {
-	return &c
 }
 
 // RoleDefinitionType - Indicates whether the Role Definition was built-in or user created.
@@ -739,16 +658,12 @@ func PossibleRoleDefinitionTypeValues() []RoleDefinitionType {
 	}
 }
 
-// ToPtr returns a *RoleDefinitionType pointing to the current value.
-func (c RoleDefinitionType) ToPtr() *RoleDefinitionType {
-	return &c
-}
-
 // ServerVersion - Describes the ServerVersion of an a MongoDB account.
 type ServerVersion string
 
 const (
 	ServerVersionFour0  ServerVersion = "4.0"
+	ServerVersionFour2  ServerVersion = "4.2"
 	ServerVersionThree2 ServerVersion = "3.2"
 	ServerVersionThree6 ServerVersion = "3.6"
 )
@@ -757,14 +672,72 @@ const (
 func PossibleServerVersionValues() []ServerVersion {
 	return []ServerVersion{
 		ServerVersionFour0,
+		ServerVersionFour2,
 		ServerVersionThree2,
 		ServerVersionThree6,
 	}
 }
 
-// ToPtr returns a *ServerVersion pointing to the current value.
-func (c ServerVersion) ToPtr() *ServerVersion {
-	return &c
+// ServiceSize - Instance type for the service.
+type ServiceSize string
+
+const (
+	ServiceSizeCosmosD16S ServiceSize = "Cosmos.D16s"
+	ServiceSizeCosmosD4S  ServiceSize = "Cosmos.D4s"
+	ServiceSizeCosmosD8S  ServiceSize = "Cosmos.D8s"
+)
+
+// PossibleServiceSizeValues returns the possible values for the ServiceSize const type.
+func PossibleServiceSizeValues() []ServiceSize {
+	return []ServiceSize{
+		ServiceSizeCosmosD16S,
+		ServiceSizeCosmosD4S,
+		ServiceSizeCosmosD8S,
+	}
+}
+
+// ServiceStatus - Describes the status of a service.
+type ServiceStatus string
+
+const (
+	ServiceStatusCreating ServiceStatus = "Creating"
+	ServiceStatusDeleting ServiceStatus = "Deleting"
+	ServiceStatusError    ServiceStatus = "Error"
+	ServiceStatusRunning  ServiceStatus = "Running"
+	ServiceStatusStopped  ServiceStatus = "Stopped"
+	ServiceStatusUpdating ServiceStatus = "Updating"
+)
+
+// PossibleServiceStatusValues returns the possible values for the ServiceStatus const type.
+func PossibleServiceStatusValues() []ServiceStatus {
+	return []ServiceStatus{
+		ServiceStatusCreating,
+		ServiceStatusDeleting,
+		ServiceStatusError,
+		ServiceStatusRunning,
+		ServiceStatusStopped,
+		ServiceStatusUpdating,
+	}
+}
+
+// ServiceType - ServiceType for the service.
+type ServiceType string
+
+const (
+	ServiceTypeDataTransfer             ServiceType = "DataTransfer"
+	ServiceTypeGraphAPICompute          ServiceType = "GraphAPICompute"
+	ServiceTypeMaterializedViewsBuilder ServiceType = "MaterializedViewsBuilder"
+	ServiceTypeSQLDedicatedGateway      ServiceType = "SqlDedicatedGateway"
+)
+
+// PossibleServiceTypeValues returns the possible values for the ServiceType const type.
+func PossibleServiceTypeValues() []ServiceType {
+	return []ServiceType{
+		ServiceTypeDataTransfer,
+		ServiceTypeGraphAPICompute,
+		ServiceTypeMaterializedViewsBuilder,
+		ServiceTypeSQLDedicatedGateway,
+	}
 }
 
 // SpatialType - Indicates the spatial type of index.
@@ -785,11 +758,6 @@ func PossibleSpatialTypeValues() []SpatialType {
 		SpatialTypePoint,
 		SpatialTypePolygon,
 	}
-}
-
-// ToPtr returns a *SpatialType pointing to the current value.
-func (c SpatialType) ToPtr() *SpatialType {
-	return &c
 }
 
 // TriggerOperation - The operation the trigger is associated with
@@ -814,11 +782,6 @@ func PossibleTriggerOperationValues() []TriggerOperation {
 	}
 }
 
-// ToPtr returns a *TriggerOperation pointing to the current value.
-func (c TriggerOperation) ToPtr() *TriggerOperation {
-	return &c
-}
-
 // TriggerType - Type of the Trigger
 type TriggerType string
 
@@ -833,11 +796,6 @@ func PossibleTriggerTypeValues() []TriggerType {
 		TriggerTypePost,
 		TriggerTypePre,
 	}
-}
-
-// ToPtr returns a *TriggerType pointing to the current value.
-func (c TriggerType) ToPtr() *TriggerType {
-	return &c
 }
 
 // UnitType - The unit of the metric.
@@ -864,9 +822,4 @@ func PossibleUnitTypeValues() []UnitType {
 		UnitTypePercent,
 		UnitTypeSeconds,
 	}
-}
-
-// ToPtr returns a *UnitType pointing to the current value.
-func (c UnitType) ToPtr() *UnitType {
-	return &c
 }

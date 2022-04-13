@@ -1,5 +1,52 @@
 # Release History
 
+## 0.3.0 (2022-04-11)
+### Breaking Changes
+
+- Function `*ADCCatalogsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, ADCCatalog, *ADCCatalogsClientCreateOrUpdateOptions)` to `(context.Context, string, string, ADCCatalog, *ADCCatalogsClientCreateOrUpdateOptions)`
+- Function `*ADCCatalogsClient.Get` parameter(s) have been changed from `(context.Context, string, *ADCCatalogsClientGetOptions)` to `(context.Context, string, string, *ADCCatalogsClientGetOptions)`
+- Function `*ADCCatalogsClient.Update` parameter(s) have been changed from `(context.Context, string, ADCCatalog, *ADCCatalogsClientUpdateOptions)` to `(context.Context, string, string, ADCCatalog, *ADCCatalogsClientUpdateOptions)`
+- Function `*ADCCatalogsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, *ADCCatalogsClientBeginDeleteOptions)` to `(context.Context, string, string, *ADCCatalogsClientBeginDeleteOptions)`
+- Function `*ADCCatalogsClient.BeginDelete` return value(s) have been changed from `(ADCCatalogsClientDeletePollerResponse, error)` to `(*armruntime.Poller[ADCCatalogsClientDeleteResponse], error)`
+- Function `NewADCOperationsClient` return value(s) have been changed from `(*ADCOperationsClient)` to `(*ADCOperationsClient, error)`
+- Function `NewADCCatalogsClient` parameter(s) have been changed from `(string, string, azcore.TokenCredential, *arm.ClientOptions)` to `(string, azcore.TokenCredential, *arm.ClientOptions)`
+- Function `NewADCCatalogsClient` return value(s) have been changed from `(*ADCCatalogsClient)` to `(*ADCCatalogsClient, error)`
+- Function `*ADCCatalogsClientDeletePoller.ResumeToken` has been removed
+- Function `SKUType.ToPtr` has been removed
+- Function `ADCCatalogsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ADCCatalogsClientDeletePoller.FinalResponse` has been removed
+- Function `*ADCCatalogsClientDeletePoller.Poll` has been removed
+- Function `*ADCCatalogsClientDeletePoller.Done` has been removed
+- Function `*ADCCatalogsClientDeletePollerResponse.Resume` has been removed
+- Struct `ADCCatalogsClientCreateOrUpdateResult` has been removed
+- Struct `ADCCatalogsClientDeletePoller` has been removed
+- Struct `ADCCatalogsClientDeletePollerResponse` has been removed
+- Struct `ADCCatalogsClientGetResult` has been removed
+- Struct `ADCCatalogsClientListtByResourceGroupResult` has been removed
+- Struct `ADCCatalogsClientUpdateResult` has been removed
+- Struct `ADCOperationsClientListResult` has been removed
+- Field `ADCCatalogsClientGetResult` of struct `ADCCatalogsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ADCCatalogsClientGetResponse` has been removed
+- Field `ADCCatalogsClientListtByResourceGroupResult` of struct `ADCCatalogsClientListtByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `ADCCatalogsClientListtByResourceGroupResponse` has been removed
+- Field `ADCOperationsClientListResult` of struct `ADCOperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `ADCOperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `ADCCatalogsClientDeleteResponse` has been removed
+- Field `ADCCatalogsClientCreateOrUpdateResult` of struct `ADCCatalogsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ADCCatalogsClientCreateOrUpdateResponse` has been removed
+- Field `ADCCatalogsClientUpdateResult` of struct `ADCCatalogsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ADCCatalogsClientUpdateResponse` has been removed
+
+### Features Added
+
+- New anonymous field `OperationEntityListResult` in struct `ADCOperationsClientListResponse`
+- New field `ResumeToken` in struct `ADCCatalogsClientBeginDeleteOptions`
+- New anonymous field `ADCCatalog` in struct `ADCCatalogsClientCreateOrUpdateResponse`
+- New anonymous field `ADCCatalogsListResult` in struct `ADCCatalogsClientListtByResourceGroupResponse`
+- New anonymous field `ADCCatalog` in struct `ADCCatalogsClientUpdateResponse`
+- New anonymous field `ADCCatalog` in struct `ADCCatalogsClientGetResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

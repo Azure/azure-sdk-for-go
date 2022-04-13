@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type JobScheduleClient struct {
 // forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewJobScheduleClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *JobScheduleClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewJobScheduleClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*JobScheduleClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &JobScheduleClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Create - Create a job schedule.
@@ -101,7 +106,7 @@ func (client *JobScheduleClient) createCreateRequest(ctx context.Context, resour
 
 // createHandleResponse handles the Create response.
 func (client *JobScheduleClient) createHandleResponse(resp *http.Response) (JobScheduleClientCreateResponse, error) {
-	result := JobScheduleClientCreateResponse{RawResponse: resp}
+	result := JobScheduleClientCreateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobSchedule); err != nil {
 		return JobScheduleClientCreateResponse{}, err
 	}
@@ -126,7 +131,7 @@ func (client *JobScheduleClient) Delete(ctx context.Context, resourceGroupName s
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return JobScheduleClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return JobScheduleClientDeleteResponse{RawResponse: resp}, nil
+	return JobScheduleClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -206,7 +211,7 @@ func (client *JobScheduleClient) getCreateRequest(ctx context.Context, resourceG
 
 // getHandleResponse handles the Get response.
 func (client *JobScheduleClient) getHandleResponse(resp *http.Response) (JobScheduleClientGetResponse, error) {
-	result := JobScheduleClientGetResponse{RawResponse: resp}
+	result := JobScheduleClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobSchedule); err != nil {
 		return JobScheduleClientGetResponse{}, err
 	}
@@ -219,16 +224,32 @@ func (client *JobScheduleClient) getHandleResponse(resp *http.Response) (JobSche
 // automationAccountName - The name of the automation account.
 // options - JobScheduleClientListByAutomationAccountOptions contains the optional parameters for the JobScheduleClient.ListByAutomationAccount
 // method.
-func (client *JobScheduleClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *JobScheduleClientListByAutomationAccountOptions) *JobScheduleClientListByAutomationAccountPager {
-	return &JobScheduleClientListByAutomationAccountPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, options)
+func (client *JobScheduleClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *JobScheduleClientListByAutomationAccountOptions) *runtime.Pager[JobScheduleClientListByAutomationAccountResponse] {
+	return runtime.NewPager(runtime.PageProcessor[JobScheduleClientListByAutomationAccountResponse]{
+		More: func(page JobScheduleClientListByAutomationAccountResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp JobScheduleClientListByAutomationAccountResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.JobScheduleListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *JobScheduleClientListByAutomationAccountResponse) (JobScheduleClientListByAutomationAccountResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return JobScheduleClientListByAutomationAccountResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return JobScheduleClientListByAutomationAccountResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return JobScheduleClientListByAutomationAccountResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByAutomationAccountHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByAutomationAccountCreateRequest creates the ListByAutomationAccount request.
@@ -262,7 +283,7 @@ func (client *JobScheduleClient) listByAutomationAccountCreateRequest(ctx contex
 
 // listByAutomationAccountHandleResponse handles the ListByAutomationAccount response.
 func (client *JobScheduleClient) listByAutomationAccountHandleResponse(resp *http.Response) (JobScheduleClientListByAutomationAccountResponse, error) {
-	result := JobScheduleClientListByAutomationAccountResponse{RawResponse: resp}
+	result := JobScheduleClientListByAutomationAccountResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobScheduleListResult); err != nil {
 		return JobScheduleClientListByAutomationAccountResponse{}, err
 	}

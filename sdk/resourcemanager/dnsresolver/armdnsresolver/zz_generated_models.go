@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,12 +8,28 @@
 
 package armdnsresolver
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
+
+// CloudError - An error message
+type CloudError struct {
+	// The error message body
+	Error *CloudErrorBody `json:"error,omitempty"`
+}
+
+// CloudErrorBody - The body of an error message
+type CloudErrorBody struct {
+	// The error code
+	Code *string `json:"code,omitempty"`
+
+	// Extra error information
+	Details []*CloudErrorBody `json:"details,omitempty"`
+
+	// A description of what caused the error
+	Message *string `json:"message,omitempty"`
+
+	// The target resource of the error message
+	Target *string `json:"target,omitempty"`
+}
 
 // DNSForwardingRuleset - Describes a DNS forwarding ruleset.
 type DNSForwardingRuleset struct {
@@ -42,20 +58,6 @@ type DNSForwardingRuleset struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DNSForwardingRuleset.
-func (d DNSForwardingRuleset) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", d.Etag)
-	populate(objectMap, "id", d.ID)
-	populate(objectMap, "location", d.Location)
-	populate(objectMap, "name", d.Name)
-	populate(objectMap, "properties", d.Properties)
-	populate(objectMap, "systemData", d.SystemData)
-	populate(objectMap, "tags", d.Tags)
-	populate(objectMap, "type", d.Type)
-	return json.Marshal(objectMap)
-}
-
 // DNSForwardingRulesetListResult - The response to an enumeration operation on DNS forwarding rulesets.
 type DNSForwardingRulesetListResult struct {
 	// Enumeration of the DNS forwarding rulesets.
@@ -65,25 +67,10 @@ type DNSForwardingRulesetListResult struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DNSForwardingRulesetListResult.
-func (d DNSForwardingRulesetListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", d.NextLink)
-	populate(objectMap, "value", d.Value)
-	return json.Marshal(objectMap)
-}
-
 // DNSForwardingRulesetPatch - Describes a DNS forwarding ruleset PATCH operation.
 type DNSForwardingRulesetPatch struct {
 	// Tags for DNS Resolver.
 	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DNSForwardingRulesetPatch.
-func (d DNSForwardingRulesetPatch) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "tags", d.Tags)
-	return json.Marshal(objectMap)
 }
 
 // DNSForwardingRulesetProperties - Represents the properties of a DNS forwarding ruleset.
@@ -100,15 +87,6 @@ type DNSForwardingRulesetProperties struct {
 	ResourceGUID *string `json:"resourceGuid,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DNSForwardingRulesetProperties.
-func (d DNSForwardingRulesetProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "dnsResolverOutboundEndpoints", d.DNSResolverOutboundEndpoints)
-	populate(objectMap, "provisioningState", d.ProvisioningState)
-	populate(objectMap, "resourceGuid", d.ResourceGUID)
-	return json.Marshal(objectMap)
-}
-
 // DNSForwardingRulesetsClientBeginCreateOrUpdateOptions contains the optional parameters for the DNSForwardingRulesetsClient.BeginCreateOrUpdate
 // method.
 type DNSForwardingRulesetsClientBeginCreateOrUpdateOptions struct {
@@ -117,6 +95,8 @@ type DNSForwardingRulesetsClientBeginCreateOrUpdateOptions struct {
 	IfMatch *string
 	// Set to '*' to allow a new resource to be created, but to prevent updating an existing resource. Other values will be ignored.
 	IfNoneMatch *string
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // DNSForwardingRulesetsClientBeginDeleteOptions contains the optional parameters for the DNSForwardingRulesetsClient.BeginDelete
@@ -125,6 +105,8 @@ type DNSForwardingRulesetsClientBeginDeleteOptions struct {
 	// ETag of the resource. Omit this value to always overwrite the current resource. Specify the last-seen ETag value to prevent
 	// accidentally overwriting any concurrent changes.
 	IfMatch *string
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // DNSForwardingRulesetsClientBeginUpdateOptions contains the optional parameters for the DNSForwardingRulesetsClient.BeginUpdate
@@ -133,6 +115,8 @@ type DNSForwardingRulesetsClientBeginUpdateOptions struct {
 	// ETag of the resource. Omit this value to always overwrite the current resource. Specify the last-seen ETag value to prevent
 	// accidentally overwriting any concurrent changes.
 	IfMatch *string
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // DNSForwardingRulesetsClientGetOptions contains the optional parameters for the DNSForwardingRulesetsClient.Get method.
@@ -187,20 +171,6 @@ type DNSResolver struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DNSResolver.
-func (d DNSResolver) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", d.Etag)
-	populate(objectMap, "id", d.ID)
-	populate(objectMap, "location", d.Location)
-	populate(objectMap, "name", d.Name)
-	populate(objectMap, "properties", d.Properties)
-	populate(objectMap, "systemData", d.SystemData)
-	populate(objectMap, "tags", d.Tags)
-	populate(objectMap, "type", d.Type)
-	return json.Marshal(objectMap)
-}
-
 // DNSResolversClientBeginCreateOrUpdateOptions contains the optional parameters for the DNSResolversClient.BeginCreateOrUpdate
 // method.
 type DNSResolversClientBeginCreateOrUpdateOptions struct {
@@ -209,6 +179,8 @@ type DNSResolversClientBeginCreateOrUpdateOptions struct {
 	IfMatch *string
 	// Set to '*' to allow a new resource to be created, but to prevent updating an existing resource. Other values will be ignored.
 	IfNoneMatch *string
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // DNSResolversClientBeginDeleteOptions contains the optional parameters for the DNSResolversClient.BeginDelete method.
@@ -216,6 +188,8 @@ type DNSResolversClientBeginDeleteOptions struct {
 	// ETag of the resource. Omit this value to always overwrite the current resource. Specify the last-seen ETag value to prevent
 	// accidentally overwriting any concurrent changes.
 	IfMatch *string
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // DNSResolversClientBeginUpdateOptions contains the optional parameters for the DNSResolversClient.BeginUpdate method.
@@ -223,6 +197,8 @@ type DNSResolversClientBeginUpdateOptions struct {
 	// ETag of the resource. Omit this value to always overwrite the current resource. Specify the last-seen ETag value to prevent
 	// accidentally overwriting any concurrent changes.
 	IfMatch *string
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // DNSResolversClientGetOptions contains the optional parameters for the DNSResolversClient.Get method.
@@ -280,25 +256,10 @@ type ForwardingRuleListResult struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ForwardingRuleListResult.
-func (f ForwardingRuleListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", f.NextLink)
-	populate(objectMap, "value", f.Value)
-	return json.Marshal(objectMap)
-}
-
 // ForwardingRulePatch - Describes a forwarding rule for PATCH operation.
 type ForwardingRulePatch struct {
 	// Updatable properties of the forwarding rule.
 	Properties *ForwardingRulePatchProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ForwardingRulePatch.
-func (f ForwardingRulePatch) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", f.Properties)
-	return json.Marshal(objectMap)
 }
 
 // ForwardingRulePatchProperties - Represents the updatable properties of a forwarding rule within a DNS forwarding ruleset.
@@ -311,15 +272,6 @@ type ForwardingRulePatchProperties struct {
 
 	// DNS servers to forward the DNS query to.
 	TargetDNSServers []*TargetDNSServer `json:"targetDnsServers,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ForwardingRulePatchProperties.
-func (f ForwardingRulePatchProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "forwardingRuleState", f.ForwardingRuleState)
-	populate(objectMap, "metadata", f.Metadata)
-	populate(objectMap, "targetDnsServers", f.TargetDNSServers)
-	return json.Marshal(objectMap)
 }
 
 // ForwardingRuleProperties - Represents the properties of a forwarding rule within a DNS forwarding ruleset.
@@ -339,17 +291,6 @@ type ForwardingRuleProperties struct {
 	// READ-ONLY; The current provisioning state of the forwarding rule. This is a read-only property and any attempt to set this
 	// value will be ignored.
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ForwardingRuleProperties.
-func (f ForwardingRuleProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "domainName", f.DomainName)
-	populate(objectMap, "forwardingRuleState", f.ForwardingRuleState)
-	populate(objectMap, "metadata", f.Metadata)
-	populate(objectMap, "provisioningState", f.ProvisioningState)
-	populate(objectMap, "targetDnsServers", f.TargetDNSServers)
-	return json.Marshal(objectMap)
 }
 
 // ForwardingRulesClientCreateOrUpdateOptions contains the optional parameters for the ForwardingRulesClient.CreateOrUpdate
@@ -426,20 +367,6 @@ type InboundEndpoint struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type InboundEndpoint.
-func (i InboundEndpoint) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", i.Etag)
-	populate(objectMap, "id", i.ID)
-	populate(objectMap, "location", i.Location)
-	populate(objectMap, "name", i.Name)
-	populate(objectMap, "properties", i.Properties)
-	populate(objectMap, "systemData", i.SystemData)
-	populate(objectMap, "tags", i.Tags)
-	populate(objectMap, "type", i.Type)
-	return json.Marshal(objectMap)
-}
-
 // InboundEndpointListResult - The response to an enumeration operation on inbound endpoints for a DNS resolver.
 type InboundEndpointListResult struct {
 	// Enumeration of the inbound endpoints for a DNS resolver.
@@ -449,25 +376,10 @@ type InboundEndpointListResult struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type InboundEndpointListResult.
-func (i InboundEndpointListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", i.NextLink)
-	populate(objectMap, "value", i.Value)
-	return json.Marshal(objectMap)
-}
-
 // InboundEndpointPatch - Describes an inbound endpoint for a DNS resolver for PATCH operation.
 type InboundEndpointPatch struct {
 	// Tags for inbound endpoint.
 	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InboundEndpointPatch.
-func (i InboundEndpointPatch) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "tags", i.Tags)
-	return json.Marshal(objectMap)
 }
 
 // InboundEndpointProperties - Represents the properties of an inbound endpoint for a DNS resolver.
@@ -483,15 +395,6 @@ type InboundEndpointProperties struct {
 	ResourceGUID *string `json:"resourceGuid,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type InboundEndpointProperties.
-func (i InboundEndpointProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "ipConfigurations", i.IPConfigurations)
-	populate(objectMap, "provisioningState", i.ProvisioningState)
-	populate(objectMap, "resourceGuid", i.ResourceGUID)
-	return json.Marshal(objectMap)
-}
-
 // InboundEndpointsClientBeginCreateOrUpdateOptions contains the optional parameters for the InboundEndpointsClient.BeginCreateOrUpdate
 // method.
 type InboundEndpointsClientBeginCreateOrUpdateOptions struct {
@@ -500,6 +403,8 @@ type InboundEndpointsClientBeginCreateOrUpdateOptions struct {
 	IfMatch *string
 	// Set to '*' to allow a new resource to be created, but to prevent updating an existing resource. Other values will be ignored.
 	IfNoneMatch *string
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // InboundEndpointsClientBeginDeleteOptions contains the optional parameters for the InboundEndpointsClient.BeginDelete method.
@@ -507,6 +412,8 @@ type InboundEndpointsClientBeginDeleteOptions struct {
 	// ETag of the resource. Omit this value to always overwrite the current resource. Specify the last-seen ETag value to prevent
 	// accidentally overwriting any concurrent changes.
 	IfMatch *string
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // InboundEndpointsClientBeginUpdateOptions contains the optional parameters for the InboundEndpointsClient.BeginUpdate method.
@@ -514,6 +421,8 @@ type InboundEndpointsClientBeginUpdateOptions struct {
 	// ETag of the resource. Omit this value to always overwrite the current resource. Specify the last-seen ETag value to prevent
 	// accidentally overwriting any concurrent changes.
 	IfMatch *string
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // InboundEndpointsClientGetOptions contains the optional parameters for the InboundEndpointsClient.Get method.
@@ -534,14 +443,6 @@ type ListResult struct {
 
 	// READ-ONLY; The continuation token for the next page of results.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ListResult.
-func (l ListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", l.NextLink)
-	populate(objectMap, "value", l.Value)
-	return json.Marshal(objectMap)
 }
 
 // OutboundEndpoint - Describes an outbound endpoint for a DNS resolver.
@@ -571,20 +472,6 @@ type OutboundEndpoint struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OutboundEndpoint.
-func (o OutboundEndpoint) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", o.Etag)
-	populate(objectMap, "id", o.ID)
-	populate(objectMap, "location", o.Location)
-	populate(objectMap, "name", o.Name)
-	populate(objectMap, "properties", o.Properties)
-	populate(objectMap, "systemData", o.SystemData)
-	populate(objectMap, "tags", o.Tags)
-	populate(objectMap, "type", o.Type)
-	return json.Marshal(objectMap)
-}
-
 // OutboundEndpointListResult - The response to an enumeration operation on outbound endpoints for a DNS resolver.
 type OutboundEndpointListResult struct {
 	// Enumeration of the outbound endpoints for a DNS resolver.
@@ -594,25 +481,10 @@ type OutboundEndpointListResult struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OutboundEndpointListResult.
-func (o OutboundEndpointListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
-}
-
 // OutboundEndpointPatch - Describes an outbound endpoint for a DNS resolver for PATCH operation.
 type OutboundEndpointPatch struct {
 	// Tags for outbound endpoint.
 	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OutboundEndpointPatch.
-func (o OutboundEndpointPatch) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "tags", o.Tags)
-	return json.Marshal(objectMap)
 }
 
 // OutboundEndpointProperties - Represents the properties of an outbound endpoint for a DNS resolver.
@@ -636,6 +508,8 @@ type OutboundEndpointsClientBeginCreateOrUpdateOptions struct {
 	IfMatch *string
 	// Set to '*' to allow a new resource to be created, but to prevent updating an existing resource. Other values will be ignored.
 	IfNoneMatch *string
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // OutboundEndpointsClientBeginDeleteOptions contains the optional parameters for the OutboundEndpointsClient.BeginDelete
@@ -644,6 +518,8 @@ type OutboundEndpointsClientBeginDeleteOptions struct {
 	// ETag of the resource. Omit this value to always overwrite the current resource. Specify the last-seen ETag value to prevent
 	// accidentally overwriting any concurrent changes.
 	IfMatch *string
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // OutboundEndpointsClientBeginUpdateOptions contains the optional parameters for the OutboundEndpointsClient.BeginUpdate
@@ -652,6 +528,8 @@ type OutboundEndpointsClientBeginUpdateOptions struct {
 	// ETag of the resource. Omit this value to always overwrite the current resource. Specify the last-seen ETag value to prevent
 	// accidentally overwriting any concurrent changes.
 	IfMatch *string
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // OutboundEndpointsClientGetOptions contains the optional parameters for the OutboundEndpointsClient.Get method.
@@ -669,13 +547,6 @@ type OutboundEndpointsClientListOptions struct {
 type Patch struct {
 	// Tags for DNS Resolver.
 	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Patch.
-func (p Patch) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "tags", p.Tags)
-	return json.Marshal(objectMap)
 }
 
 // Properties - Represents the properties of a DNS resolver.
@@ -735,14 +606,6 @@ type SubResourceListResult struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SubResourceListResult.
-func (s SubResourceListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
-}
-
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
@@ -762,53 +625,6 @@ type SystemData struct {
 
 	// The type of identity that last modified the resource.
 	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SystemData.
-func (s SystemData) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
-	populate(objectMap, "createdBy", s.CreatedBy)
-	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
-	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
-	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SystemData.
-func (s *SystemData) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdAt":
-			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
-			delete(rawMsg, key)
-		case "createdBy":
-			err = unpopulate(val, &s.CreatedBy)
-			delete(rawMsg, key)
-		case "createdByType":
-			err = unpopulate(val, &s.CreatedByType)
-			delete(rawMsg, key)
-		case "lastModifiedAt":
-			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
-			delete(rawMsg, key)
-		case "lastModifiedBy":
-			err = unpopulate(val, &s.LastModifiedBy)
-			delete(rawMsg, key)
-		case "lastModifiedByType":
-			err = unpopulate(val, &s.LastModifiedByType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // TargetDNSServer - Describes a server to forward the DNS queries to.
@@ -839,17 +655,6 @@ type TrackedResource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type TrackedResource.
-func (t TrackedResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", t.ID)
-	populate(objectMap, "location", t.Location)
-	populate(objectMap, "name", t.Name)
-	populate(objectMap, "tags", t.Tags)
-	populate(objectMap, "type", t.Type)
-	return json.Marshal(objectMap)
-}
-
 // VirtualNetworkDNSForwardingRuleset - Reference to DNS forwarding ruleset and associated virtual network link.
 type VirtualNetworkDNSForwardingRuleset struct {
 	// DNS Forwarding Ruleset Resource ID.
@@ -867,14 +672,6 @@ type VirtualNetworkDNSForwardingRulesetListResult struct {
 
 	// READ-ONLY; The continuation token for the next page of results.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VirtualNetworkDNSForwardingRulesetListResult.
-func (v VirtualNetworkDNSForwardingRulesetListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", v.NextLink)
-	populate(objectMap, "value", v.Value)
-	return json.Marshal(objectMap)
 }
 
 // VirtualNetworkLink - Describes a virtual network link.
@@ -907,38 +704,16 @@ type VirtualNetworkLinkListResult struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type VirtualNetworkLinkListResult.
-func (v VirtualNetworkLinkListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", v.NextLink)
-	populate(objectMap, "value", v.Value)
-	return json.Marshal(objectMap)
-}
-
 // VirtualNetworkLinkPatch - Describes a virtual network link for PATCH operation.
 type VirtualNetworkLinkPatch struct {
 	// Updatable properties of the virtual network link.
 	Properties *VirtualNetworkLinkPatchProperties `json:"properties,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type VirtualNetworkLinkPatch.
-func (v VirtualNetworkLinkPatch) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", v.Properties)
-	return json.Marshal(objectMap)
-}
-
 // VirtualNetworkLinkPatchProperties - Represents the updatable properties of the virtual network link.
 type VirtualNetworkLinkPatchProperties struct {
 	// Metadata attached to the virtual network link.
 	Metadata map[string]*string `json:"metadata,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VirtualNetworkLinkPatchProperties.
-func (v VirtualNetworkLinkPatchProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "metadata", v.Metadata)
-	return json.Marshal(objectMap)
 }
 
 // VirtualNetworkLinkProperties - Represents the properties of a virtual network link.
@@ -952,15 +727,6 @@ type VirtualNetworkLinkProperties struct {
 	// READ-ONLY; The current provisioning state of the virtual network link. This is a read-only property and any attempt to
 	// set this value will be ignored.
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VirtualNetworkLinkProperties.
-func (v VirtualNetworkLinkProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "metadata", v.Metadata)
-	populate(objectMap, "provisioningState", v.ProvisioningState)
-	populate(objectMap, "virtualNetwork", v.VirtualNetwork)
-	return json.Marshal(objectMap)
 }
 
 // VirtualNetworkLinkSubResourceProperties - The reference to the virtual network link that associates between the DNS forwarding
@@ -978,6 +744,8 @@ type VirtualNetworkLinksClientBeginCreateOrUpdateOptions struct {
 	IfMatch *string
 	// Set to '*' to allow a new resource to be created, but to prevent updating an existing resource. Other values will be ignored.
 	IfNoneMatch *string
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // VirtualNetworkLinksClientBeginDeleteOptions contains the optional parameters for the VirtualNetworkLinksClient.BeginDelete
@@ -986,6 +754,8 @@ type VirtualNetworkLinksClientBeginDeleteOptions struct {
 	// ETag of the resource. Omit this value to always overwrite the current resource. Specify the last-seen ETag value to prevent
 	// accidentally overwriting any concurrent changes.
 	IfMatch *string
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // VirtualNetworkLinksClientBeginUpdateOptions contains the optional parameters for the VirtualNetworkLinksClient.BeginUpdate
@@ -994,6 +764,8 @@ type VirtualNetworkLinksClientBeginUpdateOptions struct {
 	// ETag of the resource. Omit this value to always overwrite the current resource. Specify the last-seen ETag value to prevent
 	// accidentally overwriting any concurrent changes.
 	IfMatch *string
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // VirtualNetworkLinksClientGetOptions contains the optional parameters for the VirtualNetworkLinksClient.Get method.
@@ -1005,21 +777,4 @@ type VirtualNetworkLinksClientGetOptions struct {
 type VirtualNetworkLinksClientListOptions struct {
 	// The maximum number of results to return. If not specified, returns up to 100 results.
 	Top *int32
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type SourceControlClient struct {
 // forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewSourceControlClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SourceControlClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewSourceControlClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SourceControlClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &SourceControlClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Create a source control.
@@ -105,7 +110,7 @@ func (client *SourceControlClient) createOrUpdateCreateRequest(ctx context.Conte
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *SourceControlClient) createOrUpdateHandleResponse(resp *http.Response) (SourceControlClientCreateOrUpdateResponse, error) {
-	result := SourceControlClientCreateOrUpdateResponse{RawResponse: resp}
+	result := SourceControlClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SourceControl); err != nil {
 		return SourceControlClientCreateOrUpdateResponse{}, err
 	}
@@ -130,7 +135,7 @@ func (client *SourceControlClient) Delete(ctx context.Context, resourceGroupName
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return SourceControlClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return SourceControlClientDeleteResponse{RawResponse: resp}, nil
+	return SourceControlClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -216,7 +221,7 @@ func (client *SourceControlClient) getCreateRequest(ctx context.Context, resourc
 
 // getHandleResponse handles the Get response.
 func (client *SourceControlClient) getHandleResponse(resp *http.Response) (SourceControlClientGetResponse, error) {
-	result := SourceControlClientGetResponse{RawResponse: resp}
+	result := SourceControlClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SourceControl); err != nil {
 		return SourceControlClientGetResponse{}, err
 	}
@@ -229,16 +234,32 @@ func (client *SourceControlClient) getHandleResponse(resp *http.Response) (Sourc
 // automationAccountName - The name of the automation account.
 // options - SourceControlClientListByAutomationAccountOptions contains the optional parameters for the SourceControlClient.ListByAutomationAccount
 // method.
-func (client *SourceControlClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *SourceControlClientListByAutomationAccountOptions) *SourceControlClientListByAutomationAccountPager {
-	return &SourceControlClientListByAutomationAccountPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, options)
+func (client *SourceControlClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *SourceControlClientListByAutomationAccountOptions) *runtime.Pager[SourceControlClientListByAutomationAccountResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SourceControlClientListByAutomationAccountResponse]{
+		More: func(page SourceControlClientListByAutomationAccountResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SourceControlClientListByAutomationAccountResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SourceControlListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *SourceControlClientListByAutomationAccountResponse) (SourceControlClientListByAutomationAccountResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SourceControlClientListByAutomationAccountResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SourceControlClientListByAutomationAccountResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SourceControlClientListByAutomationAccountResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByAutomationAccountHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByAutomationAccountCreateRequest creates the ListByAutomationAccount request.
@@ -272,7 +293,7 @@ func (client *SourceControlClient) listByAutomationAccountCreateRequest(ctx cont
 
 // listByAutomationAccountHandleResponse handles the ListByAutomationAccount response.
 func (client *SourceControlClient) listByAutomationAccountHandleResponse(resp *http.Response) (SourceControlClientListByAutomationAccountResponse, error) {
-	result := SourceControlClientListByAutomationAccountResponse{RawResponse: resp}
+	result := SourceControlClientListByAutomationAccountResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SourceControlListResult); err != nil {
 		return SourceControlClientListByAutomationAccountResponse{}, err
 	}
@@ -333,7 +354,7 @@ func (client *SourceControlClient) updateCreateRequest(ctx context.Context, reso
 
 // updateHandleResponse handles the Update response.
 func (client *SourceControlClient) updateHandleResponse(resp *http.Response) (SourceControlClientUpdateResponse, error) {
-	result := SourceControlClientUpdateResponse{RawResponse: resp}
+	result := SourceControlClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SourceControl); err != nil {
 		return SourceControlClientUpdateResponse{}, err
 	}

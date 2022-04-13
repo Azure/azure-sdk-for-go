@@ -27,4 +27,4 @@ stages:
   parameters:
     ServiceDirectory: 'keyvault/azcertificates'
     RunLiveTests: true
-    TestRunTime: '720s'
+    TestRunTime: '900s'

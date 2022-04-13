@@ -1,14 +1,35 @@
 # Release History
 
-## 0.13.3 (Unreleased)
+## 0.14.1 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
+* `AzureCLICredential` panics after receiving an unexpected error type
+  ([#17490](https://github.com/Azure/azure-sdk-for-go/issues/17490))
 
 ### Other Changes
+
+## 0.14.0 (2022-04-05)
+
+### Breaking Changes
+* This module now requires Go 1.18
+* Removed `AuthorityHost`. Credentials are now configured for sovereign or private
+  clouds with the API in `azcore/cloud`, for example:
+  ```go
+  // before
+  opts := azidentity.ClientSecretCredentialOptions{AuthorityHost: azidentity.AzureGovernment}
+  cred, err := azidentity.NewClientSecretCredential(tenantID, clientID, secret, &opts)
+
+  // after
+  import "github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
+
+  opts := azidentity.ClientSecretCredentialOptions{}
+  opts.Cloud = cloud.AzureGovernment
+  cred, err := azidentity.NewClientSecretCredential(tenantID, clientID, secret, &opts)
+  ```
 
 ## 0.13.2 (2022-03-08)
 

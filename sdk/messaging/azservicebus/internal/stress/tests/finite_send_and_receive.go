@@ -27,7 +27,7 @@ func FiniteSendAndReceiveTest(remainingArgs []string) {
 
 	log.Printf("Creating queue")
 
-	lockDuration := 5 * time.Minute
+	lockDuration := "PT5M"
 
 	shared.MustCreateAutoDeletingQueue(sc, queueName, &admin.QueueProperties{
 		LockDuration: &lockDuration,
@@ -75,7 +75,7 @@ func FiniteSendAndReceiveTest(remainingArgs []string) {
 				ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
 				defer cancel()
 
-				err := receiver.CompleteMessage(ctx, msg)
+				err := receiver.CompleteMessage(ctx, msg, nil)
 
 				var rpcCodeErr interface{ RPCCode() int }
 

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type CredentialClient struct {
 // forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewCredentialClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CredentialClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewCredentialClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CredentialClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &CredentialClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Create a credential.
@@ -105,7 +110,7 @@ func (client *CredentialClient) createOrUpdateCreateRequest(ctx context.Context,
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *CredentialClient) createOrUpdateHandleResponse(resp *http.Response) (CredentialClientCreateOrUpdateResponse, error) {
-	result := CredentialClientCreateOrUpdateResponse{RawResponse: resp}
+	result := CredentialClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Credential); err != nil {
 		return CredentialClientCreateOrUpdateResponse{}, err
 	}
@@ -130,7 +135,7 @@ func (client *CredentialClient) Delete(ctx context.Context, resourceGroupName st
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return CredentialClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return CredentialClientDeleteResponse{RawResponse: resp}, nil
+	return CredentialClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -216,7 +221,7 @@ func (client *CredentialClient) getCreateRequest(ctx context.Context, resourceGr
 
 // getHandleResponse handles the Get response.
 func (client *CredentialClient) getHandleResponse(resp *http.Response) (CredentialClientGetResponse, error) {
-	result := CredentialClientGetResponse{RawResponse: resp}
+	result := CredentialClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Credential); err != nil {
 		return CredentialClientGetResponse{}, err
 	}
@@ -229,16 +234,32 @@ func (client *CredentialClient) getHandleResponse(resp *http.Response) (Credenti
 // automationAccountName - The name of the automation account.
 // options - CredentialClientListByAutomationAccountOptions contains the optional parameters for the CredentialClient.ListByAutomationAccount
 // method.
-func (client *CredentialClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *CredentialClientListByAutomationAccountOptions) *CredentialClientListByAutomationAccountPager {
-	return &CredentialClientListByAutomationAccountPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, options)
+func (client *CredentialClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *CredentialClientListByAutomationAccountOptions) *runtime.Pager[CredentialClientListByAutomationAccountResponse] {
+	return runtime.NewPager(runtime.PageProcessor[CredentialClientListByAutomationAccountResponse]{
+		More: func(page CredentialClientListByAutomationAccountResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp CredentialClientListByAutomationAccountResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.CredentialListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *CredentialClientListByAutomationAccountResponse) (CredentialClientListByAutomationAccountResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return CredentialClientListByAutomationAccountResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return CredentialClientListByAutomationAccountResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return CredentialClientListByAutomationAccountResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByAutomationAccountHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByAutomationAccountCreateRequest creates the ListByAutomationAccount request.
@@ -269,7 +290,7 @@ func (client *CredentialClient) listByAutomationAccountCreateRequest(ctx context
 
 // listByAutomationAccountHandleResponse handles the ListByAutomationAccount response.
 func (client *CredentialClient) listByAutomationAccountHandleResponse(resp *http.Response) (CredentialClientListByAutomationAccountResponse, error) {
-	result := CredentialClientListByAutomationAccountResponse{RawResponse: resp}
+	result := CredentialClientListByAutomationAccountResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CredentialListResult); err != nil {
 		return CredentialClientListByAutomationAccountResponse{}, err
 	}
@@ -330,7 +351,7 @@ func (client *CredentialClient) updateCreateRequest(ctx context.Context, resourc
 
 // updateHandleResponse handles the Update response.
 func (client *CredentialClient) updateHandleResponse(resp *http.Response) (CredentialClientUpdateResponse, error) {
-	result := CredentialClientUpdateResponse{RawResponse: resp}
+	result := CredentialClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Credential); err != nil {
 		return CredentialClientUpdateResponse{}, err
 	}

@@ -1,6 +1,6 @@
 # Release History
 
-## 0.22.1 (Unreleased)
+## 0.23.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,28 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 0.23.0 (2022-04-04)
+
+### Features Added
+* Added `runtime.Pager[T any]` and `runtime.Poller[T any]` supporting types for central, generic, implementations.
+* Added `cloud` package with a new API for cloud configuration
+* Added `FinalStateVia` field to `runtime.NewPollerOptions[T any]` type.
+
+### Breaking Changes
+* Removed the `Poller` type-alias to the internal poller implementation.
+* Added `Ptr[T any]` and `SliceOfPtrs[T any]` in the `to` package and removed all non-generic implementations.
+* `NullValue` and `IsNullValue` now take a generic type parameter instead of an interface func parameter.
+* Replaced `arm.Endpoint` with `cloud` API
+  * Removed the `endpoint` parameter from `NewRPRegistrationPolicy()`
+  * `arm/runtime.NewPipeline()` and `.NewRPRegistrationPolicy()` now return an `error`
+* Refactored `NewPoller` and `NewPollerFromResumeToken` funcs in `arm/runtime` and `runtime` packages.
+  * Removed the `pollerID` parameter as it's no longer required.
+  * Created optional parameter structs and moved optional parameters into them.
+* Changed `FinalStateVia` field to a `const` type.
+
+### Other Changes
+* Converted expiring resource and dependent types to use generics.
 
 ## 0.22.0 (2022-03-03)
 

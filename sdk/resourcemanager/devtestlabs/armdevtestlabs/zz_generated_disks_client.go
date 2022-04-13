@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type DisksClient struct {
 // subscriptionID - The subscription ID.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewDisksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DisksClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewDisksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DisksClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &DisksClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginAttach - Attach and create the lease of the disk to the virtual machine. This operation can take a while to complete.
@@ -58,22 +63,16 @@ func NewDisksClient(subscriptionID string, credential azcore.TokenCredential, op
 // name - The name of the disk.
 // attachDiskProperties - Properties of the disk to attach.
 // options - DisksClientBeginAttachOptions contains the optional parameters for the DisksClient.BeginAttach method.
-func (client *DisksClient) BeginAttach(ctx context.Context, resourceGroupName string, labName string, userName string, name string, attachDiskProperties AttachDiskProperties, options *DisksClientBeginAttachOptions) (DisksClientAttachPollerResponse, error) {
-	resp, err := client.attach(ctx, resourceGroupName, labName, userName, name, attachDiskProperties, options)
-	if err != nil {
-		return DisksClientAttachPollerResponse{}, err
+func (client *DisksClient) BeginAttach(ctx context.Context, resourceGroupName string, labName string, userName string, name string, attachDiskProperties AttachDiskProperties, options *DisksClientBeginAttachOptions) (*armruntime.Poller[DisksClientAttachResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.attach(ctx, resourceGroupName, labName, userName, name, attachDiskProperties, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[DisksClientAttachResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[DisksClientAttachResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DisksClientAttachPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DisksClient.Attach", "", resp, client.pl)
-	if err != nil {
-		return DisksClientAttachPollerResponse{}, err
-	}
-	result.Poller = &DisksClientAttachPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Attach - Attach and create the lease of the disk to the virtual machine. This operation can take a while to complete.
@@ -136,22 +135,16 @@ func (client *DisksClient) attachCreateRequest(ctx context.Context, resourceGrou
 // disk - A Disk.
 // options - DisksClientBeginCreateOrUpdateOptions contains the optional parameters for the DisksClient.BeginCreateOrUpdate
 // method.
-func (client *DisksClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, labName string, userName string, name string, disk Disk, options *DisksClientBeginCreateOrUpdateOptions) (DisksClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, labName, userName, name, disk, options)
-	if err != nil {
-		return DisksClientCreateOrUpdatePollerResponse{}, err
+func (client *DisksClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, labName string, userName string, name string, disk Disk, options *DisksClientBeginCreateOrUpdateOptions) (*armruntime.Poller[DisksClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, labName, userName, name, disk, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[DisksClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[DisksClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DisksClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DisksClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return DisksClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &DisksClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Create or replace an existing disk. This operation can take a while to complete.
@@ -212,22 +205,16 @@ func (client *DisksClient) createOrUpdateCreateRequest(ctx context.Context, reso
 // userName - The name of the user profile.
 // name - The name of the disk.
 // options - DisksClientBeginDeleteOptions contains the optional parameters for the DisksClient.BeginDelete method.
-func (client *DisksClient) BeginDelete(ctx context.Context, resourceGroupName string, labName string, userName string, name string, options *DisksClientBeginDeleteOptions) (DisksClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, labName, userName, name, options)
-	if err != nil {
-		return DisksClientDeletePollerResponse{}, err
+func (client *DisksClient) BeginDelete(ctx context.Context, resourceGroupName string, labName string, userName string, name string, options *DisksClientBeginDeleteOptions) (*armruntime.Poller[DisksClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, labName, userName, name, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[DisksClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[DisksClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DisksClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DisksClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return DisksClientDeletePollerResponse{}, err
-	}
-	result.Poller = &DisksClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Delete disk. This operation can take a while to complete.
@@ -290,22 +277,16 @@ func (client *DisksClient) deleteCreateRequest(ctx context.Context, resourceGrou
 // name - The name of the disk.
 // detachDiskProperties - Properties of the disk to detach.
 // options - DisksClientBeginDetachOptions contains the optional parameters for the DisksClient.BeginDetach method.
-func (client *DisksClient) BeginDetach(ctx context.Context, resourceGroupName string, labName string, userName string, name string, detachDiskProperties DetachDiskProperties, options *DisksClientBeginDetachOptions) (DisksClientDetachPollerResponse, error) {
-	resp, err := client.detach(ctx, resourceGroupName, labName, userName, name, detachDiskProperties, options)
-	if err != nil {
-		return DisksClientDetachPollerResponse{}, err
+func (client *DisksClient) BeginDetach(ctx context.Context, resourceGroupName string, labName string, userName string, name string, detachDiskProperties DetachDiskProperties, options *DisksClientBeginDetachOptions) (*armruntime.Poller[DisksClientDetachResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.detach(ctx, resourceGroupName, labName, userName, name, detachDiskProperties, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[DisksClientDetachResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[DisksClientDetachResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DisksClientDetachPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DisksClient.Detach", "", resp, client.pl)
-	if err != nil {
-		return DisksClientDetachPollerResponse{}, err
-	}
-	result.Poller = &DisksClientDetachPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Detach - Detach and break the lease of the disk attached to the virtual machine. This operation can take a while to complete.
@@ -420,7 +401,7 @@ func (client *DisksClient) getCreateRequest(ctx context.Context, resourceGroupNa
 
 // getHandleResponse handles the Get response.
 func (client *DisksClient) getHandleResponse(resp *http.Response) (DisksClientGetResponse, error) {
-	result := DisksClientGetResponse{RawResponse: resp}
+	result := DisksClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Disk); err != nil {
 		return DisksClientGetResponse{}, err
 	}
@@ -433,16 +414,32 @@ func (client *DisksClient) getHandleResponse(resp *http.Response) (DisksClientGe
 // labName - The name of the lab.
 // userName - The name of the user profile.
 // options - DisksClientListOptions contains the optional parameters for the DisksClient.List method.
-func (client *DisksClient) List(resourceGroupName string, labName string, userName string, options *DisksClientListOptions) *DisksClientListPager {
-	return &DisksClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, labName, userName, options)
+func (client *DisksClient) List(resourceGroupName string, labName string, userName string, options *DisksClientListOptions) *runtime.Pager[DisksClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DisksClientListResponse]{
+		More: func(page DisksClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DisksClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DiskList.NextLink)
+		Fetcher: func(ctx context.Context, page *DisksClientListResponse) (DisksClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, labName, userName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DisksClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DisksClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DisksClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -489,7 +486,7 @@ func (client *DisksClient) listCreateRequest(ctx context.Context, resourceGroupN
 
 // listHandleResponse handles the List response.
 func (client *DisksClient) listHandleResponse(resp *http.Response) (DisksClientListResponse, error) {
-	result := DisksClientListResponse{RawResponse: resp}
+	result := DisksClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiskList); err != nil {
 		return DisksClientListResponse{}, err
 	}
@@ -555,7 +552,7 @@ func (client *DisksClient) updateCreateRequest(ctx context.Context, resourceGrou
 
 // updateHandleResponse handles the Update response.
 func (client *DisksClient) updateHandleResponse(resp *http.Response) (DisksClientUpdateResponse, error) {
-	result := DisksClientUpdateResponse{RawResponse: resp}
+	result := DisksClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Disk); err != nil {
 		return DisksClientUpdateResponse{}, err
 	}

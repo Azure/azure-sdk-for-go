@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armmachinelearningservices
 
 const (
 	moduleName    = "armmachinelearningservices"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // AllocationState - Allocation state of the compute. Possible values are: steady - Indicates that the compute is not resizing.
@@ -33,11 +33,6 @@ func PossibleAllocationStateValues() []AllocationState {
 	}
 }
 
-// ToPtr returns a *AllocationState pointing to the current value.
-func (c AllocationState) ToPtr() *AllocationState {
-	return &c
-}
-
 // ApplicationSharingPolicy - Policy for sharing applications on this compute instance among users of parent workspace. If
 // Personal, only the creator can access applications on this compute instance. When Shared, any workspace
 // user can access applications on this instance depending on his/her assigned role.
@@ -56,11 +51,6 @@ func PossibleApplicationSharingPolicyValues() []ApplicationSharingPolicy {
 	}
 }
 
-// ToPtr returns a *ApplicationSharingPolicy pointing to the current value.
-func (c ApplicationSharingPolicy) ToPtr() *ApplicationSharingPolicy {
-	return &c
-}
-
 // BillingCurrency - Three lettered code specifying the currency of the VM price. Example: USD
 type BillingCurrency string
 
@@ -73,11 +63,6 @@ func PossibleBillingCurrencyValues() []BillingCurrency {
 	return []BillingCurrency{
 		BillingCurrencyUSD,
 	}
-}
-
-// ToPtr returns a *BillingCurrency pointing to the current value.
-func (c BillingCurrency) ToPtr() *BillingCurrency {
-	return &c
 }
 
 // ClusterPurpose - Intended usage of the cluster
@@ -98,11 +83,6 @@ func PossibleClusterPurposeValues() []ClusterPurpose {
 	}
 }
 
-// ToPtr returns a *ClusterPurpose pointing to the current value.
-func (c ClusterPurpose) ToPtr() *ClusterPurpose {
-	return &c
-}
-
 // ComputeInstanceAuthorizationType - The Compute Instance Authorization type. Available values are personal (default).
 type ComputeInstanceAuthorizationType string
 
@@ -115,11 +95,6 @@ func PossibleComputeInstanceAuthorizationTypeValues() []ComputeInstanceAuthoriza
 	return []ComputeInstanceAuthorizationType{
 		ComputeInstanceAuthorizationTypePersonal,
 	}
-}
-
-// ToPtr returns a *ComputeInstanceAuthorizationType pointing to the current value.
-func (c ComputeInstanceAuthorizationType) ToPtr() *ComputeInstanceAuthorizationType {
-	return &c
 }
 
 // ComputeInstanceState - Current state of an ComputeInstance.
@@ -164,11 +139,6 @@ func PossibleComputeInstanceStateValues() []ComputeInstanceState {
 	}
 }
 
-// ToPtr returns a *ComputeInstanceState pointing to the current value.
-func (c ComputeInstanceState) ToPtr() *ComputeInstanceState {
-	return &c
-}
-
 // ComputeType - The type of compute
 type ComputeType string
 
@@ -201,11 +171,6 @@ func PossibleComputeTypeValues() []ComputeType {
 	}
 }
 
-// ToPtr returns a *ComputeType pointing to the current value.
-func (c ComputeType) ToPtr() *ComputeType {
-	return &c
-}
-
 // CreatedByType - The type of identity that created the resource.
 type CreatedByType string
 
@@ -226,11 +191,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
-}
-
 // DiagnoseResultLevel - Level of workspace setup error
 type DiagnoseResultLevel string
 
@@ -249,11 +209,6 @@ func PossibleDiagnoseResultLevelValues() []DiagnoseResultLevel {
 	}
 }
 
-// ToPtr returns a *DiagnoseResultLevel pointing to the current value.
-func (c DiagnoseResultLevel) ToPtr() *DiagnoseResultLevel {
-	return &c
-}
-
 // EncryptionStatus - Indicates whether or not the encryption is enabled for the workspace.
 type EncryptionStatus string
 
@@ -270,11 +225,6 @@ func PossibleEncryptionStatusValues() []EncryptionStatus {
 	}
 }
 
-// ToPtr returns a *EncryptionStatus pointing to the current value.
-func (c EncryptionStatus) ToPtr() *EncryptionStatus {
-	return &c
-}
-
 // LoadBalancerType - Load Balancer Type
 type LoadBalancerType string
 
@@ -289,11 +239,6 @@ func PossibleLoadBalancerTypeValues() []LoadBalancerType {
 		LoadBalancerTypeInternalLoadBalancer,
 		LoadBalancerTypePublicIP,
 	}
-}
-
-// ToPtr returns a *LoadBalancerType pointing to the current value.
-func (c LoadBalancerType) ToPtr() *LoadBalancerType {
-	return &c
 }
 
 // NodeState - State of the compute node. Values are idle, running, preparing, unusable, leaving and preempted.
@@ -320,11 +265,6 @@ func PossibleNodeStateValues() []NodeState {
 	}
 }
 
-// ToPtr returns a *NodeState pointing to the current value.
-func (c NodeState) ToPtr() *NodeState {
-	return &c
-}
-
 // OperationName - Name of the last operation.
 type OperationName string
 
@@ -347,11 +287,6 @@ func PossibleOperationNameValues() []OperationName {
 		OperationNameStart,
 		OperationNameStop,
 	}
-}
-
-// ToPtr returns a *OperationName pointing to the current value.
-func (c OperationName) ToPtr() *OperationName {
-	return &c
 }
 
 // OperationStatus - Operation status.
@@ -382,11 +317,6 @@ func PossibleOperationStatusValues() []OperationStatus {
 	}
 }
 
-// ToPtr returns a *OperationStatus pointing to the current value.
-func (c OperationStatus) ToPtr() *OperationStatus {
-	return &c
-}
-
 // OsType - Compute OS Type
 type OsType string
 
@@ -401,11 +331,6 @@ func PossibleOsTypeValues() []OsType {
 		OsTypeLinux,
 		OsTypeWindows,
 	}
-}
-
-// ToPtr returns a *OsType pointing to the current value.
-func (c OsType) ToPtr() *OsType {
-	return &c
 }
 
 // PrivateEndpointConnectionProvisioningState - The current provisioning state.
@@ -428,11 +353,6 @@ func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpoin
 	}
 }
 
-// ToPtr returns a *PrivateEndpointConnectionProvisioningState pointing to the current value.
-func (c PrivateEndpointConnectionProvisioningState) ToPtr() *PrivateEndpointConnectionProvisioningState {
-	return &c
-}
-
 // PrivateEndpointServiceConnectionStatus - The private endpoint connection status.
 type PrivateEndpointServiceConnectionStatus string
 
@@ -453,11 +373,6 @@ func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointSer
 		PrivateEndpointServiceConnectionStatusRejected,
 		PrivateEndpointServiceConnectionStatusTimeout,
 	}
-}
-
-// ToPtr returns a *PrivateEndpointServiceConnectionStatus pointing to the current value.
-func (c PrivateEndpointServiceConnectionStatus) ToPtr() *PrivateEndpointServiceConnectionStatus {
-	return &c
 }
 
 // ProvisioningState - The current deployment state of workspace resource. The provisioningState is to indicate states for
@@ -487,11 +402,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	}
 }
 
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
-}
-
 // PublicNetworkAccess - Whether requests from Public Network are allowed.
 type PublicNetworkAccess string
 
@@ -508,11 +418,6 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 	}
 }
 
-// ToPtr returns a *PublicNetworkAccess pointing to the current value.
-func (c PublicNetworkAccess) ToPtr() *PublicNetworkAccess {
-	return &c
-}
-
 // QuotaUnit - An enum describing the unit of quota measurement.
 type QuotaUnit string
 
@@ -525,11 +430,6 @@ func PossibleQuotaUnitValues() []QuotaUnit {
 	return []QuotaUnit{
 		QuotaUnitCount,
 	}
-}
-
-// ToPtr returns a *QuotaUnit pointing to the current value.
-func (c QuotaUnit) ToPtr() *QuotaUnit {
-	return &c
 }
 
 // ReasonCode - The reason for the restriction.
@@ -548,11 +448,6 @@ func PossibleReasonCodeValues() []ReasonCode {
 		ReasonCodeNotAvailableForSubscription,
 		ReasonCodeNotSpecified,
 	}
-}
-
-// ToPtr returns a *ReasonCode pointing to the current value.
-func (c ReasonCode) ToPtr() *ReasonCode {
-	return &c
 }
 
 // RemoteLoginPortPublicAccess - State of the public SSH port. Possible values are: Disabled - Indicates that the public ssh
@@ -577,11 +472,6 @@ func PossibleRemoteLoginPortPublicAccessValues() []RemoteLoginPortPublicAccess {
 	}
 }
 
-// ToPtr returns a *RemoteLoginPortPublicAccess pointing to the current value.
-func (c RemoteLoginPortPublicAccess) ToPtr() *RemoteLoginPortPublicAccess {
-	return &c
-}
-
 // ResourceIdentityType - The identity type.
 type ResourceIdentityType string
 
@@ -602,11 +492,6 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	}
 }
 
-// ToPtr returns a *ResourceIdentityType pointing to the current value.
-func (c ResourceIdentityType) ToPtr() *ResourceIdentityType {
-	return &c
-}
-
 // SSHPublicAccess - State of the public SSH port. Possible values are: Disabled - Indicates that the public ssh port is closed
 // on this instance. Enabled - Indicates that the public ssh port is open and accessible
 // according to the VNet/subnet policy if applicable.
@@ -625,11 +510,6 @@ func PossibleSSHPublicAccessValues() []SSHPublicAccess {
 	}
 }
 
-// ToPtr returns a *SSHPublicAccess pointing to the current value.
-func (c SSHPublicAccess) ToPtr() *SSHPublicAccess {
-	return &c
-}
-
 // SSLConfigurationStatus - Enable or disable ssl for scoring
 type SSLConfigurationStatus string
 
@@ -646,11 +526,6 @@ func PossibleSSLConfigurationStatusValues() []SSLConfigurationStatus {
 		SSLConfigurationStatusDisabled,
 		SSLConfigurationStatusEnabled,
 	}
-}
-
-// ToPtr returns a *SSLConfigurationStatus pointing to the current value.
-func (c SSLConfigurationStatus) ToPtr() *SSLConfigurationStatus {
-	return &c
 }
 
 // Status - Status of update workspace quota.
@@ -681,11 +556,6 @@ func PossibleStatusValues() []Status {
 	}
 }
 
-// ToPtr returns a *Status pointing to the current value.
-func (c Status) ToPtr() *Status {
-	return &c
-}
-
 type UnderlyingResourceAction string
 
 const (
@@ -699,11 +569,6 @@ func PossibleUnderlyingResourceActionValues() []UnderlyingResourceAction {
 		UnderlyingResourceActionDelete,
 		UnderlyingResourceActionDetach,
 	}
-}
-
-// ToPtr returns a *UnderlyingResourceAction pointing to the current value.
-func (c UnderlyingResourceAction) ToPtr() *UnderlyingResourceAction {
-	return &c
 }
 
 // UnitOfMeasure - The unit of time measurement for the specified VM price. Example: OneHour
@@ -720,11 +585,6 @@ func PossibleUnitOfMeasureValues() []UnitOfMeasure {
 	}
 }
 
-// ToPtr returns a *UnitOfMeasure pointing to the current value.
-func (c UnitOfMeasure) ToPtr() *UnitOfMeasure {
-	return &c
-}
-
 // UsageUnit - An enum describing the unit of usage measurement.
 type UsageUnit string
 
@@ -737,11 +597,6 @@ func PossibleUsageUnitValues() []UsageUnit {
 	return []UsageUnit{
 		UsageUnitCount,
 	}
-}
-
-// ToPtr returns a *UsageUnit pointing to the current value.
-func (c UsageUnit) ToPtr() *UsageUnit {
-	return &c
 }
 
 // VMPriceOSType - Operating system type used by the VM.
@@ -760,11 +615,6 @@ func PossibleVMPriceOSTypeValues() []VMPriceOSType {
 	}
 }
 
-// ToPtr returns a *VMPriceOSType pointing to the current value.
-func (c VMPriceOSType) ToPtr() *VMPriceOSType {
-	return &c
-}
-
 // VMPriority - Virtual Machine priority
 type VMPriority string
 
@@ -779,11 +629,6 @@ func PossibleVMPriorityValues() []VMPriority {
 		VMPriorityDedicated,
 		VMPriorityLowPriority,
 	}
-}
-
-// ToPtr returns a *VMPriority pointing to the current value.
-func (c VMPriority) ToPtr() *VMPriority {
-	return &c
 }
 
 // VMTier - The type of the VM.
@@ -804,11 +649,6 @@ func PossibleVMTierValues() []VMTier {
 	}
 }
 
-// ToPtr returns a *VMTier pointing to the current value.
-func (c VMTier) ToPtr() *VMTier {
-	return &c
-}
-
 // ValueFormat - format for the workspace connection value
 type ValueFormat string
 
@@ -821,9 +661,4 @@ func PossibleValueFormatValues() []ValueFormat {
 	return []ValueFormat{
 		ValueFormatJSON,
 	}
-}
-
-// ToPtr returns a *ValueFormat pointing to the current value.
-func (c ValueFormat) ToPtr() *ValueFormat {
-	return &c
 }

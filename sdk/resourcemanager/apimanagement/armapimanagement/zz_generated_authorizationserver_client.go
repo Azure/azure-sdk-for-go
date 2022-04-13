@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -35,20 +36,24 @@ type AuthorizationServerClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewAuthorizationServerClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AuthorizationServerClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewAuthorizationServerClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AuthorizationServerClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &AuthorizationServerClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates new authorization server or updates an existing authorization server.
@@ -109,7 +114,7 @@ func (client *AuthorizationServerClient) createOrUpdateCreateRequest(ctx context
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *AuthorizationServerClient) createOrUpdateHandleResponse(resp *http.Response) (AuthorizationServerClientCreateOrUpdateResponse, error) {
-	result := AuthorizationServerClientCreateOrUpdateResponse{RawResponse: resp}
+	result := AuthorizationServerClientCreateOrUpdateResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -140,7 +145,7 @@ func (client *AuthorizationServerClient) Delete(ctx context.Context, resourceGro
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return AuthorizationServerClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return AuthorizationServerClientDeleteResponse{RawResponse: resp}, nil
+	return AuthorizationServerClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -227,7 +232,7 @@ func (client *AuthorizationServerClient) getCreateRequest(ctx context.Context, r
 
 // getHandleResponse handles the Get response.
 func (client *AuthorizationServerClient) getHandleResponse(resp *http.Response) (AuthorizationServerClientGetResponse, error) {
-	result := AuthorizationServerClientGetResponse{RawResponse: resp}
+	result := AuthorizationServerClientGetResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -287,7 +292,7 @@ func (client *AuthorizationServerClient) getEntityTagCreateRequest(ctx context.C
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
 func (client *AuthorizationServerClient) getEntityTagHandleResponse(resp *http.Response) (AuthorizationServerClientGetEntityTagResponse, error) {
-	result := AuthorizationServerClientGetEntityTagResponse{RawResponse: resp}
+	result := AuthorizationServerClientGetEntityTagResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -303,16 +308,32 @@ func (client *AuthorizationServerClient) getEntityTagHandleResponse(resp *http.R
 // serviceName - The name of the API Management service.
 // options - AuthorizationServerClientListByServiceOptions contains the optional parameters for the AuthorizationServerClient.ListByService
 // method.
-func (client *AuthorizationServerClient) ListByService(resourceGroupName string, serviceName string, options *AuthorizationServerClientListByServiceOptions) *AuthorizationServerClientListByServicePager {
-	return &AuthorizationServerClientListByServicePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
+func (client *AuthorizationServerClient) ListByService(resourceGroupName string, serviceName string, options *AuthorizationServerClientListByServiceOptions) *runtime.Pager[AuthorizationServerClientListByServiceResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AuthorizationServerClientListByServiceResponse]{
+		More: func(page AuthorizationServerClientListByServiceResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AuthorizationServerClientListByServiceResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AuthorizationServerCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *AuthorizationServerClientListByServiceResponse) (AuthorizationServerClientListByServiceResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AuthorizationServerClientListByServiceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AuthorizationServerClientListByServiceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AuthorizationServerClientListByServiceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByServiceHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByServiceCreateRequest creates the ListByService request.
@@ -352,7 +373,7 @@ func (client *AuthorizationServerClient) listByServiceCreateRequest(ctx context.
 
 // listByServiceHandleResponse handles the ListByService response.
 func (client *AuthorizationServerClient) listByServiceHandleResponse(resp *http.Response) (AuthorizationServerClientListByServiceResponse, error) {
-	result := AuthorizationServerClientListByServiceResponse{RawResponse: resp}
+	result := AuthorizationServerClientListByServiceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AuthorizationServerCollection); err != nil {
 		return AuthorizationServerClientListByServiceResponse{}, err
 	}
@@ -413,7 +434,7 @@ func (client *AuthorizationServerClient) listSecretsCreateRequest(ctx context.Co
 
 // listSecretsHandleResponse handles the ListSecrets response.
 func (client *AuthorizationServerClient) listSecretsHandleResponse(resp *http.Response) (AuthorizationServerClientListSecretsResponse, error) {
-	result := AuthorizationServerClientListSecretsResponse{RawResponse: resp}
+	result := AuthorizationServerClientListSecretsResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -481,7 +502,7 @@ func (client *AuthorizationServerClient) updateCreateRequest(ctx context.Context
 
 // updateHandleResponse handles the Update response.
 func (client *AuthorizationServerClient) updateHandleResponse(resp *http.Response) (AuthorizationServerClientUpdateResponse, error) {
-	result := AuthorizationServerClientUpdateResponse{RawResponse: resp}
+	result := AuthorizationServerClientUpdateResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}

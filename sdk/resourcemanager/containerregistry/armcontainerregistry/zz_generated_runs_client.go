@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type RunsClient struct {
 // subscriptionID - The Microsoft Azure subscription ID.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewRunsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RunsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewRunsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RunsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &RunsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCancel - Cancel an existing run.
@@ -56,22 +61,16 @@ func NewRunsClient(subscriptionID string, credential azcore.TokenCredential, opt
 // registryName - The name of the container registry.
 // runID - The run ID.
 // options - RunsClientBeginCancelOptions contains the optional parameters for the RunsClient.BeginCancel method.
-func (client *RunsClient) BeginCancel(ctx context.Context, resourceGroupName string, registryName string, runID string, options *RunsClientBeginCancelOptions) (RunsClientCancelPollerResponse, error) {
-	resp, err := client.cancel(ctx, resourceGroupName, registryName, runID, options)
-	if err != nil {
-		return RunsClientCancelPollerResponse{}, err
+func (client *RunsClient) BeginCancel(ctx context.Context, resourceGroupName string, registryName string, runID string, options *RunsClientBeginCancelOptions) (*armruntime.Poller[RunsClientCancelResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.cancel(ctx, resourceGroupName, registryName, runID, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[RunsClientCancelResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[RunsClientCancelResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := RunsClientCancelPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("RunsClient.Cancel", "", resp, client.pl)
-	if err != nil {
-		return RunsClientCancelPollerResponse{}, err
-	}
-	result.Poller = &RunsClientCancelPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Cancel - Cancel an existing run.
@@ -174,7 +173,7 @@ func (client *RunsClient) getCreateRequest(ctx context.Context, resourceGroupNam
 
 // getHandleResponse handles the Get response.
 func (client *RunsClient) getHandleResponse(resp *http.Response) (RunsClientGetResponse, error) {
-	result := RunsClientGetResponse{RawResponse: resp}
+	result := RunsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Run); err != nil {
 		return RunsClientGetResponse{}, err
 	}
@@ -234,7 +233,7 @@ func (client *RunsClient) getLogSasURLCreateRequest(ctx context.Context, resourc
 
 // getLogSasURLHandleResponse handles the GetLogSasURL response.
 func (client *RunsClient) getLogSasURLHandleResponse(resp *http.Response) (RunsClientGetLogSasURLResponse, error) {
-	result := RunsClientGetLogSasURLResponse{RawResponse: resp}
+	result := RunsClientGetLogSasURLResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RunGetLogResult); err != nil {
 		return RunsClientGetLogSasURLResponse{}, err
 	}
@@ -246,16 +245,32 @@ func (client *RunsClient) getLogSasURLHandleResponse(resp *http.Response) (RunsC
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.
 // options - RunsClientListOptions contains the optional parameters for the RunsClient.List method.
-func (client *RunsClient) List(resourceGroupName string, registryName string, options *RunsClientListOptions) *RunsClientListPager {
-	return &RunsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, registryName, options)
+func (client *RunsClient) List(resourceGroupName string, registryName string, options *RunsClientListOptions) *runtime.Pager[RunsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[RunsClientListResponse]{
+		More: func(page RunsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp RunsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.RunListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *RunsClientListResponse) (RunsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, registryName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return RunsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return RunsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return RunsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -292,7 +307,7 @@ func (client *RunsClient) listCreateRequest(ctx context.Context, resourceGroupNa
 
 // listHandleResponse handles the List response.
 func (client *RunsClient) listHandleResponse(resp *http.Response) (RunsClientListResponse, error) {
-	result := RunsClientListResponse{RawResponse: resp}
+	result := RunsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RunListResult); err != nil {
 		return RunsClientListResponse{}, err
 	}
@@ -306,22 +321,16 @@ func (client *RunsClient) listHandleResponse(resp *http.Response) (RunsClientLis
 // runID - The run ID.
 // runUpdateParameters - The run update properties.
 // options - RunsClientBeginUpdateOptions contains the optional parameters for the RunsClient.BeginUpdate method.
-func (client *RunsClient) BeginUpdate(ctx context.Context, resourceGroupName string, registryName string, runID string, runUpdateParameters RunUpdateParameters, options *RunsClientBeginUpdateOptions) (RunsClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, registryName, runID, runUpdateParameters, options)
-	if err != nil {
-		return RunsClientUpdatePollerResponse{}, err
+func (client *RunsClient) BeginUpdate(ctx context.Context, resourceGroupName string, registryName string, runID string, runUpdateParameters RunUpdateParameters, options *RunsClientBeginUpdateOptions) (*armruntime.Poller[RunsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, registryName, runID, runUpdateParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[RunsClientUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[RunsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := RunsClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("RunsClient.Update", "", resp, client.pl)
-	if err != nil {
-		return RunsClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &RunsClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Patch the run properties.

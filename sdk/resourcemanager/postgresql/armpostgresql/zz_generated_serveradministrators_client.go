@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ServerAdministratorsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewServerAdministratorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServerAdministratorsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewServerAdministratorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ServerAdministratorsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ServerAdministratorsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or update active directory administrator on an existing server. The update action will overwrite
@@ -57,22 +62,16 @@ func NewServerAdministratorsClient(subscriptionID string, credential azcore.Toke
 // properties - The required parameters for creating or updating an AAD server administrator.
 // options - ServerAdministratorsClientBeginCreateOrUpdateOptions contains the optional parameters for the ServerAdministratorsClient.BeginCreateOrUpdate
 // method.
-func (client *ServerAdministratorsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, properties ServerAdministratorResource, options *ServerAdministratorsClientBeginCreateOrUpdateOptions) (ServerAdministratorsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, properties, options)
-	if err != nil {
-		return ServerAdministratorsClientCreateOrUpdatePollerResponse{}, err
+func (client *ServerAdministratorsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, properties ServerAdministratorResource, options *ServerAdministratorsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[ServerAdministratorsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ServerAdministratorsClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ServerAdministratorsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ServerAdministratorsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ServerAdministratorsClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return ServerAdministratorsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &ServerAdministratorsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or update active directory administrator on an existing server. The update action will overwrite
@@ -125,22 +124,16 @@ func (client *ServerAdministratorsClient) createOrUpdateCreateRequest(ctx contex
 // serverName - The name of the server.
 // options - ServerAdministratorsClientBeginDeleteOptions contains the optional parameters for the ServerAdministratorsClient.BeginDelete
 // method.
-func (client *ServerAdministratorsClient) BeginDelete(ctx context.Context, resourceGroupName string, serverName string, options *ServerAdministratorsClientBeginDeleteOptions) (ServerAdministratorsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, serverName, options)
-	if err != nil {
-		return ServerAdministratorsClientDeletePollerResponse{}, err
+func (client *ServerAdministratorsClient) BeginDelete(ctx context.Context, resourceGroupName string, serverName string, options *ServerAdministratorsClientBeginDeleteOptions) (*armruntime.Poller[ServerAdministratorsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, serverName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ServerAdministratorsClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ServerAdministratorsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ServerAdministratorsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ServerAdministratorsClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return ServerAdministratorsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &ServerAdministratorsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes server active directory administrator.
@@ -235,7 +228,7 @@ func (client *ServerAdministratorsClient) getCreateRequest(ctx context.Context, 
 
 // getHandleResponse handles the Get response.
 func (client *ServerAdministratorsClient) getHandleResponse(resp *http.Response) (ServerAdministratorsClientGetResponse, error) {
-	result := ServerAdministratorsClientGetResponse{RawResponse: resp}
+	result := ServerAdministratorsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerAdministratorResource); err != nil {
 		return ServerAdministratorsClientGetResponse{}, err
 	}
@@ -248,19 +241,26 @@ func (client *ServerAdministratorsClient) getHandleResponse(resp *http.Response)
 // serverName - The name of the server.
 // options - ServerAdministratorsClientListOptions contains the optional parameters for the ServerAdministratorsClient.List
 // method.
-func (client *ServerAdministratorsClient) List(ctx context.Context, resourceGroupName string, serverName string, options *ServerAdministratorsClientListOptions) (ServerAdministratorsClientListResponse, error) {
-	req, err := client.listCreateRequest(ctx, resourceGroupName, serverName, options)
-	if err != nil {
-		return ServerAdministratorsClientListResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return ServerAdministratorsClientListResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServerAdministratorsClientListResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listHandleResponse(resp)
+func (client *ServerAdministratorsClient) List(resourceGroupName string, serverName string, options *ServerAdministratorsClientListOptions) *runtime.Pager[ServerAdministratorsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ServerAdministratorsClientListResponse]{
+		More: func(page ServerAdministratorsClientListResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *ServerAdministratorsClientListResponse) (ServerAdministratorsClientListResponse, error) {
+			req, err := client.listCreateRequest(ctx, resourceGroupName, serverName, options)
+			if err != nil {
+				return ServerAdministratorsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ServerAdministratorsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ServerAdministratorsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
+		},
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -291,7 +291,7 @@ func (client *ServerAdministratorsClient) listCreateRequest(ctx context.Context,
 
 // listHandleResponse handles the List response.
 func (client *ServerAdministratorsClient) listHandleResponse(resp *http.Response) (ServerAdministratorsClientListResponse, error) {
-	result := ServerAdministratorsClientListResponse{RawResponse: resp}
+	result := ServerAdministratorsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerAdministratorResourceListResult); err != nil {
 		return ServerAdministratorsClientListResponse{}, err
 	}

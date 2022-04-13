@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ServersClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewServersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServersClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewServersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ServersClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ServersClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Gets information about a server in server group.
@@ -102,7 +107,7 @@ func (client *ServersClient) getCreateRequest(ctx context.Context, resourceGroup
 
 // getHandleResponse handles the Get response.
 func (client *ServersClient) getHandleResponse(resp *http.Response) (ServersClientGetResponse, error) {
-	result := ServersClientGetResponse{RawResponse: resp}
+	result := ServersClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerGroupServer); err != nil {
 		return ServersClientGetResponse{}, err
 	}
@@ -115,19 +120,26 @@ func (client *ServersClient) getHandleResponse(resp *http.Response) (ServersClie
 // serverGroupName - The name of the server group.
 // options - ServersClientListByServerGroupOptions contains the optional parameters for the ServersClient.ListByServerGroup
 // method.
-func (client *ServersClient) ListByServerGroup(ctx context.Context, resourceGroupName string, serverGroupName string, options *ServersClientListByServerGroupOptions) (ServersClientListByServerGroupResponse, error) {
-	req, err := client.listByServerGroupCreateRequest(ctx, resourceGroupName, serverGroupName, options)
-	if err != nil {
-		return ServersClientListByServerGroupResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return ServersClientListByServerGroupResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServersClientListByServerGroupResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listByServerGroupHandleResponse(resp)
+func (client *ServersClient) ListByServerGroup(resourceGroupName string, serverGroupName string, options *ServersClientListByServerGroupOptions) *runtime.Pager[ServersClientListByServerGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ServersClientListByServerGroupResponse]{
+		More: func(page ServersClientListByServerGroupResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *ServersClientListByServerGroupResponse) (ServersClientListByServerGroupResponse, error) {
+			req, err := client.listByServerGroupCreateRequest(ctx, resourceGroupName, serverGroupName, options)
+			if err != nil {
+				return ServersClientListByServerGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ServersClientListByServerGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ServersClientListByServerGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByServerGroupHandleResponse(resp)
+		},
+	})
 }
 
 // listByServerGroupCreateRequest creates the ListByServerGroup request.
@@ -158,7 +170,7 @@ func (client *ServersClient) listByServerGroupCreateRequest(ctx context.Context,
 
 // listByServerGroupHandleResponse handles the ListByServerGroup response.
 func (client *ServersClient) listByServerGroupHandleResponse(resp *http.Response) (ServersClientListByServerGroupResponse, error) {
-	result := ServersClientListByServerGroupResponse{RawResponse: resp}
+	result := ServersClientListByServerGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerGroupServerListResult); err != nil {
 		return ServersClientListByServerGroupResponse{}, err
 	}

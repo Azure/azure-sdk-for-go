@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armrecoveryservices
 
 const (
 	moduleName    = "armrecoveryservices"
-	moduleVersion = "v0.3.1"
+	moduleVersion = "v0.4.0"
 )
 
 // AuthType - Specifies the authentication type.
@@ -35,11 +35,6 @@ func PossibleAuthTypeValues() []AuthType {
 	}
 }
 
-// ToPtr returns a *AuthType pointing to the current value.
-func (c AuthType) ToPtr() *AuthType {
-	return &c
-}
-
 // BackupStorageVersion - Backup storage version
 type BackupStorageVersion string
 
@@ -56,11 +51,6 @@ func PossibleBackupStorageVersionValues() []BackupStorageVersion {
 		BackupStorageVersionV1,
 		BackupStorageVersionV2,
 	}
-}
-
-// ToPtr returns a *BackupStorageVersion pointing to the current value.
-func (c BackupStorageVersion) ToPtr() *BackupStorageVersion {
-	return &c
 }
 
 // CreatedByType - The type of identity that created the resource.
@@ -83,11 +73,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
-}
-
 // InfrastructureEncryptionState - Enabling/Disabling the Double Encryption state
 type InfrastructureEncryptionState string
 
@@ -102,11 +87,6 @@ func PossibleInfrastructureEncryptionStateValues() []InfrastructureEncryptionSta
 		InfrastructureEncryptionStateDisabled,
 		InfrastructureEncryptionStateEnabled,
 	}
-}
-
-// ToPtr returns a *InfrastructureEncryptionState pointing to the current value.
-func (c InfrastructureEncryptionState) ToPtr() *InfrastructureEncryptionState {
-	return &c
 }
 
 // PrivateEndpointConnectionStatus - Gets or sets the status.
@@ -129,11 +109,6 @@ func PossiblePrivateEndpointConnectionStatusValues() []PrivateEndpointConnection
 	}
 }
 
-// ToPtr returns a *PrivateEndpointConnectionStatus pointing to the current value.
-func (c PrivateEndpointConnectionStatus) ToPtr() *PrivateEndpointConnectionStatus {
-	return &c
-}
-
 // ProvisioningState - Gets or sets provisioning state of the private endpoint connection.
 type ProvisioningState string
 
@@ -152,11 +127,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 		ProvisioningStatePending,
 		ProvisioningStateSucceeded,
 	}
-}
-
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
 }
 
 // ResourceIdentityType - The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both an implicitly
@@ -179,11 +149,6 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 		ResourceIdentityTypeSystemAssignedUserAssigned,
 		ResourceIdentityTypeUserAssigned,
 	}
-}
-
-// ToPtr returns a *ResourceIdentityType pointing to the current value.
-func (c ResourceIdentityType) ToPtr() *ResourceIdentityType {
-	return &c
 }
 
 // ResourceMoveState - The State of the Resource after the move operation
@@ -218,11 +183,6 @@ func PossibleResourceMoveStateValues() []ResourceMoveState {
 	}
 }
 
-// ToPtr returns a *ResourceMoveState pointing to the current value.
-func (c ResourceMoveState) ToPtr() *ResourceMoveState {
-	return &c
-}
-
 // SKUName - The Sku name.
 type SKUName string
 
@@ -239,11 +199,6 @@ func PossibleSKUNameValues() []SKUName {
 	}
 }
 
-// ToPtr returns a *SKUName pointing to the current value.
-func (c SKUName) ToPtr() *SKUName {
-	return &c
-}
-
 // TriggerType - The way the vault upgrade was triggered.
 type TriggerType string
 
@@ -258,11 +213,6 @@ func PossibleTriggerTypeValues() []TriggerType {
 		TriggerTypeForcedUpgrade,
 		TriggerTypeUserTriggered,
 	}
-}
-
-// ToPtr returns a *TriggerType pointing to the current value.
-func (c TriggerType) ToPtr() *TriggerType {
-	return &c
 }
 
 // UsagesUnit - Unit of the usage.
@@ -289,11 +239,6 @@ func PossibleUsagesUnitValues() []UsagesUnit {
 	}
 }
 
-// ToPtr returns a *UsagesUnit pointing to the current value.
-func (c UsagesUnit) ToPtr() *UsagesUnit {
-	return &c
-}
-
 // VaultPrivateEndpointState - Private endpoint state for backup.
 type VaultPrivateEndpointState string
 
@@ -308,11 +253,6 @@ func PossibleVaultPrivateEndpointStateValues() []VaultPrivateEndpointState {
 		VaultPrivateEndpointStateEnabled,
 		VaultPrivateEndpointStateNone,
 	}
-}
-
-// ToPtr returns a *VaultPrivateEndpointState pointing to the current value.
-func (c VaultPrivateEndpointState) ToPtr() *VaultPrivateEndpointState {
-	return &c
 }
 
 // VaultUpgradeState - Status of the vault upgrade operation.
@@ -333,9 +273,4 @@ func PossibleVaultUpgradeStateValues() []VaultUpgradeState {
 		VaultUpgradeStateUnknown,
 		VaultUpgradeStateUpgraded,
 	}
-}
-
-// ToPtr returns a *VaultUpgradeState pointing to the current value.
-func (c VaultUpgradeState) ToPtr() *VaultUpgradeState {
-	return &c
 }

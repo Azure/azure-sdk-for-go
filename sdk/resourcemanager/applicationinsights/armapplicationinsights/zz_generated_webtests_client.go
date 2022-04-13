@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type WebTestsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewWebTestsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *WebTestsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewWebTestsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WebTestsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &WebTestsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates an Application Insights web test definition.
@@ -98,7 +103,7 @@ func (client *WebTestsClient) createOrUpdateCreateRequest(ctx context.Context, r
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *WebTestsClient) createOrUpdateHandleResponse(resp *http.Response) (WebTestsClientCreateOrUpdateResponse, error) {
-	result := WebTestsClientCreateOrUpdateResponse{RawResponse: resp}
+	result := WebTestsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WebTest); err != nil {
 		return WebTestsClientCreateOrUpdateResponse{}, err
 	}
@@ -122,7 +127,7 @@ func (client *WebTestsClient) Delete(ctx context.Context, resourceGroupName stri
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return WebTestsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return WebTestsClientDeleteResponse{RawResponse: resp}, nil
+	return WebTestsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -198,7 +203,7 @@ func (client *WebTestsClient) getCreateRequest(ctx context.Context, resourceGrou
 
 // getHandleResponse handles the Get response.
 func (client *WebTestsClient) getHandleResponse(resp *http.Response) (WebTestsClientGetResponse, error) {
-	result := WebTestsClientGetResponse{RawResponse: resp}
+	result := WebTestsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WebTest); err != nil {
 		return WebTestsClientGetResponse{}, err
 	}
@@ -208,16 +213,32 @@ func (client *WebTestsClient) getHandleResponse(resp *http.Response) (WebTestsCl
 // List - Get all Application Insights web test alerts definitions within a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - WebTestsClientListOptions contains the optional parameters for the WebTestsClient.List method.
-func (client *WebTestsClient) List(options *WebTestsClientListOptions) *WebTestsClientListPager {
-	return &WebTestsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *WebTestsClient) List(options *WebTestsClientListOptions) *runtime.Pager[WebTestsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[WebTestsClientListResponse]{
+		More: func(page WebTestsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp WebTestsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.WebTestListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *WebTestsClientListResponse) (WebTestsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return WebTestsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return WebTestsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return WebTestsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -240,7 +261,7 @@ func (client *WebTestsClient) listCreateRequest(ctx context.Context, options *We
 
 // listHandleResponse handles the List response.
 func (client *WebTestsClient) listHandleResponse(resp *http.Response) (WebTestsClientListResponse, error) {
-	result := WebTestsClientListResponse{RawResponse: resp}
+	result := WebTestsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WebTestListResult); err != nil {
 		return WebTestsClientListResponse{}, err
 	}
@@ -253,16 +274,32 @@ func (client *WebTestsClient) listHandleResponse(resp *http.Response) (WebTestsC
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - WebTestsClientListByComponentOptions contains the optional parameters for the WebTestsClient.ListByComponent
 // method.
-func (client *WebTestsClient) ListByComponent(componentName string, resourceGroupName string, options *WebTestsClientListByComponentOptions) *WebTestsClientListByComponentPager {
-	return &WebTestsClientListByComponentPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByComponentCreateRequest(ctx, componentName, resourceGroupName, options)
+func (client *WebTestsClient) ListByComponent(componentName string, resourceGroupName string, options *WebTestsClientListByComponentOptions) *runtime.Pager[WebTestsClientListByComponentResponse] {
+	return runtime.NewPager(runtime.PageProcessor[WebTestsClientListByComponentResponse]{
+		More: func(page WebTestsClientListByComponentResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp WebTestsClientListByComponentResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.WebTestListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *WebTestsClientListByComponentResponse) (WebTestsClientListByComponentResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByComponentCreateRequest(ctx, componentName, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return WebTestsClientListByComponentResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return WebTestsClientListByComponentResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return WebTestsClientListByComponentResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByComponentHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByComponentCreateRequest creates the ListByComponent request.
@@ -293,7 +330,7 @@ func (client *WebTestsClient) listByComponentCreateRequest(ctx context.Context, 
 
 // listByComponentHandleResponse handles the ListByComponent response.
 func (client *WebTestsClient) listByComponentHandleResponse(resp *http.Response) (WebTestsClientListByComponentResponse, error) {
-	result := WebTestsClientListByComponentResponse{RawResponse: resp}
+	result := WebTestsClientListByComponentResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WebTestListResult); err != nil {
 		return WebTestsClientListByComponentResponse{}, err
 	}
@@ -305,16 +342,32 @@ func (client *WebTestsClient) listByComponentHandleResponse(resp *http.Response)
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - WebTestsClientListByResourceGroupOptions contains the optional parameters for the WebTestsClient.ListByResourceGroup
 // method.
-func (client *WebTestsClient) ListByResourceGroup(resourceGroupName string, options *WebTestsClientListByResourceGroupOptions) *WebTestsClientListByResourceGroupPager {
-	return &WebTestsClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *WebTestsClient) ListByResourceGroup(resourceGroupName string, options *WebTestsClientListByResourceGroupOptions) *runtime.Pager[WebTestsClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[WebTestsClientListByResourceGroupResponse]{
+		More: func(page WebTestsClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp WebTestsClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.WebTestListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *WebTestsClientListByResourceGroupResponse) (WebTestsClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return WebTestsClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return WebTestsClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return WebTestsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -341,7 +394,7 @@ func (client *WebTestsClient) listByResourceGroupCreateRequest(ctx context.Conte
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *WebTestsClient) listByResourceGroupHandleResponse(resp *http.Response) (WebTestsClientListByResourceGroupResponse, error) {
-	result := WebTestsClientListByResourceGroupResponse{RawResponse: resp}
+	result := WebTestsClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WebTestListResult); err != nil {
 		return WebTestsClientListByResourceGroupResponse{}, err
 	}
@@ -397,7 +450,7 @@ func (client *WebTestsClient) updateTagsCreateRequest(ctx context.Context, resou
 
 // updateTagsHandleResponse handles the UpdateTags response.
 func (client *WebTestsClient) updateTagsHandleResponse(resp *http.Response) (WebTestsClientUpdateTagsResponse, error) {
-	result := WebTestsClientUpdateTagsResponse{RawResponse: resp}
+	result := WebTestsClientUpdateTagsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WebTest); err != nil {
 		return WebTestsClientUpdateTagsResponse{}, err
 	}

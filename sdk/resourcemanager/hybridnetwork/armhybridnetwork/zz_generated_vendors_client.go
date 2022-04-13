@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type VendorsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewVendorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VendorsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewVendorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VendorsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &VendorsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates a vendor.
@@ -54,22 +59,18 @@ func NewVendorsClient(subscriptionID string, credential azcore.TokenCredential, 
 // vendorName - The name of the vendor.
 // options - VendorsClientBeginCreateOrUpdateOptions contains the optional parameters for the VendorsClient.BeginCreateOrUpdate
 // method.
-func (client *VendorsClient) BeginCreateOrUpdate(ctx context.Context, vendorName string, options *VendorsClientBeginCreateOrUpdateOptions) (VendorsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, vendorName, options)
-	if err != nil {
-		return VendorsClientCreateOrUpdatePollerResponse{}, err
+func (client *VendorsClient) BeginCreateOrUpdate(ctx context.Context, vendorName string, options *VendorsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[VendorsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, vendorName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[VendorsClientCreateOrUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[VendorsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := VendorsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("VendorsClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return VendorsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &VendorsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a vendor.
@@ -105,7 +106,7 @@ func (client *VendorsClient) createOrUpdateCreateRequest(ctx context.Context, ve
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	if options != nil && options.Parameters != nil {
@@ -118,22 +119,18 @@ func (client *VendorsClient) createOrUpdateCreateRequest(ctx context.Context, ve
 // If the operation fails it returns an *azcore.ResponseError type.
 // vendorName - The name of the vendor.
 // options - VendorsClientBeginDeleteOptions contains the optional parameters for the VendorsClient.BeginDelete method.
-func (client *VendorsClient) BeginDelete(ctx context.Context, vendorName string, options *VendorsClientBeginDeleteOptions) (VendorsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, vendorName, options)
-	if err != nil {
-		return VendorsClientDeletePollerResponse{}, err
+func (client *VendorsClient) BeginDelete(ctx context.Context, vendorName string, options *VendorsClientBeginDeleteOptions) (*armruntime.Poller[VendorsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, vendorName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[VendorsClientDeleteResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[VendorsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := VendorsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("VendorsClient.Delete", "location", resp, client.pl)
-	if err != nil {
-		return VendorsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &VendorsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes the specified vendor.
@@ -169,7 +166,7 @@ func (client *VendorsClient) deleteCreateRequest(ctx context.Context, vendorName
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -210,7 +207,7 @@ func (client *VendorsClient) getCreateRequest(ctx context.Context, vendorName st
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -218,7 +215,7 @@ func (client *VendorsClient) getCreateRequest(ctx context.Context, vendorName st
 
 // getHandleResponse handles the Get response.
 func (client *VendorsClient) getHandleResponse(resp *http.Response) (VendorsClientGetResponse, error) {
-	result := VendorsClientGetResponse{RawResponse: resp}
+	result := VendorsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Vendor); err != nil {
 		return VendorsClientGetResponse{}, err
 	}
@@ -229,16 +226,32 @@ func (client *VendorsClient) getHandleResponse(resp *http.Response) (VendorsClie
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - VendorsClientListBySubscriptionOptions contains the optional parameters for the VendorsClient.ListBySubscription
 // method.
-func (client *VendorsClient) ListBySubscription(options *VendorsClientListBySubscriptionOptions) *VendorsClientListBySubscriptionPager {
-	return &VendorsClientListBySubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySubscriptionCreateRequest(ctx, options)
+func (client *VendorsClient) ListBySubscription(options *VendorsClientListBySubscriptionOptions) *runtime.Pager[VendorsClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[VendorsClientListBySubscriptionResponse]{
+		More: func(page VendorsClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp VendorsClientListBySubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.VendorListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *VendorsClientListBySubscriptionResponse) (VendorsClientListBySubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySubscriptionCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return VendorsClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return VendorsClientListBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return VendorsClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
@@ -253,7 +266,7 @@ func (client *VendorsClient) listBySubscriptionCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -261,7 +274,7 @@ func (client *VendorsClient) listBySubscriptionCreateRequest(ctx context.Context
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
 func (client *VendorsClient) listBySubscriptionHandleResponse(resp *http.Response) (VendorsClientListBySubscriptionResponse, error) {
-	result := VendorsClientListBySubscriptionResponse{RawResponse: resp}
+	result := VendorsClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VendorListResult); err != nil {
 		return VendorsClientListBySubscriptionResponse{}, err
 	}

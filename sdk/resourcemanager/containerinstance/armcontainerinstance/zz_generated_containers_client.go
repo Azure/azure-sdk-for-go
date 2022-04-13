@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -35,20 +36,24 @@ type ContainersClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewContainersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ContainersClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewContainersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ContainersClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ContainersClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Attach - Attach to the output stream of a specific container instance in a specified resource group and container group.
@@ -104,7 +109,7 @@ func (client *ContainersClient) attachCreateRequest(ctx context.Context, resourc
 
 // attachHandleResponse handles the Attach response.
 func (client *ContainersClient) attachHandleResponse(resp *http.Response) (ContainersClientAttachResponse, error) {
-	result := ContainersClientAttachResponse{RawResponse: resp}
+	result := ContainersClientAttachResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ContainerAttachResponse); err != nil {
 		return ContainersClientAttachResponse{}, err
 	}
@@ -166,7 +171,7 @@ func (client *ContainersClient) executeCommandCreateRequest(ctx context.Context,
 
 // executeCommandHandleResponse handles the ExecuteCommand response.
 func (client *ContainersClient) executeCommandHandleResponse(resp *http.Response) (ContainersClientExecuteCommandResponse, error) {
-	result := ContainersClientExecuteCommandResponse{RawResponse: resp}
+	result := ContainersClientExecuteCommandResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ContainerExecResponse); err != nil {
 		return ContainersClientExecuteCommandResponse{}, err
 	}
@@ -232,7 +237,7 @@ func (client *ContainersClient) listLogsCreateRequest(ctx context.Context, resou
 
 // listLogsHandleResponse handles the ListLogs response.
 func (client *ContainersClient) listLogsHandleResponse(resp *http.Response) (ContainersClientListLogsResponse, error) {
-	result := ContainersClientListLogsResponse{RawResponse: resp}
+	result := ContainersClientListLogsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Logs); err != nil {
 		return ContainersClientListLogsResponse{}, err
 	}

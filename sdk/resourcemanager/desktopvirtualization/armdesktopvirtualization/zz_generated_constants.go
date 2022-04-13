@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armdesktopvirtualization
 
 const (
 	moduleName    = "armdesktopvirtualization"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // ApplicationGroupType - Resource Type of ApplicationGroup.
@@ -29,11 +29,6 @@ func PossibleApplicationGroupTypeValues() []ApplicationGroupType {
 	}
 }
 
-// ToPtr returns a *ApplicationGroupType pointing to the current value.
-func (c ApplicationGroupType) ToPtr() *ApplicationGroupType {
-	return &c
-}
-
 // ApplicationType - Application type of application.
 type ApplicationType string
 
@@ -48,11 +43,6 @@ func PossibleApplicationTypeValues() []ApplicationType {
 		ApplicationTypeDesktop,
 		ApplicationTypeRemoteApp,
 	}
-}
-
-// ToPtr returns a *ApplicationType pointing to the current value.
-func (c ApplicationType) ToPtr() *ApplicationType {
-	return &c
 }
 
 // CommandLineSetting - Specifies whether this published application can be launched with command line arguments provided
@@ -72,11 +62,6 @@ func PossibleCommandLineSettingValues() []CommandLineSetting {
 		CommandLineSettingDoNotAllow,
 		CommandLineSettingRequire,
 	}
-}
-
-// ToPtr returns a *CommandLineSetting pointing to the current value.
-func (c CommandLineSetting) ToPtr() *CommandLineSetting {
-	return &c
 }
 
 // CreatedByType - The type of identity that created the resource.
@@ -99,9 +84,30 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
+// DayOfWeek - Day of the week.
+type DayOfWeek string
+
+const (
+	DayOfWeekMonday    DayOfWeek = "Monday"
+	DayOfWeekTuesday   DayOfWeek = "Tuesday"
+	DayOfWeekWednesday DayOfWeek = "Wednesday"
+	DayOfWeekThursday  DayOfWeek = "Thursday"
+	DayOfWeekFriday    DayOfWeek = "Friday"
+	DayOfWeekSaturday  DayOfWeek = "Saturday"
+	DayOfWeekSunday    DayOfWeek = "Sunday"
+)
+
+// PossibleDayOfWeekValues returns the possible values for the DayOfWeek const type.
+func PossibleDayOfWeekValues() []DayOfWeek {
+	return []DayOfWeek{
+		DayOfWeekMonday,
+		DayOfWeekTuesday,
+		DayOfWeekWednesday,
+		DayOfWeekThursday,
+		DayOfWeekFriday,
+		DayOfWeekSaturday,
+		DayOfWeekSunday,
+	}
 }
 
 // HealthCheckName - Represents the name of the health check operation performed.
@@ -171,11 +177,6 @@ func PossibleHealthCheckNameValues() []HealthCheckName {
 	}
 }
 
-// ToPtr returns a *HealthCheckName pointing to the current value.
-func (c HealthCheckName) ToPtr() *HealthCheckName {
-	return &c
-}
-
 // HealthCheckResult - Represents the Health state of the health check we performed.
 type HealthCheckResult string
 
@@ -198,11 +199,6 @@ func PossibleHealthCheckResultValues() []HealthCheckResult {
 		HealthCheckResultSessionHostShutdown,
 		HealthCheckResultUnknown,
 	}
-}
-
-// ToPtr returns a *HealthCheckResult pointing to the current value.
-func (c HealthCheckResult) ToPtr() *HealthCheckResult {
-	return &c
 }
 
 // HostPoolType - HostPool type for desktop.
@@ -229,9 +225,25 @@ func PossibleHostPoolTypeValues() []HostPoolType {
 	}
 }
 
-// ToPtr returns a *HostPoolType pointing to the current value.
-func (c HostPoolType) ToPtr() *HostPoolType {
-	return &c
+// HostpoolPublicNetworkAccess - Enabled allows this resource to be accessed from both public and private networks, Disabled
+// allows this resource to only be accessed via private endpoints
+type HostpoolPublicNetworkAccess string
+
+const (
+	HostpoolPublicNetworkAccessDisabled                   HostpoolPublicNetworkAccess = "Disabled"
+	HostpoolPublicNetworkAccessEnabled                    HostpoolPublicNetworkAccess = "Enabled"
+	HostpoolPublicNetworkAccessEnabledForClientsOnly      HostpoolPublicNetworkAccess = "EnabledForClientsOnly"
+	HostpoolPublicNetworkAccessEnabledForSessionHostsOnly HostpoolPublicNetworkAccess = "EnabledForSessionHostsOnly"
+)
+
+// PossibleHostpoolPublicNetworkAccessValues returns the possible values for the HostpoolPublicNetworkAccess const type.
+func PossibleHostpoolPublicNetworkAccessValues() []HostpoolPublicNetworkAccess {
+	return []HostpoolPublicNetworkAccess{
+		HostpoolPublicNetworkAccessDisabled,
+		HostpoolPublicNetworkAccessEnabled,
+		HostpoolPublicNetworkAccessEnabledForClientsOnly,
+		HostpoolPublicNetworkAccessEnabledForSessionHostsOnly,
+	}
 }
 
 // LoadBalancerType - The type of the load balancer.
@@ -250,11 +262,6 @@ func PossibleLoadBalancerTypeValues() []LoadBalancerType {
 		LoadBalancerTypeDepthFirst,
 		LoadBalancerTypePersistent,
 	}
-}
-
-// ToPtr returns a *LoadBalancerType pointing to the current value.
-func (c LoadBalancerType) ToPtr() *LoadBalancerType {
-	return &c
 }
 
 // Operation - The type of operation for migration.
@@ -284,11 +291,6 @@ func PossibleOperationValues() []Operation {
 	}
 }
 
-// ToPtr returns a *Operation pointing to the current value.
-func (c Operation) ToPtr() *Operation {
-	return &c
-}
-
 // PersonalDesktopAssignmentType - PersonalDesktopAssignment type for HostPool.
 type PersonalDesktopAssignmentType string
 
@@ -303,11 +305,6 @@ func PossiblePersonalDesktopAssignmentTypeValues() []PersonalDesktopAssignmentTy
 		PersonalDesktopAssignmentTypeAutomatic,
 		PersonalDesktopAssignmentTypeDirect,
 	}
-}
-
-// ToPtr returns a *PersonalDesktopAssignmentType pointing to the current value.
-func (c PersonalDesktopAssignmentType) ToPtr() *PersonalDesktopAssignmentType {
-	return &c
 }
 
 // PreferredAppGroupType - The type of preferred application group type, default to Desktop Application Group
@@ -326,11 +323,6 @@ func PossiblePreferredAppGroupTypeValues() []PreferredAppGroupType {
 		PreferredAppGroupTypeNone,
 		PreferredAppGroupTypeRailApplications,
 	}
-}
-
-// ToPtr returns a *PreferredAppGroupType pointing to the current value.
-func (c PreferredAppGroupType) ToPtr() *PreferredAppGroupType {
-	return &c
 }
 
 // PrivateEndpointConnectionProvisioningState - The current provisioning state.
@@ -353,11 +345,6 @@ func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpoin
 	}
 }
 
-// ToPtr returns a *PrivateEndpointConnectionProvisioningState pointing to the current value.
-func (c PrivateEndpointConnectionProvisioningState) ToPtr() *PrivateEndpointConnectionProvisioningState {
-	return &c
-}
-
 // PrivateEndpointServiceConnectionStatus - The private endpoint connection status.
 type PrivateEndpointServiceConnectionStatus string
 
@@ -376,11 +363,6 @@ func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointSer
 	}
 }
 
-// ToPtr returns a *PrivateEndpointServiceConnectionStatus pointing to the current value.
-func (c PrivateEndpointServiceConnectionStatus) ToPtr() *PrivateEndpointServiceConnectionStatus {
-	return &c
-}
-
 // PublicNetworkAccess - Enabled allows this resource to be accessed from both public and private networks, Disabled allows
 // this resource to only be accessed via private endpoints
 type PublicNetworkAccess string
@@ -396,11 +378,6 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 		PublicNetworkAccessDisabled,
 		PublicNetworkAccessEnabled,
 	}
-}
-
-// ToPtr returns a *PublicNetworkAccess pointing to the current value.
-func (c PublicNetworkAccess) ToPtr() *PublicNetworkAccess {
-	return &c
 }
 
 // RegistrationTokenOperation - The type of resetting the token.
@@ -421,11 +398,6 @@ func PossibleRegistrationTokenOperationValues() []RegistrationTokenOperation {
 	}
 }
 
-// ToPtr returns a *RegistrationTokenOperation pointing to the current value.
-func (c RegistrationTokenOperation) ToPtr() *RegistrationTokenOperation {
-	return &c
-}
-
 // RemoteApplicationType - Resource Type of Application.
 type RemoteApplicationType string
 
@@ -440,11 +412,6 @@ func PossibleRemoteApplicationTypeValues() []RemoteApplicationType {
 		RemoteApplicationTypeInBuilt,
 		RemoteApplicationTypeMsixApplication,
 	}
-}
-
-// ToPtr returns a *RemoteApplicationType pointing to the current value.
-func (c RemoteApplicationType) ToPtr() *RemoteApplicationType {
-	return &c
 }
 
 // SKUTier - This field is required to be implemented by the Resource Provider if the service has more than one tier, but
@@ -468,11 +435,6 @@ func PossibleSKUTierValues() []SKUTier {
 	}
 }
 
-// ToPtr returns a *SKUTier pointing to the current value.
-func (c SKUTier) ToPtr() *SKUTier {
-	return &c
-}
-
 // SSOSecretType - The type of single sign on Secret Type.
 type SSOSecretType string
 
@@ -493,11 +455,6 @@ func PossibleSSOSecretTypeValues() []SSOSecretType {
 	}
 }
 
-// ToPtr returns a *SSOSecretType pointing to the current value.
-func (c SSOSecretType) ToPtr() *SSOSecretType {
-	return &c
-}
-
 // ScalingHostPoolType - HostPool type for desktop.
 type ScalingHostPoolType string
 
@@ -511,11 +468,6 @@ func PossibleScalingHostPoolTypeValues() []ScalingHostPoolType {
 	return []ScalingHostPoolType{
 		ScalingHostPoolTypePooled,
 	}
-}
-
-// ToPtr returns a *ScalingHostPoolType pointing to the current value.
-func (c ScalingHostPoolType) ToPtr() *ScalingHostPoolType {
-	return &c
 }
 
 type ScalingScheduleDaysOfWeekItem string
@@ -543,9 +495,23 @@ func PossibleScalingScheduleDaysOfWeekItemValues() []ScalingScheduleDaysOfWeekIt
 	}
 }
 
-// ToPtr returns a *ScalingScheduleDaysOfWeekItem pointing to the current value.
-func (c ScalingScheduleDaysOfWeekItem) ToPtr() *ScalingScheduleDaysOfWeekItem {
-	return &c
+// SessionHostComponentUpdateType - The type of maintenance for session host components.
+type SessionHostComponentUpdateType string
+
+const (
+	// SessionHostComponentUpdateTypeDefault - Agent and other agent side components are delivery schedule is controlled by WVD
+	// Infra.
+	SessionHostComponentUpdateTypeDefault SessionHostComponentUpdateType = "Default"
+	// SessionHostComponentUpdateTypeScheduled - TenantAdmin have opted in for Scheduled Component Update feature.
+	SessionHostComponentUpdateTypeScheduled SessionHostComponentUpdateType = "Scheduled"
+)
+
+// PossibleSessionHostComponentUpdateTypeValues returns the possible values for the SessionHostComponentUpdateType const type.
+func PossibleSessionHostComponentUpdateTypeValues() []SessionHostComponentUpdateType {
+	return []SessionHostComponentUpdateType{
+		SessionHostComponentUpdateTypeDefault,
+		SessionHostComponentUpdateTypeScheduled,
+	}
 }
 
 // SessionHostLoadBalancingAlgorithm - Load balancing algorithm for ramp up period.
@@ -562,11 +528,6 @@ func PossibleSessionHostLoadBalancingAlgorithmValues() []SessionHostLoadBalancin
 		SessionHostLoadBalancingAlgorithmBreadthFirst,
 		SessionHostLoadBalancingAlgorithmDepthFirst,
 	}
-}
-
-// ToPtr returns a *SessionHostLoadBalancingAlgorithm pointing to the current value.
-func (c SessionHostLoadBalancingAlgorithm) ToPtr() *SessionHostLoadBalancingAlgorithm {
-	return &c
 }
 
 // SessionState - State of user session.
@@ -591,11 +552,6 @@ func PossibleSessionStateValues() []SessionState {
 		SessionStateUnknown,
 		SessionStateUserProfileDiskMounted,
 	}
-}
-
-// ToPtr returns a *SessionState pointing to the current value.
-func (c SessionState) ToPtr() *SessionState {
-	return &c
 }
 
 // Status - Status for a SessionHost.
@@ -650,11 +606,6 @@ func PossibleStatusValues() []Status {
 	}
 }
 
-// ToPtr returns a *Status pointing to the current value.
-func (c Status) ToPtr() *Status {
-	return &c
-}
-
 // StopHostsWhen - Specifies when to stop hosts during ramp down period.
 type StopHostsWhen string
 
@@ -669,11 +620,6 @@ func PossibleStopHostsWhenValues() []StopHostsWhen {
 		StopHostsWhenZeroActiveSessions,
 		StopHostsWhenZeroSessions,
 	}
-}
-
-// ToPtr returns a *StopHostsWhen pointing to the current value.
-func (c StopHostsWhen) ToPtr() *StopHostsWhen {
-	return &c
 }
 
 // UpdateState - Update state of a SessionHost.
@@ -696,9 +642,4 @@ func PossibleUpdateStateValues() []UpdateState {
 		UpdateStateStarted,
 		UpdateStateSucceeded,
 	}
-}
-
-// ToPtr returns a *UpdateState pointing to the current value.
-func (c UpdateState) ToPtr() *UpdateState {
-	return &c
 }

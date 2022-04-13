@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armdomainservices
 
 const (
 	moduleName    = "armdomainservices"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // CreatedByType - The type of identity that created the resource.
@@ -33,11 +33,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
-}
-
 // ExternalAccess - A flag to determine whether or not Secure LDAP access over the internet is enabled or disabled.
 type ExternalAccess string
 
@@ -52,11 +47,6 @@ func PossibleExternalAccessValues() []ExternalAccess {
 		ExternalAccessDisabled,
 		ExternalAccessEnabled,
 	}
-}
-
-// ToPtr returns a *ExternalAccess pointing to the current value.
-func (c ExternalAccess) ToPtr() *ExternalAccess {
-	return &c
 }
 
 // FilteredSync - Enabled or Disabled flag to turn on Group-based filtered sync
@@ -75,11 +65,6 @@ func PossibleFilteredSyncValues() []FilteredSync {
 	}
 }
 
-// ToPtr returns a *FilteredSync pointing to the current value.
-func (c FilteredSync) ToPtr() *FilteredSync {
-	return &c
-}
-
 // KerberosArmoring - A flag to determine whether or not KerberosArmoring is enabled or disabled.
 type KerberosArmoring string
 
@@ -94,11 +79,6 @@ func PossibleKerberosArmoringValues() []KerberosArmoring {
 		KerberosArmoringDisabled,
 		KerberosArmoringEnabled,
 	}
-}
-
-// ToPtr returns a *KerberosArmoring pointing to the current value.
-func (c KerberosArmoring) ToPtr() *KerberosArmoring {
-	return &c
 }
 
 // KerberosRc4Encryption - A flag to determine whether or not KerberosRc4Encryption is enabled or disabled.
@@ -117,11 +97,6 @@ func PossibleKerberosRc4EncryptionValues() []KerberosRc4Encryption {
 	}
 }
 
-// ToPtr returns a *KerberosRc4Encryption pointing to the current value.
-func (c KerberosRc4Encryption) ToPtr() *KerberosRc4Encryption {
-	return &c
-}
-
 // Ldaps - A flag to determine whether or not Secure LDAP is enabled or disabled.
 type Ldaps string
 
@@ -136,11 +111,6 @@ func PossibleLdapsValues() []Ldaps {
 		LdapsDisabled,
 		LdapsEnabled,
 	}
-}
-
-// ToPtr returns a *Ldaps pointing to the current value.
-func (c Ldaps) ToPtr() *Ldaps {
-	return &c
 }
 
 // NotifyDcAdmins - Should domain controller admins be notified
@@ -159,11 +129,6 @@ func PossibleNotifyDcAdminsValues() []NotifyDcAdmins {
 	}
 }
 
-// ToPtr returns a *NotifyDcAdmins pointing to the current value.
-func (c NotifyDcAdmins) ToPtr() *NotifyDcAdmins {
-	return &c
-}
-
 // NotifyGlobalAdmins - Should global admins be notified
 type NotifyGlobalAdmins string
 
@@ -180,11 +145,6 @@ func PossibleNotifyGlobalAdminsValues() []NotifyGlobalAdmins {
 	}
 }
 
-// ToPtr returns a *NotifyGlobalAdmins pointing to the current value.
-func (c NotifyGlobalAdmins) ToPtr() *NotifyGlobalAdmins {
-	return &c
-}
-
 // NtlmV1 - A flag to determine whether or not NtlmV1 is enabled or disabled.
 type NtlmV1 string
 
@@ -199,11 +159,6 @@ func PossibleNtlmV1Values() []NtlmV1 {
 		NtlmV1Disabled,
 		NtlmV1Enabled,
 	}
-}
-
-// ToPtr returns a *NtlmV1 pointing to the current value.
-func (c NtlmV1) ToPtr() *NtlmV1 {
-	return &c
 }
 
 // Status - Status for individual validator after running diagnostics.
@@ -230,11 +185,6 @@ func PossibleStatusValues() []Status {
 	}
 }
 
-// ToPtr returns a *Status pointing to the current value.
-func (c Status) ToPtr() *Status {
-	return &c
-}
-
 // SyncKerberosPasswords - A flag to determine whether or not SyncKerberosPasswords is enabled or disabled.
 type SyncKerberosPasswords string
 
@@ -249,11 +199,6 @@ func PossibleSyncKerberosPasswordsValues() []SyncKerberosPasswords {
 		SyncKerberosPasswordsDisabled,
 		SyncKerberosPasswordsEnabled,
 	}
-}
-
-// ToPtr returns a *SyncKerberosPasswords pointing to the current value.
-func (c SyncKerberosPasswords) ToPtr() *SyncKerberosPasswords {
-	return &c
 }
 
 // SyncNtlmPasswords - A flag to determine whether or not SyncNtlmPasswords is enabled or disabled.
@@ -272,11 +217,6 @@ func PossibleSyncNtlmPasswordsValues() []SyncNtlmPasswords {
 	}
 }
 
-// ToPtr returns a *SyncNtlmPasswords pointing to the current value.
-func (c SyncNtlmPasswords) ToPtr() *SyncNtlmPasswords {
-	return &c
-}
-
 // SyncOnPremPasswords - A flag to determine whether or not SyncOnPremPasswords is enabled or disabled.
 type SyncOnPremPasswords string
 
@@ -293,11 +233,6 @@ func PossibleSyncOnPremPasswordsValues() []SyncOnPremPasswords {
 	}
 }
 
-// ToPtr returns a *SyncOnPremPasswords pointing to the current value.
-func (c SyncOnPremPasswords) ToPtr() *SyncOnPremPasswords {
-	return &c
-}
-
 // TLSV1 - A flag to determine whether or not TlsV1 is enabled or disabled.
 type TLSV1 string
 
@@ -312,9 +247,4 @@ func PossibleTLSV1Values() []TLSV1 {
 		TLSV1Disabled,
 		TLSV1Enabled,
 	}
-}
-
-// ToPtr returns a *TLSV1 pointing to the current value.
-func (c TLSV1) ToPtr() *TLSV1 {
-	return &c
 }

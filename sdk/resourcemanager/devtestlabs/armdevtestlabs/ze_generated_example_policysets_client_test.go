@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,14 +17,19 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devtestlabs/armdevtestlabs"
 )
 
-// x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/PolicySets_EvaluatePolicies.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/PolicySets_EvaluatePolicies.json
 func ExamplePolicySetsClient_EvaluatePolicies() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdevtestlabs.NewPolicySetsClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewPolicySetsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.EvaluatePolicies(ctx,
 		"<resource-group-name>",
 		"<lab-name>",
@@ -32,13 +37,15 @@ func ExamplePolicySetsClient_EvaluatePolicies() {
 		armdevtestlabs.EvaluatePoliciesRequest{
 			Policies: []*armdevtestlabs.EvaluatePoliciesProperties{
 				{
-					FactName:    to.StringPtr("<fact-name>"),
-					ValueOffset: to.StringPtr("<value-offset>"),
+					FactName:    to.Ptr("<fact-name>"),
+					ValueOffset: to.Ptr("<value-offset>"),
 				}},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.PolicySetsClientEvaluatePoliciesResult)
+	// TODO: use response item
+	_ = res
 }

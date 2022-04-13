@@ -28,9 +28,6 @@ type InteractiveBrowserCredentialOptions struct {
 	// RedirectURL will be supported in a future version but presently doesn't work: https://github.com/Azure/azure-sdk-for-go/issues/15632.
 	// Applications which have "http://localhost" registered as a redirect URL need not set this option.
 	RedirectURL string
-	// AuthorityHost is the base URL of an Azure Active Directory authority. Defaults
-	// to the value of environment variable AZURE_AUTHORITY_HOST, if set, or AzurePublicCloud.
-	AuthorityHost AuthorityHost
 }
 
 func (o *InteractiveBrowserCredentialOptions) init() {
@@ -60,7 +57,7 @@ func NewInteractiveBrowserCredential(options *InteractiveBrowserCredentialOption
 	if !validTenantID(cp.TenantID) {
 		return nil, errors.New(tenantIDValidationErr)
 	}
-	authorityHost, err := setAuthorityHost(cp.AuthorityHost)
+	authorityHost, err := setAuthorityHost(cp.Cloud)
 	if err != nil {
 		return nil, err
 	}

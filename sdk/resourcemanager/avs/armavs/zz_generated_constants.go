@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armavs
 
 const (
 	moduleName    = "armavs"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // AddonProvisioningState - The state of the addon provisioning
@@ -37,11 +37,6 @@ func PossibleAddonProvisioningStateValues() []AddonProvisioningState {
 	}
 }
 
-// ToPtr returns a *AddonProvisioningState pointing to the current value.
-func (c AddonProvisioningState) ToPtr() *AddonProvisioningState {
-	return &c
-}
-
 // AddonType - The type of private cloud addon
 type AddonType string
 
@@ -60,11 +55,6 @@ func PossibleAddonTypeValues() []AddonType {
 	}
 }
 
-// ToPtr returns a *AddonType pointing to the current value.
-func (c AddonType) ToPtr() *AddonType {
-	return &c
-}
-
 // AffinityType - Placement policy affinity type
 type AffinityType string
 
@@ -81,11 +71,6 @@ func PossibleAffinityTypeValues() []AffinityType {
 	}
 }
 
-// ToPtr returns a *AffinityType pointing to the current value.
-func (c AffinityType) ToPtr() *AffinityType {
-	return &c
-}
-
 // AvailabilityStrategy - The availability strategy for the private cloud
 type AvailabilityStrategy string
 
@@ -100,11 +85,6 @@ func PossibleAvailabilityStrategyValues() []AvailabilityStrategy {
 		AvailabilityStrategyDualZone,
 		AvailabilityStrategySingleZone,
 	}
-}
-
-// ToPtr returns a *AvailabilityStrategy pointing to the current value.
-func (c AvailabilityStrategy) ToPtr() *AvailabilityStrategy {
-	return &c
 }
 
 // CloudLinkStatus - The state of the cloud link.
@@ -129,11 +109,6 @@ func PossibleCloudLinkStatusValues() []CloudLinkStatus {
 	}
 }
 
-// ToPtr returns a *CloudLinkStatus pointing to the current value.
-func (c CloudLinkStatus) ToPtr() *CloudLinkStatus {
-	return &c
-}
-
 // ClusterProvisioningState - The state of the cluster provisioning
 type ClusterProvisioningState string
 
@@ -154,11 +129,6 @@ func PossibleClusterProvisioningStateValues() []ClusterProvisioningState {
 		ClusterProvisioningStateSucceeded,
 		ClusterProvisioningStateUpdating,
 	}
-}
-
-// ToPtr returns a *ClusterProvisioningState pointing to the current value.
-func (c ClusterProvisioningState) ToPtr() *ClusterProvisioningState {
-	return &c
 }
 
 // DNSServiceLogLevelEnum - DNS Service log level.
@@ -183,11 +153,6 @@ func PossibleDNSServiceLogLevelEnumValues() []DNSServiceLogLevelEnum {
 	}
 }
 
-// ToPtr returns a *DNSServiceLogLevelEnum pointing to the current value.
-func (c DNSServiceLogLevelEnum) ToPtr() *DNSServiceLogLevelEnum {
-	return &c
-}
-
 // DNSServiceStatusEnum - DNS Service status.
 type DNSServiceStatusEnum string
 
@@ -202,11 +167,6 @@ func PossibleDNSServiceStatusEnumValues() []DNSServiceStatusEnum {
 		DNSServiceStatusEnumFAILURE,
 		DNSServiceStatusEnumSUCCESS,
 	}
-}
-
-// ToPtr returns a *DNSServiceStatusEnum pointing to the current value.
-func (c DNSServiceStatusEnum) ToPtr() *DNSServiceStatusEnum {
-	return &c
 }
 
 // DatastoreProvisioningState - The state of the datastore provisioning
@@ -235,11 +195,6 @@ func PossibleDatastoreProvisioningStateValues() []DatastoreProvisioningState {
 	}
 }
 
-// ToPtr returns a *DatastoreProvisioningState pointing to the current value.
-func (c DatastoreProvisioningState) ToPtr() *DatastoreProvisioningState {
-	return &c
-}
-
 // DatastoreStatus - The operational status of the datastore
 type DatastoreStatus string
 
@@ -266,11 +221,6 @@ func PossibleDatastoreStatusValues() []DatastoreStatus {
 	}
 }
 
-// ToPtr returns a *DatastoreStatus pointing to the current value.
-func (c DatastoreStatus) ToPtr() *DatastoreStatus {
-	return &c
-}
-
 // DhcpTypeEnum - Type of DHCP: SERVER or RELAY.
 type DhcpTypeEnum string
 
@@ -285,11 +235,6 @@ func PossibleDhcpTypeEnumValues() []DhcpTypeEnum {
 		DhcpTypeEnumRELAY,
 		DhcpTypeEnumSERVER,
 	}
-}
-
-// ToPtr returns a *DhcpTypeEnum pointing to the current value.
-func (c DhcpTypeEnum) ToPtr() *DhcpTypeEnum {
-	return &c
 }
 
 // EncryptionKeyStatus - The state of key provided
@@ -308,11 +253,6 @@ func PossibleEncryptionKeyStatusValues() []EncryptionKeyStatus {
 	}
 }
 
-// ToPtr returns a *EncryptionKeyStatus pointing to the current value.
-func (c EncryptionKeyStatus) ToPtr() *EncryptionKeyStatus {
-	return &c
-}
-
 // EncryptionState - Status of customer managed encryption key
 type EncryptionState string
 
@@ -329,11 +269,6 @@ func PossibleEncryptionStateValues() []EncryptionState {
 	}
 }
 
-// ToPtr returns a *EncryptionState pointing to the current value.
-func (c EncryptionState) ToPtr() *EncryptionState {
-	return &c
-}
-
 // EncryptionVersionType - Property of the key if user provided or auto detected
 type EncryptionVersionType string
 
@@ -348,11 +283,6 @@ func PossibleEncryptionVersionTypeValues() []EncryptionVersionType {
 		EncryptionVersionTypeAutoDetected,
 		EncryptionVersionTypeFixed,
 	}
-}
-
-// ToPtr returns a *EncryptionVersionType pointing to the current value.
-func (c EncryptionVersionType) ToPtr() *EncryptionVersionType {
-	return &c
 }
 
 // ExpressRouteAuthorizationProvisioningState - The state of the ExpressRoute Circuit Authorization provisioning
@@ -373,11 +303,6 @@ func PossibleExpressRouteAuthorizationProvisioningStateValues() []ExpressRouteAu
 	}
 }
 
-// ToPtr returns a *ExpressRouteAuthorizationProvisioningState pointing to the current value.
-func (c ExpressRouteAuthorizationProvisioningState) ToPtr() *ExpressRouteAuthorizationProvisioningState {
-	return &c
-}
-
 // GlobalReachConnectionProvisioningState - The state of the ExpressRoute Circuit Authorization provisioning
 type GlobalReachConnectionProvisioningState string
 
@@ -396,11 +321,6 @@ func PossibleGlobalReachConnectionProvisioningStateValues() []GlobalReachConnect
 	}
 }
 
-// ToPtr returns a *GlobalReachConnectionProvisioningState pointing to the current value.
-func (c GlobalReachConnectionProvisioningState) ToPtr() *GlobalReachConnectionProvisioningState {
-	return &c
-}
-
 // GlobalReachConnectionStatus - The connection status of the global reach connection
 type GlobalReachConnectionStatus string
 
@@ -417,11 +337,6 @@ func PossibleGlobalReachConnectionStatusValues() []GlobalReachConnectionStatus {
 		GlobalReachConnectionStatusConnecting,
 		GlobalReachConnectionStatusDisconnected,
 	}
-}
-
-// ToPtr returns a *GlobalReachConnectionStatus pointing to the current value.
-func (c GlobalReachConnectionStatus) ToPtr() *GlobalReachConnectionStatus {
-	return &c
 }
 
 // HcxEnterpriseSiteStatus - The status of the HCX Enterprise Site
@@ -444,11 +359,6 @@ func PossibleHcxEnterpriseSiteStatusValues() []HcxEnterpriseSiteStatus {
 	}
 }
 
-// ToPtr returns a *HcxEnterpriseSiteStatus pointing to the current value.
-func (c HcxEnterpriseSiteStatus) ToPtr() *HcxEnterpriseSiteStatus {
-	return &c
-}
-
 // InternetEnum - Connectivity to internet is enabled or disabled
 type InternetEnum string
 
@@ -463,11 +373,6 @@ func PossibleInternetEnumValues() []InternetEnum {
 		InternetEnumDisabled,
 		InternetEnumEnabled,
 	}
-}
-
-// ToPtr returns a *InternetEnum pointing to the current value.
-func (c InternetEnum) ToPtr() *InternetEnum {
-	return &c
 }
 
 // MountOptionEnum - Mode that describes whether the LUN has to be mounted as a datastore or attached as a LUN
@@ -486,11 +391,6 @@ func PossibleMountOptionEnumValues() []MountOptionEnum {
 	}
 }
 
-// ToPtr returns a *MountOptionEnum pointing to the current value.
-func (c MountOptionEnum) ToPtr() *MountOptionEnum {
-	return &c
-}
-
 // OptionalParamEnum - Is this parameter required or optional
 type OptionalParamEnum string
 
@@ -505,11 +405,6 @@ func PossibleOptionalParamEnumValues() []OptionalParamEnum {
 		OptionalParamEnumOptional,
 		OptionalParamEnumRequired,
 	}
-}
-
-// ToPtr returns a *OptionalParamEnum pointing to the current value.
-func (c OptionalParamEnum) ToPtr() *OptionalParamEnum {
-	return &c
 }
 
 // PlacementPolicyProvisioningState - The provisioning state
@@ -534,11 +429,6 @@ func PossiblePlacementPolicyProvisioningStateValues() []PlacementPolicyProvision
 	}
 }
 
-// ToPtr returns a *PlacementPolicyProvisioningState pointing to the current value.
-func (c PlacementPolicyProvisioningState) ToPtr() *PlacementPolicyProvisioningState {
-	return &c
-}
-
 // PlacementPolicyState - Whether the placement policy is enabled or disabled
 type PlacementPolicyState string
 
@@ -555,11 +445,6 @@ func PossiblePlacementPolicyStateValues() []PlacementPolicyState {
 	}
 }
 
-// ToPtr returns a *PlacementPolicyState pointing to the current value.
-func (c PlacementPolicyState) ToPtr() *PlacementPolicyState {
-	return &c
-}
-
 // PlacementPolicyType - placement policy type
 type PlacementPolicyType string
 
@@ -574,11 +459,6 @@ func PossiblePlacementPolicyTypeValues() []PlacementPolicyType {
 		PlacementPolicyTypeVMHost,
 		PlacementPolicyTypeVMVM,
 	}
-}
-
-// ToPtr returns a *PlacementPolicyType pointing to the current value.
-func (c PlacementPolicyType) ToPtr() *PlacementPolicyType {
-	return &c
 }
 
 // PortMirroringDirectionEnum - Direction of port mirroring profile.
@@ -599,11 +479,6 @@ func PossiblePortMirroringDirectionEnumValues() []PortMirroringDirectionEnum {
 	}
 }
 
-// ToPtr returns a *PortMirroringDirectionEnum pointing to the current value.
-func (c PortMirroringDirectionEnum) ToPtr() *PortMirroringDirectionEnum {
-	return &c
-}
-
 // PortMirroringStatusEnum - Port Mirroring Status.
 type PortMirroringStatusEnum string
 
@@ -618,11 +493,6 @@ func PossiblePortMirroringStatusEnumValues() []PortMirroringStatusEnum {
 		PortMirroringStatusEnumFAILURE,
 		PortMirroringStatusEnumSUCCESS,
 	}
-}
-
-// ToPtr returns a *PortMirroringStatusEnum pointing to the current value.
-func (c PortMirroringStatusEnum) ToPtr() *PortMirroringStatusEnum {
-	return &c
 }
 
 // PrivateCloudProvisioningState - The provisioning state
@@ -651,11 +521,6 @@ func PossiblePrivateCloudProvisioningStateValues() []PrivateCloudProvisioningSta
 	}
 }
 
-// ToPtr returns a *PrivateCloudProvisioningState pointing to the current value.
-func (c PrivateCloudProvisioningState) ToPtr() *PrivateCloudProvisioningState {
-	return &c
-}
-
 // QuotaEnabled - Host quota is active for current subscription
 type QuotaEnabled string
 
@@ -670,11 +535,6 @@ func PossibleQuotaEnabledValues() []QuotaEnabled {
 		QuotaEnabledDisabled,
 		QuotaEnabledEnabled,
 	}
-}
-
-// ToPtr returns a *QuotaEnabled pointing to the current value.
-func (c QuotaEnabled) ToPtr() *QuotaEnabled {
-	return &c
 }
 
 // ResourceIdentityType - The type of identity used for the private cloud. The type 'SystemAssigned' refers to an implicitly
@@ -694,11 +554,6 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	}
 }
 
-// ToPtr returns a *ResourceIdentityType pointing to the current value.
-func (c ResourceIdentityType) ToPtr() *ResourceIdentityType {
-	return &c
-}
-
 // SSLEnum - Protect LDAP communication using SSL certificate (LDAPS)
 type SSLEnum string
 
@@ -713,11 +568,6 @@ func PossibleSSLEnumValues() []SSLEnum {
 		SSLEnumDisabled,
 		SSLEnumEnabled,
 	}
-}
-
-// ToPtr returns a *SSLEnum pointing to the current value.
-func (c SSLEnum) ToPtr() *SSLEnum {
-	return &c
 }
 
 // ScriptExecutionParameterType - The type of execution parameter
@@ -736,11 +586,6 @@ func PossibleScriptExecutionParameterTypeValues() []ScriptExecutionParameterType
 		ScriptExecutionParameterTypeSecureValue,
 		ScriptExecutionParameterTypeValue,
 	}
-}
-
-// ToPtr returns a *ScriptExecutionParameterType pointing to the current value.
-func (c ScriptExecutionParameterType) ToPtr() *ScriptExecutionParameterType {
-	return &c
 }
 
 // ScriptExecutionProvisioningState - The state of the script execution resource
@@ -769,11 +614,6 @@ func PossibleScriptExecutionProvisioningStateValues() []ScriptExecutionProvision
 	}
 }
 
-// ToPtr returns a *ScriptExecutionProvisioningState pointing to the current value.
-func (c ScriptExecutionProvisioningState) ToPtr() *ScriptExecutionProvisioningState {
-	return &c
-}
-
 type ScriptOutputStreamType string
 
 const (
@@ -791,11 +631,6 @@ func PossibleScriptOutputStreamTypeValues() []ScriptOutputStreamType {
 		ScriptOutputStreamTypeOutput,
 		ScriptOutputStreamTypeWarning,
 	}
-}
-
-// ToPtr returns a *ScriptOutputStreamType pointing to the current value.
-func (c ScriptOutputStreamType) ToPtr() *ScriptOutputStreamType {
-	return &c
 }
 
 // ScriptParameterTypes - The type of parameter the script is expecting. psCredential is a PSCredentialObject
@@ -822,11 +657,6 @@ func PossibleScriptParameterTypesValues() []ScriptParameterTypes {
 	}
 }
 
-// ToPtr returns a *ScriptParameterTypes pointing to the current value.
-func (c ScriptParameterTypes) ToPtr() *ScriptParameterTypes {
-	return &c
-}
-
 // SegmentStatusEnum - Segment status.
 type SegmentStatusEnum string
 
@@ -841,11 +671,6 @@ func PossibleSegmentStatusEnumValues() []SegmentStatusEnum {
 		SegmentStatusEnumFAILURE,
 		SegmentStatusEnumSUCCESS,
 	}
-}
-
-// ToPtr returns a *SegmentStatusEnum pointing to the current value.
-func (c SegmentStatusEnum) ToPtr() *SegmentStatusEnum {
-	return &c
 }
 
 // TrialStatus - Trial status
@@ -866,11 +691,6 @@ func PossibleTrialStatusValues() []TrialStatus {
 	}
 }
 
-// ToPtr returns a *TrialStatus pointing to the current value.
-func (c TrialStatus) ToPtr() *TrialStatus {
-	return &c
-}
-
 // VMGroupStatusEnum - VM Group status.
 type VMGroupStatusEnum string
 
@@ -885,11 +705,6 @@ func PossibleVMGroupStatusEnumValues() []VMGroupStatusEnum {
 		VMGroupStatusEnumFAILURE,
 		VMGroupStatusEnumSUCCESS,
 	}
-}
-
-// ToPtr returns a *VMGroupStatusEnum pointing to the current value.
-func (c VMGroupStatusEnum) ToPtr() *VMGroupStatusEnum {
-	return &c
 }
 
 // VMTypeEnum - Virtual machine type.
@@ -910,11 +725,6 @@ func PossibleVMTypeEnumValues() []VMTypeEnum {
 	}
 }
 
-// ToPtr returns a *VMTypeEnum pointing to the current value.
-func (c VMTypeEnum) ToPtr() *VMTypeEnum {
-	return &c
-}
-
 // VirtualMachineRestrictMovementState - Whether VM DRS-driven movement is restricted (enabled) or not (disabled)
 type VirtualMachineRestrictMovementState string
 
@@ -931,11 +741,6 @@ func PossibleVirtualMachineRestrictMovementStateValues() []VirtualMachineRestric
 	}
 }
 
-// ToPtr returns a *VirtualMachineRestrictMovementState pointing to the current value.
-func (c VirtualMachineRestrictMovementState) ToPtr() *VirtualMachineRestrictMovementState {
-	return &c
-}
-
 // VisibilityParameterEnum - Should this parameter be visible to arm and passed in the parameters argument when executing
 type VisibilityParameterEnum string
 
@@ -950,11 +755,6 @@ func PossibleVisibilityParameterEnumValues() []VisibilityParameterEnum {
 		VisibilityParameterEnumHidden,
 		VisibilityParameterEnumVisible,
 	}
-}
-
-// ToPtr returns a *VisibilityParameterEnum pointing to the current value.
-func (c VisibilityParameterEnum) ToPtr() *VisibilityParameterEnum {
-	return &c
 }
 
 // WorkloadNetworkDNSServiceProvisioningState - The provisioning state
@@ -979,11 +779,6 @@ func PossibleWorkloadNetworkDNSServiceProvisioningStateValues() []WorkloadNetwor
 	}
 }
 
-// ToPtr returns a *WorkloadNetworkDNSServiceProvisioningState pointing to the current value.
-func (c WorkloadNetworkDNSServiceProvisioningState) ToPtr() *WorkloadNetworkDNSServiceProvisioningState {
-	return &c
-}
-
 // WorkloadNetworkDNSZoneProvisioningState - The provisioning state
 type WorkloadNetworkDNSZoneProvisioningState string
 
@@ -1004,11 +799,6 @@ func PossibleWorkloadNetworkDNSZoneProvisioningStateValues() []WorkloadNetworkDN
 		WorkloadNetworkDNSZoneProvisioningStateSucceeded,
 		WorkloadNetworkDNSZoneProvisioningStateUpdating,
 	}
-}
-
-// ToPtr returns a *WorkloadNetworkDNSZoneProvisioningState pointing to the current value.
-func (c WorkloadNetworkDNSZoneProvisioningState) ToPtr() *WorkloadNetworkDNSZoneProvisioningState {
-	return &c
 }
 
 // WorkloadNetworkDhcpProvisioningState - The provisioning state
@@ -1033,11 +823,6 @@ func PossibleWorkloadNetworkDhcpProvisioningStateValues() []WorkloadNetworkDhcpP
 	}
 }
 
-// ToPtr returns a *WorkloadNetworkDhcpProvisioningState pointing to the current value.
-func (c WorkloadNetworkDhcpProvisioningState) ToPtr() *WorkloadNetworkDhcpProvisioningState {
-	return &c
-}
-
 // WorkloadNetworkPortMirroringProvisioningState - The provisioning state
 type WorkloadNetworkPortMirroringProvisioningState string
 
@@ -1058,11 +843,6 @@ func PossibleWorkloadNetworkPortMirroringProvisioningStateValues() []WorkloadNet
 		WorkloadNetworkPortMirroringProvisioningStateSucceeded,
 		WorkloadNetworkPortMirroringProvisioningStateUpdating,
 	}
-}
-
-// ToPtr returns a *WorkloadNetworkPortMirroringProvisioningState pointing to the current value.
-func (c WorkloadNetworkPortMirroringProvisioningState) ToPtr() *WorkloadNetworkPortMirroringProvisioningState {
-	return &c
 }
 
 // WorkloadNetworkPublicIPProvisioningState - The provisioning state
@@ -1087,11 +867,6 @@ func PossibleWorkloadNetworkPublicIPProvisioningStateValues() []WorkloadNetworkP
 	}
 }
 
-// ToPtr returns a *WorkloadNetworkPublicIPProvisioningState pointing to the current value.
-func (c WorkloadNetworkPublicIPProvisioningState) ToPtr() *WorkloadNetworkPublicIPProvisioningState {
-	return &c
-}
-
 // WorkloadNetworkSegmentProvisioningState - The provisioning state
 type WorkloadNetworkSegmentProvisioningState string
 
@@ -1114,11 +889,6 @@ func PossibleWorkloadNetworkSegmentProvisioningStateValues() []WorkloadNetworkSe
 	}
 }
 
-// ToPtr returns a *WorkloadNetworkSegmentProvisioningState pointing to the current value.
-func (c WorkloadNetworkSegmentProvisioningState) ToPtr() *WorkloadNetworkSegmentProvisioningState {
-	return &c
-}
-
 // WorkloadNetworkVMGroupProvisioningState - The provisioning state
 type WorkloadNetworkVMGroupProvisioningState string
 
@@ -1139,9 +909,4 @@ func PossibleWorkloadNetworkVMGroupProvisioningStateValues() []WorkloadNetworkVM
 		WorkloadNetworkVMGroupProvisioningStateSucceeded,
 		WorkloadNetworkVMGroupProvisioningStateUpdating,
 	}
-}
-
-// ToPtr returns a *WorkloadNetworkVMGroupProvisioningState pointing to the current value.
-func (c WorkloadNetworkVMGroupProvisioningState) ToPtr() *WorkloadNetworkVMGroupProvisioningState {
-	return &c
 }

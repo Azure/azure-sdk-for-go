@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type AttachedDatabaseConfigurationsClient struct {
 // forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewAttachedDatabaseConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AttachedDatabaseConfigurationsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewAttachedDatabaseConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AttachedDatabaseConfigurationsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &AttachedDatabaseConfigurationsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CheckNameAvailability - Checks that the attached database configuration resource name is valid and is not already in use.
@@ -92,7 +97,7 @@ func (client *AttachedDatabaseConfigurationsClient) checkNameAvailabilityCreateR
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, resourceName)
@@ -100,7 +105,7 @@ func (client *AttachedDatabaseConfigurationsClient) checkNameAvailabilityCreateR
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
 func (client *AttachedDatabaseConfigurationsClient) checkNameAvailabilityHandleResponse(resp *http.Response) (AttachedDatabaseConfigurationsClientCheckNameAvailabilityResponse, error) {
-	result := AttachedDatabaseConfigurationsClientCheckNameAvailabilityResponse{RawResponse: resp}
+	result := AttachedDatabaseConfigurationsClientCheckNameAvailabilityResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameResult); err != nil {
 		return AttachedDatabaseConfigurationsClientCheckNameAvailabilityResponse{}, err
 	}
@@ -115,22 +120,16 @@ func (client *AttachedDatabaseConfigurationsClient) checkNameAvailabilityHandleR
 // parameters - The database parameters supplied to the CreateOrUpdate operation.
 // options - AttachedDatabaseConfigurationsClientBeginCreateOrUpdateOptions contains the optional parameters for the AttachedDatabaseConfigurationsClient.BeginCreateOrUpdate
 // method.
-func (client *AttachedDatabaseConfigurationsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, attachedDatabaseConfigurationName string, parameters AttachedDatabaseConfiguration, options *AttachedDatabaseConfigurationsClientBeginCreateOrUpdateOptions) (AttachedDatabaseConfigurationsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, clusterName, attachedDatabaseConfigurationName, parameters, options)
-	if err != nil {
-		return AttachedDatabaseConfigurationsClientCreateOrUpdatePollerResponse{}, err
+func (client *AttachedDatabaseConfigurationsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, attachedDatabaseConfigurationName string, parameters AttachedDatabaseConfiguration, options *AttachedDatabaseConfigurationsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[AttachedDatabaseConfigurationsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, clusterName, attachedDatabaseConfigurationName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[AttachedDatabaseConfigurationsClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[AttachedDatabaseConfigurationsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := AttachedDatabaseConfigurationsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("AttachedDatabaseConfigurationsClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return AttachedDatabaseConfigurationsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &AttachedDatabaseConfigurationsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates an attached database configuration.
@@ -174,7 +173,7 @@ func (client *AttachedDatabaseConfigurationsClient) createOrUpdateCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -187,22 +186,16 @@ func (client *AttachedDatabaseConfigurationsClient) createOrUpdateCreateRequest(
 // attachedDatabaseConfigurationName - The name of the attached database configuration.
 // options - AttachedDatabaseConfigurationsClientBeginDeleteOptions contains the optional parameters for the AttachedDatabaseConfigurationsClient.BeginDelete
 // method.
-func (client *AttachedDatabaseConfigurationsClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, attachedDatabaseConfigurationName string, options *AttachedDatabaseConfigurationsClientBeginDeleteOptions) (AttachedDatabaseConfigurationsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, clusterName, attachedDatabaseConfigurationName, options)
-	if err != nil {
-		return AttachedDatabaseConfigurationsClientDeletePollerResponse{}, err
+func (client *AttachedDatabaseConfigurationsClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, attachedDatabaseConfigurationName string, options *AttachedDatabaseConfigurationsClientBeginDeleteOptions) (*armruntime.Poller[AttachedDatabaseConfigurationsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, clusterName, attachedDatabaseConfigurationName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[AttachedDatabaseConfigurationsClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[AttachedDatabaseConfigurationsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := AttachedDatabaseConfigurationsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("AttachedDatabaseConfigurationsClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return AttachedDatabaseConfigurationsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &AttachedDatabaseConfigurationsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes the attached database configuration with the given name.
@@ -246,7 +239,7 @@ func (client *AttachedDatabaseConfigurationsClient) deleteCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -298,7 +291,7 @@ func (client *AttachedDatabaseConfigurationsClient) getCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -306,7 +299,7 @@ func (client *AttachedDatabaseConfigurationsClient) getCreateRequest(ctx context
 
 // getHandleResponse handles the Get response.
 func (client *AttachedDatabaseConfigurationsClient) getHandleResponse(resp *http.Response) (AttachedDatabaseConfigurationsClientGetResponse, error) {
-	result := AttachedDatabaseConfigurationsClientGetResponse{RawResponse: resp}
+	result := AttachedDatabaseConfigurationsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AttachedDatabaseConfiguration); err != nil {
 		return AttachedDatabaseConfigurationsClientGetResponse{}, err
 	}
@@ -319,19 +312,26 @@ func (client *AttachedDatabaseConfigurationsClient) getHandleResponse(resp *http
 // clusterName - The name of the Kusto cluster.
 // options - AttachedDatabaseConfigurationsClientListByClusterOptions contains the optional parameters for the AttachedDatabaseConfigurationsClient.ListByCluster
 // method.
-func (client *AttachedDatabaseConfigurationsClient) ListByCluster(ctx context.Context, resourceGroupName string, clusterName string, options *AttachedDatabaseConfigurationsClientListByClusterOptions) (AttachedDatabaseConfigurationsClientListByClusterResponse, error) {
-	req, err := client.listByClusterCreateRequest(ctx, resourceGroupName, clusterName, options)
-	if err != nil {
-		return AttachedDatabaseConfigurationsClientListByClusterResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return AttachedDatabaseConfigurationsClientListByClusterResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AttachedDatabaseConfigurationsClientListByClusterResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listByClusterHandleResponse(resp)
+func (client *AttachedDatabaseConfigurationsClient) ListByCluster(resourceGroupName string, clusterName string, options *AttachedDatabaseConfigurationsClientListByClusterOptions) *runtime.Pager[AttachedDatabaseConfigurationsClientListByClusterResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AttachedDatabaseConfigurationsClientListByClusterResponse]{
+		More: func(page AttachedDatabaseConfigurationsClientListByClusterResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *AttachedDatabaseConfigurationsClientListByClusterResponse) (AttachedDatabaseConfigurationsClientListByClusterResponse, error) {
+			req, err := client.listByClusterCreateRequest(ctx, resourceGroupName, clusterName, options)
+			if err != nil {
+				return AttachedDatabaseConfigurationsClientListByClusterResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AttachedDatabaseConfigurationsClientListByClusterResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AttachedDatabaseConfigurationsClientListByClusterResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByClusterHandleResponse(resp)
+		},
+	})
 }
 
 // listByClusterCreateRequest creates the ListByCluster request.
@@ -354,7 +354,7 @@ func (client *AttachedDatabaseConfigurationsClient) listByClusterCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -362,7 +362,7 @@ func (client *AttachedDatabaseConfigurationsClient) listByClusterCreateRequest(c
 
 // listByClusterHandleResponse handles the ListByCluster response.
 func (client *AttachedDatabaseConfigurationsClient) listByClusterHandleResponse(resp *http.Response) (AttachedDatabaseConfigurationsClientListByClusterResponse, error) {
-	result := AttachedDatabaseConfigurationsClientListByClusterResponse{RawResponse: resp}
+	result := AttachedDatabaseConfigurationsClientListByClusterResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AttachedDatabaseConfigurationListResult); err != nil {
 		return AttachedDatabaseConfigurationsClientListByClusterResponse{}, err
 	}

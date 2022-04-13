@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type IotDpsResourceClient struct {
 // subscriptionID - The subscription identifier.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewIotDpsResourceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *IotDpsResourceClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewIotDpsResourceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IotDpsResourceClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &IotDpsResourceClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CheckProvisioningServiceNameAvailability - Check if a provisioning service name is available. This will validate if the
@@ -82,7 +87,7 @@ func (client *IotDpsResourceClient) checkProvisioningServiceNameAvailabilityCrea
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, arguments)
@@ -90,7 +95,7 @@ func (client *IotDpsResourceClient) checkProvisioningServiceNameAvailabilityCrea
 
 // checkProvisioningServiceNameAvailabilityHandleResponse handles the CheckProvisioningServiceNameAvailability response.
 func (client *IotDpsResourceClient) checkProvisioningServiceNameAvailabilityHandleResponse(resp *http.Response) (IotDpsResourceClientCheckProvisioningServiceNameAvailabilityResponse, error) {
-	result := IotDpsResourceClientCheckProvisioningServiceNameAvailabilityResponse{RawResponse: resp}
+	result := IotDpsResourceClientCheckProvisioningServiceNameAvailabilityResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NameAvailabilityInfo); err != nil {
 		return IotDpsResourceClientCheckProvisioningServiceNameAvailabilityResponse{}, err
 	}
@@ -106,22 +111,16 @@ func (client *IotDpsResourceClient) checkProvisioningServiceNameAvailabilityHand
 // iotDpsDescription - Description of the provisioning service to create or update.
 // options - IotDpsResourceClientBeginCreateOrUpdateOptions contains the optional parameters for the IotDpsResourceClient.BeginCreateOrUpdate
 // method.
-func (client *IotDpsResourceClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, provisioningServiceName string, iotDpsDescription ProvisioningServiceDescription, options *IotDpsResourceClientBeginCreateOrUpdateOptions) (IotDpsResourceClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, provisioningServiceName, iotDpsDescription, options)
-	if err != nil {
-		return IotDpsResourceClientCreateOrUpdatePollerResponse{}, err
+func (client *IotDpsResourceClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, provisioningServiceName string, iotDpsDescription ProvisioningServiceDescription, options *IotDpsResourceClientBeginCreateOrUpdateOptions) (*armruntime.Poller[IotDpsResourceClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, provisioningServiceName, iotDpsDescription, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[IotDpsResourceClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[IotDpsResourceClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := IotDpsResourceClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("IotDpsResourceClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return IotDpsResourceClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &IotDpsResourceClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Create or update the metadata of the provisioning service. The usual pattern to modify a property is to
@@ -163,7 +162,7 @@ func (client *IotDpsResourceClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, iotDpsDescription)
@@ -178,22 +177,16 @@ func (client *IotDpsResourceClient) createOrUpdateCreateRequest(ctx context.Cont
 // privateEndpointConnection - The private endpoint connection with updated properties
 // options - IotDpsResourceClientBeginCreateOrUpdatePrivateEndpointConnectionOptions contains the optional parameters for
 // the IotDpsResourceClient.BeginCreateOrUpdatePrivateEndpointConnection method.
-func (client *IotDpsResourceClient) BeginCreateOrUpdatePrivateEndpointConnection(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, privateEndpointConnection PrivateEndpointConnection, options *IotDpsResourceClientBeginCreateOrUpdatePrivateEndpointConnectionOptions) (IotDpsResourceClientCreateOrUpdatePrivateEndpointConnectionPollerResponse, error) {
-	resp, err := client.createOrUpdatePrivateEndpointConnection(ctx, resourceGroupName, resourceName, privateEndpointConnectionName, privateEndpointConnection, options)
-	if err != nil {
-		return IotDpsResourceClientCreateOrUpdatePrivateEndpointConnectionPollerResponse{}, err
+func (client *IotDpsResourceClient) BeginCreateOrUpdatePrivateEndpointConnection(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, privateEndpointConnection PrivateEndpointConnection, options *IotDpsResourceClientBeginCreateOrUpdatePrivateEndpointConnectionOptions) (*armruntime.Poller[IotDpsResourceClientCreateOrUpdatePrivateEndpointConnectionResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdatePrivateEndpointConnection(ctx, resourceGroupName, resourceName, privateEndpointConnectionName, privateEndpointConnection, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[IotDpsResourceClientCreateOrUpdatePrivateEndpointConnectionResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[IotDpsResourceClientCreateOrUpdatePrivateEndpointConnectionResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := IotDpsResourceClientCreateOrUpdatePrivateEndpointConnectionPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("IotDpsResourceClient.CreateOrUpdatePrivateEndpointConnection", "", resp, client.pl)
-	if err != nil {
-		return IotDpsResourceClientCreateOrUpdatePrivateEndpointConnectionPollerResponse{}, err
-	}
-	result.Poller = &IotDpsResourceClientCreateOrUpdatePrivateEndpointConnectionPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdatePrivateEndpointConnection - Create or update the status of a private endpoint connection with the specified
@@ -238,7 +231,7 @@ func (client *IotDpsResourceClient) createOrUpdatePrivateEndpointConnectionCreat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, privateEndpointConnection)
@@ -250,22 +243,16 @@ func (client *IotDpsResourceClient) createOrUpdatePrivateEndpointConnectionCreat
 // resourceGroupName - Resource group identifier.
 // options - IotDpsResourceClientBeginDeleteOptions contains the optional parameters for the IotDpsResourceClient.BeginDelete
 // method.
-func (client *IotDpsResourceClient) BeginDelete(ctx context.Context, provisioningServiceName string, resourceGroupName string, options *IotDpsResourceClientBeginDeleteOptions) (IotDpsResourceClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, provisioningServiceName, resourceGroupName, options)
-	if err != nil {
-		return IotDpsResourceClientDeletePollerResponse{}, err
+func (client *IotDpsResourceClient) BeginDelete(ctx context.Context, provisioningServiceName string, resourceGroupName string, options *IotDpsResourceClientBeginDeleteOptions) (*armruntime.Poller[IotDpsResourceClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, provisioningServiceName, resourceGroupName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[IotDpsResourceClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[IotDpsResourceClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := IotDpsResourceClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("IotDpsResourceClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return IotDpsResourceClientDeletePollerResponse{}, err
-	}
-	result.Poller = &IotDpsResourceClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes the Provisioning Service.
@@ -305,7 +292,7 @@ func (client *IotDpsResourceClient) deleteCreateRequest(ctx context.Context, pro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -318,22 +305,16 @@ func (client *IotDpsResourceClient) deleteCreateRequest(ctx context.Context, pro
 // privateEndpointConnectionName - The name of the private endpoint connection
 // options - IotDpsResourceClientBeginDeletePrivateEndpointConnectionOptions contains the optional parameters for the IotDpsResourceClient.BeginDeletePrivateEndpointConnection
 // method.
-func (client *IotDpsResourceClient) BeginDeletePrivateEndpointConnection(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, options *IotDpsResourceClientBeginDeletePrivateEndpointConnectionOptions) (IotDpsResourceClientDeletePrivateEndpointConnectionPollerResponse, error) {
-	resp, err := client.deletePrivateEndpointConnection(ctx, resourceGroupName, resourceName, privateEndpointConnectionName, options)
-	if err != nil {
-		return IotDpsResourceClientDeletePrivateEndpointConnectionPollerResponse{}, err
+func (client *IotDpsResourceClient) BeginDeletePrivateEndpointConnection(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, options *IotDpsResourceClientBeginDeletePrivateEndpointConnectionOptions) (*armruntime.Poller[IotDpsResourceClientDeletePrivateEndpointConnectionResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deletePrivateEndpointConnection(ctx, resourceGroupName, resourceName, privateEndpointConnectionName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[IotDpsResourceClientDeletePrivateEndpointConnectionResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[IotDpsResourceClientDeletePrivateEndpointConnectionResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := IotDpsResourceClientDeletePrivateEndpointConnectionPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("IotDpsResourceClient.DeletePrivateEndpointConnection", "", resp, client.pl)
-	if err != nil {
-		return IotDpsResourceClientDeletePrivateEndpointConnectionPollerResponse{}, err
-	}
-	result.Poller = &IotDpsResourceClientDeletePrivateEndpointConnectionPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // DeletePrivateEndpointConnection - Delete private endpoint connection with the specified name
@@ -377,7 +358,7 @@ func (client *IotDpsResourceClient) deletePrivateEndpointConnectionCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -423,7 +404,7 @@ func (client *IotDpsResourceClient) getCreateRequest(ctx context.Context, provis
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -431,7 +412,7 @@ func (client *IotDpsResourceClient) getCreateRequest(ctx context.Context, provis
 
 // getHandleResponse handles the Get response.
 func (client *IotDpsResourceClient) getHandleResponse(resp *http.Response) (IotDpsResourceClientGetResponse, error) {
-	result := IotDpsResourceClientGetResponse{RawResponse: resp}
+	result := IotDpsResourceClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProvisioningServiceDescription); err != nil {
 		return IotDpsResourceClientGetResponse{}, err
 	}
@@ -486,7 +467,7 @@ func (client *IotDpsResourceClient) getOperationResultCreateRequest(ctx context.
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("asyncinfo", asyncinfo)
-	reqQP.Set("api-version", "2020-03-01")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -494,7 +475,7 @@ func (client *IotDpsResourceClient) getOperationResultCreateRequest(ctx context.
 
 // getOperationResultHandleResponse handles the GetOperationResult response.
 func (client *IotDpsResourceClient) getOperationResultHandleResponse(resp *http.Response) (IotDpsResourceClientGetOperationResultResponse, error) {
-	result := IotDpsResourceClientGetOperationResultResponse{RawResponse: resp}
+	result := IotDpsResourceClientGetOperationResultResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AsyncOperationResult); err != nil {
 		return IotDpsResourceClientGetOperationResultResponse{}, err
 	}
@@ -547,7 +528,7 @@ func (client *IotDpsResourceClient) getPrivateEndpointConnectionCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -555,7 +536,7 @@ func (client *IotDpsResourceClient) getPrivateEndpointConnectionCreateRequest(ct
 
 // getPrivateEndpointConnectionHandleResponse handles the GetPrivateEndpointConnection response.
 func (client *IotDpsResourceClient) getPrivateEndpointConnectionHandleResponse(resp *http.Response) (IotDpsResourceClientGetPrivateEndpointConnectionResponse, error) {
-	result := IotDpsResourceClientGetPrivateEndpointConnectionResponse{RawResponse: resp}
+	result := IotDpsResourceClientGetPrivateEndpointConnectionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnection); err != nil {
 		return IotDpsResourceClientGetPrivateEndpointConnectionResponse{}, err
 	}
@@ -608,7 +589,7 @@ func (client *IotDpsResourceClient) getPrivateLinkResourcesCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -616,7 +597,7 @@ func (client *IotDpsResourceClient) getPrivateLinkResourcesCreateRequest(ctx con
 
 // getPrivateLinkResourcesHandleResponse handles the GetPrivateLinkResources response.
 func (client *IotDpsResourceClient) getPrivateLinkResourcesHandleResponse(resp *http.Response) (IotDpsResourceClientGetPrivateLinkResourcesResponse, error) {
-	result := IotDpsResourceClientGetPrivateLinkResourcesResponse{RawResponse: resp}
+	result := IotDpsResourceClientGetPrivateLinkResourcesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GroupIDInformation); err != nil {
 		return IotDpsResourceClientGetPrivateLinkResourcesResponse{}, err
 	}
@@ -628,16 +609,32 @@ func (client *IotDpsResourceClient) getPrivateLinkResourcesHandleResponse(resp *
 // resourceGroupName - Resource group identifier.
 // options - IotDpsResourceClientListByResourceGroupOptions contains the optional parameters for the IotDpsResourceClient.ListByResourceGroup
 // method.
-func (client *IotDpsResourceClient) ListByResourceGroup(resourceGroupName string, options *IotDpsResourceClientListByResourceGroupOptions) *IotDpsResourceClientListByResourceGroupPager {
-	return &IotDpsResourceClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *IotDpsResourceClient) ListByResourceGroup(resourceGroupName string, options *IotDpsResourceClientListByResourceGroupOptions) *runtime.Pager[IotDpsResourceClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[IotDpsResourceClientListByResourceGroupResponse]{
+		More: func(page IotDpsResourceClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp IotDpsResourceClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ProvisioningServiceDescriptionListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *IotDpsResourceClientListByResourceGroupResponse) (IotDpsResourceClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return IotDpsResourceClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return IotDpsResourceClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return IotDpsResourceClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -656,7 +653,7 @@ func (client *IotDpsResourceClient) listByResourceGroupCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -664,7 +661,7 @@ func (client *IotDpsResourceClient) listByResourceGroupCreateRequest(ctx context
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *IotDpsResourceClient) listByResourceGroupHandleResponse(resp *http.Response) (IotDpsResourceClientListByResourceGroupResponse, error) {
-	result := IotDpsResourceClientListByResourceGroupResponse{RawResponse: resp}
+	result := IotDpsResourceClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProvisioningServiceDescriptionListResult); err != nil {
 		return IotDpsResourceClientListByResourceGroupResponse{}, err
 	}
@@ -675,16 +672,32 @@ func (client *IotDpsResourceClient) listByResourceGroupHandleResponse(resp *http
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - IotDpsResourceClientListBySubscriptionOptions contains the optional parameters for the IotDpsResourceClient.ListBySubscription
 // method.
-func (client *IotDpsResourceClient) ListBySubscription(options *IotDpsResourceClientListBySubscriptionOptions) *IotDpsResourceClientListBySubscriptionPager {
-	return &IotDpsResourceClientListBySubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySubscriptionCreateRequest(ctx, options)
+func (client *IotDpsResourceClient) ListBySubscription(options *IotDpsResourceClientListBySubscriptionOptions) *runtime.Pager[IotDpsResourceClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[IotDpsResourceClientListBySubscriptionResponse]{
+		More: func(page IotDpsResourceClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp IotDpsResourceClientListBySubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ProvisioningServiceDescriptionListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *IotDpsResourceClientListBySubscriptionResponse) (IotDpsResourceClientListBySubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySubscriptionCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return IotDpsResourceClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return IotDpsResourceClientListBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return IotDpsResourceClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
@@ -699,7 +712,7 @@ func (client *IotDpsResourceClient) listBySubscriptionCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -707,7 +720,7 @@ func (client *IotDpsResourceClient) listBySubscriptionCreateRequest(ctx context.
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
 func (client *IotDpsResourceClient) listBySubscriptionHandleResponse(resp *http.Response) (IotDpsResourceClientListBySubscriptionResponse, error) {
-	result := IotDpsResourceClientListBySubscriptionResponse{RawResponse: resp}
+	result := IotDpsResourceClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProvisioningServiceDescriptionListResult); err != nil {
 		return IotDpsResourceClientListBySubscriptionResponse{}, err
 	}
@@ -719,16 +732,32 @@ func (client *IotDpsResourceClient) listBySubscriptionHandleResponse(resp *http.
 // provisioningServiceName - The provisioning service name to get the shared access keys for.
 // resourceGroupName - resource group name
 // options - IotDpsResourceClientListKeysOptions contains the optional parameters for the IotDpsResourceClient.ListKeys method.
-func (client *IotDpsResourceClient) ListKeys(provisioningServiceName string, resourceGroupName string, options *IotDpsResourceClientListKeysOptions) *IotDpsResourceClientListKeysPager {
-	return &IotDpsResourceClientListKeysPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listKeysCreateRequest(ctx, provisioningServiceName, resourceGroupName, options)
+func (client *IotDpsResourceClient) ListKeys(provisioningServiceName string, resourceGroupName string, options *IotDpsResourceClientListKeysOptions) *runtime.Pager[IotDpsResourceClientListKeysResponse] {
+	return runtime.NewPager(runtime.PageProcessor[IotDpsResourceClientListKeysResponse]{
+		More: func(page IotDpsResourceClientListKeysResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp IotDpsResourceClientListKeysResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SharedAccessSignatureAuthorizationRuleListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *IotDpsResourceClientListKeysResponse) (IotDpsResourceClientListKeysResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listKeysCreateRequest(ctx, provisioningServiceName, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return IotDpsResourceClientListKeysResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return IotDpsResourceClientListKeysResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return IotDpsResourceClientListKeysResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listKeysHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listKeysCreateRequest creates the ListKeys request.
@@ -751,7 +780,7 @@ func (client *IotDpsResourceClient) listKeysCreateRequest(ctx context.Context, p
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -759,7 +788,7 @@ func (client *IotDpsResourceClient) listKeysCreateRequest(ctx context.Context, p
 
 // listKeysHandleResponse handles the ListKeys response.
 func (client *IotDpsResourceClient) listKeysHandleResponse(resp *http.Response) (IotDpsResourceClientListKeysResponse, error) {
-	result := IotDpsResourceClientListKeysResponse{RawResponse: resp}
+	result := IotDpsResourceClientListKeysResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SharedAccessSignatureAuthorizationRuleListResult); err != nil {
 		return IotDpsResourceClientListKeysResponse{}, err
 	}
@@ -812,7 +841,7 @@ func (client *IotDpsResourceClient) listKeysForKeyNameCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -820,7 +849,7 @@ func (client *IotDpsResourceClient) listKeysForKeyNameCreateRequest(ctx context.
 
 // listKeysForKeyNameHandleResponse handles the ListKeysForKeyName response.
 func (client *IotDpsResourceClient) listKeysForKeyNameHandleResponse(resp *http.Response) (IotDpsResourceClientListKeysForKeyNameResponse, error) {
-	result := IotDpsResourceClientListKeysForKeyNameResponse{RawResponse: resp}
+	result := IotDpsResourceClientListKeysForKeyNameResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SharedAccessSignatureAuthorizationRuleAccessRightsDescription); err != nil {
 		return IotDpsResourceClientListKeysForKeyNameResponse{}, err
 	}
@@ -868,7 +897,7 @@ func (client *IotDpsResourceClient) listPrivateEndpointConnectionsCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -876,7 +905,7 @@ func (client *IotDpsResourceClient) listPrivateEndpointConnectionsCreateRequest(
 
 // listPrivateEndpointConnectionsHandleResponse handles the ListPrivateEndpointConnections response.
 func (client *IotDpsResourceClient) listPrivateEndpointConnectionsHandleResponse(resp *http.Response) (IotDpsResourceClientListPrivateEndpointConnectionsResponse, error) {
-	result := IotDpsResourceClientListPrivateEndpointConnectionsResponse{RawResponse: resp}
+	result := IotDpsResourceClientListPrivateEndpointConnectionsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnectionArray); err != nil {
 		return IotDpsResourceClientListPrivateEndpointConnectionsResponse{}, err
 	}
@@ -924,7 +953,7 @@ func (client *IotDpsResourceClient) listPrivateLinkResourcesCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -932,7 +961,7 @@ func (client *IotDpsResourceClient) listPrivateLinkResourcesCreateRequest(ctx co
 
 // listPrivateLinkResourcesHandleResponse handles the ListPrivateLinkResources response.
 func (client *IotDpsResourceClient) listPrivateLinkResourcesHandleResponse(resp *http.Response) (IotDpsResourceClientListPrivateLinkResourcesResponse, error) {
-	result := IotDpsResourceClientListPrivateLinkResourcesResponse{RawResponse: resp}
+	result := IotDpsResourceClientListPrivateLinkResourcesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResources); err != nil {
 		return IotDpsResourceClientListPrivateLinkResourcesResponse{}, err
 	}
@@ -945,16 +974,32 @@ func (client *IotDpsResourceClient) listPrivateLinkResourcesHandleResponse(resp 
 // resourceGroupName - Name of resource group.
 // options - IotDpsResourceClientListValidSKUsOptions contains the optional parameters for the IotDpsResourceClient.ListValidSKUs
 // method.
-func (client *IotDpsResourceClient) ListValidSKUs(provisioningServiceName string, resourceGroupName string, options *IotDpsResourceClientListValidSKUsOptions) *IotDpsResourceClientListValidSKUsPager {
-	return &IotDpsResourceClientListValidSKUsPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listValidSKUsCreateRequest(ctx, provisioningServiceName, resourceGroupName, options)
+func (client *IotDpsResourceClient) ListValidSKUs(provisioningServiceName string, resourceGroupName string, options *IotDpsResourceClientListValidSKUsOptions) *runtime.Pager[IotDpsResourceClientListValidSKUsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[IotDpsResourceClientListValidSKUsResponse]{
+		More: func(page IotDpsResourceClientListValidSKUsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp IotDpsResourceClientListValidSKUsResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.IotDpsSKUDefinitionListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *IotDpsResourceClientListValidSKUsResponse) (IotDpsResourceClientListValidSKUsResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listValidSKUsCreateRequest(ctx, provisioningServiceName, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return IotDpsResourceClientListValidSKUsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return IotDpsResourceClientListValidSKUsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return IotDpsResourceClientListValidSKUsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listValidSKUsHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listValidSKUsCreateRequest creates the ListValidSKUs request.
@@ -977,7 +1022,7 @@ func (client *IotDpsResourceClient) listValidSKUsCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -985,7 +1030,7 @@ func (client *IotDpsResourceClient) listValidSKUsCreateRequest(ctx context.Conte
 
 // listValidSKUsHandleResponse handles the ListValidSKUs response.
 func (client *IotDpsResourceClient) listValidSKUsHandleResponse(resp *http.Response) (IotDpsResourceClientListValidSKUsResponse, error) {
-	result := IotDpsResourceClientListValidSKUsResponse{RawResponse: resp}
+	result := IotDpsResourceClientListValidSKUsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IotDpsSKUDefinitionListResult); err != nil {
 		return IotDpsResourceClientListValidSKUsResponse{}, err
 	}
@@ -999,22 +1044,16 @@ func (client *IotDpsResourceClient) listValidSKUsHandleResponse(resp *http.Respo
 // provisioningServiceTags - Updated tag information to set into the provisioning service instance.
 // options - IotDpsResourceClientBeginUpdateOptions contains the optional parameters for the IotDpsResourceClient.BeginUpdate
 // method.
-func (client *IotDpsResourceClient) BeginUpdate(ctx context.Context, resourceGroupName string, provisioningServiceName string, provisioningServiceTags TagsResource, options *IotDpsResourceClientBeginUpdateOptions) (IotDpsResourceClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, provisioningServiceName, provisioningServiceTags, options)
-	if err != nil {
-		return IotDpsResourceClientUpdatePollerResponse{}, err
+func (client *IotDpsResourceClient) BeginUpdate(ctx context.Context, resourceGroupName string, provisioningServiceName string, provisioningServiceTags TagsResource, options *IotDpsResourceClientBeginUpdateOptions) (*armruntime.Poller[IotDpsResourceClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, provisioningServiceName, provisioningServiceTags, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[IotDpsResourceClientUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[IotDpsResourceClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := IotDpsResourceClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("IotDpsResourceClient.Update", "", resp, client.pl)
-	if err != nil {
-		return IotDpsResourceClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &IotDpsResourceClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Update an existing provisioning service's tags. to update other fields use the CreateOrUpdate method
@@ -1054,7 +1093,7 @@ func (client *IotDpsResourceClient) updateCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, provisioningServiceTags)

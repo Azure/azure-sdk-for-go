@@ -1,133 +1,118 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
 package crypto
 
-// WrapAlgorithm represents the key wrapping algorithms
-type WrapAlgorithm string
+// WrapAlg represents the key wrapping algorithms
+type WrapAlg string
 
 const (
-	WrapAlgorithmAES128     WrapAlgorithm = "A128KW"
-	WrapAlgorithmAES192     WrapAlgorithm = "A192KW"
-	WrapAlgorithmAES256     WrapAlgorithm = "A256KW"
-	WrapAlgorithmRSAOAEP    WrapAlgorithm = "RSA-OAEP"
-	WrapAlgorithmRSAOAEP256 WrapAlgorithm = "RSA-OAEP-256"
-	WrapAlgorithmRSA15      WrapAlgorithm = "RSA1_5"
+	WrapAlgAES128     WrapAlg = "A128KW"
+	WrapAlgAES192     WrapAlg = "A192KW"
+	WrapAlgAES256     WrapAlg = "A256KW"
+	WrapAlgRSAOAEP    WrapAlg = "RSA-OAEP"
+	WrapAlgRSAOAEP256 WrapAlg = "RSA-OAEP-256"
+	WrapAlgRSA15      WrapAlg = "RSA1_5"
 )
 
-// ToPtr returns a pointer to WrapAlgorithm
-func (k WrapAlgorithm) ToPtr() *WrapAlgorithm {
-	return &k
-}
-
-// PossibleWrapAlgorithmValues returns a slice of all possible WrapAlgorithm values
-func PossibleWrapAlgorithmValues() []WrapAlgorithm {
-	return []WrapAlgorithm{
-		WrapAlgorithmAES128,
-		WrapAlgorithmAES192,
-		WrapAlgorithmAES256,
-		WrapAlgorithmRSAOAEP,
-		WrapAlgorithmRSAOAEP256,
-		WrapAlgorithmRSA15,
+// PossibleWrapAlgValues returns a slice of all possible WrapAlg values
+func PossibleWrapAlgValues() []WrapAlg {
+	return []WrapAlg{
+		WrapAlgAES128,
+		WrapAlgAES192,
+		WrapAlgAES256,
+		WrapAlgRSAOAEP,
+		WrapAlgRSAOAEP256,
+		WrapAlgRSA15,
 	}
 }
 
-// EncryptionAlgorithm - algorithm identifier
-type EncryptionAlgorithm string
+// EncryptionAlg - algorithm identifier
+type EncryptionAlg string
 
 const (
-	EncryptionAlgorithmA128CBC    EncryptionAlgorithm = "A128CBC"
-	EncryptionAlgorithmA128CBCPAD EncryptionAlgorithm = "A128CBCPAD"
-	EncryptionAlgorithmA128GCM    EncryptionAlgorithm = "A128GCM"
-	EncryptionAlgorithmA128KW     EncryptionAlgorithm = "A128KW"
-	EncryptionAlgorithmA192CBC    EncryptionAlgorithm = "A192CBC"
-	EncryptionAlgorithmA192CBCPAD EncryptionAlgorithm = "A192CBCPAD"
-	EncryptionAlgorithmA192GCM    EncryptionAlgorithm = "A192GCM"
-	EncryptionAlgorithmA192KW     EncryptionAlgorithm = "A192KW"
-	EncryptionAlgorithmA256CBC    EncryptionAlgorithm = "A256CBC"
-	EncryptionAlgorithmA256CBCPAD EncryptionAlgorithm = "A256CBCPAD"
-	EncryptionAlgorithmA256GCM    EncryptionAlgorithm = "A256GCM"
-	EncryptionAlgorithmA256KW     EncryptionAlgorithm = "A256KW"
-	EncryptionAlgorithmRSA15      EncryptionAlgorithm = "RSA1_5"
-	EncryptionAlgorithmRSAOAEP    EncryptionAlgorithm = "RSA-OAEP"
-	EncryptionAlgorithmRSAOAEP256 EncryptionAlgorithm = "RSA-OAEP-256"
+	EncryptionAlgA128CBC    EncryptionAlg = "A128CBC"
+	EncryptionAlgA128CBCPAD EncryptionAlg = "A128CBCPAD"
+	EncryptionAlgA128GCM    EncryptionAlg = "A128GCM"
+	EncryptionAlgA128KW     EncryptionAlg = "A128KW"
+	EncryptionAlgA192CBC    EncryptionAlg = "A192CBC"
+	EncryptionAlgA192CBCPAD EncryptionAlg = "A192CBCPAD"
+	EncryptionAlgA192GCM    EncryptionAlg = "A192GCM"
+	EncryptionAlgA192KW     EncryptionAlg = "A192KW"
+	EncryptionAlgA256CBC    EncryptionAlg = "A256CBC"
+	EncryptionAlgA256CBCPAD EncryptionAlg = "A256CBCPAD"
+	EncryptionAlgA256GCM    EncryptionAlg = "A256GCM"
+	EncryptionAlgA256KW     EncryptionAlg = "A256KW"
+	EncryptionAlgRSA15      EncryptionAlg = "RSA1_5"
+	EncryptionAlgRSAOAEP    EncryptionAlg = "RSA-OAEP"
+	EncryptionAlgRSAOAEP256 EncryptionAlg = "RSA-OAEP-256"
 )
 
-// ToPtr returns a *EncryptionAlgorithm pointing to the current value.
-func (c EncryptionAlgorithm) ToPtr() *EncryptionAlgorithm {
-	return &c
-}
-
-// PossibleEncryptionAlgorithmValues returns a slice of all possible EncryptionAlgorithm values
-func PossibleEncryptionAlgorithmValues() []EncryptionAlgorithm {
-	return []EncryptionAlgorithm{
-		EncryptionAlgorithmA128CBC,
-		EncryptionAlgorithmA128CBCPAD,
-		EncryptionAlgorithmA128GCM,
-		EncryptionAlgorithmA128KW,
-		EncryptionAlgorithmA192CBC,
-		EncryptionAlgorithmA192CBCPAD,
-		EncryptionAlgorithmA192GCM,
-		EncryptionAlgorithmA192KW,
-		EncryptionAlgorithmA256CBC,
-		EncryptionAlgorithmA256CBCPAD,
-		EncryptionAlgorithmA256GCM,
-		EncryptionAlgorithmA256KW,
-		EncryptionAlgorithmRSA15,
-		EncryptionAlgorithmRSAOAEP,
-		EncryptionAlgorithmRSAOAEP256,
+// PossibleEncryptionAlgValues returns a slice of all possible EncryptionAlg values
+func PossibleEncryptionAlgValues() []EncryptionAlg {
+	return []EncryptionAlg{
+		EncryptionAlgA128CBC,
+		EncryptionAlgA128CBCPAD,
+		EncryptionAlgA128GCM,
+		EncryptionAlgA128KW,
+		EncryptionAlgA192CBC,
+		EncryptionAlgA192CBCPAD,
+		EncryptionAlgA192GCM,
+		EncryptionAlgA192KW,
+		EncryptionAlgA256CBC,
+		EncryptionAlgA256CBCPAD,
+		EncryptionAlgA256GCM,
+		EncryptionAlgA256KW,
+		EncryptionAlgRSA15,
+		EncryptionAlgRSAOAEP,
+		EncryptionAlgRSAOAEP256,
 	}
 }
 
-// SignatureAlgorithm - The signing/verification algorithm identifier.
-type SignatureAlgorithm string
+// SignatureAlg - The signing/verification algorithm identifier.
+type SignatureAlg string
 
 const (
 	// ES256 - ECDSA using P-256 and SHA-256, as described in https://tools.ietf.org/html/rfc7518.
-	SignatureAlgorithmES256 SignatureAlgorithm = "ES256"
+	SignatureAlgES256 SignatureAlg = "ES256"
 	// ES256K - ECDSA using P-256K and SHA-256, as described in https://tools.ietf.org/html/rfc7518
-	SignatureAlgorithmES256K SignatureAlgorithm = "ES256K"
+	SignatureAlgES256K SignatureAlg = "ES256K"
 	// ES384 - ECDSA using P-384 and SHA-384, as described in https://tools.ietf.org/html/rfc7518
-	SignatureAlgorithmES384 SignatureAlgorithm = "ES384"
+	SignatureAlgES384 SignatureAlg = "ES384"
 	// ES512 - ECDSA using P-521 and SHA-512, as described in https://tools.ietf.org/html/rfc7518
-	SignatureAlgorithmES512 SignatureAlgorithm = "ES512"
+	SignatureAlgES512 SignatureAlg = "ES512"
 	// PS256 - RSASSA-PSS using SHA-256 and MGF1 with SHA-256, as described in https://tools.ietf.org/html/rfc7518
-	SignatureAlgorithmPS256 SignatureAlgorithm = "PS256"
+	SignatureAlgPS256 SignatureAlg = "PS256"
 	// PS384 - RSASSA-PSS using SHA-384 and MGF1 with SHA-384, as described in https://tools.ietf.org/html/rfc7518
-	SignatureAlgorithmPS384 SignatureAlgorithm = "PS384"
+	SignatureAlgPS384 SignatureAlg = "PS384"
 	// PS512 - RSASSA-PSS using SHA-512 and MGF1 with SHA-512, as described in https://tools.ietf.org/html/rfc7518
-	SignatureAlgorithmPS512 SignatureAlgorithm = "PS512"
+	SignatureAlgPS512 SignatureAlg = "PS512"
 	// RS256 - RSASSA-PKCS1-v1_5 using SHA-256, as described in https://tools.ietf.org/html/rfc7518
-	SignatureAlgorithmRS256 SignatureAlgorithm = "RS256"
+	SignatureAlgRS256 SignatureAlg = "RS256"
 	// RS384 - RSASSA-PKCS1-v1_5 using SHA-384, as described in https://tools.ietf.org/html/rfc7518
-	SignatureAlgorithmRS384 SignatureAlgorithm = "RS384"
+	SignatureAlgRS384 SignatureAlg = "RS384"
 	// RS512 - RSASSA-PKCS1-v1_5 using SHA-512, as described in https://tools.ietf.org/html/rfc7518
-	SignatureAlgorithmRS512 SignatureAlgorithm = "RS512"
+	SignatureAlgRS512 SignatureAlg = "RS512"
 	// RSNULL - Reserved
-	SignatureAlgorithmRSNULL SignatureAlgorithm = "RSNULL"
+	SignatureAlgRSNULL SignatureAlg = "RSNULL"
 )
 
-// ToPtr returns a *SignatureAlgorithm pointing to the current value.
-func (c SignatureAlgorithm) ToPtr() *SignatureAlgorithm {
-	return &c
-}
-
-// PossibleSignatureAlgorithmValues returns a slice of all possible SignatureAlgorithm values
-func PossibleSignatureAlgorithmValues() []SignatureAlgorithm {
-	return []SignatureAlgorithm{
-		SignatureAlgorithmES256,
-		SignatureAlgorithmES256K,
-		SignatureAlgorithmES384,
-		SignatureAlgorithmES512,
-		SignatureAlgorithmPS256,
-		SignatureAlgorithmPS384,
-		SignatureAlgorithmPS512,
-		SignatureAlgorithmRS256,
-		SignatureAlgorithmRS384,
-		SignatureAlgorithmRS512,
-		SignatureAlgorithmRSNULL,
+// PossibleSignatureAlgValues returns a slice of all possible SignatureAlg values
+func PossibleSignatureAlgValues() []SignatureAlg {
+	return []SignatureAlg{
+		SignatureAlgES256,
+		SignatureAlgES256K,
+		SignatureAlgES384,
+		SignatureAlgES512,
+		SignatureAlgPS256,
+		SignatureAlgPS384,
+		SignatureAlgPS512,
+		SignatureAlgRS256,
+		SignatureAlgRS384,
+		SignatureAlgRS512,
+		SignatureAlgRSNULL,
 	}
 }

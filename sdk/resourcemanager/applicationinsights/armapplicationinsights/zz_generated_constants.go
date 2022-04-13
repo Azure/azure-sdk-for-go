@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armapplicationinsights
 
 const (
 	moduleName    = "armapplicationinsights"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // ApplicationType - Type of application being monitored.
@@ -27,11 +27,6 @@ func PossibleApplicationTypeValues() []ApplicationType {
 		ApplicationTypeOther,
 		ApplicationTypeWeb,
 	}
-}
-
-// ToPtr returns a *ApplicationType pointing to the current value.
-func (c ApplicationType) ToPtr() *ApplicationType {
-	return &c
 }
 
 type CategoryType string
@@ -53,11 +48,6 @@ func PossibleCategoryTypeValues() []CategoryType {
 	}
 }
 
-// ToPtr returns a *CategoryType pointing to the current value.
-func (c CategoryType) ToPtr() *CategoryType {
-	return &c
-}
-
 // CreatedByType - The type of identity that created the resource.
 type CreatedByType string
 
@@ -76,11 +66,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
 	}
-}
-
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
 }
 
 type FavoriteSourceType string
@@ -110,11 +95,6 @@ func PossibleFavoriteSourceTypeValues() []FavoriteSourceType {
 	}
 }
 
-// ToPtr returns a *FavoriteSourceType pointing to the current value.
-func (c FavoriteSourceType) ToPtr() *FavoriteSourceType {
-	return &c
-}
-
 // FavoriteType - Enum indicating if this favorite definition is owned by a specific user or is shared between all users with
 // access to the Application Insights component.
 type FavoriteType string
@@ -132,11 +112,6 @@ func PossibleFavoriteTypeValues() []FavoriteType {
 	}
 }
 
-// ToPtr returns a *FavoriteType pointing to the current value.
-func (c FavoriteType) ToPtr() *FavoriteType {
-	return &c
-}
-
 // FlowType - Used by the Application Insights system to determine what kind of flow this component was created by. This is
 // to be set to 'Bluefield' when creating/updating a component via the REST API.
 type FlowType string
@@ -150,11 +125,6 @@ func PossibleFlowTypeValues() []FlowType {
 	return []FlowType{
 		FlowTypeBluefield,
 	}
-}
-
-// ToPtr returns a *FlowType pointing to the current value.
-func (c FlowType) ToPtr() *FlowType {
-	return &c
 }
 
 // IngestionMode - Indicates the flow of the ingestion.
@@ -175,11 +145,6 @@ func PossibleIngestionModeValues() []IngestionMode {
 	}
 }
 
-// ToPtr returns a *IngestionMode pointing to the current value.
-func (c IngestionMode) ToPtr() *IngestionMode {
-	return &c
-}
-
 // ItemScope - Enum indicating if this item definition is owned by a specific user or is shared between all users with access
 // to the Application Insights component.
 type ItemScope string
@@ -197,11 +162,6 @@ func PossibleItemScopeValues() []ItemScope {
 	}
 }
 
-// ToPtr returns a *ItemScope pointing to the current value.
-func (c ItemScope) ToPtr() *ItemScope {
-	return &c
-}
-
 type ItemScopePath string
 
 const (
@@ -215,11 +175,6 @@ func PossibleItemScopePathValues() []ItemScopePath {
 		ItemScopePathAnalyticsItems,
 		ItemScopePathMyanalyticsItems,
 	}
-}
-
-// ToPtr returns a *ItemScopePath pointing to the current value.
-func (c ItemScopePath) ToPtr() *ItemScopePath {
-	return &c
 }
 
 // ItemType - Enum indicating the type of the Analytics item.
@@ -240,11 +195,6 @@ func PossibleItemTypeValues() []ItemType {
 		ItemTypeQuery,
 		ItemTypeRecent,
 	}
-}
-
-// ToPtr returns a *ItemType pointing to the current value.
-func (c ItemType) ToPtr() *ItemType {
-	return &c
 }
 
 type ItemTypeParameter string
@@ -268,11 +218,6 @@ func PossibleItemTypeParameterValues() []ItemTypeParameter {
 	}
 }
 
-// ToPtr returns a *ItemTypeParameter pointing to the current value.
-func (c ItemTypeParameter) ToPtr() *ItemTypeParameter {
-	return &c
-}
-
 // Kind - The kind of workbook. Choices are user and shared.
 type Kind string
 
@@ -287,11 +232,6 @@ func PossibleKindValues() []Kind {
 		KindShared,
 		KindUser,
 	}
-}
-
-// ToPtr returns a *Kind pointing to the current value.
-func (c Kind) ToPtr() *Kind {
-	return &c
 }
 
 // ManagedServiceIdentityType - Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
@@ -314,11 +254,6 @@ func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
 	}
 }
 
-// ToPtr returns a *ManagedServiceIdentityType pointing to the current value.
-func (c ManagedServiceIdentityType) ToPtr() *ManagedServiceIdentityType {
-	return &c
-}
-
 // MyWorkbookManagedIdentityType - The identity type.
 type MyWorkbookManagedIdentityType string
 
@@ -333,11 +268,6 @@ func PossibleMyWorkbookManagedIdentityTypeValues() []MyWorkbookManagedIdentityTy
 		MyWorkbookManagedIdentityTypeNone,
 		MyWorkbookManagedIdentityTypeUserAssigned,
 	}
-}
-
-// ToPtr returns a *MyWorkbookManagedIdentityType pointing to the current value.
-func (c MyWorkbookManagedIdentityType) ToPtr() *MyWorkbookManagedIdentityType {
-	return &c
 }
 
 // PublicNetworkAccessType - The network access type for operating on the Application Insights Component. By default it is
@@ -359,11 +289,6 @@ func PossiblePublicNetworkAccessTypeValues() []PublicNetworkAccessType {
 	}
 }
 
-// ToPtr returns a *PublicNetworkAccessType pointing to the current value.
-func (c PublicNetworkAccessType) ToPtr() *PublicNetworkAccessType {
-	return &c
-}
-
 // PurgeState - Status of the operation represented by the requested Id.
 type PurgeState string
 
@@ -378,11 +303,6 @@ func PossiblePurgeStateValues() []PurgeState {
 		PurgeStateCompleted,
 		PurgeStatePending,
 	}
-}
-
-// ToPtr returns a *PurgeState pointing to the current value.
-func (c PurgeState) ToPtr() *PurgeState {
-	return &c
 }
 
 // RequestSource - Describes what tool created this Application Insights component. Customers using this API should set this
@@ -400,12 +320,7 @@ func PossibleRequestSourceValues() []RequestSource {
 	}
 }
 
-// ToPtr returns a *RequestSource pointing to the current value.
-func (c RequestSource) ToPtr() *RequestSource {
-	return &c
-}
-
-// SharedTypeKind - The kind of workbook. Choices are user and shared.
+// SharedTypeKind - The kind of workbook. Only valid value is shared.
 type SharedTypeKind string
 
 const (
@@ -421,11 +336,6 @@ func PossibleSharedTypeKindValues() []SharedTypeKind {
 	}
 }
 
-// ToPtr returns a *SharedTypeKind pointing to the current value.
-func (c SharedTypeKind) ToPtr() *SharedTypeKind {
-	return &c
-}
-
 type StorageType string
 
 const (
@@ -437,11 +347,6 @@ func PossibleStorageTypeValues() []StorageType {
 	return []StorageType{
 		StorageTypeServiceProfiler,
 	}
-}
-
-// ToPtr returns a *StorageType pointing to the current value.
-func (c StorageType) ToPtr() *StorageType {
-	return &c
 }
 
 // WebTestKind - The kind of web test that this web test watches. Choices are ping and multistep.
@@ -458,9 +363,4 @@ func PossibleWebTestKindValues() []WebTestKind {
 		WebTestKindPing,
 		WebTestKindMultistep,
 	}
-}
-
-// ToPtr returns a *WebTestKind pointing to the current value.
-func (c WebTestKind) ToPtr() *WebTestKind {
-	return &c
 }

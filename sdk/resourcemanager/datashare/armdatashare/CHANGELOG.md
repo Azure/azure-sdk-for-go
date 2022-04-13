@@ -1,5 +1,465 @@
 # Release History
 
+## 0.3.0 (2022-04-11)
+### Breaking Changes
+
+- Function `NewConsumerSourceDataSetsClient` return value(s) have been changed from `(*ConsumerSourceDataSetsClient)` to `(*ConsumerSourceDataSetsClient, error)`
+- Function `*ShareSubscriptionsClient.ListSourceShareSynchronizationSettings` return value(s) have been changed from `(*ShareSubscriptionsClientListSourceShareSynchronizationSettingsPager)` to `(*runtime.Pager[ShareSubscriptionsClientListSourceShareSynchronizationSettingsResponse])`
+- Function `*SharesClient.ListSynchronizations` return value(s) have been changed from `(*SharesClientListSynchronizationsPager)` to `(*runtime.Pager[SharesClientListSynchronizationsResponse])`
+- Function `*SynchronizationSettingsClient.ListByShare` return value(s) have been changed from `(*SynchronizationSettingsClientListBySharePager)` to `(*runtime.Pager[SynchronizationSettingsClientListByShareResponse])`
+- Function `*SynchronizationSettingsClient.BeginDelete` return value(s) have been changed from `(SynchronizationSettingsClientDeletePollerResponse, error)` to `(*armruntime.Poller[SynchronizationSettingsClientDeleteResponse], error)`
+- Function `NewSynchronizationSettingsClient` return value(s) have been changed from `(*SynchronizationSettingsClient)` to `(*SynchronizationSettingsClient, error)`
+- Function `*ShareSubscriptionsClient.ListSynchronizations` return value(s) have been changed from `(*ShareSubscriptionsClientListSynchronizationsPager)` to `(*runtime.Pager[ShareSubscriptionsClientListSynchronizationsResponse])`
+- Function `NewShareSubscriptionsClient` return value(s) have been changed from `(*ShareSubscriptionsClient)` to `(*ShareSubscriptionsClient, error)`
+- Function `*DataSetsClient.ListByShare` return value(s) have been changed from `(*DataSetsClientListBySharePager)` to `(*runtime.Pager[DataSetsClientListByShareResponse])`
+- Function `*TriggersClient.BeginCreate` return value(s) have been changed from `(TriggersClientCreatePollerResponse, error)` to `(*armruntime.Poller[TriggersClientCreateResponse], error)`
+- Function `*DataSetMappingsClient.ListByShareSubscription` return value(s) have been changed from `(*DataSetMappingsClientListByShareSubscriptionPager)` to `(*runtime.Pager[DataSetMappingsClientListByShareSubscriptionResponse])`
+- Function `*ShareSubscriptionsClient.BeginDelete` return value(s) have been changed from `(ShareSubscriptionsClientDeletePollerResponse, error)` to `(*armruntime.Poller[ShareSubscriptionsClientDeleteResponse], error)`
+- Function `*TriggersClient.BeginDelete` return value(s) have been changed from `(TriggersClientDeletePollerResponse, error)` to `(*armruntime.Poller[TriggersClientDeleteResponse], error)`
+- Function `*ShareSubscriptionsClient.ListByAccount` return value(s) have been changed from `(*ShareSubscriptionsClientListByAccountPager)` to `(*runtime.Pager[ShareSubscriptionsClientListByAccountResponse])`
+- Function `*TriggersClient.ListByShareSubscription` return value(s) have been changed from `(*TriggersClientListByShareSubscriptionPager)` to `(*runtime.Pager[TriggersClientListByShareSubscriptionResponse])`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `NewAccountsClient` return value(s) have been changed from `(*AccountsClient)` to `(*AccountsClient, error)`
+- Function `*AccountsClient.ListByResourceGroup` return value(s) have been changed from `(*AccountsClientListByResourceGroupPager)` to `(*runtime.Pager[AccountsClientListByResourceGroupResponse])`
+- Function `NewProviderShareSubscriptionsClient` return value(s) have been changed from `(*ProviderShareSubscriptionsClient)` to `(*ProviderShareSubscriptionsClient, error)`
+- Function `NewDataSetMappingsClient` return value(s) have been changed from `(*DataSetMappingsClient)` to `(*DataSetMappingsClient, error)`
+- Function `*SharesClient.BeginDelete` return value(s) have been changed from `(SharesClientDeletePollerResponse, error)` to `(*armruntime.Poller[SharesClientDeleteResponse], error)`
+- Function `*ConsumerInvitationsClient.ListInvitations` return value(s) have been changed from `(*ConsumerInvitationsClientListInvitationsPager)` to `(*runtime.Pager[ConsumerInvitationsClientListInvitationsResponse])`
+- Function `*ShareSubscriptionsClient.BeginCancelSynchronization` return value(s) have been changed from `(ShareSubscriptionsClientCancelSynchronizationPollerResponse, error)` to `(*armruntime.Poller[ShareSubscriptionsClientCancelSynchronizationResponse], error)`
+- Function `*SharesClient.ListByAccount` return value(s) have been changed from `(*SharesClientListByAccountPager)` to `(*runtime.Pager[SharesClientListByAccountResponse])`
+- Function `*AccountsClient.ListBySubscription` return value(s) have been changed from `(*AccountsClientListBySubscriptionPager)` to `(*runtime.Pager[AccountsClientListBySubscriptionResponse])`
+- Function `NewTriggersClient` return value(s) have been changed from `(*TriggersClient)` to `(*TriggersClient, error)`
+- Function `NewSharesClient` return value(s) have been changed from `(*SharesClient)` to `(*SharesClient, error)`
+- Function `*AccountsClient.BeginDelete` return value(s) have been changed from `(AccountsClientDeletePollerResponse, error)` to `(*armruntime.Poller[AccountsClientDeleteResponse], error)`
+- Function `NewInvitationsClient` return value(s) have been changed from `(*InvitationsClient)` to `(*InvitationsClient, error)`
+- Function `*ProviderShareSubscriptionsClient.BeginRevoke` return value(s) have been changed from `(ProviderShareSubscriptionsClientRevokePollerResponse, error)` to `(*armruntime.Poller[ProviderShareSubscriptionsClientRevokeResponse], error)`
+- Function `*DataSetsClient.BeginDelete` return value(s) have been changed from `(DataSetsClientDeletePollerResponse, error)` to `(*armruntime.Poller[DataSetsClientDeleteResponse], error)`
+- Function `*ProviderShareSubscriptionsClient.ListByShare` return value(s) have been changed from `(*ProviderShareSubscriptionsClientListBySharePager)` to `(*runtime.Pager[ProviderShareSubscriptionsClientListByShareResponse])`
+- Function `*AccountsClient.BeginCreate` return value(s) have been changed from `(AccountsClientCreatePollerResponse, error)` to `(*armruntime.Poller[AccountsClientCreateResponse], error)`
+- Function `*ShareSubscriptionsClient.BeginSynchronize` return value(s) have been changed from `(ShareSubscriptionsClientSynchronizePollerResponse, error)` to `(*armruntime.Poller[ShareSubscriptionsClientSynchronizeResponse], error)`
+- Function `NewDataSetsClient` return value(s) have been changed from `(*DataSetsClient)` to `(*DataSetsClient, error)`
+- Function `*SharesClient.ListSynchronizationDetails` return value(s) have been changed from `(*SharesClientListSynchronizationDetailsPager)` to `(*runtime.Pager[SharesClientListSynchronizationDetailsResponse])`
+- Function `*ConsumerSourceDataSetsClient.ListByShareSubscription` return value(s) have been changed from `(*ConsumerSourceDataSetsClientListByShareSubscriptionPager)` to `(*runtime.Pager[ConsumerSourceDataSetsClientListByShareSubscriptionResponse])`
+- Function `NewConsumerInvitationsClient` return value(s) have been changed from `(*ConsumerInvitationsClient)` to `(*ConsumerInvitationsClient, error)`
+- Function `NewEmailRegistrationsClient` return value(s) have been changed from `(*EmailRegistrationsClient)` to `(*EmailRegistrationsClient, error)`
+- Function `*ShareSubscriptionsClient.ListSynchronizationDetails` return value(s) have been changed from `(*ShareSubscriptionsClientListSynchronizationDetailsPager)` to `(*runtime.Pager[ShareSubscriptionsClientListSynchronizationDetailsResponse])`
+- Function `*InvitationsClient.ListByShare` return value(s) have been changed from `(*InvitationsClientListBySharePager)` to `(*runtime.Pager[InvitationsClientListByShareResponse])`
+- Function `*SharesClientListSynchronizationDetailsPager.PageResponse` has been removed
+- Function `*SynchronizationSettingsClientDeletePoller.FinalResponse` has been removed
+- Function `*TriggersClientCreatePoller.Done` has been removed
+- Function `*TriggersClientCreatePoller.FinalResponse` has been removed
+- Function `*ProviderShareSubscriptionsClientRevokePoller.FinalResponse` has been removed
+- Function `AccountsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*AccountsClientDeletePoller.Poll` has been removed
+- Function `*ShareSubscriptionsClientSynchronizePoller.Done` has been removed
+- Function `*DataSetsClientCreateResult.UnmarshalJSON` has been removed
+- Function `ShareSubscriptionStatus.ToPtr` has been removed
+- Function `*AccountsClientDeletePollerResponse.Resume` has been removed
+- Function `*ShareSubscriptionsClientDeletePoller.Done` has been removed
+- Function `*ShareSubscriptionsClientDeletePoller.Poll` has been removed
+- Function `*SynchronizationSettingsClientDeletePoller.ResumeToken` has been removed
+- Function `*SharesClientListSynchronizationsPager.PageResponse` has been removed
+- Function `*SharesClientDeletePoller.Poll` has been removed
+- Function `*TriggersClientListByShareSubscriptionPager.NextPage` has been removed
+- Function `*AccountsClientListBySubscriptionPager.PageResponse` has been removed
+- Function `*AccountsClientListByResourceGroupPager.Err` has been removed
+- Function `*AccountsClientDeletePoller.FinalResponse` has been removed
+- Function `*DataSetsClientDeletePoller.Done` has been removed
+- Function `*ShareSubscriptionsClientListSynchronizationsPager.PageResponse` has been removed
+- Function `*SynchronizationSettingsClientListBySharePager.NextPage` has been removed
+- Function `*DataSetMappingsClientListByShareSubscriptionPager.Err` has been removed
+- Function `*SynchronizationSettingsClientGetResult.UnmarshalJSON` has been removed
+- Function `*AccountsClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*ShareSubscriptionsClientSynchronizePoller.Poll` has been removed
+- Function `DataSetKind.ToPtr` has been removed
+- Function `*SharesClientListByAccountPager.NextPage` has been removed
+- Function `*ShareSubscriptionsClientListSynchronizationDetailsPager.PageResponse` has been removed
+- Function `*DataSetsClientDeletePollerResponse.Resume` has been removed
+- Function `*SharesClientDeletePollerResponse.Resume` has been removed
+- Function `*AccountsClientListBySubscriptionPager.NextPage` has been removed
+- Function `SharesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ShareSubscriptionsClientCancelSynchronizationPoller.FinalResponse` has been removed
+- Function `*DataSetsClientDeletePoller.FinalResponse` has been removed
+- Function `*ProviderShareSubscriptionsClientListBySharePager.PageResponse` has been removed
+- Function `*InvitationsClientListBySharePager.PageResponse` has been removed
+- Function `TriggerStatus.ToPtr` has been removed
+- Function `*AccountsClientCreatePollerResponse.Resume` has been removed
+- Function `LastModifiedByType.ToPtr` has been removed
+- Function `*SharesClientListSynchronizationDetailsPager.Err` has been removed
+- Function `*ShareSubscriptionsClientListSourceShareSynchronizationSettingsPager.PageResponse` has been removed
+- Function `*ShareSubscriptionsClientCancelSynchronizationPoller.ResumeToken` has been removed
+- Function `*DataSetMappingsClientListByShareSubscriptionPager.NextPage` has been removed
+- Function `*ShareSubscriptionsClientListByAccountPager.Err` has been removed
+- Function `*InvitationsClientListBySharePager.Err` has been removed
+- Function `*ProviderShareSubscriptionsClientRevokePollerResponse.Resume` has been removed
+- Function `ShareKind.ToPtr` has been removed
+- Function `SourceShareSynchronizationSettingKind.ToPtr` has been removed
+- Function `*AccountsClientCreatePoller.ResumeToken` has been removed
+- Function `*ProviderShareSubscriptionsClientListBySharePager.Err` has been removed
+- Function `TriggersClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*SynchronizationSettingsClientListBySharePager.PageResponse` has been removed
+- Function `*TriggersClientCreatePollerResponse.Resume` has been removed
+- Function `Type.ToPtr` has been removed
+- Function `DataSetsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ConsumerInvitationsClientListInvitationsPager.NextPage` has been removed
+- Function `*TriggersClientDeletePoller.Done` has been removed
+- Function `*AccountsClientCreatePoller.Done` has been removed
+- Function `*ShareSubscriptionsClientListSynchronizationsPager.NextPage` has been removed
+- Function `*AccountsClientCreatePoller.FinalResponse` has been removed
+- Function `*ShareSubscriptionsClientSynchronizePoller.FinalResponse` has been removed
+- Function `*ShareSubscriptionsClientListSynchronizationDetailsPager.NextPage` has been removed
+- Function `*TriggersClientDeletePollerResponse.Resume` has been removed
+- Function `DataSetMappingKind.ToPtr` has been removed
+- Function `*TriggersClientGetResult.UnmarshalJSON` has been removed
+- Function `TriggerKind.ToPtr` has been removed
+- Function `*ShareSubscriptionsClientDeletePoller.ResumeToken` has been removed
+- Function `CreatedByType.ToPtr` has been removed
+- Function `*TriggersClientCreatePoller.Poll` has been removed
+- Function `RegistrationStatus.ToPtr` has been removed
+- Function `ProvisioningState.ToPtr` has been removed
+- Function `*ShareSubscriptionsClientSynchronizePollerResponse.Resume` has been removed
+- Function `*SharesClientDeletePoller.Done` has been removed
+- Function `*DataSetMappingsClientCreateResult.UnmarshalJSON` has been removed
+- Function `*DataSetsClientListBySharePager.Err` has been removed
+- Function `*SynchronizationSettingsClientDeletePoller.Poll` has been removed
+- Function `*DataSetsClientDeletePoller.Poll` has been removed
+- Function `*DataSetsClientListBySharePager.NextPage` has been removed
+- Function `*SharesClientListSynchronizationsPager.NextPage` has been removed
+- Function `*TriggersClientListByShareSubscriptionPager.PageResponse` has been removed
+- Function `*ConsumerInvitationsClientListInvitationsPager.PageResponse` has been removed
+- Function `DataSetType.ToPtr` has been removed
+- Function `AccountsClientCreatePollerResponse.PollUntilDone` has been removed
+- Function `ProviderShareSubscriptionsClientRevokePollerResponse.PollUntilDone` has been removed
+- Function `SynchronizationSettingsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*TriggersClientCreatePoller.ResumeToken` has been removed
+- Function `*ProviderShareSubscriptionsClientRevokePoller.Poll` has been removed
+- Function `*SynchronizationSettingsClientListBySharePager.Err` has been removed
+- Function `*ShareSubscriptionsClientListByAccountPager.PageResponse` has been removed
+- Function `*SharesClientListSynchronizationDetailsPager.NextPage` has been removed
+- Function `*SharesClientListByAccountPager.PageResponse` has been removed
+- Function `DataSetMappingStatus.ToPtr` has been removed
+- Function `*AccountsClientDeletePoller.Done` has been removed
+- Function `*ShareSubscriptionsClientListByAccountPager.NextPage` has been removed
+- Function `*ShareSubscriptionsClientListSourceShareSynchronizationSettingsPager.Err` has been removed
+- Function `*SharesClientListSynchronizationsPager.Err` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `*SharesClientDeletePoller.ResumeToken` has been removed
+- Function `Status.ToPtr` has been removed
+- Function `SynchronizationMode.ToPtr` has been removed
+- Function `*ProviderShareSubscriptionsClientListBySharePager.NextPage` has been removed
+- Function `*ShareSubscriptionsClientDeletePollerResponse.Resume` has been removed
+- Function `*TriggersClientListByShareSubscriptionPager.Err` has been removed
+- Function `*TriggersClientDeletePoller.ResumeToken` has been removed
+- Function `*ShareSubscriptionsClientListSynchronizationsPager.Err` has been removed
+- Function `*SynchronizationSettingsClientDeletePollerResponse.Resume` has been removed
+- Function `*ShareSubscriptionsClientDeletePoller.FinalResponse` has been removed
+- Function `*ConsumerSourceDataSetsClientListByShareSubscriptionPager.NextPage` has been removed
+- Function `*AccountsClientListByResourceGroupPager.NextPage` has been removed
+- Function `*SynchronizationSettingsClientCreateResult.UnmarshalJSON` has been removed
+- Function `*TriggersClientDeletePoller.Poll` has been removed
+- Function `*InvitationsClientListBySharePager.NextPage` has been removed
+- Function `TriggersClientCreatePollerResponse.PollUntilDone` has been removed
+- Function `SynchronizationSettingKind.ToPtr` has been removed
+- Function `*ShareSubscriptionsClientCancelSynchronizationPoller.Done` has been removed
+- Function `*AccountsClientCreatePoller.Poll` has been removed
+- Function `*AccountsClientDeletePoller.ResumeToken` has been removed
+- Function `*ShareSubscriptionsClientSynchronizePoller.ResumeToken` has been removed
+- Function `ShareSubscriptionsClientSynchronizePollerResponse.PollUntilDone` has been removed
+- Function `*ProviderShareSubscriptionsClientRevokePoller.ResumeToken` has been removed
+- Function `ShareSubscriptionsClientCancelSynchronizationPollerResponse.PollUntilDone` has been removed
+- Function `*SynchronizationSettingsClientDeletePoller.Done` has been removed
+- Function `OutputType.ToPtr` has been removed
+- Function `*DataSetMappingsClientListByShareSubscriptionPager.PageResponse` has been removed
+- Function `*ShareSubscriptionsClientListSynchronizationDetailsPager.Err` has been removed
+- Function `*ProviderShareSubscriptionsClientRevokePoller.Done` has been removed
+- Function `*ConsumerInvitationsClientListInvitationsPager.Err` has been removed
+- Function `*AccountsClientListBySubscriptionPager.Err` has been removed
+- Function `InvitationStatus.ToPtr` has been removed
+- Function `*ConsumerSourceDataSetsClientListByShareSubscriptionPager.PageResponse` has been removed
+- Function `*SharesClientListByAccountPager.Err` has been removed
+- Function `ShareSubscriptionsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*DataSetsClientDeletePoller.ResumeToken` has been removed
+- Function `*DataSetMappingsClientGetResult.UnmarshalJSON` has been removed
+- Function `*DataSetsClientListBySharePager.PageResponse` has been removed
+- Function `*SharesClientDeletePoller.FinalResponse` has been removed
+- Function `*ShareSubscriptionsClientCancelSynchronizationPollerResponse.Resume` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `*ConsumerSourceDataSetsClientListByShareSubscriptionPager.Err` has been removed
+- Function `*TriggersClientDeletePoller.FinalResponse` has been removed
+- Function `*ShareSubscriptionsClientCancelSynchronizationPoller.Poll` has been removed
+- Function `RecurrenceInterval.ToPtr` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Function `*TriggersClientCreateResult.UnmarshalJSON` has been removed
+- Function `*DataSetsClientGetResult.UnmarshalJSON` has been removed
+- Function `*ShareSubscriptionsClientListSourceShareSynchronizationSettingsPager.NextPage` has been removed
+- Struct `AccountsClientCreatePoller` has been removed
+- Struct `AccountsClientCreatePollerResponse` has been removed
+- Struct `AccountsClientCreateResult` has been removed
+- Struct `AccountsClientDeletePoller` has been removed
+- Struct `AccountsClientDeletePollerResponse` has been removed
+- Struct `AccountsClientDeleteResult` has been removed
+- Struct `AccountsClientGetResult` has been removed
+- Struct `AccountsClientListByResourceGroupPager` has been removed
+- Struct `AccountsClientListByResourceGroupResult` has been removed
+- Struct `AccountsClientListBySubscriptionPager` has been removed
+- Struct `AccountsClientListBySubscriptionResult` has been removed
+- Struct `AccountsClientUpdateResult` has been removed
+- Struct `ConsumerInvitationsClientGetResult` has been removed
+- Struct `ConsumerInvitationsClientListInvitationsPager` has been removed
+- Struct `ConsumerInvitationsClientListInvitationsResult` has been removed
+- Struct `ConsumerInvitationsClientRejectInvitationResult` has been removed
+- Struct `ConsumerSourceDataSetsClientListByShareSubscriptionPager` has been removed
+- Struct `ConsumerSourceDataSetsClientListByShareSubscriptionResult` has been removed
+- Struct `DataSetMappingsClientCreateResult` has been removed
+- Struct `DataSetMappingsClientGetResult` has been removed
+- Struct `DataSetMappingsClientListByShareSubscriptionPager` has been removed
+- Struct `DataSetMappingsClientListByShareSubscriptionResult` has been removed
+- Struct `DataSetsClientCreateResult` has been removed
+- Struct `DataSetsClientDeletePoller` has been removed
+- Struct `DataSetsClientDeletePollerResponse` has been removed
+- Struct `DataSetsClientGetResult` has been removed
+- Struct `DataSetsClientListBySharePager` has been removed
+- Struct `DataSetsClientListByShareResult` has been removed
+- Struct `EmailRegistrationsClientActivateEmailResult` has been removed
+- Struct `EmailRegistrationsClientRegisterEmailResult` has been removed
+- Struct `InvitationsClientCreateResult` has been removed
+- Struct `InvitationsClientGetResult` has been removed
+- Struct `InvitationsClientListBySharePager` has been removed
+- Struct `InvitationsClientListByShareResult` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `ProviderShareSubscriptionsClientAdjustResult` has been removed
+- Struct `ProviderShareSubscriptionsClientGetByShareResult` has been removed
+- Struct `ProviderShareSubscriptionsClientListBySharePager` has been removed
+- Struct `ProviderShareSubscriptionsClientListByShareResult` has been removed
+- Struct `ProviderShareSubscriptionsClientReinstateResult` has been removed
+- Struct `ProviderShareSubscriptionsClientRevokePoller` has been removed
+- Struct `ProviderShareSubscriptionsClientRevokePollerResponse` has been removed
+- Struct `ProviderShareSubscriptionsClientRevokeResult` has been removed
+- Struct `ShareSubscriptionsClientCancelSynchronizationPoller` has been removed
+- Struct `ShareSubscriptionsClientCancelSynchronizationPollerResponse` has been removed
+- Struct `ShareSubscriptionsClientCancelSynchronizationResult` has been removed
+- Struct `ShareSubscriptionsClientCreateResult` has been removed
+- Struct `ShareSubscriptionsClientDeletePoller` has been removed
+- Struct `ShareSubscriptionsClientDeletePollerResponse` has been removed
+- Struct `ShareSubscriptionsClientDeleteResult` has been removed
+- Struct `ShareSubscriptionsClientGetResult` has been removed
+- Struct `ShareSubscriptionsClientListByAccountPager` has been removed
+- Struct `ShareSubscriptionsClientListByAccountResult` has been removed
+- Struct `ShareSubscriptionsClientListSourceShareSynchronizationSettingsPager` has been removed
+- Struct `ShareSubscriptionsClientListSourceShareSynchronizationSettingsResult` has been removed
+- Struct `ShareSubscriptionsClientListSynchronizationDetailsPager` has been removed
+- Struct `ShareSubscriptionsClientListSynchronizationDetailsResult` has been removed
+- Struct `ShareSubscriptionsClientListSynchronizationsPager` has been removed
+- Struct `ShareSubscriptionsClientListSynchronizationsResult` has been removed
+- Struct `ShareSubscriptionsClientSynchronizePoller` has been removed
+- Struct `ShareSubscriptionsClientSynchronizePollerResponse` has been removed
+- Struct `ShareSubscriptionsClientSynchronizeResult` has been removed
+- Struct `SharesClientCreateResult` has been removed
+- Struct `SharesClientDeletePoller` has been removed
+- Struct `SharesClientDeletePollerResponse` has been removed
+- Struct `SharesClientDeleteResult` has been removed
+- Struct `SharesClientGetResult` has been removed
+- Struct `SharesClientListByAccountPager` has been removed
+- Struct `SharesClientListByAccountResult` has been removed
+- Struct `SharesClientListSynchronizationDetailsPager` has been removed
+- Struct `SharesClientListSynchronizationDetailsResult` has been removed
+- Struct `SharesClientListSynchronizationsPager` has been removed
+- Struct `SharesClientListSynchronizationsResult` has been removed
+- Struct `SynchronizationSettingsClientCreateResult` has been removed
+- Struct `SynchronizationSettingsClientDeletePoller` has been removed
+- Struct `SynchronizationSettingsClientDeletePollerResponse` has been removed
+- Struct `SynchronizationSettingsClientDeleteResult` has been removed
+- Struct `SynchronizationSettingsClientGetResult` has been removed
+- Struct `SynchronizationSettingsClientListBySharePager` has been removed
+- Struct `SynchronizationSettingsClientListByShareResult` has been removed
+- Struct `TriggersClientCreatePoller` has been removed
+- Struct `TriggersClientCreatePollerResponse` has been removed
+- Struct `TriggersClientCreateResult` has been removed
+- Struct `TriggersClientDeletePoller` has been removed
+- Struct `TriggersClientDeletePollerResponse` has been removed
+- Struct `TriggersClientDeleteResult` has been removed
+- Struct `TriggersClientGetResult` has been removed
+- Struct `TriggersClientListByShareSubscriptionPager` has been removed
+- Struct `TriggersClientListByShareSubscriptionResult` has been removed
+- Field `SynchronizationSettingsClientCreateResult` of struct `SynchronizationSettingsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `SynchronizationSettingsClientCreateResponse` has been removed
+- Field `AccountsClientGetResult` of struct `AccountsClientGetResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientGetResponse` has been removed
+- Field `ConsumerSourceDataSetsClientListByShareSubscriptionResult` of struct `ConsumerSourceDataSetsClientListByShareSubscriptionResponse` has been removed
+- Field `RawResponse` of struct `ConsumerSourceDataSetsClientListByShareSubscriptionResponse` has been removed
+- Field `AccountsClientListBySubscriptionResult` of struct `AccountsClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientListBySubscriptionResponse` has been removed
+- Field `AccountsClientUpdateResult` of struct `AccountsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientUpdateResponse` has been removed
+- Field `ShareSubscriptionsClientDeleteResult` of struct `ShareSubscriptionsClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `ShareSubscriptionsClientDeleteResponse` has been removed
+- Field `DataSetMappingsClientListByShareSubscriptionResult` of struct `DataSetMappingsClientListByShareSubscriptionResponse` has been removed
+- Field `RawResponse` of struct `DataSetMappingsClientListByShareSubscriptionResponse` has been removed
+- Field `DataSetMappingsClientCreateResult` of struct `DataSetMappingsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `DataSetMappingsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `DataSetsClientDeleteResponse` has been removed
+- Field `ConsumerInvitationsClientListInvitationsResult` of struct `ConsumerInvitationsClientListInvitationsResponse` has been removed
+- Field `RawResponse` of struct `ConsumerInvitationsClientListInvitationsResponse` has been removed
+- Field `SynchronizationSettingsClientGetResult` of struct `SynchronizationSettingsClientGetResponse` has been removed
+- Field `RawResponse` of struct `SynchronizationSettingsClientGetResponse` has been removed
+- Field `AccountsClientListByResourceGroupResult` of struct `AccountsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientListByResourceGroupResponse` has been removed
+- Field `TriggersClientListByShareSubscriptionResult` of struct `TriggersClientListByShareSubscriptionResponse` has been removed
+- Field `RawResponse` of struct `TriggersClientListByShareSubscriptionResponse` has been removed
+- Field `RawResponse` of struct `DataSetMappingsClientDeleteResponse` has been removed
+- Field `TriggersClientDeleteResult` of struct `TriggersClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `TriggersClientDeleteResponse` has been removed
+- Field `InvitationsClientCreateResult` of struct `InvitationsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `InvitationsClientCreateResponse` has been removed
+- Field `ShareSubscriptionsClientListSourceShareSynchronizationSettingsResult` of struct `ShareSubscriptionsClientListSourceShareSynchronizationSettingsResponse` has been removed
+- Field `RawResponse` of struct `ShareSubscriptionsClientListSourceShareSynchronizationSettingsResponse` has been removed
+- Field `ShareSubscriptionsClientGetResult` of struct `ShareSubscriptionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ShareSubscriptionsClientGetResponse` has been removed
+- Field `SharesClientCreateResult` of struct `SharesClientCreateResponse` has been removed
+- Field `RawResponse` of struct `SharesClientCreateResponse` has been removed
+- Field `SharesClientListByAccountResult` of struct `SharesClientListByAccountResponse` has been removed
+- Field `RawResponse` of struct `SharesClientListByAccountResponse` has been removed
+- Field `ConsumerInvitationsClientRejectInvitationResult` of struct `ConsumerInvitationsClientRejectInvitationResponse` has been removed
+- Field `RawResponse` of struct `ConsumerInvitationsClientRejectInvitationResponse` has been removed
+- Field `SharesClientGetResult` of struct `SharesClientGetResponse` has been removed
+- Field `RawResponse` of struct `SharesClientGetResponse` has been removed
+- Field `RawResponse` of struct `InvitationsClientDeleteResponse` has been removed
+- Field `ShareSubscriptionsClientSynchronizeResult` of struct `ShareSubscriptionsClientSynchronizeResponse` has been removed
+- Field `RawResponse` of struct `ShareSubscriptionsClientSynchronizeResponse` has been removed
+- Field `DataSetMappingsClientGetResult` of struct `DataSetMappingsClientGetResponse` has been removed
+- Field `RawResponse` of struct `DataSetMappingsClientGetResponse` has been removed
+- Field `ProviderShareSubscriptionsClientAdjustResult` of struct `ProviderShareSubscriptionsClientAdjustResponse` has been removed
+- Field `RawResponse` of struct `ProviderShareSubscriptionsClientAdjustResponse` has been removed
+- Field `InvitationsClientListByShareResult` of struct `InvitationsClientListByShareResponse` has been removed
+- Field `RawResponse` of struct `InvitationsClientListByShareResponse` has been removed
+- Field `ShareSubscriptionsClientListByAccountResult` of struct `ShareSubscriptionsClientListByAccountResponse` has been removed
+- Field `RawResponse` of struct `ShareSubscriptionsClientListByAccountResponse` has been removed
+- Field `ShareSubscriptionsClientListSynchronizationDetailsResult` of struct `ShareSubscriptionsClientListSynchronizationDetailsResponse` has been removed
+- Field `RawResponse` of struct `ShareSubscriptionsClientListSynchronizationDetailsResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `ProviderShareSubscriptionsClientGetByShareResult` of struct `ProviderShareSubscriptionsClientGetByShareResponse` has been removed
+- Field `RawResponse` of struct `ProviderShareSubscriptionsClientGetByShareResponse` has been removed
+- Field `ProviderShareSubscriptionsClientReinstateResult` of struct `ProviderShareSubscriptionsClientReinstateResponse` has been removed
+- Field `RawResponse` of struct `ProviderShareSubscriptionsClientReinstateResponse` has been removed
+- Field `TriggersClientCreateResult` of struct `TriggersClientCreateResponse` has been removed
+- Field `RawResponse` of struct `TriggersClientCreateResponse` has been removed
+- Field `SynchronizationSettingsClientListByShareResult` of struct `SynchronizationSettingsClientListByShareResponse` has been removed
+- Field `RawResponse` of struct `SynchronizationSettingsClientListByShareResponse` has been removed
+- Field `SynchronizationSettingsClientDeleteResult` of struct `SynchronizationSettingsClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `SynchronizationSettingsClientDeleteResponse` has been removed
+- Field `DataSetsClientListByShareResult` of struct `DataSetsClientListByShareResponse` has been removed
+- Field `RawResponse` of struct `DataSetsClientListByShareResponse` has been removed
+- Field `DataSetsClientGetResult` of struct `DataSetsClientGetResponse` has been removed
+- Field `RawResponse` of struct `DataSetsClientGetResponse` has been removed
+- Field `ShareSubscriptionsClientCreateResult` of struct `ShareSubscriptionsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `ShareSubscriptionsClientCreateResponse` has been removed
+- Field `DataSetsClientCreateResult` of struct `DataSetsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `DataSetsClientCreateResponse` has been removed
+- Field `ProviderShareSubscriptionsClientRevokeResult` of struct `ProviderShareSubscriptionsClientRevokeResponse` has been removed
+- Field `RawResponse` of struct `ProviderShareSubscriptionsClientRevokeResponse` has been removed
+- Field `ProviderShareSubscriptionsClientListByShareResult` of struct `ProviderShareSubscriptionsClientListByShareResponse` has been removed
+- Field `RawResponse` of struct `ProviderShareSubscriptionsClientListByShareResponse` has been removed
+- Field `EmailRegistrationsClientActivateEmailResult` of struct `EmailRegistrationsClientActivateEmailResponse` has been removed
+- Field `RawResponse` of struct `EmailRegistrationsClientActivateEmailResponse` has been removed
+- Field `AccountsClientCreateResult` of struct `AccountsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientCreateResponse` has been removed
+- Field `SharesClientListSynchronizationsResult` of struct `SharesClientListSynchronizationsResponse` has been removed
+- Field `RawResponse` of struct `SharesClientListSynchronizationsResponse` has been removed
+- Field `InvitationsClientGetResult` of struct `InvitationsClientGetResponse` has been removed
+- Field `RawResponse` of struct `InvitationsClientGetResponse` has been removed
+- Field `SharesClientDeleteResult` of struct `SharesClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `SharesClientDeleteResponse` has been removed
+- Field `ShareSubscriptionsClientCancelSynchronizationResult` of struct `ShareSubscriptionsClientCancelSynchronizationResponse` has been removed
+- Field `RawResponse` of struct `ShareSubscriptionsClientCancelSynchronizationResponse` has been removed
+- Field `TriggersClientGetResult` of struct `TriggersClientGetResponse` has been removed
+- Field `RawResponse` of struct `TriggersClientGetResponse` has been removed
+- Field `ShareSubscriptionsClientListSynchronizationsResult` of struct `ShareSubscriptionsClientListSynchronizationsResponse` has been removed
+- Field `RawResponse` of struct `ShareSubscriptionsClientListSynchronizationsResponse` has been removed
+- Field `AccountsClientDeleteResult` of struct `AccountsClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientDeleteResponse` has been removed
+- Field `SharesClientListSynchronizationDetailsResult` of struct `SharesClientListSynchronizationDetailsResponse` has been removed
+- Field `RawResponse` of struct `SharesClientListSynchronizationDetailsResponse` has been removed
+- Field `ConsumerInvitationsClientGetResult` of struct `ConsumerInvitationsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ConsumerInvitationsClientGetResponse` has been removed
+- Field `EmailRegistrationsClientRegisterEmailResult` of struct `EmailRegistrationsClientRegisterEmailResponse` has been removed
+- Field `RawResponse` of struct `EmailRegistrationsClientRegisterEmailResponse` has been removed
+
+### Features Added
+
+- New function `*SynchronizationSettingsClientCreateResponse.UnmarshalJSON([]byte) error`
+- New function `*DataSetsClientGetResponse.UnmarshalJSON([]byte) error`
+- New function `*TriggersClientGetResponse.UnmarshalJSON([]byte) error`
+- New function `*DataSetsClientCreateResponse.UnmarshalJSON([]byte) error`
+- New function `*TriggersClientCreateResponse.UnmarshalJSON([]byte) error`
+- New function `*SynchronizationSettingsClientGetResponse.UnmarshalJSON([]byte) error`
+- New function `*DataSetMappingsClientCreateResponse.UnmarshalJSON([]byte) error`
+- New function `*DataSetMappingsClientGetResponse.UnmarshalJSON([]byte) error`
+- New field `ResumeToken` in struct `SynchronizationSettingsClientBeginDeleteOptions`
+- New anonymous field `TriggerClassification` in struct `TriggersClientGetResponse`
+- New anonymous field `EmailRegistration` in struct `EmailRegistrationsClientActivateEmailResponse`
+- New anonymous field `ShareList` in struct `SharesClientListByAccountResponse`
+- New field `ResumeToken` in struct `TriggersClientBeginCreateOptions`
+- New anonymous field `TriggerClassification` in struct `TriggersClientCreateResponse`
+- New field `ResumeToken` in struct `DataSetsClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `AccountsClientBeginCreateOptions`
+- New anonymous field `OperationResponse` in struct `ShareSubscriptionsClientDeleteResponse`
+- New anonymous field `ProviderShareSubscription` in struct `ProviderShareSubscriptionsClientGetByShareResponse`
+- New anonymous field `SourceShareSynchronizationSettingList` in struct `ShareSubscriptionsClientListSourceShareSynchronizationSettingsResponse`
+- New anonymous field `ShareSubscriptionSynchronization` in struct `ShareSubscriptionsClientCancelSynchronizationResponse`
+- New anonymous field `SynchronizationDetailsList` in struct `SharesClientListSynchronizationDetailsResponse`
+- New anonymous field `DataSetList` in struct `DataSetsClientListByShareResponse`
+- New anonymous field `Invitation` in struct `InvitationsClientCreateResponse`
+- New anonymous field `ShareSynchronizationList` in struct `SharesClientListSynchronizationsResponse`
+- New field `ResumeToken` in struct `ShareSubscriptionsClientBeginCancelSynchronizationOptions`
+- New anonymous field `SynchronizationSettingClassification` in struct `SynchronizationSettingsClientGetResponse`
+- New anonymous field `AccountList` in struct `AccountsClientListBySubscriptionResponse`
+- New anonymous field `DataSetMappingClassification` in struct `DataSetMappingsClientCreateResponse`
+- New anonymous field `ProviderShareSubscription` in struct `ProviderShareSubscriptionsClientReinstateResponse`
+- New anonymous field `ShareSubscriptionSynchronizationList` in struct `ShareSubscriptionsClientListSynchronizationsResponse`
+- New anonymous field `ShareSubscriptionList` in struct `ShareSubscriptionsClientListByAccountResponse`
+- New anonymous field `DataSetClassification` in struct `DataSetsClientCreateResponse`
+- New anonymous field `ConsumerInvitationList` in struct `ConsumerInvitationsClientListInvitationsResponse`
+- New anonymous field `Account` in struct `AccountsClientUpdateResponse`
+- New anonymous field `OperationResponse` in struct `AccountsClientDeleteResponse`
+- New anonymous field `AccountList` in struct `AccountsClientListByResourceGroupResponse`
+- New anonymous field `ProviderShareSubscription` in struct `ProviderShareSubscriptionsClientAdjustResponse`
+- New anonymous field `ShareSubscription` in struct `ShareSubscriptionsClientGetResponse`
+- New anonymous field `ConsumerInvitation` in struct `ConsumerInvitationsClientRejectInvitationResponse`
+- New anonymous field `DataSetMappingList` in struct `DataSetMappingsClientListByShareSubscriptionResponse`
+- New field `ResumeToken` in struct `ProviderShareSubscriptionsClientBeginRevokeOptions`
+- New field `ResumeToken` in struct `ShareSubscriptionsClientBeginDeleteOptions`
+- New anonymous field `ShareSubscription` in struct `ShareSubscriptionsClientCreateResponse`
+- New anonymous field `OperationResponse` in struct `SharesClientDeleteResponse`
+- New anonymous field `OperationResponse` in struct `TriggersClientDeleteResponse`
+- New anonymous field `EmailRegistration` in struct `EmailRegistrationsClientRegisterEmailResponse`
+- New field `ResumeToken` in struct `SharesClientBeginDeleteOptions`
+- New anonymous field `OperationResponse` in struct `SynchronizationSettingsClientDeleteResponse`
+- New anonymous field `ProviderShareSubscriptionList` in struct `ProviderShareSubscriptionsClientListByShareResponse`
+- New anonymous field `TriggerList` in struct `TriggersClientListByShareSubscriptionResponse`
+- New anonymous field `Account` in struct `AccountsClientCreateResponse`
+- New anonymous field `Invitation` in struct `InvitationsClientGetResponse`
+- New anonymous field `Share` in struct `SharesClientCreateResponse`
+- New anonymous field `OperationList` in struct `OperationsClientListResponse`
+- New anonymous field `ProviderShareSubscription` in struct `ProviderShareSubscriptionsClientRevokeResponse`
+- New anonymous field `SynchronizationSettingClassification` in struct `SynchronizationSettingsClientCreateResponse`
+- New anonymous field `ShareSubscriptionSynchronization` in struct `ShareSubscriptionsClientSynchronizeResponse`
+- New anonymous field `DataSetClassification` in struct `DataSetsClientGetResponse`
+- New anonymous field `SynchronizationDetailsList` in struct `ShareSubscriptionsClientListSynchronizationDetailsResponse`
+- New field `ResumeToken` in struct `AccountsClientBeginDeleteOptions`
+- New anonymous field `DataSetMappingClassification` in struct `DataSetMappingsClientGetResponse`
+- New anonymous field `Share` in struct `SharesClientGetResponse`
+- New field `ResumeToken` in struct `TriggersClientBeginDeleteOptions`
+- New anonymous field `InvitationList` in struct `InvitationsClientListByShareResponse`
+- New field `ResumeToken` in struct `ShareSubscriptionsClientBeginSynchronizeOptions`
+- New anonymous field `SynchronizationSettingList` in struct `SynchronizationSettingsClientListByShareResponse`
+- New anonymous field `ConsumerSourceDataSetList` in struct `ConsumerSourceDataSetsClientListByShareSubscriptionResponse`
+- New anonymous field `ConsumerInvitation` in struct `ConsumerInvitationsClientGetResponse`
+- New anonymous field `Account` in struct `AccountsClientGetResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

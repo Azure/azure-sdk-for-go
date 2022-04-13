@@ -1,72 +1,125 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
 package azcertificates
 
-// CertificatePolicyAction - The type of the action.
-type CertificatePolicyAction string
+// PolicyAction - The type of the action.
+type PolicyAction string
 
 const (
-	CertificatePolicyActionEmailContacts CertificatePolicyAction = "EmailContacts"
-	CertificatePolicyActionAutoRenew     CertificatePolicyAction = "AutoRenew"
+	PolicyActionEmailContacts PolicyAction = "EmailContacts"
+	PolicyActionAutoRenew     PolicyAction = "AutoRenew"
 )
 
-// ToPtr returns a *ActionType pointing to the current value.
-func (c CertificatePolicyAction) ToPtr() *CertificatePolicyAction {
-	return &c
+// PossiblePolicyActionValues returns a slice of all possible CertificatePolicyAction values.
+func PossiblePolicyActionValues() []PolicyAction {
+	return []PolicyAction{
+		PolicyActionEmailContacts,
+		PolicyActionAutoRenew,
+	}
 }
 
-// CertificateKeyCurveName - Elliptic curve name. For valid values, see CertificateKeyCurveName.
-type CertificateKeyCurveName string
+// KeyCurveName - Elliptic curve name. For valid values, see KeyCurveName.
+type KeyCurveName string
 
 const (
-	CertificateKeyCurveNameP256  CertificateKeyCurveName = "P-256"
-	CertificateKeyCurveNameP256K CertificateKeyCurveName = "P-256K"
-	CertificateKeyCurveNameP384  CertificateKeyCurveName = "P-384"
-	CertificateKeyCurveNameP521  CertificateKeyCurveName = "P-521"
+	KeyCurveNameP256  KeyCurveName = "P-256"
+	KeyCurveNameP256K KeyCurveName = "P-256K"
+	KeyCurveNameP384  KeyCurveName = "P-384"
+	KeyCurveNameP521  KeyCurveName = "P-521"
 )
 
-// ToPtr returns a *CertificateKeyCurveName pointing to the current value.
-func (c CertificateKeyCurveName) ToPtr() *CertificateKeyCurveName {
-	return &c
+// PossibleKeyCurveNameValues returns a slice of all possible CertificateKeyCurveName values.
+func PossibleKeyCurveNameValues() []KeyCurveName {
+	return []KeyCurveName{
+		KeyCurveNameP256,
+		KeyCurveNameP256K,
+		KeyCurveNameP384,
+		KeyCurveNameP521,
+	}
 }
 
-// CertificateKeyType - The type of key pair to be used for the certificate.
-type CertificateKeyType string
+// KeyType - The type of key pair to be used for the certificate.
+type KeyType string
 
 const (
-	CertificateKeyTypeEC     CertificateKeyType = "EC"
-	CertificateKeyTypeECHSM  CertificateKeyType = "EC-HSM"
-	CertificateKeyTypeOct    CertificateKeyType = "oct"
-	CertificateKeyTypeOctHSM CertificateKeyType = "oct-HSM"
-	CertificateKeyTypeRSA    CertificateKeyType = "RSA"
-	CertificateKeyTypeRSAHSM CertificateKeyType = "RSA-HSM"
+	KeyTypeEC     KeyType = "EC"
+	KeyTypeECHSM  KeyType = "EC-HSM"
+	KeyTypeRSA    KeyType = "RSA"
+	KeyTypeRSAHSM KeyType = "RSA-HSM"
 )
 
-// ToPtr returns a *CertificateKeyType pointing to the current value.
-func (c CertificateKeyType) ToPtr() *CertificateKeyType {
-	return &c
+// PossibleKeyTypeValues returns a slice of all possible CertificateKeyType values.
+func PossibleKeyTypeValues() []KeyType {
+	return []KeyType{
+		KeyTypeEC,
+		KeyTypeECHSM,
+		KeyTypeRSA,
+		KeyTypeRSAHSM,
+	}
 }
 
-// CerificateKeyUsage is the key usage for a certificate
-type CerificateKeyUsage string
+// KeyUsage is the key usage for a certificate
+type KeyUsage string
 
 const (
-	CertificateKeyUsageCRLSign          CerificateKeyUsage = "cRLSign"
-	CertificateKeyUsageDataEncipherment CerificateKeyUsage = "dataEncipherment"
-	CertificateKeyUsageDecipherOnly     CerificateKeyUsage = "decipherOnly"
-	CertificateKeyUsageDigitalSignature CerificateKeyUsage = "digitalSignature"
-	CertificateKeyUsageEncipherOnly     CerificateKeyUsage = "encipherOnly"
-	CertificateKeyUsageKeyAgreement     CerificateKeyUsage = "keyAgreement"
-	CertificateKeyUsageKeyCertSign      CerificateKeyUsage = "keyCertSign"
-	CertificateKeyUsageKeyEncipherment  CerificateKeyUsage = "keyEncipherment"
-	CertificateKeyUsageNonRepudiation   CerificateKeyUsage = "nonRepudiation"
+	KeyUsageCRLSign          KeyUsage = "cRLSign"
+	KeyUsageDataEncipherment KeyUsage = "dataEncipherment"
+	KeyUsageDecipherOnly     KeyUsage = "decipherOnly"
+	KeyUsageDigitalSignature KeyUsage = "digitalSignature"
+	KeyUsageEncipherOnly     KeyUsage = "encipherOnly"
+	KeyUsageKeyAgreement     KeyUsage = "keyAgreement"
+	KeyUsageKeyCertSign      KeyUsage = "keyCertSign"
+	KeyUsageKeyEncipherment  KeyUsage = "keyEncipherment"
+	KeyUsageNonRepudiation   KeyUsage = "nonRepudiation"
 )
 
-// ToPtr returns a *CertificateKeyUsage pointing to the current value.
-func (c CerificateKeyUsage) ToPtr() *CerificateKeyUsage {
-	return &c
+// PossibleKeyUsageValues returns a slice of all possible CertificateKeyUsage values.
+func PossibleKeyUsageValues() []KeyUsage {
+	return []KeyUsage{
+		KeyUsageCRLSign,
+		KeyUsageDataEncipherment,
+		KeyUsageDecipherOnly,
+		KeyUsageDigitalSignature,
+		KeyUsageEncipherOnly,
+		KeyUsageKeyAgreement,
+		KeyUsageKeyCertSign,
+		KeyUsageKeyEncipherment,
+		KeyUsageNonRepudiation,
+	}
+}
+
+// CertificateContentType is the content type of the certificate.
+type CertificateContentType string
+
+const (
+	CertificateContentTypePKCS12 CertificateContentType = "application/x-pkcs12"
+	CertificateContentTypePEM    CertificateContentType = "application/x-pem-file"
+)
+
+// PossibleCertificateContentTypeValues returns a slice of all possible CertificateContentType values.
+func PossibleCertificateContentTypeValues() []CertificateContentType {
+	return []CertificateContentType{
+		CertificateContentTypePEM,
+		CertificateContentTypePKCS12,
+	}
+}
+
+// WellKnownIssuerNames names you can use when creating a certificate policy
+type WellKnownIssuerNames string
+
+const (
+	WellKnownIssuerNamesSelf    WellKnownIssuerNames = "Self"
+	WellKnownIssuerNamesUnknown WellKnownIssuerNames = "Unknown"
+)
+
+// PossibleWellKnownIssuerNamesValues returns a slice of all possible WellKnownIssuer values.
+func PossibleWellKnownIssuerNamesValues() []WellKnownIssuerNames {
+	return []WellKnownIssuerNames{
+		WellKnownIssuerNamesSelf,
+		WellKnownIssuerNamesUnknown,
+	}
 }

@@ -1,5 +1,752 @@
 # Release History
 
+## 0.4.0 (2022-04-08)
+### Breaking Changes
+
+- Function `*Client.BeginMoveResources` return value(s) have been changed from `(ClientMoveResourcesPollerResponse, error)` to `(*armruntime.Poller[ClientMoveResourcesResponse], error)`
+- Function `*DeploymentsClient.BeginCreateOrUpdateAtSubscriptionScope` return value(s) have been changed from `(DeploymentsClientCreateOrUpdateAtSubscriptionScopePollerResponse, error)` to `(*armruntime.Poller[DeploymentsClientCreateOrUpdateAtSubscriptionScopeResponse], error)`
+- Function `NewClient` return value(s) have been changed from `(*Client)` to `(*Client, error)`
+- Function `NewDeploymentsClient` return value(s) have been changed from `(*DeploymentsClient)` to `(*DeploymentsClient, error)`
+- Function `*DeploymentsClient.CalculateTemplateHash` parameter(s) have been changed from `(context.Context, map[string]interface{}, *DeploymentsClientCalculateTemplateHashOptions)` to `(context.Context, interface{}, *DeploymentsClientCalculateTemplateHashOptions)`
+- Function `*DeploymentsClient.BeginValidateAtTenantScope` return value(s) have been changed from `(DeploymentsClientValidateAtTenantScopePollerResponse, error)` to `(*armruntime.Poller[DeploymentsClientValidateAtTenantScopeResponse], error)`
+- Function `*Client.BeginCreateOrUpdate` return value(s) have been changed from `(ClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ClientCreateOrUpdateResponse], error)`
+- Function `*ProvidersClient.ListAtTenantScope` return value(s) have been changed from `(*ProvidersClientListAtTenantScopePager)` to `(*runtime.Pager[ProvidersClientListAtTenantScopeResponse])`
+- Function `*DeploymentsClient.BeginDelete` return value(s) have been changed from `(DeploymentsClientDeletePollerResponse, error)` to `(*armruntime.Poller[DeploymentsClientDeleteResponse], error)`
+- Function `*DeploymentOperationsClient.ListAtManagementGroupScope` return value(s) have been changed from `(*DeploymentOperationsClientListAtManagementGroupScopePager)` to `(*runtime.Pager[DeploymentOperationsClientListAtManagementGroupScopeResponse])`
+- Function `*Client.BeginUpdateByID` return value(s) have been changed from `(ClientUpdateByIDPollerResponse, error)` to `(*armruntime.Poller[ClientUpdateByIDResponse], error)`
+- Function `*DeploymentsClient.BeginValidate` return value(s) have been changed from `(DeploymentsClientValidatePollerResponse, error)` to `(*armruntime.Poller[DeploymentsClientValidateResponse], error)`
+- Function `*DeploymentsClient.BeginValidateAtManagementGroupScope` return value(s) have been changed from `(DeploymentsClientValidateAtManagementGroupScopePollerResponse, error)` to `(*armruntime.Poller[DeploymentsClientValidateAtManagementGroupScopeResponse], error)`
+- Function `*ResourceGroupsClient.BeginExportTemplate` return value(s) have been changed from `(ResourceGroupsClientExportTemplatePollerResponse, error)` to `(*armruntime.Poller[ResourceGroupsClientExportTemplateResponse], error)`
+- Function `NewProvidersClient` return value(s) have been changed from `(*ProvidersClient)` to `(*ProvidersClient, error)`
+- Function `*DeploymentsClient.BeginValidateAtSubscriptionScope` return value(s) have been changed from `(DeploymentsClientValidateAtSubscriptionScopePollerResponse, error)` to `(*armruntime.Poller[DeploymentsClientValidateAtSubscriptionScopeResponse], error)`
+- Function `*DeploymentsClient.BeginDeleteAtScope` return value(s) have been changed from `(DeploymentsClientDeleteAtScopePollerResponse, error)` to `(*armruntime.Poller[DeploymentsClientDeleteAtScopeResponse], error)`
+- Function `*DeploymentsClient.ListAtManagementGroupScope` return value(s) have been changed from `(*DeploymentsClientListAtManagementGroupScopePager)` to `(*runtime.Pager[DeploymentsClientListAtManagementGroupScopeResponse])`
+- Function `NewTagsClient` return value(s) have been changed from `(*TagsClient)` to `(*TagsClient, error)`
+- Function `*DeploymentsClient.BeginWhatIfAtTenantScope` return value(s) have been changed from `(DeploymentsClientWhatIfAtTenantScopePollerResponse, error)` to `(*armruntime.Poller[DeploymentsClientWhatIfAtTenantScopeResponse], error)`
+- Function `*DeploymentsClient.BeginDeleteAtTenantScope` return value(s) have been changed from `(DeploymentsClientDeleteAtTenantScopePollerResponse, error)` to `(*armruntime.Poller[DeploymentsClientDeleteAtTenantScopeResponse], error)`
+- Function `NewDeploymentOperationsClient` return value(s) have been changed from `(*DeploymentOperationsClient)` to `(*DeploymentOperationsClient, error)`
+- Function `*ResourceGroupsClient.List` return value(s) have been changed from `(*ResourceGroupsClientListPager)` to `(*runtime.Pager[ResourceGroupsClientListResponse])`
+- Function `*DeploymentOperationsClient.ListAtTenantScope` return value(s) have been changed from `(*DeploymentOperationsClientListAtTenantScopePager)` to `(*runtime.Pager[DeploymentOperationsClientListAtTenantScopeResponse])`
+- Function `*DeploymentsClient.BeginWhatIf` return value(s) have been changed from `(DeploymentsClientWhatIfPollerResponse, error)` to `(*armruntime.Poller[DeploymentsClientWhatIfResponse], error)`
+- Function `*ResourceGroupsClient.BeginDelete` return value(s) have been changed from `(ResourceGroupsClientDeletePollerResponse, error)` to `(*armruntime.Poller[ResourceGroupsClientDeleteResponse], error)`
+- Function `*DeploymentsClient.BeginWhatIfAtSubscriptionScope` return value(s) have been changed from `(DeploymentsClientWhatIfAtSubscriptionScopePollerResponse, error)` to `(*armruntime.Poller[DeploymentsClientWhatIfAtSubscriptionScopeResponse], error)`
+- Function `*DeploymentsClient.BeginCreateOrUpdate` return value(s) have been changed from `(DeploymentsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[DeploymentsClientCreateOrUpdateResponse], error)`
+- Function `*DeploymentsClient.BeginDeleteAtManagementGroupScope` return value(s) have been changed from `(DeploymentsClientDeleteAtManagementGroupScopePollerResponse, error)` to `(*armruntime.Poller[DeploymentsClientDeleteAtManagementGroupScopeResponse], error)`
+- Function `*DeploymentsClient.ListByResourceGroup` return value(s) have been changed from `(*DeploymentsClientListByResourceGroupPager)` to `(*runtime.Pager[DeploymentsClientListByResourceGroupResponse])`
+- Function `*ProvidersClient.List` return value(s) have been changed from `(*ProvidersClientListPager)` to `(*runtime.Pager[ProvidersClientListResponse])`
+- Function `*DeploymentsClient.BeginCreateOrUpdateAtManagementGroupScope` return value(s) have been changed from `(DeploymentsClientCreateOrUpdateAtManagementGroupScopePollerResponse, error)` to `(*armruntime.Poller[DeploymentsClientCreateOrUpdateAtManagementGroupScopeResponse], error)`
+- Function `*DeploymentsClient.BeginCreateOrUpdateAtTenantScope` return value(s) have been changed from `(DeploymentsClientCreateOrUpdateAtTenantScopePollerResponse, error)` to `(*armruntime.Poller[DeploymentsClientCreateOrUpdateAtTenantScopeResponse], error)`
+- Function `*DeploymentsClient.ListAtScope` return value(s) have been changed from `(*DeploymentsClientListAtScopePager)` to `(*runtime.Pager[DeploymentsClientListAtScopeResponse])`
+- Function `*Client.List` return value(s) have been changed from `(*ClientListPager)` to `(*runtime.Pager[ClientListResponse])`
+- Function `*DeploymentsClient.BeginCreateOrUpdateAtScope` return value(s) have been changed from `(DeploymentsClientCreateOrUpdateAtScopePollerResponse, error)` to `(*armruntime.Poller[DeploymentsClientCreateOrUpdateAtScopeResponse], error)`
+- Function `*DeploymentOperationsClient.List` return value(s) have been changed from `(*DeploymentOperationsClientListPager)` to `(*runtime.Pager[DeploymentOperationsClientListResponse])`
+- Function `*DeploymentOperationsClient.ListAtScope` return value(s) have been changed from `(*DeploymentOperationsClientListAtScopePager)` to `(*runtime.Pager[DeploymentOperationsClientListAtScopeResponse])`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `NewProviderResourceTypesClient` return value(s) have been changed from `(*ProviderResourceTypesClient)` to `(*ProviderResourceTypesClient, error)`
+- Function `*Client.BeginCreateOrUpdateByID` return value(s) have been changed from `(ClientCreateOrUpdateByIDPollerResponse, error)` to `(*armruntime.Poller[ClientCreateOrUpdateByIDResponse], error)`
+- Function `*Client.BeginUpdate` return value(s) have been changed from `(ClientUpdatePollerResponse, error)` to `(*armruntime.Poller[ClientUpdateResponse], error)`
+- Function `*DeploymentsClient.BeginWhatIfAtManagementGroupScope` return value(s) have been changed from `(DeploymentsClientWhatIfAtManagementGroupScopePollerResponse, error)` to `(*armruntime.Poller[DeploymentsClientWhatIfAtManagementGroupScopeResponse], error)`
+- Function `*Client.BeginDelete` return value(s) have been changed from `(ClientDeletePollerResponse, error)` to `(*armruntime.Poller[ClientDeleteResponse], error)`
+- Function `*DeploymentsClient.ListAtSubscriptionScope` return value(s) have been changed from `(*DeploymentsClientListAtSubscriptionScopePager)` to `(*runtime.Pager[DeploymentsClientListAtSubscriptionScopeResponse])`
+- Function `*DeploymentsClient.ListAtTenantScope` return value(s) have been changed from `(*DeploymentsClientListAtTenantScopePager)` to `(*runtime.Pager[DeploymentsClientListAtTenantScopeResponse])`
+- Function `*DeploymentOperationsClient.ListAtSubscriptionScope` return value(s) have been changed from `(*DeploymentOperationsClientListAtSubscriptionScopePager)` to `(*runtime.Pager[DeploymentOperationsClientListAtSubscriptionScopeResponse])`
+- Function `*Client.ListByResourceGroup` return value(s) have been changed from `(*ClientListByResourceGroupPager)` to `(*runtime.Pager[ClientListByResourceGroupResponse])`
+- Function `NewResourceGroupsClient` return value(s) have been changed from `(*ResourceGroupsClient)` to `(*ResourceGroupsClient, error)`
+- Function `*TagsClient.List` return value(s) have been changed from `(*TagsClientListPager)` to `(*runtime.Pager[TagsClientListResponse])`
+- Function `*Client.BeginValidateMoveResources` return value(s) have been changed from `(ClientValidateMoveResourcesPollerResponse, error)` to `(*armruntime.Poller[ClientValidateMoveResourcesResponse], error)`
+- Function `*DeploymentsClient.BeginValidateAtScope` return value(s) have been changed from `(DeploymentsClientValidateAtScopePollerResponse, error)` to `(*armruntime.Poller[DeploymentsClientValidateAtScopeResponse], error)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `*Client.BeginDeleteByID` return value(s) have been changed from `(ClientDeleteByIDPollerResponse, error)` to `(*armruntime.Poller[ClientDeleteByIDResponse], error)`
+- Function `*DeploymentsClient.BeginDeleteAtSubscriptionScope` return value(s) have been changed from `(DeploymentsClientDeleteAtSubscriptionScopePollerResponse, error)` to `(*armruntime.Poller[DeploymentsClientDeleteAtSubscriptionScopeResponse], error)`
+- Type of `DeploymentProperties.Parameters` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `DeploymentProperties.Template` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `WhatIfChange.After` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `WhatIfChange.Before` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `ErrorAdditionalInfo.Info` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `WhatIfPropertyChange.After` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `WhatIfPropertyChange.Before` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `GenericResource.Properties` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `DeploymentPropertiesExtended.Outputs` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `DeploymentPropertiesExtended.Parameters` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `DeploymentWhatIfProperties.Parameters` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `DeploymentWhatIfProperties.Template` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `HTTPMessage.Content` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `DeploymentExportResult.Template` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `ResourceGroupExportResult.Template` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `GenericResourceExpanded.Properties` has been changed from `map[string]interface{}` to `interface{}`
+- Function `ProvisioningOperation.ToPtr` has been removed
+- Function `*DeploymentsClientValidateAtSubscriptionScopePoller.Done` has been removed
+- Function `*ProvidersClientListAtTenantScopePager.PageResponse` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `*DeploymentsClientValidateAtScopePoller.Poll` has been removed
+- Function `ProvisioningState.ToPtr` has been removed
+- Function `*ClientListByResourceGroupPager.Err` has been removed
+- Function `*ClientDeleteByIDPoller.FinalResponse` has been removed
+- Function `*ProvidersClientListPager.PageResponse` has been removed
+- Function `*DeploymentsClientValidateAtScopePoller.ResumeToken` has been removed
+- Function `*DeploymentsClientListAtScopePager.Err` has been removed
+- Function `*ClientListPager.NextPage` has been removed
+- Function `*DeploymentsClientListAtTenantScopePager.Err` has been removed
+- Function `ResourceIdentityType.ToPtr` has been removed
+- Function `ExtendedLocationType.ToPtr` has been removed
+- Function `*DeploymentsClientDeleteAtScopePoller.Done` has been removed
+- Function `*ResourceGroupsClientDeletePoller.Done` has been removed
+- Function `*ClientListPager.Err` has been removed
+- Function `*ClientCreateOrUpdateByIDPollerResponse.Resume` has been removed
+- Function `*ClientCreateOrUpdateByIDPoller.ResumeToken` has been removed
+- Function `*DeploymentsClientDeleteAtManagementGroupScopePoller.Poll` has been removed
+- Function `*DeploymentsClientDeleteAtTenantScopePoller.FinalResponse` has been removed
+- Function `*DeploymentsClientDeletePoller.ResumeToken` has been removed
+- Function `*DeploymentOperationsClientListAtScopePager.NextPage` has been removed
+- Function `*ClientValidateMoveResourcesPollerResponse.Resume` has been removed
+- Function `ClientMoveResourcesPollerResponse.PollUntilDone` has been removed
+- Function `*ResourceGroupsClientExportTemplatePoller.FinalResponse` has been removed
+- Function `*DeploymentsClientCreateOrUpdateAtScopePoller.Poll` has been removed
+- Function `*DeploymentsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ClientDeletePollerResponse.Resume` has been removed
+- Function `*DeploymentsClientValidateAtSubscriptionScopePoller.Poll` has been removed
+- Function `*ClientListByResourceGroupPager.NextPage` has been removed
+- Function `*DeploymentsClientDeleteAtTenantScopePollerResponse.Resume` has been removed
+- Function `*ProvidersClientListPager.Err` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `DeploymentsClientValidateAtTenantScopePollerResponse.PollUntilDone` has been removed
+- Function `*ClientListPager.PageResponse` has been removed
+- Function `*ClientDeletePoller.FinalResponse` has been removed
+- Function `*DeploymentsClientWhatIfPollerResponse.Resume` has been removed
+- Function `*DeploymentsClientListAtManagementGroupScopePager.PageResponse` has been removed
+- Function `*DeploymentOperationsClientListAtSubscriptionScopePager.Err` has been removed
+- Function `*DeploymentsClientWhatIfPoller.Done` has been removed
+- Function `DeploymentsClientValidateAtManagementGroupScopePollerResponse.PollUntilDone` has been removed
+- Function `*ClientUpdatePoller.Poll` has been removed
+- Function `*ClientDeletePoller.Done` has been removed
+- Function `*DeploymentsClientWhatIfAtManagementGroupScopePoller.ResumeToken` has been removed
+- Function `*DeploymentsClientListAtSubscriptionScopePager.Err` has been removed
+- Function `*DeploymentsClientWhatIfAtSubscriptionScopePoller.Poll` has been removed
+- Function `*DeploymentsClientWhatIfPoller.Poll` has been removed
+- Function `*DeploymentsClientCreateOrUpdateAtSubscriptionScopePollerResponse.Resume` has been removed
+- Function `DeploymentsClientCreateOrUpdateAtManagementGroupScopePollerResponse.PollUntilDone` has been removed
+- Function `*DeploymentsClientWhatIfPoller.ResumeToken` has been removed
+- Function `*ClientMoveResourcesPoller.Done` has been removed
+- Function `*DeploymentsClientDeleteAtSubscriptionScopePoller.Poll` has been removed
+- Function `*DeploymentsClientCreateOrUpdateAtTenantScopePoller.Done` has been removed
+- Function `*TagsClientListPager.Err` has been removed
+- Function `*DeploymentsClientDeleteAtTenantScopePoller.Poll` has been removed
+- Function `*ClientMoveResourcesPoller.ResumeToken` has been removed
+- Function `*ResourceGroupsClientExportTemplatePoller.Poll` has been removed
+- Function `*DeploymentsClientValidateAtManagementGroupScopePollerResponse.Resume` has been removed
+- Function `DeploymentsClientDeleteAtTenantScopePollerResponse.PollUntilDone` has been removed
+- Function `*ClientListByResourceGroupPager.PageResponse` has been removed
+- Function `DeploymentsClientValidateAtSubscriptionScopePollerResponse.PollUntilDone` has been removed
+- Function `DeploymentMode.ToPtr` has been removed
+- Function `*DeploymentsClientCreateOrUpdateAtManagementGroupScopePollerResponse.Resume` has been removed
+- Function `*DeploymentsClientWhatIfAtTenantScopePoller.Poll` has been removed
+- Function `*ProvidersClientListAtTenantScopePager.NextPage` has been removed
+- Function `*DeploymentsClientValidateAtSubscriptionScopePoller.FinalResponse` has been removed
+- Function `*DeploymentsClientValidateAtManagementGroupScopePoller.ResumeToken` has been removed
+- Function `*DeploymentsClientValidatePollerResponse.Resume` has been removed
+- Function `*DeploymentsClientCreateOrUpdateAtScopePoller.Done` has been removed
+- Function `ChangeType.ToPtr` has been removed
+- Function `DeploymentsClientWhatIfAtTenantScopePollerResponse.PollUntilDone` has been removed
+- Function `*DeploymentOperationsClientListAtTenantScopePager.NextPage` has been removed
+- Function `*DeploymentsClientDeleteAtSubscriptionScopePoller.Done` has been removed
+- Function `*DeploymentsClientValidateAtManagementGroupScopePoller.Poll` has been removed
+- Function `*ResourceGroupsClientListPager.Err` has been removed
+- Function `*ResourceGroupsClientExportTemplatePoller.ResumeToken` has been removed
+- Function `DeploymentsClientCreateOrUpdateAtSubscriptionScopePollerResponse.PollUntilDone` has been removed
+- Function `*ClientCreateOrUpdateByIDPoller.Done` has been removed
+- Function `*DeploymentsClientWhatIfAtManagementGroupScopePollerResponse.Resume` has been removed
+- Function `*DeploymentsClientValidateAtManagementGroupScopePoller.Done` has been removed
+- Function `*DeploymentOperationsClientListAtSubscriptionScopePager.NextPage` has been removed
+- Function `*DeploymentsClientCreateOrUpdateAtScopePollerResponse.Resume` has been removed
+- Function `*DeploymentsClientDeletePoller.Poll` has been removed
+- Function `*ClientDeleteByIDPoller.Poll` has been removed
+- Function `*DeploymentsClientWhatIfAtManagementGroupScopePoller.FinalResponse` has been removed
+- Function `ClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*DeploymentsClientDeletePoller.Done` has been removed
+- Function `*DeploymentsClientListAtManagementGroupScopePager.Err` has been removed
+- Function `*DeploymentsClientWhatIfAtManagementGroupScopePoller.Poll` has been removed
+- Function `*ClientValidateMoveResourcesPoller.FinalResponse` has been removed
+- Function `*DeploymentsClientWhatIfAtSubscriptionScopePoller.ResumeToken` has been removed
+- Function `*DeploymentsClientCreateOrUpdateAtTenantScopePoller.Poll` has been removed
+- Function `AliasPatternType.ToPtr` has been removed
+- Function `*ClientUpdateByIDPoller.ResumeToken` has been removed
+- Function `*DeploymentsClientWhatIfAtSubscriptionScopePoller.Done` has been removed
+- Function `*DeploymentsClientValidateAtManagementGroupScopePoller.FinalResponse` has been removed
+- Function `*DeploymentsClientWhatIfAtTenantScopePoller.Done` has been removed
+- Function `*DeploymentsClientListAtScopePager.NextPage` has been removed
+- Function `ClientValidateMoveResourcesPollerResponse.PollUntilDone` has been removed
+- Function `*DeploymentsClientDeletePollerResponse.Resume` has been removed
+- Function `ExpressionEvaluationOptionsScopeType.ToPtr` has been removed
+- Function `*DeploymentsClientDeleteAtTenantScopePoller.Done` has been removed
+- Function `WhatIfResultFormat.ToPtr` has been removed
+- Function `*ClientValidateMoveResourcesPoller.Done` has been removed
+- Function `*DeploymentsClientDeleteAtScopePoller.Poll` has been removed
+- Function `*ResourceGroupsClientExportTemplatePollerResponse.Resume` has been removed
+- Function `*DeploymentsClientDeleteAtTenantScopePoller.ResumeToken` has been removed
+- Function `*ClientUpdatePollerResponse.Resume` has been removed
+- Function `*DeploymentsClientWhatIfAtTenantScopePoller.FinalResponse` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Function `*DeploymentsClientDeleteAtSubscriptionScopePollerResponse.Resume` has been removed
+- Function `*DeploymentOperationsClientListPager.Err` has been removed
+- Function `*ClientMoveResourcesPoller.FinalResponse` has been removed
+- Function `*DeploymentsClientValidateAtSubscriptionScopePollerResponse.Resume` has been removed
+- Function `AliasPathTokenType.ToPtr` has been removed
+- Function `*TagsClientListPager.NextPage` has been removed
+- Function `*ResourceGroupsClientListPager.NextPage` has been removed
+- Function `*DeploymentsClientValidateAtTenantScopePoller.Done` has been removed
+- Function `*DeploymentsClientValidatePoller.Poll` has been removed
+- Function `*ProvidersClientListPager.NextPage` has been removed
+- Function `DeploymentsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ClientValidateMoveResourcesPoller.Poll` has been removed
+- Function `*DeploymentsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*DeploymentsClientCreateOrUpdateAtSubscriptionScopePoller.ResumeToken` has been removed
+- Function `*ClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*DeploymentsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*ResourceGroupsClientDeletePoller.FinalResponse` has been removed
+- Function `*DeploymentsClientListAtTenantScopePager.PageResponse` has been removed
+- Function `*ClientUpdateByIDPollerResponse.Resume` has been removed
+- Function `*DeploymentsClientValidateAtTenantScopePoller.FinalResponse` has been removed
+- Function `*DeploymentsClientCreateOrUpdateAtScopePoller.ResumeToken` has been removed
+- Function `*ResourceGroupsClientDeletePollerResponse.Resume` has been removed
+- Function `*ClientCreateOrUpdatePoller.Done` has been removed
+- Function `*DeploymentsClientCreateOrUpdateAtManagementGroupScopePoller.ResumeToken` has been removed
+- Function `*ClientCreateOrUpdateByIDPoller.FinalResponse` has been removed
+- Function `*DeploymentOperationsClientListAtTenantScopePager.Err` has been removed
+- Function `*DeploymentsClientCreateOrUpdateAtManagementGroupScopePoller.Done` has been removed
+- Function `*DeploymentsClientValidateAtTenantScopePollerResponse.Resume` has been removed
+- Function `PropertyChangeType.ToPtr` has been removed
+- Function `*DeploymentOperationsClientListAtSubscriptionScopePager.PageResponse` has been removed
+- Function `*DeploymentsClientValidateAtScopePoller.FinalResponse` has been removed
+- Function `DeploymentsClientValidateAtScopePollerResponse.PollUntilDone` has been removed
+- Function `DeploymentsClientCreateOrUpdateAtTenantScopePollerResponse.PollUntilDone` has been removed
+- Function `*ResourceGroupsClientDeletePoller.Poll` has been removed
+- Function `*DeploymentsClientValidateAtScopePollerResponse.Resume` has been removed
+- Function `*DeploymentOperationsClientListAtManagementGroupScopePager.Err` has been removed
+- Function `*ProvidersClientListAtTenantScopePager.Err` has been removed
+- Function `*DeploymentOperationsClientListAtManagementGroupScopePager.PageResponse` has been removed
+- Function `*DeploymentsClientDeleteAtScopePoller.FinalResponse` has been removed
+- Function `*DeploymentsClientWhatIfAtManagementGroupScopePoller.Done` has been removed
+- Function `*DeploymentsClientDeleteAtSubscriptionScopePoller.ResumeToken` has been removed
+- Function `*DeploymentsClientDeleteAtSubscriptionScopePoller.FinalResponse` has been removed
+- Function `*ClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ClientUpdateByIDPoller.Poll` has been removed
+- Function `*DeploymentsClientCreateOrUpdateAtTenantScopePollerResponse.Resume` has been removed
+- Function `*ClientUpdatePoller.FinalResponse` has been removed
+- Function `*DeploymentsClientListAtManagementGroupScopePager.NextPage` has been removed
+- Function `DeploymentsClientWhatIfPollerResponse.PollUntilDone` has been removed
+- Function `*DeploymentsClientWhatIfAtTenantScopePoller.ResumeToken` has been removed
+- Function `DeploymentsClientValidatePollerResponse.PollUntilDone` has been removed
+- Function `*DeploymentsClientDeleteAtManagementGroupScopePollerResponse.Resume` has been removed
+- Function `*ClientCreateOrUpdateByIDPoller.Poll` has been removed
+- Function `*ClientDeleteByIDPollerResponse.Resume` has been removed
+- Function `*DeploymentsClientWhatIfAtTenantScopePollerResponse.Resume` has been removed
+- Function `DeploymentsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*DeploymentsClientListAtTenantScopePager.NextPage` has been removed
+- Function `*ClientDeletePoller.Poll` has been removed
+- Function `*DeploymentsClientCreateOrUpdateAtSubscriptionScopePoller.Done` has been removed
+- Function `*DeploymentsClientListByResourceGroupPager.PageResponse` has been removed
+- Function `DeploymentsClientDeleteAtScopePollerResponse.PollUntilDone` has been removed
+- Function `*DeploymentsClientWhatIfAtSubscriptionScopePollerResponse.Resume` has been removed
+- Function `*ClientUpdateByIDPoller.FinalResponse` has been removed
+- Function `*DeploymentsClientValidatePoller.ResumeToken` has been removed
+- Function `*ClientMoveResourcesPollerResponse.Resume` has been removed
+- Function `*DeploymentsClientCreateOrUpdateAtTenantScopePoller.ResumeToken` has been removed
+- Function `*ClientDeleteByIDPoller.Done` has been removed
+- Function `*ResourceGroupsClientDeletePoller.ResumeToken` has been removed
+- Function `*ClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `DeploymentsClientCreateOrUpdateAtScopePollerResponse.PollUntilDone` has been removed
+- Function `ProviderAuthorizationConsentState.ToPtr` has been removed
+- Function `*DeploymentsClientCreateOrUpdateAtSubscriptionScopePoller.Poll` has been removed
+- Function `*TagsClientListPager.PageResponse` has been removed
+- Function `TagsPatchOperation.ToPtr` has been removed
+- Function `*DeploymentsClientCreateOrUpdateAtTenantScopePoller.FinalResponse` has been removed
+- Function `*DeploymentsClientCreateOrUpdateAtSubscriptionScopePoller.FinalResponse` has been removed
+- Function `*DeploymentsClientCreateOrUpdateAtManagementGroupScopePoller.FinalResponse` has been removed
+- Function `*ClientUpdatePoller.ResumeToken` has been removed
+- Function `*DeploymentsClientWhatIfPoller.FinalResponse` has been removed
+- Function `DeploymentsClientWhatIfAtSubscriptionScopePollerResponse.PollUntilDone` has been removed
+- Function `*DeploymentsClientListAtScopePager.PageResponse` has been removed
+- Function `*DeploymentsClientDeleteAtManagementGroupScopePoller.Done` has been removed
+- Function `*DeploymentOperationsClientListAtScopePager.PageResponse` has been removed
+- Function `DeploymentsClientDeleteAtSubscriptionScopePollerResponse.PollUntilDone` has been removed
+- Function `*ClientDeleteByIDPoller.ResumeToken` has been removed
+- Function `AliasPathAttributes.ToPtr` has been removed
+- Function `ClientCreateOrUpdateByIDPollerResponse.PollUntilDone` has been removed
+- Function `ResourceGroupsClientExportTemplatePollerResponse.PollUntilDone` has been removed
+- Function `*DeploymentOperationsClientListAtScopePager.Err` has been removed
+- Function `*ClientUpdatePoller.Done` has been removed
+- Function `*DeploymentsClientListAtSubscriptionScopePager.PageResponse` has been removed
+- Function `ClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*DeploymentsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*DeploymentOperationsClientListAtTenantScopePager.PageResponse` has been removed
+- Function `*DeploymentsClientValidateAtScopePoller.Done` has been removed
+- Function `*DeploymentsClientDeleteAtManagementGroupScopePoller.FinalResponse` has been removed
+- Function `*ClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*DeploymentsClientValidateAtSubscriptionScopePoller.ResumeToken` has been removed
+- Function `*DeploymentsClientValidateAtTenantScopePoller.Poll` has been removed
+- Function `*DeploymentsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*DeploymentsClientDeleteAtScopePoller.ResumeToken` has been removed
+- Function `ClientDeleteByIDPollerResponse.PollUntilDone` has been removed
+- Function `*DeploymentsClientListByResourceGroupPager.NextPage` has been removed
+- Function `*ClientDeletePoller.ResumeToken` has been removed
+- Function `*DeploymentsClientWhatIfAtSubscriptionScopePoller.FinalResponse` has been removed
+- Function `*DeploymentsClientCreateOrUpdateAtScopePoller.FinalResponse` has been removed
+- Function `*DeploymentsClientValidatePoller.FinalResponse` has been removed
+- Function `DeploymentsClientWhatIfAtManagementGroupScopePollerResponse.PollUntilDone` has been removed
+- Function `*DeploymentOperationsClientListAtManagementGroupScopePager.NextPage` has been removed
+- Function `*DeploymentsClientCreateOrUpdateAtManagementGroupScopePoller.Poll` has been removed
+- Function `*DeploymentsClientDeletePoller.FinalResponse` has been removed
+- Function `*DeploymentOperationsClientListPager.NextPage` has been removed
+- Function `*ClientUpdateByIDPoller.Done` has been removed
+- Function `*DeploymentsClientValidateAtTenantScopePoller.ResumeToken` has been removed
+- Function `AliasType.ToPtr` has been removed
+- Function `*DeploymentsClientDeleteAtScopePollerResponse.Resume` has been removed
+- Function `OnErrorDeploymentType.ToPtr` has been removed
+- Function `*DeploymentsClientListAtSubscriptionScopePager.NextPage` has been removed
+- Function `*ClientMoveResourcesPoller.Poll` has been removed
+- Function `*ResourceGroupsClientExportTemplatePoller.Done` has been removed
+- Function `ClientUpdateByIDPollerResponse.PollUntilDone` has been removed
+- Function `*ClientValidateMoveResourcesPoller.ResumeToken` has been removed
+- Function `*DeploymentsClientDeleteAtManagementGroupScopePoller.ResumeToken` has been removed
+- Function `*ResourceGroupsClientListPager.PageResponse` has been removed
+- Function `ClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `ResourceGroupsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `DeploymentsClientDeleteAtManagementGroupScopePollerResponse.PollUntilDone` has been removed
+- Function `*DeploymentsClientValidatePoller.Done` has been removed
+- Function `*DeploymentOperationsClientListPager.PageResponse` has been removed
+- Function `*DeploymentsClientListByResourceGroupPager.Err` has been removed
+- Struct `ClientCheckExistenceByIDResult` has been removed
+- Struct `ClientCheckExistenceResult` has been removed
+- Struct `ClientCreateOrUpdateByIDPoller` has been removed
+- Struct `ClientCreateOrUpdateByIDPollerResponse` has been removed
+- Struct `ClientCreateOrUpdateByIDResult` has been removed
+- Struct `ClientCreateOrUpdatePoller` has been removed
+- Struct `ClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ClientCreateOrUpdateResult` has been removed
+- Struct `ClientDeleteByIDPoller` has been removed
+- Struct `ClientDeleteByIDPollerResponse` has been removed
+- Struct `ClientDeletePoller` has been removed
+- Struct `ClientDeletePollerResponse` has been removed
+- Struct `ClientGetByIDResult` has been removed
+- Struct `ClientGetResult` has been removed
+- Struct `ClientListByResourceGroupPager` has been removed
+- Struct `ClientListByResourceGroupResult` has been removed
+- Struct `ClientListPager` has been removed
+- Struct `ClientListResult` has been removed
+- Struct `ClientMoveResourcesPoller` has been removed
+- Struct `ClientMoveResourcesPollerResponse` has been removed
+- Struct `ClientUpdateByIDPoller` has been removed
+- Struct `ClientUpdateByIDPollerResponse` has been removed
+- Struct `ClientUpdateByIDResult` has been removed
+- Struct `ClientUpdatePoller` has been removed
+- Struct `ClientUpdatePollerResponse` has been removed
+- Struct `ClientUpdateResult` has been removed
+- Struct `ClientValidateMoveResourcesPoller` has been removed
+- Struct `ClientValidateMoveResourcesPollerResponse` has been removed
+- Struct `DeploymentOperationsClientGetAtManagementGroupScopeResult` has been removed
+- Struct `DeploymentOperationsClientGetAtScopeResult` has been removed
+- Struct `DeploymentOperationsClientGetAtSubscriptionScopeResult` has been removed
+- Struct `DeploymentOperationsClientGetAtTenantScopeResult` has been removed
+- Struct `DeploymentOperationsClientGetResult` has been removed
+- Struct `DeploymentOperationsClientListAtManagementGroupScopePager` has been removed
+- Struct `DeploymentOperationsClientListAtManagementGroupScopeResult` has been removed
+- Struct `DeploymentOperationsClientListAtScopePager` has been removed
+- Struct `DeploymentOperationsClientListAtScopeResult` has been removed
+- Struct `DeploymentOperationsClientListAtSubscriptionScopePager` has been removed
+- Struct `DeploymentOperationsClientListAtSubscriptionScopeResult` has been removed
+- Struct `DeploymentOperationsClientListAtTenantScopePager` has been removed
+- Struct `DeploymentOperationsClientListAtTenantScopeResult` has been removed
+- Struct `DeploymentOperationsClientListPager` has been removed
+- Struct `DeploymentOperationsClientListResult` has been removed
+- Struct `DeploymentsClientCalculateTemplateHashResult` has been removed
+- Struct `DeploymentsClientCheckExistenceAtManagementGroupScopeResult` has been removed
+- Struct `DeploymentsClientCheckExistenceAtScopeResult` has been removed
+- Struct `DeploymentsClientCheckExistenceAtSubscriptionScopeResult` has been removed
+- Struct `DeploymentsClientCheckExistenceAtTenantScopeResult` has been removed
+- Struct `DeploymentsClientCheckExistenceResult` has been removed
+- Struct `DeploymentsClientCreateOrUpdateAtManagementGroupScopePoller` has been removed
+- Struct `DeploymentsClientCreateOrUpdateAtManagementGroupScopePollerResponse` has been removed
+- Struct `DeploymentsClientCreateOrUpdateAtManagementGroupScopeResult` has been removed
+- Struct `DeploymentsClientCreateOrUpdateAtScopePoller` has been removed
+- Struct `DeploymentsClientCreateOrUpdateAtScopePollerResponse` has been removed
+- Struct `DeploymentsClientCreateOrUpdateAtScopeResult` has been removed
+- Struct `DeploymentsClientCreateOrUpdateAtSubscriptionScopePoller` has been removed
+- Struct `DeploymentsClientCreateOrUpdateAtSubscriptionScopePollerResponse` has been removed
+- Struct `DeploymentsClientCreateOrUpdateAtSubscriptionScopeResult` has been removed
+- Struct `DeploymentsClientCreateOrUpdateAtTenantScopePoller` has been removed
+- Struct `DeploymentsClientCreateOrUpdateAtTenantScopePollerResponse` has been removed
+- Struct `DeploymentsClientCreateOrUpdateAtTenantScopeResult` has been removed
+- Struct `DeploymentsClientCreateOrUpdatePoller` has been removed
+- Struct `DeploymentsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `DeploymentsClientCreateOrUpdateResult` has been removed
+- Struct `DeploymentsClientDeleteAtManagementGroupScopePoller` has been removed
+- Struct `DeploymentsClientDeleteAtManagementGroupScopePollerResponse` has been removed
+- Struct `DeploymentsClientDeleteAtScopePoller` has been removed
+- Struct `DeploymentsClientDeleteAtScopePollerResponse` has been removed
+- Struct `DeploymentsClientDeleteAtSubscriptionScopePoller` has been removed
+- Struct `DeploymentsClientDeleteAtSubscriptionScopePollerResponse` has been removed
+- Struct `DeploymentsClientDeleteAtTenantScopePoller` has been removed
+- Struct `DeploymentsClientDeleteAtTenantScopePollerResponse` has been removed
+- Struct `DeploymentsClientDeletePoller` has been removed
+- Struct `DeploymentsClientDeletePollerResponse` has been removed
+- Struct `DeploymentsClientExportTemplateAtManagementGroupScopeResult` has been removed
+- Struct `DeploymentsClientExportTemplateAtScopeResult` has been removed
+- Struct `DeploymentsClientExportTemplateAtSubscriptionScopeResult` has been removed
+- Struct `DeploymentsClientExportTemplateAtTenantScopeResult` has been removed
+- Struct `DeploymentsClientExportTemplateResult` has been removed
+- Struct `DeploymentsClientGetAtManagementGroupScopeResult` has been removed
+- Struct `DeploymentsClientGetAtScopeResult` has been removed
+- Struct `DeploymentsClientGetAtSubscriptionScopeResult` has been removed
+- Struct `DeploymentsClientGetAtTenantScopeResult` has been removed
+- Struct `DeploymentsClientGetResult` has been removed
+- Struct `DeploymentsClientListAtManagementGroupScopePager` has been removed
+- Struct `DeploymentsClientListAtManagementGroupScopeResult` has been removed
+- Struct `DeploymentsClientListAtScopePager` has been removed
+- Struct `DeploymentsClientListAtScopeResult` has been removed
+- Struct `DeploymentsClientListAtSubscriptionScopePager` has been removed
+- Struct `DeploymentsClientListAtSubscriptionScopeResult` has been removed
+- Struct `DeploymentsClientListAtTenantScopePager` has been removed
+- Struct `DeploymentsClientListAtTenantScopeResult` has been removed
+- Struct `DeploymentsClientListByResourceGroupPager` has been removed
+- Struct `DeploymentsClientListByResourceGroupResult` has been removed
+- Struct `DeploymentsClientValidateAtManagementGroupScopePoller` has been removed
+- Struct `DeploymentsClientValidateAtManagementGroupScopePollerResponse` has been removed
+- Struct `DeploymentsClientValidateAtManagementGroupScopeResult` has been removed
+- Struct `DeploymentsClientValidateAtScopePoller` has been removed
+- Struct `DeploymentsClientValidateAtScopePollerResponse` has been removed
+- Struct `DeploymentsClientValidateAtScopeResult` has been removed
+- Struct `DeploymentsClientValidateAtSubscriptionScopePoller` has been removed
+- Struct `DeploymentsClientValidateAtSubscriptionScopePollerResponse` has been removed
+- Struct `DeploymentsClientValidateAtSubscriptionScopeResult` has been removed
+- Struct `DeploymentsClientValidateAtTenantScopePoller` has been removed
+- Struct `DeploymentsClientValidateAtTenantScopePollerResponse` has been removed
+- Struct `DeploymentsClientValidateAtTenantScopeResult` has been removed
+- Struct `DeploymentsClientValidatePoller` has been removed
+- Struct `DeploymentsClientValidatePollerResponse` has been removed
+- Struct `DeploymentsClientValidateResult` has been removed
+- Struct `DeploymentsClientWhatIfAtManagementGroupScopePoller` has been removed
+- Struct `DeploymentsClientWhatIfAtManagementGroupScopePollerResponse` has been removed
+- Struct `DeploymentsClientWhatIfAtManagementGroupScopeResult` has been removed
+- Struct `DeploymentsClientWhatIfAtSubscriptionScopePoller` has been removed
+- Struct `DeploymentsClientWhatIfAtSubscriptionScopePollerResponse` has been removed
+- Struct `DeploymentsClientWhatIfAtSubscriptionScopeResult` has been removed
+- Struct `DeploymentsClientWhatIfAtTenantScopePoller` has been removed
+- Struct `DeploymentsClientWhatIfAtTenantScopePollerResponse` has been removed
+- Struct `DeploymentsClientWhatIfAtTenantScopeResult` has been removed
+- Struct `DeploymentsClientWhatIfPoller` has been removed
+- Struct `DeploymentsClientWhatIfPollerResponse` has been removed
+- Struct `DeploymentsClientWhatIfResult` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `ProviderResourceTypesClientListResult` has been removed
+- Struct `ProvidersClientGetAtTenantScopeResult` has been removed
+- Struct `ProvidersClientGetResult` has been removed
+- Struct `ProvidersClientListAtTenantScopePager` has been removed
+- Struct `ProvidersClientListAtTenantScopeResult` has been removed
+- Struct `ProvidersClientListPager` has been removed
+- Struct `ProvidersClientListResult` has been removed
+- Struct `ProvidersClientProviderPermissionsResult` has been removed
+- Struct `ProvidersClientRegisterResult` has been removed
+- Struct `ProvidersClientUnregisterResult` has been removed
+- Struct `ResourceGroupsClientCheckExistenceResult` has been removed
+- Struct `ResourceGroupsClientCreateOrUpdateResult` has been removed
+- Struct `ResourceGroupsClientDeletePoller` has been removed
+- Struct `ResourceGroupsClientDeletePollerResponse` has been removed
+- Struct `ResourceGroupsClientExportTemplatePoller` has been removed
+- Struct `ResourceGroupsClientExportTemplatePollerResponse` has been removed
+- Struct `ResourceGroupsClientExportTemplateResult` has been removed
+- Struct `ResourceGroupsClientGetResult` has been removed
+- Struct `ResourceGroupsClientListPager` has been removed
+- Struct `ResourceGroupsClientListResult` has been removed
+- Struct `ResourceGroupsClientUpdateResult` has been removed
+- Struct `TagsClientCreateOrUpdateAtScopeResult` has been removed
+- Struct `TagsClientCreateOrUpdateResult` has been removed
+- Struct `TagsClientCreateOrUpdateValueResult` has been removed
+- Struct `TagsClientGetAtScopeResult` has been removed
+- Struct `TagsClientListPager` has been removed
+- Struct `TagsClientListResult` has been removed
+- Struct `TagsClientUpdateAtScopeResult` has been removed
+- Field `DeploymentOperationsClientGetAtSubscriptionScopeResult` of struct `DeploymentOperationsClientGetAtSubscriptionScopeResponse` has been removed
+- Field `RawResponse` of struct `DeploymentOperationsClientGetAtSubscriptionScopeResponse` has been removed
+- Field `TagsClientCreateOrUpdateResult` of struct `TagsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `TagsClientCreateOrUpdateResponse` has been removed
+- Field `DeploymentsClientExportTemplateAtManagementGroupScopeResult` of struct `DeploymentsClientExportTemplateAtManagementGroupScopeResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientExportTemplateAtManagementGroupScopeResponse` has been removed
+- Field `DeploymentsClientValidateAtSubscriptionScopeResult` of struct `DeploymentsClientValidateAtSubscriptionScopeResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientValidateAtSubscriptionScopeResponse` has been removed
+- Field `ClientCreateOrUpdateResult` of struct `ClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ClientCreateOrUpdateResponse` has been removed
+- Field `DeploymentsClientListAtManagementGroupScopeResult` of struct `DeploymentsClientListAtManagementGroupScopeResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientListAtManagementGroupScopeResponse` has been removed
+- Field `DeploymentsClientValidateAtManagementGroupScopeResult` of struct `DeploymentsClientValidateAtManagementGroupScopeResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientValidateAtManagementGroupScopeResponse` has been removed
+- Field `ClientUpdateByIDResult` of struct `ClientUpdateByIDResponse` has been removed
+- Field `RawResponse` of struct `ClientUpdateByIDResponse` has been removed
+- Field `DeploymentOperationsClientListAtSubscriptionScopeResult` of struct `DeploymentOperationsClientListAtSubscriptionScopeResponse` has been removed
+- Field `RawResponse` of struct `DeploymentOperationsClientListAtSubscriptionScopeResponse` has been removed
+- Field `DeploymentsClientGetAtSubscriptionScopeResult` of struct `DeploymentsClientGetAtSubscriptionScopeResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientGetAtSubscriptionScopeResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientDeleteAtTenantScopeResponse` has been removed
+- Field `DeploymentsClientWhatIfResult` of struct `DeploymentsClientWhatIfResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientWhatIfResponse` has been removed
+- Field `ProvidersClientGetAtTenantScopeResult` of struct `ProvidersClientGetAtTenantScopeResponse` has been removed
+- Field `RawResponse` of struct `ProvidersClientGetAtTenantScopeResponse` has been removed
+- Field `DeploymentOperationsClientListResult` of struct `DeploymentOperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `DeploymentOperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `ResourceGroupsClientDeleteResponse` has been removed
+- Field `DeploymentsClientCheckExistenceAtScopeResult` of struct `DeploymentsClientCheckExistenceAtScopeResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientCheckExistenceAtScopeResponse` has been removed
+- Field `ResourceGroupsClientGetResult` of struct `ResourceGroupsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ResourceGroupsClientGetResponse` has been removed
+- Field `ResourceGroupsClientListResult` of struct `ResourceGroupsClientListResponse` has been removed
+- Field `RawResponse` of struct `ResourceGroupsClientListResponse` has been removed
+- Field `ClientCheckExistenceResult` of struct `ClientCheckExistenceResponse` has been removed
+- Field `RawResponse` of struct `ClientCheckExistenceResponse` has been removed
+- Field `DeploymentsClientExportTemplateAtSubscriptionScopeResult` of struct `DeploymentsClientExportTemplateAtSubscriptionScopeResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientExportTemplateAtSubscriptionScopeResponse` has been removed
+- Field `TagsClientCreateOrUpdateValueResult` of struct `TagsClientCreateOrUpdateValueResponse` has been removed
+- Field `RawResponse` of struct `TagsClientCreateOrUpdateValueResponse` has been removed
+- Field `DeploymentsClientGetResult` of struct `DeploymentsClientGetResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientGetResponse` has been removed
+- Field `DeploymentOperationsClientListAtScopeResult` of struct `DeploymentOperationsClientListAtScopeResponse` has been removed
+- Field `RawResponse` of struct `DeploymentOperationsClientListAtScopeResponse` has been removed
+- Field `DeploymentOperationsClientGetAtTenantScopeResult` of struct `DeploymentOperationsClientGetAtTenantScopeResponse` has been removed
+- Field `RawResponse` of struct `DeploymentOperationsClientGetAtTenantScopeResponse` has been removed
+- Field `DeploymentsClientCreateOrUpdateAtTenantScopeResult` of struct `DeploymentsClientCreateOrUpdateAtTenantScopeResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientCreateOrUpdateAtTenantScopeResponse` has been removed
+- Field `DeploymentOperationsClientGetResult` of struct `DeploymentOperationsClientGetResponse` has been removed
+- Field `RawResponse` of struct `DeploymentOperationsClientGetResponse` has been removed
+- Field `DeploymentsClientGetAtManagementGroupScopeResult` of struct `DeploymentsClientGetAtManagementGroupScopeResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientGetAtManagementGroupScopeResponse` has been removed
+- Field `DeploymentsClientGetAtScopeResult` of struct `DeploymentsClientGetAtScopeResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientGetAtScopeResponse` has been removed
+- Field `DeploymentsClientCreateOrUpdateAtSubscriptionScopeResult` of struct `DeploymentsClientCreateOrUpdateAtSubscriptionScopeResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientCreateOrUpdateAtSubscriptionScopeResponse` has been removed
+- Field `ClientListResult` of struct `ClientListResponse` has been removed
+- Field `RawResponse` of struct `ClientListResponse` has been removed
+- Field `ProvidersClientRegisterResult` of struct `ProvidersClientRegisterResponse` has been removed
+- Field `RawResponse` of struct `ProvidersClientRegisterResponse` has been removed
+- Field `TagsClientGetAtScopeResult` of struct `TagsClientGetAtScopeResponse` has been removed
+- Field `RawResponse` of struct `TagsClientGetAtScopeResponse` has been removed
+- Field `DeploymentOperationsClientGetAtScopeResult` of struct `DeploymentOperationsClientGetAtScopeResponse` has been removed
+- Field `RawResponse` of struct `DeploymentOperationsClientGetAtScopeResponse` has been removed
+- Field `DeploymentsClientListAtScopeResult` of struct `DeploymentsClientListAtScopeResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientListAtScopeResponse` has been removed
+- Field `RawResponse` of struct `ClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientCancelAtTenantScopeResponse` has been removed
+- Field `DeploymentsClientCreateOrUpdateAtManagementGroupScopeResult` of struct `DeploymentsClientCreateOrUpdateAtManagementGroupScopeResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientCreateOrUpdateAtManagementGroupScopeResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientCancelResponse` has been removed
+- Field `RawResponse` of struct `ClientMoveResourcesResponse` has been removed
+- Field `DeploymentsClientCheckExistenceResult` of struct `DeploymentsClientCheckExistenceResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientCheckExistenceResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientDeleteAtScopeResponse` has been removed
+- Field `RawResponse` of struct `ProvidersClientRegisterAtManagementGroupScopeResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientCancelAtSubscriptionScopeResponse` has been removed
+- Field `ClientGetByIDResult` of struct `ClientGetByIDResponse` has been removed
+- Field `RawResponse` of struct `ClientGetByIDResponse` has been removed
+- Field `ClientUpdateResult` of struct `ClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ClientUpdateResponse` has been removed
+- Field `DeploymentsClientCheckExistenceAtTenantScopeResult` of struct `DeploymentsClientCheckExistenceAtTenantScopeResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientCheckExistenceAtTenantScopeResponse` has been removed
+- Field `DeploymentsClientWhatIfAtSubscriptionScopeResult` of struct `DeploymentsClientWhatIfAtSubscriptionScopeResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientWhatIfAtSubscriptionScopeResponse` has been removed
+- Field `DeploymentsClientGetAtTenantScopeResult` of struct `DeploymentsClientGetAtTenantScopeResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientGetAtTenantScopeResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientCancelAtScopeResponse` has been removed
+- Field `DeploymentsClientCheckExistenceAtManagementGroupScopeResult` of struct `DeploymentsClientCheckExistenceAtManagementGroupScopeResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientCheckExistenceAtManagementGroupScopeResponse` has been removed
+- Field `ProvidersClientProviderPermissionsResult` of struct `ProvidersClientProviderPermissionsResponse` has been removed
+- Field `RawResponse` of struct `ProvidersClientProviderPermissionsResponse` has been removed
+- Field `DeploymentsClientListByResourceGroupResult` of struct `DeploymentsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `ClientDeleteByIDResponse` has been removed
+- Field `DeploymentsClientWhatIfAtTenantScopeResult` of struct `DeploymentsClientWhatIfAtTenantScopeResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientWhatIfAtTenantScopeResponse` has been removed
+- Field `ProviderResourceTypesClientListResult` of struct `ProviderResourceTypesClientListResponse` has been removed
+- Field `RawResponse` of struct `ProviderResourceTypesClientListResponse` has been removed
+- Field `DeploymentsClientCreateOrUpdateResult` of struct `DeploymentsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientCreateOrUpdateResponse` has been removed
+- Field `DeploymentsClientValidateAtScopeResult` of struct `DeploymentsClientValidateAtScopeResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientValidateAtScopeResponse` has been removed
+- Field `ProvidersClientListAtTenantScopeResult` of struct `ProvidersClientListAtTenantScopeResponse` has been removed
+- Field `RawResponse` of struct `ProvidersClientListAtTenantScopeResponse` has been removed
+- Field `DeploymentsClientWhatIfAtManagementGroupScopeResult` of struct `DeploymentsClientWhatIfAtManagementGroupScopeResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientWhatIfAtManagementGroupScopeResponse` has been removed
+- Field `DeploymentsClientListAtSubscriptionScopeResult` of struct `DeploymentsClientListAtSubscriptionScopeResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientListAtSubscriptionScopeResponse` has been removed
+- Field `DeploymentsClientExportTemplateAtScopeResult` of struct `DeploymentsClientExportTemplateAtScopeResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientExportTemplateAtScopeResponse` has been removed
+- Field `DeploymentOperationsClientListAtTenantScopeResult` of struct `DeploymentOperationsClientListAtTenantScopeResponse` has been removed
+- Field `RawResponse` of struct `DeploymentOperationsClientListAtTenantScopeResponse` has been removed
+- Field `DeploymentsClientCreateOrUpdateAtScopeResult` of struct `DeploymentsClientCreateOrUpdateAtScopeResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientCreateOrUpdateAtScopeResponse` has been removed
+- Field `RawResponse` of struct `TagsClientDeleteValueResponse` has been removed
+- Field `DeploymentsClientCheckExistenceAtSubscriptionScopeResult` of struct `DeploymentsClientCheckExistenceAtSubscriptionScopeResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientCheckExistenceAtSubscriptionScopeResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientDeleteResponse` has been removed
+- Field `TagsClientUpdateAtScopeResult` of struct `TagsClientUpdateAtScopeResponse` has been removed
+- Field `RawResponse` of struct `TagsClientUpdateAtScopeResponse` has been removed
+- Field `DeploymentsClientExportTemplateResult` of struct `DeploymentsClientExportTemplateResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientExportTemplateResponse` has been removed
+- Field `ProvidersClientUnregisterResult` of struct `ProvidersClientUnregisterResponse` has been removed
+- Field `RawResponse` of struct `ProvidersClientUnregisterResponse` has been removed
+- Field `ClientListByResourceGroupResult` of struct `ClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `ClientListByResourceGroupResponse` has been removed
+- Field `DeploymentsClientValidateAtTenantScopeResult` of struct `DeploymentsClientValidateAtTenantScopeResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientValidateAtTenantScopeResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `ResourceGroupsClientCreateOrUpdateResult` of struct `ResourceGroupsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ResourceGroupsClientCreateOrUpdateResponse` has been removed
+- Field `ClientCreateOrUpdateByIDResult` of struct `ClientCreateOrUpdateByIDResponse` has been removed
+- Field `RawResponse` of struct `ClientCreateOrUpdateByIDResponse` has been removed
+- Field `RawResponse` of struct `TagsClientDeleteAtScopeResponse` has been removed
+- Field `ClientCheckExistenceByIDResult` of struct `ClientCheckExistenceByIDResponse` has been removed
+- Field `RawResponse` of struct `ClientCheckExistenceByIDResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientDeleteAtSubscriptionScopeResponse` has been removed
+- Field `ProvidersClientListResult` of struct `ProvidersClientListResponse` has been removed
+- Field `RawResponse` of struct `ProvidersClientListResponse` has been removed
+- Field `TagsClientListResult` of struct `TagsClientListResponse` has been removed
+- Field `RawResponse` of struct `TagsClientListResponse` has been removed
+- Field `ResourceGroupsClientUpdateResult` of struct `ResourceGroupsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ResourceGroupsClientUpdateResponse` has been removed
+- Field `DeploymentOperationsClientGetAtManagementGroupScopeResult` of struct `DeploymentOperationsClientGetAtManagementGroupScopeResponse` has been removed
+- Field `RawResponse` of struct `DeploymentOperationsClientGetAtManagementGroupScopeResponse` has been removed
+- Field `RawResponse` of struct `TagsClientDeleteResponse` has been removed
+- Field `ResourceGroupsClientCheckExistenceResult` of struct `ResourceGroupsClientCheckExistenceResponse` has been removed
+- Field `RawResponse` of struct `ResourceGroupsClientCheckExistenceResponse` has been removed
+- Field `ProvidersClientGetResult` of struct `ProvidersClientGetResponse` has been removed
+- Field `RawResponse` of struct `ProvidersClientGetResponse` has been removed
+- Field `DeploymentsClientCalculateTemplateHashResult` of struct `DeploymentsClientCalculateTemplateHashResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientCalculateTemplateHashResponse` has been removed
+- Field `DeploymentsClientValidateResult` of struct `DeploymentsClientValidateResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientValidateResponse` has been removed
+- Field `ResourceGroupsClientExportTemplateResult` of struct `ResourceGroupsClientExportTemplateResponse` has been removed
+- Field `RawResponse` of struct `ResourceGroupsClientExportTemplateResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientCancelAtManagementGroupScopeResponse` has been removed
+- Field `TagsClientCreateOrUpdateAtScopeResult` of struct `TagsClientCreateOrUpdateAtScopeResponse` has been removed
+- Field `RawResponse` of struct `TagsClientCreateOrUpdateAtScopeResponse` has been removed
+- Field `DeploymentsClientListAtTenantScopeResult` of struct `DeploymentsClientListAtTenantScopeResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientListAtTenantScopeResponse` has been removed
+- Field `RawResponse` of struct `ClientValidateMoveResourcesResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientDeleteAtManagementGroupScopeResponse` has been removed
+- Field `ClientGetResult` of struct `ClientGetResponse` has been removed
+- Field `RawResponse` of struct `ClientGetResponse` has been removed
+- Field `DeploymentsClientExportTemplateAtTenantScopeResult` of struct `DeploymentsClientExportTemplateAtTenantScopeResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientExportTemplateAtTenantScopeResponse` has been removed
+- Field `DeploymentOperationsClientListAtManagementGroupScopeResult` of struct `DeploymentOperationsClientListAtManagementGroupScopeResponse` has been removed
+- Field `RawResponse` of struct `DeploymentOperationsClientListAtManagementGroupScopeResponse` has been removed
+
+### Features Added
+
+- New anonymous field `GenericResource` in struct `ClientUpdateByIDResponse`
+- New anonymous field `GenericResource` in struct `ClientGetResponse`
+- New anonymous field `DeploymentExtended` in struct `DeploymentsClientCreateOrUpdateAtSubscriptionScopeResponse`
+- New field `ResumeToken` in struct `DeploymentsClientBeginCreateOrUpdateAtManagementGroupScopeOptions`
+- New field `Success` in struct `DeploymentsClientCheckExistenceAtTenantScopeResponse`
+- New anonymous field `DeploymentExtended` in struct `DeploymentsClientCreateOrUpdateAtManagementGroupScopeResponse`
+- New anonymous field `TagValue` in struct `TagsClientCreateOrUpdateValueResponse`
+- New anonymous field `Provider` in struct `ProvidersClientGetResponse`
+- New anonymous field `DeploymentExportResult` in struct `DeploymentsClientExportTemplateAtManagementGroupScopeResponse`
+- New anonymous field `DeploymentListResult` in struct `DeploymentsClientListAtManagementGroupScopeResponse`
+- New anonymous field `DeploymentExtended` in struct `DeploymentsClientCreateOrUpdateAtScopeResponse`
+- New anonymous field `WhatIfOperationResult` in struct `DeploymentsClientWhatIfAtManagementGroupScopeResponse`
+- New anonymous field `DeploymentExtended` in struct `DeploymentsClientGetResponse`
+- New anonymous field `DeploymentExportResult` in struct `DeploymentsClientExportTemplateResponse`
+- New anonymous field `Provider` in struct `ProvidersClientGetAtTenantScopeResponse`
+- New anonymous field `DeploymentExtended` in struct `DeploymentsClientGetAtScopeResponse`
+- New field `Success` in struct `DeploymentsClientCheckExistenceResponse`
+- New anonymous field `WhatIfOperationResult` in struct `DeploymentsClientWhatIfAtTenantScopeResponse`
+- New field `ResumeToken` in struct `DeploymentsClientBeginCreateOrUpdateAtSubscriptionScopeOptions`
+- New anonymous field `GenericResource` in struct `ClientUpdateResponse`
+- New anonymous field `DeploymentOperationsListResult` in struct `DeploymentOperationsClientListAtTenantScopeResponse`
+- New anonymous field `TagsListResult` in struct `TagsClientListResponse`
+- New anonymous field `WhatIfOperationResult` in struct `DeploymentsClientWhatIfAtSubscriptionScopeResponse`
+- New field `ResumeToken` in struct `DeploymentsClientBeginWhatIfAtSubscriptionScopeOptions`
+- New field `ResumeToken` in struct `ResourceGroupsClientBeginDeleteOptions`
+- New anonymous field `DeploymentExportResult` in struct `DeploymentsClientExportTemplateAtSubscriptionScopeResponse`
+- New anonymous field `ProviderResourceTypeListResult` in struct `ProviderResourceTypesClientListResponse`
+- New anonymous field `TagsResource` in struct `TagsClientUpdateAtScopeResponse`
+- New field `ResumeToken` in struct `DeploymentsClientBeginValidateAtScopeOptions`
+- New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
+- New anonymous field `DeploymentOperation` in struct `DeploymentOperationsClientGetAtScopeResponse`
+- New field `ResumeToken` in struct `ClientBeginDeleteOptions`
+- New anonymous field `Provider` in struct `ProvidersClientRegisterResponse`
+- New field `Success` in struct `ClientCheckExistenceResponse`
+- New anonymous field `ResourceGroupExportResult` in struct `ResourceGroupsClientExportTemplateResponse`
+- New field `ResumeToken` in struct `ClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `ResourceGroupsClientBeginExportTemplateOptions`
+- New anonymous field `DeploymentExtended` in struct `DeploymentsClientGetAtTenantScopeResponse`
+- New anonymous field `GenericResource` in struct `ClientGetByIDResponse`
+- New anonymous field `ResourceListResult` in struct `ClientListResponse`
+- New anonymous field `DeploymentOperation` in struct `DeploymentOperationsClientGetAtManagementGroupScopeResponse`
+- New field `ResumeToken` in struct `ClientBeginUpdateOptions`
+- New field `ResumeToken` in struct `ClientBeginValidateMoveResourcesOptions`
+- New field `Success` in struct `DeploymentsClientCheckExistenceAtSubscriptionScopeResponse`
+- New field `ResumeToken` in struct `DeploymentsClientBeginWhatIfOptions`
+- New field `Success` in struct `ResourceGroupsClientCheckExistenceResponse`
+- New anonymous field `ResourceListResult` in struct `ClientListByResourceGroupResponse`
+- New field `ResumeToken` in struct `DeploymentsClientBeginCreateOrUpdateAtTenantScopeOptions`
+- New anonymous field `ResourceGroup` in struct `ResourceGroupsClientUpdateResponse`
+- New anonymous field `DeploymentExtended` in struct `DeploymentsClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `DeploymentsClientBeginCreateOrUpdateOptions`
+- New field `Success` in struct `ClientCheckExistenceByIDResponse`
+- New anonymous field `DeploymentExportResult` in struct `DeploymentsClientExportTemplateAtTenantScopeResponse`
+- New anonymous field `DeploymentOperation` in struct `DeploymentOperationsClientGetAtTenantScopeResponse`
+- New anonymous field `DeploymentValidateResult` in struct `DeploymentsClientValidateAtScopeResponse`
+- New field `ResumeToken` in struct `ClientBeginCreateOrUpdateByIDOptions`
+- New field `ResumeToken` in struct `DeploymentsClientBeginValidateAtSubscriptionScopeOptions`
+- New field `ResumeToken` in struct `ClientBeginMoveResourcesOptions`
+- New anonymous field `DeploymentValidateResult` in struct `DeploymentsClientValidateAtTenantScopeResponse`
+- New anonymous field `DeploymentOperationsListResult` in struct `DeploymentOperationsClientListAtScopeResponse`
+- New field `ResumeToken` in struct `DeploymentsClientBeginValidateOptions`
+- New field `ResumeToken` in struct `DeploymentsClientBeginValidateAtTenantScopeOptions`
+- New field `ResumeToken` in struct `ClientBeginDeleteByIDOptions`
+- New field `ResumeToken` in struct `DeploymentsClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `ClientBeginUpdateByIDOptions`
+- New field `ResumeToken` in struct `DeploymentsClientBeginDeleteAtSubscriptionScopeOptions`
+- New field `ResumeToken` in struct `DeploymentsClientBeginWhatIfAtManagementGroupScopeOptions`
+- New field `Success` in struct `DeploymentsClientCheckExistenceAtManagementGroupScopeResponse`
+- New anonymous field `Provider` in struct `ProvidersClientUnregisterResponse`
+- New anonymous field `DeploymentListResult` in struct `DeploymentsClientListAtSubscriptionScopeResponse`
+- New anonymous field `DeploymentValidateResult` in struct `DeploymentsClientValidateAtManagementGroupScopeResponse`
+- New field `Success` in struct `DeploymentsClientCheckExistenceAtScopeResponse`
+- New anonymous field `ResourceGroup` in struct `ResourceGroupsClientGetResponse`
+- New anonymous field `DeploymentExtended` in struct `DeploymentsClientCreateOrUpdateAtTenantScopeResponse`
+- New anonymous field `DeploymentOperationsListResult` in struct `DeploymentOperationsClientListAtSubscriptionScopeResponse`
+- New anonymous field `DeploymentExportResult` in struct `DeploymentsClientExportTemplateAtScopeResponse`
+- New anonymous field `DeploymentOperation` in struct `DeploymentOperationsClientGetResponse`
+- New field `ResumeToken` in struct `DeploymentsClientBeginDeleteAtManagementGroupScopeOptions`
+- New anonymous field `TagsResource` in struct `TagsClientGetAtScopeResponse`
+- New anonymous field `DeploymentValidateResult` in struct `DeploymentsClientValidateAtSubscriptionScopeResponse`
+- New anonymous field `GenericResource` in struct `ClientCreateOrUpdateByIDResponse`
+- New anonymous field `TemplateHashResult` in struct `DeploymentsClientCalculateTemplateHashResponse`
+- New anonymous field `DeploymentOperationsListResult` in struct `DeploymentOperationsClientListResponse`
+- New anonymous field `DeploymentExtended` in struct `DeploymentsClientGetAtManagementGroupScopeResponse`
+- New anonymous field `DeploymentOperationsListResult` in struct `DeploymentOperationsClientListAtManagementGroupScopeResponse`
+- New field `ResumeToken` in struct `DeploymentsClientBeginDeleteAtTenantScopeOptions`
+- New anonymous field `TagsResource` in struct `TagsClientCreateOrUpdateAtScopeResponse`
+- New anonymous field `GenericResource` in struct `ClientCreateOrUpdateResponse`
+- New anonymous field `ResourceGroup` in struct `ResourceGroupsClientCreateOrUpdateResponse`
+- New anonymous field `DeploymentListResult` in struct `DeploymentsClientListAtTenantScopeResponse`
+- New anonymous field `DeploymentExtended` in struct `DeploymentsClientGetAtSubscriptionScopeResponse`
+- New anonymous field `ProviderPermissionListResult` in struct `ProvidersClientProviderPermissionsResponse`
+- New anonymous field `ProviderListResult` in struct `ProvidersClientListAtTenantScopeResponse`
+- New anonymous field `DeploymentValidateResult` in struct `DeploymentsClientValidateResponse`
+- New anonymous field `DeploymentOperation` in struct `DeploymentOperationsClientGetAtSubscriptionScopeResponse`
+- New anonymous field `ProviderListResult` in struct `ProvidersClientListResponse`
+- New field `ResumeToken` in struct `DeploymentsClientBeginDeleteAtScopeOptions`
+- New anonymous field `DeploymentListResult` in struct `DeploymentsClientListByResourceGroupResponse`
+- New field `ResumeToken` in struct `DeploymentsClientBeginWhatIfAtTenantScopeOptions`
+- New field `ResumeToken` in struct `DeploymentsClientBeginCreateOrUpdateAtScopeOptions`
+- New field `ResumeToken` in struct `DeploymentsClientBeginValidateAtManagementGroupScopeOptions`
+- New anonymous field `WhatIfOperationResult` in struct `DeploymentsClientWhatIfResponse`
+- New anonymous field `TagDetails` in struct `TagsClientCreateOrUpdateResponse`
+- New anonymous field `ResourceGroupListResult` in struct `ResourceGroupsClientListResponse`
+- New anonymous field `DeploymentListResult` in struct `DeploymentsClientListAtScopeResponse`
+
+
 ## 0.3.1 (2022-02-22)
 
 ### Other Changes

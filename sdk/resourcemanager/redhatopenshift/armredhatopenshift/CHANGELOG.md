@@ -1,5 +1,92 @@
 # Release History
 
+## 0.3.0 (2022-04-12)
+### Breaking Changes
+
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `*OpenShiftClustersClient.BeginCreateOrUpdate` return value(s) have been changed from `(OpenShiftClustersClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[OpenShiftClustersClientCreateOrUpdateResponse], error)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `NewOpenShiftClustersClient` return value(s) have been changed from `(*OpenShiftClustersClient)` to `(*OpenShiftClustersClient, error)`
+- Function `*OpenShiftClustersClient.ListByResourceGroup` return value(s) have been changed from `(*OpenShiftClustersClientListByResourceGroupPager)` to `(*runtime.Pager[OpenShiftClustersClientListByResourceGroupResponse])`
+- Function `*OpenShiftClustersClient.BeginUpdate` return value(s) have been changed from `(OpenShiftClustersClientUpdatePollerResponse, error)` to `(*armruntime.Poller[OpenShiftClustersClientUpdateResponse], error)`
+- Function `*OpenShiftClustersClient.BeginDelete` return value(s) have been changed from `(OpenShiftClustersClientDeletePollerResponse, error)` to `(*armruntime.Poller[OpenShiftClustersClientDeleteResponse], error)`
+- Function `*OpenShiftClustersClient.List` return value(s) have been changed from `(*OpenShiftClustersClientListPager)` to `(*runtime.Pager[OpenShiftClustersClientListResponse])`
+- Function `*OpenShiftClustersClientListByResourceGroupPager.PageResponse` has been removed
+- Function `OpenShiftClustersClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*OpenShiftClustersClientListByResourceGroupPager.Err` has been removed
+- Function `*OpenShiftClustersClientListPager.PageResponse` has been removed
+- Function `*OpenShiftClustersClientDeletePollerResponse.Resume` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Function `*OpenShiftClustersClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*OpenShiftClustersClientListPager.NextPage` has been removed
+- Function `*OpenShiftClustersClientUpdatePoller.ResumeToken` has been removed
+- Function `*OpenShiftClustersClientDeletePoller.FinalResponse` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `VMSize.ToPtr` has been removed
+- Function `*OpenShiftClustersClientDeletePoller.Done` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `Visibility.ToPtr` has been removed
+- Function `*OpenShiftClustersClientDeletePoller.Poll` has been removed
+- Function `*OpenShiftClustersClientDeletePoller.ResumeToken` has been removed
+- Function `OpenShiftClustersClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `OpenShiftClustersClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*OpenShiftClustersClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*OpenShiftClustersClientListByResourceGroupPager.NextPage` has been removed
+- Function `*OpenShiftClustersClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `ProvisioningState.ToPtr` has been removed
+- Function `*OpenShiftClustersClientCreateOrUpdatePoller.Done` has been removed
+- Function `*OpenShiftClustersClientUpdatePoller.FinalResponse` has been removed
+- Function `*OpenShiftClustersClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*OpenShiftClustersClientListPager.Err` has been removed
+- Function `*OpenShiftClustersClientUpdatePoller.Done` has been removed
+- Function `*OpenShiftClustersClientUpdatePollerResponse.Resume` has been removed
+- Function `*OpenShiftClustersClientUpdatePoller.Poll` has been removed
+- Struct `OpenShiftClustersClientCreateOrUpdatePoller` has been removed
+- Struct `OpenShiftClustersClientCreateOrUpdatePollerResponse` has been removed
+- Struct `OpenShiftClustersClientCreateOrUpdateResult` has been removed
+- Struct `OpenShiftClustersClientDeletePoller` has been removed
+- Struct `OpenShiftClustersClientDeletePollerResponse` has been removed
+- Struct `OpenShiftClustersClientGetResult` has been removed
+- Struct `OpenShiftClustersClientListByResourceGroupPager` has been removed
+- Struct `OpenShiftClustersClientListByResourceGroupResult` has been removed
+- Struct `OpenShiftClustersClientListCredentialsResult` has been removed
+- Struct `OpenShiftClustersClientListPager` has been removed
+- Struct `OpenShiftClustersClientListResult` has been removed
+- Struct `OpenShiftClustersClientUpdatePoller` has been removed
+- Struct `OpenShiftClustersClientUpdatePollerResponse` has been removed
+- Struct `OpenShiftClustersClientUpdateResult` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Field `RawResponse` of struct `OpenShiftClustersClientDeleteResponse` has been removed
+- Field `OpenShiftClustersClientListCredentialsResult` of struct `OpenShiftClustersClientListCredentialsResponse` has been removed
+- Field `RawResponse` of struct `OpenShiftClustersClientListCredentialsResponse` has been removed
+- Field `OpenShiftClustersClientCreateOrUpdateResult` of struct `OpenShiftClustersClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `OpenShiftClustersClientCreateOrUpdateResponse` has been removed
+- Field `OpenShiftClustersClientGetResult` of struct `OpenShiftClustersClientGetResponse` has been removed
+- Field `RawResponse` of struct `OpenShiftClustersClientGetResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `OpenShiftClustersClientUpdateResult` of struct `OpenShiftClustersClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `OpenShiftClustersClientUpdateResponse` has been removed
+- Field `OpenShiftClustersClientListByResourceGroupResult` of struct `OpenShiftClustersClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `OpenShiftClustersClientListByResourceGroupResponse` has been removed
+- Field `OpenShiftClustersClientListResult` of struct `OpenShiftClustersClientListResponse` has been removed
+- Field `RawResponse` of struct `OpenShiftClustersClientListResponse` has been removed
+
+### Features Added
+
+- New field `ResumeToken` in struct `OpenShiftClustersClientBeginCreateOrUpdateOptions`
+- New anonymous field `OpenShiftCluster` in struct `OpenShiftClustersClientCreateOrUpdateResponse`
+- New anonymous field `OpenShiftClusterCredentials` in struct `OpenShiftClustersClientListCredentialsResponse`
+- New anonymous field `OpenShiftClusterList` in struct `OpenShiftClustersClientListResponse`
+- New anonymous field `OpenShiftClusterList` in struct `OpenShiftClustersClientListByResourceGroupResponse`
+- New field `ResumeToken` in struct `OpenShiftClustersClientBeginDeleteOptions`
+- New anonymous field `OpenShiftCluster` in struct `OpenShiftClustersClientGetResponse`
+- New anonymous field `OperationList` in struct `OperationsClientListResponse`
+- New field `ResumeToken` in struct `OpenShiftClustersClientBeginUpdateOptions`
+- New anonymous field `OpenShiftCluster` in struct `OpenShiftClustersClientUpdateResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

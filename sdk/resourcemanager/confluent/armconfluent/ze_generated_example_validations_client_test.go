@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,40 +17,47 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/confluent/armconfluent"
 )
 
-// x-ms-original-file: specification/confluent/resource-manager/Microsoft.Confluent/preview/2021-09-01-preview/examples/Validations_ValidateOrganizations.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/confluent/resource-manager/Microsoft.Confluent/stable/2021-12-01/examples/Validations_ValidateOrganizations.json
 func ExampleValidationsClient_ValidateOrganization() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armconfluent.NewValidationsClient("<subscription-id>", cred, nil)
+	client, err := armconfluent.NewValidationsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.ValidateOrganization(ctx,
 		"<resource-group-name>",
 		"<organization-name>",
 		armconfluent.OrganizationResource{
-			Location: to.StringPtr("<location>"),
+			Location: to.Ptr("<location>"),
 			Properties: &armconfluent.OrganizationResourceProperties{
 				OfferDetail: &armconfluent.OfferDetail{
-					ID:          to.StringPtr("<id>"),
-					PlanID:      to.StringPtr("<plan-id>"),
-					PlanName:    to.StringPtr("<plan-name>"),
-					PublisherID: to.StringPtr("<publisher-id>"),
-					TermUnit:    to.StringPtr("<term-unit>"),
+					ID:          to.Ptr("<id>"),
+					PlanID:      to.Ptr("<plan-id>"),
+					PlanName:    to.Ptr("<plan-name>"),
+					PublisherID: to.Ptr("<publisher-id>"),
+					TermUnit:    to.Ptr("<term-unit>"),
 				},
 				UserDetail: &armconfluent.UserDetail{
-					EmailAddress: to.StringPtr("<email-address>"),
-					FirstName:    to.StringPtr("<first-name>"),
-					LastName:     to.StringPtr("<last-name>"),
+					EmailAddress: to.Ptr("<email-address>"),
+					FirstName:    to.Ptr("<first-name>"),
+					LastName:     to.Ptr("<last-name>"),
 				},
 			},
 			Tags: map[string]*string{
-				"Environment": to.StringPtr("Dev"),
+				"Environment": to.Ptr("Dev"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ValidationsClientValidateOrganizationResult)
+	// TODO: use response item
+	_ = res
 }

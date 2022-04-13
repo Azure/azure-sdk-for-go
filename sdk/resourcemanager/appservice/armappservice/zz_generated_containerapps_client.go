@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ContainerAppsClient struct {
 // subscriptionID - Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewContainerAppsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ContainerAppsClient {
+func NewContainerAppsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ContainerAppsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ContainerAppsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Description for Create or update a Container App.
@@ -55,22 +60,16 @@ func NewContainerAppsClient(subscriptionID string, credential azcore.TokenCreden
 // name - Name of the Container App.
 // options - ContainerAppsClientBeginCreateOrUpdateOptions contains the optional parameters for the ContainerAppsClient.BeginCreateOrUpdate
 // method.
-func (client *ContainerAppsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, name string, containerAppEnvelope ContainerApp, options *ContainerAppsClientBeginCreateOrUpdateOptions) (ContainerAppsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, name, containerAppEnvelope, options)
-	if err != nil {
-		return ContainerAppsClientCreateOrUpdatePollerResponse{}, err
+func (client *ContainerAppsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, name string, containerAppEnvelope ContainerApp, options *ContainerAppsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[ContainerAppsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, name, containerAppEnvelope, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ContainerAppsClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ContainerAppsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ContainerAppsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ContainerAppsClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return ContainerAppsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &ContainerAppsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Description for Create or update a Container App.
@@ -122,22 +121,16 @@ func (client *ContainerAppsClient) createOrUpdateCreateRequest(ctx context.Conte
 // name - Name of the Container App.
 // options - ContainerAppsClientBeginDeleteOptions contains the optional parameters for the ContainerAppsClient.BeginDelete
 // method.
-func (client *ContainerAppsClient) BeginDelete(ctx context.Context, resourceGroupName string, name string, options *ContainerAppsClientBeginDeleteOptions) (ContainerAppsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, name, options)
-	if err != nil {
-		return ContainerAppsClientDeletePollerResponse{}, err
+func (client *ContainerAppsClient) BeginDelete(ctx context.Context, resourceGroupName string, name string, options *ContainerAppsClientBeginDeleteOptions) (*armruntime.Poller[ContainerAppsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, name, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ContainerAppsClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ContainerAppsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ContainerAppsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ContainerAppsClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return ContainerAppsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &ContainerAppsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Description for Delete a Container App.
@@ -231,7 +224,7 @@ func (client *ContainerAppsClient) getCreateRequest(ctx context.Context, resourc
 
 // getHandleResponse handles the Get response.
 func (client *ContainerAppsClient) getHandleResponse(resp *http.Response) (ContainerAppsClientGetResponse, error) {
-	result := ContainerAppsClientGetResponse{RawResponse: resp}
+	result := ContainerAppsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ContainerApp); err != nil {
 		return ContainerAppsClientGetResponse{}, err
 	}
@@ -243,16 +236,32 @@ func (client *ContainerAppsClient) getHandleResponse(resp *http.Response) (Conta
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // options - ContainerAppsClientListByResourceGroupOptions contains the optional parameters for the ContainerAppsClient.ListByResourceGroup
 // method.
-func (client *ContainerAppsClient) ListByResourceGroup(resourceGroupName string, options *ContainerAppsClientListByResourceGroupOptions) *ContainerAppsClientListByResourceGroupPager {
-	return &ContainerAppsClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *ContainerAppsClient) ListByResourceGroup(resourceGroupName string, options *ContainerAppsClientListByResourceGroupOptions) *runtime.Pager[ContainerAppsClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ContainerAppsClientListByResourceGroupResponse]{
+		More: func(page ContainerAppsClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ContainerAppsClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ContainerAppCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *ContainerAppsClientListByResourceGroupResponse) (ContainerAppsClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ContainerAppsClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ContainerAppsClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ContainerAppsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -279,7 +288,7 @@ func (client *ContainerAppsClient) listByResourceGroupCreateRequest(ctx context.
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *ContainerAppsClient) listByResourceGroupHandleResponse(resp *http.Response) (ContainerAppsClientListByResourceGroupResponse, error) {
-	result := ContainerAppsClientListByResourceGroupResponse{RawResponse: resp}
+	result := ContainerAppsClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ContainerAppCollection); err != nil {
 		return ContainerAppsClientListByResourceGroupResponse{}, err
 	}
@@ -290,16 +299,32 @@ func (client *ContainerAppsClient) listByResourceGroupHandleResponse(resp *http.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ContainerAppsClientListBySubscriptionOptions contains the optional parameters for the ContainerAppsClient.ListBySubscription
 // method.
-func (client *ContainerAppsClient) ListBySubscription(options *ContainerAppsClientListBySubscriptionOptions) *ContainerAppsClientListBySubscriptionPager {
-	return &ContainerAppsClientListBySubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySubscriptionCreateRequest(ctx, options)
+func (client *ContainerAppsClient) ListBySubscription(options *ContainerAppsClientListBySubscriptionOptions) *runtime.Pager[ContainerAppsClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ContainerAppsClientListBySubscriptionResponse]{
+		More: func(page ContainerAppsClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ContainerAppsClientListBySubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ContainerAppCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *ContainerAppsClientListBySubscriptionResponse) (ContainerAppsClientListBySubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySubscriptionCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ContainerAppsClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ContainerAppsClientListBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ContainerAppsClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
@@ -322,7 +347,7 @@ func (client *ContainerAppsClient) listBySubscriptionCreateRequest(ctx context.C
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
 func (client *ContainerAppsClient) listBySubscriptionHandleResponse(resp *http.Response) (ContainerAppsClientListBySubscriptionResponse, error) {
-	result := ContainerAppsClientListBySubscriptionResponse{RawResponse: resp}
+	result := ContainerAppsClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ContainerAppCollection); err != nil {
 		return ContainerAppsClientListBySubscriptionResponse{}, err
 	}
@@ -373,7 +398,7 @@ func (client *ContainerAppsClient) listSecretsCreateRequest(ctx context.Context,
 
 // listSecretsHandleResponse handles the ListSecrets response.
 func (client *ContainerAppsClient) listSecretsHandleResponse(resp *http.Response) (ContainerAppsClientListSecretsResponse, error) {
-	result := ContainerAppsClientListSecretsResponse{RawResponse: resp}
+	result := ContainerAppsClientListSecretsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecretsCollection); err != nil {
 		return ContainerAppsClientListSecretsResponse{}, err
 	}

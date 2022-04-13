@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type CertificatesClient struct {
 // subscriptionID - The subscription identifier.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewCertificatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CertificatesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewCertificatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CertificatesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &CertificatesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Adds new or replaces existing certificate.
@@ -96,7 +101,7 @@ func (client *CertificatesClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-07-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header.Set("If-Match", *options.IfMatch)
@@ -107,7 +112,7 @@ func (client *CertificatesClient) createOrUpdateCreateRequest(ctx context.Contex
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *CertificatesClient) createOrUpdateHandleResponse(resp *http.Response) (CertificatesClientCreateOrUpdateResponse, error) {
-	result := CertificatesClientCreateOrUpdateResponse{RawResponse: resp}
+	result := CertificatesClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateDescription); err != nil {
 		return CertificatesClientCreateOrUpdateResponse{}, err
 	}
@@ -133,7 +138,7 @@ func (client *CertificatesClient) Delete(ctx context.Context, resourceGroupName 
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return CertificatesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return CertificatesClientDeleteResponse{RawResponse: resp}, nil
+	return CertificatesClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -160,7 +165,7 @@ func (client *CertificatesClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-07-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("If-Match", ifMatch)
 	req.Raw().Header.Set("Accept", "application/json")
@@ -215,7 +220,7 @@ func (client *CertificatesClient) generateVerificationCodeCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-07-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("If-Match", ifMatch)
 	req.Raw().Header.Set("Accept", "application/json")
@@ -224,7 +229,7 @@ func (client *CertificatesClient) generateVerificationCodeCreateRequest(ctx cont
 
 // generateVerificationCodeHandleResponse handles the GenerateVerificationCode response.
 func (client *CertificatesClient) generateVerificationCodeHandleResponse(resp *http.Response) (CertificatesClientGenerateVerificationCodeResponse, error) {
-	result := CertificatesClientGenerateVerificationCodeResponse{RawResponse: resp}
+	result := CertificatesClientGenerateVerificationCodeResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateWithNonceDescription); err != nil {
 		return CertificatesClientGenerateVerificationCodeResponse{}, err
 	}
@@ -276,7 +281,7 @@ func (client *CertificatesClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-07-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -284,7 +289,7 @@ func (client *CertificatesClient) getCreateRequest(ctx context.Context, resource
 
 // getHandleResponse handles the Get response.
 func (client *CertificatesClient) getHandleResponse(resp *http.Response) (CertificatesClientGetResponse, error) {
-	result := CertificatesClientGetResponse{RawResponse: resp}
+	result := CertificatesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateDescription); err != nil {
 		return CertificatesClientGetResponse{}, err
 	}
@@ -332,7 +337,7 @@ func (client *CertificatesClient) listByIotHubCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-07-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -340,7 +345,7 @@ func (client *CertificatesClient) listByIotHubCreateRequest(ctx context.Context,
 
 // listByIotHubHandleResponse handles the ListByIotHub response.
 func (client *CertificatesClient) listByIotHubHandleResponse(resp *http.Response) (CertificatesClientListByIotHubResponse, error) {
-	result := CertificatesClientListByIotHubResponse{RawResponse: resp}
+	result := CertificatesClientListByIotHubResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateListDescription); err != nil {
 		return CertificatesClientListByIotHubResponse{}, err
 	}
@@ -395,7 +400,7 @@ func (client *CertificatesClient) verifyCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-07-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("If-Match", ifMatch)
 	req.Raw().Header.Set("Accept", "application/json")
@@ -404,7 +409,7 @@ func (client *CertificatesClient) verifyCreateRequest(ctx context.Context, resou
 
 // verifyHandleResponse handles the Verify response.
 func (client *CertificatesClient) verifyHandleResponse(resp *http.Response) (CertificatesClientVerifyResponse, error) {
-	result := CertificatesClientVerifyResponse{RawResponse: resp}
+	result := CertificatesClientVerifyResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateDescription); err != nil {
 		return CertificatesClientVerifyResponse{}, err
 	}

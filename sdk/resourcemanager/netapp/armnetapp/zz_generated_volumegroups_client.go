@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type VolumeGroupsClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewVolumeGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VolumeGroupsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewVolumeGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VolumeGroupsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &VolumeGroupsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreate - Create a volume group along with specified volumes
@@ -58,22 +63,16 @@ func NewVolumeGroupsClient(subscriptionID string, credential azcore.TokenCredent
 // body - Volume Group object supplied in the body of the operation.
 // options - VolumeGroupsClientBeginCreateOptions contains the optional parameters for the VolumeGroupsClient.BeginCreate
 // method.
-func (client *VolumeGroupsClient) BeginCreate(ctx context.Context, resourceGroupName string, accountName string, volumeGroupName string, body VolumeGroupDetails, options *VolumeGroupsClientBeginCreateOptions) (VolumeGroupsClientCreatePollerResponse, error) {
-	resp, err := client.create(ctx, resourceGroupName, accountName, volumeGroupName, body, options)
-	if err != nil {
-		return VolumeGroupsClientCreatePollerResponse{}, err
+func (client *VolumeGroupsClient) BeginCreate(ctx context.Context, resourceGroupName string, accountName string, volumeGroupName string, body VolumeGroupDetails, options *VolumeGroupsClientBeginCreateOptions) (*armruntime.Poller[VolumeGroupsClientCreateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.create(ctx, resourceGroupName, accountName, volumeGroupName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[VolumeGroupsClientCreateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[VolumeGroupsClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := VolumeGroupsClientCreatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("VolumeGroupsClient.Create", "", resp, client.pl)
-	if err != nil {
-		return VolumeGroupsClientCreatePollerResponse{}, err
-	}
-	result.Poller = &VolumeGroupsClientCreatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Create - Create a volume group along with specified volumes
@@ -117,7 +116,7 @@ func (client *VolumeGroupsClient) createCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, body)
@@ -130,22 +129,16 @@ func (client *VolumeGroupsClient) createCreateRequest(ctx context.Context, resou
 // volumeGroupName - The name of the volumeGroup
 // options - VolumeGroupsClientBeginDeleteOptions contains the optional parameters for the VolumeGroupsClient.BeginDelete
 // method.
-func (client *VolumeGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, volumeGroupName string, options *VolumeGroupsClientBeginDeleteOptions) (VolumeGroupsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, volumeGroupName, options)
-	if err != nil {
-		return VolumeGroupsClientDeletePollerResponse{}, err
+func (client *VolumeGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, volumeGroupName string, options *VolumeGroupsClientBeginDeleteOptions) (*armruntime.Poller[VolumeGroupsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, volumeGroupName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[VolumeGroupsClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[VolumeGroupsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := VolumeGroupsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("VolumeGroupsClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return VolumeGroupsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &VolumeGroupsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Delete the specified volume group only if there are no volumes under volume group.
@@ -189,7 +182,7 @@ func (client *VolumeGroupsClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -239,7 +232,7 @@ func (client *VolumeGroupsClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -247,7 +240,7 @@ func (client *VolumeGroupsClient) getCreateRequest(ctx context.Context, resource
 
 // getHandleResponse handles the Get response.
 func (client *VolumeGroupsClient) getHandleResponse(resp *http.Response) (VolumeGroupsClientGetResponse, error) {
-	result := VolumeGroupsClientGetResponse{RawResponse: resp}
+	result := VolumeGroupsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VolumeGroupDetails); err != nil {
 		return VolumeGroupsClientGetResponse{}, err
 	}
@@ -260,19 +253,26 @@ func (client *VolumeGroupsClient) getHandleResponse(resp *http.Response) (Volume
 // accountName - The name of the NetApp account
 // options - VolumeGroupsClientListByNetAppAccountOptions contains the optional parameters for the VolumeGroupsClient.ListByNetAppAccount
 // method.
-func (client *VolumeGroupsClient) ListByNetAppAccount(ctx context.Context, resourceGroupName string, accountName string, options *VolumeGroupsClientListByNetAppAccountOptions) (VolumeGroupsClientListByNetAppAccountResponse, error) {
-	req, err := client.listByNetAppAccountCreateRequest(ctx, resourceGroupName, accountName, options)
-	if err != nil {
-		return VolumeGroupsClientListByNetAppAccountResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return VolumeGroupsClientListByNetAppAccountResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return VolumeGroupsClientListByNetAppAccountResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listByNetAppAccountHandleResponse(resp)
+func (client *VolumeGroupsClient) ListByNetAppAccount(resourceGroupName string, accountName string, options *VolumeGroupsClientListByNetAppAccountOptions) *runtime.Pager[VolumeGroupsClientListByNetAppAccountResponse] {
+	return runtime.NewPager(runtime.PageProcessor[VolumeGroupsClientListByNetAppAccountResponse]{
+		More: func(page VolumeGroupsClientListByNetAppAccountResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *VolumeGroupsClientListByNetAppAccountResponse) (VolumeGroupsClientListByNetAppAccountResponse, error) {
+			req, err := client.listByNetAppAccountCreateRequest(ctx, resourceGroupName, accountName, options)
+			if err != nil {
+				return VolumeGroupsClientListByNetAppAccountResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return VolumeGroupsClientListByNetAppAccountResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return VolumeGroupsClientListByNetAppAccountResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByNetAppAccountHandleResponse(resp)
+		},
+	})
 }
 
 // listByNetAppAccountCreateRequest creates the ListByNetAppAccount request.
@@ -295,7 +295,7 @@ func (client *VolumeGroupsClient) listByNetAppAccountCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -303,7 +303,7 @@ func (client *VolumeGroupsClient) listByNetAppAccountCreateRequest(ctx context.C
 
 // listByNetAppAccountHandleResponse handles the ListByNetAppAccount response.
 func (client *VolumeGroupsClient) listByNetAppAccountHandleResponse(resp *http.Response) (VolumeGroupsClientListByNetAppAccountResponse, error) {
-	result := VolumeGroupsClientListByNetAppAccountResponse{RawResponse: resp}
+	result := VolumeGroupsClientListByNetAppAccountResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VolumeGroupList); err != nil {
 		return VolumeGroupsClientListByNetAppAccountResponse{}, err
 	}

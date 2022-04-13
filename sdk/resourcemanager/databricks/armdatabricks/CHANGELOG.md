@@ -1,5 +1,194 @@
 # Release History
 
+## 0.4.0 (2022-04-11)
+### Breaking Changes
+
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(PrivateEndpointConnectionsClientDeletePollerResponse, error)` to `(*armruntime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)`
+- Function `*PrivateLinkResourcesClient.List` return value(s) have been changed from `(*PrivateLinkResourcesClientListPager)` to `(*runtime.Pager[PrivateLinkResourcesClientListResponse])`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `*VNetPeeringClient.BeginDelete` return value(s) have been changed from `(VNetPeeringClientDeletePollerResponse, error)` to `(*armruntime.Poller[VNetPeeringClientDeleteResponse], error)`
+- Function `NewWorkspacesClient` return value(s) have been changed from `(*WorkspacesClient)` to `(*WorkspacesClient, error)`
+- Function `NewPrivateLinkResourcesClient` return value(s) have been changed from `(*PrivateLinkResourcesClient)` to `(*PrivateLinkResourcesClient, error)`
+- Function `*WorkspacesClient.BeginUpdate` return value(s) have been changed from `(WorkspacesClientUpdatePollerResponse, error)` to `(*armruntime.Poller[WorkspacesClientUpdateResponse], error)`
+- Function `*WorkspacesClient.BeginDelete` return value(s) have been changed from `(WorkspacesClientDeletePollerResponse, error)` to `(*armruntime.Poller[WorkspacesClientDeleteResponse], error)`
+- Function `*WorkspacesClient.ListByResourceGroup` return value(s) have been changed from `(*WorkspacesClientListByResourceGroupPager)` to `(*runtime.Pager[WorkspacesClientListByResourceGroupResponse])`
+- Function `NewPrivateEndpointConnectionsClient` return value(s) have been changed from `(*PrivateEndpointConnectionsClient)` to `(*PrivateEndpointConnectionsClient, error)`
+- Function `*PrivateEndpointConnectionsClient.BeginCreate` return value(s) have been changed from `(PrivateEndpointConnectionsClientCreatePollerResponse, error)` to `(*armruntime.Poller[PrivateEndpointConnectionsClientCreateResponse], error)`
+- Function `NewVNetPeeringClient` return value(s) have been changed from `(*VNetPeeringClient)` to `(*VNetPeeringClient, error)`
+- Function `NewOutboundNetworkDependenciesEndpointsClient` return value(s) have been changed from `(*OutboundNetworkDependenciesEndpointsClient)` to `(*OutboundNetworkDependenciesEndpointsClient, error)`
+- Function `*WorkspacesClient.ListBySubscription` return value(s) have been changed from `(*WorkspacesClientListBySubscriptionPager)` to `(*runtime.Pager[WorkspacesClientListBySubscriptionResponse])`
+- Function `*VNetPeeringClient.BeginCreateOrUpdate` return value(s) have been changed from `(VNetPeeringClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[VNetPeeringClientCreateOrUpdateResponse], error)`
+- Function `*WorkspacesClient.BeginCreateOrUpdate` return value(s) have been changed from `(WorkspacesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[WorkspacesClientCreateOrUpdateResponse], error)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `*VNetPeeringClient.ListByWorkspace` return value(s) have been changed from `(*VNetPeeringClientListByWorkspacePager)` to `(*runtime.Pager[VNetPeeringClientListByWorkspaceResponse])`
+- Function `*PrivateEndpointConnectionsClient.List` return value(s) have been changed from `(*PrivateEndpointConnectionsClientListPager)` to `(*runtime.Pager[PrivateEndpointConnectionsClientListResponse])`
+- Type of `WorkspaceCustomObjectParameter.Value` has been changed from `map[string]interface{}` to `interface{}`
+- Function `*PrivateLinkResourcesClientListPager.Err` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `PrivateEndpointConnectionsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Function `*WorkspacesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `WorkspacesClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VNetPeeringClientListByWorkspacePager.Err` has been removed
+- Function `PublicNetworkAccess.ToPtr` has been removed
+- Function `*WorkspacesClientUpdatePoller.Poll` has been removed
+- Function `*VNetPeeringClientListByWorkspacePager.NextPage` has been removed
+- Function `*WorkspacesClientUpdatePoller.Done` has been removed
+- Function `RequiredNsgRules.ToPtr` has been removed
+- Function `VNetPeeringClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*WorkspacesClientListByResourceGroupPager.Err` has been removed
+- Function `*VNetPeeringClientDeletePoller.ResumeToken` has been removed
+- Function `*WorkspacesClientListByResourceGroupPager.NextPage` has been removed
+- Function `KeySource.ToPtr` has been removed
+- Function `*PrivateEndpointConnectionsClientListPager.PageResponse` has been removed
+- Function `CustomParameterType.ToPtr` has been removed
+- Function `*VNetPeeringClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `PrivateEndpointConnectionsClientCreatePollerResponse.PollUntilDone` has been removed
+- Function `*VNetPeeringClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*VNetPeeringClientCreateOrUpdatePoller.Done` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePoller.Done` has been removed
+- Function `PrivateLinkServiceConnectionStatus.ToPtr` has been removed
+- Function `*PrivateLinkResourcesClientListPager.NextPage` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePoller.ResumeToken` has been removed
+- Function `*WorkspacesClientDeletePoller.Done` has been removed
+- Function `*WorkspacesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `PrivateEndpointConnectionProvisioningState.ToPtr` has been removed
+- Function `*PrivateEndpointConnectionsClientCreatePoller.FinalResponse` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePoller.Poll` has been removed
+- Function `*WorkspacesClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*WorkspacesClientUpdatePoller.ResumeToken` has been removed
+- Function `ProvisioningState.ToPtr` has been removed
+- Function `*PrivateEndpointConnectionsClientCreatePollerResponse.Resume` has been removed
+- Function `*PrivateLinkResourcesClientListPager.PageResponse` has been removed
+- Function `*WorkspacesClientListBySubscriptionPager.PageResponse` has been removed
+- Function `PeeringProvisioningState.ToPtr` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePoller.FinalResponse` has been removed
+- Function `*VNetPeeringClientDeletePoller.Poll` has been removed
+- Function `*VNetPeeringClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `WorkspacesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VNetPeeringClientDeletePoller.Done` has been removed
+- Function `*WorkspacesClientDeletePoller.FinalResponse` has been removed
+- Function `*PrivateEndpointConnectionsClientListPager.NextPage` has been removed
+- Function `CreatedByType.ToPtr` has been removed
+- Function `*WorkspacesClientListBySubscriptionPager.NextPage` has been removed
+- Function `*WorkspacesClientListBySubscriptionPager.Err` has been removed
+- Function `*WorkspacesClientDeletePollerResponse.Resume` has been removed
+- Function `*VNetPeeringClientDeletePollerResponse.Resume` has been removed
+- Function `*WorkspacesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*PrivateEndpointConnectionsClientCreatePoller.ResumeToken` has been removed
+- Function `*PrivateEndpointConnectionsClientListPager.Err` has been removed
+- Function `*WorkspacesClientDeletePoller.Poll` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `*VNetPeeringClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*PrivateEndpointConnectionsClientCreatePoller.Poll` has been removed
+- Function `*WorkspacesClientDeletePoller.ResumeToken` has been removed
+- Function `*WorkspacesClientUpdatePollerResponse.Resume` has been removed
+- Function `*WorkspacesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*VNetPeeringClientListByWorkspacePager.PageResponse` has been removed
+- Function `*PrivateEndpointConnectionsClientCreatePoller.Done` has been removed
+- Function `*WorkspacesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePollerResponse.Resume` has been removed
+- Function `*WorkspacesClientUpdatePoller.FinalResponse` has been removed
+- Function `VNetPeeringClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `PeeringState.ToPtr` has been removed
+- Function `EncryptionKeySource.ToPtr` has been removed
+- Function `WorkspacesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*VNetPeeringClientDeletePoller.FinalResponse` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `OutboundNetworkDependenciesEndpointsClientListResult` has been removed
+- Struct `PrivateEndpointConnectionsClientCreatePoller` has been removed
+- Struct `PrivateEndpointConnectionsClientCreatePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsClientCreateResult` has been removed
+- Struct `PrivateEndpointConnectionsClientDeletePoller` has been removed
+- Struct `PrivateEndpointConnectionsClientDeletePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsClientGetResult` has been removed
+- Struct `PrivateEndpointConnectionsClientListPager` has been removed
+- Struct `PrivateEndpointConnectionsClientListResult` has been removed
+- Struct `PrivateLinkResourcesClientGetResult` has been removed
+- Struct `PrivateLinkResourcesClientListPager` has been removed
+- Struct `PrivateLinkResourcesClientListResult` has been removed
+- Struct `VNetPeeringClientCreateOrUpdatePoller` has been removed
+- Struct `VNetPeeringClientCreateOrUpdatePollerResponse` has been removed
+- Struct `VNetPeeringClientCreateOrUpdateResult` has been removed
+- Struct `VNetPeeringClientDeletePoller` has been removed
+- Struct `VNetPeeringClientDeletePollerResponse` has been removed
+- Struct `VNetPeeringClientGetResult` has been removed
+- Struct `VNetPeeringClientListByWorkspacePager` has been removed
+- Struct `VNetPeeringClientListByWorkspaceResult` has been removed
+- Struct `WorkspacesClientCreateOrUpdatePoller` has been removed
+- Struct `WorkspacesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `WorkspacesClientCreateOrUpdateResult` has been removed
+- Struct `WorkspacesClientDeletePoller` has been removed
+- Struct `WorkspacesClientDeletePollerResponse` has been removed
+- Struct `WorkspacesClientGetResult` has been removed
+- Struct `WorkspacesClientListByResourceGroupPager` has been removed
+- Struct `WorkspacesClientListByResourceGroupResult` has been removed
+- Struct `WorkspacesClientListBySubscriptionPager` has been removed
+- Struct `WorkspacesClientListBySubscriptionResult` has been removed
+- Struct `WorkspacesClientUpdatePoller` has been removed
+- Struct `WorkspacesClientUpdatePollerResponse` has been removed
+- Struct `WorkspacesClientUpdateResult` has been removed
+- Field `VNetPeeringClientListByWorkspaceResult` of struct `VNetPeeringClientListByWorkspaceResponse` has been removed
+- Field `RawResponse` of struct `VNetPeeringClientListByWorkspaceResponse` has been removed
+- Field `PrivateLinkResourcesClientListResult` of struct `PrivateLinkResourcesClientListResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkResourcesClientListResponse` has been removed
+- Field `PrivateEndpointConnectionsClientListResult` of struct `PrivateEndpointConnectionsClientListResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientListResponse` has been removed
+- Field `WorkspacesClientUpdateResult` of struct `WorkspacesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `WorkspacesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `VNetPeeringClientDeleteResponse` has been removed
+- Field `WorkspacesClientListBySubscriptionResult` of struct `WorkspacesClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `WorkspacesClientListBySubscriptionResponse` has been removed
+- Field `VNetPeeringClientCreateOrUpdateResult` of struct `VNetPeeringClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `VNetPeeringClientCreateOrUpdateResponse` has been removed
+- Field `PrivateEndpointConnectionsClientGetResult` of struct `PrivateEndpointConnectionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientGetResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `PrivateEndpointConnectionsClientCreateResult` of struct `PrivateEndpointConnectionsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientDeleteResponse` has been removed
+- Field `PrivateLinkResourcesClientGetResult` of struct `PrivateLinkResourcesClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkResourcesClientGetResponse` has been removed
+- Field `OutboundNetworkDependenciesEndpointsClientListResult` of struct `OutboundNetworkDependenciesEndpointsClientListResponse` has been removed
+- Field `RawResponse` of struct `OutboundNetworkDependenciesEndpointsClientListResponse` has been removed
+- Field `WorkspacesClientListByResourceGroupResult` of struct `WorkspacesClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `WorkspacesClientListByResourceGroupResponse` has been removed
+- Field `VNetPeeringClientGetResult` of struct `VNetPeeringClientGetResponse` has been removed
+- Field `RawResponse` of struct `VNetPeeringClientGetResponse` has been removed
+- Field `WorkspacesClientCreateOrUpdateResult` of struct `WorkspacesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `WorkspacesClientCreateOrUpdateResponse` has been removed
+- Field `WorkspacesClientGetResult` of struct `WorkspacesClientGetResponse` has been removed
+- Field `RawResponse` of struct `WorkspacesClientGetResponse` has been removed
+- Field `RawResponse` of struct `WorkspacesClientDeleteResponse` has been removed
+
+### Features Added
+
+- New anonymous field `WorkspaceListResult` in struct `WorkspacesClientListBySubscriptionResponse`
+- New anonymous field `Workspace` in struct `WorkspacesClientCreateOrUpdateResponse`
+- New anonymous field `Workspace` in struct `WorkspacesClientUpdateResponse`
+- New anonymous field `PrivateLinkResourcesList` in struct `PrivateLinkResourcesClientListResponse`
+- New field `ResumeToken` in struct `WorkspacesClientBeginCreateOrUpdateOptions`
+- New anonymous field `Workspace` in struct `WorkspacesClientGetResponse`
+- New anonymous field `PrivateEndpointConnection` in struct `PrivateEndpointConnectionsClientCreateResponse`
+- New anonymous field `VirtualNetworkPeering` in struct `VNetPeeringClientGetResponse`
+- New field `ResumeToken` in struct `PrivateEndpointConnectionsClientBeginDeleteOptions`
+- New anonymous field `WorkspaceListResult` in struct `WorkspacesClientListByResourceGroupResponse`
+- New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
+- New field `ResumeToken` in struct `WorkspacesClientBeginUpdateOptions`
+- New anonymous field `VirtualNetworkPeering` in struct `VNetPeeringClientCreateOrUpdateResponse`
+- New anonymous field `GroupIDInformation` in struct `PrivateLinkResourcesClientGetResponse`
+- New field `OutboundEnvironmentEndpointArray` in struct `OutboundNetworkDependenciesEndpointsClientListResponse`
+- New field `ResumeToken` in struct `VNetPeeringClientBeginDeleteOptions`
+- New anonymous field `VirtualNetworkPeeringList` in struct `VNetPeeringClientListByWorkspaceResponse`
+- New anonymous field `PrivateEndpointConnection` in struct `PrivateEndpointConnectionsClientGetResponse`
+- New field `ResumeToken` in struct `PrivateEndpointConnectionsClientBeginCreateOptions`
+- New field `ResumeToken` in struct `VNetPeeringClientBeginCreateOrUpdateOptions`
+- New anonymous field `PrivateEndpointConnectionsList` in struct `PrivateEndpointConnectionsClientListResponse`
+- New field `ResumeToken` in struct `WorkspacesClientBeginDeleteOptions`
+
+
 ## 0.3.1 (2022-02-22)
 
 ### Other Changes

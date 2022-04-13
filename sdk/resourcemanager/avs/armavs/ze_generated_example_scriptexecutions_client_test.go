@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,58 +19,74 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs"
 )
 
-// x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/ScriptExecutions_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/ScriptExecutions_List.json
 func ExampleScriptExecutionsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armavs.NewScriptExecutionsClient("<subscription-id>", cred, nil)
+	client, err := armavs.NewScriptExecutionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.List("<resource-group-name>",
 		"<private-cloud-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/ScriptExecutions_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/ScriptExecutions_Get.json
 func ExampleScriptExecutionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armavs.NewScriptExecutionsClient("<subscription-id>", cred, nil)
+	client, err := armavs.NewScriptExecutionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<private-cloud-name>",
 		"<script-execution-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ScriptExecutionsClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/ScriptExecutions_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/ScriptExecutions_CreateOrUpdate.json
 func ExampleScriptExecutionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armavs.NewScriptExecutionsClient("<subscription-id>", cred, nil)
+	client, err := armavs.NewScriptExecutionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<private-cloud-name>",
@@ -79,79 +95,96 @@ func ExampleScriptExecutionsClient_BeginCreateOrUpdate() {
 			Properties: &armavs.ScriptExecutionProperties{
 				HiddenParameters: []armavs.ScriptExecutionParameterClassification{
 					&armavs.ScriptSecureStringExecutionParameter{
-						Name:        to.StringPtr("<name>"),
-						Type:        armavs.ScriptExecutionParameterType("SecureValue").ToPtr(),
-						SecureValue: to.StringPtr("<secure-value>"),
+						Name:        to.Ptr("<name>"),
+						Type:        to.Ptr(armavs.ScriptExecutionParameterTypeSecureValue),
+						SecureValue: to.Ptr("<secure-value>"),
 					}},
 				Parameters: []armavs.ScriptExecutionParameterClassification{
 					&armavs.ScriptStringExecutionParameter{
-						Name:  to.StringPtr("<name>"),
-						Type:  armavs.ScriptExecutionParameterType("Value").ToPtr(),
-						Value: to.StringPtr("<value>"),
+						Name:  to.Ptr("<name>"),
+						Type:  to.Ptr(armavs.ScriptExecutionParameterTypeValue),
+						Value: to.Ptr("<value>"),
 					},
 					&armavs.ScriptStringExecutionParameter{
-						Name:  to.StringPtr("<name>"),
-						Type:  armavs.ScriptExecutionParameterType("Value").ToPtr(),
-						Value: to.StringPtr("<value>"),
+						Name:  to.Ptr("<name>"),
+						Type:  to.Ptr(armavs.ScriptExecutionParameterTypeValue),
+						Value: to.Ptr("<value>"),
 					}},
-				Retention:      to.StringPtr("<retention>"),
-				ScriptCmdletID: to.StringPtr("<script-cmdlet-id>"),
-				Timeout:        to.StringPtr("<timeout>"),
+				Retention:      to.Ptr("<retention>"),
+				ScriptCmdletID: to.Ptr("<script-cmdlet-id>"),
+				Timeout:        to.Ptr("<timeout>"),
 			},
 		},
-		nil)
+		&armavs.ScriptExecutionsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ScriptExecutionsClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/ScriptExecutions_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/ScriptExecutions_Delete.json
 func ExampleScriptExecutionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armavs.NewScriptExecutionsClient("<subscription-id>", cred, nil)
+	client, err := armavs.NewScriptExecutionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
 		"<private-cloud-name>",
 		"<script-execution-name>",
-		nil)
+		&armavs.ScriptExecutionsClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/ScriptExecutions_GetExecutionLogs.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/ScriptExecutions_GetExecutionLogs.json
 func ExampleScriptExecutionsClient_GetExecutionLogs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armavs.NewScriptExecutionsClient("<subscription-id>", cred, nil)
+	client, err := armavs.NewScriptExecutionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GetExecutionLogs(ctx,
 		"<resource-group-name>",
 		"<private-cloud-name>",
 		"<script-execution-name>",
 		&armavs.ScriptExecutionsClientGetExecutionLogsOptions{ScriptOutputStreamType: []*armavs.ScriptOutputStreamType{
-			armavs.ScriptOutputStreamType("Information").ToPtr(),
-			armavs.ScriptOutputStreamType("Warnings").ToPtr(),
-			armavs.ScriptOutputStreamType("Errors").ToPtr(),
-			armavs.ScriptOutputStreamType("Output").ToPtr()},
+			to.Ptr(armavs.ScriptOutputStreamTypeInformation),
+			to.Ptr(armavs.ScriptOutputStreamType("Warnings")),
+			to.Ptr(armavs.ScriptOutputStreamType("Errors")),
+			to.Ptr(armavs.ScriptOutputStreamTypeOutput)},
 		})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ScriptExecutionsClientGetExecutionLogsResult)
+	// TODO: use response item
+	_ = res
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type JobsClient struct {
 // subscriptionID - The Subscription Id
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewJobsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *JobsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewJobsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*JobsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &JobsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCancel - Cancels the given job.
@@ -58,22 +63,16 @@ func NewJobsClient(subscriptionID string, credential azcore.TokenCredential, opt
 // dataManagerName - The name of the DataManager Resource within the specified resource group. DataManager names must be between
 // 3 and 24 characters in length and use any alphanumeric and underscore only
 // options - JobsClientBeginCancelOptions contains the optional parameters for the JobsClient.BeginCancel method.
-func (client *JobsClient) BeginCancel(ctx context.Context, dataServiceName string, jobDefinitionName string, jobID string, resourceGroupName string, dataManagerName string, options *JobsClientBeginCancelOptions) (JobsClientCancelPollerResponse, error) {
-	resp, err := client.cancel(ctx, dataServiceName, jobDefinitionName, jobID, resourceGroupName, dataManagerName, options)
-	if err != nil {
-		return JobsClientCancelPollerResponse{}, err
+func (client *JobsClient) BeginCancel(ctx context.Context, dataServiceName string, jobDefinitionName string, jobID string, resourceGroupName string, dataManagerName string, options *JobsClientBeginCancelOptions) (*armruntime.Poller[JobsClientCancelResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.cancel(ctx, dataServiceName, jobDefinitionName, jobID, resourceGroupName, dataManagerName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[JobsClientCancelResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[JobsClientCancelResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := JobsClientCancelPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("JobsClient.Cancel", "", resp, client.pl)
-	if err != nil {
-		return JobsClientCancelPollerResponse{}, err
-	}
-	result.Poller = &JobsClientCancelPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Cancel - Cancels the given job.
@@ -197,7 +196,7 @@ func (client *JobsClient) getCreateRequest(ctx context.Context, dataServiceName 
 
 // getHandleResponse handles the Get response.
 func (client *JobsClient) getHandleResponse(resp *http.Response) (JobsClientGetResponse, error) {
-	result := JobsClientGetResponse{RawResponse: resp}
+	result := JobsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Job); err != nil {
 		return JobsClientGetResponse{}, err
 	}
@@ -210,16 +209,32 @@ func (client *JobsClient) getHandleResponse(resp *http.Response) (JobsClientGetR
 // dataManagerName - The name of the DataManager Resource within the specified resource group. DataManager names must be between
 // 3 and 24 characters in length and use any alphanumeric and underscore only
 // options - JobsClientListByDataManagerOptions contains the optional parameters for the JobsClient.ListByDataManager method.
-func (client *JobsClient) ListByDataManager(resourceGroupName string, dataManagerName string, options *JobsClientListByDataManagerOptions) *JobsClientListByDataManagerPager {
-	return &JobsClientListByDataManagerPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByDataManagerCreateRequest(ctx, resourceGroupName, dataManagerName, options)
+func (client *JobsClient) ListByDataManager(resourceGroupName string, dataManagerName string, options *JobsClientListByDataManagerOptions) *runtime.Pager[JobsClientListByDataManagerResponse] {
+	return runtime.NewPager(runtime.PageProcessor[JobsClientListByDataManagerResponse]{
+		More: func(page JobsClientListByDataManagerResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp JobsClientListByDataManagerResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.JobList.NextLink)
+		Fetcher: func(ctx context.Context, page *JobsClientListByDataManagerResponse) (JobsClientListByDataManagerResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByDataManagerCreateRequest(ctx, resourceGroupName, dataManagerName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return JobsClientListByDataManagerResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return JobsClientListByDataManagerResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return JobsClientListByDataManagerResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByDataManagerHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByDataManagerCreateRequest creates the ListByDataManager request.
@@ -253,7 +268,7 @@ func (client *JobsClient) listByDataManagerCreateRequest(ctx context.Context, re
 
 // listByDataManagerHandleResponse handles the ListByDataManager response.
 func (client *JobsClient) listByDataManagerHandleResponse(resp *http.Response) (JobsClientListByDataManagerResponse, error) {
-	result := JobsClientListByDataManagerResponse{RawResponse: resp}
+	result := JobsClientListByDataManagerResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobList); err != nil {
 		return JobsClientListByDataManagerResponse{}, err
 	}
@@ -267,16 +282,32 @@ func (client *JobsClient) listByDataManagerHandleResponse(resp *http.Response) (
 // dataManagerName - The name of the DataManager Resource within the specified resource group. DataManager names must be between
 // 3 and 24 characters in length and use any alphanumeric and underscore only
 // options - JobsClientListByDataServiceOptions contains the optional parameters for the JobsClient.ListByDataService method.
-func (client *JobsClient) ListByDataService(dataServiceName string, resourceGroupName string, dataManagerName string, options *JobsClientListByDataServiceOptions) *JobsClientListByDataServicePager {
-	return &JobsClientListByDataServicePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByDataServiceCreateRequest(ctx, dataServiceName, resourceGroupName, dataManagerName, options)
+func (client *JobsClient) ListByDataService(dataServiceName string, resourceGroupName string, dataManagerName string, options *JobsClientListByDataServiceOptions) *runtime.Pager[JobsClientListByDataServiceResponse] {
+	return runtime.NewPager(runtime.PageProcessor[JobsClientListByDataServiceResponse]{
+		More: func(page JobsClientListByDataServiceResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp JobsClientListByDataServiceResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.JobList.NextLink)
+		Fetcher: func(ctx context.Context, page *JobsClientListByDataServiceResponse) (JobsClientListByDataServiceResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByDataServiceCreateRequest(ctx, dataServiceName, resourceGroupName, dataManagerName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return JobsClientListByDataServiceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return JobsClientListByDataServiceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return JobsClientListByDataServiceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByDataServiceHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByDataServiceCreateRequest creates the ListByDataService request.
@@ -314,7 +345,7 @@ func (client *JobsClient) listByDataServiceCreateRequest(ctx context.Context, da
 
 // listByDataServiceHandleResponse handles the ListByDataService response.
 func (client *JobsClient) listByDataServiceHandleResponse(resp *http.Response) (JobsClientListByDataServiceResponse, error) {
-	result := JobsClientListByDataServiceResponse{RawResponse: resp}
+	result := JobsClientListByDataServiceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobList); err != nil {
 		return JobsClientListByDataServiceResponse{}, err
 	}
@@ -330,16 +361,32 @@ func (client *JobsClient) listByDataServiceHandleResponse(resp *http.Response) (
 // 3 and 24 characters in length and use any alphanumeric and underscore only
 // options - JobsClientListByJobDefinitionOptions contains the optional parameters for the JobsClient.ListByJobDefinition
 // method.
-func (client *JobsClient) ListByJobDefinition(dataServiceName string, jobDefinitionName string, resourceGroupName string, dataManagerName string, options *JobsClientListByJobDefinitionOptions) *JobsClientListByJobDefinitionPager {
-	return &JobsClientListByJobDefinitionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByJobDefinitionCreateRequest(ctx, dataServiceName, jobDefinitionName, resourceGroupName, dataManagerName, options)
+func (client *JobsClient) ListByJobDefinition(dataServiceName string, jobDefinitionName string, resourceGroupName string, dataManagerName string, options *JobsClientListByJobDefinitionOptions) *runtime.Pager[JobsClientListByJobDefinitionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[JobsClientListByJobDefinitionResponse]{
+		More: func(page JobsClientListByJobDefinitionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp JobsClientListByJobDefinitionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.JobList.NextLink)
+		Fetcher: func(ctx context.Context, page *JobsClientListByJobDefinitionResponse) (JobsClientListByJobDefinitionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByJobDefinitionCreateRequest(ctx, dataServiceName, jobDefinitionName, resourceGroupName, dataManagerName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return JobsClientListByJobDefinitionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return JobsClientListByJobDefinitionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return JobsClientListByJobDefinitionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByJobDefinitionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByJobDefinitionCreateRequest creates the ListByJobDefinition request.
@@ -381,7 +428,7 @@ func (client *JobsClient) listByJobDefinitionCreateRequest(ctx context.Context, 
 
 // listByJobDefinitionHandleResponse handles the ListByJobDefinition response.
 func (client *JobsClient) listByJobDefinitionHandleResponse(resp *http.Response) (JobsClientListByJobDefinitionResponse, error) {
-	result := JobsClientListByJobDefinitionResponse{RawResponse: resp}
+	result := JobsClientListByJobDefinitionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobList); err != nil {
 		return JobsClientListByJobDefinitionResponse{}, err
 	}
@@ -397,22 +444,16 @@ func (client *JobsClient) listByJobDefinitionHandleResponse(resp *http.Response)
 // dataManagerName - The name of the DataManager Resource within the specified resource group. DataManager names must be between
 // 3 and 24 characters in length and use any alphanumeric and underscore only
 // options - JobsClientBeginResumeOptions contains the optional parameters for the JobsClient.BeginResume method.
-func (client *JobsClient) BeginResume(ctx context.Context, dataServiceName string, jobDefinitionName string, jobID string, resourceGroupName string, dataManagerName string, options *JobsClientBeginResumeOptions) (JobsClientResumePollerResponse, error) {
-	resp, err := client.resume(ctx, dataServiceName, jobDefinitionName, jobID, resourceGroupName, dataManagerName, options)
-	if err != nil {
-		return JobsClientResumePollerResponse{}, err
+func (client *JobsClient) BeginResume(ctx context.Context, dataServiceName string, jobDefinitionName string, jobID string, resourceGroupName string, dataManagerName string, options *JobsClientBeginResumeOptions) (*armruntime.Poller[JobsClientResumeResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.resume(ctx, dataServiceName, jobDefinitionName, jobID, resourceGroupName, dataManagerName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[JobsClientResumeResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[JobsClientResumeResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := JobsClientResumePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("JobsClient.Resume", "", resp, client.pl)
-	if err != nil {
-		return JobsClientResumePollerResponse{}, err
-	}
-	result.Poller = &JobsClientResumePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Resume - Resumes the given job.

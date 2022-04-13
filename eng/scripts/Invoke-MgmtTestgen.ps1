@@ -9,10 +9,10 @@ param(
     [switch]$cleanGenerated,
     [switch]$format,
     [switch]$tidy,
-    [string]$config = "autorest.md",
-    [string]$autorestVersion = "3.7.3",
-    [string]$goExtension = "@autorest/go@4.0.0-preview.36",
-    [string]$testExtension = "@autorest/gotest@1.3.0",
+    [string]$config,
+    [string]$autorestVersion,
+    [string]$goExtension,
+    [string]$testExtension,
     [string]$outputFolder
 )
 

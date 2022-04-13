@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type FactoriesClient struct {
 // subscriptionID - The subscription identifier.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewFactoriesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *FactoriesClient {
+func NewFactoriesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FactoriesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &FactoriesClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // ConfigureFactoryRepo - Updates a factory's repo information.
@@ -94,7 +99,7 @@ func (client *FactoriesClient) configureFactoryRepoCreateRequest(ctx context.Con
 
 // configureFactoryRepoHandleResponse handles the ConfigureFactoryRepo response.
 func (client *FactoriesClient) configureFactoryRepoHandleResponse(resp *http.Response) (FactoriesClientConfigureFactoryRepoResponse, error) {
-	result := FactoriesClientConfigureFactoryRepoResponse{RawResponse: resp}
+	result := FactoriesClientConfigureFactoryRepoResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Factory); err != nil {
 		return FactoriesClientConfigureFactoryRepoResponse{}, err
 	}
@@ -154,7 +159,7 @@ func (client *FactoriesClient) createOrUpdateCreateRequest(ctx context.Context, 
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *FactoriesClient) createOrUpdateHandleResponse(resp *http.Response) (FactoriesClientCreateOrUpdateResponse, error) {
-	result := FactoriesClientCreateOrUpdateResponse{RawResponse: resp}
+	result := FactoriesClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Factory); err != nil {
 		return FactoriesClientCreateOrUpdateResponse{}, err
 	}
@@ -178,7 +183,7 @@ func (client *FactoriesClient) Delete(ctx context.Context, resourceGroupName str
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return FactoriesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return FactoriesClientDeleteResponse{RawResponse: resp}, nil
+	return FactoriesClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -258,7 +263,7 @@ func (client *FactoriesClient) getCreateRequest(ctx context.Context, resourceGro
 
 // getHandleResponse handles the Get response.
 func (client *FactoriesClient) getHandleResponse(resp *http.Response) (FactoriesClientGetResponse, error) {
-	result := FactoriesClientGetResponse{RawResponse: resp}
+	result := FactoriesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Factory); err != nil {
 		return FactoriesClientGetResponse{}, err
 	}
@@ -315,7 +320,7 @@ func (client *FactoriesClient) getDataPlaneAccessCreateRequest(ctx context.Conte
 
 // getDataPlaneAccessHandleResponse handles the GetDataPlaneAccess response.
 func (client *FactoriesClient) getDataPlaneAccessHandleResponse(resp *http.Response) (FactoriesClientGetDataPlaneAccessResponse, error) {
-	result := FactoriesClientGetDataPlaneAccessResponse{RawResponse: resp}
+	result := FactoriesClientGetDataPlaneAccessResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessPolicyResponse); err != nil {
 		return FactoriesClientGetDataPlaneAccessResponse{}, err
 	}
@@ -372,7 +377,7 @@ func (client *FactoriesClient) getGitHubAccessTokenCreateRequest(ctx context.Con
 
 // getGitHubAccessTokenHandleResponse handles the GetGitHubAccessToken response.
 func (client *FactoriesClient) getGitHubAccessTokenHandleResponse(resp *http.Response) (FactoriesClientGetGitHubAccessTokenResponse, error) {
-	result := FactoriesClientGetGitHubAccessTokenResponse{RawResponse: resp}
+	result := FactoriesClientGetGitHubAccessTokenResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GitHubAccessTokenResponse); err != nil {
 		return FactoriesClientGetGitHubAccessTokenResponse{}, err
 	}
@@ -382,16 +387,32 @@ func (client *FactoriesClient) getGitHubAccessTokenHandleResponse(resp *http.Res
 // List - Lists factories under the specified subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - FactoriesClientListOptions contains the optional parameters for the FactoriesClient.List method.
-func (client *FactoriesClient) List(options *FactoriesClientListOptions) *FactoriesClientListPager {
-	return &FactoriesClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *FactoriesClient) List(options *FactoriesClientListOptions) *runtime.Pager[FactoriesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[FactoriesClientListResponse]{
+		More: func(page FactoriesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp FactoriesClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.FactoryListResponse.NextLink)
+		Fetcher: func(ctx context.Context, page *FactoriesClientListResponse) (FactoriesClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return FactoriesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return FactoriesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return FactoriesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -414,7 +435,7 @@ func (client *FactoriesClient) listCreateRequest(ctx context.Context, options *F
 
 // listHandleResponse handles the List response.
 func (client *FactoriesClient) listHandleResponse(resp *http.Response) (FactoriesClientListResponse, error) {
-	result := FactoriesClientListResponse{RawResponse: resp}
+	result := FactoriesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FactoryListResponse); err != nil {
 		return FactoriesClientListResponse{}, err
 	}
@@ -426,16 +447,32 @@ func (client *FactoriesClient) listHandleResponse(resp *http.Response) (Factorie
 // resourceGroupName - The resource group name.
 // options - FactoriesClientListByResourceGroupOptions contains the optional parameters for the FactoriesClient.ListByResourceGroup
 // method.
-func (client *FactoriesClient) ListByResourceGroup(resourceGroupName string, options *FactoriesClientListByResourceGroupOptions) *FactoriesClientListByResourceGroupPager {
-	return &FactoriesClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *FactoriesClient) ListByResourceGroup(resourceGroupName string, options *FactoriesClientListByResourceGroupOptions) *runtime.Pager[FactoriesClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[FactoriesClientListByResourceGroupResponse]{
+		More: func(page FactoriesClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp FactoriesClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.FactoryListResponse.NextLink)
+		Fetcher: func(ctx context.Context, page *FactoriesClientListByResourceGroupResponse) (FactoriesClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return FactoriesClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return FactoriesClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return FactoriesClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -462,7 +499,7 @@ func (client *FactoriesClient) listByResourceGroupCreateRequest(ctx context.Cont
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *FactoriesClient) listByResourceGroupHandleResponse(resp *http.Response) (FactoriesClientListByResourceGroupResponse, error) {
-	result := FactoriesClientListByResourceGroupResponse{RawResponse: resp}
+	result := FactoriesClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FactoryListResponse); err != nil {
 		return FactoriesClientListByResourceGroupResponse{}, err
 	}
@@ -518,7 +555,7 @@ func (client *FactoriesClient) updateCreateRequest(ctx context.Context, resource
 
 // updateHandleResponse handles the Update response.
 func (client *FactoriesClient) updateHandleResponse(resp *http.Response) (FactoriesClientUpdateResponse, error) {
-	result := FactoriesClientUpdateResponse{RawResponse: resp}
+	result := FactoriesClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Factory); err != nil {
 		return FactoriesClientUpdateResponse{}, err
 	}

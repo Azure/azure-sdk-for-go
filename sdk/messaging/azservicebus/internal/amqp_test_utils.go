@@ -62,6 +62,7 @@ type FakeAMQPReceiver struct {
 
 	PrefetchedCalled int
 	ReceiveCalled    int
+	ReceiveFn        func(ctx context.Context) (*amqp.Message, error)
 
 	ReceiveResults []struct {
 		M *amqp.Message
@@ -103,6 +104,10 @@ func (r *FakeAMQPReceiver) DrainCredit(ctx context.Context) error {
 // is empty, will block on ctx.Done().
 func (r *FakeAMQPReceiver) Receive(ctx context.Context) (*amqp.Message, error) {
 	r.ReceiveCalled++
+
+	if r.ReceiveFn != nil {
+		return r.ReceiveFn(ctx)
+	}
 
 	if len(r.ReceiveResults) == 0 {
 		<-ctx.Done()
@@ -168,7 +173,7 @@ func (l *FakeAMQPLinks) Close(ctx context.Context, permanently bool) error {
 	return nil
 }
 
-func (l *FakeAMQPLinks) CloseIfNeeded(ctx context.Context, err error) recoveryKind {
+func (l *FakeAMQPLinks) CloseIfNeeded(ctx context.Context, err error) RecoveryKind {
 	l.CloseIfNeededCalled++
 	return GetRecoveryKind(err)
 }
@@ -223,6 +228,6 @@ func (ns *FakeNS) Check() error {
 	return nil
 }
 
-func (ns *FakeNS) NewAMQPLinks(entityPath string, createLinkFunc CreateLinkFunc) AMQPLinks {
+func (ns *FakeNS) NewAMQPLinks(entityPath string, createLinkFunc CreateLinkFunc, getRecoveryKindFunc func(err error) RecoveryKind) AMQPLinks {
 	return ns.AMQPLinks
 }

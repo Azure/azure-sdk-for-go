@@ -1,7 +1,11 @@
 # Azure Key Vault Secrets client library for Go
+Azure Key Vault helps solve the following problems:
+* Secrets management (this library) - securely store and control access to tokens, passwords, certificates, API keys, and other secrets
+* Cryptographic key management ([azkeys](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys)) - create, store, and control access to the keys used to encrypt your data
+* Certificate management ([azcertificates](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azcertificates)) - create, manage, and deploy public and private SSL/TLS certificates
 Azure Key Vault helps securely store and control access to tokens, passwords, certificates, API keys, and other secrets.
 
-[Source code][secret_client_src] | [API reference documentation][reference_docs] | [Product documentation][keyvault_docs]
+[Source code][secret_client_src] | [Package (pkg.go.dev)][reference_docs] | [Product documentation][keyvault_docs] | [Samples][secrets_samples]
 
 ## Getting started
 
@@ -18,7 +22,7 @@ go get -u github.com/Azure/azure-sdk-for-go/sdk/azidentity
 
 ### Prerequisites
 * An [Azure subscription][azure_sub]
-* Go version 1.16 or later
+* Go version 1.18 or later
 * A Key Vault. If you need to create one, you can use the [Azure Cloud Shell][azure_cloud_shell] to create one with these commands (replace `"my-resource-group"` and `"my-key-vault"` with your own, unique names):
 
   (Optional) if you want a new resource group to hold the Key Vault:
@@ -103,9 +107,29 @@ Once the **AZURE_CLIENT_ID**, **AZURE_CLIENT_SECRET** and **AZURE_TENANT_ID** en
 Constructing the client also requires your vault's URL, which you can get from the Azure CLI or the Azure Portal. In the Azure Portal, this URL is the vault's "DNS Name".
 
 ```golang
-cred, err := azidentity.NewDefaultAzureCredential(nil)
+import (
+	"context"
+	"fmt"
+	"os"
+	"time"
 
-client, err := azsecrets.NewClient("https://my-key-vault.vault.azure.net/", cred, nil)
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets"
+)
+
+func main() {
+	vaultURL := os.Getenv("AZURE_KEYVAULT_URL")
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		panic(err)
+	}
+
+	client, err := azsecrets.NewClient(vaultURL, cred, nil)
+	if err != nil {
+		panic(err)
+	}
+}
 ```
 
 ## Key concepts
@@ -123,93 +147,202 @@ This section contains code snippets covering common tasks:
 * [List Secrets](#list-secrets "List Secrets")
 
 ### Set a Secret
-[SetSecret](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets@v0.1.1#Client.SetSecret) creates new secrets and changes the values of existing secrets. If no secret with the given name exists, `SetSecret` creates a new secret with that name and the given value. If the given name is in use, `SetSecret` creates a new version of that secret, with the given value.
+[SetSecret](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets#Client.SetSecret) creates new secrets and changes the values of existing secrets. If no secret with the given name exists, `SetSecret` creates a new secret with that name and the given value. If the given name is in use, `SetSecret` creates a new version of that secret, with the given value.
 
 ```golang
-cred, err := azidentity.NewDefaultAzureCredential(nil)
-client, err := azsecrets.NewClient("https://my-key-vault.vault.azure.net/", cred, nil)
+import (
+	"context"
+	"fmt"
+	"os"
 
-resp, err := client.SetSecret(context.Background(), "secretName", "secretValue", nil)
-if err != nil {
-    // handle error
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets"
+)
+
+func main() {
+	vaultURL := os.Getenv("AZURE_KEYVAULT_URL")
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		panic(err)
+	}
+
+	client, err := azsecrets.NewClient(vaultURL, cred, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	secretName := "mySecret"
+	secretValue := "mySecretValue"
+
+	resp, err := client.SetSecret(context.TODO(), secretName, secretValue, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("Set secret %s", *resp.Secret.ID)
 }
-
-fmt.Printf("Name: %s, Value: %s\n", *resp.ID, *resp.Value)
 ```
 
 ### Retrieve a Secret
-[GetSecret](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets@v0.1.1#Client.GetSecret) retrieves a secret previously stored in the Key Vault.
+[GetSecret](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets#Client.GetSecret) retrieves a secret previously stored in the Key Vault.
 
 ```golang
-cred, err := azidentity.NewDefaultAzureCredential(nil)
-client, err := azsecrets.NewClient("https://my-key-vault.vault.azure.net/", cred, nil)
+import (
+	"context"
+	"fmt"
+	"os"
 
-resp, err := client.GetSecret(context.Background(), "mySecretName", nil)
-if err != nil {
-    // handle error
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets"
+)
+
+func main() {
+	vaultURL := os.Getenv("AZURE_KEYVAULT_URL")
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		panic(err)
+	}
+
+	client, err := azsecrets.NewClient(vaultURL, cred, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	resp, err := client.GetSecret(context.TODO(), "mySecretName", nil)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("Secret Name: %s\tSecret Value: %s", *resp.Secret.ID, *resp.Secret.Value)
 }
-
-fmt.Printf("Name: %s, Value: %s\n", *resp.ID, *resp.Value)
 ```
 
 ### Update Secret metadata
 `UpdateSecretProperties` updates a secret's metadata. It cannot change the secret's value; use [SetSecret](#set-a-secret) to set a secret's value.
 
 ```golang
-cred, err := azidentity.NewDefaultAzureCredential(nil)
-client, err := azsecrets.NewClient("https://my-key-vault.vault.azure.net/", cred, nil)
+import (
+	"context"
+	"fmt"
+	"os"
 
-// Clients may specify the content type of a secret to assist in interpreting the secret data when it's retrieved
-contentType := "text/plain"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets"
+)
 
-// We will also disable the secret for further use
+func main() {
+	vaultURL := os.Getenv("AZURE_KEYVAULT_URL")
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		panic(err)
+	}
 
-properties := azsecrets.Properties{
-    ContentType: to.StringPtr("password"),
-    Tags: map[string]string{
-        "Tag1": "TagVal1",
-    },
-    SecretAttributes: &azsecrets.Attributes{
-        Enabled: to.BoolPtr(true),
-    },
+	client, err := azsecrets.NewClient(vaultURL, cred, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	getResp, err := client.GetSecret(context.TODO(), "secret-to-update", nil)
+	if err != nil {
+		panic(err)
+	}
+
+	if getResp.Secret.Properties == nil {
+		getResp.Secret.Properties = &azsecrets.Properties{}
+	}
+	getResp.Secret.Properties = &azsecrets.Properties{
+		Enabled:     to.Ptr(true),
+		ExpiresOn:   to.Ptr(time.Now().Add(48 * time.Hour)),
+		NotBefore:   to.Ptr(time.Now().Add(-24 * time.Hour)),
+		ContentType: to.Ptr("password"),
+		Tags:        map[string]string{"Tag1": "Tag1Value"},
+		// Remember to preserve the name and version
+		Name:    getResp.Secret.Properties.Name,
+		Version: getResp.Secret.Properties.Version,
+	}
+	resp, err := client.UpdateSecretProperties(context.Background(), *getResp.Secret, nil)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("Updated secret with ID: %s\n", *resp.Secret.ID)
 }
-
-resp, err := client.UpdateSecretProperties(context.Background(), "mySecretName", properties, nil)
-if err != nil {
-    // handle error...
-}
-
-fmt.Printf("Updated on: %v, Content type: %v, Enabled: %v", *resp.Attributes.Updated, *resp.ContentType, *resp.Attributes.Enabled)
 ```
 
 ### Delete a Secret
-[BeginDeleteSecret](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets@v0.1.1#Client.BeginDeleteSecret) requests Key Vault delete a secret, returning a poller which allows you to wait for the deletion to finish. Waiting is helpful when the vault has [soft-delete][soft_delete] enabled, and you want to purge (permanently delete) the secret as soon as possible. When [soft-delete][soft_delete] is disabled, `BeginDeleteSecret` itself is permanent.
+[BeginDeleteSecret](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets#Client.BeginDeleteSecret) requests Key Vault delete a secret, returning a poller which allows you to wait for the deletion to finish. Waiting is helpful when the vault has [soft-delete][soft_delete] enabled, and you want to purge (permanently delete) the secret as soon as possible. When [soft-delete][soft_delete] is disabled, `BeginDeleteSecret` itself is permanent.
 
 ```golang
-cred, err := azidentity.NewDefaultAzureCredential(nil)
-client, err := azsecrets.NewClient("https://my-key-vault.vault.azure.net/", cred, nil)
+import (
+	"context"
+	"fmt"
+	"os"
 
-resp, err := client.BeginDeleteSecret(context.Background(), "secret-name", nil)
-final, err := resp.PollUntilDone(context.Background(), 1 * time.Second)
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets"
+)
+
+func main() {
+	vaultURL := os.Getenv("AZURE_KEYVAULT_URL")
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		panic(err)
+	}
+
+	client, err := azsecrets.NewClient(vaultURL, cred, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	resp, err := client.BeginDeleteSecret(context.TODO(), "secretToDelete", nil)
+	if err != nil {
+		panic(err)
+	}
+
+	// If you do not care when the secret is deleted, you do not have to
+	// call resp.PollUntilDone. If you need to know when it's done use
+	// the PollUntilDone method.
+	_, err = resp.PollUntilDone(context.TODO(), 250*time.Millisecond)
+	if err != nil {
+		panic(err)
+	}
+}
 ```
 
 ### List secrets
-[ListSecrets](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets@v0.1.1#Client.ListSecrets) lists the properties of all of the secrets in the client's vault. This list doesn't include the secret's values.
+[ListPropertiesOfSecrets](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets#Client.ListPropertiesOfSecrets) lists the properties of all of the secrets in the client's vault. This list doesn't include the secret's values.
 
 ```golang
-cred, err := azidentity.NewDefaultAzureCredential(nil)
-client, err := azsecrets.NewClient("https://my-key-vault.vault.azure.net/", cred, nil)
+import (
+	"context"
+	"fmt"
+	"os"
 
-pager := client.ListSecrets(nil)
-for pager.NextPage(context.Background()) {
-    resp := pager.PageResponse()
-    for _, secret := range resp.Secrets {
-        fmt.Printf("Secret ID: %s", *secret.ID)
-    }
-}
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets"
+)
 
-if pager.Err() != nil {
-    // handle error
+func main() {
+	vaultURL := os.Getenv("AZURE_KEYVAULT_URL")
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		panic(err)
+	}
+
+	client, err := azsecrets.NewClient(vaultURL, cred, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	pager := client.ListPropertiesOfSecrets(nil)
+	for pager.More() {
+		page, err := pager.NextPage(context.TODO())
+		if err != nil {
+			panic(err)
+		}
+		for _, v := range page.Secrets {
+			fmt.Printf("Secret Name: %s\tSecret Tags: %v\n", *v.ID, v.Tags)
+		}
+	}
 }
 ```
 
@@ -221,9 +354,9 @@ All I/O operations will return an `error` that can be investigated to discover m
 ```golang
 resp, err := client.GetSecret(context.Background(), "mySecretName", nil)
 if err != nil {
-    var httpErr azcore.HTTPResponse
+    var httpErr azcore.ResponseError
     if errors.As(err, &httpErr) {
-        // investigate httpErr.RawResponse()
+        // investigate httpErr.RawResponse
     }
 }
 ```
@@ -254,7 +387,7 @@ You can access the raw `*http.Response` returned by the service using the `runti
 ```go
 import "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 
-func GetHTTPResponse() {
+func main() {
     var respFromCtx *http.Response
     ctx := runtime.WithCaptureResponse(context.Background(), &respFromCtx)
     _, err = client.GetSecret(ctx, "mySecretName", nil)
@@ -286,8 +419,9 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [keyvault_docs]: https://docs.microsoft.com/azure/key-vault/
 [rbac_guide]: https://docs.microsoft.com/azure/key-vault/general/rbac-guide
 [reference_docs]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets
-[secret_client_docs]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets@v0.1.1#Client
+[secret_client_docs]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets#Client
 [secret_client_src]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/keyvault/azsecrets/client.go
 [soft_delete]: https://docs.microsoft.com/azure/key-vault/general/soft-delete-overview
+[secrets_samples]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/keyvault/azsecrets/example_test.go
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-go%2Fsdk%2Fkeyvault%2Fazsecrets%2FREADME.png)

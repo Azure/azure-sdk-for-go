@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type ComputePoliciesClient struct {
 // forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewComputePoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ComputePoliciesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewComputePoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ComputePoliciesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ComputePoliciesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates the specified compute policy. During update, the compute policy with the specified
@@ -107,7 +112,7 @@ func (client *ComputePoliciesClient) createOrUpdateCreateRequest(ctx context.Con
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *ComputePoliciesClient) createOrUpdateHandleResponse(resp *http.Response) (ComputePoliciesClientCreateOrUpdateResponse, error) {
-	result := ComputePoliciesClientCreateOrUpdateResponse{RawResponse: resp}
+	result := ComputePoliciesClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComputePolicy); err != nil {
 		return ComputePoliciesClientCreateOrUpdateResponse{}, err
 	}
@@ -132,7 +137,7 @@ func (client *ComputePoliciesClient) Delete(ctx context.Context, resourceGroupNa
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return ComputePoliciesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ComputePoliciesClientDeleteResponse{RawResponse: resp}, nil
+	return ComputePoliciesClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -218,7 +223,7 @@ func (client *ComputePoliciesClient) getCreateRequest(ctx context.Context, resou
 
 // getHandleResponse handles the Get response.
 func (client *ComputePoliciesClient) getHandleResponse(resp *http.Response) (ComputePoliciesClientGetResponse, error) {
-	result := ComputePoliciesClientGetResponse{RawResponse: resp}
+	result := ComputePoliciesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComputePolicy); err != nil {
 		return ComputePoliciesClientGetResponse{}, err
 	}
@@ -232,16 +237,32 @@ func (client *ComputePoliciesClient) getHandleResponse(resp *http.Response) (Com
 // accountName - The name of the Data Lake Analytics account.
 // options - ComputePoliciesClientListByAccountOptions contains the optional parameters for the ComputePoliciesClient.ListByAccount
 // method.
-func (client *ComputePoliciesClient) ListByAccount(resourceGroupName string, accountName string, options *ComputePoliciesClientListByAccountOptions) *ComputePoliciesClientListByAccountPager {
-	return &ComputePoliciesClientListByAccountPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByAccountCreateRequest(ctx, resourceGroupName, accountName, options)
+func (client *ComputePoliciesClient) ListByAccount(resourceGroupName string, accountName string, options *ComputePoliciesClientListByAccountOptions) *runtime.Pager[ComputePoliciesClientListByAccountResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ComputePoliciesClientListByAccountResponse]{
+		More: func(page ComputePoliciesClientListByAccountResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ComputePoliciesClientListByAccountResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ComputePolicyListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ComputePoliciesClientListByAccountResponse) (ComputePoliciesClientListByAccountResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByAccountCreateRequest(ctx, resourceGroupName, accountName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ComputePoliciesClientListByAccountResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ComputePoliciesClientListByAccountResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ComputePoliciesClientListByAccountResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByAccountHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByAccountCreateRequest creates the ListByAccount request.
@@ -272,7 +293,7 @@ func (client *ComputePoliciesClient) listByAccountCreateRequest(ctx context.Cont
 
 // listByAccountHandleResponse handles the ListByAccount response.
 func (client *ComputePoliciesClient) listByAccountHandleResponse(resp *http.Response) (ComputePoliciesClientListByAccountResponse, error) {
-	result := ComputePoliciesClientListByAccountResponse{RawResponse: resp}
+	result := ComputePoliciesClientListByAccountResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComputePolicyListResult); err != nil {
 		return ComputePoliciesClientListByAccountResponse{}, err
 	}
@@ -335,7 +356,7 @@ func (client *ComputePoliciesClient) updateCreateRequest(ctx context.Context, re
 
 // updateHandleResponse handles the Update response.
 func (client *ComputePoliciesClient) updateHandleResponse(resp *http.Response) (ComputePoliciesClientUpdateResponse, error) {
-	result := ComputePoliciesClientUpdateResponse{RawResponse: resp}
+	result := ComputePoliciesClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComputePolicy); err != nil {
 		return ComputePoliciesClientUpdateResponse{}, err
 	}

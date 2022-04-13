@@ -27,6 +27,7 @@ type DatabaseProperties struct {
 	LastModified time.Time `json:"_ts,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaler interface
 func (tp DatabaseProperties) MarshalJSON() ([]byte, error) {
 	buffer := bytes.NewBufferString("{")
 
@@ -57,6 +58,7 @@ func (tp DatabaseProperties) MarshalJSON() ([]byte, error) {
 	return buffer.Bytes(), nil
 }
 
+// UnmarshalJSON implements the json.Unmarshaler interface
 func (tp *DatabaseProperties) UnmarshalJSON(b []byte) error {
 	var attributes map[string]json.RawMessage
 	err := json.Unmarshal(b, &attributes)

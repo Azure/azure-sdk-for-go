@@ -1,3 +1,6 @@
+//go:build go1.18
+// +build go1.18
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -5,12 +8,13 @@ package azblob
 
 import (
 	"context"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/stretchr/testify/assert"
 )
 
 //var headersToIgnoreForLease = []string {"X-Ms-Proposed-Lease-Id", "X-Ms-Lease-Id"}
-var proposedLeaseIDs = []*string{to.StringPtr("c820a799-76d7-4ee2-6e15-546f19325c2c"), to.StringPtr("326cc5e1-746e-4af8-4811-a50e6629a8ca")}
+var proposedLeaseIDs = []*string{to.Ptr("c820a799-76d7-4ee2-6e15-546f19325c2c"), to.Ptr("326cc5e1-746e-4af8-4811-a50e6629a8ca")}
 
 func (s *azblobTestSuite) TestContainerAcquireLease() {
 	_assert := assert.New(s.T())
@@ -30,7 +34,7 @@ func (s *azblobTestSuite) TestContainerAcquireLease() {
 	containerLeaseClient, _ := containerClient.NewContainerLeaseClient(proposedLeaseIDs[0])
 
 	ctx := context.Background()
-	acquireLeaseResponse, err := containerLeaseClient.AcquireLease(ctx, &AcquireLeaseContainerOptions{Duration: to.Int32Ptr(60)})
+	acquireLeaseResponse, err := containerLeaseClient.AcquireLease(ctx, &AcquireLeaseContainerOptions{Duration: to.Ptr[int32](60)})
 	_assert.Nil(err)
 	_assert.NotNil(acquireLeaseResponse.LeaseID)
 	_assert.EqualValues(acquireLeaseResponse.LeaseID, containerLeaseClient.leaseID)
@@ -56,7 +60,7 @@ func (s *azblobTestSuite) TestContainerDeleteContainerWithoutLeaseId() {
 	containerLeaseClient, _ := containerClient.NewContainerLeaseClient(proposedLeaseIDs[0])
 
 	ctx := context.Background()
-	acquireLeaseResponse, err := containerLeaseClient.AcquireLease(ctx, &AcquireLeaseContainerOptions{Duration: to.Int32Ptr(60)})
+	acquireLeaseResponse, err := containerLeaseClient.AcquireLease(ctx, &AcquireLeaseContainerOptions{Duration: to.Ptr[int32](60)})
 	_assert.Nil(err)
 	_assert.NotNil(acquireLeaseResponse.LeaseID)
 	_assert.EqualValues(acquireLeaseResponse.LeaseID, containerLeaseClient.leaseID)
@@ -92,7 +96,7 @@ func (s *azblobTestSuite) TestContainerReleaseLease() {
 	containerLeaseClient, _ := containerClient.NewContainerLeaseClient(proposedLeaseIDs[0])
 
 	ctx := context.Background()
-	acquireLeaseResponse, err := containerLeaseClient.AcquireLease(ctx, &AcquireLeaseContainerOptions{Duration: to.Int32Ptr(60)})
+	acquireLeaseResponse, err := containerLeaseClient.AcquireLease(ctx, &AcquireLeaseContainerOptions{Duration: to.Ptr[int32](60)})
 	_assert.Nil(err)
 	_assert.NotNil(acquireLeaseResponse.LeaseID)
 	_assert.EqualValues(acquireLeaseResponse.LeaseID, containerLeaseClient.leaseID)
@@ -126,7 +130,7 @@ func (s *azblobTestSuite) TestContainerRenewLease() {
 	containerLeaseClient, _ := containerClient.NewContainerLeaseClient(proposedLeaseIDs[0])
 
 	ctx := context.Background()
-	acquireLeaseResponse, err := containerLeaseClient.AcquireLease(ctx, &AcquireLeaseContainerOptions{Duration: to.Int32Ptr(15)})
+	acquireLeaseResponse, err := containerLeaseClient.AcquireLease(ctx, &AcquireLeaseContainerOptions{Duration: to.Ptr[int32](15)})
 	_assert.Nil(err)
 	_assert.NotNil(acquireLeaseResponse.LeaseID)
 	_assert.EqualValues(acquireLeaseResponse.LeaseID, containerLeaseClient.leaseID)
@@ -157,7 +161,7 @@ func (s *azblobTestSuite) TestContainerChangeLease() {
 	containerLeaseClient, _ := containerClient.NewContainerLeaseClient(proposedLeaseIDs[0])
 
 	ctx := context.Background()
-	acquireLeaseResponse, err := containerLeaseClient.AcquireLease(ctx, &AcquireLeaseContainerOptions{Duration: to.Int32Ptr(15)})
+	acquireLeaseResponse, err := containerLeaseClient.AcquireLease(ctx, &AcquireLeaseContainerOptions{Duration: to.Ptr[int32](15)})
 	_assert.Nil(err)
 	_assert.NotNil(acquireLeaseResponse.LeaseID)
 	_assert.EqualValues(acquireLeaseResponse.LeaseID, containerLeaseClient.leaseID)
@@ -197,7 +201,7 @@ func (s *azblobTestSuite) TestBlobAcquireLease() {
 	blobLeaseClient, _ := bbClient.NewBlobLeaseClient(proposedLeaseIDs[0])
 
 	ctx := context.Background()
-	acquireLeaseResponse, err := blobLeaseClient.AcquireLease(ctx, &AcquireLeaseBlobOptions{Duration: to.Int32Ptr(60)})
+	acquireLeaseResponse, err := blobLeaseClient.AcquireLease(ctx, &AcquireLeaseBlobOptions{Duration: to.Ptr[int32](60)})
 	_assert.Nil(err)
 	_assert.NotNil(acquireLeaseResponse.LeaseID)
 	_assert.EqualValues(acquireLeaseResponse.LeaseID, blobLeaseClient.leaseID)
@@ -227,7 +231,7 @@ func (s *azblobTestSuite) TestDeleteBlobWithoutLeaseId() {
 	blobLeaseClient, _ := bbClient.NewBlobLeaseClient(proposedLeaseIDs[0])
 
 	ctx := context.Background()
-	acquireLeaseResponse, err := blobLeaseClient.AcquireLease(ctx, &AcquireLeaseBlobOptions{Duration: to.Int32Ptr(60)})
+	acquireLeaseResponse, err := blobLeaseClient.AcquireLease(ctx, &AcquireLeaseBlobOptions{Duration: to.Ptr[int32](60)})
 	_assert.Nil(err)
 	_assert.NotNil(acquireLeaseResponse.LeaseID)
 	_assert.EqualValues(acquireLeaseResponse.LeaseID, blobLeaseClient.leaseID)
@@ -267,7 +271,7 @@ func (s *azblobTestSuite) TestBlobReleaseLease() {
 	blobLeaseClient, _ := bbClient.NewBlobLeaseClient(proposedLeaseIDs[0])
 
 	ctx := context.Background()
-	acquireLeaseResponse, err := blobLeaseClient.AcquireLease(ctx, &AcquireLeaseBlobOptions{Duration: to.Int32Ptr(60)})
+	acquireLeaseResponse, err := blobLeaseClient.AcquireLease(ctx, &AcquireLeaseBlobOptions{Duration: to.Ptr[int32](60)})
 	_assert.Nil(err)
 	_assert.NotNil(acquireLeaseResponse.LeaseID)
 	_assert.EqualValues(acquireLeaseResponse.LeaseID, blobLeaseClient.leaseID)
@@ -300,7 +304,7 @@ func (s *azblobTestSuite) TestBlobRenewLease() {
 	blobLeaseClient, _ := bbClient.NewBlobLeaseClient(proposedLeaseIDs[0])
 
 	ctx := context.Background()
-	acquireLeaseResponse, err := blobLeaseClient.AcquireLease(ctx, &AcquireLeaseBlobOptions{Duration: to.Int32Ptr(15)})
+	acquireLeaseResponse, err := blobLeaseClient.AcquireLease(ctx, &AcquireLeaseBlobOptions{Duration: to.Ptr[int32](15)})
 	_assert.Nil(err)
 	_assert.NotNil(acquireLeaseResponse.LeaseID)
 	_assert.EqualValues(acquireLeaseResponse.LeaseID, blobLeaseClient.leaseID)
@@ -333,7 +337,7 @@ func (s *azblobTestSuite) TestBlobChangeLease() {
 	blobLeaseClient, _ := bbClient.NewBlobLeaseClient(proposedLeaseIDs[0])
 
 	ctx := context.Background()
-	acquireLeaseResponse, err := blobLeaseClient.AcquireLease(ctx, &AcquireLeaseBlobOptions{Duration: to.Int32Ptr(15)})
+	acquireLeaseResponse, err := blobLeaseClient.AcquireLease(ctx, &AcquireLeaseBlobOptions{Duration: to.Ptr[int32](15)})
 	_assert.Nil(err)
 	_assert.NotNil(acquireLeaseResponse.LeaseID)
 	_assert.Equal(*acquireLeaseResponse.LeaseID, *proposedLeaseIDs[0])

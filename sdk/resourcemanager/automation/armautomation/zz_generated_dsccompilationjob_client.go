@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type DscCompilationJobClient struct {
 // forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewDscCompilationJobClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DscCompilationJobClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewDscCompilationJobClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DscCompilationJobClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &DscCompilationJobClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreate - Creates the Dsc compilation job of the configuration.
@@ -58,22 +63,16 @@ func NewDscCompilationJobClient(subscriptionID string, credential azcore.TokenCr
 // parameters - The parameters supplied to the create compilation job operation.
 // options - DscCompilationJobClientBeginCreateOptions contains the optional parameters for the DscCompilationJobClient.BeginCreate
 // method.
-func (client *DscCompilationJobClient) BeginCreate(ctx context.Context, resourceGroupName string, automationAccountName string, compilationJobName string, parameters DscCompilationJobCreateParameters, options *DscCompilationJobClientBeginCreateOptions) (DscCompilationJobClientCreatePollerResponse, error) {
-	resp, err := client.create(ctx, resourceGroupName, automationAccountName, compilationJobName, parameters, options)
-	if err != nil {
-		return DscCompilationJobClientCreatePollerResponse{}, err
+func (client *DscCompilationJobClient) BeginCreate(ctx context.Context, resourceGroupName string, automationAccountName string, compilationJobName string, parameters DscCompilationJobCreateParameters, options *DscCompilationJobClientBeginCreateOptions) (*armruntime.Poller[DscCompilationJobClientCreateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.create(ctx, resourceGroupName, automationAccountName, compilationJobName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[DscCompilationJobClientCreateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[DscCompilationJobClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DscCompilationJobClientCreatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DscCompilationJobClient.Create", "", resp, client.pl)
-	if err != nil {
-		return DscCompilationJobClientCreatePollerResponse{}, err
-	}
-	result.Poller = &DscCompilationJobClientCreatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Create - Creates the Dsc compilation job of the configuration.
@@ -176,7 +175,7 @@ func (client *DscCompilationJobClient) getCreateRequest(ctx context.Context, res
 
 // getHandleResponse handles the Get response.
 func (client *DscCompilationJobClient) getHandleResponse(resp *http.Response) (DscCompilationJobClientGetResponse, error) {
-	result := DscCompilationJobClientGetResponse{RawResponse: resp}
+	result := DscCompilationJobClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DscCompilationJob); err != nil {
 		return DscCompilationJobClientGetResponse{}, err
 	}
@@ -239,7 +238,7 @@ func (client *DscCompilationJobClient) getStreamCreateRequest(ctx context.Contex
 
 // getStreamHandleResponse handles the GetStream response.
 func (client *DscCompilationJobClient) getStreamHandleResponse(resp *http.Response) (DscCompilationJobClientGetStreamResponse, error) {
-	result := DscCompilationJobClientGetStreamResponse{RawResponse: resp}
+	result := DscCompilationJobClientGetStreamResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobStream); err != nil {
 		return DscCompilationJobClientGetStreamResponse{}, err
 	}
@@ -252,16 +251,32 @@ func (client *DscCompilationJobClient) getStreamHandleResponse(resp *http.Respon
 // automationAccountName - The name of the automation account.
 // options - DscCompilationJobClientListByAutomationAccountOptions contains the optional parameters for the DscCompilationJobClient.ListByAutomationAccount
 // method.
-func (client *DscCompilationJobClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *DscCompilationJobClientListByAutomationAccountOptions) *DscCompilationJobClientListByAutomationAccountPager {
-	return &DscCompilationJobClientListByAutomationAccountPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, options)
+func (client *DscCompilationJobClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *DscCompilationJobClientListByAutomationAccountOptions) *runtime.Pager[DscCompilationJobClientListByAutomationAccountResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DscCompilationJobClientListByAutomationAccountResponse]{
+		More: func(page DscCompilationJobClientListByAutomationAccountResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DscCompilationJobClientListByAutomationAccountResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DscCompilationJobListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *DscCompilationJobClientListByAutomationAccountResponse) (DscCompilationJobClientListByAutomationAccountResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DscCompilationJobClientListByAutomationAccountResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DscCompilationJobClientListByAutomationAccountResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DscCompilationJobClientListByAutomationAccountResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByAutomationAccountHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByAutomationAccountCreateRequest creates the ListByAutomationAccount request.
@@ -295,7 +310,7 @@ func (client *DscCompilationJobClient) listByAutomationAccountCreateRequest(ctx 
 
 // listByAutomationAccountHandleResponse handles the ListByAutomationAccount response.
 func (client *DscCompilationJobClient) listByAutomationAccountHandleResponse(resp *http.Response) (DscCompilationJobClientListByAutomationAccountResponse, error) {
-	result := DscCompilationJobClientListByAutomationAccountResponse{RawResponse: resp}
+	result := DscCompilationJobClientListByAutomationAccountResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DscCompilationJobListResult); err != nil {
 		return DscCompilationJobClientListByAutomationAccountResponse{}, err
 	}

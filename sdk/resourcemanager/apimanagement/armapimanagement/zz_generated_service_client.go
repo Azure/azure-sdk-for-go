@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type ServiceClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewServiceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServiceClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewServiceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ServiceClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ServiceClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginApplyNetworkConfigurationUpdates - Updates the Microsoft.ApiManagement resource running in the Virtual network to
@@ -57,22 +62,18 @@ func NewServiceClient(subscriptionID string, credential azcore.TokenCredential, 
 // serviceName - The name of the API Management service.
 // options - ServiceClientBeginApplyNetworkConfigurationUpdatesOptions contains the optional parameters for the ServiceClient.BeginApplyNetworkConfigurationUpdates
 // method.
-func (client *ServiceClient) BeginApplyNetworkConfigurationUpdates(ctx context.Context, resourceGroupName string, serviceName string, options *ServiceClientBeginApplyNetworkConfigurationUpdatesOptions) (ServiceClientApplyNetworkConfigurationUpdatesPollerResponse, error) {
-	resp, err := client.applyNetworkConfigurationUpdates(ctx, resourceGroupName, serviceName, options)
-	if err != nil {
-		return ServiceClientApplyNetworkConfigurationUpdatesPollerResponse{}, err
+func (client *ServiceClient) BeginApplyNetworkConfigurationUpdates(ctx context.Context, resourceGroupName string, serviceName string, options *ServiceClientBeginApplyNetworkConfigurationUpdatesOptions) (*armruntime.Poller[ServiceClientApplyNetworkConfigurationUpdatesResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.applyNetworkConfigurationUpdates(ctx, resourceGroupName, serviceName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ServiceClientApplyNetworkConfigurationUpdatesResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[ServiceClientApplyNetworkConfigurationUpdatesResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ServiceClientApplyNetworkConfigurationUpdatesPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ServiceClient.ApplyNetworkConfigurationUpdates", "location", resp, client.pl)
-	if err != nil {
-		return ServiceClientApplyNetworkConfigurationUpdatesPollerResponse{}, err
-	}
-	result.Poller = &ServiceClientApplyNetworkConfigurationUpdatesPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // ApplyNetworkConfigurationUpdates - Updates the Microsoft.ApiManagement resource running in the Virtual network to pick
@@ -129,22 +130,18 @@ func (client *ServiceClient) applyNetworkConfigurationUpdatesCreateRequest(ctx c
 // serviceName - The name of the API Management service.
 // parameters - Parameters supplied to the ApiManagementService_Backup operation.
 // options - ServiceClientBeginBackupOptions contains the optional parameters for the ServiceClient.BeginBackup method.
-func (client *ServiceClient) BeginBackup(ctx context.Context, resourceGroupName string, serviceName string, parameters ServiceBackupRestoreParameters, options *ServiceClientBeginBackupOptions) (ServiceClientBackupPollerResponse, error) {
-	resp, err := client.backup(ctx, resourceGroupName, serviceName, parameters, options)
-	if err != nil {
-		return ServiceClientBackupPollerResponse{}, err
+func (client *ServiceClient) BeginBackup(ctx context.Context, resourceGroupName string, serviceName string, parameters ServiceBackupRestoreParameters, options *ServiceClientBeginBackupOptions) (*armruntime.Poller[ServiceClientBackupResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.backup(ctx, resourceGroupName, serviceName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ServiceClientBackupResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[ServiceClientBackupResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ServiceClientBackupPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ServiceClient.Backup", "location", resp, client.pl)
-	if err != nil {
-		return ServiceClientBackupPollerResponse{}, err
-	}
-	result.Poller = &ServiceClientBackupPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Backup - Creates a backup of the API Management service to the given Azure Storage Account. This is long running operation
@@ -231,7 +228,7 @@ func (client *ServiceClient) checkNameAvailabilityCreateRequest(ctx context.Cont
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
 func (client *ServiceClient) checkNameAvailabilityHandleResponse(resp *http.Response) (ServiceClientCheckNameAvailabilityResponse, error) {
-	result := ServiceClientCheckNameAvailabilityResponse{RawResponse: resp}
+	result := ServiceClientCheckNameAvailabilityResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceNameAvailabilityResult); err != nil {
 		return ServiceClientCheckNameAvailabilityResponse{}, err
 	}
@@ -246,22 +243,16 @@ func (client *ServiceClient) checkNameAvailabilityHandleResponse(resp *http.Resp
 // parameters - Parameters supplied to the CreateOrUpdate API Management service operation.
 // options - ServiceClientBeginCreateOrUpdateOptions contains the optional parameters for the ServiceClient.BeginCreateOrUpdate
 // method.
-func (client *ServiceClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, parameters ServiceResource, options *ServiceClientBeginCreateOrUpdateOptions) (ServiceClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, serviceName, parameters, options)
-	if err != nil {
-		return ServiceClientCreateOrUpdatePollerResponse{}, err
+func (client *ServiceClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, parameters ServiceResource, options *ServiceClientBeginCreateOrUpdateOptions) (*armruntime.Poller[ServiceClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, serviceName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ServiceClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ServiceClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ServiceClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ServiceClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return ServiceClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &ServiceClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates an API Management service. This is long running operation and could take several minutes
@@ -313,22 +304,16 @@ func (client *ServiceClient) createOrUpdateCreateRequest(ctx context.Context, re
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // options - ServiceClientBeginDeleteOptions contains the optional parameters for the ServiceClient.BeginDelete method.
-func (client *ServiceClient) BeginDelete(ctx context.Context, resourceGroupName string, serviceName string, options *ServiceClientBeginDeleteOptions) (ServiceClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, serviceName, options)
-	if err != nil {
-		return ServiceClientDeletePollerResponse{}, err
+func (client *ServiceClient) BeginDelete(ctx context.Context, resourceGroupName string, serviceName string, options *ServiceClientBeginDeleteOptions) (*armruntime.Poller[ServiceClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, serviceName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ServiceClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ServiceClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ServiceClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ServiceClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return ServiceClientDeletePollerResponse{}, err
-	}
-	result.Poller = &ServiceClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes an existing API Management service.
@@ -422,7 +407,7 @@ func (client *ServiceClient) getCreateRequest(ctx context.Context, resourceGroup
 
 // getHandleResponse handles the Get response.
 func (client *ServiceClient) getHandleResponse(resp *http.Response) (ServiceClientGetResponse, error) {
-	result := ServiceClientGetResponse{RawResponse: resp}
+	result := ServiceClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceResource); err != nil {
 		return ServiceClientGetResponse{}, err
 	}
@@ -468,7 +453,7 @@ func (client *ServiceClient) getDomainOwnershipIdentifierCreateRequest(ctx conte
 
 // getDomainOwnershipIdentifierHandleResponse handles the GetDomainOwnershipIdentifier response.
 func (client *ServiceClient) getDomainOwnershipIdentifierHandleResponse(resp *http.Response) (ServiceClientGetDomainOwnershipIdentifierResponse, error) {
-	result := ServiceClientGetDomainOwnershipIdentifierResponse{RawResponse: resp}
+	result := ServiceClientGetDomainOwnershipIdentifierResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceGetDomainOwnershipIdentifierResult); err != nil {
 		return ServiceClientGetDomainOwnershipIdentifierResponse{}, err
 	}
@@ -523,7 +508,7 @@ func (client *ServiceClient) getSsoTokenCreateRequest(ctx context.Context, resou
 
 // getSsoTokenHandleResponse handles the GetSsoToken response.
 func (client *ServiceClient) getSsoTokenHandleResponse(resp *http.Response) (ServiceClientGetSsoTokenResponse, error) {
-	result := ServiceClientGetSsoTokenResponse{RawResponse: resp}
+	result := ServiceClientGetSsoTokenResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceGetSsoTokenResult); err != nil {
 		return ServiceClientGetSsoTokenResponse{}, err
 	}
@@ -533,16 +518,32 @@ func (client *ServiceClient) getSsoTokenHandleResponse(resp *http.Response) (Ser
 // List - Lists all API Management services within an Azure subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ServiceClientListOptions contains the optional parameters for the ServiceClient.List method.
-func (client *ServiceClient) List(options *ServiceClientListOptions) *ServiceClientListPager {
-	return &ServiceClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *ServiceClient) List(options *ServiceClientListOptions) *runtime.Pager[ServiceClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ServiceClientListResponse]{
+		More: func(page ServiceClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ServiceClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ServiceListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ServiceClientListResponse) (ServiceClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ServiceClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ServiceClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ServiceClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -565,7 +566,7 @@ func (client *ServiceClient) listCreateRequest(ctx context.Context, options *Ser
 
 // listHandleResponse handles the List response.
 func (client *ServiceClient) listHandleResponse(resp *http.Response) (ServiceClientListResponse, error) {
-	result := ServiceClientListResponse{RawResponse: resp}
+	result := ServiceClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceListResult); err != nil {
 		return ServiceClientListResponse{}, err
 	}
@@ -577,16 +578,32 @@ func (client *ServiceClient) listHandleResponse(resp *http.Response) (ServiceCli
 // resourceGroupName - The name of the resource group.
 // options - ServiceClientListByResourceGroupOptions contains the optional parameters for the ServiceClient.ListByResourceGroup
 // method.
-func (client *ServiceClient) ListByResourceGroup(resourceGroupName string, options *ServiceClientListByResourceGroupOptions) *ServiceClientListByResourceGroupPager {
-	return &ServiceClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *ServiceClient) ListByResourceGroup(resourceGroupName string, options *ServiceClientListByResourceGroupOptions) *runtime.Pager[ServiceClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ServiceClientListByResourceGroupResponse]{
+		More: func(page ServiceClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ServiceClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ServiceListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ServiceClientListByResourceGroupResponse) (ServiceClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ServiceClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ServiceClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ServiceClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -613,7 +630,7 @@ func (client *ServiceClient) listByResourceGroupCreateRequest(ctx context.Contex
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *ServiceClient) listByResourceGroupHandleResponse(resp *http.Response) (ServiceClientListByResourceGroupResponse, error) {
-	result := ServiceClientListByResourceGroupResponse{RawResponse: resp}
+	result := ServiceClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceListResult); err != nil {
 		return ServiceClientListByResourceGroupResponse{}, err
 	}
@@ -628,22 +645,18 @@ func (client *ServiceClient) listByResourceGroupHandleResponse(resp *http.Respon
 // serviceName - The name of the API Management service.
 // parameters - Parameters supplied to the Restore API Management service from backup operation.
 // options - ServiceClientBeginRestoreOptions contains the optional parameters for the ServiceClient.BeginRestore method.
-func (client *ServiceClient) BeginRestore(ctx context.Context, resourceGroupName string, serviceName string, parameters ServiceBackupRestoreParameters, options *ServiceClientBeginRestoreOptions) (ServiceClientRestorePollerResponse, error) {
-	resp, err := client.restore(ctx, resourceGroupName, serviceName, parameters, options)
-	if err != nil {
-		return ServiceClientRestorePollerResponse{}, err
+func (client *ServiceClient) BeginRestore(ctx context.Context, resourceGroupName string, serviceName string, parameters ServiceBackupRestoreParameters, options *ServiceClientBeginRestoreOptions) (*armruntime.Poller[ServiceClientRestoreResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.restore(ctx, resourceGroupName, serviceName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ServiceClientRestoreResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[ServiceClientRestoreResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ServiceClientRestorePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ServiceClient.Restore", "location", resp, client.pl)
-	if err != nil {
-		return ServiceClientRestorePollerResponse{}, err
-	}
-	result.Poller = &ServiceClientRestorePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Restore - Restores a backup of an API Management service created using the ApiManagementService_Backup operation on the
@@ -697,22 +710,16 @@ func (client *ServiceClient) restoreCreateRequest(ctx context.Context, resourceG
 // serviceName - The name of the API Management service.
 // parameters - Parameters supplied to the CreateOrUpdate API Management service operation.
 // options - ServiceClientBeginUpdateOptions contains the optional parameters for the ServiceClient.BeginUpdate method.
-func (client *ServiceClient) BeginUpdate(ctx context.Context, resourceGroupName string, serviceName string, parameters ServiceUpdateParameters, options *ServiceClientBeginUpdateOptions) (ServiceClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, serviceName, parameters, options)
-	if err != nil {
-		return ServiceClientUpdatePollerResponse{}, err
+func (client *ServiceClient) BeginUpdate(ctx context.Context, resourceGroupName string, serviceName string, parameters ServiceUpdateParameters, options *ServiceClientBeginUpdateOptions) (*armruntime.Poller[ServiceClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, serviceName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ServiceClientUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ServiceClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ServiceClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ServiceClient.Update", "", resp, client.pl)
-	if err != nil {
-		return ServiceClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &ServiceClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Updates an existing API Management service.

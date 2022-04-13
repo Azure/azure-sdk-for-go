@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -31,19 +32,23 @@ type RegistrationDefinitionsClient struct {
 // NewRegistrationDefinitionsClient creates a new instance of RegistrationDefinitionsClient with the specified values.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewRegistrationDefinitionsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *RegistrationDefinitionsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewRegistrationDefinitionsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*RegistrationDefinitionsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &RegistrationDefinitionsClient{
-		host: string(cp.Endpoint),
-		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host: ep,
+		pl:   pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates a registration definition.
@@ -53,22 +58,16 @@ func NewRegistrationDefinitionsClient(credential azcore.TokenCredential, options
 // requestBody - The parameters required to create a new registration definition.
 // options - RegistrationDefinitionsClientBeginCreateOrUpdateOptions contains the optional parameters for the RegistrationDefinitionsClient.BeginCreateOrUpdate
 // method.
-func (client *RegistrationDefinitionsClient) BeginCreateOrUpdate(ctx context.Context, registrationDefinitionID string, scope string, requestBody RegistrationDefinition, options *RegistrationDefinitionsClientBeginCreateOrUpdateOptions) (RegistrationDefinitionsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, registrationDefinitionID, scope, requestBody, options)
-	if err != nil {
-		return RegistrationDefinitionsClientCreateOrUpdatePollerResponse{}, err
+func (client *RegistrationDefinitionsClient) BeginCreateOrUpdate(ctx context.Context, registrationDefinitionID string, scope string, requestBody RegistrationDefinition, options *RegistrationDefinitionsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[RegistrationDefinitionsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, registrationDefinitionID, scope, requestBody, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[RegistrationDefinitionsClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[RegistrationDefinitionsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := RegistrationDefinitionsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("RegistrationDefinitionsClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return RegistrationDefinitionsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &RegistrationDefinitionsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a registration definition.
@@ -101,7 +100,7 @@ func (client *RegistrationDefinitionsClient) createOrUpdateCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-02-01-preview")
+	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, requestBody)
@@ -125,7 +124,7 @@ func (client *RegistrationDefinitionsClient) Delete(ctx context.Context, registr
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return RegistrationDefinitionsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return RegistrationDefinitionsClientDeleteResponse{RawResponse: resp}, nil
+	return RegistrationDefinitionsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -141,7 +140,7 @@ func (client *RegistrationDefinitionsClient) deleteCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-02-01-preview")
+	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -181,7 +180,7 @@ func (client *RegistrationDefinitionsClient) getCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-02-01-preview")
+	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -189,7 +188,7 @@ func (client *RegistrationDefinitionsClient) getCreateRequest(ctx context.Contex
 
 // getHandleResponse handles the Get response.
 func (client *RegistrationDefinitionsClient) getHandleResponse(resp *http.Response) (RegistrationDefinitionsClientGetResponse, error) {
-	result := RegistrationDefinitionsClientGetResponse{RawResponse: resp}
+	result := RegistrationDefinitionsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RegistrationDefinition); err != nil {
 		return RegistrationDefinitionsClientGetResponse{}, err
 	}
@@ -201,16 +200,32 @@ func (client *RegistrationDefinitionsClient) getHandleResponse(resp *http.Respon
 // scope - The scope of the resource.
 // options - RegistrationDefinitionsClientListOptions contains the optional parameters for the RegistrationDefinitionsClient.List
 // method.
-func (client *RegistrationDefinitionsClient) List(scope string, options *RegistrationDefinitionsClientListOptions) *RegistrationDefinitionsClientListPager {
-	return &RegistrationDefinitionsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, scope, options)
+func (client *RegistrationDefinitionsClient) List(scope string, options *RegistrationDefinitionsClientListOptions) *runtime.Pager[RegistrationDefinitionsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[RegistrationDefinitionsClientListResponse]{
+		More: func(page RegistrationDefinitionsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp RegistrationDefinitionsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.RegistrationDefinitionList.NextLink)
+		Fetcher: func(ctx context.Context, page *RegistrationDefinitionsClientListResponse) (RegistrationDefinitionsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, scope, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return RegistrationDefinitionsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return RegistrationDefinitionsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return RegistrationDefinitionsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -222,7 +237,10 @@ func (client *RegistrationDefinitionsClient) listCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-02-01-preview")
+	reqQP.Set("api-version", "2022-01-01-preview")
+	if options != nil && options.Filter != nil {
+		reqQP.Set("$filter", *options.Filter)
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -230,7 +248,7 @@ func (client *RegistrationDefinitionsClient) listCreateRequest(ctx context.Conte
 
 // listHandleResponse handles the List response.
 func (client *RegistrationDefinitionsClient) listHandleResponse(resp *http.Response) (RegistrationDefinitionsClientListResponse, error) {
-	result := RegistrationDefinitionsClientListResponse{RawResponse: resp}
+	result := RegistrationDefinitionsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RegistrationDefinitionList); err != nil {
 		return RegistrationDefinitionsClientListResponse{}, err
 	}

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type VirtualMachinesClient struct {
 // forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewVirtualMachinesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VirtualMachinesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewVirtualMachinesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VirtualMachinesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &VirtualMachinesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // GetAsyncOperationStatus - Gets the async operation status.
@@ -104,7 +109,7 @@ func (client *VirtualMachinesClient) getAsyncOperationStatusCreateRequest(ctx co
 
 // getAsyncOperationStatusHandleResponse handles the GetAsyncOperationStatus response.
 func (client *VirtualMachinesClient) getAsyncOperationStatusHandleResponse(resp *http.Response) (VirtualMachinesClientGetAsyncOperationStatusResponse, error) {
-	result := VirtualMachinesClientGetAsyncOperationStatusResponse{RawResponse: resp}
+	result := VirtualMachinesClientGetAsyncOperationStatusResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AsyncOperationResult); err != nil {
 		return VirtualMachinesClientGetAsyncOperationStatusResponse{}, err
 	}
@@ -160,7 +165,7 @@ func (client *VirtualMachinesClient) listHostsCreateRequest(ctx context.Context,
 
 // listHostsHandleResponse handles the ListHosts response.
 func (client *VirtualMachinesClient) listHostsHandleResponse(resp *http.Response) (VirtualMachinesClientListHostsResponse, error) {
-	result := VirtualMachinesClientListHostsResponse{RawResponse: resp}
+	result := VirtualMachinesClientListHostsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HostInfoArray); err != nil {
 		return VirtualMachinesClientListHostsResponse{}, err
 	}
@@ -174,22 +179,18 @@ func (client *VirtualMachinesClient) listHostsHandleResponse(resp *http.Response
 // hosts - The list of hosts to restart
 // options - VirtualMachinesClientBeginRestartHostsOptions contains the optional parameters for the VirtualMachinesClient.BeginRestartHosts
 // method.
-func (client *VirtualMachinesClient) BeginRestartHosts(ctx context.Context, resourceGroupName string, clusterName string, hosts []*string, options *VirtualMachinesClientBeginRestartHostsOptions) (VirtualMachinesClientRestartHostsPollerResponse, error) {
-	resp, err := client.restartHosts(ctx, resourceGroupName, clusterName, hosts, options)
-	if err != nil {
-		return VirtualMachinesClientRestartHostsPollerResponse{}, err
+func (client *VirtualMachinesClient) BeginRestartHosts(ctx context.Context, resourceGroupName string, clusterName string, hosts []*string, options *VirtualMachinesClientBeginRestartHostsOptions) (*armruntime.Poller[VirtualMachinesClientRestartHostsResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.restartHosts(ctx, resourceGroupName, clusterName, hosts, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[VirtualMachinesClientRestartHostsResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[VirtualMachinesClientRestartHostsResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := VirtualMachinesClientRestartHostsPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("VirtualMachinesClient.RestartHosts", "location", resp, client.pl)
-	if err != nil {
-		return VirtualMachinesClientRestartHostsPollerResponse{}, err
-	}
-	result.Poller = &VirtualMachinesClientRestartHostsPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // RestartHosts - Restarts the specified HDInsight cluster hosts.

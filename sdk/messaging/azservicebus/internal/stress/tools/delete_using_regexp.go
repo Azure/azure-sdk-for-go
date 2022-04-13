@@ -54,17 +54,19 @@ func DeleteUsingRegexp(remainingArgs []string) int {
 
 		var queuesToDelete []string
 
-		for pager.NextPage(ctx) {
-			for _, queueProps := range pager.PageResponse().Items {
+		for pager.More() {
+			page, err := pager.NextPage(ctx)
+
+			if err != nil {
+				log.Printf("Failed to get queues: %s", err)
+				os.Exit(1)
+			}
+
+			for _, queueProps := range page.Queues {
 				if re.MatchString(queueProps.QueueName) {
 					queuesToDelete = append(queuesToDelete, queueProps.QueueName)
 				}
 			}
-		}
-
-		if pager.Err() != nil {
-			log.Printf("Failed to get queues: %s", pager.Err().Error())
-			os.Exit(1)
 		}
 
 		log.Printf("Deleting %d queues", len(queuesToDelete))
@@ -82,17 +84,19 @@ func DeleteUsingRegexp(remainingArgs []string) int {
 
 		var topicsToDelete []string
 
-		for pager.NextPage(ctx) {
-			for _, topicProps := range pager.PageResponse().Items {
+		for pager.More() {
+			page, err := pager.NextPage(ctx)
+
+			if err != nil {
+				fmt.Printf("Failed to get topics: %s\n", err)
+				return 1
+			}
+
+			for _, topicProps := range page.Topics {
 				if re.MatchString(topicProps.TopicName) {
 					topicsToDelete = append(topicsToDelete, topicProps.TopicName)
 				}
 			}
-		}
-
-		if pager.Err() != nil {
-			fmt.Printf("Failed to get topics: %s\n", pager.Err().Error())
-			return 1
 		}
 
 		log.Printf("Deleting %d topics", len(topicsToDelete))

@@ -22,6 +22,7 @@ func SpatialTypeValues() []SpatialType {
 	return []SpatialType{SpatialTypePoint, SpatialTypePolygon, SpatialTypeLineString, SpatialTypeMultiPolygon}
 }
 
+// ToPtr returns a *SpatialType
 func (c SpatialType) ToPtr() *SpatialType {
 	return &c
 }

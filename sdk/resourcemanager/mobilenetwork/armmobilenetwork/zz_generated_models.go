@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,12 +8,7 @@
 
 package armmobilenetwork
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
 
 // Ambr - Aggregate Maximum Bit Rate.
 type Ambr struct {
@@ -22,6 +17,18 @@ type Ambr struct {
 
 	// REQUIRED; Uplink bit rate.
 	Uplink *string `json:"uplink,omitempty"`
+}
+
+// Arp - Allocation and Retention Priority (ARP) parameters.
+type Arp struct {
+	// REQUIRED; ARP preemption capability.
+	PreemptCap *PreemptionCapability `json:"preemptCap,omitempty"`
+
+	// REQUIRED; ARP preemption vulnerability
+	PreemptVuln *PreemptionVulnerability `json:"preemptVuln,omitempty"`
+
+	// REQUIRED; ARP priority level.
+	PriorityLevel *int32 `json:"priorityLevel,omitempty"`
 }
 
 // AttachedDataNetwork - Attached data network resource.
@@ -41,24 +48,11 @@ type AttachedDataNetwork struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AttachedDataNetwork.
-func (a AttachedDataNetwork) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", a.ID)
-	populate(objectMap, "location", a.Location)
-	populate(objectMap, "name", a.Name)
-	populate(objectMap, "properties", a.Properties)
-	populate(objectMap, "systemData", a.SystemData)
-	populate(objectMap, "tags", a.Tags)
-	populate(objectMap, "type", a.Type)
-	return json.Marshal(objectMap)
 }
 
 // AttachedDataNetworkListResult - Response for attached data network API service call.
@@ -68,14 +62,6 @@ type AttachedDataNetworkListResult struct {
 
 	// READ-ONLY; The URL to get the next set of results.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AttachedDataNetworkListResult.
-func (a AttachedDataNetworkListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
 }
 
 // AttachedDataNetworkPropertiesFormat - Data network properties.
@@ -103,17 +89,6 @@ type AttachedDataNetworkPropertiesFormat struct {
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AttachedDataNetworkPropertiesFormat.
-func (a AttachedDataNetworkPropertiesFormat) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "naptConfiguration", a.NaptConfiguration)
-	populate(objectMap, "provisioningState", a.ProvisioningState)
-	populate(objectMap, "userEquipmentAddressPoolPrefix", a.UserEquipmentAddressPoolPrefix)
-	populate(objectMap, "userEquipmentStaticAddressPoolPrefix", a.UserEquipmentStaticAddressPoolPrefix)
-	populate(objectMap, "userPlaneDataInterface", a.UserPlaneDataInterface)
-	return json.Marshal(objectMap)
-}
-
 // AttachedDataNetworkResourceID - Reference to an Attached Data Network resource.
 type AttachedDataNetworkResourceID struct {
 	// REQUIRED; Attached Data Network resource ID.
@@ -123,13 +98,15 @@ type AttachedDataNetworkResourceID struct {
 // AttachedDataNetworksClientBeginCreateOrUpdateOptions contains the optional parameters for the AttachedDataNetworksClient.BeginCreateOrUpdate
 // method.
 type AttachedDataNetworksClientBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // AttachedDataNetworksClientBeginDeleteOptions contains the optional parameters for the AttachedDataNetworksClient.BeginDelete
 // method.
 type AttachedDataNetworksClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // AttachedDataNetworksClientGetOptions contains the optional parameters for the AttachedDataNetworksClient.Get method.
@@ -172,24 +149,11 @@ type DataNetwork struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DataNetwork.
-func (d DataNetwork) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", d.ID)
-	populate(objectMap, "location", d.Location)
-	populate(objectMap, "name", d.Name)
-	populate(objectMap, "properties", d.Properties)
-	populate(objectMap, "systemData", d.SystemData)
-	populate(objectMap, "tags", d.Tags)
-	populate(objectMap, "type", d.Type)
-	return json.Marshal(objectMap)
 }
 
 // DataNetworkConfiguration - Settings controlling Data Network use
@@ -235,21 +199,6 @@ type DataNetworkConfiguration struct {
 	PreemptionVulnerability *PreemptionVulnerability `json:"preemptionVulnerability,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DataNetworkConfiguration.
-func (d DataNetworkConfiguration) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalAllowedSessionTypes", d.AdditionalAllowedSessionTypes)
-	populate(objectMap, "allocationAndRetentionPriorityLevel", d.AllocationAndRetentionPriorityLevel)
-	populate(objectMap, "allowedServices", d.AllowedServices)
-	populate(objectMap, "dataNetwork", d.DataNetwork)
-	populate(objectMap, "defaultSessionType", d.DefaultSessionType)
-	populate(objectMap, "5qi", d.FiveQi)
-	populate(objectMap, "preemptionCapability", d.PreemptionCapability)
-	populate(objectMap, "preemptionVulnerability", d.PreemptionVulnerability)
-	populate(objectMap, "sessionAmbr", d.SessionAmbr)
-	return json.Marshal(objectMap)
-}
-
 // DataNetworkListResult - Response for data network API service call.
 type DataNetworkListResult struct {
 	// A list of data networks in a resource group.
@@ -257,14 +206,6 @@ type DataNetworkListResult struct {
 
 	// READ-ONLY; The URL to get the next set of results.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DataNetworkListResult.
-func (d DataNetworkListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", d.NextLink)
-	populate(objectMap, "value", d.Value)
-	return json.Marshal(objectMap)
 }
 
 // DataNetworkPropertiesFormat - Data network properties.
@@ -285,12 +226,14 @@ type DataNetworkResourceID struct {
 // DataNetworksClientBeginCreateOrUpdateOptions contains the optional parameters for the DataNetworksClient.BeginCreateOrUpdate
 // method.
 type DataNetworksClientBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // DataNetworksClientBeginDeleteOptions contains the optional parameters for the DataNetworksClient.BeginDelete method.
 type DataNetworksClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // DataNetworksClientGetOptions contains the optional parameters for the DataNetworksClient.Get method.
@@ -309,11 +252,54 @@ type DataNetworksClientUpdateTagsOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ErrorAdditionalInfo - The resource management error additional info.
+type ErrorAdditionalInfo struct {
+	// READ-ONLY; The additional info.
+	Info interface{} `json:"info,omitempty" azure:"ro"`
+
+	// READ-ONLY; The additional info type.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// ErrorDetail - The error detail.
+type ErrorDetail struct {
+	// READ-ONLY; The error additional info.
+	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+
+	// READ-ONLY; The error code.
+	Code *string `json:"code,omitempty" azure:"ro"`
+
+	// READ-ONLY; The error details.
+	Details []*ErrorDetail `json:"details,omitempty" azure:"ro"`
+
+	// READ-ONLY; The error message.
+	Message *string `json:"message,omitempty" azure:"ro"`
+
+	// READ-ONLY; The error target.
+	Target *string `json:"target,omitempty" azure:"ro"`
+}
+
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
+type ErrorResponse struct {
+	// The error object.
+	Error *ErrorDetail `json:"error,omitempty"`
+}
+
 // InterfaceProperties - Interface properties
 type InterfaceProperties struct {
 	// REQUIRED; The logical name for this interface. This should match one of the interfaces configured on your Azure Stack Edge
 	// machine.
 	Name *string `json:"name,omitempty"`
+
+	// The IPv4 address.
+	IPv4Address *string `json:"ipv4Address,omitempty"`
+
+	// The default IPv4 gateway (router).
+	IPv4Gateway *string `json:"ipv4Gateway,omitempty"`
+
+	// The IPv4 subnet.
+	IPv4Subnet *string `json:"ipv4Subnet,omitempty"`
 }
 
 // ListResult - Response for mobile networks API service call.
@@ -323,14 +309,6 @@ type ListResult struct {
 
 	// READ-ONLY; The URL to get the next set of results.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ListResult.
-func (l ListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", l.NextLink)
-	populate(objectMap, "value", l.Value)
-	return json.Marshal(objectMap)
 }
 
 // MobileNetwork - Mobile network resource.
@@ -350,41 +328,31 @@ type MobileNetwork struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type MobileNetwork.
-func (m MobileNetwork) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", m.ID)
-	populate(objectMap, "location", m.Location)
-	populate(objectMap, "name", m.Name)
-	populate(objectMap, "properties", m.Properties)
-	populate(objectMap, "systemData", m.SystemData)
-	populate(objectMap, "tags", m.Tags)
-	populate(objectMap, "type", m.Type)
-	return json.Marshal(objectMap)
-}
-
 // MobileNetworksClientBeginCreateOrUpdateOptions contains the optional parameters for the MobileNetworksClient.BeginCreateOrUpdate
 // method.
 type MobileNetworksClientBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // MobileNetworksClientBeginDeleteOptions contains the optional parameters for the MobileNetworksClient.BeginDelete method.
 type MobileNetworksClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // MobileNetworksClientBeginListSimIDsOptions contains the optional parameters for the MobileNetworksClient.BeginListSimIDs
 // method.
 type MobileNetworksClientBeginListSimIDsOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // MobileNetworksClientGetOptions contains the optional parameters for the MobileNetworksClient.Get method.
@@ -466,14 +434,6 @@ type OperationList struct {
 	Value []*Operation `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationList.
-func (o OperationList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
-}
-
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -496,24 +456,11 @@ type PacketCoreControlPlane struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PacketCoreControlPlane.
-func (p PacketCoreControlPlane) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", p.ID)
-	populate(objectMap, "location", p.Location)
-	populate(objectMap, "name", p.Name)
-	populate(objectMap, "properties", p.Properties)
-	populate(objectMap, "systemData", p.SystemData)
-	populate(objectMap, "tags", p.Tags)
-	populate(objectMap, "type", p.Type)
-	return json.Marshal(objectMap)
 }
 
 // PacketCoreControlPlaneListResult - Response for packet core control planes API service call.
@@ -523,14 +470,6 @@ type PacketCoreControlPlaneListResult struct {
 
 	// READ-ONLY; The URL to get the next set of results.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PacketCoreControlPlaneListResult.
-func (p PacketCoreControlPlaneListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
 }
 
 // PacketCoreControlPlanePropertiesFormat - PacketCoreControlPlane properties.
@@ -558,13 +497,15 @@ type PacketCoreControlPlanePropertiesFormat struct {
 // PacketCoreControlPlanesClientBeginCreateOrUpdateOptions contains the optional parameters for the PacketCoreControlPlanesClient.BeginCreateOrUpdate
 // method.
 type PacketCoreControlPlanesClientBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // PacketCoreControlPlanesClientBeginDeleteOptions contains the optional parameters for the PacketCoreControlPlanesClient.BeginDelete
 // method.
 type PacketCoreControlPlanesClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // PacketCoreControlPlanesClientGetOptions contains the optional parameters for the PacketCoreControlPlanesClient.Get method.
@@ -607,24 +548,11 @@ type PacketCoreDataPlane struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PacketCoreDataPlane.
-func (p PacketCoreDataPlane) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", p.ID)
-	populate(objectMap, "location", p.Location)
-	populate(objectMap, "name", p.Name)
-	populate(objectMap, "properties", p.Properties)
-	populate(objectMap, "systemData", p.SystemData)
-	populate(objectMap, "tags", p.Tags)
-	populate(objectMap, "type", p.Type)
-	return json.Marshal(objectMap)
 }
 
 // PacketCoreDataPlaneListResult - Response for packet core data planes API service call.
@@ -634,14 +562,6 @@ type PacketCoreDataPlaneListResult struct {
 
 	// READ-ONLY; The URL to get the next set of results.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PacketCoreDataPlaneListResult.
-func (p PacketCoreDataPlaneListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
 }
 
 // PacketCoreDataPlanePropertiesFormat - PacketCoreDataPlane properties.
@@ -657,13 +577,15 @@ type PacketCoreDataPlanePropertiesFormat struct {
 // PacketCoreDataPlanesClientBeginCreateOrUpdateOptions contains the optional parameters for the PacketCoreDataPlanesClient.BeginCreateOrUpdate
 // method.
 type PacketCoreDataPlanesClientBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // PacketCoreDataPlanesClientBeginDeleteOptions contains the optional parameters for the PacketCoreDataPlanesClient.BeginDelete
 // method.
 type PacketCoreDataPlanesClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // PacketCoreDataPlanesClientGetOptions contains the optional parameters for the PacketCoreDataPlanesClient.Get method.
@@ -702,17 +624,6 @@ type PccRuleConfiguration struct {
 
 	// Determines whether flows that match this PCC Rule are permitted.
 	TrafficControl *TrafficControlPermission `json:"trafficControl,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PccRuleConfiguration.
-func (p PccRuleConfiguration) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "ruleName", p.RuleName)
-	populate(objectMap, "rulePrecedence", p.RulePrecedence)
-	populate(objectMap, "ruleQosPolicy", p.RuleQosPolicy)
-	populate(objectMap, "serviceDataFlowTemplates", p.ServiceDataFlowTemplates)
-	populate(objectMap, "trafficControl", p.TrafficControl)
-	return json.Marshal(objectMap)
 }
 
 // PccRuleQosPolicy - PCC rule QoS policy
@@ -844,6 +755,9 @@ type Resource struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
@@ -871,24 +785,11 @@ type Service struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Service.
-func (s Service) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", s.ID)
-	populate(objectMap, "location", s.Location)
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "properties", s.Properties)
-	populate(objectMap, "systemData", s.SystemData)
-	populate(objectMap, "tags", s.Tags)
-	populate(objectMap, "type", s.Type)
-	return json.Marshal(objectMap)
 }
 
 // ServiceDataFlowTemplate - Service data flow (SDF) template
@@ -920,17 +821,6 @@ type ServiceDataFlowTemplate struct {
 	Ports []*string `json:"ports,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ServiceDataFlowTemplate.
-func (s ServiceDataFlowTemplate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "direction", s.Direction)
-	populate(objectMap, "ports", s.Ports)
-	populate(objectMap, "protocol", s.Protocol)
-	populate(objectMap, "remoteIpList", s.RemoteIPList)
-	populate(objectMap, "templateName", s.TemplateName)
-	return json.Marshal(objectMap)
-}
-
 // ServiceListResult - Response for Services API service call.
 type ServiceListResult struct {
 	// A list of Services.
@@ -938,14 +828,6 @@ type ServiceListResult struct {
 
 	// READ-ONLY; The URL to get the next set of results.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ServiceListResult.
-func (s ServiceListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
 }
 
 // ServicePropertiesFormat - Service properties.
@@ -967,16 +849,6 @@ type ServicePropertiesFormat struct {
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ServicePropertiesFormat.
-func (s ServicePropertiesFormat) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "pccRules", s.PccRules)
-	populate(objectMap, "provisioningState", s.ProvisioningState)
-	populate(objectMap, "servicePrecedence", s.ServicePrecedence)
-	populate(objectMap, "serviceQosPolicy", s.ServiceQosPolicy)
-	return json.Marshal(objectMap)
-}
-
 // ServiceResourceID - Reference to a Service resource.
 type ServiceResourceID struct {
 	// REQUIRED; Service resource ID.
@@ -985,12 +857,14 @@ type ServiceResourceID struct {
 
 // ServicesClientBeginCreateOrUpdateOptions contains the optional parameters for the ServicesClient.BeginCreateOrUpdate method.
 type ServicesClientBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ServicesClientBeginDeleteOptions contains the optional parameters for the ServicesClient.BeginDelete method.
 type ServicesClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ServicesClientGetOptions contains the optional parameters for the ServicesClient.Get method.
@@ -1025,24 +899,11 @@ type Sim struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Sim.
-func (s Sim) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", s.ID)
-	populate(objectMap, "location", s.Location)
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "properties", s.Properties)
-	populate(objectMap, "systemData", s.SystemData)
-	populate(objectMap, "tags", s.Tags)
-	populate(objectMap, "type", s.Type)
-	return json.Marshal(objectMap)
 }
 
 // SimIDListResult - Response for list sim ids API service call.
@@ -1054,14 +915,6 @@ type SimIDListResult struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SimIDListResult.
-func (s SimIDListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
-}
-
 // SimListResult - Response for list Sims API service call.
 type SimListResult struct {
 	// A list of Sims in a resource group.
@@ -1071,23 +924,17 @@ type SimListResult struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SimListResult.
-func (s SimListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
-}
-
 // SimPoliciesClientBeginCreateOrUpdateOptions contains the optional parameters for the SimPoliciesClient.BeginCreateOrUpdate
 // method.
 type SimPoliciesClientBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // SimPoliciesClientBeginDeleteOptions contains the optional parameters for the SimPoliciesClient.BeginDelete method.
 type SimPoliciesClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // SimPoliciesClientGetOptions contains the optional parameters for the SimPoliciesClient.Get method.
@@ -1123,24 +970,11 @@ type SimPolicy struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SimPolicy.
-func (s SimPolicy) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", s.ID)
-	populate(objectMap, "location", s.Location)
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "properties", s.Properties)
-	populate(objectMap, "systemData", s.SystemData)
-	populate(objectMap, "tags", s.Tags)
-	populate(objectMap, "type", s.Type)
-	return json.Marshal(objectMap)
 }
 
 // SimPolicyListResult - Response for SimPolicies API service call.
@@ -1150,14 +984,6 @@ type SimPolicyListResult struct {
 
 	// READ-ONLY; The URL to get the next set of results.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SimPolicyListResult.
-func (s SimPolicyListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
 }
 
 // SimPolicyPropertiesFormat - SimPolicy properties.
@@ -1182,18 +1008,6 @@ type SimPolicyPropertiesFormat struct {
 
 	// READ-ONLY; The provisioning state of the sim policy resource.
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SimPolicyPropertiesFormat.
-func (s SimPolicyPropertiesFormat) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "defaultSlice", s.DefaultSlice)
-	populate(objectMap, "provisioningState", s.ProvisioningState)
-	populate(objectMap, "registrationTimer", s.RegistrationTimer)
-	populate(objectMap, "rfspIndex", s.RfspIndex)
-	populate(objectMap, "sliceConfigurations", s.SliceConfigurations)
-	populate(objectMap, "ueAmbr", s.UeAmbr)
-	return json.Marshal(objectMap)
 }
 
 // SimPolicyResourceID - Reference to a SIM Policy resource.
@@ -1231,27 +1045,11 @@ type SimPropertiesFormat struct {
 	// data network, slice}.
 	StaticIPConfiguration []*SimStaticIPProperties `json:"staticIpConfiguration,omitempty"`
 
-	// READ-ONLY; The configuration state of the sim resource - complete or incomplete.
-	ConfigurationState *ConfigurationState `json:"configurationState,omitempty" azure:"ro"`
-
 	// READ-ONLY; The provisioning state of the sim resource.
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type SimPropertiesFormat.
-func (s SimPropertiesFormat) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "authenticationKey", s.AuthenticationKey)
-	populate(objectMap, "configurationState", s.ConfigurationState)
-	populate(objectMap, "deviceType", s.DeviceType)
-	populate(objectMap, "integratedCircuitCardIdentifier", s.IntegratedCircuitCardIdentifier)
-	populate(objectMap, "internationalMobileSubscriberIdentity", s.InternationalMobileSubscriberIdentity)
-	populate(objectMap, "mobileNetwork", s.MobileNetwork)
-	populate(objectMap, "operatorKeyCode", s.OperatorKeyCode)
-	populate(objectMap, "provisioningState", s.ProvisioningState)
-	populate(objectMap, "simPolicy", s.SimPolicy)
-	populate(objectMap, "staticIpConfiguration", s.StaticIPConfiguration)
-	return json.Marshal(objectMap)
+	// READ-ONLY; The state of the sim resource.
+	SimState *SimState `json:"simState,omitempty" azure:"ro"`
 }
 
 // SimStaticIPProperties - Static IP configuration for a sim, scoped to a particular attached data network and slice.
@@ -1277,12 +1075,14 @@ type SimStaticIPPropertiesStaticIP struct {
 
 // SimsClientBeginCreateOrUpdateOptions contains the optional parameters for the SimsClient.BeginCreateOrUpdate method.
 type SimsClientBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // SimsClientBeginDeleteOptions contains the optional parameters for the SimsClient.BeginDelete method.
 type SimsClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // SimsClientGetOptions contains the optional parameters for the SimsClient.Get method.
@@ -1322,24 +1122,11 @@ type Site struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Site.
-func (s Site) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", s.ID)
-	populate(objectMap, "location", s.Location)
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "properties", s.Properties)
-	populate(objectMap, "systemData", s.SystemData)
-	populate(objectMap, "tags", s.Tags)
-	populate(objectMap, "type", s.Type)
-	return json.Marshal(objectMap)
 }
 
 // SiteListResult - Response for sites API service call.
@@ -1351,14 +1138,6 @@ type SiteListResult struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SiteListResult.
-func (s SiteListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
-}
-
 // SitePropertiesFormat - Site properties.
 type SitePropertiesFormat struct {
 	// An array of ids of the network functions deployed on the site, maintained by the user.
@@ -1368,22 +1147,16 @@ type SitePropertiesFormat struct {
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SitePropertiesFormat.
-func (s SitePropertiesFormat) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "networkFunctions", s.NetworkFunctions)
-	populate(objectMap, "provisioningState", s.ProvisioningState)
-	return json.Marshal(objectMap)
-}
-
 // SitesClientBeginCreateOrUpdateOptions contains the optional parameters for the SitesClient.BeginCreateOrUpdate method.
 type SitesClientBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // SitesClientBeginDeleteOptions contains the optional parameters for the SitesClient.BeginDelete method.
 type SitesClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // SitesClientGetOptions contains the optional parameters for the SitesClient.Get method.
@@ -1418,24 +1191,11 @@ type Slice struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Slice.
-func (s Slice) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", s.ID)
-	populate(objectMap, "location", s.Location)
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "properties", s.Properties)
-	populate(objectMap, "systemData", s.SystemData)
-	populate(objectMap, "tags", s.Tags)
-	populate(objectMap, "type", s.Type)
-	return json.Marshal(objectMap)
 }
 
 // SliceConfiguration - Per-slice settings
@@ -1452,15 +1212,6 @@ type SliceConfiguration struct {
 	Slice *SliceResourceID `json:"slice,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SliceConfiguration.
-func (s SliceConfiguration) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "dataNetworkConfigurations", s.DataNetworkConfigurations)
-	populate(objectMap, "defaultDataNetwork", s.DefaultDataNetwork)
-	populate(objectMap, "slice", s.Slice)
-	return json.Marshal(objectMap)
-}
-
 // SliceListResult - Response for attached data network API service call.
 type SliceListResult struct {
 	// A list of data networks in a resource group.
@@ -1468,14 +1219,6 @@ type SliceListResult struct {
 
 	// READ-ONLY; The URL to get the next set of results.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SliceListResult.
-func (s SliceListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
 }
 
 // SlicePropertiesFormat - Network slice properties.
@@ -1498,12 +1241,14 @@ type SliceResourceID struct {
 
 // SlicesClientBeginCreateOrUpdateOptions contains the optional parameters for the SlicesClient.BeginCreateOrUpdate method.
 type SlicesClientBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // SlicesClientBeginDeleteOptions contains the optional parameters for the SlicesClient.BeginDelete method.
 type SlicesClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // SlicesClientGetOptions contains the optional parameters for the SlicesClient.Get method.
@@ -1557,64 +1302,10 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SystemData.
-func (s SystemData) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
-	populate(objectMap, "createdBy", s.CreatedBy)
-	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
-	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
-	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SystemData.
-func (s *SystemData) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdAt":
-			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
-			delete(rawMsg, key)
-		case "createdBy":
-			err = unpopulate(val, &s.CreatedBy)
-			delete(rawMsg, key)
-		case "createdByType":
-			err = unpopulate(val, &s.CreatedByType)
-			delete(rawMsg, key)
-		case "lastModifiedAt":
-			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
-			delete(rawMsg, key)
-		case "lastModifiedBy":
-			err = unpopulate(val, &s.LastModifiedBy)
-			delete(rawMsg, key)
-		case "lastModifiedByType":
-			err = unpopulate(val, &s.LastModifiedByType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // TagsObject - Tags object for patch operations.
 type TagsObject struct {
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type TagsObject.
-func (t TagsObject) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "tags", t.Tags)
-	return json.Marshal(objectMap)
 }
 
 // TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
@@ -1632,34 +1323,9 @@ type TrackedResource struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type TrackedResource.
-func (t TrackedResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", t.ID)
-	populate(objectMap, "location", t.Location)
-	populate(objectMap, "name", t.Name)
-	populate(objectMap, "tags", t.Tags)
-	populate(objectMap, "type", t.Type)
-	return json.Marshal(objectMap)
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

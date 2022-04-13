@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type APIPortalCustomDomainsClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewAPIPortalCustomDomainsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *APIPortalCustomDomainsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewAPIPortalCustomDomainsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*APIPortalCustomDomainsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &APIPortalCustomDomainsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Create or update the API portal custom domain.
@@ -60,22 +65,18 @@ func NewAPIPortalCustomDomainsClient(subscriptionID string, credential azcore.To
 // apiPortalCustomDomainResource - The API portal custom domain for the create or update operation
 // options - APIPortalCustomDomainsClientBeginCreateOrUpdateOptions contains the optional parameters for the APIPortalCustomDomainsClient.BeginCreateOrUpdate
 // method.
-func (client *APIPortalCustomDomainsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apiPortalName string, domainName string, apiPortalCustomDomainResource APIPortalCustomDomainResource, options *APIPortalCustomDomainsClientBeginCreateOrUpdateOptions) (APIPortalCustomDomainsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, serviceName, apiPortalName, domainName, apiPortalCustomDomainResource, options)
-	if err != nil {
-		return APIPortalCustomDomainsClientCreateOrUpdatePollerResponse{}, err
+func (client *APIPortalCustomDomainsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apiPortalName string, domainName string, apiPortalCustomDomainResource APIPortalCustomDomainResource, options *APIPortalCustomDomainsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[APIPortalCustomDomainsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, serviceName, apiPortalName, domainName, apiPortalCustomDomainResource, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[APIPortalCustomDomainsClientCreateOrUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[APIPortalCustomDomainsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := APIPortalCustomDomainsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("APIPortalCustomDomainsClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return APIPortalCustomDomainsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &APIPortalCustomDomainsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Create or update the API portal custom domain.
@@ -123,7 +124,7 @@ func (client *APIPortalCustomDomainsClient) createOrUpdateCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, apiPortalCustomDomainResource)
@@ -138,22 +139,18 @@ func (client *APIPortalCustomDomainsClient) createOrUpdateCreateRequest(ctx cont
 // domainName - The name of the API portal custom domain.
 // options - APIPortalCustomDomainsClientBeginDeleteOptions contains the optional parameters for the APIPortalCustomDomainsClient.BeginDelete
 // method.
-func (client *APIPortalCustomDomainsClient) BeginDelete(ctx context.Context, resourceGroupName string, serviceName string, apiPortalName string, domainName string, options *APIPortalCustomDomainsClientBeginDeleteOptions) (APIPortalCustomDomainsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, serviceName, apiPortalName, domainName, options)
-	if err != nil {
-		return APIPortalCustomDomainsClientDeletePollerResponse{}, err
+func (client *APIPortalCustomDomainsClient) BeginDelete(ctx context.Context, resourceGroupName string, serviceName string, apiPortalName string, domainName string, options *APIPortalCustomDomainsClientBeginDeleteOptions) (*armruntime.Poller[APIPortalCustomDomainsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, serviceName, apiPortalName, domainName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[APIPortalCustomDomainsClientDeleteResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[APIPortalCustomDomainsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := APIPortalCustomDomainsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("APIPortalCustomDomainsClient.Delete", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return APIPortalCustomDomainsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &APIPortalCustomDomainsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Delete the API portal custom domain.
@@ -201,7 +198,7 @@ func (client *APIPortalCustomDomainsClient) deleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -259,7 +256,7 @@ func (client *APIPortalCustomDomainsClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -267,7 +264,7 @@ func (client *APIPortalCustomDomainsClient) getCreateRequest(ctx context.Context
 
 // getHandleResponse handles the Get response.
 func (client *APIPortalCustomDomainsClient) getHandleResponse(resp *http.Response) (APIPortalCustomDomainsClientGetResponse, error) {
-	result := APIPortalCustomDomainsClientGetResponse{RawResponse: resp}
+	result := APIPortalCustomDomainsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.APIPortalCustomDomainResource); err != nil {
 		return APIPortalCustomDomainsClientGetResponse{}, err
 	}
@@ -282,16 +279,32 @@ func (client *APIPortalCustomDomainsClient) getHandleResponse(resp *http.Respons
 // apiPortalName - The name of API portal.
 // options - APIPortalCustomDomainsClientListOptions contains the optional parameters for the APIPortalCustomDomainsClient.List
 // method.
-func (client *APIPortalCustomDomainsClient) List(resourceGroupName string, serviceName string, apiPortalName string, options *APIPortalCustomDomainsClientListOptions) *APIPortalCustomDomainsClientListPager {
-	return &APIPortalCustomDomainsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, serviceName, apiPortalName, options)
+func (client *APIPortalCustomDomainsClient) List(resourceGroupName string, serviceName string, apiPortalName string, options *APIPortalCustomDomainsClientListOptions) *runtime.Pager[APIPortalCustomDomainsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[APIPortalCustomDomainsClientListResponse]{
+		More: func(page APIPortalCustomDomainsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp APIPortalCustomDomainsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.APIPortalCustomDomainResourceCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *APIPortalCustomDomainsClientListResponse) (APIPortalCustomDomainsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, serviceName, apiPortalName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return APIPortalCustomDomainsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return APIPortalCustomDomainsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return APIPortalCustomDomainsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -318,7 +331,7 @@ func (client *APIPortalCustomDomainsClient) listCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -326,7 +339,7 @@ func (client *APIPortalCustomDomainsClient) listCreateRequest(ctx context.Contex
 
 // listHandleResponse handles the List response.
 func (client *APIPortalCustomDomainsClient) listHandleResponse(resp *http.Response) (APIPortalCustomDomainsClientListResponse, error) {
-	result := APIPortalCustomDomainsClientListResponse{RawResponse: resp}
+	result := APIPortalCustomDomainsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.APIPortalCustomDomainResourceCollection); err != nil {
 		return APIPortalCustomDomainsClientListResponse{}, err
 	}

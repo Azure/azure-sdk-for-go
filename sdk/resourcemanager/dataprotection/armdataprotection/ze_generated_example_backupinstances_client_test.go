@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,365 +19,608 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dataprotection/armdataprotection"
 )
 
-// x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/BackupInstanceOperations/ListBackupInstances.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-02-01-preview/examples/BackupInstanceOperations/ListBackupInstances.json
 func ExampleBackupInstancesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdataprotection.NewBackupInstancesClient("<subscription-id>", cred, nil)
-	pager := client.List("<vault-name>",
-		"<resource-group-name>",
+	client, err := armdataprotection.NewBackupInstancesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
+	pager := client.List("<resource-group-name>",
+		"<vault-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/BackupInstanceOperations/GetBackupInstance.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-02-01-preview/examples/BackupInstanceOperations/GetBackupInstance.json
 func ExampleBackupInstancesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdataprotection.NewBackupInstancesClient("<subscription-id>", cred, nil)
+	client, err := armdataprotection.NewBackupInstancesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
-		"<vault-name>",
 		"<resource-group-name>",
+		"<vault-name>",
 		"<backup-instance-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.BackupInstancesClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/BackupInstanceOperations/PutBackupInstance.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-02-01-preview/examples/BackupInstanceOperations/PutBackupInstance.json
 func ExampleBackupInstancesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdataprotection.NewBackupInstancesClient("<subscription-id>", cred, nil)
+	client, err := armdataprotection.NewBackupInstancesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<vault-name>",
 		"<resource-group-name>",
+		"<vault-name>",
 		"<backup-instance-name>",
 		armdataprotection.BackupInstanceResource{
 			Properties: &armdataprotection.BackupInstance{
 				DataSourceInfo: &armdataprotection.Datasource{
-					DatasourceType:   to.StringPtr("<datasource-type>"),
-					ObjectType:       to.StringPtr("<object-type>"),
-					ResourceID:       to.StringPtr("<resource-id>"),
-					ResourceLocation: to.StringPtr("<resource-location>"),
-					ResourceName:     to.StringPtr("<resource-name>"),
-					ResourceType:     to.StringPtr("<resource-type>"),
-					ResourceURI:      to.StringPtr("<resource-uri>"),
+					DatasourceType:   to.Ptr("<datasource-type>"),
+					ObjectType:       to.Ptr("<object-type>"),
+					ResourceID:       to.Ptr("<resource-id>"),
+					ResourceLocation: to.Ptr("<resource-location>"),
+					ResourceName:     to.Ptr("<resource-name>"),
+					ResourceType:     to.Ptr("<resource-type>"),
+					ResourceURI:      to.Ptr("<resource-uri>"),
 				},
 				DataSourceSetInfo: &armdataprotection.DatasourceSet{
-					DatasourceType:   to.StringPtr("<datasource-type>"),
-					ObjectType:       to.StringPtr("<object-type>"),
-					ResourceID:       to.StringPtr("<resource-id>"),
-					ResourceLocation: to.StringPtr("<resource-location>"),
-					ResourceName:     to.StringPtr("<resource-name>"),
-					ResourceType:     to.StringPtr("<resource-type>"),
-					ResourceURI:      to.StringPtr("<resource-uri>"),
+					DatasourceType:   to.Ptr("<datasource-type>"),
+					ObjectType:       to.Ptr("<object-type>"),
+					ResourceID:       to.Ptr("<resource-id>"),
+					ResourceLocation: to.Ptr("<resource-location>"),
+					ResourceName:     to.Ptr("<resource-name>"),
+					ResourceType:     to.Ptr("<resource-type>"),
+					ResourceURI:      to.Ptr("<resource-uri>"),
 				},
 				DatasourceAuthCredentials: &armdataprotection.SecretStoreBasedAuthCredentials{
-					ObjectType: to.StringPtr("<object-type>"),
+					ObjectType: to.Ptr("<object-type>"),
 					SecretStoreResource: &armdataprotection.SecretStoreResource{
-						SecretStoreType: armdataprotection.SecretStoreType("AzureKeyVault").ToPtr(),
-						URI:             to.StringPtr("<uri>"),
+						SecretStoreType: to.Ptr(armdataprotection.SecretStoreTypeAzureKeyVault),
+						URI:             to.Ptr("<uri>"),
 					},
 				},
-				FriendlyName: to.StringPtr("<friendly-name>"),
-				ObjectType:   to.StringPtr("<object-type>"),
+				FriendlyName: to.Ptr("<friendly-name>"),
+				ObjectType:   to.Ptr("<object-type>"),
 				PolicyInfo: &armdataprotection.PolicyInfo{
-					PolicyID: to.StringPtr("<policy-id>"),
+					PolicyID: to.Ptr("<policy-id>"),
 					PolicyParameters: &armdataprotection.PolicyParameters{
 						DataStoreParametersList: []armdataprotection.DataStoreParametersClassification{
 							&armdataprotection.AzureOperationalStoreParameters{
-								DataStoreType:   armdataprotection.DataStoreTypes("OperationalStore").ToPtr(),
-								ObjectType:      to.StringPtr("<object-type>"),
-								ResourceGroupID: to.StringPtr("<resource-group-id>"),
+								DataStoreType:   to.Ptr(armdataprotection.DataStoreTypesOperationalStore),
+								ObjectType:      to.Ptr("<object-type>"),
+								ResourceGroupID: to.Ptr("<resource-group-id>"),
 							}},
 					},
 				},
+				ValidationType: to.Ptr(armdataprotection.ValidationTypeShallowValidation),
 			},
 		},
-		nil)
+		&armdataprotection.BackupInstancesClientBeginCreateOrUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.BackupInstancesClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/BackupInstanceOperations/DeleteBackupInstance.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-02-01-preview/examples/BackupInstanceOperations/DeleteBackupInstance.json
 func ExampleBackupInstancesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdataprotection.NewBackupInstancesClient("<subscription-id>", cred, nil)
-	poller, err := client.BeginDelete(ctx,
-		"<vault-name>",
-		"<resource-group-name>",
-		"<backup-instance-name>",
-		nil)
+	client, err := armdataprotection.NewBackupInstancesClient("<subscription-id>", cred, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
+	poller, err := client.BeginDelete(ctx,
+		"<resource-group-name>",
+		"<vault-name>",
+		"<backup-instance-name>",
+		&armdataprotection.BackupInstancesClientBeginDeleteOptions{ResumeToken: ""})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/BackupInstanceOperations/TriggerBackup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-02-01-preview/examples/BackupInstanceOperations/TriggerBackup.json
 func ExampleBackupInstancesClient_BeginAdhocBackup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdataprotection.NewBackupInstancesClient("<subscription-id>", cred, nil)
+	client, err := armdataprotection.NewBackupInstancesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginAdhocBackup(ctx,
-		"<vault-name>",
 		"<resource-group-name>",
+		"<vault-name>",
 		"<backup-instance-name>",
 		armdataprotection.TriggerBackupRequest{
 			BackupRuleOptions: &armdataprotection.AdHocBackupRuleOptions{
-				RuleName: to.StringPtr("<rule-name>"),
+				RuleName: to.Ptr("<rule-name>"),
 				TriggerOption: &armdataprotection.AdhocBackupTriggerOption{
-					RetentionTagOverride: to.StringPtr("<retention-tag-override>"),
+					RetentionTagOverride: to.Ptr("<retention-tag-override>"),
 				},
 			},
 		},
-		nil)
+		&armdataprotection.BackupInstancesClientBeginAdhocBackupOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.BackupInstancesClientAdhocBackupResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/BackupInstanceOperations/ValidateForBackup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-02-01-preview/examples/BackupInstanceOperations/ValidateForBackup.json
 func ExampleBackupInstancesClient_BeginValidateForBackup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdataprotection.NewBackupInstancesClient("<subscription-id>", cred, nil)
+	client, err := armdataprotection.NewBackupInstancesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginValidateForBackup(ctx,
-		"<vault-name>",
 		"<resource-group-name>",
+		"<vault-name>",
 		armdataprotection.ValidateForBackupRequest{
 			BackupInstance: &armdataprotection.BackupInstance{
 				DataSourceInfo: &armdataprotection.Datasource{
-					DatasourceType:   to.StringPtr("<datasource-type>"),
-					ObjectType:       to.StringPtr("<object-type>"),
-					ResourceID:       to.StringPtr("<resource-id>"),
-					ResourceLocation: to.StringPtr("<resource-location>"),
-					ResourceName:     to.StringPtr("<resource-name>"),
-					ResourceType:     to.StringPtr("<resource-type>"),
-					ResourceURI:      to.StringPtr("<resource-uri>"),
+					DatasourceType:   to.Ptr("<datasource-type>"),
+					ObjectType:       to.Ptr("<object-type>"),
+					ResourceID:       to.Ptr("<resource-id>"),
+					ResourceLocation: to.Ptr("<resource-location>"),
+					ResourceName:     to.Ptr("<resource-name>"),
+					ResourceType:     to.Ptr("<resource-type>"),
+					ResourceURI:      to.Ptr("<resource-uri>"),
 				},
 				DataSourceSetInfo: &armdataprotection.DatasourceSet{
-					DatasourceType:   to.StringPtr("<datasource-type>"),
-					ObjectType:       to.StringPtr("<object-type>"),
-					ResourceID:       to.StringPtr("<resource-id>"),
-					ResourceLocation: to.StringPtr("<resource-location>"),
-					ResourceName:     to.StringPtr("<resource-name>"),
-					ResourceType:     to.StringPtr("<resource-type>"),
-					ResourceURI:      to.StringPtr("<resource-uri>"),
+					DatasourceType:   to.Ptr("<datasource-type>"),
+					ObjectType:       to.Ptr("<object-type>"),
+					ResourceID:       to.Ptr("<resource-id>"),
+					ResourceLocation: to.Ptr("<resource-location>"),
+					ResourceName:     to.Ptr("<resource-name>"),
+					ResourceType:     to.Ptr("<resource-type>"),
+					ResourceURI:      to.Ptr("<resource-uri>"),
 				},
 				DatasourceAuthCredentials: &armdataprotection.SecretStoreBasedAuthCredentials{
-					ObjectType: to.StringPtr("<object-type>"),
+					ObjectType: to.Ptr("<object-type>"),
 					SecretStoreResource: &armdataprotection.SecretStoreResource{
-						SecretStoreType: armdataprotection.SecretStoreType("AzureKeyVault").ToPtr(),
-						URI:             to.StringPtr("<uri>"),
+						SecretStoreType: to.Ptr(armdataprotection.SecretStoreTypeAzureKeyVault),
+						URI:             to.Ptr("<uri>"),
 					},
 				},
-				FriendlyName: to.StringPtr("<friendly-name>"),
-				ObjectType:   to.StringPtr("<object-type>"),
+				FriendlyName: to.Ptr("<friendly-name>"),
+				ObjectType:   to.Ptr("<object-type>"),
 				PolicyInfo: &armdataprotection.PolicyInfo{
-					PolicyID: to.StringPtr("<policy-id>"),
+					PolicyID: to.Ptr("<policy-id>"),
 				},
 			},
 		},
-		nil)
+		&armdataprotection.BackupInstancesClientBeginValidateForBackupOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.BackupInstancesClientValidateForBackupResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/BackupInstanceOperations/TriggerRehydrate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-02-01-preview/examples/BackupInstanceOperations/GetBackupInstanceOperationResult.json
+func ExampleBackupInstancesClient_GetBackupInstanceOperationResult() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+		return
+	}
+	ctx := context.Background()
+	client, err := armdataprotection.NewBackupInstancesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
+	res, err := client.GetBackupInstanceOperationResult(ctx,
+		"<resource-group-name>",
+		"<vault-name>",
+		"<backup-instance-name>",
+		"<operation-id>",
+		nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+		return
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-02-01-preview/examples/BackupInstanceOperations/TriggerRehydrate.json
 func ExampleBackupInstancesClient_BeginTriggerRehydrate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdataprotection.NewBackupInstancesClient("<subscription-id>", cred, nil)
+	client, err := armdataprotection.NewBackupInstancesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginTriggerRehydrate(ctx,
 		"<resource-group-name>",
 		"<vault-name>",
 		"<backup-instance-name>",
 		armdataprotection.AzureBackupRehydrationRequest{
-			RecoveryPointID:              to.StringPtr("<recovery-point-id>"),
-			RehydrationPriority:          armdataprotection.RehydrationPriority("High").ToPtr(),
-			RehydrationRetentionDuration: to.StringPtr("<rehydration-retention-duration>"),
+			RecoveryPointID:              to.Ptr("<recovery-point-id>"),
+			RehydrationPriority:          to.Ptr(armdataprotection.RehydrationPriorityHigh),
+			RehydrationRetentionDuration: to.Ptr("<rehydration-retention-duration>"),
 		},
-		nil)
+		&armdataprotection.BackupInstancesClientBeginTriggerRehydrateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/BackupInstanceOperations/TriggerRestore.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-02-01-preview/examples/BackupInstanceOperations/TriggerRestore.json
 func ExampleBackupInstancesClient_BeginTriggerRestore() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdataprotection.NewBackupInstancesClient("<subscription-id>", cred, nil)
+	client, err := armdataprotection.NewBackupInstancesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginTriggerRestore(ctx,
-		"<vault-name>",
 		"<resource-group-name>",
+		"<vault-name>",
 		"<backup-instance-name>",
 		&armdataprotection.AzureBackupRecoveryPointBasedRestoreRequest{
-			ObjectType: to.StringPtr("<object-type>"),
+			ObjectType: to.Ptr("<object-type>"),
 			RestoreTargetInfo: &armdataprotection.RestoreTargetInfo{
-				ObjectType:      to.StringPtr("<object-type>"),
-				RecoveryOption:  armdataprotection.RecoveryOption("FailIfExists").ToPtr(),
-				RestoreLocation: to.StringPtr("<restore-location>"),
+				ObjectType:      to.Ptr("<object-type>"),
+				RecoveryOption:  to.Ptr(armdataprotection.RecoveryOptionFailIfExists),
+				RestoreLocation: to.Ptr("<restore-location>"),
 				DatasourceAuthCredentials: &armdataprotection.SecretStoreBasedAuthCredentials{
-					ObjectType: to.StringPtr("<object-type>"),
+					ObjectType: to.Ptr("<object-type>"),
 					SecretStoreResource: &armdataprotection.SecretStoreResource{
-						SecretStoreType: armdataprotection.SecretStoreType("AzureKeyVault").ToPtr(),
-						URI:             to.StringPtr("<uri>"),
+						SecretStoreType: to.Ptr(armdataprotection.SecretStoreTypeAzureKeyVault),
+						URI:             to.Ptr("<uri>"),
 					},
 				},
 				DatasourceInfo: &armdataprotection.Datasource{
-					DatasourceType:   to.StringPtr("<datasource-type>"),
-					ObjectType:       to.StringPtr("<object-type>"),
-					ResourceID:       to.StringPtr("<resource-id>"),
-					ResourceLocation: to.StringPtr("<resource-location>"),
-					ResourceName:     to.StringPtr("<resource-name>"),
-					ResourceType:     to.StringPtr("<resource-type>"),
-					ResourceURI:      to.StringPtr("<resource-uri>"),
+					DatasourceType:   to.Ptr("<datasource-type>"),
+					ObjectType:       to.Ptr("<object-type>"),
+					ResourceID:       to.Ptr("<resource-id>"),
+					ResourceLocation: to.Ptr("<resource-location>"),
+					ResourceName:     to.Ptr("<resource-name>"),
+					ResourceType:     to.Ptr("<resource-type>"),
+					ResourceURI:      to.Ptr("<resource-uri>"),
 				},
 				DatasourceSetInfo: &armdataprotection.DatasourceSet{
-					DatasourceType:   to.StringPtr("<datasource-type>"),
-					ObjectType:       to.StringPtr("<object-type>"),
-					ResourceID:       to.StringPtr("<resource-id>"),
-					ResourceLocation: to.StringPtr("<resource-location>"),
-					ResourceName:     to.StringPtr("<resource-name>"),
-					ResourceType:     to.StringPtr("<resource-type>"),
-					ResourceURI:      to.StringPtr("<resource-uri>"),
+					DatasourceType:   to.Ptr("<datasource-type>"),
+					ObjectType:       to.Ptr("<object-type>"),
+					ResourceID:       to.Ptr("<resource-id>"),
+					ResourceLocation: to.Ptr("<resource-location>"),
+					ResourceName:     to.Ptr("<resource-name>"),
+					ResourceType:     to.Ptr("<resource-type>"),
+					ResourceURI:      to.Ptr("<resource-uri>"),
 				},
 			},
-			SourceDataStoreType: armdataprotection.SourceDataStoreType("VaultStore").ToPtr(),
-			RecoveryPointID:     to.StringPtr("<recovery-point-id>"),
+			SourceDataStoreType: to.Ptr(armdataprotection.SourceDataStoreTypeVaultStore),
+			SourceResourceID:    to.Ptr("<source-resource-id>"),
+			RecoveryPointID:     to.Ptr("<recovery-point-id>"),
 		},
-		nil)
+		&armdataprotection.BackupInstancesClientBeginTriggerRestoreOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.BackupInstancesClientTriggerRestoreResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/BackupInstanceOperations/ValidateRestore.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-02-01-preview/examples/BackupInstanceOperations/ResumeBackups.json
+func ExampleBackupInstancesClient_BeginResumeBackups() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+		return
+	}
+	ctx := context.Background()
+	client, err := armdataprotection.NewBackupInstancesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
+	poller, err := client.BeginResumeBackups(ctx,
+		"<resource-group-name>",
+		"<vault-name>",
+		"<backup-instance-name>",
+		&armdataprotection.BackupInstancesClientBeginResumeBackupsOptions{ResumeToken: ""})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+		return
+	}
+	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+		return
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-02-01-preview/examples/BackupInstanceOperations/ResumeProtection.json
+func ExampleBackupInstancesClient_BeginResumeProtection() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+		return
+	}
+	ctx := context.Background()
+	client, err := armdataprotection.NewBackupInstancesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
+	poller, err := client.BeginResumeProtection(ctx,
+		"<resource-group-name>",
+		"<vault-name>",
+		"<backup-instance-name>",
+		&armdataprotection.BackupInstancesClientBeginResumeProtectionOptions{ResumeToken: ""})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+		return
+	}
+	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+		return
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-02-01-preview/examples/BackupInstanceOperations/StopProtection.json
+func ExampleBackupInstancesClient_BeginStopProtection() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+		return
+	}
+	ctx := context.Background()
+	client, err := armdataprotection.NewBackupInstancesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
+	poller, err := client.BeginStopProtection(ctx,
+		"<resource-group-name>",
+		"<vault-name>",
+		"<backup-instance-name>",
+		&armdataprotection.BackupInstancesClientBeginStopProtectionOptions{ResumeToken: ""})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+		return
+	}
+	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+		return
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-02-01-preview/examples/BackupInstanceOperations/SuspendBackups.json
+func ExampleBackupInstancesClient_BeginSuspendBackups() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+		return
+	}
+	ctx := context.Background()
+	client, err := armdataprotection.NewBackupInstancesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
+	poller, err := client.BeginSuspendBackups(ctx,
+		"<resource-group-name>",
+		"<vault-name>",
+		"<backup-instance-name>",
+		&armdataprotection.BackupInstancesClientBeginSuspendBackupsOptions{ResumeToken: ""})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+		return
+	}
+	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+		return
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-02-01-preview/examples/BackupInstanceOperations/SyncBackupInstance.json
+func ExampleBackupInstancesClient_BeginSyncBackupInstance() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+		return
+	}
+	ctx := context.Background()
+	client, err := armdataprotection.NewBackupInstancesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
+	poller, err := client.BeginSyncBackupInstance(ctx,
+		"<resource-group-name>",
+		"<vault-name>",
+		"<backup-instance-name>",
+		armdataprotection.SyncBackupInstanceRequest{
+			SyncType: to.Ptr(armdataprotection.SyncTypeDefault),
+		},
+		&armdataprotection.BackupInstancesClientBeginSyncBackupInstanceOptions{ResumeToken: ""})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+		return
+	}
+	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+		return
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-02-01-preview/examples/BackupInstanceOperations/ValidateRestore.json
 func ExampleBackupInstancesClient_BeginValidateForRestore() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdataprotection.NewBackupInstancesClient("<subscription-id>", cred, nil)
+	client, err := armdataprotection.NewBackupInstancesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginValidateForRestore(ctx,
-		"<vault-name>",
 		"<resource-group-name>",
+		"<vault-name>",
 		"<backup-instance-name>",
 		armdataprotection.ValidateRestoreRequestObject{
 			RestoreRequestObject: &armdataprotection.AzureBackupRecoveryPointBasedRestoreRequest{
-				ObjectType: to.StringPtr("<object-type>"),
+				ObjectType: to.Ptr("<object-type>"),
 				RestoreTargetInfo: &armdataprotection.RestoreTargetInfo{
-					ObjectType:      to.StringPtr("<object-type>"),
-					RecoveryOption:  armdataprotection.RecoveryOption("FailIfExists").ToPtr(),
-					RestoreLocation: to.StringPtr("<restore-location>"),
+					ObjectType:      to.Ptr("<object-type>"),
+					RecoveryOption:  to.Ptr(armdataprotection.RecoveryOptionFailIfExists),
+					RestoreLocation: to.Ptr("<restore-location>"),
 					DatasourceAuthCredentials: &armdataprotection.SecretStoreBasedAuthCredentials{
-						ObjectType: to.StringPtr("<object-type>"),
+						ObjectType: to.Ptr("<object-type>"),
 						SecretStoreResource: &armdataprotection.SecretStoreResource{
-							SecretStoreType: armdataprotection.SecretStoreType("AzureKeyVault").ToPtr(),
-							URI:             to.StringPtr("<uri>"),
+							SecretStoreType: to.Ptr(armdataprotection.SecretStoreTypeAzureKeyVault),
+							URI:             to.Ptr("<uri>"),
 						},
 					},
 					DatasourceInfo: &armdataprotection.Datasource{
-						DatasourceType:   to.StringPtr("<datasource-type>"),
-						ObjectType:       to.StringPtr("<object-type>"),
-						ResourceID:       to.StringPtr("<resource-id>"),
-						ResourceLocation: to.StringPtr("<resource-location>"),
-						ResourceName:     to.StringPtr("<resource-name>"),
-						ResourceType:     to.StringPtr("<resource-type>"),
-						ResourceURI:      to.StringPtr("<resource-uri>"),
+						DatasourceType:   to.Ptr("<datasource-type>"),
+						ObjectType:       to.Ptr("<object-type>"),
+						ResourceID:       to.Ptr("<resource-id>"),
+						ResourceLocation: to.Ptr("<resource-location>"),
+						ResourceName:     to.Ptr("<resource-name>"),
+						ResourceType:     to.Ptr("<resource-type>"),
+						ResourceURI:      to.Ptr("<resource-uri>"),
 					},
 					DatasourceSetInfo: &armdataprotection.DatasourceSet{
-						DatasourceType:   to.StringPtr("<datasource-type>"),
-						ObjectType:       to.StringPtr("<object-type>"),
-						ResourceID:       to.StringPtr("<resource-id>"),
-						ResourceLocation: to.StringPtr("<resource-location>"),
-						ResourceName:     to.StringPtr("<resource-name>"),
-						ResourceType:     to.StringPtr("<resource-type>"),
-						ResourceURI:      to.StringPtr("<resource-uri>"),
+						DatasourceType:   to.Ptr("<datasource-type>"),
+						ObjectType:       to.Ptr("<object-type>"),
+						ResourceID:       to.Ptr("<resource-id>"),
+						ResourceLocation: to.Ptr("<resource-location>"),
+						ResourceName:     to.Ptr("<resource-name>"),
+						ResourceType:     to.Ptr("<resource-type>"),
+						ResourceURI:      to.Ptr("<resource-uri>"),
 					},
 				},
-				SourceDataStoreType: armdataprotection.SourceDataStoreType("VaultStore").ToPtr(),
-				RecoveryPointID:     to.StringPtr("<recovery-point-id>"),
+				SourceDataStoreType: to.Ptr(armdataprotection.SourceDataStoreTypeVaultStore),
+				SourceResourceID:    to.Ptr("<source-resource-id>"),
+				RecoveryPointID:     to.Ptr("<recovery-point-id>"),
 			},
 		},
-		nil)
+		&armdataprotection.BackupInstancesClientBeginValidateForRestoreOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.BackupInstancesClientValidateForRestoreResult)
+	// TODO: use response item
+	_ = res
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,80 +17,98 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery"
 )
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationProtectionIntents_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/ReplicationProtectionIntents_List.json
 func ExampleReplicationProtectionIntentsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armrecoveryservicessiterecovery.NewReplicationProtectionIntentsClient("<resource-name>",
+	client, err := armrecoveryservicessiterecovery.NewReplicationProtectionIntentsClient("<resource-name>",
 		"<resource-group-name>",
 		"<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.List(&armrecoveryservicessiterecovery.ReplicationProtectionIntentsClientListOptions{SkipToken: nil,
 		TakeToken: nil,
 	})
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationProtectionIntents_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/ReplicationProtectionIntents_Get.json
 func ExampleReplicationProtectionIntentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armrecoveryservicessiterecovery.NewReplicationProtectionIntentsClient("<resource-name>",
+	client, err := armrecoveryservicessiterecovery.NewReplicationProtectionIntentsClient("<resource-name>",
 		"<resource-group-name>",
 		"<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<intent-object-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ReplicationProtectionIntentsClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationProtectionIntents_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/ReplicationProtectionIntents_Create.json
 func ExampleReplicationProtectionIntentsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armrecoveryservicessiterecovery.NewReplicationProtectionIntentsClient("<resource-name>",
+	client, err := armrecoveryservicessiterecovery.NewReplicationProtectionIntentsClient("<resource-name>",
 		"<resource-group-name>",
 		"<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Create(ctx,
 		"<intent-object-name>",
 		armrecoveryservicessiterecovery.CreateProtectionIntentInput{
 			Properties: &armrecoveryservicessiterecovery.CreateProtectionIntentProperties{
 				ProviderSpecificDetails: &armrecoveryservicessiterecovery.A2ACreateProtectionIntentInput{
-					InstanceType:             to.StringPtr("<instance-type>"),
-					FabricObjectID:           to.StringPtr("<fabric-object-id>"),
-					PrimaryLocation:          to.StringPtr("<primary-location>"),
-					RecoveryAvailabilityType: armrecoveryservicessiterecovery.A2ARecoveryAvailabilityType("Single").ToPtr(),
-					RecoveryLocation:         to.StringPtr("<recovery-location>"),
-					RecoveryResourceGroupID:  to.StringPtr("<recovery-resource-group-id>"),
-					RecoverySubscriptionID:   to.StringPtr("<recovery-subscription-id>"),
+					InstanceType:             to.Ptr("<instance-type>"),
+					FabricObjectID:           to.Ptr("<fabric-object-id>"),
+					PrimaryLocation:          to.Ptr("<primary-location>"),
+					RecoveryAvailabilityType: to.Ptr(armrecoveryservicessiterecovery.A2ARecoveryAvailabilityTypeSingle),
+					RecoveryLocation:         to.Ptr("<recovery-location>"),
+					RecoveryResourceGroupID:  to.Ptr("<recovery-resource-group-id>"),
+					RecoverySubscriptionID:   to.Ptr("<recovery-subscription-id>"),
 				},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ReplicationProtectionIntentsClientCreateResult)
+	// TODO: use response item
+	_ = res
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type ConnectionTypeClient struct {
 // forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewConnectionTypeClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ConnectionTypeClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewConnectionTypeClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConnectionTypeClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ConnectionTypeClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Create a connection type.
@@ -105,7 +110,7 @@ func (client *ConnectionTypeClient) createOrUpdateCreateRequest(ctx context.Cont
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *ConnectionTypeClient) createOrUpdateHandleResponse(resp *http.Response) (ConnectionTypeClientCreateOrUpdateResponse, error) {
-	result := ConnectionTypeClientCreateOrUpdateResponse{RawResponse: resp}
+	result := ConnectionTypeClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectionType); err != nil {
 		return ConnectionTypeClientCreateOrUpdateResponse{}, err
 	}
@@ -130,7 +135,7 @@ func (client *ConnectionTypeClient) Delete(ctx context.Context, resourceGroupNam
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return ConnectionTypeClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ConnectionTypeClientDeleteResponse{RawResponse: resp}, nil
+	return ConnectionTypeClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -216,7 +221,7 @@ func (client *ConnectionTypeClient) getCreateRequest(ctx context.Context, resour
 
 // getHandleResponse handles the Get response.
 func (client *ConnectionTypeClient) getHandleResponse(resp *http.Response) (ConnectionTypeClientGetResponse, error) {
-	result := ConnectionTypeClientGetResponse{RawResponse: resp}
+	result := ConnectionTypeClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectionType); err != nil {
 		return ConnectionTypeClientGetResponse{}, err
 	}
@@ -229,16 +234,32 @@ func (client *ConnectionTypeClient) getHandleResponse(resp *http.Response) (Conn
 // automationAccountName - The name of the automation account.
 // options - ConnectionTypeClientListByAutomationAccountOptions contains the optional parameters for the ConnectionTypeClient.ListByAutomationAccount
 // method.
-func (client *ConnectionTypeClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *ConnectionTypeClientListByAutomationAccountOptions) *ConnectionTypeClientListByAutomationAccountPager {
-	return &ConnectionTypeClientListByAutomationAccountPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, options)
+func (client *ConnectionTypeClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *ConnectionTypeClientListByAutomationAccountOptions) *runtime.Pager[ConnectionTypeClientListByAutomationAccountResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ConnectionTypeClientListByAutomationAccountResponse]{
+		More: func(page ConnectionTypeClientListByAutomationAccountResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ConnectionTypeClientListByAutomationAccountResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ConnectionTypeListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ConnectionTypeClientListByAutomationAccountResponse) (ConnectionTypeClientListByAutomationAccountResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ConnectionTypeClientListByAutomationAccountResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ConnectionTypeClientListByAutomationAccountResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ConnectionTypeClientListByAutomationAccountResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByAutomationAccountHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByAutomationAccountCreateRequest creates the ListByAutomationAccount request.
@@ -269,7 +290,7 @@ func (client *ConnectionTypeClient) listByAutomationAccountCreateRequest(ctx con
 
 // listByAutomationAccountHandleResponse handles the ListByAutomationAccount response.
 func (client *ConnectionTypeClient) listByAutomationAccountHandleResponse(resp *http.Response) (ConnectionTypeClientListByAutomationAccountResponse, error) {
-	result := ConnectionTypeClientListByAutomationAccountResponse{RawResponse: resp}
+	result := ConnectionTypeClientListByAutomationAccountResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectionTypeListResult); err != nil {
 		return ConnectionTypeClientListByAutomationAccountResponse{}, err
 	}

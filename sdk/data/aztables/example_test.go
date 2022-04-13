@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/aztables"
 )
@@ -95,6 +96,33 @@ func ExampleNewServiceClientWithNoCredential() {
 		panic(err)
 	}
 	fmt.Println(client)
+}
+
+func ExampleServiceClient_GetAccountSASURL() {
+	cred, err := aztables.NewSharedKeyCredential("myAccountName", "myAccountKey")
+	if err != nil {
+		panic(err)
+	}
+	service, err := aztables.NewServiceClientWithSharedKey("https://<myAccountName>.table.core.windows.net", cred, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	resources := aztables.AccountSASResourceTypes{Service: true}
+	permission := aztables.AccountSASPermissions{Read: true}
+	start := time.Now()
+	expiry := start.AddDate(1, 0, 0)
+	sasURL, err := service.GetAccountSASURL(resources, permission, start, expiry)
+	if err != nil {
+		panic(err)
+	}
+
+	serviceURL := fmt.Sprintf("https://<myAccountName>.table.core.windows.net/?%s", sasURL)
+	sasService, err := aztables.NewServiceClientWithNoCredential(serviceURL, nil)
+	if err != nil {
+		panic(err)
+	}
+	_ = sasService
 }
 
 type MyEntity struct {
@@ -195,7 +223,7 @@ func ExampleServiceClient_DeleteTable() {
 	}
 }
 
-func ExampleClient_Create() {
+func ExampleClient_CreateTable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		panic(err)
@@ -211,7 +239,7 @@ func ExampleClient_Create() {
 	}
 
 	// Create a table
-	_, err = client.Create(context.TODO(), nil)
+	_, err = client.CreateTable(context.TODO(), nil)
 	if err != nil {
 		panic(err)
 	}
@@ -287,7 +315,7 @@ type InventoryEntity struct {
 	OnSale      bool
 }
 
-func ExampleClient_InsertEntity() {
+func ExampleClient_UpsertEntity() {
 	accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
 	if !ok {
 		panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
@@ -382,7 +410,7 @@ func ExampleClient_DeleteEntity() {
 	}
 }
 
-func ExampleClient_List() {
+func ExampleClient_ListEntities() {
 	accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
 	if !ok {
 		panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
@@ -402,8 +430,11 @@ func ExampleClient_List() {
 		panic(err)
 	}
 
-	filter := fmt.Sprintf("PartitionKey eq '%v' or PartitionKey eq '%v'", "pk001", "pk002")
-	pager := client.List(&aztables.ListEntitiesOptions{Filter: &filter})
+	// For more information about writing query strings, check out:
+	//  - API Documentation: https://docs.microsoft.com/en-us/rest/api/storageservices/querying-tables-and-entities
+	//  - README samples: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/data/aztables/README.md#writing-filters
+	filter := fmt.Sprintf("PartitionKey eq '%s' or PartitionKey eq '%s'", "pk001", "pk002")
+	pager := client.ListEntities(&aztables.ListEntitiesOptions{Filter: &filter})
 
 	pageCount := 1
 	for pager.More() {
@@ -412,11 +443,26 @@ func ExampleClient_List() {
 			panic(err)
 		}
 		fmt.Printf("There are %d entities in page #%d\n", len(response.Entities), pageCount)
+
+		for _, entity := range response.Entities {
+			var myEntity aztables.EDMEntity
+			err = json.Unmarshal(entity, &myEntity)
+			if err != nil {
+				panic(err)
+			}
+
+			sp := myEntity.Properties["String"].(string)
+			dp := myEntity.Properties["Double"].(float64)
+			dt := myEntity.Properties["DateTime"].(aztables.EDMDateTime)
+			t1 := time.Time(dt)
+
+			fmt.Printf("Received: %s, %s, %s, %.2f, %s", myEntity.PartitionKey, myEntity.RowKey, sp, dp, t1.String())
+		}
 		pageCount += 1
 	}
 
 	// To list all entities in a table, provide nil to Query()
-	listPager := client.List(nil)
+	listPager := client.ListEntities(nil)
 	pageCount = 0
 	for listPager.More() {
 		response, err := listPager.NextPage(context.TODO())
@@ -425,6 +471,21 @@ func ExampleClient_List() {
 		}
 		fmt.Printf("There are %d entities in page #%d\n", len(response.Entities), pageCount)
 		pageCount += 1
+
+		for _, entity := range response.Entities {
+			var myEntity aztables.EDMEntity
+			err = json.Unmarshal(entity, &myEntity)
+			if err != nil {
+				panic(err)
+			}
+
+			sp := myEntity.Properties["String"].(string)
+			dp := myEntity.Properties["Double"].(float64)
+			dt := myEntity.Properties["DateTime"].(aztables.EDMDateTime)
+			t1 := time.Time(dt)
+
+			fmt.Printf("Received: %s, %s, %s, %.2f, %s", myEntity.PartitionKey, myEntity.RowKey, sp, dp, t1.String())
+		}
 	}
 }
 
@@ -463,5 +524,44 @@ func ExampleServiceClient_ListTables() {
 			fmt.Printf("\tTableName: %s\n", *table.Name)
 		}
 		pageCount += 1
+	}
+}
+
+func ExampleServiceClient_SetProperties() {
+	accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
+	if !ok {
+		panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
+	}
+	serviceURL := accountName + ".table.core.windows.net"
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		panic(err)
+	}
+	service, err := aztables.NewServiceClient(serviceURL, cred, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	getResp, err := service.GetProperties(context.TODO(), nil)
+	if err != nil {
+		panic(err)
+	}
+
+	getResp.HourMetrics = &aztables.Metrics{
+		Enabled: to.Ptr(true),
+	}
+	getResp.Logging = &aztables.Logging{
+		Delete: to.Ptr(true),
+		Read:   to.Ptr(true),
+		Write:  to.Ptr(true),
+	}
+	getResp.Cors = append(getResp.Cors, &aztables.CorsRule{
+		AllowedHeaders: to.Ptr("x-allowed-header"),
+		AllowedMethods: to.Ptr("POST,GET"),
+	})
+
+	_, err = service.SetProperties(context.TODO(), getResp.ServiceProperties, nil)
+	if err != nil {
+		panic(err)
 	}
 }

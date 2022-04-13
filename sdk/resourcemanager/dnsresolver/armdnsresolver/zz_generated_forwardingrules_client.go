@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type ForwardingRulesClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewForwardingRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ForwardingRulesClient {
+func NewForwardingRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ForwardingRulesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ForwardingRulesClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates a forwarding rule in a DNS forwarding ruleset.
@@ -111,7 +116,7 @@ func (client *ForwardingRulesClient) createOrUpdateCreateRequest(ctx context.Con
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *ForwardingRulesClient) createOrUpdateHandleResponse(resp *http.Response) (ForwardingRulesClientCreateOrUpdateResponse, error) {
-	result := ForwardingRulesClientCreateOrUpdateResponse{RawResponse: resp}
+	result := ForwardingRulesClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ForwardingRule); err != nil {
 		return ForwardingRulesClientCreateOrUpdateResponse{}, err
 	}
@@ -136,7 +141,7 @@ func (client *ForwardingRulesClient) Delete(ctx context.Context, resourceGroupNa
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return ForwardingRulesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ForwardingRulesClientDeleteResponse{RawResponse: resp}, nil
+	return ForwardingRulesClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -225,7 +230,7 @@ func (client *ForwardingRulesClient) getCreateRequest(ctx context.Context, resou
 
 // getHandleResponse handles the Get response.
 func (client *ForwardingRulesClient) getHandleResponse(resp *http.Response) (ForwardingRulesClientGetResponse, error) {
-	result := ForwardingRulesClientGetResponse{RawResponse: resp}
+	result := ForwardingRulesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ForwardingRule); err != nil {
 		return ForwardingRulesClientGetResponse{}, err
 	}
@@ -237,16 +242,32 @@ func (client *ForwardingRulesClient) getHandleResponse(resp *http.Response) (For
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // dnsForwardingRulesetName - The name of the DNS forwarding ruleset.
 // options - ForwardingRulesClientListOptions contains the optional parameters for the ForwardingRulesClient.List method.
-func (client *ForwardingRulesClient) List(resourceGroupName string, dnsForwardingRulesetName string, options *ForwardingRulesClientListOptions) *ForwardingRulesClientListPager {
-	return &ForwardingRulesClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, dnsForwardingRulesetName, options)
+func (client *ForwardingRulesClient) List(resourceGroupName string, dnsForwardingRulesetName string, options *ForwardingRulesClientListOptions) *runtime.Pager[ForwardingRulesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ForwardingRulesClientListResponse]{
+		More: func(page ForwardingRulesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ForwardingRulesClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ForwardingRuleListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ForwardingRulesClientListResponse) (ForwardingRulesClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, dnsForwardingRulesetName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ForwardingRulesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ForwardingRulesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ForwardingRulesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -280,7 +301,7 @@ func (client *ForwardingRulesClient) listCreateRequest(ctx context.Context, reso
 
 // listHandleResponse handles the List response.
 func (client *ForwardingRulesClient) listHandleResponse(resp *http.Response) (ForwardingRulesClientListResponse, error) {
-	result := ForwardingRulesClientListResponse{RawResponse: resp}
+	result := ForwardingRulesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ForwardingRuleListResult); err != nil {
 		return ForwardingRulesClientListResponse{}, err
 	}
@@ -344,7 +365,7 @@ func (client *ForwardingRulesClient) updateCreateRequest(ctx context.Context, re
 
 // updateHandleResponse handles the Update response.
 func (client *ForwardingRulesClient) updateHandleResponse(resp *http.Response) (ForwardingRulesClientUpdateResponse, error) {
-	result := ForwardingRulesClientUpdateResponse{RawResponse: resp}
+	result := ForwardingRulesClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ForwardingRule); err != nil {
 		return ForwardingRulesClientUpdateResponse{}, err
 	}

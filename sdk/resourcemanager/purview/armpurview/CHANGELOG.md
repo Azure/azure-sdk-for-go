@@ -1,5 +1,166 @@
 # Release History
 
+## 0.3.0 (2022-04-12)
+### Breaking Changes
+
+- Function `NewDefaultAccountsClient` return value(s) have been changed from `(*DefaultAccountsClient)` to `(*DefaultAccountsClient, error)`
+- Function `NewPrivateLinkResourcesClient` return value(s) have been changed from `(*PrivateLinkResourcesClient)` to `(*PrivateLinkResourcesClient, error)`
+- Function `NewAccountsClient` return value(s) have been changed from `(*AccountsClient)` to `(*AccountsClient, error)`
+- Function `*PrivateEndpointConnectionsClient.ListByAccount` return value(s) have been changed from `(*PrivateEndpointConnectionsClientListByAccountPager)` to `(*runtime.Pager[PrivateEndpointConnectionsClientListByAccountResponse])`
+- Function `*AccountsClient.ListBySubscription` return value(s) have been changed from `(*AccountsClientListBySubscriptionPager)` to `(*runtime.Pager[AccountsClientListBySubscriptionResponse])`
+- Function `*AccountsClient.BeginCreateOrUpdate` return value(s) have been changed from `(AccountsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[AccountsClientCreateOrUpdateResponse], error)`
+- Function `*AccountsClient.BeginDelete` return value(s) have been changed from `(AccountsClientDeletePollerResponse, error)` to `(*armruntime.Poller[AccountsClientDeleteResponse], error)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(PrivateEndpointConnectionsClientDeletePollerResponse, error)` to `(*armruntime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)`
+- Function `*AccountsClient.BeginUpdate` return value(s) have been changed from `(AccountsClientUpdatePollerResponse, error)` to `(*armruntime.Poller[AccountsClientUpdateResponse], error)`
+- Function `NewPrivateEndpointConnectionsClient` return value(s) have been changed from `(*PrivateEndpointConnectionsClient)` to `(*PrivateEndpointConnectionsClient, error)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `*PrivateEndpointConnectionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[PrivateEndpointConnectionsClientCreateOrUpdateResponse], error)`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `*PrivateLinkResourcesClient.ListByAccount` return value(s) have been changed from `(*PrivateLinkResourcesClientListByAccountPager)` to `(*runtime.Pager[PrivateLinkResourcesClientListByAccountResponse])`
+- Function `*AccountsClient.ListByResourceGroup` return value(s) have been changed from `(*AccountsClientListByResourceGroupPager)` to `(*runtime.Pager[AccountsClientListByResourceGroupResponse])`
+- Function `*AccountsClientListBySubscriptionPager.Err` has been removed
+- Function `*PrivateEndpointConnectionsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `AccountsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `Name.ToPtr` has been removed
+- Function `*PrivateEndpointConnectionsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*AccountsClientListBySubscriptionPager.NextPage` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePoller.FinalResponse` has been removed
+- Function `ScopeType.ToPtr` has been removed
+- Function `*AccountsClientListByResourceGroupPager.NextPage` has been removed
+- Function `*AccountsClientUpdatePoller.Poll` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Function `AccountsClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePoller.Done` has been removed
+- Function `Reason.ToPtr` has been removed
+- Function `CreatedByType.ToPtr` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePoller.Poll` has been removed
+- Function `Type.ToPtr` has been removed
+- Function `*AccountsClientCreateOrUpdatePoller.Done` has been removed
+- Function `PublicNetworkAccess.ToPtr` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `*PrivateEndpointConnectionsClientListByAccountPager.PageResponse` has been removed
+- Function `*PrivateLinkResourcesClientListByAccountPager.Err` has been removed
+- Function `*AccountsClientListByResourceGroupPager.Err` has been removed
+- Function `ProvisioningState.ToPtr` has been removed
+- Function `AccountsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*AccountsClientUpdatePoller.FinalResponse` has been removed
+- Function `*AccountsClientDeletePoller.ResumeToken` has been removed
+- Function `*AccountsClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*AccountsClientUpdatePoller.ResumeToken` has been removed
+- Function `*PrivateEndpointConnectionsClientListByAccountPager.NextPage` has been removed
+- Function `*AccountsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `LastModifiedByType.ToPtr` has been removed
+- Function `*PrivateEndpointConnectionsClientListByAccountPager.Err` has been removed
+- Function `PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePollerResponse.Resume` has been removed
+- Function `*AccountsClientUpdatePollerResponse.Resume` has been removed
+- Function `*AccountsClientDeletePoller.Done` has been removed
+- Function `*AccountsClientDeletePoller.Poll` has been removed
+- Function `*AccountsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*PrivateEndpointConnectionsClientDeletePoller.ResumeToken` has been removed
+- Function `*AccountsClientListBySubscriptionPager.PageResponse` has been removed
+- Function `PrivateEndpointConnectionsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateLinkResourcesClientListByAccountPager.NextPage` has been removed
+- Function `Status.ToPtr` has been removed
+- Function `*AccountsClientUpdatePoller.Done` has been removed
+- Function `*AccountsClientDeletePollerResponse.Resume` has been removed
+- Function `*PrivateEndpointConnectionsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*AccountsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*AccountsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*PrivateEndpointConnectionsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*PrivateLinkResourcesClientListByAccountPager.PageResponse` has been removed
+- Function `*PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `*AccountsClientDeletePoller.FinalResponse` has been removed
+- Struct `AccountsClientCheckNameAvailabilityResult` has been removed
+- Struct `AccountsClientCreateOrUpdatePoller` has been removed
+- Struct `AccountsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `AccountsClientCreateOrUpdateResult` has been removed
+- Struct `AccountsClientDeletePoller` has been removed
+- Struct `AccountsClientDeletePollerResponse` has been removed
+- Struct `AccountsClientGetResult` has been removed
+- Struct `AccountsClientListByResourceGroupPager` has been removed
+- Struct `AccountsClientListByResourceGroupResult` has been removed
+- Struct `AccountsClientListBySubscriptionPager` has been removed
+- Struct `AccountsClientListBySubscriptionResult` has been removed
+- Struct `AccountsClientListKeysResult` has been removed
+- Struct `AccountsClientUpdatePoller` has been removed
+- Struct `AccountsClientUpdatePollerResponse` has been removed
+- Struct `AccountsClientUpdateResult` has been removed
+- Struct `DefaultAccountsClientGetResult` has been removed
+- Struct `DefaultAccountsClientSetResult` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `PrivateEndpointConnectionsClientCreateOrUpdatePoller` has been removed
+- Struct `PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsClientCreateOrUpdateResult` has been removed
+- Struct `PrivateEndpointConnectionsClientDeletePoller` has been removed
+- Struct `PrivateEndpointConnectionsClientDeletePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsClientGetResult` has been removed
+- Struct `PrivateEndpointConnectionsClientListByAccountPager` has been removed
+- Struct `PrivateEndpointConnectionsClientListByAccountResult` has been removed
+- Struct `PrivateLinkResourcesClientGetByGroupIDResult` has been removed
+- Struct `PrivateLinkResourcesClientListByAccountPager` has been removed
+- Struct `PrivateLinkResourcesClientListByAccountResult` has been removed
+- Field `PrivateLinkResourcesClientListByAccountResult` of struct `PrivateLinkResourcesClientListByAccountResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkResourcesClientListByAccountResponse` has been removed
+- Field `AccountsClientListKeysResult` of struct `AccountsClientListKeysResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientListKeysResponse` has been removed
+- Field `AccountsClientUpdateResult` of struct `AccountsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientUpdateResponse` has been removed
+- Field `PrivateEndpointConnectionsClientGetResult` of struct `PrivateEndpointConnectionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientGetResponse` has been removed
+- Field `PrivateLinkResourcesClientGetByGroupIDResult` of struct `PrivateLinkResourcesClientGetByGroupIDResponse` has been removed
+- Field `RawResponse` of struct `PrivateLinkResourcesClientGetByGroupIDResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientDeleteResponse` has been removed
+- Field `AccountsClientGetResult` of struct `AccountsClientGetResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientGetResponse` has been removed
+- Field `RawResponse` of struct `DefaultAccountsClientRemoveResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientAddRootCollectionAdminResponse` has been removed
+- Field `PrivateEndpointConnectionsClientCreateOrUpdateResult` of struct `PrivateEndpointConnectionsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientCreateOrUpdateResponse` has been removed
+- Field `DefaultAccountsClientSetResult` of struct `DefaultAccountsClientSetResponse` has been removed
+- Field `RawResponse` of struct `DefaultAccountsClientSetResponse` has been removed
+- Field `DefaultAccountsClientGetResult` of struct `DefaultAccountsClientGetResponse` has been removed
+- Field `RawResponse` of struct `DefaultAccountsClientGetResponse` has been removed
+- Field `AccountsClientCreateOrUpdateResult` of struct `AccountsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientCreateOrUpdateResponse` has been removed
+- Field `AccountsClientListBySubscriptionResult` of struct `AccountsClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientListBySubscriptionResponse` has been removed
+- Field `AccountsClientCheckNameAvailabilityResult` of struct `AccountsClientCheckNameAvailabilityResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientCheckNameAvailabilityResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientDeleteResponse` has been removed
+- Field `AccountsClientListByResourceGroupResult` of struct `AccountsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientListByResourceGroupResponse` has been removed
+- Field `PrivateEndpointConnectionsClientListByAccountResult` of struct `PrivateEndpointConnectionsClientListByAccountResponse` has been removed
+- Field `RawResponse` of struct `PrivateEndpointConnectionsClientListByAccountResponse` has been removed
+
+### Features Added
+
+- New anonymous field `AccountList` in struct `AccountsClientListBySubscriptionResponse`
+- New anonymous field `DefaultAccountPayload` in struct `DefaultAccountsClientGetResponse`
+- New anonymous field `Account` in struct `AccountsClientUpdateResponse`
+- New anonymous field `DefaultAccountPayload` in struct `DefaultAccountsClientSetResponse`
+- New field `ResumeToken` in struct `PrivateEndpointConnectionsClientBeginDeleteOptions`
+- New anonymous field `PrivateEndpointConnectionList` in struct `PrivateEndpointConnectionsClientListByAccountResponse`
+- New field `ResumeToken` in struct `AccountsClientBeginUpdateOptions`
+- New anonymous field `Account` in struct `AccountsClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `AccountsClientBeginDeleteOptions`
+- New anonymous field `PrivateLinkResource` in struct `PrivateLinkResourcesClientGetByGroupIDResponse`
+- New anonymous field `OperationList` in struct `OperationsClientListResponse`
+- New anonymous field `AccountList` in struct `AccountsClientListByResourceGroupResponse`
+- New anonymous field `PrivateEndpointConnection` in struct `PrivateEndpointConnectionsClientCreateOrUpdateResponse`
+- New anonymous field `PrivateEndpointConnection` in struct `PrivateEndpointConnectionsClientGetResponse`
+- New anonymous field `AccessKeys` in struct `AccountsClientListKeysResponse`
+- New field `ResumeToken` in struct `AccountsClientBeginCreateOrUpdateOptions`
+- New anonymous field `PrivateLinkResourceList` in struct `PrivateLinkResourcesClientListByAccountResponse`
+- New anonymous field `Account` in struct `AccountsClientGetResponse`
+- New anonymous field `CheckNameAvailabilityResult` in struct `AccountsClientCheckNameAvailabilityResponse`
+- New field `ResumeToken` in struct `PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

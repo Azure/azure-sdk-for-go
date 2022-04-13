@@ -1,5 +1,1133 @@
 # Release History
 
+## 0.4.0 (2022-04-11)
+### Breaking Changes
+
+- Function `*CustomDomainsClient.BeginCreateOrUpdate` return value(s) have been changed from `(CustomDomainsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[CustomDomainsClientCreateOrUpdateResponse], error)`
+- Function `*ConfigurationServicesClient.BeginValidate` return value(s) have been changed from `(ConfigurationServicesClientValidatePollerResponse, error)` to `(*armruntime.Poller[ConfigurationServicesClientValidateResponse], error)`
+- Function `*ServicesClient.ListBySubscription` return value(s) have been changed from `(*ServicesClientListBySubscriptionPager)` to `(*runtime.Pager[ServicesClientListBySubscriptionResponse])`
+- Function `*ServicesClient.BeginStop` return value(s) have been changed from `(ServicesClientStopPollerResponse, error)` to `(*armruntime.Poller[ServicesClientStopResponse], error)`
+- Function `*DeploymentsClient.BeginStart` return value(s) have been changed from `(DeploymentsClientStartPollerResponse, error)` to `(*armruntime.Poller[DeploymentsClientStartResponse], error)`
+- Function `*APIPortalCustomDomainsClient.List` return value(s) have been changed from `(*APIPortalCustomDomainsClientListPager)` to `(*runtime.Pager[APIPortalCustomDomainsClientListResponse])`
+- Function `*ConfigurationServicesClient.BeginDelete` return value(s) have been changed from `(ConfigurationServicesClientDeletePollerResponse, error)` to `(*armruntime.Poller[ConfigurationServicesClientDeleteResponse], error)`
+- Function `*GatewayCustomDomainsClient.BeginDelete` return value(s) have been changed from `(GatewayCustomDomainsClientDeletePollerResponse, error)` to `(*armruntime.Poller[GatewayCustomDomainsClientDeleteResponse], error)`
+- Function `NewGatewayRouteConfigsClient` return value(s) have been changed from `(*GatewayRouteConfigsClient)` to `(*GatewayRouteConfigsClient, error)`
+- Function `NewBuildServiceBuilderClient` return value(s) have been changed from `(*BuildServiceBuilderClient)` to `(*BuildServiceBuilderClient, error)`
+- Function `NewCertificatesClient` return value(s) have been changed from `(*CertificatesClient)` to `(*CertificatesClient, error)`
+- Function `*CustomDomainsClient.BeginUpdate` return value(s) have been changed from `(CustomDomainsClientUpdatePollerResponse, error)` to `(*armruntime.Poller[CustomDomainsClientUpdateResponse], error)`
+- Function `NewDeploymentsClient` return value(s) have been changed from `(*DeploymentsClient)` to `(*DeploymentsClient, error)`
+- Function `*StoragesClient.BeginCreateOrUpdate` return value(s) have been changed from `(StoragesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[StoragesClientCreateOrUpdateResponse], error)`
+- Function `*AppsClient.List` return value(s) have been changed from `(*AppsClientListPager)` to `(*runtime.Pager[AppsClientListResponse])`
+- Function `*ServicesClient.BeginUpdate` return value(s) have been changed from `(ServicesClientUpdatePollerResponse, error)` to `(*armruntime.Poller[ServicesClientUpdateResponse], error)`
+- Function `*ServicesClient.BeginDelete` return value(s) have been changed from `(ServicesClientDeletePollerResponse, error)` to `(*armruntime.Poller[ServicesClientDeleteResponse], error)`
+- Function `*BuildServiceClient.ListBuildResults` return value(s) have been changed from `(*BuildServiceClientListBuildResultsPager)` to `(*runtime.Pager[BuildServiceClientListBuildResultsResponse])`
+- Function `*APIPortalsClient.BeginCreateOrUpdate` return value(s) have been changed from `(APIPortalsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[APIPortalsClientCreateOrUpdateResponse], error)`
+- Function `*ServiceRegistriesClient.List` return value(s) have been changed from `(*ServiceRegistriesClientListPager)` to `(*runtime.Pager[ServiceRegistriesClientListResponse])`
+- Function `*CustomDomainsClient.List` return value(s) have been changed from `(*CustomDomainsClientListPager)` to `(*runtime.Pager[CustomDomainsClientListResponse])`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `*BuildServiceClient.ListBuilds` return value(s) have been changed from `(*BuildServiceClientListBuildsPager)` to `(*runtime.Pager[BuildServiceClientListBuildsResponse])`
+- Function `*GatewayCustomDomainsClient.List` return value(s) have been changed from `(*GatewayCustomDomainsClientListPager)` to `(*runtime.Pager[GatewayCustomDomainsClientListResponse])`
+- Function `*AppsClient.BeginDelete` return value(s) have been changed from `(AppsClientDeletePollerResponse, error)` to `(*armruntime.Poller[AppsClientDeleteResponse], error)`
+- Function `NewServiceRegistriesClient` return value(s) have been changed from `(*ServiceRegistriesClient)` to `(*ServiceRegistriesClient, error)`
+- Function `NewConfigServersClient` return value(s) have been changed from `(*ConfigServersClient)` to `(*ConfigServersClient, error)`
+- Function `*GatewayRouteConfigsClient.BeginDelete` return value(s) have been changed from `(GatewayRouteConfigsClientDeletePollerResponse, error)` to `(*armruntime.Poller[GatewayRouteConfigsClientDeleteResponse], error)`
+- Function `NewBuildServiceClient` return value(s) have been changed from `(*BuildServiceClient)` to `(*BuildServiceClient, error)`
+- Function `*GatewaysClient.List` return value(s) have been changed from `(*GatewaysClientListPager)` to `(*runtime.Pager[GatewaysClientListResponse])`
+- Function `*BindingsClient.BeginUpdate` return value(s) have been changed from `(BindingsClientUpdatePollerResponse, error)` to `(*armruntime.Poller[BindingsClientUpdateResponse], error)`
+- Function `*DeploymentsClient.ListForCluster` return value(s) have been changed from `(*DeploymentsClientListForClusterPager)` to `(*runtime.Pager[DeploymentsClientListForClusterResponse])`
+- Function `*DeploymentsClient.BeginStop` return value(s) have been changed from `(DeploymentsClientStopPollerResponse, error)` to `(*armruntime.Poller[DeploymentsClientStopResponse], error)`
+- Function `*BindingsClient.BeginDelete` return value(s) have been changed from `(BindingsClientDeletePollerResponse, error)` to `(*armruntime.Poller[BindingsClientDeleteResponse], error)`
+- Function `*APIPortalCustomDomainsClient.BeginCreateOrUpdate` return value(s) have been changed from `(APIPortalCustomDomainsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[APIPortalCustomDomainsClientCreateOrUpdateResponse], error)`
+- Function `*ConfigurationServicesClient.List` return value(s) have been changed from `(*ConfigurationServicesClientListPager)` to `(*runtime.Pager[ConfigurationServicesClientListResponse])`
+- Function `*ServiceRegistriesClient.BeginDelete` return value(s) have been changed from `(ServiceRegistriesClientDeletePollerResponse, error)` to `(*armruntime.Poller[ServiceRegistriesClientDeleteResponse], error)`
+- Function `*BuildpackBindingClient.BeginDelete` return value(s) have been changed from `(BuildpackBindingClientDeletePollerResponse, error)` to `(*armruntime.Poller[BuildpackBindingClientDeleteResponse], error)`
+- Function `*DeploymentsClient.BeginGenerateHeapDump` return value(s) have been changed from `(DeploymentsClientGenerateHeapDumpPollerResponse, error)` to `(*armruntime.Poller[DeploymentsClientGenerateHeapDumpResponse], error)`
+- Function `NewServicesClient` return value(s) have been changed from `(*ServicesClient)` to `(*ServicesClient, error)`
+- Function `*APIPortalsClient.List` return value(s) have been changed from `(*APIPortalsClientListPager)` to `(*runtime.Pager[APIPortalsClientListResponse])`
+- Function `*DeploymentsClient.BeginDelete` return value(s) have been changed from `(DeploymentsClientDeletePollerResponse, error)` to `(*armruntime.Poller[DeploymentsClientDeleteResponse], error)`
+- Function `*ServicesClient.BeginStart` return value(s) have been changed from `(ServicesClientStartPollerResponse, error)` to `(*armruntime.Poller[ServicesClientStartResponse], error)`
+- Function `*SKUsClient.List` return value(s) have been changed from `(*SKUsClientListPager)` to `(*runtime.Pager[SKUsClientListResponse])`
+- Function `*MonitoringSettingsClient.BeginUpdatePatch` return value(s) have been changed from `(MonitoringSettingsClientUpdatePatchPollerResponse, error)` to `(*armruntime.Poller[MonitoringSettingsClientUpdatePatchResponse], error)`
+- Function `*DeploymentsClient.BeginStartJFR` return value(s) have been changed from `(DeploymentsClientStartJFRPollerResponse, error)` to `(*armruntime.Poller[DeploymentsClientStartJFRResponse], error)`
+- Function `*DeploymentsClient.BeginCreateOrUpdate` return value(s) have been changed from `(DeploymentsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[DeploymentsClientCreateOrUpdateResponse], error)`
+- Function `*BuildServiceBuilderClient.List` return value(s) have been changed from `(*BuildServiceBuilderClientListPager)` to `(*runtime.Pager[BuildServiceBuilderClientListResponse])`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `*GatewaysClient.BeginCreateOrUpdate` return value(s) have been changed from `(GatewaysClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[GatewaysClientCreateOrUpdateResponse], error)`
+- Function `NewAppsClient` return value(s) have been changed from `(*AppsClient)` to `(*AppsClient, error)`
+- Function `NewAPIPortalsClient` return value(s) have been changed from `(*APIPortalsClient)` to `(*APIPortalsClient, error)`
+- Function `*AppsClient.BeginUpdate` return value(s) have been changed from `(AppsClientUpdatePollerResponse, error)` to `(*armruntime.Poller[AppsClientUpdateResponse], error)`
+- Function `*DeploymentsClient.BeginRestart` return value(s) have been changed from `(DeploymentsClientRestartPollerResponse, error)` to `(*armruntime.Poller[DeploymentsClientRestartResponse], error)`
+- Function `*BuildServiceBuilderClient.BeginDelete` return value(s) have been changed from `(BuildServiceBuilderClientDeletePollerResponse, error)` to `(*armruntime.Poller[BuildServiceBuilderClientDeleteResponse], error)`
+- Function `*AppsClient.BeginCreateOrUpdate` return value(s) have been changed from `(AppsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[AppsClientCreateOrUpdateResponse], error)`
+- Function `NewSKUsClient` return value(s) have been changed from `(*SKUsClient)` to `(*SKUsClient, error)`
+- Function `NewMonitoringSettingsClient` return value(s) have been changed from `(*MonitoringSettingsClient)` to `(*MonitoringSettingsClient, error)`
+- Function `*BuildServiceAgentPoolClient.List` return value(s) have been changed from `(*BuildServiceAgentPoolClientListPager)` to `(*runtime.Pager[BuildServiceAgentPoolClientListResponse])`
+- Function `*BindingsClient.List` return value(s) have been changed from `(*BindingsClientListPager)` to `(*runtime.Pager[BindingsClientListResponse])`
+- Function `*ConfigServersClient.BeginUpdatePatch` return value(s) have been changed from `(ConfigServersClientUpdatePatchPollerResponse, error)` to `(*armruntime.Poller[ConfigServersClientUpdatePatchResponse], error)`
+- Function `*MonitoringSettingsClient.BeginUpdatePut` return value(s) have been changed from `(MonitoringSettingsClientUpdatePutPollerResponse, error)` to `(*armruntime.Poller[MonitoringSettingsClientUpdatePutResponse], error)`
+- Function `NewCustomDomainsClient` return value(s) have been changed from `(*CustomDomainsClient)` to `(*CustomDomainsClient, error)`
+- Function `*AppsClient.BeginSetActiveDeployments` return value(s) have been changed from `(AppsClientSetActiveDeploymentsPollerResponse, error)` to `(*armruntime.Poller[AppsClientSetActiveDeploymentsResponse], error)`
+- Function `NewGatewayCustomDomainsClient` return value(s) have been changed from `(*GatewayCustomDomainsClient)` to `(*GatewayCustomDomainsClient, error)`
+- Function `*ConfigurationServicesClient.BeginCreateOrUpdate` return value(s) have been changed from `(ConfigurationServicesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ConfigurationServicesClientCreateOrUpdateResponse], error)`
+- Function `*GatewayCustomDomainsClient.BeginCreateOrUpdate` return value(s) have been changed from `(GatewayCustomDomainsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[GatewayCustomDomainsClientCreateOrUpdateResponse], error)`
+- Function `*APIPortalCustomDomainsClient.BeginDelete` return value(s) have been changed from `(APIPortalCustomDomainsClientDeletePollerResponse, error)` to `(*armruntime.Poller[APIPortalCustomDomainsClientDeleteResponse], error)`
+- Function `*CertificatesClient.BeginDelete` return value(s) have been changed from `(CertificatesClientDeletePollerResponse, error)` to `(*armruntime.Poller[CertificatesClientDeleteResponse], error)`
+- Function `*ServiceRegistriesClient.BeginCreateOrUpdate` return value(s) have been changed from `(ServiceRegistriesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ServiceRegistriesClientCreateOrUpdateResponse], error)`
+- Function `NewAPIPortalCustomDomainsClient` return value(s) have been changed from `(*APIPortalCustomDomainsClient)` to `(*APIPortalCustomDomainsClient, error)`
+- Function `*ServicesClient.List` return value(s) have been changed from `(*ServicesClientListPager)` to `(*runtime.Pager[ServicesClientListResponse])`
+- Function `*ConfigServersClient.BeginValidate` return value(s) have been changed from `(ConfigServersClientValidatePollerResponse, error)` to `(*armruntime.Poller[ConfigServersClientValidateResponse], error)`
+- Function `*CertificatesClient.List` return value(s) have been changed from `(*CertificatesClientListPager)` to `(*runtime.Pager[CertificatesClientListResponse])`
+- Function `*BindingsClient.BeginCreateOrUpdate` return value(s) have been changed from `(BindingsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[BindingsClientCreateOrUpdateResponse], error)`
+- Function `*BuildServiceClient.ListBuildServices` return value(s) have been changed from `(*BuildServiceClientListBuildServicesPager)` to `(*runtime.Pager[BuildServiceClientListBuildServicesResponse])`
+- Function `*BuildServiceBuilderClient.BeginCreateOrUpdate` return value(s) have been changed from `(BuildServiceBuilderClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[BuildServiceBuilderClientCreateOrUpdateResponse], error)`
+- Function `*GatewaysClient.BeginDelete` return value(s) have been changed from `(GatewaysClientDeletePollerResponse, error)` to `(*armruntime.Poller[GatewaysClientDeleteResponse], error)`
+- Function `NewBuildServiceAgentPoolClient` return value(s) have been changed from `(*BuildServiceAgentPoolClient)` to `(*BuildServiceAgentPoolClient, error)`
+- Function `NewBuildpackBindingClient` return value(s) have been changed from `(*BuildpackBindingClient)` to `(*BuildpackBindingClient, error)`
+- Function `*CustomDomainsClient.BeginDelete` return value(s) have been changed from `(CustomDomainsClientDeletePollerResponse, error)` to `(*armruntime.Poller[CustomDomainsClientDeleteResponse], error)`
+- Function `NewRuntimeVersionsClient` return value(s) have been changed from `(*RuntimeVersionsClient)` to `(*RuntimeVersionsClient, error)`
+- Function `NewBindingsClient` return value(s) have been changed from `(*BindingsClient)` to `(*BindingsClient, error)`
+- Function `*ConfigServersClient.BeginUpdatePut` return value(s) have been changed from `(ConfigServersClientUpdatePutPollerResponse, error)` to `(*armruntime.Poller[ConfigServersClientUpdatePutResponse], error)`
+- Function `*DeploymentsClient.BeginUpdate` return value(s) have been changed from `(DeploymentsClientUpdatePollerResponse, error)` to `(*armruntime.Poller[DeploymentsClientUpdateResponse], error)`
+- Function `*ServicesClient.BeginCreateOrUpdate` return value(s) have been changed from `(ServicesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ServicesClientCreateOrUpdateResponse], error)`
+- Function `*APIPortalsClient.BeginDelete` return value(s) have been changed from `(APIPortalsClientDeletePollerResponse, error)` to `(*armruntime.Poller[APIPortalsClientDeleteResponse], error)`
+- Function `*GatewayRouteConfigsClient.BeginCreateOrUpdate` return value(s) have been changed from `(GatewayRouteConfigsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[GatewayRouteConfigsClientCreateOrUpdateResponse], error)`
+- Function `NewGatewaysClient` return value(s) have been changed from `(*GatewaysClient)` to `(*GatewaysClient, error)`
+- Function `*StoragesClient.List` return value(s) have been changed from `(*StoragesClientListPager)` to `(*runtime.Pager[StoragesClientListResponse])`
+- Function `*StoragesClient.BeginDelete` return value(s) have been changed from `(StoragesClientDeletePollerResponse, error)` to `(*armruntime.Poller[StoragesClientDeleteResponse], error)`
+- Function `NewConfigurationServicesClient` return value(s) have been changed from `(*ConfigurationServicesClient)` to `(*ConfigurationServicesClient, error)`
+- Function `*BuildpackBindingClient.BeginCreateOrUpdate` return value(s) have been changed from `(BuildpackBindingClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[BuildpackBindingClientCreateOrUpdateResponse], error)`
+- Function `*BuildpackBindingClient.List` return value(s) have been changed from `(*BuildpackBindingClientListPager)` to `(*runtime.Pager[BuildpackBindingClientListResponse])`
+- Function `NewStoragesClient` return value(s) have been changed from `(*StoragesClient)` to `(*StoragesClient, error)`
+- Function `*CertificatesClient.BeginCreateOrUpdate` return value(s) have been changed from `(CertificatesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[CertificatesClientCreateOrUpdateResponse], error)`
+- Function `*DeploymentsClient.BeginGenerateThreadDump` return value(s) have been changed from `(DeploymentsClientGenerateThreadDumpPollerResponse, error)` to `(*armruntime.Poller[DeploymentsClientGenerateThreadDumpResponse], error)`
+- Function `*DeploymentsClient.List` return value(s) have been changed from `(*DeploymentsClientListPager)` to `(*runtime.Pager[DeploymentsClientListResponse])`
+- Function `*BuildServiceAgentPoolClient.BeginUpdatePut` return value(s) have been changed from `(BuildServiceAgentPoolClientUpdatePutPollerResponse, error)` to `(*armruntime.Poller[BuildServiceAgentPoolClientUpdatePutResponse], error)`
+- Function `*GatewayRouteConfigsClient.List` return value(s) have been changed from `(*GatewayRouteConfigsClientListPager)` to `(*runtime.Pager[GatewayRouteConfigsClientListResponse])`
+- Type of `BindingResourceProperties.BindingParameters` has been changed from `map[string]map[string]interface{}` to `map[string]interface{}`
+- Type of `StorageAccount.StorageType` has been changed from `*StoragePropertiesStorageType` to `*StorageType`
+- Type of `CustomPersistentDiskProperties.Type` has been changed from `*CustomPersistentDiskPropertiesType` to `*Type`
+- Type of `AppResourceProperties.AddonConfigs` has been changed from `map[string]map[string]map[string]interface{}` to `map[string]map[string]interface{}`
+- Type of `StorageProperties.StorageType` has been changed from `*StoragePropertiesStorageType` to `*StorageType`
+- Type of `DeploymentSettings.AddonConfigs` has been changed from `map[string]map[string]map[string]interface{}` to `map[string]map[string]interface{}`
+- Type of `AzureFileVolume.Type` has been changed from `*CustomPersistentDiskPropertiesType` to `*Type`
+- Const `StoragePropertiesStorageTypeStorageAccount` has been removed
+- Const `CustomPersistentDiskPropertiesTypeAzureFileVolume` has been removed
+- Function `*DeploymentsClientListForClusterPager.Err` has been removed
+- Function `ServiceRegistriesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `BuildResultProvisioningState.ToPtr` has been removed
+- Function `*BindingsClientUpdatePollerResponse.Resume` has been removed
+- Function `*BindingsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*DeploymentsClientStartJFRPoller.FinalResponse` has been removed
+- Function `BuildpackBindingClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ServicesClientUpdatePoller.Done` has been removed
+- Function `*SKUsClientListPager.Err` has been removed
+- Function `ConfigurationServiceProvisioningState.ToPtr` has been removed
+- Function `*GatewayCustomDomainsClientListPager.Err` has been removed
+- Function `*CustomDomainsClientListPager.PageResponse` has been removed
+- Function `*ServiceRegistriesClientListPager.NextPage` has been removed
+- Function `SKUScaleType.ToPtr` has been removed
+- Function `*CustomDomainsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `GatewayRouteConfigsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*BuildServiceBuilderClientDeletePoller.ResumeToken` has been removed
+- Function `GatewayRouteConfigsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ServiceRegistriesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*DeploymentsClientStopPollerResponse.Resume` has been removed
+- Function `*BindingsClientUpdatePoller.Poll` has been removed
+- Function `*ConfigServersClientUpdatePutPoller.Poll` has been removed
+- Function `*BuildServiceClientListBuildsPager.Err` has been removed
+- Function `*BuildpackBindingClientListPager.NextPage` has been removed
+- Function `ManagedIdentityType.ToPtr` has been removed
+- Function `*CertificatesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ConfigServersClientUpdatePutPoller.ResumeToken` has been removed
+- Function `*AppsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ServicesClientStopPoller.ResumeToken` has been removed
+- Function `*GatewaysClientListPager.Err` has been removed
+- Function `*ConfigurationServicesClientValidatePollerResponse.Resume` has been removed
+- Function `*APIPortalCustomDomainsClientDeletePoller.FinalResponse` has been removed
+- Function `DeploymentsClientRestartPollerResponse.PollUntilDone` has been removed
+- Function `*StoragesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*GatewaysClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*BuildpackBindingClientDeletePoller.FinalResponse` has been removed
+- Function `*ConfigurationServicesClientDeletePoller.ResumeToken` has been removed
+- Function `*ServicesClientListPager.PageResponse` has been removed
+- Function `DeploymentsClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*CustomDomainsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*GatewayRouteConfigsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*AppsClientSetActiveDeploymentsPoller.Poll` has been removed
+- Function `*BuildServiceBuilderClientCreateOrUpdatePoller.Poll` has been removed
+- Function `DeploymentsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `CustomDomainsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*DeploymentsClientStartPoller.ResumeToken` has been removed
+- Function `*APIPortalsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*ServiceRegistriesClientListPager.PageResponse` has been removed
+- Function `*MonitoringSettingsClientUpdatePatchPoller.Done` has been removed
+- Function `AppsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*MonitoringSettingsClientUpdatePatchPoller.ResumeToken` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Function `*ConfigurationServicesClientValidatePoller.Done` has been removed
+- Function `*GatewayCustomDomainsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*CustomDomainsClientUpdatePoller.Done` has been removed
+- Function `CertificatesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*BuildServiceClientListBuildServicesPager.Err` has been removed
+- Function `DeploymentsClientGenerateThreadDumpPollerResponse.PollUntilDone` has been removed
+- Function `*DeploymentsClientUpdatePoller.ResumeToken` has been removed
+- Function `*APIPortalCustomDomainsClientListPager.PageResponse` has been removed
+- Function `*AppsClientDeletePoller.Done` has been removed
+- Function `*APIPortalsClientListPager.Err` has been removed
+- Function `*ConfigServersClientUpdatePatchPollerResponse.Resume` has been removed
+- Function `*AppsClientListPager.Err` has been removed
+- Function `*ConfigServersClientUpdatePutPoller.FinalResponse` has been removed
+- Function `*BuildpackBindingClientDeletePoller.Poll` has been removed
+- Function `*ServiceRegistriesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*GatewayRouteConfigsClientDeletePoller.FinalResponse` has been removed
+- Function `*CertificatesClientDeletePoller.Done` has been removed
+- Function `*AppsClientDeletePoller.Poll` has been removed
+- Function `MonitoringSettingState.ToPtr` has been removed
+- Function `*SKUsClientListPager.NextPage` has been removed
+- Function `*BuildServiceBuilderClientDeletePollerResponse.Resume` has been removed
+- Function `*GatewaysClientDeletePoller.Done` has been removed
+- Function `ResourceSKURestrictionsReasonCode.ToPtr` has been removed
+- Function `*BindingsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*APIPortalCustomDomainsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*APIPortalsClientDeletePoller.ResumeToken` has been removed
+- Function `*BindingsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ConfigServersClientUpdatePutPoller.Done` has been removed
+- Function `*ConfigServersClientUpdatePatchPoller.Done` has been removed
+- Function `*ServiceRegistriesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*DeploymentsClientDeletePoller.Poll` has been removed
+- Function `PossibleStoragePropertiesStorageTypeValues` has been removed
+- Function `MonitoringSettingsClientUpdatePatchPollerResponse.PollUntilDone` has been removed
+- Function `*GatewaysClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*DeploymentsClientRestartPoller.Done` has been removed
+- Function `*BindingsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `ProvisioningState.ToPtr` has been removed
+- Function `*ConfigurationServicesClientListPager.Err` has been removed
+- Function `*DeploymentsClientRestartPoller.FinalResponse` has been removed
+- Function `*DeploymentsClientStartPoller.FinalResponse` has been removed
+- Function `*ServiceRegistriesClientDeletePoller.FinalResponse` has been removed
+- Function `*CustomDomainsClientListPager.NextPage` has been removed
+- Function `*DeploymentsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*GatewayRouteConfigsClientListPager.Err` has been removed
+- Function `*ServicesClientStopPollerResponse.Resume` has been removed
+- Function `ConfigurationServicesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*CertificatesClientListPager.PageResponse` has been removed
+- Function `*ConfigurationServicesClientListPager.NextPage` has been removed
+- Function `*CertificatesClientDeletePoller.ResumeToken` has been removed
+- Function `*BuildServiceBuilderClientListPager.NextPage` has been removed
+- Function `*ServicesClientListBySubscriptionPager.PageResponse` has been removed
+- Function `PowerState.ToPtr` has been removed
+- Function `BindingsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*BuildServiceBuilderClientDeletePoller.FinalResponse` has been removed
+- Function `*CertificatesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*APIPortalsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*BuildpackBindingClientDeletePoller.Done` has been removed
+- Function `*StoragesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `BuildProvisioningState.ToPtr` has been removed
+- Function `*ConfigurationServicesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*StoragesClientDeletePoller.FinalResponse` has been removed
+- Function `BuildpackBindingClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ServicesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*CustomDomainsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*AppsClientUpdatePoller.ResumeToken` has been removed
+- Function `*ConfigServersClientValidatePoller.Done` has been removed
+- Function `*AppsClientDeletePoller.FinalResponse` has been removed
+- Function `*DeploymentsClientDeletePoller.ResumeToken` has been removed
+- Function `*StoragesClientDeletePoller.Done` has been removed
+- Function `*ConfigurationServicesClientDeletePoller.Poll` has been removed
+- Function `*CustomDomainsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ConfigurationServicesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `StoragePropertiesStorageType.ToPtr` has been removed
+- Function `*DeploymentsClientDeletePoller.Done` has been removed
+- Function `*BindingsClientUpdatePoller.FinalResponse` has been removed
+- Function `*DeploymentsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*CertificatesClientListPager.Err` has been removed
+- Function `LastModifiedByType.ToPtr` has been removed
+- Function `*APIPortalCustomDomainsClientDeletePoller.Done` has been removed
+- Function `*APIPortalCustomDomainsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*DeploymentsClientRestartPoller.Poll` has been removed
+- Function `ConfigurationServicesClientValidatePollerResponse.PollUntilDone` has been removed
+- Function `*MonitoringSettingsClientUpdatePutPollerResponse.Resume` has been removed
+- Function `*DeploymentsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*CustomDomainsClientDeletePollerResponse.Resume` has been removed
+- Function `*AppsClientSetActiveDeploymentsPollerResponse.Resume` has been removed
+- Function `*BindingsClientListPager.NextPage` has been removed
+- Function `*ConfigServersClientValidatePoller.ResumeToken` has been removed
+- Function `*DeploymentsClientGenerateHeapDumpPoller.FinalResponse` has been removed
+- Function `MonitoringSettingsClientUpdatePutPollerResponse.PollUntilDone` has been removed
+- Function `*CustomDomainsClientDeletePoller.Poll` has been removed
+- Function `*ServiceRegistriesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*DeploymentsClientGenerateHeapDumpPoller.Done` has been removed
+- Function `*ServicesClientCreateOrUpdatePoller.Done` has been removed
+- Function `ServicesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*DeploymentsClientGenerateThreadDumpPoller.ResumeToken` has been removed
+- Function `StoragesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*GatewayRouteConfigsClientDeletePoller.ResumeToken` has been removed
+- Function `*AppsClientUpdatePoller.FinalResponse` has been removed
+- Function `SupportedRuntimePlatform.ToPtr` has been removed
+- Function `*GatewayCustomDomainsClientDeletePoller.Poll` has been removed
+- Function `*BindingsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*BuildServiceBuilderClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*APIPortalCustomDomainsClientListPager.Err` has been removed
+- Function `StoragesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ServicesClientDeletePoller.Poll` has been removed
+- Function `*BuildpackBindingClientDeletePoller.ResumeToken` has been removed
+- Function `*BuildServiceBuilderClientDeletePoller.Done` has been removed
+- Function `*DeploymentsClientDeletePoller.FinalResponse` has been removed
+- Function `AppResourceProvisioningState.ToPtr` has been removed
+- Function `*ServiceRegistriesClientDeletePoller.Poll` has been removed
+- Function `*ServicesClientUpdatePollerResponse.Resume` has been removed
+- Function `*CertificatesClientDeletePoller.Poll` has been removed
+- Function `*SKUsClientListPager.PageResponse` has been removed
+- Function `*BindingsClientUpdatePoller.Done` has been removed
+- Function `*GatewaysClientDeletePoller.Poll` has been removed
+- Function `*DeploymentsClientRestartPoller.ResumeToken` has been removed
+- Function `CreatedByType.ToPtr` has been removed
+- Function `*BindingsClientListPager.PageResponse` has been removed
+- Function `*ConfigurationServicesClientValidatePoller.Poll` has been removed
+- Function `*DeploymentsClientGenerateThreadDumpPoller.Done` has been removed
+- Function `*BuildpackBindingClientDeletePollerResponse.Resume` has been removed
+- Function `*ServicesClientStopPoller.FinalResponse` has been removed
+- Function `*DeploymentsClientStartPoller.Poll` has been removed
+- Function `*GatewaysClientDeletePollerResponse.Resume` has been removed
+- Function `ServicesClientStartPollerResponse.PollUntilDone` has been removed
+- Function `BuildServiceBuilderClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*GatewaysClientDeletePoller.FinalResponse` has been removed
+- Function `*GatewayRouteConfigsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*BuildServiceClientListBuildsPager.NextPage` has been removed
+- Function `*ServiceRegistriesClientDeletePoller.ResumeToken` has been removed
+- Function `*MonitoringSettingsClientUpdatePutPoller.Done` has been removed
+- Function `*AppsClientUpdatePoller.Done` has been removed
+- Function `*GatewayRouteConfigsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ServicesClientStartPoller.FinalResponse` has been removed
+- Function `SupportedRuntimeValue.ToPtr` has been removed
+- Function `*BuildpackBindingClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*DeploymentsClientStartJFRPollerResponse.Resume` has been removed
+- Function `ConfigServersClientUpdatePutPollerResponse.PollUntilDone` has been removed
+- Function `*BindingsClientUpdatePoller.ResumeToken` has been removed
+- Function `*AppsClientDeletePoller.ResumeToken` has been removed
+- Function `*DeploymentsClientListPager.PageResponse` has been removed
+- Function `*APIPortalCustomDomainsClientDeletePollerResponse.Resume` has been removed
+- Function `DeploymentsClientStartJFRPollerResponse.PollUntilDone` has been removed
+- Function `*AppsClientListPager.NextPage` has been removed
+- Function `APIPortalsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ConfigurationServicesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*DeploymentsClientDeletePollerResponse.Resume` has been removed
+- Function `AppsClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*BuildServiceBuilderClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ConfigServersClientUpdatePutPollerResponse.Resume` has been removed
+- Function `BuildpackBindingProvisioningState.ToPtr` has been removed
+- Function `*GatewaysClientCreateOrUpdatePoller.Done` has been removed
+- Function `*CustomDomainsClientDeletePoller.FinalResponse` has been removed
+- Function `*DeploymentsClientUpdatePollerResponse.Resume` has been removed
+- Function `ConfigServersClientValidatePollerResponse.PollUntilDone` has been removed
+- Function `BuildServiceAgentPoolClientUpdatePutPollerResponse.PollUntilDone` has been removed
+- Function `*GatewayRouteConfigsClientDeletePoller.Done` has been removed
+- Function `*ConfigurationServicesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*CertificatesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*StoragesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*DeploymentsClientStopPoller.FinalResponse` has been removed
+- Function `GatewayProvisioningState.ToPtr` has been removed
+- Function `*APIPortalCustomDomainsClientListPager.NextPage` has been removed
+- Function `*BuildServiceClientListBuildResultsPager.PageResponse` has been removed
+- Function `AppsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*DeploymentsClientGenerateThreadDumpPoller.Poll` has been removed
+- Function `*DeploymentsClientStopPoller.Done` has been removed
+- Function `*ServiceRegistriesClientDeletePoller.Done` has been removed
+- Function `*ConfigServersClientValidatePoller.Poll` has been removed
+- Function `*DeploymentsClientGenerateThreadDumpPollerResponse.Resume` has been removed
+- Function `*ConfigServersClientUpdatePatchPoller.FinalResponse` has been removed
+- Function `*BuildServiceBuilderClientListPager.Err` has been removed
+- Function `*DeploymentsClientRestartPollerResponse.Resume` has been removed
+- Function `CustomDomainsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*AppsClientListPager.PageResponse` has been removed
+- Function `DeploymentsClientGenerateHeapDumpPollerResponse.PollUntilDone` has been removed
+- Function `*ServicesClientDeletePoller.ResumeToken` has been removed
+- Function `ServicesClientStopPollerResponse.PollUntilDone` has been removed
+- Function `*ConfigurationServicesClientDeletePoller.FinalResponse` has been removed
+- Function `*MonitoringSettingsClientUpdatePutPoller.FinalResponse` has been removed
+- Function `*CustomDomainsClientUpdatePoller.FinalResponse` has been removed
+- Function `*AppsClientSetActiveDeploymentsPoller.Done` has been removed
+- Function `*DeploymentsClientStartJFRPoller.Poll` has been removed
+- Function `*GatewayRouteConfigsClientDeletePoller.Poll` has been removed
+- Function `BindingsClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*BuildServiceAgentPoolClientUpdatePutPoller.ResumeToken` has been removed
+- Function `*APIPortalCustomDomainsClientDeletePoller.Poll` has been removed
+- Function `*ServicesClientDeletePollerResponse.Resume` has been removed
+- Function `*StoragesClientDeletePoller.Poll` has been removed
+- Function `*BuildpackBindingClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ServicesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*APIPortalsClientDeletePoller.Poll` has been removed
+- Function `*BuildpackBindingClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*APIPortalCustomDomainsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ServicesClientUpdatePoller.Poll` has been removed
+- Function `*ServicesClientDeletePoller.Done` has been removed
+- Function `*StoragesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*DeploymentsClientListPager.NextPage` has been removed
+- Function `*CertificatesClientDeletePollerResponse.Resume` has been removed
+- Function `*DeploymentsClientListPager.Err` has been removed
+- Function `*APIPortalsClientDeletePollerResponse.Resume` has been removed
+- Function `*BuildServiceBuilderClientDeletePoller.Poll` has been removed
+- Function `ServicesClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*DeploymentsClientStartPoller.Done` has been removed
+- Function `*APIPortalsClientDeletePoller.Done` has been removed
+- Function `*ConfigServersClientUpdatePatchPoller.Poll` has been removed
+- Function `*ConfigServersClientValidatePoller.FinalResponse` has been removed
+- Function `*DeploymentsClientStartPollerResponse.Resume` has been removed
+- Function `*GatewayCustomDomainsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*GatewayCustomDomainsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*DeploymentsClientStartJFRPoller.Done` has been removed
+- Function `*BuildServiceClientListBuildResultsPager.NextPage` has been removed
+- Function `*AppsClientSetActiveDeploymentsPoller.FinalResponse` has been removed
+- Function `DeploymentsClientStopPollerResponse.PollUntilDone` has been removed
+- Function `ServiceRegistriesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `DeploymentResourceStatus.ToPtr` has been removed
+- Function `AppsClientSetActiveDeploymentsPollerResponse.PollUntilDone` has been removed
+- Function `*ServicesClientListPager.NextPage` has been removed
+- Function `APIPortalCustomDomainsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ConfigurationServicesClientValidatePoller.ResumeToken` has been removed
+- Function `*GatewayRouteConfigsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `GatewayCustomDomainsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `TrafficDirection.ToPtr` has been removed
+- Function `*ConfigServersClientValidatePollerResponse.Resume` has been removed
+- Function `CustomPersistentDiskPropertiesType.ToPtr` has been removed
+- Function `*StoragesClientListPager.PageResponse` has been removed
+- Function `*DeploymentsClientUpdatePoller.FinalResponse` has been removed
+- Function `BindingsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*GatewayCustomDomainsClientDeletePoller.ResumeToken` has been removed
+- Function `*BuildServiceAgentPoolClientUpdatePutPoller.Poll` has been removed
+- Function `*BuildServiceAgentPoolClientListPager.NextPage` has been removed
+- Function `*AppsClientSetActiveDeploymentsPoller.ResumeToken` has been removed
+- Function `*ServicesClientUpdatePoller.ResumeToken` has been removed
+- Function `*DeploymentsClientStartJFRPoller.ResumeToken` has been removed
+- Function `*APIPortalsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*GatewayRouteConfigsClientListPager.NextPage` has been removed
+- Function `*ServicesClientStartPoller.Done` has been removed
+- Function `*AppsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*ConfigurationServicesClientDeletePoller.Done` has been removed
+- Function `*StoragesClientDeletePollerResponse.Resume` has been removed
+- Function `*GatewayCustomDomainsClientDeletePoller.FinalResponse` has been removed
+- Function `*BuildServiceAgentPoolClientUpdatePutPollerResponse.Resume` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `*GatewayRouteConfigsClientListPager.PageResponse` has been removed
+- Function `*BuildpackBindingClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `DeploymentResourceProvisioningState.ToPtr` has been removed
+- Function `*GatewaysClientListPager.PageResponse` has been removed
+- Function `BuildServiceBuilderClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `ConfigurationServicesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*AppsClientUpdatePollerResponse.Resume` has been removed
+- Function `*StoragesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*DeploymentsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `BuildServiceProvisioningState.ToPtr` has been removed
+- Function `*AppsClientDeletePollerResponse.Resume` has been removed
+- Function `*BindingsClientDeletePoller.Done` has been removed
+- Function `*GatewayCustomDomainsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `*BuildServiceAgentPoolClientUpdatePutPoller.Done` has been removed
+- Function `*GatewayCustomDomainsClientListPager.PageResponse` has been removed
+- Function `APIPortalCustomDomainsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `CertificatesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `BindingType.ToPtr` has been removed
+- Function `*AppsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*BindingsClientDeletePollerResponse.Resume` has been removed
+- Function `*DeploymentsClientUpdatePoller.Done` has been removed
+- Function `*CertificatesClientListPager.NextPage` has been removed
+- Function `*DeploymentsClientUpdatePoller.Poll` has been removed
+- Function `*MonitoringSettingsClientUpdatePatchPoller.Poll` has been removed
+- Function `*CustomDomainsClientDeletePoller.Done` has been removed
+- Function `*BuildServiceBuilderClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*BuildServiceAgentPoolClientListPager.PageResponse` has been removed
+- Function `KPackBuildStageProvisioningState.ToPtr` has been removed
+- Function `*ServicesClientStopPoller.Done` has been removed
+- Function `*MonitoringSettingsClientUpdatePatchPollerResponse.Resume` has been removed
+- Function `*GatewayCustomDomainsClientDeletePoller.Done` has been removed
+- Function `*ConfigurationServicesClientListPager.PageResponse` has been removed
+- Function `*ServicesClientDeletePoller.FinalResponse` has been removed
+- Function `*ServicesClientStopPoller.Poll` has been removed
+- Function `*CustomDomainsClientUpdatePoller.ResumeToken` has been removed
+- Function `DeploymentsClientStartPollerResponse.PollUntilDone` has been removed
+- Function `*DeploymentsClientListForClusterPager.PageResponse` has been removed
+- Function `TestKeyType.ToPtr` has been removed
+- Function `*ServicesClientStartPoller.ResumeToken` has been removed
+- Function `*AppsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*BuildpackBindingClientListPager.Err` has been removed
+- Function `*ServicesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*DeploymentsClientGenerateHeapDumpPoller.Poll` has been removed
+- Function `*ServicesClientStartPoller.Poll` has been removed
+- Function `*StoragesClientListPager.NextPage` has been removed
+- Function `*BuildServiceClientListBuildServicesPager.PageResponse` has been removed
+- Function `*GatewaysClientListPager.NextPage` has been removed
+- Function `APIPortalsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*CustomDomainsClientUpdatePoller.Poll` has been removed
+- Function `*APIPortalCustomDomainsClientCreateOrUpdatePoller.Done` has been removed
+- Function `ResourceSKURestrictionsType.ToPtr` has been removed
+- Function `APIPortalProvisioningState.ToPtr` has been removed
+- Function `*ConfigurationServicesClientValidatePoller.FinalResponse` has been removed
+- Function `*BuildServiceAgentPoolClientListPager.Err` has been removed
+- Function `*APIPortalsClientDeletePoller.FinalResponse` has been removed
+- Function `*MonitoringSettingsClientUpdatePutPoller.ResumeToken` has been removed
+- Function `*CertificatesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*BuildServiceClientListBuildServicesPager.NextPage` has been removed
+- Function `*AppsClientUpdatePoller.Poll` has been removed
+- Function `*ConfigurationServicesClientDeletePollerResponse.Resume` has been removed
+- Function `GatewaysClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `BuilderProvisioningState.ToPtr` has been removed
+- Function `*CustomDomainsClientUpdatePollerResponse.Resume` has been removed
+- Function `*BuildServiceAgentPoolClientUpdatePutPoller.FinalResponse` has been removed
+- Function `*GatewaysClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*DeploymentsClientGenerateHeapDumpPollerResponse.Resume` has been removed
+- Function `CustomDomainsClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `GatewaysClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ServiceRegistriesClientDeletePollerResponse.Resume` has been removed
+- Function `*ConfigServersClientUpdatePatchPoller.ResumeToken` has been removed
+- Function `*BuildpackBindingClientCreateOrUpdatePoller.Done` has been removed
+- Function `*CertificatesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*GatewaysClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*BuildServiceClientListBuildResultsPager.Err` has been removed
+- Function `*CustomDomainsClientListPager.Err` has been removed
+- Function `*GatewayRouteConfigsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*BuildServiceBuilderClientCreateOrUpdatePoller.Done` has been removed
+- Function `*DeploymentsClientStopPoller.ResumeToken` has been removed
+- Function `*ServicesClientListPager.Err` has been removed
+- Function `DeploymentsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*GatewayRouteConfigsClientDeletePollerResponse.Resume` has been removed
+- Function `*BindingsClientDeletePoller.ResumeToken` has been removed
+- Function `ServicesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ServiceRegistriesClientListPager.Err` has been removed
+- Function `*DeploymentsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*GatewayCustomDomainsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*APIPortalsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*APIPortalCustomDomainsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*APIPortalsClientListPager.NextPage` has been removed
+- Function `*GatewayCustomDomainsClientListPager.NextPage` has been removed
+- Function `*BindingsClientDeletePoller.FinalResponse` has been removed
+- Function `GatewayCustomDomainsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `ConfigServersClientUpdatePatchPollerResponse.PollUntilDone` has been removed
+- Function `*APIPortalsClientListPager.PageResponse` has been removed
+- Function `*DeploymentsClientGenerateThreadDumpPoller.FinalResponse` has been removed
+- Function `*BindingsClientListPager.Err` has been removed
+- Function `*ServicesClientUpdatePoller.FinalResponse` has been removed
+- Function `*GatewayCustomDomainsClientDeletePollerResponse.Resume` has been removed
+- Function `*StoragesClientDeletePoller.ResumeToken` has been removed
+- Function `*BuildServiceClientListBuildsPager.PageResponse` has been removed
+- Function `*ConfigurationServicesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*APIPortalCustomDomainsClientDeletePoller.ResumeToken` has been removed
+- Function `*BuildServiceBuilderClientListPager.PageResponse` has been removed
+- Function `ServiceRegistryProvisioningState.ToPtr` has been removed
+- Function `*ServicesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `ConfigServerState.ToPtr` has been removed
+- Function `*MonitoringSettingsClientUpdatePutPoller.Poll` has been removed
+- Function `*ServicesClientStartPollerResponse.Resume` has been removed
+- Function `*AppsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*DeploymentsClientListForClusterPager.NextPage` has been removed
+- Function `*DeploymentsClientGenerateHeapDumpPoller.ResumeToken` has been removed
+- Function `*BuildpackBindingClientListPager.PageResponse` has been removed
+- Function `*CustomDomainsClientDeletePoller.ResumeToken` has been removed
+- Function `*ServicesClientListBySubscriptionPager.NextPage` has been removed
+- Function `*BindingsClientDeletePoller.Poll` has been removed
+- Function `*CustomDomainsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ServicesClientListBySubscriptionPager.Err` has been removed
+- Function `*StoragesClientListPager.Err` has been removed
+- Function `*ServiceRegistriesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*MonitoringSettingsClientUpdatePatchPoller.FinalResponse` has been removed
+- Function `PossibleCustomPersistentDiskPropertiesTypeValues` has been removed
+- Function `*DeploymentsClientStopPoller.Poll` has been removed
+- Function `*CertificatesClientDeletePoller.FinalResponse` has been removed
+- Function `*APIPortalsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*GatewaysClientDeletePoller.ResumeToken` has been removed
+- Struct `APIPortalCustomDomainsClientCreateOrUpdatePoller` has been removed
+- Struct `APIPortalCustomDomainsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `APIPortalCustomDomainsClientCreateOrUpdateResult` has been removed
+- Struct `APIPortalCustomDomainsClientDeletePoller` has been removed
+- Struct `APIPortalCustomDomainsClientDeletePollerResponse` has been removed
+- Struct `APIPortalCustomDomainsClientGetResult` has been removed
+- Struct `APIPortalCustomDomainsClientListPager` has been removed
+- Struct `APIPortalCustomDomainsClientListResult` has been removed
+- Struct `APIPortalsClientCreateOrUpdatePoller` has been removed
+- Struct `APIPortalsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `APIPortalsClientCreateOrUpdateResult` has been removed
+- Struct `APIPortalsClientDeletePoller` has been removed
+- Struct `APIPortalsClientDeletePollerResponse` has been removed
+- Struct `APIPortalsClientGetResult` has been removed
+- Struct `APIPortalsClientListPager` has been removed
+- Struct `APIPortalsClientListResult` has been removed
+- Struct `APIPortalsClientValidateDomainResult` has been removed
+- Struct `AppsClientCreateOrUpdatePoller` has been removed
+- Struct `AppsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `AppsClientCreateOrUpdateResult` has been removed
+- Struct `AppsClientDeletePoller` has been removed
+- Struct `AppsClientDeletePollerResponse` has been removed
+- Struct `AppsClientGetResourceUploadURLResult` has been removed
+- Struct `AppsClientGetResult` has been removed
+- Struct `AppsClientListPager` has been removed
+- Struct `AppsClientListResult` has been removed
+- Struct `AppsClientSetActiveDeploymentsPoller` has been removed
+- Struct `AppsClientSetActiveDeploymentsPollerResponse` has been removed
+- Struct `AppsClientSetActiveDeploymentsResult` has been removed
+- Struct `AppsClientUpdatePoller` has been removed
+- Struct `AppsClientUpdatePollerResponse` has been removed
+- Struct `AppsClientUpdateResult` has been removed
+- Struct `AppsClientValidateDomainResult` has been removed
+- Struct `BindingsClientCreateOrUpdatePoller` has been removed
+- Struct `BindingsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `BindingsClientCreateOrUpdateResult` has been removed
+- Struct `BindingsClientDeletePoller` has been removed
+- Struct `BindingsClientDeletePollerResponse` has been removed
+- Struct `BindingsClientGetResult` has been removed
+- Struct `BindingsClientListPager` has been removed
+- Struct `BindingsClientListResult` has been removed
+- Struct `BindingsClientUpdatePoller` has been removed
+- Struct `BindingsClientUpdatePollerResponse` has been removed
+- Struct `BindingsClientUpdateResult` has been removed
+- Struct `BuildServiceAgentPoolClientGetResult` has been removed
+- Struct `BuildServiceAgentPoolClientListPager` has been removed
+- Struct `BuildServiceAgentPoolClientListResult` has been removed
+- Struct `BuildServiceAgentPoolClientUpdatePutPoller` has been removed
+- Struct `BuildServiceAgentPoolClientUpdatePutPollerResponse` has been removed
+- Struct `BuildServiceAgentPoolClientUpdatePutResult` has been removed
+- Struct `BuildServiceBuilderClientCreateOrUpdatePoller` has been removed
+- Struct `BuildServiceBuilderClientCreateOrUpdatePollerResponse` has been removed
+- Struct `BuildServiceBuilderClientCreateOrUpdateResult` has been removed
+- Struct `BuildServiceBuilderClientDeletePoller` has been removed
+- Struct `BuildServiceBuilderClientDeletePollerResponse` has been removed
+- Struct `BuildServiceBuilderClientGetResult` has been removed
+- Struct `BuildServiceBuilderClientListPager` has been removed
+- Struct `BuildServiceBuilderClientListResult` has been removed
+- Struct `BuildServiceClientCreateOrUpdateBuildResult` has been removed
+- Struct `BuildServiceClientGetBuildResult` has been removed
+- Struct `BuildServiceClientGetBuildResultLogResult` has been removed
+- Struct `BuildServiceClientGetBuildResultResult` has been removed
+- Struct `BuildServiceClientGetBuildServiceResult` has been removed
+- Struct `BuildServiceClientGetResourceUploadURLResult` has been removed
+- Struct `BuildServiceClientGetSupportedBuildpackResult` has been removed
+- Struct `BuildServiceClientGetSupportedStackResult` has been removed
+- Struct `BuildServiceClientListBuildResultsPager` has been removed
+- Struct `BuildServiceClientListBuildResultsResult` has been removed
+- Struct `BuildServiceClientListBuildServicesPager` has been removed
+- Struct `BuildServiceClientListBuildServicesResult` has been removed
+- Struct `BuildServiceClientListBuildsPager` has been removed
+- Struct `BuildServiceClientListBuildsResult` has been removed
+- Struct `BuildServiceClientListSupportedBuildpacksResult` has been removed
+- Struct `BuildServiceClientListSupportedStacksResult` has been removed
+- Struct `BuildpackBindingClientCreateOrUpdatePoller` has been removed
+- Struct `BuildpackBindingClientCreateOrUpdatePollerResponse` has been removed
+- Struct `BuildpackBindingClientCreateOrUpdateResult` has been removed
+- Struct `BuildpackBindingClientDeletePoller` has been removed
+- Struct `BuildpackBindingClientDeletePollerResponse` has been removed
+- Struct `BuildpackBindingClientGetResult` has been removed
+- Struct `BuildpackBindingClientListPager` has been removed
+- Struct `BuildpackBindingClientListResult` has been removed
+- Struct `CertificatesClientCreateOrUpdatePoller` has been removed
+- Struct `CertificatesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `CertificatesClientCreateOrUpdateResult` has been removed
+- Struct `CertificatesClientDeletePoller` has been removed
+- Struct `CertificatesClientDeletePollerResponse` has been removed
+- Struct `CertificatesClientGetResult` has been removed
+- Struct `CertificatesClientListPager` has been removed
+- Struct `CertificatesClientListResult` has been removed
+- Struct `ConfigServersClientGetResult` has been removed
+- Struct `ConfigServersClientUpdatePatchPoller` has been removed
+- Struct `ConfigServersClientUpdatePatchPollerResponse` has been removed
+- Struct `ConfigServersClientUpdatePatchResult` has been removed
+- Struct `ConfigServersClientUpdatePutPoller` has been removed
+- Struct `ConfigServersClientUpdatePutPollerResponse` has been removed
+- Struct `ConfigServersClientUpdatePutResult` has been removed
+- Struct `ConfigServersClientValidatePoller` has been removed
+- Struct `ConfigServersClientValidatePollerResponse` has been removed
+- Struct `ConfigServersClientValidateResult` has been removed
+- Struct `ConfigurationServicesClientCreateOrUpdatePoller` has been removed
+- Struct `ConfigurationServicesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ConfigurationServicesClientCreateOrUpdateResult` has been removed
+- Struct `ConfigurationServicesClientDeletePoller` has been removed
+- Struct `ConfigurationServicesClientDeletePollerResponse` has been removed
+- Struct `ConfigurationServicesClientGetResult` has been removed
+- Struct `ConfigurationServicesClientListPager` has been removed
+- Struct `ConfigurationServicesClientListResult` has been removed
+- Struct `ConfigurationServicesClientValidatePoller` has been removed
+- Struct `ConfigurationServicesClientValidatePollerResponse` has been removed
+- Struct `ConfigurationServicesClientValidateResult` has been removed
+- Struct `CustomDomainsClientCreateOrUpdatePoller` has been removed
+- Struct `CustomDomainsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `CustomDomainsClientCreateOrUpdateResult` has been removed
+- Struct `CustomDomainsClientDeletePoller` has been removed
+- Struct `CustomDomainsClientDeletePollerResponse` has been removed
+- Struct `CustomDomainsClientGetResult` has been removed
+- Struct `CustomDomainsClientListPager` has been removed
+- Struct `CustomDomainsClientListResult` has been removed
+- Struct `CustomDomainsClientUpdatePoller` has been removed
+- Struct `CustomDomainsClientUpdatePollerResponse` has been removed
+- Struct `CustomDomainsClientUpdateResult` has been removed
+- Struct `DeploymentsClientCreateOrUpdatePoller` has been removed
+- Struct `DeploymentsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `DeploymentsClientCreateOrUpdateResult` has been removed
+- Struct `DeploymentsClientDeletePoller` has been removed
+- Struct `DeploymentsClientDeletePollerResponse` has been removed
+- Struct `DeploymentsClientGenerateHeapDumpPoller` has been removed
+- Struct `DeploymentsClientGenerateHeapDumpPollerResponse` has been removed
+- Struct `DeploymentsClientGenerateThreadDumpPoller` has been removed
+- Struct `DeploymentsClientGenerateThreadDumpPollerResponse` has been removed
+- Struct `DeploymentsClientGetLogFileURLResult` has been removed
+- Struct `DeploymentsClientGetResult` has been removed
+- Struct `DeploymentsClientListForClusterPager` has been removed
+- Struct `DeploymentsClientListForClusterResult` has been removed
+- Struct `DeploymentsClientListPager` has been removed
+- Struct `DeploymentsClientListResult` has been removed
+- Struct `DeploymentsClientRestartPoller` has been removed
+- Struct `DeploymentsClientRestartPollerResponse` has been removed
+- Struct `DeploymentsClientStartJFRPoller` has been removed
+- Struct `DeploymentsClientStartJFRPollerResponse` has been removed
+- Struct `DeploymentsClientStartPoller` has been removed
+- Struct `DeploymentsClientStartPollerResponse` has been removed
+- Struct `DeploymentsClientStopPoller` has been removed
+- Struct `DeploymentsClientStopPollerResponse` has been removed
+- Struct `DeploymentsClientUpdatePoller` has been removed
+- Struct `DeploymentsClientUpdatePollerResponse` has been removed
+- Struct `DeploymentsClientUpdateResult` has been removed
+- Struct `GatewayCustomDomainsClientCreateOrUpdatePoller` has been removed
+- Struct `GatewayCustomDomainsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `GatewayCustomDomainsClientCreateOrUpdateResult` has been removed
+- Struct `GatewayCustomDomainsClientDeletePoller` has been removed
+- Struct `GatewayCustomDomainsClientDeletePollerResponse` has been removed
+- Struct `GatewayCustomDomainsClientGetResult` has been removed
+- Struct `GatewayCustomDomainsClientListPager` has been removed
+- Struct `GatewayCustomDomainsClientListResult` has been removed
+- Struct `GatewayRouteConfigsClientCreateOrUpdatePoller` has been removed
+- Struct `GatewayRouteConfigsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `GatewayRouteConfigsClientCreateOrUpdateResult` has been removed
+- Struct `GatewayRouteConfigsClientDeletePoller` has been removed
+- Struct `GatewayRouteConfigsClientDeletePollerResponse` has been removed
+- Struct `GatewayRouteConfigsClientGetResult` has been removed
+- Struct `GatewayRouteConfigsClientListPager` has been removed
+- Struct `GatewayRouteConfigsClientListResult` has been removed
+- Struct `GatewaysClientCreateOrUpdatePoller` has been removed
+- Struct `GatewaysClientCreateOrUpdatePollerResponse` has been removed
+- Struct `GatewaysClientCreateOrUpdateResult` has been removed
+- Struct `GatewaysClientDeletePoller` has been removed
+- Struct `GatewaysClientDeletePollerResponse` has been removed
+- Struct `GatewaysClientGetResult` has been removed
+- Struct `GatewaysClientListPager` has been removed
+- Struct `GatewaysClientListResult` has been removed
+- Struct `GatewaysClientValidateDomainResult` has been removed
+- Struct `MonitoringSettingsClientGetResult` has been removed
+- Struct `MonitoringSettingsClientUpdatePatchPoller` has been removed
+- Struct `MonitoringSettingsClientUpdatePatchPollerResponse` has been removed
+- Struct `MonitoringSettingsClientUpdatePatchResult` has been removed
+- Struct `MonitoringSettingsClientUpdatePutPoller` has been removed
+- Struct `MonitoringSettingsClientUpdatePutPollerResponse` has been removed
+- Struct `MonitoringSettingsClientUpdatePutResult` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `RuntimeVersionsClientListRuntimeVersionsResult` has been removed
+- Struct `SKUsClientListPager` has been removed
+- Struct `SKUsClientListResult` has been removed
+- Struct `ServiceRegistriesClientCreateOrUpdatePoller` has been removed
+- Struct `ServiceRegistriesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ServiceRegistriesClientCreateOrUpdateResult` has been removed
+- Struct `ServiceRegistriesClientDeletePoller` has been removed
+- Struct `ServiceRegistriesClientDeletePollerResponse` has been removed
+- Struct `ServiceRegistriesClientGetResult` has been removed
+- Struct `ServiceRegistriesClientListPager` has been removed
+- Struct `ServiceRegistriesClientListResult` has been removed
+- Struct `ServicesClientCheckNameAvailabilityResult` has been removed
+- Struct `ServicesClientCreateOrUpdatePoller` has been removed
+- Struct `ServicesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ServicesClientCreateOrUpdateResult` has been removed
+- Struct `ServicesClientDeletePoller` has been removed
+- Struct `ServicesClientDeletePollerResponse` has been removed
+- Struct `ServicesClientEnableTestEndpointResult` has been removed
+- Struct `ServicesClientGetResult` has been removed
+- Struct `ServicesClientListBySubscriptionPager` has been removed
+- Struct `ServicesClientListBySubscriptionResult` has been removed
+- Struct `ServicesClientListPager` has been removed
+- Struct `ServicesClientListResult` has been removed
+- Struct `ServicesClientListTestKeysResult` has been removed
+- Struct `ServicesClientRegenerateTestKeyResult` has been removed
+- Struct `ServicesClientStartPoller` has been removed
+- Struct `ServicesClientStartPollerResponse` has been removed
+- Struct `ServicesClientStopPoller` has been removed
+- Struct `ServicesClientStopPollerResponse` has been removed
+- Struct `ServicesClientUpdatePoller` has been removed
+- Struct `ServicesClientUpdatePollerResponse` has been removed
+- Struct `ServicesClientUpdateResult` has been removed
+- Struct `StoragesClientCreateOrUpdatePoller` has been removed
+- Struct `StoragesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `StoragesClientCreateOrUpdateResult` has been removed
+- Struct `StoragesClientDeletePoller` has been removed
+- Struct `StoragesClientDeletePollerResponse` has been removed
+- Struct `StoragesClientGetResult` has been removed
+- Struct `StoragesClientListPager` has been removed
+- Struct `StoragesClientListResult` has been removed
+- Field `ServiceRegistriesClientCreateOrUpdateResult` of struct `ServiceRegistriesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ServiceRegistriesClientCreateOrUpdateResponse` has been removed
+- Field `GatewayCustomDomainsClientListResult` of struct `GatewayCustomDomainsClientListResponse` has been removed
+- Field `RawResponse` of struct `GatewayCustomDomainsClientListResponse` has been removed
+- Field `BuildServiceClientGetBuildServiceResult` of struct `BuildServiceClientGetBuildServiceResponse` has been removed
+- Field `RawResponse` of struct `BuildServiceClientGetBuildServiceResponse` has been removed
+- Field `BuildServiceClientGetResourceUploadURLResult` of struct `BuildServiceClientGetResourceUploadURLResponse` has been removed
+- Field `RawResponse` of struct `BuildServiceClientGetResourceUploadURLResponse` has been removed
+- Field `GatewayRouteConfigsClientGetResult` of struct `GatewayRouteConfigsClientGetResponse` has been removed
+- Field `RawResponse` of struct `GatewayRouteConfigsClientGetResponse` has been removed
+- Field `DeploymentsClientGetLogFileURLResult` of struct `DeploymentsClientGetLogFileURLResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientGetLogFileURLResponse` has been removed
+- Field `ServicesClientCheckNameAvailabilityResult` of struct `ServicesClientCheckNameAvailabilityResponse` has been removed
+- Field `RawResponse` of struct `ServicesClientCheckNameAvailabilityResponse` has been removed
+- Field `BuildServiceBuilderClientListResult` of struct `BuildServiceBuilderClientListResponse` has been removed
+- Field `RawResponse` of struct `BuildServiceBuilderClientListResponse` has been removed
+- Field `ConfigurationServicesClientCreateOrUpdateResult` of struct `ConfigurationServicesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ConfigurationServicesClientCreateOrUpdateResponse` has been removed
+- Field `APIPortalCustomDomainsClientGetResult` of struct `APIPortalCustomDomainsClientGetResponse` has been removed
+- Field `RawResponse` of struct `APIPortalCustomDomainsClientGetResponse` has been removed
+- Field `APIPortalCustomDomainsClientCreateOrUpdateResult` of struct `APIPortalCustomDomainsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `APIPortalCustomDomainsClientCreateOrUpdateResponse` has been removed
+- Field `CustomDomainsClientGetResult` of struct `CustomDomainsClientGetResponse` has been removed
+- Field `RawResponse` of struct `CustomDomainsClientGetResponse` has been removed
+- Field `BuildServiceAgentPoolClientListResult` of struct `BuildServiceAgentPoolClientListResponse` has been removed
+- Field `RawResponse` of struct `BuildServiceAgentPoolClientListResponse` has been removed
+- Field `CertificatesClientGetResult` of struct `CertificatesClientGetResponse` has been removed
+- Field `RawResponse` of struct `CertificatesClientGetResponse` has been removed
+- Field `BuildServiceClientListBuildsResult` of struct `BuildServiceClientListBuildsResponse` has been removed
+- Field `RawResponse` of struct `BuildServiceClientListBuildsResponse` has been removed
+- Field `BuildServiceClientListBuildServicesResult` of struct `BuildServiceClientListBuildServicesResponse` has been removed
+- Field `RawResponse` of struct `BuildServiceClientListBuildServicesResponse` has been removed
+- Field `ServicesClientListResult` of struct `ServicesClientListResponse` has been removed
+- Field `RawResponse` of struct `ServicesClientListResponse` has been removed
+- Field `GatewayCustomDomainsClientGetResult` of struct `GatewayCustomDomainsClientGetResponse` has been removed
+- Field `RawResponse` of struct `GatewayCustomDomainsClientGetResponse` has been removed
+- Field `ServiceRegistriesClientListResult` of struct `ServiceRegistriesClientListResponse` has been removed
+- Field `RawResponse` of struct `ServiceRegistriesClientListResponse` has been removed
+- Field `GatewayRouteConfigsClientCreateOrUpdateResult` of struct `GatewayRouteConfigsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `GatewayRouteConfigsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ConfigurationServicesClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `ServicesClientStartResponse` has been removed
+- Field `APIPortalsClientCreateOrUpdateResult` of struct `APIPortalsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `APIPortalsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ServicesClientDeleteResponse` has been removed
+- Field `ServicesClientListBySubscriptionResult` of struct `ServicesClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `ServicesClientListBySubscriptionResponse` has been removed
+- Field `ServicesClientEnableTestEndpointResult` of struct `ServicesClientEnableTestEndpointResponse` has been removed
+- Field `RawResponse` of struct `ServicesClientEnableTestEndpointResponse` has been removed
+- Field `BindingsClientGetResult` of struct `BindingsClientGetResponse` has been removed
+- Field `RawResponse` of struct `BindingsClientGetResponse` has been removed
+- Field `BindingsClientListResult` of struct `BindingsClientListResponse` has been removed
+- Field `RawResponse` of struct `BindingsClientListResponse` has been removed
+- Field `DeploymentsClientUpdateResult` of struct `DeploymentsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `GatewayRouteConfigsClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `APIPortalCustomDomainsClientDeleteResponse` has been removed
+- Field `ConfigServersClientGetResult` of struct `ConfigServersClientGetResponse` has been removed
+- Field `RawResponse` of struct `ConfigServersClientGetResponse` has been removed
+- Field `BuildServiceClientGetSupportedBuildpackResult` of struct `BuildServiceClientGetSupportedBuildpackResponse` has been removed
+- Field `RawResponse` of struct `BuildServiceClientGetSupportedBuildpackResponse` has been removed
+- Field `CustomDomainsClientUpdateResult` of struct `CustomDomainsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `CustomDomainsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `CustomDomainsClientDeleteResponse` has been removed
+- Field `GatewayCustomDomainsClientCreateOrUpdateResult` of struct `GatewayCustomDomainsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `GatewayCustomDomainsClientCreateOrUpdateResponse` has been removed
+- Field `BuildServiceClientCreateOrUpdateBuildResult` of struct `BuildServiceClientCreateOrUpdateBuildResponse` has been removed
+- Field `RawResponse` of struct `BuildServiceClientCreateOrUpdateBuildResponse` has been removed
+- Field `BuildServiceClientListSupportedStacksResult` of struct `BuildServiceClientListSupportedStacksResponse` has been removed
+- Field `RawResponse` of struct `BuildServiceClientListSupportedStacksResponse` has been removed
+- Field `APIPortalsClientListResult` of struct `APIPortalsClientListResponse` has been removed
+- Field `RawResponse` of struct `APIPortalsClientListResponse` has been removed
+- Field `BuildServiceBuilderClientCreateOrUpdateResult` of struct `BuildServiceBuilderClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `BuildServiceBuilderClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `CertificatesClientDeleteResponse` has been removed
+- Field `BuildServiceAgentPoolClientUpdatePutResult` of struct `BuildServiceAgentPoolClientUpdatePutResponse` has been removed
+- Field `RawResponse` of struct `BuildServiceAgentPoolClientUpdatePutResponse` has been removed
+- Field `BuildpackBindingClientGetResult` of struct `BuildpackBindingClientGetResponse` has been removed
+- Field `RawResponse` of struct `BuildpackBindingClientGetResponse` has been removed
+- Field `BuildServiceBuilderClientGetResult` of struct `BuildServiceBuilderClientGetResponse` has been removed
+- Field `RawResponse` of struct `BuildServiceBuilderClientGetResponse` has been removed
+- Field `StoragesClientCreateOrUpdateResult` of struct `StoragesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `StoragesClientCreateOrUpdateResponse` has been removed
+- Field `StoragesClientListResult` of struct `StoragesClientListResponse` has been removed
+- Field `RawResponse` of struct `StoragesClientListResponse` has been removed
+- Field `ServicesClientUpdateResult` of struct `ServicesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ServicesClientUpdateResponse` has been removed
+- Field `AppsClientValidateDomainResult` of struct `AppsClientValidateDomainResponse` has been removed
+- Field `RawResponse` of struct `AppsClientValidateDomainResponse` has been removed
+- Field `ConfigurationServicesClientGetResult` of struct `ConfigurationServicesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ConfigurationServicesClientGetResponse` has been removed
+- Field `MonitoringSettingsClientGetResult` of struct `MonitoringSettingsClientGetResponse` has been removed
+- Field `RawResponse` of struct `MonitoringSettingsClientGetResponse` has been removed
+- Field `BuildpackBindingClientListResult` of struct `BuildpackBindingClientListResponse` has been removed
+- Field `RawResponse` of struct `BuildpackBindingClientListResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientStopResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientGenerateHeapDumpResponse` has been removed
+- Field `BuildpackBindingClientCreateOrUpdateResult` of struct `BuildpackBindingClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `BuildpackBindingClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `APIPortalsClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `ServiceRegistriesClientDeleteResponse` has been removed
+- Field `DeploymentsClientCreateOrUpdateResult` of struct `DeploymentsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientCreateOrUpdateResponse` has been removed
+- Field `AppsClientGetResourceUploadURLResult` of struct `AppsClientGetResourceUploadURLResponse` has been removed
+- Field `RawResponse` of struct `AppsClientGetResourceUploadURLResponse` has been removed
+- Field `ConfigServersClientValidateResult` of struct `ConfigServersClientValidateResponse` has been removed
+- Field `RawResponse` of struct `ConfigServersClientValidateResponse` has been removed
+- Field `RawResponse` of struct `StoragesClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `BuildServiceBuilderClientDeleteResponse` has been removed
+- Field `AppsClientListResult` of struct `AppsClientListResponse` has been removed
+- Field `RawResponse` of struct `AppsClientListResponse` has been removed
+- Field `BuildServiceClientListBuildResultsResult` of struct `BuildServiceClientListBuildResultsResponse` has been removed
+- Field `RawResponse` of struct `BuildServiceClientListBuildResultsResponse` has been removed
+- Field `MonitoringSettingsClientUpdatePutResult` of struct `MonitoringSettingsClientUpdatePutResponse` has been removed
+- Field `RawResponse` of struct `MonitoringSettingsClientUpdatePutResponse` has been removed
+- Field `CustomDomainsClientListResult` of struct `CustomDomainsClientListResponse` has been removed
+- Field `RawResponse` of struct `CustomDomainsClientListResponse` has been removed
+- Field `ServicesClientListTestKeysResult` of struct `ServicesClientListTestKeysResponse` has been removed
+- Field `RawResponse` of struct `ServicesClientListTestKeysResponse` has been removed
+- Field `DeploymentsClientListResult` of struct `DeploymentsClientListResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientListResponse` has been removed
+- Field `StoragesClientGetResult` of struct `StoragesClientGetResponse` has been removed
+- Field `RawResponse` of struct `StoragesClientGetResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientDeleteResponse` has been removed
+- Field `ServiceRegistriesClientGetResult` of struct `ServiceRegistriesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ServiceRegistriesClientGetResponse` has been removed
+- Field `GatewayRouteConfigsClientListResult` of struct `GatewayRouteConfigsClientListResponse` has been removed
+- Field `RawResponse` of struct `GatewayRouteConfigsClientListResponse` has been removed
+- Field `ServicesClientGetResult` of struct `ServicesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ServicesClientGetResponse` has been removed
+- Field `RawResponse` of struct `AppsClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientStartJFRResponse` has been removed
+- Field `GatewaysClientGetResult` of struct `GatewaysClientGetResponse` has been removed
+- Field `RawResponse` of struct `GatewaysClientGetResponse` has been removed
+- Field `AppsClientCreateOrUpdateResult` of struct `AppsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `AppsClientCreateOrUpdateResponse` has been removed
+- Field `ConfigurationServicesClientListResult` of struct `ConfigurationServicesClientListResponse` has been removed
+- Field `RawResponse` of struct `ConfigurationServicesClientListResponse` has been removed
+- Field `ServicesClientRegenerateTestKeyResult` of struct `ServicesClientRegenerateTestKeyResponse` has been removed
+- Field `RawResponse` of struct `ServicesClientRegenerateTestKeyResponse` has been removed
+- Field `RuntimeVersionsClientListRuntimeVersionsResult` of struct `RuntimeVersionsClientListRuntimeVersionsResponse` has been removed
+- Field `RawResponse` of struct `RuntimeVersionsClientListRuntimeVersionsResponse` has been removed
+- Field `BuildServiceClientGetSupportedStackResult` of struct `BuildServiceClientGetSupportedStackResponse` has been removed
+- Field `RawResponse` of struct `BuildServiceClientGetSupportedStackResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientGenerateThreadDumpResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `SKUsClientListResult` of struct `SKUsClientListResponse` has been removed
+- Field `RawResponse` of struct `SKUsClientListResponse` has been removed
+- Field `GatewaysClientListResult` of struct `GatewaysClientListResponse` has been removed
+- Field `RawResponse` of struct `GatewaysClientListResponse` has been removed
+- Field `MonitoringSettingsClientUpdatePatchResult` of struct `MonitoringSettingsClientUpdatePatchResponse` has been removed
+- Field `RawResponse` of struct `MonitoringSettingsClientUpdatePatchResponse` has been removed
+- Field `BuildServiceClientGetBuildResult` of struct `BuildServiceClientGetBuildResponse` has been removed
+- Field `RawResponse` of struct `BuildServiceClientGetBuildResponse` has been removed
+- Field `RawResponse` of struct `GatewayCustomDomainsClientDeleteResponse` has been removed
+- Field `BindingsClientCreateOrUpdateResult` of struct `BindingsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `BindingsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientStartResponse` has been removed
+- Field `DeploymentsClientListForClusterResult` of struct `DeploymentsClientListForClusterResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientListForClusterResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientRestartResponse` has been removed
+- Field `APIPortalsClientValidateDomainResult` of struct `APIPortalsClientValidateDomainResponse` has been removed
+- Field `RawResponse` of struct `APIPortalsClientValidateDomainResponse` has been removed
+- Field `BindingsClientUpdateResult` of struct `BindingsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `BindingsClientUpdateResponse` has been removed
+- Field `APIPortalCustomDomainsClientListResult` of struct `APIPortalCustomDomainsClientListResponse` has been removed
+- Field `RawResponse` of struct `APIPortalCustomDomainsClientListResponse` has been removed
+- Field `GatewaysClientValidateDomainResult` of struct `GatewaysClientValidateDomainResponse` has been removed
+- Field `RawResponse` of struct `GatewaysClientValidateDomainResponse` has been removed
+- Field `BuildServiceAgentPoolClientGetResult` of struct `BuildServiceAgentPoolClientGetResponse` has been removed
+- Field `RawResponse` of struct `BuildServiceAgentPoolClientGetResponse` has been removed
+- Field `ConfigurationServicesClientValidateResult` of struct `ConfigurationServicesClientValidateResponse` has been removed
+- Field `RawResponse` of struct `ConfigurationServicesClientValidateResponse` has been removed
+- Field `BuildServiceClientListSupportedBuildpacksResult` of struct `BuildServiceClientListSupportedBuildpacksResponse` has been removed
+- Field `RawResponse` of struct `BuildServiceClientListSupportedBuildpacksResponse` has been removed
+- Field `RawResponse` of struct `BindingsClientDeleteResponse` has been removed
+- Field `CertificatesClientCreateOrUpdateResult` of struct `CertificatesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `CertificatesClientCreateOrUpdateResponse` has been removed
+- Field `ServicesClientCreateOrUpdateResult` of struct `ServicesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ServicesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `GatewaysClientDeleteResponse` has been removed
+- Field `ConfigServersClientUpdatePutResult` of struct `ConfigServersClientUpdatePutResponse` has been removed
+- Field `RawResponse` of struct `ConfigServersClientUpdatePutResponse` has been removed
+- Field `GatewaysClientCreateOrUpdateResult` of struct `GatewaysClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `GatewaysClientCreateOrUpdateResponse` has been removed
+- Field `BuildServiceClientGetBuildResultResult` of struct `BuildServiceClientGetBuildResultResponse` has been removed
+- Field `RawResponse` of struct `BuildServiceClientGetBuildResultResponse` has been removed
+- Field `APIPortalsClientGetResult` of struct `APIPortalsClientGetResponse` has been removed
+- Field `RawResponse` of struct `APIPortalsClientGetResponse` has been removed
+- Field `CertificatesClientListResult` of struct `CertificatesClientListResponse` has been removed
+- Field `RawResponse` of struct `CertificatesClientListResponse` has been removed
+- Field `BuildServiceClientGetBuildResultLogResult` of struct `BuildServiceClientGetBuildResultLogResponse` has been removed
+- Field `RawResponse` of struct `BuildServiceClientGetBuildResultLogResponse` has been removed
+- Field `AppsClientUpdateResult` of struct `AppsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `AppsClientUpdateResponse` has been removed
+- Field `ConfigServersClientUpdatePatchResult` of struct `ConfigServersClientUpdatePatchResponse` has been removed
+- Field `RawResponse` of struct `ConfigServersClientUpdatePatchResponse` has been removed
+- Field `CustomDomainsClientCreateOrUpdateResult` of struct `CustomDomainsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `CustomDomainsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `BuildpackBindingClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `ServicesClientDisableTestEndpointResponse` has been removed
+- Field `DeploymentsClientGetResult` of struct `DeploymentsClientGetResponse` has been removed
+- Field `RawResponse` of struct `DeploymentsClientGetResponse` has been removed
+- Field `AppsClientGetResult` of struct `AppsClientGetResponse` has been removed
+- Field `RawResponse` of struct `AppsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ServicesClientStopResponse` has been removed
+- Field `AppsClientSetActiveDeploymentsResult` of struct `AppsClientSetActiveDeploymentsResponse` has been removed
+- Field `RawResponse` of struct `AppsClientSetActiveDeploymentsResponse` has been removed
+
+### Features Added
+
+- New const `ProvisioningStateStopping`
+- New const `TypeAzureFileVolume`
+- New const `ProvisioningStateStarting`
+- New const `StorageTypeStorageAccount`
+- New const `ActionTypeInternal`
+- New function `PossibleTypeValues() []Type`
+- New function `PossibleActionTypeValues() []ActionType`
+- New function `PossibleStorageTypeValues() []StorageType`
+- New function `ManagedIdentityProperties.MarshalJSON() ([]byte, error)`
+- New struct `UserAssignedManagedIdentity`
+- New field `ResumeToken` in struct `ConfigurationServicesClientBeginCreateOrUpdateOptions`
+- New anonymous field `CustomDomainResourceCollection` in struct `CustomDomainsClientListResponse`
+- New anonymous field `BuildpackBindingResource` in struct `BuildpackBindingClientGetResponse`
+- New anonymous field `CustomDomainValidateResult` in struct `AppsClientValidateDomainResponse`
+- New anonymous field `BuildResultLog` in struct `BuildServiceClientGetBuildResultLogResponse`
+- New anonymous field `SupportedStacksCollection` in struct `BuildServiceClientListSupportedStacksResponse`
+- New anonymous field `BuildService` in struct `BuildServiceClientGetBuildServiceResponse`
+- New anonymous field `BuilderResource` in struct `BuildServiceBuilderClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `MonitoringSettingsClientBeginUpdatePatchOptions`
+- New anonymous field `ConfigServerSettingsValidateResult` in struct `ConfigServersClientValidateResponse`
+- New anonymous field `GatewayRouteConfigResource` in struct `GatewayRouteConfigsClientGetResponse`
+- New anonymous field `BuilderResourceCollection` in struct `BuildServiceBuilderClientListResponse`
+- New field `ResumeToken` in struct `StoragesClientBeginCreateOrUpdateOptions`
+- New anonymous field `GatewayCustomDomainResource` in struct `GatewayCustomDomainsClientGetResponse`
+- New anonymous field `NameAvailability` in struct `ServicesClientCheckNameAvailabilityResponse`
+- New field `ResumeToken` in struct `ConfigurationServicesClientBeginDeleteOptions`
+- New anonymous field `ConfigurationServiceSettingsValidateResult` in struct `ConfigurationServicesClientValidateResponse`
+- New field `ResumeToken` in struct `ServicesClientBeginStopOptions`
+- New anonymous field `ConfigurationServiceResource` in struct `ConfigurationServicesClientGetResponse`
+- New field `ResumeToken` in struct `ServiceRegistriesClientBeginCreateOrUpdateOptions`
+- New anonymous field `CertificateResource` in struct `CertificatesClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `DeploymentsClientBeginRestartOptions`
+- New anonymous field `ServiceResourceList` in struct `ServicesClientListBySubscriptionResponse`
+- New anonymous field `AvailableOperations` in struct `OperationsClientListResponse`
+- New field `ResumeToken` in struct `MonitoringSettingsClientBeginUpdatePutOptions`
+- New anonymous field `DeploymentResource` in struct `DeploymentsClientUpdateResponse`
+- New anonymous field `ServiceResource` in struct `ServicesClientUpdateResponse`
+- New anonymous field `MonitoringSettingResource` in struct `MonitoringSettingsClientUpdatePatchResponse`
+- New anonymous field `BindingResource` in struct `BindingsClientGetResponse`
+- New field `ResumeToken` in struct `AppsClientBeginDeleteOptions`
+- New field `LanguageFramework` in struct `CustomContainer`
+- New field `ResumeToken` in struct `ServiceRegistriesClientBeginDeleteOptions`
+- New anonymous field `ServiceResource` in struct `ServicesClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `BuildServiceBuilderClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `GatewayRouteConfigsClientBeginDeleteOptions`
+- New anonymous field `StorageResource` in struct `StoragesClientGetResponse`
+- New anonymous field `StorageResourceCollection` in struct `StoragesClientListResponse`
+- New anonymous field `CertificateResourceCollection` in struct `CertificatesClientListResponse`
+- New field `ResumeToken` in struct `DeploymentsClientBeginUpdateOptions`
+- New anonymous field `ServiceRegistryResourceCollection` in struct `ServiceRegistriesClientListResponse`
+- New anonymous field `CustomDomainResource` in struct `CustomDomainsClientGetResponse`
+- New field `ResumeToken` in struct `APIPortalsClientBeginDeleteOptions`
+- New anonymous field `ResourceUploadDefinition` in struct `AppsClientGetResourceUploadURLResponse`
+- New anonymous field `BindingResource` in struct `BindingsClientUpdateResponse`
+- New field `ResumeToken` in struct `DeploymentsClientBeginStopOptions`
+- New field `ResumeToken` in struct `AppsClientBeginCreateOrUpdateOptions`
+- New anonymous field `ConfigurationServiceResource` in struct `ConfigurationServicesClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `BuildpackBindingClientBeginDeleteOptions`
+- New anonymous field `APIPortalCustomDomainResourceCollection` in struct `APIPortalCustomDomainsClientListResponse`
+- New anonymous field `GatewayRouteConfigResourceCollection` in struct `GatewayRouteConfigsClientListResponse`
+- New anonymous field `MonitoringSettingResource` in struct `MonitoringSettingsClientUpdatePutResponse`
+- New anonymous field `GatewayCustomDomainResource` in struct `GatewayCustomDomainsClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `APIPortalCustomDomainsClientBeginCreateOrUpdateOptions`
+- New anonymous field `ConfigServerResource` in struct `ConfigServersClientUpdatePatchResponse`
+- New field `ResumeToken` in struct `CustomDomainsClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `CustomDomainsClientBeginCreateOrUpdateOptions`
+- New anonymous field `ResourceSKUCollection` in struct `SKUsClientListResponse`
+- New field `ResumeToken` in struct `DeploymentsClientBeginGenerateThreadDumpOptions`
+- New anonymous field `CertificateResource` in struct `CertificatesClientGetResponse`
+- New field `ResumeToken` in struct `ServicesClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `DeploymentsClientBeginStartOptions`
+- New anonymous field `DeploymentResourceCollection` in struct `DeploymentsClientListResponse`
+- New anonymous field `ServiceRegistryResource` in struct `ServiceRegistriesClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `DeploymentsClientBeginGenerateHeapDumpOptions`
+- New anonymous field `ServiceResource` in struct `ServicesClientGetResponse`
+- New anonymous field `GatewayResourceCollection` in struct `GatewaysClientListResponse`
+- New anonymous field `ServiceRegistryResource` in struct `ServiceRegistriesClientGetResponse`
+- New field `ResumeToken` in struct `CustomDomainsClientBeginUpdateOptions`
+- New anonymous field `BuildCollection` in struct `BuildServiceClientListBuildsResponse`
+- New anonymous field `TestKeys` in struct `ServicesClientListTestKeysResponse`
+- New field `ResumeToken` in struct `GatewaysClientBeginCreateOrUpdateOptions`
+- New anonymous field `AppResource` in struct `AppsClientCreateOrUpdateResponse`
+- New anonymous field `BindingResource` in struct `BindingsClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `ConfigurationServicesClientBeginValidateOptions`
+- New field `ResumeToken` in struct `AppsClientBeginSetActiveDeploymentsOptions`
+- New anonymous field `SupportedBuildpackResource` in struct `BuildServiceClientGetSupportedBuildpackResponse`
+- New anonymous field `Build` in struct `BuildServiceClientGetBuildResponse`
+- New anonymous field `BuildpackBindingResourceCollection` in struct `BuildpackBindingClientListResponse`
+- New field `ResumeToken` in struct `APIPortalCustomDomainsClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `GatewaysClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `ServicesClientBeginStartOptions`
+- New field `ResumeToken` in struct `DeploymentsClientBeginCreateOrUpdateOptions`
+- New anonymous field `ConfigurationServiceResourceCollection` in struct `ConfigurationServicesClientListResponse`
+- New field `ResumeToken` in struct `BuildpackBindingClientBeginCreateOrUpdateOptions`
+- New anonymous field `CustomDomainResource` in struct `CustomDomainsClientUpdateResponse`
+- New field `ResumeToken` in struct `BindingsClientBeginUpdateOptions`
+- New anonymous field `APIPortalCustomDomainResource` in struct `APIPortalCustomDomainsClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `DeploymentsClientBeginDeleteOptions`
+- New anonymous field `TestKeys` in struct `ServicesClientRegenerateTestKeyResponse`
+- New anonymous field `DeploymentResourceCollection` in struct `DeploymentsClientListForClusterResponse`
+- New anonymous field `ResourceUploadDefinition` in struct `BuildServiceClientGetResourceUploadURLResponse`
+- New anonymous field `AvailableRuntimeVersions` in struct `RuntimeVersionsClientListRuntimeVersionsResponse`
+- New anonymous field `GatewayResource` in struct `GatewaysClientGetResponse`
+- New anonymous field `DeploymentResource` in struct `DeploymentsClientGetResponse`
+- New anonymous field `SupportedStackResource` in struct `BuildServiceClientGetSupportedStackResponse`
+- New anonymous field `DeploymentResource` in struct `DeploymentsClientCreateOrUpdateResponse`
+- New anonymous field `APIPortalResource` in struct `APIPortalsClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `GatewayCustomDomainsClientBeginCreateOrUpdateOptions`
+- New anonymous field `AppResource` in struct `AppsClientUpdateResponse`
+- New field `ResumeToken` in struct `GatewayRouteConfigsClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `BuildServiceAgentPoolClientBeginUpdatePutOptions`
+- New field `ResumeToken` in struct `ConfigServersClientBeginUpdatePutOptions`
+- New anonymous field `AppResourceCollection` in struct `AppsClientListResponse`
+- New anonymous field `BuildServiceCollection` in struct `BuildServiceClientListBuildServicesResponse`
+- New anonymous field `GatewayResource` in struct `GatewaysClientCreateOrUpdateResponse`
+- New anonymous field `ConfigServerResource` in struct `ConfigServersClientUpdatePutResponse`
+- New anonymous field `APIPortalResourceCollection` in struct `APIPortalsClientListResponse`
+- New anonymous field `BuildServiceAgentPoolResourceCollection` in struct `BuildServiceAgentPoolClientListResponse`
+- New anonymous field `StorageResource` in struct `StoragesClientCreateOrUpdateResponse`
+- New anonymous field `CustomDomainResource` in struct `CustomDomainsClientCreateOrUpdateResponse`
+- New anonymous field `SupportedBuildpacksCollection` in struct `BuildServiceClientListSupportedBuildpacksResponse`
+- New field `ResumeToken` in struct `AppsClientBeginUpdateOptions`
+- New anonymous field `CustomDomainValidateResult` in struct `APIPortalsClientValidateDomainResponse`
+- New field `ResumeToken` in struct `BindingsClientBeginDeleteOptions`
+- New anonymous field `AppResource` in struct `AppsClientSetActiveDeploymentsResponse`
+- New anonymous field `BuildServiceAgentPoolResource` in struct `BuildServiceAgentPoolClientUpdatePutResponse`
+- New anonymous field `ServiceResourceList` in struct `ServicesClientListResponse`
+- New anonymous field `BuildResultCollection` in struct `BuildServiceClientListBuildResultsResponse`
+- New anonymous field `GatewayRouteConfigResource` in struct `GatewayRouteConfigsClientCreateOrUpdateResponse`
+- New anonymous field `ConfigServerResource` in struct `ConfigServersClientGetResponse`
+- New anonymous field `BuildpackBindingResource` in struct `BuildpackBindingClientCreateOrUpdateResponse`
+- New field `ActionType` in struct `OperationDetail`
+- New anonymous field `Build` in struct `BuildServiceClientCreateOrUpdateBuildResponse`
+- New field `ResumeToken` in struct `CertificatesClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `APIPortalsClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `StoragesClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `ConfigServersClientBeginUpdatePatchOptions`
+- New field `ResumeToken` in struct `CertificatesClientBeginCreateOrUpdateOptions`
+- New anonymous field `BindingResourceCollection` in struct `BindingsClientListResponse`
+- New anonymous field `BuildResult` in struct `BuildServiceClientGetBuildResultResponse`
+- New anonymous field `MonitoringSettingResource` in struct `MonitoringSettingsClientGetResponse`
+- New field `ResumeToken` in struct `ServicesClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `GatewayCustomDomainsClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `BindingsClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `BuildServiceBuilderClientBeginCreateOrUpdateOptions`
+- New anonymous field `GatewayCustomDomainResourceCollection` in struct `GatewayCustomDomainsClientListResponse`
+- New anonymous field `CustomDomainValidateResult` in struct `GatewaysClientValidateDomainResponse`
+- New anonymous field `APIPortalResource` in struct `APIPortalsClientGetResponse`
+- New anonymous field `TestKeys` in struct `ServicesClientEnableTestEndpointResponse`
+- New field `UserAssignedIdentities` in struct `ManagedIdentityProperties`
+- New field `ResumeToken` in struct `DeploymentsClientBeginStartJFROptions`
+- New anonymous field `AppResource` in struct `AppsClientGetResponse`
+- New field `ResumeToken` in struct `ConfigServersClientBeginValidateOptions`
+- New anonymous field `LogFileURLResponse` in struct `DeploymentsClientGetLogFileURLResponse`
+- New anonymous field `BuilderResource` in struct `BuildServiceBuilderClientGetResponse`
+- New field `ResumeToken` in struct `ServicesClientBeginUpdateOptions`
+- New anonymous field `APIPortalCustomDomainResource` in struct `APIPortalCustomDomainsClientGetResponse`
+- New anonymous field `BuildServiceAgentPoolResource` in struct `BuildServiceAgentPoolClientGetResponse`
+
+
 ## 0.3.1 (2022-02-22)
 
 ### Other Changes

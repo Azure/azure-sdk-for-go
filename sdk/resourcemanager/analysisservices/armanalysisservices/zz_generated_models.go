@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -7,12 +7,6 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package armanalysisservices
-
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-)
 
 // CheckServerNameAvailabilityParameters - Details of server name request body.
 type CheckServerNameAvailabilityParameters struct {
@@ -38,7 +32,7 @@ type CheckServerNameAvailabilityResult struct {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info map[string]interface{} `json:"info,omitempty" azure:"ro"`
+	Info interface{} `json:"info,omitempty" azure:"ro"`
 
 	// READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -69,20 +63,6 @@ type ErrorDetail struct {
 
 	// READ-ONLY; the timestamp for the error.
 	TimeStamp *string `json:"timeStamp,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ErrorDetail.
-func (e ErrorDetail) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalInfo", e.AdditionalInfo)
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "httpStatusCode", e.HTTPStatusCode)
-	populate(objectMap, "message", e.Message)
-	populate(objectMap, "subCode", e.SubCode)
-	populate(objectMap, "target", e.Target)
-	populate(objectMap, "timeStamp", e.TimeStamp)
-	return json.Marshal(objectMap)
 }
 
 // ErrorResponse - Describes the format of Error response.
@@ -136,14 +116,6 @@ type IPv4FirewallSettings struct {
 	FirewallRules []*IPv4FirewallRule `json:"firewallRules,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type IPv4FirewallSettings.
-func (i IPv4FirewallSettings) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "enablePowerBIService", i.EnablePowerBIService)
-	populate(objectMap, "firewallRules", i.FirewallRules)
-	return json.Marshal(objectMap)
-}
-
 // LogSpecifications - The log metric specification for exposing performance metrics to shoebox.
 type LogSpecifications struct {
 	// READ-ONLY; The blob duration for the log.
@@ -186,18 +158,6 @@ type MetricSpecifications struct {
 	Unit *string `json:"unit,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type MetricSpecifications.
-func (m MetricSpecifications) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "aggregationType", m.AggregationType)
-	populate(objectMap, "dimensions", m.Dimensions)
-	populate(objectMap, "displayDescription", m.DisplayDescription)
-	populate(objectMap, "displayName", m.DisplayName)
-	populate(objectMap, "name", m.Name)
-	populate(objectMap, "unit", m.Unit)
-	return json.Marshal(objectMap)
-}
-
 // Operation - A Consumption REST API operation.
 type Operation struct {
 	// The object that represents the operation.
@@ -238,14 +198,6 @@ type OperationListResult struct {
 	Value []*Operation `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
-func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
-}
-
 // OperationProperties - Additional properties to expose performance metrics to shoebox.
 type OperationProperties struct {
 	// Performance metrics to shoebox.
@@ -259,14 +211,6 @@ type OperationPropertiesServiceSpecification struct {
 
 	// READ-ONLY; The metric specifications.
 	MetricSpecifications []*MetricSpecifications `json:"metricSpecifications,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OperationPropertiesServiceSpecification.
-func (o OperationPropertiesServiceSpecification) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "logSpecifications", o.LogSpecifications)
-	populate(objectMap, "metricSpecifications", o.MetricSpecifications)
-	return json.Marshal(objectMap)
 }
 
 // OperationStatus - The status of operation.
@@ -316,18 +260,6 @@ type Resource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "location", r.Location)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "sku", r.SKU)
-	populate(objectMap, "tags", r.Tags)
-	populate(objectMap, "type", r.Type)
-	return json.Marshal(objectMap)
-}
-
 // ResourceSKU - Represents the SKU name and Azure pricing tier for Analysis Services resource.
 type ResourceSKU struct {
 	// REQUIRED; Name of the SKU level.
@@ -355,24 +287,10 @@ type SKUEnumerationForExistingResourceResult struct {
 	Value []*SKUDetailsForExistingResource `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SKUEnumerationForExistingResourceResult.
-func (s SKUEnumerationForExistingResourceResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
-}
-
 // SKUEnumerationForNewResourceResult - An object that represents enumerating SKUs for new resources.
 type SKUEnumerationForNewResourceResult struct {
 	// The collection of available SKUs for new resources.
 	Value []*ResourceSKU `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SKUEnumerationForNewResourceResult.
-func (s SKUEnumerationForNewResourceResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
 }
 
 // Server - Represents an instance of an Analysis Services resource.
@@ -399,30 +317,10 @@ type Server struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Server.
-func (s Server) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", s.ID)
-	populate(objectMap, "location", s.Location)
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "properties", s.Properties)
-	populate(objectMap, "sku", s.SKU)
-	populate(objectMap, "tags", s.Tags)
-	populate(objectMap, "type", s.Type)
-	return json.Marshal(objectMap)
-}
-
 // ServerAdministrators - An array of administrator user identities.
 type ServerAdministrators struct {
 	// An array of administrator user identities.
 	Members []*string `json:"members,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ServerAdministrators.
-func (s ServerAdministrators) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "members", s.Members)
-	return json.Marshal(objectMap)
 }
 
 // ServerMutableProperties - An object that represents a set of mutable Analysis Services resource properties.
@@ -506,51 +404,40 @@ type ServerUpdateParameters struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ServerUpdateParameters.
-func (s ServerUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", s.Properties)
-	populate(objectMap, "sku", s.SKU)
-	populate(objectMap, "tags", s.Tags)
-	return json.Marshal(objectMap)
-}
-
 // Servers - An array of Analysis Services resources.
 type Servers struct {
 	// REQUIRED; An array of Analysis Services resources.
 	Value []*Server `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Servers.
-func (s Servers) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
-}
-
 // ServersClientBeginCreateOptions contains the optional parameters for the ServersClient.BeginCreate method.
 type ServersClientBeginCreateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ServersClientBeginDeleteOptions contains the optional parameters for the ServersClient.BeginDelete method.
 type ServersClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ServersClientBeginResumeOptions contains the optional parameters for the ServersClient.BeginResume method.
 type ServersClientBeginResumeOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ServersClientBeginSuspendOptions contains the optional parameters for the ServersClient.BeginSuspend method.
 type ServersClientBeginSuspendOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ServersClientBeginUpdateOptions contains the optional parameters for the ServersClient.BeginUpdate method.
 type ServersClientBeginUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ServersClientCheckNameAvailabilityOptions contains the optional parameters for the ServersClient.CheckNameAvailability
@@ -603,14 +490,4 @@ type ServersClientListSKUsForExistingOptions struct {
 // ServersClientListSKUsForNewOptions contains the optional parameters for the ServersClient.ListSKUsForNew method.
 type ServersClientListSKUsForNewOptions struct {
 	// placeholder for future optional parameters
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
 }

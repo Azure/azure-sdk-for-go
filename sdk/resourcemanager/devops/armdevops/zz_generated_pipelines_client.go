@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type PipelinesClient struct {
 // subscriptionID - Unique identifier of the Azure subscription. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewPipelinesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PipelinesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewPipelinesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PipelinesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &PipelinesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates an Azure Pipeline.
@@ -56,22 +61,16 @@ func NewPipelinesClient(subscriptionID string, credential azcore.TokenCredential
 // createOperationParameters - The request payload to create the Azure Pipeline.
 // options - PipelinesClientBeginCreateOrUpdateOptions contains the optional parameters for the PipelinesClient.BeginCreateOrUpdate
 // method.
-func (client *PipelinesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, pipelineName string, createOperationParameters Pipeline, options *PipelinesClientBeginCreateOrUpdateOptions) (PipelinesClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, pipelineName, createOperationParameters, options)
-	if err != nil {
-		return PipelinesClientCreateOrUpdatePollerResponse{}, err
+func (client *PipelinesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, pipelineName string, createOperationParameters Pipeline, options *PipelinesClientBeginCreateOrUpdateOptions) (*armruntime.Poller[PipelinesClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, pipelineName, createOperationParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[PipelinesClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[PipelinesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := PipelinesClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("PipelinesClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return PipelinesClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &PipelinesClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates an Azure Pipeline.
@@ -134,7 +133,7 @@ func (client *PipelinesClient) Delete(ctx context.Context, resourceGroupName str
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return PipelinesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return PipelinesClientDeleteResponse{RawResponse: resp}, nil
+	return PipelinesClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -211,7 +210,7 @@ func (client *PipelinesClient) getCreateRequest(ctx context.Context, resourceGro
 
 // getHandleResponse handles the Get response.
 func (client *PipelinesClient) getHandleResponse(resp *http.Response) (PipelinesClientGetResponse, error) {
-	result := PipelinesClientGetResponse{RawResponse: resp}
+	result := PipelinesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Pipeline); err != nil {
 		return PipelinesClientGetResponse{}, err
 	}
@@ -223,16 +222,32 @@ func (client *PipelinesClient) getHandleResponse(resp *http.Response) (Pipelines
 // resourceGroupName - Name of the resource group within the Azure subscription.
 // options - PipelinesClientListByResourceGroupOptions contains the optional parameters for the PipelinesClient.ListByResourceGroup
 // method.
-func (client *PipelinesClient) ListByResourceGroup(resourceGroupName string, options *PipelinesClientListByResourceGroupOptions) *PipelinesClientListByResourceGroupPager {
-	return &PipelinesClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *PipelinesClient) ListByResourceGroup(resourceGroupName string, options *PipelinesClientListByResourceGroupOptions) *runtime.Pager[PipelinesClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PipelinesClientListByResourceGroupResponse]{
+		More: func(page PipelinesClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PipelinesClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PipelineListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *PipelinesClientListByResourceGroupResponse) (PipelinesClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return PipelinesClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PipelinesClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PipelinesClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -259,7 +274,7 @@ func (client *PipelinesClient) listByResourceGroupCreateRequest(ctx context.Cont
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *PipelinesClient) listByResourceGroupHandleResponse(resp *http.Response) (PipelinesClientListByResourceGroupResponse, error) {
-	result := PipelinesClientListByResourceGroupResponse{RawResponse: resp}
+	result := PipelinesClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PipelineListResult); err != nil {
 		return PipelinesClientListByResourceGroupResponse{}, err
 	}
@@ -270,16 +285,32 @@ func (client *PipelinesClient) listByResourceGroupHandleResponse(resp *http.Resp
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - PipelinesClientListBySubscriptionOptions contains the optional parameters for the PipelinesClient.ListBySubscription
 // method.
-func (client *PipelinesClient) ListBySubscription(options *PipelinesClientListBySubscriptionOptions) *PipelinesClientListBySubscriptionPager {
-	return &PipelinesClientListBySubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySubscriptionCreateRequest(ctx, options)
+func (client *PipelinesClient) ListBySubscription(options *PipelinesClientListBySubscriptionOptions) *runtime.Pager[PipelinesClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PipelinesClientListBySubscriptionResponse]{
+		More: func(page PipelinesClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PipelinesClientListBySubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PipelineListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *PipelinesClientListBySubscriptionResponse) (PipelinesClientListBySubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySubscriptionCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return PipelinesClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PipelinesClientListBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PipelinesClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
@@ -302,7 +333,7 @@ func (client *PipelinesClient) listBySubscriptionCreateRequest(ctx context.Conte
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
 func (client *PipelinesClient) listBySubscriptionHandleResponse(resp *http.Response) (PipelinesClientListBySubscriptionResponse, error) {
-	result := PipelinesClientListBySubscriptionResponse{RawResponse: resp}
+	result := PipelinesClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PipelineListResult); err != nil {
 		return PipelinesClientListBySubscriptionResponse{}, err
 	}
@@ -358,7 +389,7 @@ func (client *PipelinesClient) updateCreateRequest(ctx context.Context, resource
 
 // updateHandleResponse handles the Update response.
 func (client *PipelinesClient) updateHandleResponse(resp *http.Response) (PipelinesClientUpdateResponse, error) {
-	result := PipelinesClientUpdateResponse{RawResponse: resp}
+	result := PipelinesClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Pipeline); err != nil {
 		return PipelinesClientUpdateResponse{}, err
 	}

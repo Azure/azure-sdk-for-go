@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armquantum
 
 const (
 	moduleName    = "armquantum"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // CreatedByType - The type of identity that created the resource.
@@ -31,11 +31,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
 	}
-}
-
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
 }
 
 // ProvisioningStatus - Provisioning status field
@@ -62,11 +57,6 @@ func PossibleProvisioningStatusValues() []ProvisioningStatus {
 	}
 }
 
-// ToPtr returns a *ProvisioningStatus pointing to the current value.
-func (c ProvisioningStatus) ToPtr() *ProvisioningStatus {
-	return &c
-}
-
 // ResourceIdentityType - The identity type.
 type ResourceIdentityType string
 
@@ -81,11 +71,6 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 		ResourceIdentityTypeNone,
 		ResourceIdentityTypeSystemAssigned,
 	}
-}
-
-// ToPtr returns a *ResourceIdentityType pointing to the current value.
-func (c ResourceIdentityType) ToPtr() *ResourceIdentityType {
-	return &c
 }
 
 // Status - Provisioning status field
@@ -112,11 +97,6 @@ func PossibleStatusValues() []Status {
 	}
 }
 
-// ToPtr returns a *Status pointing to the current value.
-func (c Status) ToPtr() *Status {
-	return &c
-}
-
 // UsableStatus - Whether the current workspace is ready to accept Jobs.
 type UsableStatus string
 
@@ -133,9 +113,4 @@ func PossibleUsableStatusValues() []UsableStatus {
 		UsableStatusPartial,
 		UsableStatusYes,
 	}
-}
-
-// ToPtr returns a *UsableStatus pointing to the current value.
-func (c UsableStatus) ToPtr() *UsableStatus {
-	return &c
 }

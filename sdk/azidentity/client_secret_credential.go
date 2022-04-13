@@ -18,10 +18,6 @@ const credNameSecret = "ClientSecretCredential"
 // ClientSecretCredentialOptions contains optional parameters for ClientSecretCredential.
 type ClientSecretCredentialOptions struct {
 	azcore.ClientOptions
-
-	// AuthorityHost is the base URL of an Azure Active Directory authority. Defaults
-	// to the value of environment variable AZURE_AUTHORITY_HOST, if set, or AzurePublicCloud.
-	AuthorityHost AuthorityHost
 }
 
 // ClientSecretCredential authenticates an application with a client secret.
@@ -41,7 +37,7 @@ func NewClientSecretCredential(tenantID string, clientID string, clientSecret st
 	if options == nil {
 		options = &ClientSecretCredentialOptions{}
 	}
-	authorityHost, err := setAuthorityHost(options.AuthorityHost)
+	authorityHost, err := setAuthorityHost(options.Cloud)
 	if err != nil {
 		return nil, err
 	}

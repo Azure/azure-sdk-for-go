@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type DefaultRolloutsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewDefaultRolloutsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DefaultRolloutsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewDefaultRolloutsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DefaultRolloutsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &DefaultRolloutsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates the rollout details.
@@ -56,22 +61,18 @@ func NewDefaultRolloutsClient(subscriptionID string, credential azcore.TokenCred
 // properties - The Default rollout properties supplied to the CreateOrUpdate operation.
 // options - DefaultRolloutsClientBeginCreateOrUpdateOptions contains the optional parameters for the DefaultRolloutsClient.BeginCreateOrUpdate
 // method.
-func (client *DefaultRolloutsClient) BeginCreateOrUpdate(ctx context.Context, providerNamespace string, rolloutName string, properties DefaultRollout, options *DefaultRolloutsClientBeginCreateOrUpdateOptions) (DefaultRolloutsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, providerNamespace, rolloutName, properties, options)
-	if err != nil {
-		return DefaultRolloutsClientCreateOrUpdatePollerResponse{}, err
+func (client *DefaultRolloutsClient) BeginCreateOrUpdate(ctx context.Context, providerNamespace string, rolloutName string, properties DefaultRollout, options *DefaultRolloutsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[DefaultRolloutsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, providerNamespace, rolloutName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[DefaultRolloutsClientCreateOrUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[DefaultRolloutsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DefaultRolloutsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DefaultRolloutsClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return DefaultRolloutsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &DefaultRolloutsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates the rollout details.
@@ -134,7 +135,7 @@ func (client *DefaultRolloutsClient) Delete(ctx context.Context, providerNamespa
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return DefaultRolloutsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return DefaultRolloutsClientDeleteResponse{RawResponse: resp}, nil
+	return DefaultRolloutsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -211,7 +212,7 @@ func (client *DefaultRolloutsClient) getCreateRequest(ctx context.Context, provi
 
 // getHandleResponse handles the Get response.
 func (client *DefaultRolloutsClient) getHandleResponse(resp *http.Response) (DefaultRolloutsClientGetResponse, error) {
-	result := DefaultRolloutsClientGetResponse{RawResponse: resp}
+	result := DefaultRolloutsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DefaultRollout); err != nil {
 		return DefaultRolloutsClientGetResponse{}, err
 	}
@@ -223,16 +224,32 @@ func (client *DefaultRolloutsClient) getHandleResponse(resp *http.Response) (Def
 // providerNamespace - The name of the resource provider hosted within ProviderHub.
 // options - DefaultRolloutsClientListByProviderRegistrationOptions contains the optional parameters for the DefaultRolloutsClient.ListByProviderRegistration
 // method.
-func (client *DefaultRolloutsClient) ListByProviderRegistration(providerNamespace string, options *DefaultRolloutsClientListByProviderRegistrationOptions) *DefaultRolloutsClientListByProviderRegistrationPager {
-	return &DefaultRolloutsClientListByProviderRegistrationPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByProviderRegistrationCreateRequest(ctx, providerNamespace, options)
+func (client *DefaultRolloutsClient) ListByProviderRegistration(providerNamespace string, options *DefaultRolloutsClientListByProviderRegistrationOptions) *runtime.Pager[DefaultRolloutsClientListByProviderRegistrationResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DefaultRolloutsClientListByProviderRegistrationResponse]{
+		More: func(page DefaultRolloutsClientListByProviderRegistrationResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DefaultRolloutsClientListByProviderRegistrationResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DefaultRolloutArrayResponseWithContinuation.NextLink)
+		Fetcher: func(ctx context.Context, page *DefaultRolloutsClientListByProviderRegistrationResponse) (DefaultRolloutsClientListByProviderRegistrationResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByProviderRegistrationCreateRequest(ctx, providerNamespace, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DefaultRolloutsClientListByProviderRegistrationResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DefaultRolloutsClientListByProviderRegistrationResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DefaultRolloutsClientListByProviderRegistrationResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByProviderRegistrationHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByProviderRegistrationCreateRequest creates the ListByProviderRegistration request.
@@ -259,7 +276,7 @@ func (client *DefaultRolloutsClient) listByProviderRegistrationCreateRequest(ctx
 
 // listByProviderRegistrationHandleResponse handles the ListByProviderRegistration response.
 func (client *DefaultRolloutsClient) listByProviderRegistrationHandleResponse(resp *http.Response) (DefaultRolloutsClientListByProviderRegistrationResponse, error) {
-	result := DefaultRolloutsClientListByProviderRegistrationResponse{RawResponse: resp}
+	result := DefaultRolloutsClientListByProviderRegistrationResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DefaultRolloutArrayResponseWithContinuation); err != nil {
 		return DefaultRolloutsClientListByProviderRegistrationResponse{}, err
 	}
@@ -283,7 +300,7 @@ func (client *DefaultRolloutsClient) Stop(ctx context.Context, providerNamespace
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return DefaultRolloutsClientStopResponse{}, runtime.NewResponseError(resp)
 	}
-	return DefaultRolloutsClientStopResponse{RawResponse: resp}, nil
+	return DefaultRolloutsClientStopResponse{}, nil
 }
 
 // stopCreateRequest creates the Stop request.

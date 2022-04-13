@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,125 +19,151 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databoxedge/armdataboxedge"
 )
 
-// x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2021-06-01/examples/RoleGetAllInDevice.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2022-03-01/examples/RoleGetAllInDevice.json
 func ExampleRolesClient_ListByDataBoxEdgeDevice() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdataboxedge.NewRolesClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewRolesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListByDataBoxEdgeDevice("<device-name>",
 		"<resource-group-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2021-06-01/examples/RoleGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2022-03-01/examples/RoleGet.json
 func ExampleRolesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdataboxedge.NewRolesClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewRolesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<device-name>",
 		"<name>",
 		"<resource-group-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.RolesClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2021-06-01/examples/RolePut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2022-03-01/examples/RolePut.json
 func ExampleRolesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdataboxedge.NewRolesClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewRolesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<device-name>",
 		"<name>",
 		"<resource-group-name>",
 		&armdataboxedge.IoTRole{
-			Kind: armdataboxedge.RoleTypes("IOT").ToPtr(),
+			Kind: to.Ptr(armdataboxedge.RoleTypesIOT),
 			Properties: &armdataboxedge.IoTRoleProperties{
-				HostPlatform: armdataboxedge.PlatformType("Linux").ToPtr(),
+				HostPlatform: to.Ptr(armdataboxedge.PlatformTypeLinux),
 				IoTDeviceDetails: &armdataboxedge.IoTDeviceInfo{
 					Authentication: &armdataboxedge.Authentication{
 						SymmetricKey: &armdataboxedge.SymmetricKey{
 							ConnectionString: &armdataboxedge.AsymmetricEncryptedSecret{
-								EncryptionAlgorithm:      armdataboxedge.EncryptionAlgorithm("AES256").ToPtr(),
-								EncryptionCertThumbprint: to.StringPtr("<encryption-cert-thumbprint>"),
-								Value:                    to.StringPtr("<value>"),
+								EncryptionAlgorithm:      to.Ptr(armdataboxedge.EncryptionAlgorithmAES256),
+								EncryptionCertThumbprint: to.Ptr("<encryption-cert-thumbprint>"),
+								Value:                    to.Ptr("<value>"),
 							},
 						},
 					},
-					DeviceID:   to.StringPtr("<device-id>"),
-					IoTHostHub: to.StringPtr("<io-thost-hub>"),
+					DeviceID:   to.Ptr("<device-id>"),
+					IoTHostHub: to.Ptr("<io-thost-hub>"),
 				},
 				IoTEdgeDeviceDetails: &armdataboxedge.IoTDeviceInfo{
 					Authentication: &armdataboxedge.Authentication{
 						SymmetricKey: &armdataboxedge.SymmetricKey{
 							ConnectionString: &armdataboxedge.AsymmetricEncryptedSecret{
-								EncryptionAlgorithm:      armdataboxedge.EncryptionAlgorithm("AES256").ToPtr(),
-								EncryptionCertThumbprint: to.StringPtr("<encryption-cert-thumbprint>"),
-								Value:                    to.StringPtr("<value>"),
+								EncryptionAlgorithm:      to.Ptr(armdataboxedge.EncryptionAlgorithmAES256),
+								EncryptionCertThumbprint: to.Ptr("<encryption-cert-thumbprint>"),
+								Value:                    to.Ptr("<value>"),
 							},
 						},
 					},
-					DeviceID:   to.StringPtr("<device-id>"),
-					IoTHostHub: to.StringPtr("<io-thost-hub>"),
+					DeviceID:   to.Ptr("<device-id>"),
+					IoTHostHub: to.Ptr("<io-thost-hub>"),
 				},
-				RoleStatus:    armdataboxedge.RoleStatus("Enabled").ToPtr(),
+				RoleStatus:    to.Ptr(armdataboxedge.RoleStatusEnabled),
 				ShareMappings: []*armdataboxedge.MountPointMap{},
 			},
 		},
-		nil)
+		&armdataboxedge.RolesClientBeginCreateOrUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.RolesClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2021-06-01/examples/RoleDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2022-03-01/examples/RoleDelete.json
 func ExampleRolesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdataboxedge.NewRolesClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewRolesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginDelete(ctx,
 		"<device-name>",
 		"<name>",
 		"<resource-group-name>",
-		nil)
+		&armdataboxedge.RolesClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }

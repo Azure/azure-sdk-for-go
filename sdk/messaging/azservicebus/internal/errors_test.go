@@ -8,6 +8,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"net/http"
 	"reflect"
 	"testing"
 
@@ -211,8 +212,6 @@ func Test_ServiceBusError_LinkRecoveryNeeded(t *testing.T) {
 		&amqp.DetachError{},
 		&amqp.Error{Condition: amqp.ErrorDetachForced},
 		&amqp.Error{Condition: amqp.ErrorTransferLimitExceeded},
-		// we lost the session lock, attempt link recovery
-		rpcError{Resp: &RPCResponse{Code: 410}},
 		// this can happen when we're recovering the link - the client gets closed and the old link is still being
 		// used by this instance of the client. It needs to recover and attempt it again.
 		rpcError{Resp: &RPCResponse{Code: 401}},
@@ -240,5 +239,11 @@ func Test_ServiceBusError_Fatal(t *testing.T) {
 		require.EqualValues(t, RecoveryKindFatal, rk, fmt.Sprintf("[%d] %s", i, cond))
 	}
 
-	require.Equal(t, RecoveryKindFatal, GetSBErrInfo(rpcError{Resp: &RPCResponse{Code: 404}}).RecoveryKind)
+	require.Equal(t, RecoveryKindFatal, GetSBErrInfo(rpcError{Resp: &RPCResponse{Code: http.StatusNotFound}}).RecoveryKind)
+	require.Equal(t, RecoveryKindFatal, GetSBErrInfo(rpcError{Resp: &RPCResponse{Code: RPCResponseCodeLockLost}}).RecoveryKind)
+}
+
+func Test_IsLockLostError(t *testing.T) {
+	require.True(t, isLockLostError(rpcError{Resp: &RPCResponse{Code: RPCResponseCodeLockLost}}))
+	require.False(t, isLockLostError(rpcError{Resp: &RPCResponse{Code: http.StatusNotFound}}))
 }

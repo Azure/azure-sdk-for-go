@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,83 +19,102 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mariadb/armmariadb"
 )
 
-// x-ms-original-file: specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/ServerSecurityAlertsGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/ServerSecurityAlertsGet.json
 func ExampleServerSecurityAlertPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armmariadb.NewServerSecurityAlertPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armmariadb.NewServerSecurityAlertPoliciesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<server-name>",
-		armmariadb.SecurityAlertPolicyName("Default"),
+		armmariadb.SecurityAlertPolicyNameDefault,
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ServerSecurityAlertPoliciesClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/ServerSecurityAlertsCreateMax.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/ServerSecurityAlertsCreateMax.json
 func ExampleServerSecurityAlertPoliciesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armmariadb.NewServerSecurityAlertPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armmariadb.NewServerSecurityAlertPoliciesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<server-name>",
-		armmariadb.SecurityAlertPolicyName("Default"),
+		armmariadb.SecurityAlertPolicyNameDefault,
 		armmariadb.ServerSecurityAlertPolicy{
 			Properties: &armmariadb.SecurityAlertPolicyProperties{
 				DisabledAlerts: []*string{
-					to.StringPtr("Access_Anomaly"),
-					to.StringPtr("Usage_Anomaly")},
-				EmailAccountAdmins: to.BoolPtr(true),
+					to.Ptr("Access_Anomaly"),
+					to.Ptr("Usage_Anomaly")},
+				EmailAccountAdmins: to.Ptr(true),
 				EmailAddresses: []*string{
-					to.StringPtr("testSecurityAlert@microsoft.com")},
-				RetentionDays:           to.Int32Ptr(5),
-				State:                   armmariadb.ServerSecurityAlertPolicyStateEnabled.ToPtr(),
-				StorageAccountAccessKey: to.StringPtr("<storage-account-access-key>"),
-				StorageEndpoint:         to.StringPtr("<storage-endpoint>"),
+					to.Ptr("testSecurityAlert@microsoft.com")},
+				RetentionDays:           to.Ptr[int32](5),
+				State:                   to.Ptr(armmariadb.ServerSecurityAlertPolicyStateEnabled),
+				StorageAccountAccessKey: to.Ptr("<storage-account-access-key>"),
+				StorageEndpoint:         to.Ptr("<storage-endpoint>"),
 			},
 		},
-		nil)
+		&armmariadb.ServerSecurityAlertPoliciesClientBeginCreateOrUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ServerSecurityAlertPoliciesClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/ServerSecurityAlertsListByServer.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/ServerSecurityAlertsListByServer.json
 func ExampleServerSecurityAlertPoliciesClient_ListByServer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armmariadb.NewServerSecurityAlertPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armmariadb.NewServerSecurityAlertPoliciesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListByServer("<resource-group-name>",
 		"<server-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }

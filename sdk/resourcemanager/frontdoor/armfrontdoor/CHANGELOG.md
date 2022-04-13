@@ -1,5 +1,396 @@
 # Release History
 
+## 0.3.0 (2022-04-11)
+### Breaking Changes
+
+- Function `NewReportsClient` return value(s) have been changed from `(*ReportsClient)` to `(*ReportsClient, error)`
+- Function `*ManagedRuleSetsClient.List` return value(s) have been changed from `(*ManagedRuleSetsClientListPager)` to `(*runtime.Pager[ManagedRuleSetsClientListResponse])`
+- Function `NewNameAvailabilityClient` return value(s) have been changed from `(*NameAvailabilityClient)` to `(*NameAvailabilityClient, error)`
+- Function `NewRulesEnginesClient` return value(s) have been changed from `(*RulesEnginesClient)` to `(*RulesEnginesClient, error)`
+- Function `NewExperimentsClient` return value(s) have been changed from `(*ExperimentsClient)` to `(*ExperimentsClient, error)`
+- Function `NewManagedRuleSetsClient` return value(s) have been changed from `(*ManagedRuleSetsClient)` to `(*ManagedRuleSetsClient, error)`
+- Function `*EndpointsClient.BeginPurgeContent` return value(s) have been changed from `(EndpointsClientPurgeContentPollerResponse, error)` to `(*armruntime.Poller[EndpointsClientPurgeContentResponse], error)`
+- Function `*ExperimentsClient.BeginUpdate` return value(s) have been changed from `(ExperimentsClientUpdatePollerResponse, error)` to `(*armruntime.Poller[ExperimentsClientUpdateResponse], error)`
+- Function `NewNameAvailabilityWithSubscriptionClient` return value(s) have been changed from `(*NameAvailabilityWithSubscriptionClient)` to `(*NameAvailabilityWithSubscriptionClient, error)`
+- Function `*NetworkExperimentProfilesClient.List` return value(s) have been changed from `(*NetworkExperimentProfilesClientListPager)` to `(*runtime.Pager[NetworkExperimentProfilesClientListResponse])`
+- Function `NewPreconfiguredEndpointsClient` return value(s) have been changed from `(*PreconfiguredEndpointsClient)` to `(*PreconfiguredEndpointsClient, error)`
+- Function `NewFrontendEndpointsClient` return value(s) have been changed from `(*FrontendEndpointsClient)` to `(*FrontendEndpointsClient, error)`
+- Function `*PoliciesClient.BeginCreateOrUpdate` return value(s) have been changed from `(PoliciesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[PoliciesClientCreateOrUpdateResponse], error)`
+- Function `*FrontendEndpointsClient.BeginEnableHTTPS` return value(s) have been changed from `(FrontendEndpointsClientEnableHTTPSPollerResponse, error)` to `(*armruntime.Poller[FrontendEndpointsClientEnableHTTPSResponse], error)`
+- Function `*PoliciesClient.BeginDelete` return value(s) have been changed from `(PoliciesClientDeletePollerResponse, error)` to `(*armruntime.Poller[PoliciesClientDeleteResponse], error)`
+- Function `*NetworkExperimentProfilesClient.BeginCreateOrUpdate` return value(s) have been changed from `(NetworkExperimentProfilesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[NetworkExperimentProfilesClientCreateOrUpdateResponse], error)`
+- Function `*ExperimentsClient.ListByProfile` return value(s) have been changed from `(*ExperimentsClientListByProfilePager)` to `(*runtime.Pager[ExperimentsClientListByProfileResponse])`
+- Function `*ExperimentsClient.BeginCreateOrUpdate` return value(s) have been changed from `(ExperimentsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ExperimentsClientCreateOrUpdateResponse], error)`
+- Function `*ExperimentsClient.BeginDelete` return value(s) have been changed from `(ExperimentsClientDeletePollerResponse, error)` to `(*armruntime.Poller[ExperimentsClientDeleteResponse], error)`
+- Function `NewPoliciesClient` return value(s) have been changed from `(*PoliciesClient)` to `(*PoliciesClient, error)`
+- Function `*NetworkExperimentProfilesClient.BeginDelete` return value(s) have been changed from `(NetworkExperimentProfilesClientDeletePollerResponse, error)` to `(*armruntime.Poller[NetworkExperimentProfilesClientDeleteResponse], error)`
+- Function `*FrontDoorsClient.BeginCreateOrUpdate` return value(s) have been changed from `(FrontDoorsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[FrontDoorsClientCreateOrUpdateResponse], error)`
+- Function `*NetworkExperimentProfilesClient.ListByResourceGroup` return value(s) have been changed from `(*NetworkExperimentProfilesClientListByResourceGroupPager)` to `(*runtime.Pager[NetworkExperimentProfilesClientListByResourceGroupResponse])`
+- Function `*RulesEnginesClient.BeginDelete` return value(s) have been changed from `(RulesEnginesClientDeletePollerResponse, error)` to `(*armruntime.Poller[RulesEnginesClientDeleteResponse], error)`
+- Function `*PreconfiguredEndpointsClient.List` return value(s) have been changed from `(*PreconfiguredEndpointsClientListPager)` to `(*runtime.Pager[PreconfiguredEndpointsClientListResponse])`
+- Function `*PoliciesClient.List` return value(s) have been changed from `(*PoliciesClientListPager)` to `(*runtime.Pager[PoliciesClientListResponse])`
+- Function `*RulesEnginesClient.ListByFrontDoor` return value(s) have been changed from `(*RulesEnginesClientListByFrontDoorPager)` to `(*runtime.Pager[RulesEnginesClientListByFrontDoorResponse])`
+- Function `NewNetworkExperimentProfilesClient` return value(s) have been changed from `(*NetworkExperimentProfilesClient)` to `(*NetworkExperimentProfilesClient, error)`
+- Function `*NetworkExperimentProfilesClient.BeginUpdate` return value(s) have been changed from `(NetworkExperimentProfilesClientUpdatePollerResponse, error)` to `(*armruntime.Poller[NetworkExperimentProfilesClientUpdateResponse], error)`
+- Function `*RulesEnginesClient.BeginCreateOrUpdate` return value(s) have been changed from `(RulesEnginesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[RulesEnginesClientCreateOrUpdateResponse], error)`
+- Function `NewEndpointsClient` return value(s) have been changed from `(*EndpointsClient)` to `(*EndpointsClient, error)`
+- Function `*FrontDoorsClient.ListByResourceGroup` return value(s) have been changed from `(*FrontDoorsClientListByResourceGroupPager)` to `(*runtime.Pager[FrontDoorsClientListByResourceGroupResponse])`
+- Function `*FrontDoorsClient.BeginDelete` return value(s) have been changed from `(FrontDoorsClientDeletePollerResponse, error)` to `(*armruntime.Poller[FrontDoorsClientDeleteResponse], error)`
+- Function `NewFrontDoorsClient` return value(s) have been changed from `(*FrontDoorsClient)` to `(*FrontDoorsClient, error)`
+- Function `*FrontDoorsClient.List` return value(s) have been changed from `(*FrontDoorsClientListPager)` to `(*runtime.Pager[FrontDoorsClientListResponse])`
+- Function `*FrontendEndpointsClient.BeginDisableHTTPS` return value(s) have been changed from `(FrontendEndpointsClientDisableHTTPSPollerResponse, error)` to `(*armruntime.Poller[FrontendEndpointsClientDisableHTTPSResponse], error)`
+- Function `*FrontendEndpointsClient.ListByFrontDoor` return value(s) have been changed from `(*FrontendEndpointsClientListByFrontDoorPager)` to `(*runtime.Pager[FrontendEndpointsClientListByFrontDoorResponse])`
+- Function `*NetworkExperimentProfilesClientCreateOrUpdatePoller.Done` has been removed
+- Function `CustomRuleEnabledState.ToPtr` has been removed
+- Function `ManagedRuleSetActionType.ToPtr` has been removed
+- Function `*ExperimentsClientUpdatePollerResponse.Resume` has been removed
+- Function `*NetworkExperimentProfilesClientListByResourceGroupPager.PageResponse` has been removed
+- Function `Transform.ToPtr` has been removed
+- Function `*RulesEnginesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*RulesEnginesClientDeletePollerResponse.Resume` has been removed
+- Function `*ExperimentsClientListByProfilePager.PageResponse` has been removed
+- Function `*FrontendEndpointsClientListByFrontDoorPager.PageResponse` has been removed
+- Function `*NetworkExperimentProfilesClientUpdatePoller.FinalResponse` has been removed
+- Function `*PreconfiguredEndpointsClientListPager.Err` has been removed
+- Function `*ExperimentsClientUpdatePoller.ResumeToken` has been removed
+- Function `*NetworkExperimentProfilesClientListByResourceGroupPager.NextPage` has been removed
+- Function `*PoliciesClientListPager.PageResponse` has been removed
+- Function `*PoliciesClientListPager.NextPage` has been removed
+- Function `FrontDoorTLSProtocolType.ToPtr` has been removed
+- Function `*NetworkExperimentProfilesClientDeletePollerResponse.Resume` has been removed
+- Function `*FrontendEndpointsClientEnableHTTPSPoller.FinalResponse` has been removed
+- Function `*FrontendEndpointsClientEnableHTTPSPoller.Poll` has been removed
+- Function `NetworkExperimentProfilesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*FrontDoorsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*FrontDoorsClientListByResourceGroupPager.PageResponse` has been removed
+- Function `BackendEnabledState.ToPtr` has been removed
+- Function `PoliciesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*FrontendEndpointsClientEnableHTTPSPollerResponse.Resume` has been removed
+- Function `*NetworkExperimentProfilesClientDeletePoller.ResumeToken` has been removed
+- Function `*FrontDoorsClientDeletePoller.Poll` has been removed
+- Function `*RulesEnginesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*FrontendEndpointsClientEnableHTTPSPoller.Done` has been removed
+- Function `*FrontDoorsClientDeletePoller.Done` has been removed
+- Function `*ManagedRuleSetsClientListPager.Err` has been removed
+- Function `*FrontDoorsClientListPager.Err` has been removed
+- Function `*NetworkExperimentProfilesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `TimeseriesAggregationInterval.ToPtr` has been removed
+- Function `*RulesEnginesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*NetworkExperimentProfilesClientUpdatePoller.Done` has been removed
+- Function `FrontDoorResourceState.ToPtr` has been removed
+- Function `*ExperimentsClientUpdatePoller.FinalResponse` has been removed
+- Function `*EndpointsClientPurgeContentPoller.FinalResponse` has been removed
+- Function `*NetworkExperimentProfilesClientDeletePoller.Done` has been removed
+- Function `ExperimentsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ExperimentsClientCreateOrUpdatePoller.Done` has been removed
+- Function `PolicyEnabledState.ToPtr` has been removed
+- Function `*ExperimentsClientDeletePollerResponse.Resume` has been removed
+- Function `*ExperimentsClientListByProfilePager.NextPage` has been removed
+- Function `PolicyRequestBodyCheck.ToPtr` has been removed
+- Function `*ManagedRuleSetsClientListPager.NextPage` has been removed
+- Function `*FrontendEndpointsClientDisableHTTPSPoller.Poll` has been removed
+- Function `RulesEnginesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*FrontDoorsClientListByResourceGroupPager.NextPage` has been removed
+- Function `*PoliciesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*PoliciesClientDeletePoller.Poll` has been removed
+- Function `*NetworkExperimentProfilesClientListByResourceGroupPager.Err` has been removed
+- Function `*PoliciesClientListPager.Err` has been removed
+- Function `*RulesEnginesClientDeletePoller.Poll` has been removed
+- Function `*RulesEnginesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `FrontDoorQuery.ToPtr` has been removed
+- Function `*RulesEnginesClientListByFrontDoorPager.Err` has been removed
+- Function `*EndpointsClientPurgeContentPoller.ResumeToken` has been removed
+- Function `FrontDoorsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `RulesEngineOperator.ToPtr` has been removed
+- Function `PoliciesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*PoliciesClientDeletePoller.FinalResponse` has been removed
+- Function `*FrontDoorsClientCreateOrUpdatePoller.Done` has been removed
+- Function `NetworkExperimentProfilesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `NetworkExperimentProfilesClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ExperimentsClientDeletePoller.Poll` has been removed
+- Function `ManagedRuleExclusionSelectorMatchOperator.ToPtr` has been removed
+- Function `*FrontendEndpointsClientDisableHTTPSPoller.FinalResponse` has been removed
+- Function `*PoliciesClientCreateOrUpdatePoller.Done` has been removed
+- Function `FrontDoorEnabledState.ToPtr` has been removed
+- Function `MatchProcessingBehavior.ToPtr` has been removed
+- Function `*RulesEnginesClientDeletePoller.Done` has been removed
+- Function `*ExperimentsClientUpdatePoller.Poll` has been removed
+- Function `ExperimentsClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `ActionType.ToPtr` has been removed
+- Function `NetworkOperationStatus.ToPtr` has been removed
+- Function `*PoliciesClientDeletePoller.Done` has been removed
+- Function `FrontendEndpointsClientEnableHTTPSPollerResponse.PollUntilDone` has been removed
+- Function `*ExperimentsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*FrontendEndpointsClientDisableHTTPSPoller.ResumeToken` has been removed
+- Function `FrontDoorCertificateType.ToPtr` has been removed
+- Function `*FrontDoorsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ExperimentsClientDeletePoller.Done` has been removed
+- Function `*PoliciesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*FrontDoorsClientListByResourceGroupPager.Err` has been removed
+- Function `RoutingRuleEnabledState.ToPtr` has been removed
+- Function `TimeseriesType.ToPtr` has been removed
+- Function `*ExperimentsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `ManagedRuleExclusionMatchVariable.ToPtr` has been removed
+- Function `*NetworkExperimentProfilesClientDeletePoller.FinalResponse` has been removed
+- Function `*FrontendEndpointsClientListByFrontDoorPager.NextPage` has been removed
+- Function `*ExperimentsClientDeletePoller.FinalResponse` has been removed
+- Function `Operator.ToPtr` has been removed
+- Function `*NetworkExperimentProfilesClientListPager.Err` has been removed
+- Function `Availability.ToPtr` has been removed
+- Function `*RulesEnginesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*RulesEnginesClientDeletePoller.ResumeToken` has been removed
+- Function `*ExperimentsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `RuleType.ToPtr` has been removed
+- Function `*PreconfiguredEndpointsClientListPager.NextPage` has been removed
+- Function `*NetworkExperimentProfilesClientListPager.PageResponse` has been removed
+- Function `*ExperimentsClientListByProfilePager.Err` has been removed
+- Function `ResourceType.ToPtr` has been removed
+- Function `*PoliciesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*EndpointsClientPurgeContentPoller.Poll` has been removed
+- Function `CustomHTTPSProvisioningSubstate.ToPtr` has been removed
+- Function `*FrontendEndpointsClientDisableHTTPSPollerResponse.Resume` has been removed
+- Function `HealthProbeEnabled.ToPtr` has been removed
+- Function `*FrontDoorsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `EndpointType.ToPtr` has been removed
+- Function `LatencyScorecardAggregationInterval.ToPtr` has been removed
+- Function `FrontendEndpointsClientDisableHTTPSPollerResponse.PollUntilDone` has been removed
+- Function `*PoliciesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*NetworkExperimentProfilesClientListPager.NextPage` has been removed
+- Function `DynamicCompressionEnabled.ToPtr` has been removed
+- Function `*NetworkExperimentProfilesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `PolicyResourceState.ToPtr` has been removed
+- Function `*ExperimentsClientUpdatePoller.Done` has been removed
+- Function `*PoliciesClientDeletePollerResponse.Resume` has been removed
+- Function `MatchVariable.ToPtr` has been removed
+- Function `HeaderActionType.ToPtr` has been removed
+- Function `*NetworkExperimentProfilesClientDeletePoller.Poll` has been removed
+- Function `*ExperimentsClientDeletePoller.ResumeToken` has been removed
+- Function `*NetworkExperimentProfilesClientUpdatePollerResponse.Resume` has been removed
+- Function `FrontDoorHealthProbeMethod.ToPtr` has been removed
+- Function `SessionAffinityEnabledState.ToPtr` has been removed
+- Function `ExperimentsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*NetworkExperimentProfilesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `AggregationInterval.ToPtr` has been removed
+- Function `*PoliciesClientDeletePoller.ResumeToken` has been removed
+- Function `*NetworkExperimentProfilesClientUpdatePoller.ResumeToken` has been removed
+- Function `TransformType.ToPtr` has been removed
+- Function `*FrontDoorsClientDeletePollerResponse.Resume` has been removed
+- Function `*ManagedRuleSetsClientListPager.PageResponse` has been removed
+- Function `*FrontendEndpointsClientListByFrontDoorPager.Err` has been removed
+- Function `MinimumTLSVersion.ToPtr` has been removed
+- Function `EnforceCertificateNameCheckEnabledState.ToPtr` has been removed
+- Function `FrontDoorProtocol.ToPtr` has been removed
+- Function `FrontDoorRedirectType.ToPtr` has been removed
+- Function `RulesEnginesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*EndpointsClientPurgeContentPoller.Done` has been removed
+- Function `NetworkExperimentResourceState.ToPtr` has been removed
+- Function `PrivateEndpointStatus.ToPtr` has been removed
+- Function `*FrontDoorsClientDeletePoller.FinalResponse` has been removed
+- Function `*FrontDoorsClientListPager.PageResponse` has been removed
+- Function `*NetworkExperimentProfilesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `FrontDoorRedirectProtocol.ToPtr` has been removed
+- Function `FrontDoorCertificateSource.ToPtr` has been removed
+- Function `SKUName.ToPtr` has been removed
+- Function `*RulesEnginesClientListByFrontDoorPager.PageResponse` has been removed
+- Function `*FrontendEndpointsClientDisableHTTPSPoller.Done` has been removed
+- Function `*FrontendEndpointsClientEnableHTTPSPoller.ResumeToken` has been removed
+- Function `*RulesEnginesClientDeletePoller.FinalResponse` has been removed
+- Function `*FrontDoorsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `RulesEngineMatchVariable.ToPtr` has been removed
+- Function `*NetworkExperimentProfilesClientUpdatePoller.Poll` has been removed
+- Function `*RulesEnginesClientListByFrontDoorPager.NextPage` has been removed
+- Function `FrontDoorsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*FrontDoorsClientDeletePoller.ResumeToken` has been removed
+- Function `CustomHTTPSProvisioningState.ToPtr` has been removed
+- Function `*EndpointsClientPurgeContentPollerResponse.Resume` has been removed
+- Function `*PreconfiguredEndpointsClientListPager.PageResponse` has been removed
+- Function `PolicyMode.ToPtr` has been removed
+- Function `FrontDoorForwardingProtocol.ToPtr` has been removed
+- Function `ManagedRuleEnabledState.ToPtr` has been removed
+- Function `*ExperimentsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*FrontDoorsClientListPager.NextPage` has been removed
+- Function `EndpointsClientPurgeContentPollerResponse.PollUntilDone` has been removed
+- Function `State.ToPtr` has been removed
+- Struct `EndpointsClientPurgeContentPoller` has been removed
+- Struct `EndpointsClientPurgeContentPollerResponse` has been removed
+- Struct `ExperimentsClientCreateOrUpdatePoller` has been removed
+- Struct `ExperimentsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ExperimentsClientCreateOrUpdateResult` has been removed
+- Struct `ExperimentsClientDeletePoller` has been removed
+- Struct `ExperimentsClientDeletePollerResponse` has been removed
+- Struct `ExperimentsClientGetResult` has been removed
+- Struct `ExperimentsClientListByProfilePager` has been removed
+- Struct `ExperimentsClientListByProfileResult` has been removed
+- Struct `ExperimentsClientUpdatePoller` has been removed
+- Struct `ExperimentsClientUpdatePollerResponse` has been removed
+- Struct `ExperimentsClientUpdateResult` has been removed
+- Struct `FrontDoorsClientCreateOrUpdatePoller` has been removed
+- Struct `FrontDoorsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `FrontDoorsClientCreateOrUpdateResult` has been removed
+- Struct `FrontDoorsClientDeletePoller` has been removed
+- Struct `FrontDoorsClientDeletePollerResponse` has been removed
+- Struct `FrontDoorsClientGetResult` has been removed
+- Struct `FrontDoorsClientListByResourceGroupPager` has been removed
+- Struct `FrontDoorsClientListByResourceGroupResult` has been removed
+- Struct `FrontDoorsClientListPager` has been removed
+- Struct `FrontDoorsClientListResult` has been removed
+- Struct `FrontDoorsClientValidateCustomDomainResult` has been removed
+- Struct `FrontendEndpointsClientDisableHTTPSPoller` has been removed
+- Struct `FrontendEndpointsClientDisableHTTPSPollerResponse` has been removed
+- Struct `FrontendEndpointsClientEnableHTTPSPoller` has been removed
+- Struct `FrontendEndpointsClientEnableHTTPSPollerResponse` has been removed
+- Struct `FrontendEndpointsClientGetResult` has been removed
+- Struct `FrontendEndpointsClientListByFrontDoorPager` has been removed
+- Struct `FrontendEndpointsClientListByFrontDoorResult` has been removed
+- Struct `ManagedRuleSetsClientListPager` has been removed
+- Struct `ManagedRuleSetsClientListResult` has been removed
+- Struct `NameAvailabilityClientCheckResult` has been removed
+- Struct `NameAvailabilityWithSubscriptionClientCheckResult` has been removed
+- Struct `NetworkExperimentProfilesClientCreateOrUpdatePoller` has been removed
+- Struct `NetworkExperimentProfilesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `NetworkExperimentProfilesClientCreateOrUpdateResult` has been removed
+- Struct `NetworkExperimentProfilesClientDeletePoller` has been removed
+- Struct `NetworkExperimentProfilesClientDeletePollerResponse` has been removed
+- Struct `NetworkExperimentProfilesClientGetResult` has been removed
+- Struct `NetworkExperimentProfilesClientListByResourceGroupPager` has been removed
+- Struct `NetworkExperimentProfilesClientListByResourceGroupResult` has been removed
+- Struct `NetworkExperimentProfilesClientListPager` has been removed
+- Struct `NetworkExperimentProfilesClientListResult` has been removed
+- Struct `NetworkExperimentProfilesClientUpdatePoller` has been removed
+- Struct `NetworkExperimentProfilesClientUpdatePollerResponse` has been removed
+- Struct `NetworkExperimentProfilesClientUpdateResult` has been removed
+- Struct `PoliciesClientCreateOrUpdatePoller` has been removed
+- Struct `PoliciesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `PoliciesClientCreateOrUpdateResult` has been removed
+- Struct `PoliciesClientDeletePoller` has been removed
+- Struct `PoliciesClientDeletePollerResponse` has been removed
+- Struct `PoliciesClientGetResult` has been removed
+- Struct `PoliciesClientListPager` has been removed
+- Struct `PoliciesClientListResult` has been removed
+- Struct `PreconfiguredEndpointsClientListPager` has been removed
+- Struct `PreconfiguredEndpointsClientListResult` has been removed
+- Struct `ReportsClientGetLatencyScorecardsResult` has been removed
+- Struct `ReportsClientGetTimeseriesResult` has been removed
+- Struct `RulesEnginesClientCreateOrUpdatePoller` has been removed
+- Struct `RulesEnginesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `RulesEnginesClientCreateOrUpdateResult` has been removed
+- Struct `RulesEnginesClientDeletePoller` has been removed
+- Struct `RulesEnginesClientDeletePollerResponse` has been removed
+- Struct `RulesEnginesClientGetResult` has been removed
+- Struct `RulesEnginesClientListByFrontDoorPager` has been removed
+- Struct `RulesEnginesClientListByFrontDoorResult` has been removed
+- Field `NetworkExperimentProfilesClientCreateOrUpdateResult` of struct `NetworkExperimentProfilesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `NetworkExperimentProfilesClientCreateOrUpdateResponse` has been removed
+- Field `PoliciesClientCreateOrUpdateResult` of struct `PoliciesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `PoliciesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ExperimentsClientDeleteResponse` has been removed
+- Field `FrontendEndpointsClientListByFrontDoorResult` of struct `FrontendEndpointsClientListByFrontDoorResponse` has been removed
+- Field `RawResponse` of struct `FrontendEndpointsClientListByFrontDoorResponse` has been removed
+- Field `FrontDoorsClientListByResourceGroupResult` of struct `FrontDoorsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `FrontDoorsClientListByResourceGroupResponse` has been removed
+- Field `RulesEnginesClientGetResult` of struct `RulesEnginesClientGetResponse` has been removed
+- Field `RawResponse` of struct `RulesEnginesClientGetResponse` has been removed
+- Field `FrontDoorsClientListResult` of struct `FrontDoorsClientListResponse` has been removed
+- Field `RawResponse` of struct `FrontDoorsClientListResponse` has been removed
+- Field `RawResponse` of struct `PoliciesClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `NetworkExperimentProfilesClientDeleteResponse` has been removed
+- Field `NetworkExperimentProfilesClientListByResourceGroupResult` of struct `NetworkExperimentProfilesClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `NetworkExperimentProfilesClientListByResourceGroupResponse` has been removed
+- Field `FrontDoorsClientGetResult` of struct `FrontDoorsClientGetResponse` has been removed
+- Field `RawResponse` of struct `FrontDoorsClientGetResponse` has been removed
+- Field `PoliciesClientListResult` of struct `PoliciesClientListResponse` has been removed
+- Field `RawResponse` of struct `PoliciesClientListResponse` has been removed
+- Field `RawResponse` of struct `FrontendEndpointsClientEnableHTTPSResponse` has been removed
+- Field `ReportsClientGetTimeseriesResult` of struct `ReportsClientGetTimeseriesResponse` has been removed
+- Field `RawResponse` of struct `ReportsClientGetTimeseriesResponse` has been removed
+- Field `RulesEnginesClientCreateOrUpdateResult` of struct `RulesEnginesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `RulesEnginesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `FrontendEndpointsClientDisableHTTPSResponse` has been removed
+- Field `NameAvailabilityClientCheckResult` of struct `NameAvailabilityClientCheckResponse` has been removed
+- Field `RawResponse` of struct `NameAvailabilityClientCheckResponse` has been removed
+- Field `RawResponse` of struct `RulesEnginesClientDeleteResponse` has been removed
+- Field `ExperimentsClientCreateOrUpdateResult` of struct `ExperimentsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ExperimentsClientCreateOrUpdateResponse` has been removed
+- Field `NetworkExperimentProfilesClientGetResult` of struct `NetworkExperimentProfilesClientGetResponse` has been removed
+- Field `RawResponse` of struct `NetworkExperimentProfilesClientGetResponse` has been removed
+- Field `ManagedRuleSetsClientListResult` of struct `ManagedRuleSetsClientListResponse` has been removed
+- Field `RawResponse` of struct `ManagedRuleSetsClientListResponse` has been removed
+- Field `NetworkExperimentProfilesClientListResult` of struct `NetworkExperimentProfilesClientListResponse` has been removed
+- Field `RawResponse` of struct `NetworkExperimentProfilesClientListResponse` has been removed
+- Field `NetworkExperimentProfilesClientUpdateResult` of struct `NetworkExperimentProfilesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `NetworkExperimentProfilesClientUpdateResponse` has been removed
+- Field `RulesEnginesClientListByFrontDoorResult` of struct `RulesEnginesClientListByFrontDoorResponse` has been removed
+- Field `RawResponse` of struct `RulesEnginesClientListByFrontDoorResponse` has been removed
+- Field `FrontDoorsClientCreateOrUpdateResult` of struct `FrontDoorsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `FrontDoorsClientCreateOrUpdateResponse` has been removed
+- Field `ExperimentsClientUpdateResult` of struct `ExperimentsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ExperimentsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `EndpointsClientPurgeContentResponse` has been removed
+- Field `ReportsClientGetLatencyScorecardsResult` of struct `ReportsClientGetLatencyScorecardsResponse` has been removed
+- Field `RawResponse` of struct `ReportsClientGetLatencyScorecardsResponse` has been removed
+- Field `ExperimentsClientListByProfileResult` of struct `ExperimentsClientListByProfileResponse` has been removed
+- Field `RawResponse` of struct `ExperimentsClientListByProfileResponse` has been removed
+- Field `FrontendEndpointsClientGetResult` of struct `FrontendEndpointsClientGetResponse` has been removed
+- Field `RawResponse` of struct `FrontendEndpointsClientGetResponse` has been removed
+- Field `FrontDoorsClientValidateCustomDomainResult` of struct `FrontDoorsClientValidateCustomDomainResponse` has been removed
+- Field `RawResponse` of struct `FrontDoorsClientValidateCustomDomainResponse` has been removed
+- Field `PoliciesClientGetResult` of struct `PoliciesClientGetResponse` has been removed
+- Field `RawResponse` of struct `PoliciesClientGetResponse` has been removed
+- Field `ExperimentsClientGetResult` of struct `ExperimentsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ExperimentsClientGetResponse` has been removed
+- Field `PreconfiguredEndpointsClientListResult` of struct `PreconfiguredEndpointsClientListResponse` has been removed
+- Field `RawResponse` of struct `PreconfiguredEndpointsClientListResponse` has been removed
+- Field `NameAvailabilityWithSubscriptionClientCheckResult` of struct `NameAvailabilityWithSubscriptionClientCheckResponse` has been removed
+- Field `RawResponse` of struct `NameAvailabilityWithSubscriptionClientCheckResponse` has been removed
+- Field `RawResponse` of struct `FrontDoorsClientDeleteResponse` has been removed
+
+### Features Added
+
+- New anonymous field `Experiment` in struct `ExperimentsClientGetResponse`
+- New anonymous field `WebApplicationFirewallPolicy` in struct `PoliciesClientGetResponse`
+- New field `ResumeToken` in struct `NetworkExperimentProfilesClientBeginUpdateOptions`
+- New anonymous field `ListResult` in struct `FrontDoorsClientListByResourceGroupResponse`
+- New field `ResumeToken` in struct `FrontDoorsClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `ExperimentsClientBeginCreateOrUpdateOptions`
+- New anonymous field `WebApplicationFirewallPolicy` in struct `PoliciesClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `EndpointsClientBeginPurgeContentOptions`
+- New anonymous field `ManagedRuleSetDefinitionList` in struct `ManagedRuleSetsClientListResponse`
+- New anonymous field `Profile` in struct `NetworkExperimentProfilesClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `RulesEnginesClientBeginDeleteOptions`
+- New anonymous field `Timeseries` in struct `ReportsClientGetTimeseriesResponse`
+- New anonymous field `RulesEngineListResult` in struct `RulesEnginesClientListByFrontDoorResponse`
+- New anonymous field `Profile` in struct `NetworkExperimentProfilesClientUpdateResponse`
+- New anonymous field `FrontendEndpointsListResult` in struct `FrontendEndpointsClientListByFrontDoorResponse`
+- New anonymous field `CheckNameAvailabilityOutput` in struct `NameAvailabilityWithSubscriptionClientCheckResponse`
+- New field `ResumeToken` in struct `NetworkExperimentProfilesClientBeginDeleteOptions`
+- New anonymous field `FrontDoor` in struct `FrontDoorsClientCreateOrUpdateResponse`
+- New anonymous field `RulesEngine` in struct `RulesEnginesClientCreateOrUpdateResponse`
+- New anonymous field `Experiment` in struct `ExperimentsClientCreateOrUpdateResponse`
+- New anonymous field `Profile` in struct `NetworkExperimentProfilesClientGetResponse`
+- New anonymous field `FrontendEndpoint` in struct `FrontendEndpointsClientGetResponse`
+- New anonymous field `RulesEngine` in struct `RulesEnginesClientGetResponse`
+- New anonymous field `Experiment` in struct `ExperimentsClientUpdateResponse`
+- New field `ResumeToken` in struct `RulesEnginesClientBeginCreateOrUpdateOptions`
+- New anonymous field `CheckNameAvailabilityOutput` in struct `NameAvailabilityClientCheckResponse`
+- New field `ResumeToken` in struct `NetworkExperimentProfilesClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `FrontendEndpointsClientBeginEnableHTTPSOptions`
+- New anonymous field `LatencyScorecard` in struct `ReportsClientGetLatencyScorecardsResponse`
+- New field `ResumeToken` in struct `FrontendEndpointsClientBeginDisableHTTPSOptions`
+- New anonymous field `PreconfiguredEndpointList` in struct `PreconfiguredEndpointsClientListResponse`
+- New field `ResumeToken` in struct `FrontDoorsClientBeginCreateOrUpdateOptions`
+- New field `ResumeToken` in struct `ExperimentsClientBeginDeleteOptions`
+- New anonymous field `ProfileList` in struct `NetworkExperimentProfilesClientListResponse`
+- New anonymous field `WebApplicationFirewallPolicyList` in struct `PoliciesClientListResponse`
+- New anonymous field `ListResult` in struct `FrontDoorsClientListResponse`
+- New anonymous field `ProfileList` in struct `NetworkExperimentProfilesClientListByResourceGroupResponse`
+- New field `ResumeToken` in struct `ExperimentsClientBeginUpdateOptions`
+- New anonymous field `ExperimentList` in struct `ExperimentsClientListByProfileResponse`
+- New field `ResumeToken` in struct `PoliciesClientBeginCreateOrUpdateOptions`
+- New anonymous field `ValidateCustomDomainOutput` in struct `FrontDoorsClientValidateCustomDomainResponse`
+- New field `ResumeToken` in struct `PoliciesClientBeginDeleteOptions`
+- New anonymous field `FrontDoor` in struct `FrontDoorsClientGetResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

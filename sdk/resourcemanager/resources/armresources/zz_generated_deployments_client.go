@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type DeploymentsClient struct {
 // subscriptionID - The Microsoft Azure subscription ID.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewDeploymentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DeploymentsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewDeploymentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DeploymentsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &DeploymentsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CalculateTemplateHash - Calculate the hash of the given template.
@@ -55,7 +60,7 @@ func NewDeploymentsClient(subscriptionID string, credential azcore.TokenCredenti
 // templateParam - The template provided to calculate hash.
 // options - DeploymentsClientCalculateTemplateHashOptions contains the optional parameters for the DeploymentsClient.CalculateTemplateHash
 // method.
-func (client *DeploymentsClient) CalculateTemplateHash(ctx context.Context, templateParam map[string]interface{}, options *DeploymentsClientCalculateTemplateHashOptions) (DeploymentsClientCalculateTemplateHashResponse, error) {
+func (client *DeploymentsClient) CalculateTemplateHash(ctx context.Context, templateParam interface{}, options *DeploymentsClientCalculateTemplateHashOptions) (DeploymentsClientCalculateTemplateHashResponse, error) {
 	req, err := client.calculateTemplateHashCreateRequest(ctx, templateParam, options)
 	if err != nil {
 		return DeploymentsClientCalculateTemplateHashResponse{}, err
@@ -71,7 +76,7 @@ func (client *DeploymentsClient) CalculateTemplateHash(ctx context.Context, temp
 }
 
 // calculateTemplateHashCreateRequest creates the CalculateTemplateHash request.
-func (client *DeploymentsClient) calculateTemplateHashCreateRequest(ctx context.Context, templateParam map[string]interface{}, options *DeploymentsClientCalculateTemplateHashOptions) (*policy.Request, error) {
+func (client *DeploymentsClient) calculateTemplateHashCreateRequest(ctx context.Context, templateParam interface{}, options *DeploymentsClientCalculateTemplateHashOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Resources/calculateTemplateHash"
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
@@ -86,7 +91,7 @@ func (client *DeploymentsClient) calculateTemplateHashCreateRequest(ctx context.
 
 // calculateTemplateHashHandleResponse handles the CalculateTemplateHash response.
 func (client *DeploymentsClient) calculateTemplateHashHandleResponse(resp *http.Response) (DeploymentsClientCalculateTemplateHashResponse, error) {
-	result := DeploymentsClientCalculateTemplateHashResponse{RawResponse: resp}
+	result := DeploymentsClientCalculateTemplateHashResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TemplateHashResult); err != nil {
 		return DeploymentsClientCalculateTemplateHashResponse{}, err
 	}
@@ -112,7 +117,7 @@ func (client *DeploymentsClient) Cancel(ctx context.Context, resourceGroupName s
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return DeploymentsClientCancelResponse{}, runtime.NewResponseError(resp)
 	}
-	return DeploymentsClientCancelResponse{RawResponse: resp}, nil
+	return DeploymentsClientCancelResponse{}, nil
 }
 
 // cancelCreateRequest creates the Cancel request.
@@ -161,7 +166,7 @@ func (client *DeploymentsClient) CancelAtManagementGroupScope(ctx context.Contex
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return DeploymentsClientCancelAtManagementGroupScopeResponse{}, runtime.NewResponseError(resp)
 	}
-	return DeploymentsClientCancelAtManagementGroupScopeResponse{RawResponse: resp}, nil
+	return DeploymentsClientCancelAtManagementGroupScopeResponse{}, nil
 }
 
 // cancelAtManagementGroupScopeCreateRequest creates the CancelAtManagementGroupScope request.
@@ -206,7 +211,7 @@ func (client *DeploymentsClient) CancelAtScope(ctx context.Context, scope string
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return DeploymentsClientCancelAtScopeResponse{}, runtime.NewResponseError(resp)
 	}
-	return DeploymentsClientCancelAtScopeResponse{RawResponse: resp}, nil
+	return DeploymentsClientCancelAtScopeResponse{}, nil
 }
 
 // cancelAtScopeCreateRequest creates the CancelAtScope request.
@@ -247,7 +252,7 @@ func (client *DeploymentsClient) CancelAtSubscriptionScope(ctx context.Context, 
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return DeploymentsClientCancelAtSubscriptionScopeResponse{}, runtime.NewResponseError(resp)
 	}
-	return DeploymentsClientCancelAtSubscriptionScopeResponse{RawResponse: resp}, nil
+	return DeploymentsClientCancelAtSubscriptionScopeResponse{}, nil
 }
 
 // cancelAtSubscriptionScopeCreateRequest creates the CancelAtSubscriptionScope request.
@@ -291,7 +296,7 @@ func (client *DeploymentsClient) CancelAtTenantScope(ctx context.Context, deploy
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return DeploymentsClientCancelAtTenantScopeResponse{}, runtime.NewResponseError(resp)
 	}
-	return DeploymentsClientCancelAtTenantScopeResponse{RawResponse: resp}, nil
+	return DeploymentsClientCancelAtTenantScopeResponse{}, nil
 }
 
 // cancelAtTenantScopeCreateRequest creates the CancelAtTenantScope request.
@@ -326,7 +331,7 @@ func (client *DeploymentsClient) CheckExistence(ctx context.Context, resourceGro
 	if err != nil {
 		return DeploymentsClientCheckExistenceResponse{}, err
 	}
-	result := DeploymentsClientCheckExistenceResponse{RawResponse: resp}
+	result := DeploymentsClientCheckExistenceResponse{}
 	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
 		result.Success = true
 	}
@@ -373,7 +378,7 @@ func (client *DeploymentsClient) CheckExistenceAtManagementGroupScope(ctx contex
 	if err != nil {
 		return DeploymentsClientCheckExistenceAtManagementGroupScopeResponse{}, err
 	}
-	result := DeploymentsClientCheckExistenceAtManagementGroupScopeResponse{RawResponse: resp}
+	result := DeploymentsClientCheckExistenceAtManagementGroupScopeResponse{}
 	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
 		result.Success = true
 	}
@@ -416,7 +421,7 @@ func (client *DeploymentsClient) CheckExistenceAtScope(ctx context.Context, scop
 	if err != nil {
 		return DeploymentsClientCheckExistenceAtScopeResponse{}, err
 	}
-	result := DeploymentsClientCheckExistenceAtScopeResponse{RawResponse: resp}
+	result := DeploymentsClientCheckExistenceAtScopeResponse{}
 	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
 		result.Success = true
 	}
@@ -455,7 +460,7 @@ func (client *DeploymentsClient) CheckExistenceAtSubscriptionScope(ctx context.C
 	if err != nil {
 		return DeploymentsClientCheckExistenceAtSubscriptionScopeResponse{}, err
 	}
-	result := DeploymentsClientCheckExistenceAtSubscriptionScopeResponse{RawResponse: resp}
+	result := DeploymentsClientCheckExistenceAtSubscriptionScopeResponse{}
 	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
 		result.Success = true
 	}
@@ -497,7 +502,7 @@ func (client *DeploymentsClient) CheckExistenceAtTenantScope(ctx context.Context
 	if err != nil {
 		return DeploymentsClientCheckExistenceAtTenantScopeResponse{}, err
 	}
-	result := DeploymentsClientCheckExistenceAtTenantScopeResponse{RawResponse: resp}
+	result := DeploymentsClientCheckExistenceAtTenantScopeResponse{}
 	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
 		result.Success = true
 	}
@@ -530,22 +535,16 @@ func (client *DeploymentsClient) checkExistenceAtTenantScopeCreateRequest(ctx co
 // parameters - Additional parameters supplied to the operation.
 // options - DeploymentsClientBeginCreateOrUpdateOptions contains the optional parameters for the DeploymentsClient.BeginCreateOrUpdate
 // method.
-func (client *DeploymentsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, deploymentName string, parameters Deployment, options *DeploymentsClientBeginCreateOrUpdateOptions) (DeploymentsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, deploymentName, parameters, options)
-	if err != nil {
-		return DeploymentsClientCreateOrUpdatePollerResponse{}, err
+func (client *DeploymentsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, deploymentName string, parameters Deployment, options *DeploymentsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[DeploymentsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, deploymentName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[DeploymentsClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[DeploymentsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DeploymentsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DeploymentsClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return DeploymentsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &DeploymentsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - You can provide the template and parameters directly in the request or link to JSON files.
@@ -599,22 +598,16 @@ func (client *DeploymentsClient) createOrUpdateCreateRequest(ctx context.Context
 // parameters - Additional parameters supplied to the operation.
 // options - DeploymentsClientBeginCreateOrUpdateAtManagementGroupScopeOptions contains the optional parameters for the DeploymentsClient.BeginCreateOrUpdateAtManagementGroupScope
 // method.
-func (client *DeploymentsClient) BeginCreateOrUpdateAtManagementGroupScope(ctx context.Context, groupID string, deploymentName string, parameters ScopedDeployment, options *DeploymentsClientBeginCreateOrUpdateAtManagementGroupScopeOptions) (DeploymentsClientCreateOrUpdateAtManagementGroupScopePollerResponse, error) {
-	resp, err := client.createOrUpdateAtManagementGroupScope(ctx, groupID, deploymentName, parameters, options)
-	if err != nil {
-		return DeploymentsClientCreateOrUpdateAtManagementGroupScopePollerResponse{}, err
+func (client *DeploymentsClient) BeginCreateOrUpdateAtManagementGroupScope(ctx context.Context, groupID string, deploymentName string, parameters ScopedDeployment, options *DeploymentsClientBeginCreateOrUpdateAtManagementGroupScopeOptions) (*armruntime.Poller[DeploymentsClientCreateOrUpdateAtManagementGroupScopeResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdateAtManagementGroupScope(ctx, groupID, deploymentName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[DeploymentsClientCreateOrUpdateAtManagementGroupScopeResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[DeploymentsClientCreateOrUpdateAtManagementGroupScopeResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DeploymentsClientCreateOrUpdateAtManagementGroupScopePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DeploymentsClient.CreateOrUpdateAtManagementGroupScope", "", resp, client.pl)
-	if err != nil {
-		return DeploymentsClientCreateOrUpdateAtManagementGroupScopePollerResponse{}, err
-	}
-	result.Poller = &DeploymentsClientCreateOrUpdateAtManagementGroupScopePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdateAtManagementGroupScope - You can provide the template and parameters directly in the request or link to JSON
@@ -664,22 +657,16 @@ func (client *DeploymentsClient) createOrUpdateAtManagementGroupScopeCreateReque
 // parameters - Additional parameters supplied to the operation.
 // options - DeploymentsClientBeginCreateOrUpdateAtScopeOptions contains the optional parameters for the DeploymentsClient.BeginCreateOrUpdateAtScope
 // method.
-func (client *DeploymentsClient) BeginCreateOrUpdateAtScope(ctx context.Context, scope string, deploymentName string, parameters Deployment, options *DeploymentsClientBeginCreateOrUpdateAtScopeOptions) (DeploymentsClientCreateOrUpdateAtScopePollerResponse, error) {
-	resp, err := client.createOrUpdateAtScope(ctx, scope, deploymentName, parameters, options)
-	if err != nil {
-		return DeploymentsClientCreateOrUpdateAtScopePollerResponse{}, err
+func (client *DeploymentsClient) BeginCreateOrUpdateAtScope(ctx context.Context, scope string, deploymentName string, parameters Deployment, options *DeploymentsClientBeginCreateOrUpdateAtScopeOptions) (*armruntime.Poller[DeploymentsClientCreateOrUpdateAtScopeResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdateAtScope(ctx, scope, deploymentName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[DeploymentsClientCreateOrUpdateAtScopeResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[DeploymentsClientCreateOrUpdateAtScopeResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DeploymentsClientCreateOrUpdateAtScopePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DeploymentsClient.CreateOrUpdateAtScope", "", resp, client.pl)
-	if err != nil {
-		return DeploymentsClientCreateOrUpdateAtScopePollerResponse{}, err
-	}
-	result.Poller = &DeploymentsClientCreateOrUpdateAtScopePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdateAtScope - You can provide the template and parameters directly in the request or link to JSON files.
@@ -725,22 +712,16 @@ func (client *DeploymentsClient) createOrUpdateAtScopeCreateRequest(ctx context.
 // parameters - Additional parameters supplied to the operation.
 // options - DeploymentsClientBeginCreateOrUpdateAtSubscriptionScopeOptions contains the optional parameters for the DeploymentsClient.BeginCreateOrUpdateAtSubscriptionScope
 // method.
-func (client *DeploymentsClient) BeginCreateOrUpdateAtSubscriptionScope(ctx context.Context, deploymentName string, parameters Deployment, options *DeploymentsClientBeginCreateOrUpdateAtSubscriptionScopeOptions) (DeploymentsClientCreateOrUpdateAtSubscriptionScopePollerResponse, error) {
-	resp, err := client.createOrUpdateAtSubscriptionScope(ctx, deploymentName, parameters, options)
-	if err != nil {
-		return DeploymentsClientCreateOrUpdateAtSubscriptionScopePollerResponse{}, err
+func (client *DeploymentsClient) BeginCreateOrUpdateAtSubscriptionScope(ctx context.Context, deploymentName string, parameters Deployment, options *DeploymentsClientBeginCreateOrUpdateAtSubscriptionScopeOptions) (*armruntime.Poller[DeploymentsClientCreateOrUpdateAtSubscriptionScopeResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdateAtSubscriptionScope(ctx, deploymentName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[DeploymentsClientCreateOrUpdateAtSubscriptionScopeResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[DeploymentsClientCreateOrUpdateAtSubscriptionScopeResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DeploymentsClientCreateOrUpdateAtSubscriptionScopePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DeploymentsClient.CreateOrUpdateAtSubscriptionScope", "", resp, client.pl)
-	if err != nil {
-		return DeploymentsClientCreateOrUpdateAtSubscriptionScopePollerResponse{}, err
-	}
-	result.Poller = &DeploymentsClientCreateOrUpdateAtSubscriptionScopePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdateAtSubscriptionScope - You can provide the template and parameters directly in the request or link to JSON
@@ -790,22 +771,16 @@ func (client *DeploymentsClient) createOrUpdateAtSubscriptionScopeCreateRequest(
 // parameters - Additional parameters supplied to the operation.
 // options - DeploymentsClientBeginCreateOrUpdateAtTenantScopeOptions contains the optional parameters for the DeploymentsClient.BeginCreateOrUpdateAtTenantScope
 // method.
-func (client *DeploymentsClient) BeginCreateOrUpdateAtTenantScope(ctx context.Context, deploymentName string, parameters ScopedDeployment, options *DeploymentsClientBeginCreateOrUpdateAtTenantScopeOptions) (DeploymentsClientCreateOrUpdateAtTenantScopePollerResponse, error) {
-	resp, err := client.createOrUpdateAtTenantScope(ctx, deploymentName, parameters, options)
-	if err != nil {
-		return DeploymentsClientCreateOrUpdateAtTenantScopePollerResponse{}, err
+func (client *DeploymentsClient) BeginCreateOrUpdateAtTenantScope(ctx context.Context, deploymentName string, parameters ScopedDeployment, options *DeploymentsClientBeginCreateOrUpdateAtTenantScopeOptions) (*armruntime.Poller[DeploymentsClientCreateOrUpdateAtTenantScopeResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdateAtTenantScope(ctx, deploymentName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[DeploymentsClientCreateOrUpdateAtTenantScopeResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[DeploymentsClientCreateOrUpdateAtTenantScopeResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DeploymentsClientCreateOrUpdateAtTenantScopePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DeploymentsClient.CreateOrUpdateAtTenantScope", "", resp, client.pl)
-	if err != nil {
-		return DeploymentsClientCreateOrUpdateAtTenantScopePollerResponse{}, err
-	}
-	result.Poller = &DeploymentsClientCreateOrUpdateAtTenantScopePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdateAtTenantScope - You can provide the template and parameters directly in the request or link to JSON files.
@@ -855,22 +830,16 @@ func (client *DeploymentsClient) createOrUpdateAtTenantScopeCreateRequest(ctx co
 // resourceGroupName - The name of the resource group with the deployment to delete. The name is case insensitive.
 // deploymentName - The name of the deployment.
 // options - DeploymentsClientBeginDeleteOptions contains the optional parameters for the DeploymentsClient.BeginDelete method.
-func (client *DeploymentsClient) BeginDelete(ctx context.Context, resourceGroupName string, deploymentName string, options *DeploymentsClientBeginDeleteOptions) (DeploymentsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, deploymentName, options)
-	if err != nil {
-		return DeploymentsClientDeletePollerResponse{}, err
+func (client *DeploymentsClient) BeginDelete(ctx context.Context, resourceGroupName string, deploymentName string, options *DeploymentsClientBeginDeleteOptions) (*armruntime.Poller[DeploymentsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, deploymentName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[DeploymentsClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[DeploymentsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DeploymentsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DeploymentsClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return DeploymentsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &DeploymentsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
@@ -935,22 +904,16 @@ func (client *DeploymentsClient) deleteCreateRequest(ctx context.Context, resour
 // deploymentName - The name of the deployment.
 // options - DeploymentsClientBeginDeleteAtManagementGroupScopeOptions contains the optional parameters for the DeploymentsClient.BeginDeleteAtManagementGroupScope
 // method.
-func (client *DeploymentsClient) BeginDeleteAtManagementGroupScope(ctx context.Context, groupID string, deploymentName string, options *DeploymentsClientBeginDeleteAtManagementGroupScopeOptions) (DeploymentsClientDeleteAtManagementGroupScopePollerResponse, error) {
-	resp, err := client.deleteAtManagementGroupScope(ctx, groupID, deploymentName, options)
-	if err != nil {
-		return DeploymentsClientDeleteAtManagementGroupScopePollerResponse{}, err
+func (client *DeploymentsClient) BeginDeleteAtManagementGroupScope(ctx context.Context, groupID string, deploymentName string, options *DeploymentsClientBeginDeleteAtManagementGroupScopeOptions) (*armruntime.Poller[DeploymentsClientDeleteAtManagementGroupScopeResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteAtManagementGroupScope(ctx, groupID, deploymentName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[DeploymentsClientDeleteAtManagementGroupScopeResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[DeploymentsClientDeleteAtManagementGroupScopeResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DeploymentsClientDeleteAtManagementGroupScopePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DeploymentsClient.DeleteAtManagementGroupScope", "", resp, client.pl)
-	if err != nil {
-		return DeploymentsClientDeleteAtManagementGroupScopePollerResponse{}, err
-	}
-	result.Poller = &DeploymentsClientDeleteAtManagementGroupScopePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // DeleteAtManagementGroupScope - A template deployment that is currently running cannot be deleted. Deleting a template deployment
@@ -1010,22 +973,16 @@ func (client *DeploymentsClient) deleteAtManagementGroupScopeCreateRequest(ctx c
 // deploymentName - The name of the deployment.
 // options - DeploymentsClientBeginDeleteAtScopeOptions contains the optional parameters for the DeploymentsClient.BeginDeleteAtScope
 // method.
-func (client *DeploymentsClient) BeginDeleteAtScope(ctx context.Context, scope string, deploymentName string, options *DeploymentsClientBeginDeleteAtScopeOptions) (DeploymentsClientDeleteAtScopePollerResponse, error) {
-	resp, err := client.deleteAtScope(ctx, scope, deploymentName, options)
-	if err != nil {
-		return DeploymentsClientDeleteAtScopePollerResponse{}, err
+func (client *DeploymentsClient) BeginDeleteAtScope(ctx context.Context, scope string, deploymentName string, options *DeploymentsClientBeginDeleteAtScopeOptions) (*armruntime.Poller[DeploymentsClientDeleteAtScopeResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteAtScope(ctx, scope, deploymentName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[DeploymentsClientDeleteAtScopeResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[DeploymentsClientDeleteAtScopeResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DeploymentsClientDeleteAtScopePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DeploymentsClient.DeleteAtScope", "", resp, client.pl)
-	if err != nil {
-		return DeploymentsClientDeleteAtScopePollerResponse{}, err
-	}
-	result.Poller = &DeploymentsClientDeleteAtScopePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // DeleteAtScope - A template deployment that is currently running cannot be deleted. Deleting a template deployment removes
@@ -1081,22 +1038,16 @@ func (client *DeploymentsClient) deleteAtScopeCreateRequest(ctx context.Context,
 // deploymentName - The name of the deployment.
 // options - DeploymentsClientBeginDeleteAtSubscriptionScopeOptions contains the optional parameters for the DeploymentsClient.BeginDeleteAtSubscriptionScope
 // method.
-func (client *DeploymentsClient) BeginDeleteAtSubscriptionScope(ctx context.Context, deploymentName string, options *DeploymentsClientBeginDeleteAtSubscriptionScopeOptions) (DeploymentsClientDeleteAtSubscriptionScopePollerResponse, error) {
-	resp, err := client.deleteAtSubscriptionScope(ctx, deploymentName, options)
-	if err != nil {
-		return DeploymentsClientDeleteAtSubscriptionScopePollerResponse{}, err
+func (client *DeploymentsClient) BeginDeleteAtSubscriptionScope(ctx context.Context, deploymentName string, options *DeploymentsClientBeginDeleteAtSubscriptionScopeOptions) (*armruntime.Poller[DeploymentsClientDeleteAtSubscriptionScopeResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteAtSubscriptionScope(ctx, deploymentName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[DeploymentsClientDeleteAtSubscriptionScopeResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[DeploymentsClientDeleteAtSubscriptionScopeResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DeploymentsClientDeleteAtSubscriptionScopePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DeploymentsClient.DeleteAtSubscriptionScope", "", resp, client.pl)
-	if err != nil {
-		return DeploymentsClientDeleteAtSubscriptionScopePollerResponse{}, err
-	}
-	result.Poller = &DeploymentsClientDeleteAtSubscriptionScopePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // DeleteAtSubscriptionScope - A template deployment that is currently running cannot be deleted. Deleting a template deployment
@@ -1155,22 +1106,16 @@ func (client *DeploymentsClient) deleteAtSubscriptionScopeCreateRequest(ctx cont
 // deploymentName - The name of the deployment.
 // options - DeploymentsClientBeginDeleteAtTenantScopeOptions contains the optional parameters for the DeploymentsClient.BeginDeleteAtTenantScope
 // method.
-func (client *DeploymentsClient) BeginDeleteAtTenantScope(ctx context.Context, deploymentName string, options *DeploymentsClientBeginDeleteAtTenantScopeOptions) (DeploymentsClientDeleteAtTenantScopePollerResponse, error) {
-	resp, err := client.deleteAtTenantScope(ctx, deploymentName, options)
-	if err != nil {
-		return DeploymentsClientDeleteAtTenantScopePollerResponse{}, err
+func (client *DeploymentsClient) BeginDeleteAtTenantScope(ctx context.Context, deploymentName string, options *DeploymentsClientBeginDeleteAtTenantScopeOptions) (*armruntime.Poller[DeploymentsClientDeleteAtTenantScopeResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteAtTenantScope(ctx, deploymentName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[DeploymentsClientDeleteAtTenantScopeResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[DeploymentsClientDeleteAtTenantScopeResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DeploymentsClientDeleteAtTenantScopePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DeploymentsClient.DeleteAtTenantScope", "", resp, client.pl)
-	if err != nil {
-		return DeploymentsClientDeleteAtTenantScopePollerResponse{}, err
-	}
-	result.Poller = &DeploymentsClientDeleteAtTenantScopePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // DeleteAtTenantScope - A template deployment that is currently running cannot be deleted. Deleting a template deployment
@@ -1263,7 +1208,7 @@ func (client *DeploymentsClient) exportTemplateCreateRequest(ctx context.Context
 
 // exportTemplateHandleResponse handles the ExportTemplate response.
 func (client *DeploymentsClient) exportTemplateHandleResponse(resp *http.Response) (DeploymentsClientExportTemplateResponse, error) {
-	result := DeploymentsClientExportTemplateResponse{RawResponse: resp}
+	result := DeploymentsClientExportTemplateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentExportResult); err != nil {
 		return DeploymentsClientExportTemplateResponse{}, err
 	}
@@ -1315,7 +1260,7 @@ func (client *DeploymentsClient) exportTemplateAtManagementGroupScopeCreateReque
 
 // exportTemplateAtManagementGroupScopeHandleResponse handles the ExportTemplateAtManagementGroupScope response.
 func (client *DeploymentsClient) exportTemplateAtManagementGroupScopeHandleResponse(resp *http.Response) (DeploymentsClientExportTemplateAtManagementGroupScopeResponse, error) {
-	result := DeploymentsClientExportTemplateAtManagementGroupScopeResponse{RawResponse: resp}
+	result := DeploymentsClientExportTemplateAtManagementGroupScopeResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentExportResult); err != nil {
 		return DeploymentsClientExportTemplateAtManagementGroupScopeResponse{}, err
 	}
@@ -1364,7 +1309,7 @@ func (client *DeploymentsClient) exportTemplateAtScopeCreateRequest(ctx context.
 
 // exportTemplateAtScopeHandleResponse handles the ExportTemplateAtScope response.
 func (client *DeploymentsClient) exportTemplateAtScopeHandleResponse(resp *http.Response) (DeploymentsClientExportTemplateAtScopeResponse, error) {
-	result := DeploymentsClientExportTemplateAtScopeResponse{RawResponse: resp}
+	result := DeploymentsClientExportTemplateAtScopeResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentExportResult); err != nil {
 		return DeploymentsClientExportTemplateAtScopeResponse{}, err
 	}
@@ -1415,7 +1360,7 @@ func (client *DeploymentsClient) exportTemplateAtSubscriptionScopeCreateRequest(
 
 // exportTemplateAtSubscriptionScopeHandleResponse handles the ExportTemplateAtSubscriptionScope response.
 func (client *DeploymentsClient) exportTemplateAtSubscriptionScopeHandleResponse(resp *http.Response) (DeploymentsClientExportTemplateAtSubscriptionScopeResponse, error) {
-	result := DeploymentsClientExportTemplateAtSubscriptionScopeResponse{RawResponse: resp}
+	result := DeploymentsClientExportTemplateAtSubscriptionScopeResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentExportResult); err != nil {
 		return DeploymentsClientExportTemplateAtSubscriptionScopeResponse{}, err
 	}
@@ -1462,7 +1407,7 @@ func (client *DeploymentsClient) exportTemplateAtTenantScopeCreateRequest(ctx co
 
 // exportTemplateAtTenantScopeHandleResponse handles the ExportTemplateAtTenantScope response.
 func (client *DeploymentsClient) exportTemplateAtTenantScopeHandleResponse(resp *http.Response) (DeploymentsClientExportTemplateAtTenantScopeResponse, error) {
-	result := DeploymentsClientExportTemplateAtTenantScopeResponse{RawResponse: resp}
+	result := DeploymentsClientExportTemplateAtTenantScopeResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentExportResult); err != nil {
 		return DeploymentsClientExportTemplateAtTenantScopeResponse{}, err
 	}
@@ -1517,7 +1462,7 @@ func (client *DeploymentsClient) getCreateRequest(ctx context.Context, resourceG
 
 // getHandleResponse handles the Get response.
 func (client *DeploymentsClient) getHandleResponse(resp *http.Response) (DeploymentsClientGetResponse, error) {
-	result := DeploymentsClientGetResponse{RawResponse: resp}
+	result := DeploymentsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentExtended); err != nil {
 		return DeploymentsClientGetResponse{}, err
 	}
@@ -1569,7 +1514,7 @@ func (client *DeploymentsClient) getAtManagementGroupScopeCreateRequest(ctx cont
 
 // getAtManagementGroupScopeHandleResponse handles the GetAtManagementGroupScope response.
 func (client *DeploymentsClient) getAtManagementGroupScopeHandleResponse(resp *http.Response) (DeploymentsClientGetAtManagementGroupScopeResponse, error) {
-	result := DeploymentsClientGetAtManagementGroupScopeResponse{RawResponse: resp}
+	result := DeploymentsClientGetAtManagementGroupScopeResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentExtended); err != nil {
 		return DeploymentsClientGetAtManagementGroupScopeResponse{}, err
 	}
@@ -1617,7 +1562,7 @@ func (client *DeploymentsClient) getAtScopeCreateRequest(ctx context.Context, sc
 
 // getAtScopeHandleResponse handles the GetAtScope response.
 func (client *DeploymentsClient) getAtScopeHandleResponse(resp *http.Response) (DeploymentsClientGetAtScopeResponse, error) {
-	result := DeploymentsClientGetAtScopeResponse{RawResponse: resp}
+	result := DeploymentsClientGetAtScopeResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentExtended); err != nil {
 		return DeploymentsClientGetAtScopeResponse{}, err
 	}
@@ -1668,7 +1613,7 @@ func (client *DeploymentsClient) getAtSubscriptionScopeCreateRequest(ctx context
 
 // getAtSubscriptionScopeHandleResponse handles the GetAtSubscriptionScope response.
 func (client *DeploymentsClient) getAtSubscriptionScopeHandleResponse(resp *http.Response) (DeploymentsClientGetAtSubscriptionScopeResponse, error) {
-	result := DeploymentsClientGetAtSubscriptionScopeResponse{RawResponse: resp}
+	result := DeploymentsClientGetAtSubscriptionScopeResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentExtended); err != nil {
 		return DeploymentsClientGetAtSubscriptionScopeResponse{}, err
 	}
@@ -1715,7 +1660,7 @@ func (client *DeploymentsClient) getAtTenantScopeCreateRequest(ctx context.Conte
 
 // getAtTenantScopeHandleResponse handles the GetAtTenantScope response.
 func (client *DeploymentsClient) getAtTenantScopeHandleResponse(resp *http.Response) (DeploymentsClientGetAtTenantScopeResponse, error) {
-	result := DeploymentsClientGetAtTenantScopeResponse{RawResponse: resp}
+	result := DeploymentsClientGetAtTenantScopeResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentExtended); err != nil {
 		return DeploymentsClientGetAtTenantScopeResponse{}, err
 	}
@@ -1727,16 +1672,32 @@ func (client *DeploymentsClient) getAtTenantScopeHandleResponse(resp *http.Respo
 // groupID - The management group ID.
 // options - DeploymentsClientListAtManagementGroupScopeOptions contains the optional parameters for the DeploymentsClient.ListAtManagementGroupScope
 // method.
-func (client *DeploymentsClient) ListAtManagementGroupScope(groupID string, options *DeploymentsClientListAtManagementGroupScopeOptions) *DeploymentsClientListAtManagementGroupScopePager {
-	return &DeploymentsClientListAtManagementGroupScopePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listAtManagementGroupScopeCreateRequest(ctx, groupID, options)
+func (client *DeploymentsClient) ListAtManagementGroupScope(groupID string, options *DeploymentsClientListAtManagementGroupScopeOptions) *runtime.Pager[DeploymentsClientListAtManagementGroupScopeResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DeploymentsClientListAtManagementGroupScopeResponse]{
+		More: func(page DeploymentsClientListAtManagementGroupScopeResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DeploymentsClientListAtManagementGroupScopeResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DeploymentListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *DeploymentsClientListAtManagementGroupScopeResponse) (DeploymentsClientListAtManagementGroupScopeResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listAtManagementGroupScopeCreateRequest(ctx, groupID, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DeploymentsClientListAtManagementGroupScopeResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DeploymentsClientListAtManagementGroupScopeResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DeploymentsClientListAtManagementGroupScopeResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listAtManagementGroupScopeHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listAtManagementGroupScopeCreateRequest creates the ListAtManagementGroupScope request.
@@ -1765,7 +1726,7 @@ func (client *DeploymentsClient) listAtManagementGroupScopeCreateRequest(ctx con
 
 // listAtManagementGroupScopeHandleResponse handles the ListAtManagementGroupScope response.
 func (client *DeploymentsClient) listAtManagementGroupScopeHandleResponse(resp *http.Response) (DeploymentsClientListAtManagementGroupScopeResponse, error) {
-	result := DeploymentsClientListAtManagementGroupScopeResponse{RawResponse: resp}
+	result := DeploymentsClientListAtManagementGroupScopeResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentListResult); err != nil {
 		return DeploymentsClientListAtManagementGroupScopeResponse{}, err
 	}
@@ -1776,16 +1737,32 @@ func (client *DeploymentsClient) listAtManagementGroupScopeHandleResponse(resp *
 // If the operation fails it returns an *azcore.ResponseError type.
 // scope - The resource scope.
 // options - DeploymentsClientListAtScopeOptions contains the optional parameters for the DeploymentsClient.ListAtScope method.
-func (client *DeploymentsClient) ListAtScope(scope string, options *DeploymentsClientListAtScopeOptions) *DeploymentsClientListAtScopePager {
-	return &DeploymentsClientListAtScopePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listAtScopeCreateRequest(ctx, scope, options)
+func (client *DeploymentsClient) ListAtScope(scope string, options *DeploymentsClientListAtScopeOptions) *runtime.Pager[DeploymentsClientListAtScopeResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DeploymentsClientListAtScopeResponse]{
+		More: func(page DeploymentsClientListAtScopeResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DeploymentsClientListAtScopeResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DeploymentListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *DeploymentsClientListAtScopeResponse) (DeploymentsClientListAtScopeResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listAtScopeCreateRequest(ctx, scope, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DeploymentsClientListAtScopeResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DeploymentsClientListAtScopeResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DeploymentsClientListAtScopeResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listAtScopeHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listAtScopeCreateRequest creates the ListAtScope request.
@@ -1811,7 +1788,7 @@ func (client *DeploymentsClient) listAtScopeCreateRequest(ctx context.Context, s
 
 // listAtScopeHandleResponse handles the ListAtScope response.
 func (client *DeploymentsClient) listAtScopeHandleResponse(resp *http.Response) (DeploymentsClientListAtScopeResponse, error) {
-	result := DeploymentsClientListAtScopeResponse{RawResponse: resp}
+	result := DeploymentsClientListAtScopeResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentListResult); err != nil {
 		return DeploymentsClientListAtScopeResponse{}, err
 	}
@@ -1822,16 +1799,32 @@ func (client *DeploymentsClient) listAtScopeHandleResponse(resp *http.Response) 
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - DeploymentsClientListAtSubscriptionScopeOptions contains the optional parameters for the DeploymentsClient.ListAtSubscriptionScope
 // method.
-func (client *DeploymentsClient) ListAtSubscriptionScope(options *DeploymentsClientListAtSubscriptionScopeOptions) *DeploymentsClientListAtSubscriptionScopePager {
-	return &DeploymentsClientListAtSubscriptionScopePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listAtSubscriptionScopeCreateRequest(ctx, options)
+func (client *DeploymentsClient) ListAtSubscriptionScope(options *DeploymentsClientListAtSubscriptionScopeOptions) *runtime.Pager[DeploymentsClientListAtSubscriptionScopeResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DeploymentsClientListAtSubscriptionScopeResponse]{
+		More: func(page DeploymentsClientListAtSubscriptionScopeResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DeploymentsClientListAtSubscriptionScopeResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DeploymentListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *DeploymentsClientListAtSubscriptionScopeResponse) (DeploymentsClientListAtSubscriptionScopeResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listAtSubscriptionScopeCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DeploymentsClientListAtSubscriptionScopeResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DeploymentsClientListAtSubscriptionScopeResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DeploymentsClientListAtSubscriptionScopeResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listAtSubscriptionScopeHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listAtSubscriptionScopeCreateRequest creates the ListAtSubscriptionScope request.
@@ -1860,7 +1853,7 @@ func (client *DeploymentsClient) listAtSubscriptionScopeCreateRequest(ctx contex
 
 // listAtSubscriptionScopeHandleResponse handles the ListAtSubscriptionScope response.
 func (client *DeploymentsClient) listAtSubscriptionScopeHandleResponse(resp *http.Response) (DeploymentsClientListAtSubscriptionScopeResponse, error) {
-	result := DeploymentsClientListAtSubscriptionScopeResponse{RawResponse: resp}
+	result := DeploymentsClientListAtSubscriptionScopeResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentListResult); err != nil {
 		return DeploymentsClientListAtSubscriptionScopeResponse{}, err
 	}
@@ -1871,16 +1864,32 @@ func (client *DeploymentsClient) listAtSubscriptionScopeHandleResponse(resp *htt
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - DeploymentsClientListAtTenantScopeOptions contains the optional parameters for the DeploymentsClient.ListAtTenantScope
 // method.
-func (client *DeploymentsClient) ListAtTenantScope(options *DeploymentsClientListAtTenantScopeOptions) *DeploymentsClientListAtTenantScopePager {
-	return &DeploymentsClientListAtTenantScopePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listAtTenantScopeCreateRequest(ctx, options)
+func (client *DeploymentsClient) ListAtTenantScope(options *DeploymentsClientListAtTenantScopeOptions) *runtime.Pager[DeploymentsClientListAtTenantScopeResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DeploymentsClientListAtTenantScopeResponse]{
+		More: func(page DeploymentsClientListAtTenantScopeResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DeploymentsClientListAtTenantScopeResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DeploymentListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *DeploymentsClientListAtTenantScopeResponse) (DeploymentsClientListAtTenantScopeResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listAtTenantScopeCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DeploymentsClientListAtTenantScopeResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DeploymentsClientListAtTenantScopeResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DeploymentsClientListAtTenantScopeResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listAtTenantScopeHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listAtTenantScopeCreateRequest creates the ListAtTenantScope request.
@@ -1905,7 +1914,7 @@ func (client *DeploymentsClient) listAtTenantScopeCreateRequest(ctx context.Cont
 
 // listAtTenantScopeHandleResponse handles the ListAtTenantScope response.
 func (client *DeploymentsClient) listAtTenantScopeHandleResponse(resp *http.Response) (DeploymentsClientListAtTenantScopeResponse, error) {
-	result := DeploymentsClientListAtTenantScopeResponse{RawResponse: resp}
+	result := DeploymentsClientListAtTenantScopeResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentListResult); err != nil {
 		return DeploymentsClientListAtTenantScopeResponse{}, err
 	}
@@ -1917,16 +1926,32 @@ func (client *DeploymentsClient) listAtTenantScopeHandleResponse(resp *http.Resp
 // resourceGroupName - The name of the resource group with the deployments to get. The name is case insensitive.
 // options - DeploymentsClientListByResourceGroupOptions contains the optional parameters for the DeploymentsClient.ListByResourceGroup
 // method.
-func (client *DeploymentsClient) ListByResourceGroup(resourceGroupName string, options *DeploymentsClientListByResourceGroupOptions) *DeploymentsClientListByResourceGroupPager {
-	return &DeploymentsClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *DeploymentsClient) ListByResourceGroup(resourceGroupName string, options *DeploymentsClientListByResourceGroupOptions) *runtime.Pager[DeploymentsClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DeploymentsClientListByResourceGroupResponse]{
+		More: func(page DeploymentsClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DeploymentsClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DeploymentListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *DeploymentsClientListByResourceGroupResponse) (DeploymentsClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DeploymentsClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DeploymentsClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DeploymentsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -1959,7 +1984,7 @@ func (client *DeploymentsClient) listByResourceGroupCreateRequest(ctx context.Co
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *DeploymentsClient) listByResourceGroupHandleResponse(resp *http.Response) (DeploymentsClientListByResourceGroupResponse, error) {
-	result := DeploymentsClientListByResourceGroupResponse{RawResponse: resp}
+	result := DeploymentsClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentListResult); err != nil {
 		return DeploymentsClientListByResourceGroupResponse{}, err
 	}
@@ -1974,22 +1999,16 @@ func (client *DeploymentsClient) listByResourceGroupHandleResponse(resp *http.Re
 // parameters - Parameters to validate.
 // options - DeploymentsClientBeginValidateOptions contains the optional parameters for the DeploymentsClient.BeginValidate
 // method.
-func (client *DeploymentsClient) BeginValidate(ctx context.Context, resourceGroupName string, deploymentName string, parameters Deployment, options *DeploymentsClientBeginValidateOptions) (DeploymentsClientValidatePollerResponse, error) {
-	resp, err := client.validate(ctx, resourceGroupName, deploymentName, parameters, options)
-	if err != nil {
-		return DeploymentsClientValidatePollerResponse{}, err
+func (client *DeploymentsClient) BeginValidate(ctx context.Context, resourceGroupName string, deploymentName string, parameters Deployment, options *DeploymentsClientBeginValidateOptions) (*armruntime.Poller[DeploymentsClientValidateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.validate(ctx, resourceGroupName, deploymentName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[DeploymentsClientValidateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[DeploymentsClientValidateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DeploymentsClientValidatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DeploymentsClient.Validate", "", resp, client.pl)
-	if err != nil {
-		return DeploymentsClientValidatePollerResponse{}, err
-	}
-	result.Poller = &DeploymentsClientValidatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Validate - Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
@@ -2043,22 +2062,16 @@ func (client *DeploymentsClient) validateCreateRequest(ctx context.Context, reso
 // parameters - Parameters to validate.
 // options - DeploymentsClientBeginValidateAtManagementGroupScopeOptions contains the optional parameters for the DeploymentsClient.BeginValidateAtManagementGroupScope
 // method.
-func (client *DeploymentsClient) BeginValidateAtManagementGroupScope(ctx context.Context, groupID string, deploymentName string, parameters ScopedDeployment, options *DeploymentsClientBeginValidateAtManagementGroupScopeOptions) (DeploymentsClientValidateAtManagementGroupScopePollerResponse, error) {
-	resp, err := client.validateAtManagementGroupScope(ctx, groupID, deploymentName, parameters, options)
-	if err != nil {
-		return DeploymentsClientValidateAtManagementGroupScopePollerResponse{}, err
+func (client *DeploymentsClient) BeginValidateAtManagementGroupScope(ctx context.Context, groupID string, deploymentName string, parameters ScopedDeployment, options *DeploymentsClientBeginValidateAtManagementGroupScopeOptions) (*armruntime.Poller[DeploymentsClientValidateAtManagementGroupScopeResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.validateAtManagementGroupScope(ctx, groupID, deploymentName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[DeploymentsClientValidateAtManagementGroupScopeResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[DeploymentsClientValidateAtManagementGroupScopeResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DeploymentsClientValidateAtManagementGroupScopePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DeploymentsClient.ValidateAtManagementGroupScope", "", resp, client.pl)
-	if err != nil {
-		return DeploymentsClientValidateAtManagementGroupScopePollerResponse{}, err
-	}
-	result.Poller = &DeploymentsClientValidateAtManagementGroupScopePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // ValidateAtManagementGroupScope - Validates whether the specified template is syntactically correct and will be accepted
@@ -2109,22 +2122,16 @@ func (client *DeploymentsClient) validateAtManagementGroupScopeCreateRequest(ctx
 // parameters - Parameters to validate.
 // options - DeploymentsClientBeginValidateAtScopeOptions contains the optional parameters for the DeploymentsClient.BeginValidateAtScope
 // method.
-func (client *DeploymentsClient) BeginValidateAtScope(ctx context.Context, scope string, deploymentName string, parameters Deployment, options *DeploymentsClientBeginValidateAtScopeOptions) (DeploymentsClientValidateAtScopePollerResponse, error) {
-	resp, err := client.validateAtScope(ctx, scope, deploymentName, parameters, options)
-	if err != nil {
-		return DeploymentsClientValidateAtScopePollerResponse{}, err
+func (client *DeploymentsClient) BeginValidateAtScope(ctx context.Context, scope string, deploymentName string, parameters Deployment, options *DeploymentsClientBeginValidateAtScopeOptions) (*armruntime.Poller[DeploymentsClientValidateAtScopeResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.validateAtScope(ctx, scope, deploymentName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[DeploymentsClientValidateAtScopeResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[DeploymentsClientValidateAtScopeResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DeploymentsClientValidateAtScopePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DeploymentsClient.ValidateAtScope", "", resp, client.pl)
-	if err != nil {
-		return DeploymentsClientValidateAtScopePollerResponse{}, err
-	}
-	result.Poller = &DeploymentsClientValidateAtScopePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // ValidateAtScope - Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
@@ -2171,22 +2178,16 @@ func (client *DeploymentsClient) validateAtScopeCreateRequest(ctx context.Contex
 // parameters - Parameters to validate.
 // options - DeploymentsClientBeginValidateAtSubscriptionScopeOptions contains the optional parameters for the DeploymentsClient.BeginValidateAtSubscriptionScope
 // method.
-func (client *DeploymentsClient) BeginValidateAtSubscriptionScope(ctx context.Context, deploymentName string, parameters Deployment, options *DeploymentsClientBeginValidateAtSubscriptionScopeOptions) (DeploymentsClientValidateAtSubscriptionScopePollerResponse, error) {
-	resp, err := client.validateAtSubscriptionScope(ctx, deploymentName, parameters, options)
-	if err != nil {
-		return DeploymentsClientValidateAtSubscriptionScopePollerResponse{}, err
+func (client *DeploymentsClient) BeginValidateAtSubscriptionScope(ctx context.Context, deploymentName string, parameters Deployment, options *DeploymentsClientBeginValidateAtSubscriptionScopeOptions) (*armruntime.Poller[DeploymentsClientValidateAtSubscriptionScopeResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.validateAtSubscriptionScope(ctx, deploymentName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[DeploymentsClientValidateAtSubscriptionScopeResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[DeploymentsClientValidateAtSubscriptionScopeResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DeploymentsClientValidateAtSubscriptionScopePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DeploymentsClient.ValidateAtSubscriptionScope", "", resp, client.pl)
-	if err != nil {
-		return DeploymentsClientValidateAtSubscriptionScopePollerResponse{}, err
-	}
-	result.Poller = &DeploymentsClientValidateAtSubscriptionScopePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // ValidateAtSubscriptionScope - Validates whether the specified template is syntactically correct and will be accepted by
@@ -2236,22 +2237,16 @@ func (client *DeploymentsClient) validateAtSubscriptionScopeCreateRequest(ctx co
 // parameters - Parameters to validate.
 // options - DeploymentsClientBeginValidateAtTenantScopeOptions contains the optional parameters for the DeploymentsClient.BeginValidateAtTenantScope
 // method.
-func (client *DeploymentsClient) BeginValidateAtTenantScope(ctx context.Context, deploymentName string, parameters ScopedDeployment, options *DeploymentsClientBeginValidateAtTenantScopeOptions) (DeploymentsClientValidateAtTenantScopePollerResponse, error) {
-	resp, err := client.validateAtTenantScope(ctx, deploymentName, parameters, options)
-	if err != nil {
-		return DeploymentsClientValidateAtTenantScopePollerResponse{}, err
+func (client *DeploymentsClient) BeginValidateAtTenantScope(ctx context.Context, deploymentName string, parameters ScopedDeployment, options *DeploymentsClientBeginValidateAtTenantScopeOptions) (*armruntime.Poller[DeploymentsClientValidateAtTenantScopeResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.validateAtTenantScope(ctx, deploymentName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[DeploymentsClientValidateAtTenantScopeResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[DeploymentsClientValidateAtTenantScopeResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DeploymentsClientValidateAtTenantScopePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DeploymentsClient.ValidateAtTenantScope", "", resp, client.pl)
-	if err != nil {
-		return DeploymentsClientValidateAtTenantScopePollerResponse{}, err
-	}
-	result.Poller = &DeploymentsClientValidateAtTenantScopePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // ValidateAtTenantScope - Validates whether the specified template is syntactically correct and will be accepted by Azure
@@ -2296,22 +2291,18 @@ func (client *DeploymentsClient) validateAtTenantScopeCreateRequest(ctx context.
 // deploymentName - The name of the deployment.
 // parameters - Parameters to validate.
 // options - DeploymentsClientBeginWhatIfOptions contains the optional parameters for the DeploymentsClient.BeginWhatIf method.
-func (client *DeploymentsClient) BeginWhatIf(ctx context.Context, resourceGroupName string, deploymentName string, parameters DeploymentWhatIf, options *DeploymentsClientBeginWhatIfOptions) (DeploymentsClientWhatIfPollerResponse, error) {
-	resp, err := client.whatIf(ctx, resourceGroupName, deploymentName, parameters, options)
-	if err != nil {
-		return DeploymentsClientWhatIfPollerResponse{}, err
+func (client *DeploymentsClient) BeginWhatIf(ctx context.Context, resourceGroupName string, deploymentName string, parameters DeploymentWhatIf, options *DeploymentsClientBeginWhatIfOptions) (*armruntime.Poller[DeploymentsClientWhatIfResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.whatIf(ctx, resourceGroupName, deploymentName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[DeploymentsClientWhatIfResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[DeploymentsClientWhatIfResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DeploymentsClientWhatIfPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DeploymentsClient.WhatIf", "location", resp, client.pl)
-	if err != nil {
-		return DeploymentsClientWhatIfPollerResponse{}, err
-	}
-	result.Poller = &DeploymentsClientWhatIfPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // WhatIf - Returns changes that will be made by the deployment if executed at the scope of the resource group.
@@ -2365,22 +2356,18 @@ func (client *DeploymentsClient) whatIfCreateRequest(ctx context.Context, resour
 // parameters - Parameters to validate.
 // options - DeploymentsClientBeginWhatIfAtManagementGroupScopeOptions contains the optional parameters for the DeploymentsClient.BeginWhatIfAtManagementGroupScope
 // method.
-func (client *DeploymentsClient) BeginWhatIfAtManagementGroupScope(ctx context.Context, groupID string, deploymentName string, parameters ScopedDeploymentWhatIf, options *DeploymentsClientBeginWhatIfAtManagementGroupScopeOptions) (DeploymentsClientWhatIfAtManagementGroupScopePollerResponse, error) {
-	resp, err := client.whatIfAtManagementGroupScope(ctx, groupID, deploymentName, parameters, options)
-	if err != nil {
-		return DeploymentsClientWhatIfAtManagementGroupScopePollerResponse{}, err
+func (client *DeploymentsClient) BeginWhatIfAtManagementGroupScope(ctx context.Context, groupID string, deploymentName string, parameters ScopedDeploymentWhatIf, options *DeploymentsClientBeginWhatIfAtManagementGroupScopeOptions) (*armruntime.Poller[DeploymentsClientWhatIfAtManagementGroupScopeResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.whatIfAtManagementGroupScope(ctx, groupID, deploymentName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[DeploymentsClientWhatIfAtManagementGroupScopeResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[DeploymentsClientWhatIfAtManagementGroupScopeResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DeploymentsClientWhatIfAtManagementGroupScopePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DeploymentsClient.WhatIfAtManagementGroupScope", "location", resp, client.pl)
-	if err != nil {
-		return DeploymentsClientWhatIfAtManagementGroupScopePollerResponse{}, err
-	}
-	result.Poller = &DeploymentsClientWhatIfAtManagementGroupScopePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // WhatIfAtManagementGroupScope - Returns changes that will be made by the deployment if executed at the scope of the management
@@ -2429,22 +2416,18 @@ func (client *DeploymentsClient) whatIfAtManagementGroupScopeCreateRequest(ctx c
 // parameters - Parameters to What If.
 // options - DeploymentsClientBeginWhatIfAtSubscriptionScopeOptions contains the optional parameters for the DeploymentsClient.BeginWhatIfAtSubscriptionScope
 // method.
-func (client *DeploymentsClient) BeginWhatIfAtSubscriptionScope(ctx context.Context, deploymentName string, parameters DeploymentWhatIf, options *DeploymentsClientBeginWhatIfAtSubscriptionScopeOptions) (DeploymentsClientWhatIfAtSubscriptionScopePollerResponse, error) {
-	resp, err := client.whatIfAtSubscriptionScope(ctx, deploymentName, parameters, options)
-	if err != nil {
-		return DeploymentsClientWhatIfAtSubscriptionScopePollerResponse{}, err
+func (client *DeploymentsClient) BeginWhatIfAtSubscriptionScope(ctx context.Context, deploymentName string, parameters DeploymentWhatIf, options *DeploymentsClientBeginWhatIfAtSubscriptionScopeOptions) (*armruntime.Poller[DeploymentsClientWhatIfAtSubscriptionScopeResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.whatIfAtSubscriptionScope(ctx, deploymentName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[DeploymentsClientWhatIfAtSubscriptionScopeResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[DeploymentsClientWhatIfAtSubscriptionScopeResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DeploymentsClientWhatIfAtSubscriptionScopePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DeploymentsClient.WhatIfAtSubscriptionScope", "location", resp, client.pl)
-	if err != nil {
-		return DeploymentsClientWhatIfAtSubscriptionScopePollerResponse{}, err
-	}
-	result.Poller = &DeploymentsClientWhatIfAtSubscriptionScopePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // WhatIfAtSubscriptionScope - Returns changes that will be made by the deployment if executed at the scope of the subscription.
@@ -2492,22 +2475,18 @@ func (client *DeploymentsClient) whatIfAtSubscriptionScopeCreateRequest(ctx cont
 // parameters - Parameters to validate.
 // options - DeploymentsClientBeginWhatIfAtTenantScopeOptions contains the optional parameters for the DeploymentsClient.BeginWhatIfAtTenantScope
 // method.
-func (client *DeploymentsClient) BeginWhatIfAtTenantScope(ctx context.Context, deploymentName string, parameters ScopedDeploymentWhatIf, options *DeploymentsClientBeginWhatIfAtTenantScopeOptions) (DeploymentsClientWhatIfAtTenantScopePollerResponse, error) {
-	resp, err := client.whatIfAtTenantScope(ctx, deploymentName, parameters, options)
-	if err != nil {
-		return DeploymentsClientWhatIfAtTenantScopePollerResponse{}, err
+func (client *DeploymentsClient) BeginWhatIfAtTenantScope(ctx context.Context, deploymentName string, parameters ScopedDeploymentWhatIf, options *DeploymentsClientBeginWhatIfAtTenantScopeOptions) (*armruntime.Poller[DeploymentsClientWhatIfAtTenantScopeResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.whatIfAtTenantScope(ctx, deploymentName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[DeploymentsClientWhatIfAtTenantScopeResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[DeploymentsClientWhatIfAtTenantScopeResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DeploymentsClientWhatIfAtTenantScopePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DeploymentsClient.WhatIfAtTenantScope", "location", resp, client.pl)
-	if err != nil {
-		return DeploymentsClientWhatIfAtTenantScopePollerResponse{}, err
-	}
-	result.Poller = &DeploymentsClientWhatIfAtTenantScopePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // WhatIfAtTenantScope - Returns changes that will be made by the deployment if executed at the scope of the tenant group.

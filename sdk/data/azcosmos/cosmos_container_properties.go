@@ -41,6 +41,7 @@ type ContainerProperties struct {
 	ConflictResolutionPolicy *ConflictResolutionPolicy
 }
 
+// MarshalJSON implements the json.Marshaler interface
 func (tp ContainerProperties) MarshalJSON() ([]byte, error) {
 	pkDefinition, err := json.Marshal(tp.PartitionKeyDefinition)
 	if err != nil {
@@ -113,6 +114,7 @@ func (tp ContainerProperties) MarshalJSON() ([]byte, error) {
 	return buffer.Bytes(), nil
 }
 
+// UnmarshalJSON implements the json.Unmarshaler interface
 func (tp *ContainerProperties) UnmarshalJSON(b []byte) error {
 	var attributes map[string]json.RawMessage
 	err := json.Unmarshal(b, &attributes)

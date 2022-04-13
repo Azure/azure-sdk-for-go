@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -13,9 +13,8 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
-	"net/url"
+	"reflect"
 	"strconv"
-	"strings"
 	"time"
 )
 
@@ -200,28 +199,9 @@ func (r *NopClosingBytesReader) Seek(offset int64, whence int) (int64, error) {
 	return i, nil
 }
 
-const defaultScope = "/.default"
-const chinaCloudARMScope = "https://management.core.chinacloudapi.cn/" + defaultScope
-const publicCloudARMScope = "https://management.core.windows.net/" + defaultScope
-const usGovCloudARMScope = "https://management.core.usgovcloudapi.net/" + defaultScope
-
-// EndpointToScope converts the provided URL endpoint to its default scope.
-func EndpointToScope(endpoint string) string {
-	parsed, err := url.Parse(endpoint)
-	if err == nil {
-		host := parsed.Hostname()
-		switch {
-		case strings.HasSuffix(host, "management.azure.com"):
-			return publicCloudARMScope
-		case strings.HasSuffix(host, "management.usgovcloudapi.net"):
-			return usGovCloudARMScope
-		case strings.HasSuffix(host, "management.chinacloudapi.cn"):
-			return chinaCloudARMScope
-		}
-	}
-	// fall back to legacy behavior when endpoint doesn't parse or match a known cloud's ARM endpoint
-	if endpoint[len(endpoint)-1] != '/' {
-		endpoint += "/"
-	}
-	return endpoint + defaultScope
+// TypeOfT returns the type of the generic type param.
+func TypeOfT[T any]() reflect.Type {
+	// you can't, at present, obtain the type of
+	// a type parameter, so this is the trick
+	return reflect.TypeOf((*T)(nil)).Elem()
 }

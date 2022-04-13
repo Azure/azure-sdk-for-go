@@ -1,5 +1,187 @@
 # Release History
 
+## 0.3.0 (2022-04-12)
+### Breaking Changes
+
+- Function `*SpacecraftsClient.BeginListAvailableContacts` return value(s) have been changed from `(SpacecraftsClientListAvailableContactsPollerResponse, error)` to `(*armruntime.Poller[SpacecraftsClientListAvailableContactsResponse], error)`
+- Function `*SpacecraftsClient.BeginCreateOrUpdate` return value(s) have been changed from `(SpacecraftsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[SpacecraftsClientCreateOrUpdateResponse], error)`
+- Function `*AvailableGroundStationsClient.ListByCapability` return value(s) have been changed from `(*AvailableGroundStationsClientListByCapabilityPager)` to `(*runtime.Pager[AvailableGroundStationsClientListByCapabilityResponse])`
+- Function `*SpacecraftsClient.ListBySubscription` parameter(s) have been changed from `(context.Context, *SpacecraftsClientListBySubscriptionOptions)` to `(*SpacecraftsClientListBySubscriptionOptions)`
+- Function `*SpacecraftsClient.ListBySubscription` return value(s) have been changed from `(SpacecraftsClientListBySubscriptionResponse, error)` to `(*runtime.Pager[SpacecraftsClientListBySubscriptionResponse])`
+- Function `NewContactProfilesClient` return value(s) have been changed from `(*ContactProfilesClient)` to `(*ContactProfilesClient, error)`
+- Function `NewSpacecraftsClient` return value(s) have been changed from `(*SpacecraftsClient)` to `(*SpacecraftsClient, error)`
+- Function `*SpacecraftsClient.List` parameter(s) have been changed from `(context.Context, string, *SpacecraftsClientListOptions)` to `(string, *SpacecraftsClientListOptions)`
+- Function `*SpacecraftsClient.List` return value(s) have been changed from `(SpacecraftsClientListResponse, error)` to `(*runtime.Pager[SpacecraftsClientListResponse])`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `*ContactsClient.BeginCreate` return value(s) have been changed from `(ContactsClientCreatePollerResponse, error)` to `(*armruntime.Poller[ContactsClientCreateResponse], error)`
+- Function `*ContactProfilesClient.BeginDelete` return value(s) have been changed from `(ContactProfilesClientDeletePollerResponse, error)` to `(*armruntime.Poller[ContactProfilesClientDeleteResponse], error)`
+- Function `NewContactsClient` return value(s) have been changed from `(*ContactsClient)` to `(*ContactsClient, error)`
+- Function `*ContactsClient.BeginDelete` return value(s) have been changed from `(ContactsClientDeletePollerResponse, error)` to `(*armruntime.Poller[ContactsClientDeleteResponse], error)`
+- Function `*SpacecraftsClient.BeginDelete` return value(s) have been changed from `(SpacecraftsClientDeletePollerResponse, error)` to `(*armruntime.Poller[SpacecraftsClientDeleteResponse], error)`
+- Function `*ContactProfilesClient.BeginCreateOrUpdate` return value(s) have been changed from `(ContactProfilesClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[ContactProfilesClientCreateOrUpdateResponse], error)`
+- Function `*ContactProfilesClient.List` parameter(s) have been changed from `(context.Context, string, *ContactProfilesClientListOptions)` to `(string, *ContactProfilesClientListOptions)`
+- Function `*ContactProfilesClient.List` return value(s) have been changed from `(ContactProfilesClientListResponse, error)` to `(*runtime.Pager[ContactProfilesClientListResponse])`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(context.Context, *OperationsClientListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(OperationsClientListResponse, error)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `NewAvailableGroundStationsClient` return value(s) have been changed from `(*AvailableGroundStationsClient)` to `(*AvailableGroundStationsClient, error)`
+- Function `*ContactProfilesClient.ListBySubscription` parameter(s) have been changed from `(context.Context, *ContactProfilesClientListBySubscriptionOptions)` to `(*ContactProfilesClientListBySubscriptionOptions)`
+- Function `*ContactProfilesClient.ListBySubscription` return value(s) have been changed from `(ContactProfilesClientListBySubscriptionResponse, error)` to `(*runtime.Pager[ContactProfilesClientListBySubscriptionResponse])`
+- Function `*ContactsClient.List` parameter(s) have been changed from `(context.Context, string, string, *ContactsClientListOptions)` to `(string, string, *ContactsClientListOptions)`
+- Function `*ContactsClient.List` return value(s) have been changed from `(ContactsClientListResponse, error)` to `(*runtime.Pager[ContactsClientListResponse])`
+- Function `*SpacecraftsClientDeletePollerResponse.Resume` has been removed
+- Function `*SpacecraftsClientDeletePoller.Poll` has been removed
+- Function `*ContactsClientDeletePoller.ResumeToken` has been removed
+- Function `*ContactsClientDeletePoller.FinalResponse` has been removed
+- Function `SpacecraftsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ContactsClientDeletePollerResponse.Resume` has been removed
+- Function `SpacecraftsClientListAvailableContactsPollerResponse.PollUntilDone` has been removed
+- Function `*AvailableGroundStationsClientListByCapabilityPager.Err` has been removed
+- Function `*SpacecraftsClientListAvailableContactsPollerResponse.Resume` has been removed
+- Function `*ContactProfilesClientDeletePollerResponse.Resume` has been removed
+- Function `*ContactsClientCreatePollerResponse.Resume` has been removed
+- Function `*ContactProfilesClientDeletePoller.Done` has been removed
+- Function `ActionType.ToPtr` has been removed
+- Function `*AvailableGroundStationsClientListByCapabilityPager.NextPage` has been removed
+- Function `*ContactsClientCreatePoller.Done` has been removed
+- Function `*SpacecraftsClientListAvailableContactsPoller.Poll` has been removed
+- Function `ContactsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*AvailableGroundStationsClientListByCapabilityPager.PageResponse` has been removed
+- Function `SpacecraftsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*SpacecraftsClientListAvailableContactsPoller.Done` has been removed
+- Function `*ContactProfilesClientDeletePoller.FinalResponse` has been removed
+- Function `*ContactsClientDeletePoller.Poll` has been removed
+- Function `ContactProfilesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `AuthorizationStatus.ToPtr` has been removed
+- Function `*ContactProfilesClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ContactsClientCreatePoller.Poll` has been removed
+- Function `Polarization.ToPtr` has been removed
+- Function `Capability.ToPtr` has been removed
+- Function `Origin.ToPtr` has been removed
+- Function `*ContactProfilesClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*SpacecraftsClientListAvailableContactsPoller.ResumeToken` has been removed
+- Function `*ContactsClientCreatePoller.FinalResponse` has been removed
+- Function `*ContactsClientDeletePoller.Done` has been removed
+- Function `*SpacecraftsClientDeletePoller.FinalResponse` has been removed
+- Function `*ContactsClientCreatePoller.ResumeToken` has been removed
+- Function `CreatedByType.ToPtr` has been removed
+- Function `*SpacecraftsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*SpacecraftsClientDeletePoller.ResumeToken` has been removed
+- Function `CapabilityType.ToPtr` has been removed
+- Function `*SpacecraftsClientListAvailableContactsPoller.FinalResponse` has been removed
+- Function `*ContactProfilesClientCreateOrUpdatePoller.Poll` has been removed
+- Function `Direction.ToPtr` has been removed
+- Function `*SpacecraftsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*ContactProfilesClientDeletePoller.Poll` has been removed
+- Function `ContactsClientCreatePollerResponse.PollUntilDone` has been removed
+- Function `Status.ToPtr` has been removed
+- Function `AutoTrackingConfiguration.ToPtr` has been removed
+- Function `*ContactProfilesClientCreateOrUpdatePoller.Done` has been removed
+- Function `*SpacecraftsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `ContactProfilesClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*SpacecraftsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ContactProfilesClientDeletePoller.ResumeToken` has been removed
+- Function `Protocol.ToPtr` has been removed
+- Function `*ContactProfilesClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*SpacecraftsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*SpacecraftsClientDeletePoller.Done` has been removed
+- Struct `AvailableGroundStationsClientGetResult` has been removed
+- Struct `AvailableGroundStationsClientListByCapabilityPager` has been removed
+- Struct `AvailableGroundStationsClientListByCapabilityResult` has been removed
+- Struct `ContactProfilesClientCreateOrUpdatePoller` has been removed
+- Struct `ContactProfilesClientCreateOrUpdatePollerResponse` has been removed
+- Struct `ContactProfilesClientCreateOrUpdateResult` has been removed
+- Struct `ContactProfilesClientDeletePoller` has been removed
+- Struct `ContactProfilesClientDeletePollerResponse` has been removed
+- Struct `ContactProfilesClientGetResult` has been removed
+- Struct `ContactProfilesClientListBySubscriptionResult` has been removed
+- Struct `ContactProfilesClientListResult` has been removed
+- Struct `ContactProfilesClientUpdateTagsResult` has been removed
+- Struct `ContactsClientCreatePoller` has been removed
+- Struct `ContactsClientCreatePollerResponse` has been removed
+- Struct `ContactsClientCreateResult` has been removed
+- Struct `ContactsClientDeletePoller` has been removed
+- Struct `ContactsClientDeletePollerResponse` has been removed
+- Struct `ContactsClientGetResult` has been removed
+- Struct `ContactsClientListResult` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `SpacecraftsClientCreateOrUpdatePoller` has been removed
+- Struct `SpacecraftsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `SpacecraftsClientCreateOrUpdateResult` has been removed
+- Struct `SpacecraftsClientDeletePoller` has been removed
+- Struct `SpacecraftsClientDeletePollerResponse` has been removed
+- Struct `SpacecraftsClientGetResult` has been removed
+- Struct `SpacecraftsClientListAvailableContactsPoller` has been removed
+- Struct `SpacecraftsClientListAvailableContactsPollerResponse` has been removed
+- Struct `SpacecraftsClientListAvailableContactsResult` has been removed
+- Struct `SpacecraftsClientListBySubscriptionResult` has been removed
+- Struct `SpacecraftsClientListResult` has been removed
+- Struct `SpacecraftsClientUpdateTagsResult` has been removed
+- Field `SpacecraftsClientUpdateTagsResult` of struct `SpacecraftsClientUpdateTagsResponse` has been removed
+- Field `RawResponse` of struct `SpacecraftsClientUpdateTagsResponse` has been removed
+- Field `SpacecraftsClientListBySubscriptionResult` of struct `SpacecraftsClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `SpacecraftsClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `ContactProfilesClientDeleteResponse` has been removed
+- Field `ContactProfilesClientListBySubscriptionResult` of struct `ContactProfilesClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `ContactProfilesClientListBySubscriptionResponse` has been removed
+- Field `AvailableGroundStationsClientGetResult` of struct `AvailableGroundStationsClientGetResponse` has been removed
+- Field `RawResponse` of struct `AvailableGroundStationsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ContactsClientDeleteResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `SpacecraftsClientGetResult` of struct `SpacecraftsClientGetResponse` has been removed
+- Field `RawResponse` of struct `SpacecraftsClientGetResponse` has been removed
+- Field `SpacecraftsClientListAvailableContactsResult` of struct `SpacecraftsClientListAvailableContactsResponse` has been removed
+- Field `RawResponse` of struct `SpacecraftsClientListAvailableContactsResponse` has been removed
+- Field `ContactsClientCreateResult` of struct `ContactsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `ContactsClientCreateResponse` has been removed
+- Field `AvailableGroundStationsClientListByCapabilityResult` of struct `AvailableGroundStationsClientListByCapabilityResponse` has been removed
+- Field `RawResponse` of struct `AvailableGroundStationsClientListByCapabilityResponse` has been removed
+- Field `SpacecraftsClientListResult` of struct `SpacecraftsClientListResponse` has been removed
+- Field `RawResponse` of struct `SpacecraftsClientListResponse` has been removed
+- Field `ContactProfilesClientListResult` of struct `ContactProfilesClientListResponse` has been removed
+- Field `RawResponse` of struct `ContactProfilesClientListResponse` has been removed
+- Field `ContactProfilesClientCreateOrUpdateResult` of struct `ContactProfilesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ContactProfilesClientCreateOrUpdateResponse` has been removed
+- Field `ContactProfilesClientUpdateTagsResult` of struct `ContactProfilesClientUpdateTagsResponse` has been removed
+- Field `RawResponse` of struct `ContactProfilesClientUpdateTagsResponse` has been removed
+- Field `ContactProfilesClientGetResult` of struct `ContactProfilesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ContactProfilesClientGetResponse` has been removed
+- Field `RawResponse` of struct `SpacecraftsClientDeleteResponse` has been removed
+- Field `ContactsClientGetResult` of struct `ContactsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ContactsClientGetResponse` has been removed
+- Field `SpacecraftsClientCreateOrUpdateResult` of struct `SpacecraftsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `SpacecraftsClientCreateOrUpdateResponse` has been removed
+- Field `ContactsClientListResult` of struct `ContactsClientListResponse` has been removed
+- Field `RawResponse` of struct `ContactsClientListResponse` has been removed
+
+### Features Added
+
+- New anonymous field `ContactProfile` in struct `ContactProfilesClientUpdateTagsResponse`
+- New anonymous field `SpacecraftListResult` in struct `SpacecraftsClientListBySubscriptionResponse`
+- New anonymous field `ContactProfile` in struct `ContactProfilesClientGetResponse`
+- New anonymous field `Contact` in struct `ContactsClientGetResponse`
+- New field `ResumeToken` in struct `ContactProfilesClientBeginDeleteOptions`
+- New anonymous field `AvailableGroundStationListResult` in struct `AvailableGroundStationsClientListByCapabilityResponse`
+- New field `ResumeToken` in struct `ContactProfilesClientBeginCreateOrUpdateOptions`
+- New anonymous field `Spacecraft` in struct `SpacecraftsClientUpdateTagsResponse`
+- New anonymous field `ContactListResult` in struct `ContactsClientListResponse`
+- New anonymous field `Contact` in struct `ContactsClientCreateResponse`
+- New anonymous field `ContactProfileListResult` in struct `ContactProfilesClientListBySubscriptionResponse`
+- New anonymous field `ContactProfile` in struct `ContactProfilesClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `SpacecraftsClientBeginListAvailableContactsOptions`
+- New anonymous field `ContactProfileListResult` in struct `ContactProfilesClientListResponse`
+- New field `ResumeToken` in struct `ContactsClientBeginCreateOptions`
+- New field `ResumeToken` in struct `SpacecraftsClientBeginDeleteOptions`
+- New field `ResumeToken` in struct `ContactsClientBeginDeleteOptions`
+- New anonymous field `Spacecraft` in struct `SpacecraftsClientCreateOrUpdateResponse`
+- New anonymous field `Spacecraft` in struct `SpacecraftsClientGetResponse`
+- New field `ResumeToken` in struct `SpacecraftsClientBeginCreateOrUpdateOptions`
+- New anonymous field `SpacecraftListResult` in struct `SpacecraftsClientListResponse`
+- New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
+- New anonymous field `AvailableGroundStation` in struct `AvailableGroundStationsClientGetResponse`
+- New anonymous field `AvailableContactsListResult` in struct `SpacecraftsClientListAvailableContactsResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

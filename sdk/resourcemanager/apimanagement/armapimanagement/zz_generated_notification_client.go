@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -35,20 +36,24 @@ type NotificationClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewNotificationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *NotificationClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewNotificationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NotificationClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &NotificationClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Create or Update API Management publisher notification.
@@ -108,7 +113,7 @@ func (client *NotificationClient) createOrUpdateCreateRequest(ctx context.Contex
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *NotificationClient) createOrUpdateHandleResponse(resp *http.Response) (NotificationClientCreateOrUpdateResponse, error) {
-	result := NotificationClientCreateOrUpdateResponse{RawResponse: resp}
+	result := NotificationClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NotificationContract); err != nil {
 		return NotificationClientCreateOrUpdateResponse{}, err
 	}
@@ -168,7 +173,7 @@ func (client *NotificationClient) getCreateRequest(ctx context.Context, resource
 
 // getHandleResponse handles the Get response.
 func (client *NotificationClient) getHandleResponse(resp *http.Response) (NotificationClientGetResponse, error) {
-	result := NotificationClientGetResponse{RawResponse: resp}
+	result := NotificationClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NotificationContract); err != nil {
 		return NotificationClientGetResponse{}, err
 	}
@@ -181,16 +186,32 @@ func (client *NotificationClient) getHandleResponse(resp *http.Response) (Notifi
 // serviceName - The name of the API Management service.
 // options - NotificationClientListByServiceOptions contains the optional parameters for the NotificationClient.ListByService
 // method.
-func (client *NotificationClient) ListByService(resourceGroupName string, serviceName string, options *NotificationClientListByServiceOptions) *NotificationClientListByServicePager {
-	return &NotificationClientListByServicePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
+func (client *NotificationClient) ListByService(resourceGroupName string, serviceName string, options *NotificationClientListByServiceOptions) *runtime.Pager[NotificationClientListByServiceResponse] {
+	return runtime.NewPager(runtime.PageProcessor[NotificationClientListByServiceResponse]{
+		More: func(page NotificationClientListByServiceResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp NotificationClientListByServiceResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.NotificationCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *NotificationClientListByServiceResponse) (NotificationClientListByServiceResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return NotificationClientListByServiceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return NotificationClientListByServiceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return NotificationClientListByServiceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByServiceHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByServiceCreateRequest creates the ListByService request.
@@ -227,7 +248,7 @@ func (client *NotificationClient) listByServiceCreateRequest(ctx context.Context
 
 // listByServiceHandleResponse handles the ListByService response.
 func (client *NotificationClient) listByServiceHandleResponse(resp *http.Response) (NotificationClientListByServiceResponse, error) {
-	result := NotificationClientListByServiceResponse{RawResponse: resp}
+	result := NotificationClientListByServiceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NotificationCollection); err != nil {
 		return NotificationClientListByServiceResponse{}, err
 	}

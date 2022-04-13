@@ -1,5 +1,105 @@
 # Release History
 
+## 0.4.0 (2022-04-12)
+### Breaking Changes
+
+- Function `*SolutionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(SolutionsClientCreateOrUpdatePollerResponse, error)` to `(*armruntime.Poller[SolutionsClientCreateOrUpdateResponse], error)`
+- Function `NewManagementAssociationsClient` parameter(s) have been changed from `(string, string, string, string, azcore.TokenCredential, *arm.ClientOptions)` to `(string, azcore.TokenCredential, *arm.ClientOptions)`
+- Function `NewManagementAssociationsClient` return value(s) have been changed from `(*ManagementAssociationsClient)` to `(*ManagementAssociationsClient, error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(context.Context, *OperationsClientListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(OperationsClientListResponse, error)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `*ManagementAssociationsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *ManagementAssociationsClientDeleteOptions)` to `(context.Context, string, string, string, string, string, *ManagementAssociationsClientDeleteOptions)`
+- Function `*SolutionsClient.BeginUpdate` return value(s) have been changed from `(SolutionsClientUpdatePollerResponse, error)` to `(*armruntime.Poller[SolutionsClientUpdateResponse], error)`
+- Function `*ManagementAssociationsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, ManagementAssociation, *ManagementAssociationsClientCreateOrUpdateOptions)` to `(context.Context, string, string, string, string, string, ManagementAssociation, *ManagementAssociationsClientCreateOrUpdateOptions)`
+- Function `*ManagementAssociationsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *ManagementAssociationsClientGetOptions)` to `(context.Context, string, string, string, string, string, *ManagementAssociationsClientGetOptions)`
+- Function `NewSolutionsClient` return value(s) have been changed from `(*SolutionsClient)` to `(*SolutionsClient, error)`
+- Function `*SolutionsClient.BeginDelete` return value(s) have been changed from `(SolutionsClientDeletePollerResponse, error)` to `(*armruntime.Poller[SolutionsClientDeleteResponse], error)`
+- Function `NewManagementConfigurationsClient` return value(s) have been changed from `(*ManagementConfigurationsClient)` to `(*ManagementConfigurationsClient, error)`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Type of `ManagementConfigurationProperties.Template` has been changed from `map[string]interface{}` to `interface{}`
+- Function `*SolutionsClientUpdatePoller.ResumeToken` has been removed
+- Function `*SolutionsClientUpdatePoller.FinalResponse` has been removed
+- Function `*SolutionsClientCreateOrUpdatePoller.Poll` has been removed
+- Function `*SolutionsClientCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*SolutionsClientCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*SolutionsClientDeletePollerResponse.Resume` has been removed
+- Function `*SolutionsClientDeletePoller.ResumeToken` has been removed
+- Function `*SolutionsClientDeletePoller.Done` has been removed
+- Function `SolutionsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*SolutionsClientDeletePoller.FinalResponse` has been removed
+- Function `SolutionsClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*SolutionsClientUpdatePoller.Done` has been removed
+- Function `*SolutionsClientCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `SolutionsClientCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*SolutionsClientCreateOrUpdatePoller.Done` has been removed
+- Function `*SolutionsClientDeletePoller.Poll` has been removed
+- Function `*SolutionsClientUpdatePoller.Poll` has been removed
+- Function `*SolutionsClientUpdatePollerResponse.Resume` has been removed
+- Struct `ManagementAssociationsClientCreateOrUpdateResult` has been removed
+- Struct `ManagementAssociationsClientGetResult` has been removed
+- Struct `ManagementAssociationsClientListBySubscriptionResult` has been removed
+- Struct `ManagementConfigurationsClientCreateOrUpdateResult` has been removed
+- Struct `ManagementConfigurationsClientGetResult` has been removed
+- Struct `ManagementConfigurationsClientListBySubscriptionResult` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `SolutionsClientCreateOrUpdatePoller` has been removed
+- Struct `SolutionsClientCreateOrUpdatePollerResponse` has been removed
+- Struct `SolutionsClientCreateOrUpdateResult` has been removed
+- Struct `SolutionsClientDeletePoller` has been removed
+- Struct `SolutionsClientDeletePollerResponse` has been removed
+- Struct `SolutionsClientGetResult` has been removed
+- Struct `SolutionsClientListByResourceGroupResult` has been removed
+- Struct `SolutionsClientListBySubscriptionResult` has been removed
+- Struct `SolutionsClientUpdatePoller` has been removed
+- Struct `SolutionsClientUpdatePollerResponse` has been removed
+- Struct `SolutionsClientUpdateResult` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `ManagementConfigurationsClientCreateOrUpdateResult` of struct `ManagementConfigurationsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ManagementConfigurationsClientCreateOrUpdateResponse` has been removed
+- Field `ManagementAssociationsClientListBySubscriptionResult` of struct `ManagementAssociationsClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `ManagementAssociationsClientListBySubscriptionResponse` has been removed
+- Field `ManagementConfigurationsClientGetResult` of struct `ManagementConfigurationsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ManagementConfigurationsClientGetResponse` has been removed
+- Field `ManagementAssociationsClientGetResult` of struct `ManagementAssociationsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ManagementAssociationsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ManagementConfigurationsClientDeleteResponse` has been removed
+- Field `SolutionsClientCreateOrUpdateResult` of struct `SolutionsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `SolutionsClientCreateOrUpdateResponse` has been removed
+- Field `SolutionsClientListBySubscriptionResult` of struct `SolutionsClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `SolutionsClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `SolutionsClientDeleteResponse` has been removed
+- Field `ManagementConfigurationsClientListBySubscriptionResult` of struct `ManagementConfigurationsClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `ManagementConfigurationsClientListBySubscriptionResponse` has been removed
+- Field `ManagementAssociationsClientCreateOrUpdateResult` of struct `ManagementAssociationsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ManagementAssociationsClientCreateOrUpdateResponse` has been removed
+- Field `SolutionsClientListByResourceGroupResult` of struct `SolutionsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `SolutionsClientListByResourceGroupResponse` has been removed
+- Field `SolutionsClientUpdateResult` of struct `SolutionsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `SolutionsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ManagementAssociationsClientDeleteResponse` has been removed
+- Field `SolutionsClientGetResult` of struct `SolutionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `SolutionsClientGetResponse` has been removed
+
+### Features Added
+
+- New field `ResumeToken` in struct `SolutionsClientBeginUpdateOptions`
+- New anonymous field `ManagementConfiguration` in struct `ManagementConfigurationsClientCreateOrUpdateResponse`
+- New anonymous field `ManagementAssociation` in struct `ManagementAssociationsClientCreateOrUpdateResponse`
+- New field `ResumeToken` in struct `SolutionsClientBeginCreateOrUpdateOptions`
+- New anonymous field `SolutionPropertiesList` in struct `SolutionsClientListByResourceGroupResponse`
+- New field `ResumeToken` in struct `SolutionsClientBeginDeleteOptions`
+- New anonymous field `SolutionPropertiesList` in struct `SolutionsClientListBySubscriptionResponse`
+- New anonymous field `ManagementConfiguration` in struct `ManagementConfigurationsClientGetResponse`
+- New anonymous field `Solution` in struct `SolutionsClientCreateOrUpdateResponse`
+- New anonymous field `Solution` in struct `SolutionsClientGetResponse`
+- New anonymous field `ManagementConfigurationPropertiesList` in struct `ManagementConfigurationsClientListBySubscriptionResponse`
+- New anonymous field `Solution` in struct `SolutionsClientUpdateResponse`
+- New anonymous field `ManagementAssociation` in struct `ManagementAssociationsClientGetResponse`
+- New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
+- New anonymous field `ManagementAssociationPropertiesList` in struct `ManagementAssociationsClientListBySubscriptionResponse`
+
+
 ## 0.3.1 (2022-02-22)
 
 ### Other Changes

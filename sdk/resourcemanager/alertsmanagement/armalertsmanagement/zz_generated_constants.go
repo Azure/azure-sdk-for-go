@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armalertsmanagement
 
 const (
 	moduleName    = "armalertsmanagement"
-	moduleVersion = "v0.3.1"
+	moduleVersion = "v0.4.0"
 )
 
 // ActionType - Action that should be applied.
@@ -27,11 +27,6 @@ func PossibleActionTypeValues() []ActionType {
 		ActionTypeAddActionGroups,
 		ActionTypeRemoveAllActionGroups,
 	}
-}
-
-// ToPtr returns a *ActionType pointing to the current value.
-func (c ActionType) ToPtr() *ActionType {
-	return &c
 }
 
 // AlertModificationEvent - Reason for the modification
@@ -64,11 +59,6 @@ func PossibleAlertModificationEventValues() []AlertModificationEvent {
 	}
 }
 
-// ToPtr returns a *AlertModificationEvent pointing to the current value.
-func (c AlertModificationEvent) ToPtr() *AlertModificationEvent {
-	return &c
-}
-
 type AlertState string
 
 const (
@@ -84,11 +74,6 @@ func PossibleAlertStateValues() []AlertState {
 		AlertStateClosed,
 		AlertStateNew,
 	}
-}
-
-// ToPtr returns a *AlertState pointing to the current value.
-func (c AlertState) ToPtr() *AlertState {
-	return &c
 }
 
 type AlertsSortByFields string
@@ -122,11 +107,6 @@ func PossibleAlertsSortByFieldsValues() []AlertsSortByFields {
 	}
 }
 
-// ToPtr returns a *AlertsSortByFields pointing to the current value.
-func (c AlertsSortByFields) ToPtr() *AlertsSortByFields {
-	return &c
-}
-
 type AlertsSummaryGroupByFields string
 
 const (
@@ -150,11 +130,6 @@ func PossibleAlertsSummaryGroupByFieldsValues() []AlertsSummaryGroupByFields {
 	}
 }
 
-// ToPtr returns a *AlertsSummaryGroupByFields pointing to the current value.
-func (c AlertsSummaryGroupByFields) ToPtr() *AlertsSummaryGroupByFields {
-	return &c
-}
-
 // CreatedByType - The type of identity that created the resource.
 type CreatedByType string
 
@@ -173,11 +148,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
 	}
-}
-
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
 }
 
 // DaysOfWeek - Days of week.
@@ -204,11 +174,6 @@ func PossibleDaysOfWeekValues() []DaysOfWeek {
 		DaysOfWeekTuesday,
 		DaysOfWeekWednesday,
 	}
-}
-
-// ToPtr returns a *DaysOfWeek pointing to the current value.
-func (c DaysOfWeek) ToPtr() *DaysOfWeek {
-	return &c
 }
 
 // Field - Field for a given condition.
@@ -245,11 +210,6 @@ func PossibleFieldValues() []Field {
 	}
 }
 
-// ToPtr returns a *Field pointing to the current value.
-func (c Field) ToPtr() *Field {
-	return &c
-}
-
 type Identifier string
 
 const (
@@ -261,11 +221,6 @@ func PossibleIdentifierValues() []Identifier {
 	return []Identifier{
 		IdentifierMonitorServiceList,
 	}
-}
-
-// ToPtr returns a *Identifier pointing to the current value.
-func (c Identifier) ToPtr() *Identifier {
-	return &c
 }
 
 // MetadataIdentifier - Identification of the information to be retrieved by API call
@@ -282,11 +237,6 @@ func PossibleMetadataIdentifierValues() []MetadataIdentifier {
 	}
 }
 
-// ToPtr returns a *MetadataIdentifier pointing to the current value.
-func (c MetadataIdentifier) ToPtr() *MetadataIdentifier {
-	return &c
-}
-
 type MonitorCondition string
 
 const (
@@ -300,11 +250,6 @@ func PossibleMonitorConditionValues() []MonitorCondition {
 		MonitorConditionFired,
 		MonitorConditionResolved,
 	}
-}
-
-// ToPtr returns a *MonitorCondition pointing to the current value.
-func (c MonitorCondition) ToPtr() *MonitorCondition {
-	return &c
 }
 
 type MonitorService string
@@ -346,11 +291,6 @@ func PossibleMonitorServiceValues() []MonitorService {
 	}
 }
 
-// ToPtr returns a *MonitorService pointing to the current value.
-func (c MonitorService) ToPtr() *MonitorService {
-	return &c
-}
-
 // Operator - Operator for a given condition.
 type Operator string
 
@@ -371,11 +311,6 @@ func PossibleOperatorValues() []Operator {
 	}
 }
 
-// ToPtr returns a *Operator pointing to the current value.
-func (c Operator) ToPtr() *Operator {
-	return &c
-}
-
 // RecurrenceType - Specifies when the recurrence should be applied.
 type RecurrenceType string
 
@@ -392,11 +327,6 @@ func PossibleRecurrenceTypeValues() []RecurrenceType {
 		RecurrenceTypeMonthly,
 		RecurrenceTypeWeekly,
 	}
-}
-
-// ToPtr returns a *RecurrenceType pointing to the current value.
-func (c RecurrenceType) ToPtr() *RecurrenceType {
-	return &c
 }
 
 type Severity string
@@ -420,11 +350,6 @@ func PossibleSeverityValues() []Severity {
 	}
 }
 
-// ToPtr returns a *Severity pointing to the current value.
-func (c Severity) ToPtr() *Severity {
-	return &c
-}
-
 // SignalType - The type of signal the alert is based on, which could be metrics, logs or activity logs.
 type SignalType string
 
@@ -441,11 +366,6 @@ func PossibleSignalTypeValues() []SignalType {
 		SignalTypeMetric,
 		SignalTypeUnknown,
 	}
-}
-
-// ToPtr returns a *SignalType pointing to the current value.
-func (c SignalType) ToPtr() *SignalType {
-	return &c
 }
 
 // SmartGroupModificationEvent - Reason for the modification
@@ -466,11 +386,6 @@ func PossibleSmartGroupModificationEventValues() []SmartGroupModificationEvent {
 		SmartGroupModificationEventAlertAdded,
 		SmartGroupModificationEventAlertRemoved,
 	}
-}
-
-// ToPtr returns a *SmartGroupModificationEvent pointing to the current value.
-func (c SmartGroupModificationEvent) ToPtr() *SmartGroupModificationEvent {
-	return &c
 }
 
 type SmartGroupsSortByFields string
@@ -494,11 +409,6 @@ func PossibleSmartGroupsSortByFieldsValues() []SmartGroupsSortByFields {
 	}
 }
 
-// ToPtr returns a *SmartGroupsSortByFields pointing to the current value.
-func (c SmartGroupsSortByFields) ToPtr() *SmartGroupsSortByFields {
-	return &c
-}
-
 type SortOrder string
 
 const (
@@ -512,11 +422,6 @@ func PossibleSortOrderValues() []SortOrder {
 		SortOrderAsc,
 		SortOrderDesc,
 	}
-}
-
-// ToPtr returns a *SortOrder pointing to the current value.
-func (c SortOrder) ToPtr() *SortOrder {
-	return &c
 }
 
 // State - Smart group state
@@ -537,11 +442,6 @@ func PossibleStateValues() []State {
 	}
 }
 
-// ToPtr returns a *State pointing to the current value.
-func (c State) ToPtr() *State {
-	return &c
-}
-
 type TimeRange string
 
 const (
@@ -559,9 +459,4 @@ func PossibleTimeRangeValues() []TimeRange {
 		TimeRangeSevenD,
 		TimeRangeThirtyD,
 	}
-}
-
-// ToPtr returns a *TimeRange pointing to the current value.
-func (c TimeRange) ToPtr() *TimeRange {
-	return &c
 }

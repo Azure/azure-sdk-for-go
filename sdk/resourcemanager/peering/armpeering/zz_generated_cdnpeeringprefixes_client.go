@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,36 +34,56 @@ type CdnPeeringPrefixesClient struct {
 // subscriptionID - The Azure subscription ID.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewCdnPeeringPrefixesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CdnPeeringPrefixesClient {
+func NewCdnPeeringPrefixesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CdnPeeringPrefixesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &CdnPeeringPrefixesClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // List - Lists all of the advertised prefixes for the specified peering location
 // If the operation fails it returns an *azcore.ResponseError type.
 // peeringLocation - The peering location.
 // options - CdnPeeringPrefixesClientListOptions contains the optional parameters for the CdnPeeringPrefixesClient.List method.
-func (client *CdnPeeringPrefixesClient) List(peeringLocation string, options *CdnPeeringPrefixesClientListOptions) *CdnPeeringPrefixesClientListPager {
-	return &CdnPeeringPrefixesClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, peeringLocation, options)
+func (client *CdnPeeringPrefixesClient) List(peeringLocation string, options *CdnPeeringPrefixesClientListOptions) *runtime.Pager[CdnPeeringPrefixesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[CdnPeeringPrefixesClientListResponse]{
+		More: func(page CdnPeeringPrefixesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp CdnPeeringPrefixesClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.CdnPeeringPrefixListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *CdnPeeringPrefixesClientListResponse) (CdnPeeringPrefixesClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, peeringLocation, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return CdnPeeringPrefixesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return CdnPeeringPrefixesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return CdnPeeringPrefixesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -78,7 +99,7 @@ func (client *CdnPeeringPrefixesClient) listCreateRequest(ctx context.Context, p
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("peeringLocation", peeringLocation)
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -86,7 +107,7 @@ func (client *CdnPeeringPrefixesClient) listCreateRequest(ctx context.Context, p
 
 // listHandleResponse handles the List response.
 func (client *CdnPeeringPrefixesClient) listHandleResponse(resp *http.Response) (CdnPeeringPrefixesClientListResponse, error) {
-	result := CdnPeeringPrefixesClientListResponse{RawResponse: resp}
+	result := CdnPeeringPrefixesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CdnPeeringPrefixListResult); err != nil {
 		return CdnPeeringPrefixesClientListResponse{}, err
 	}

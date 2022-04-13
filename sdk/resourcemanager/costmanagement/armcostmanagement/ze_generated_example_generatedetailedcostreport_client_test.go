@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,27 +19,35 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/armcostmanagement"
 )
 
-// x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/GenerateDetailedCostReportByBillingAccountLegacyAndBillingPeriod.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/GenerateDetailedCostReportByBillingAccountLegacyAndBillingPeriod.json
 func ExampleGenerateDetailedCostReportClient_BeginCreateOperation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcostmanagement.NewGenerateDetailedCostReportClient(cred, nil)
+	client, err := armcostmanagement.NewGenerateDetailedCostReportClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreateOperation(ctx,
 		"<scope>",
 		armcostmanagement.GenerateDetailedCostReportDefinition{
-			BillingPeriod: to.StringPtr("<billing-period>"),
-			Metric:        armcostmanagement.GenerateDetailedCostReportMetricType("ActualCost").ToPtr(),
+			BillingPeriod: to.Ptr("<billing-period>"),
+			Metric:        to.Ptr(armcostmanagement.GenerateDetailedCostReportMetricTypeActualCost),
 		},
-		nil)
+		&armcostmanagement.GenerateDetailedCostReportClientBeginCreateOperationOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.GenerateDetailedCostReportClientCreateOperationResult)
+	// TODO: use response item
+	_ = res
 }

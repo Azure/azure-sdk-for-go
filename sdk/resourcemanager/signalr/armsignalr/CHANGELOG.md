@@ -1,5 +1,89 @@
 # Release History
 
+## 0.3.0 (2022-04-04)
+### Features Added
+
+- New function `*CustomDomainsClientCreateOrUpdatePollerResponse.Resume(context.Context, *CustomDomainsClient, string) error`
+- New function `NewCustomCertificatesClient(string, azcore.TokenCredential, *arm.ClientOptions) *CustomCertificatesClient`
+- New function `*CustomDomainsClientDeletePoller.Done() bool`
+- New function `*CustomDomainsClientDeletePollerResponse.Resume(context.Context, *CustomDomainsClient, string) error`
+- New function `CustomCertificatesClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (CustomCertificatesClientCreateOrUpdateResponse, error)`
+- New function `*CustomDomainsClient.BeginDelete(context.Context, string, string, string, *CustomDomainsClientBeginDeleteOptions) (CustomDomainsClientDeletePollerResponse, error)`
+- New function `CustomCertificateList.MarshalJSON() ([]byte, error)`
+- New function `*CustomDomainsClientListPager.PageResponse() CustomDomainsClientListResponse`
+- New function `*CustomCertificatesClientListPager.NextPage(context.Context) bool`
+- New function `*CustomCertificatesClientCreateOrUpdatePoller.Done() bool`
+- New function `*CustomDomainsClient.Get(context.Context, string, string, string, *CustomDomainsClientGetOptions) (CustomDomainsClientGetResponse, error)`
+- New function `NewCustomDomainsClient(string, azcore.TokenCredential, *arm.ClientOptions) *CustomDomainsClient`
+- New function `*CustomCertificatesClientCreateOrUpdatePollerResponse.Resume(context.Context, *CustomCertificatesClient, string) error`
+- New function `*CustomCertificatesClientListPager.Err() error`
+- New function `*CustomDomainsClientCreateOrUpdatePoller.Done() bool`
+- New function `CustomDomainList.MarshalJSON() ([]byte, error)`
+- New function `*CustomCertificatesClient.Delete(context.Context, string, string, string, *CustomCertificatesClientDeleteOptions) (CustomCertificatesClientDeleteResponse, error)`
+- New function `*CustomDomainsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*CustomDomainsClient.BeginCreateOrUpdate(context.Context, string, string, string, CustomDomain, *CustomDomainsClientBeginCreateOrUpdateOptions) (CustomDomainsClientCreateOrUpdatePollerResponse, error)`
+- New function `*CustomDomainsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*CustomCertificatesClient.Get(context.Context, string, string, string, *CustomCertificatesClientGetOptions) (CustomCertificatesClientGetResponse, error)`
+- New function `*CustomCertificatesClientCreateOrUpdatePoller.FinalResponse(context.Context) (CustomCertificatesClientCreateOrUpdateResponse, error)`
+- New function `*CustomDomainsClient.List(string, string, *CustomDomainsClientListOptions) *CustomDomainsClientListPager`
+- New function `CustomDomainsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (CustomDomainsClientDeleteResponse, error)`
+- New function `*CustomCertificatesClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*CustomDomainsClientListPager.Err() error`
+- New function `*CustomCertificatesClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*CustomDomainsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*CustomDomainsClientDeletePoller.FinalResponse(context.Context) (CustomDomainsClientDeleteResponse, error)`
+- New function `CustomDomainsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (CustomDomainsClientCreateOrUpdateResponse, error)`
+- New function `*CustomCertificatesClient.List(string, string, *CustomCertificatesClientListOptions) *CustomCertificatesClientListPager`
+- New function `*CustomDomainsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*CustomDomainsClientCreateOrUpdatePoller.FinalResponse(context.Context) (CustomDomainsClientCreateOrUpdateResponse, error)`
+- New function `*CustomCertificatesClient.BeginCreateOrUpdate(context.Context, string, string, string, CustomCertificate, *CustomCertificatesClientBeginCreateOrUpdateOptions) (CustomCertificatesClientCreateOrUpdatePollerResponse, error)`
+- New function `*CustomCertificatesClientListPager.PageResponse() CustomCertificatesClientListResponse`
+- New function `LiveTraceConfiguration.MarshalJSON() ([]byte, error)`
+- New function `*CustomDomainsClientListPager.NextPage(context.Context) bool`
+- New struct `CustomCertificate`
+- New struct `CustomCertificateList`
+- New struct `CustomCertificateProperties`
+- New struct `CustomCertificatesClient`
+- New struct `CustomCertificatesClientBeginCreateOrUpdateOptions`
+- New struct `CustomCertificatesClientCreateOrUpdatePoller`
+- New struct `CustomCertificatesClientCreateOrUpdatePollerResponse`
+- New struct `CustomCertificatesClientCreateOrUpdateResponse`
+- New struct `CustomCertificatesClientCreateOrUpdateResult`
+- New struct `CustomCertificatesClientDeleteOptions`
+- New struct `CustomCertificatesClientDeleteResponse`
+- New struct `CustomCertificatesClientGetOptions`
+- New struct `CustomCertificatesClientGetResponse`
+- New struct `CustomCertificatesClientGetResult`
+- New struct `CustomCertificatesClientListOptions`
+- New struct `CustomCertificatesClientListPager`
+- New struct `CustomCertificatesClientListResponse`
+- New struct `CustomCertificatesClientListResult`
+- New struct `CustomDomain`
+- New struct `CustomDomainList`
+- New struct `CustomDomainProperties`
+- New struct `CustomDomainsClient`
+- New struct `CustomDomainsClientBeginCreateOrUpdateOptions`
+- New struct `CustomDomainsClientBeginDeleteOptions`
+- New struct `CustomDomainsClientCreateOrUpdatePoller`
+- New struct `CustomDomainsClientCreateOrUpdatePollerResponse`
+- New struct `CustomDomainsClientCreateOrUpdateResponse`
+- New struct `CustomDomainsClientCreateOrUpdateResult`
+- New struct `CustomDomainsClientDeletePoller`
+- New struct `CustomDomainsClientDeletePollerResponse`
+- New struct `CustomDomainsClientDeleteResponse`
+- New struct `CustomDomainsClientGetOptions`
+- New struct `CustomDomainsClientGetResponse`
+- New struct `CustomDomainsClientGetResult`
+- New struct `CustomDomainsClientListOptions`
+- New struct `CustomDomainsClientListPager`
+- New struct `CustomDomainsClientListResponse`
+- New struct `CustomDomainsClientListResult`
+- New struct `LiveTraceCategory`
+- New struct `LiveTraceConfiguration`
+- New struct `ResourceReference`
+- New field `LiveTraceConfiguration` in struct `Properties`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

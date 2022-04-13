@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armhealthbot
 
 const (
 	moduleName    = "armhealthbot"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // IdentityType - The type of identity that creates/modifies resources
@@ -31,11 +31,6 @@ func PossibleIdentityTypeValues() []IdentityType {
 		IdentityTypeManagedIdentity,
 		IdentityTypeUser,
 	}
-}
-
-// ToPtr returns a *IdentityType pointing to the current value.
-func (c IdentityType) ToPtr() *IdentityType {
-	return &c
 }
 
 // ResourceIdentityType - The identity type. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity
@@ -60,11 +55,6 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	}
 }
 
-// ToPtr returns a *ResourceIdentityType pointing to the current value.
-func (c ResourceIdentityType) ToPtr() *ResourceIdentityType {
-	return &c
-}
-
 // SKUName - The name of the Azure Health Bot SKU
 type SKUName string
 
@@ -81,9 +71,4 @@ func PossibleSKUNameValues() []SKUName {
 		SKUNameS1,
 		SKUNameC0,
 	}
-}
-
-// ToPtr returns a *SKUName pointing to the current value.
-func (c SKUName) ToPtr() *SKUName {
-	return &c
 }

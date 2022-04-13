@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armautomation
 
 const (
 	moduleName    = "armautomation"
-	moduleVersion = "v0.3.1"
+	moduleVersion = "v0.4.0"
 )
 
 // AgentRegistrationKeyName - Gets or sets the agent registration key name - primary or secondary.
@@ -27,11 +27,6 @@ func PossibleAgentRegistrationKeyNameValues() []AgentRegistrationKeyName {
 		AgentRegistrationKeyNamePrimary,
 		AgentRegistrationKeyNameSecondary,
 	}
-}
-
-// ToPtr returns a *AgentRegistrationKeyName pointing to the current value.
-func (c AgentRegistrationKeyName) ToPtr() *AgentRegistrationKeyName {
-	return &c
 }
 
 // AutomationAccountState - Gets status of account.
@@ -52,11 +47,6 @@ func PossibleAutomationAccountStateValues() []AutomationAccountState {
 	}
 }
 
-// ToPtr returns a *AutomationAccountState pointing to the current value.
-func (c AutomationAccountState) ToPtr() *AutomationAccountState {
-	return &c
-}
-
 // AutomationKeyName - Automation key name.
 type AutomationKeyName string
 
@@ -71,11 +61,6 @@ func PossibleAutomationKeyNameValues() []AutomationKeyName {
 		AutomationKeyNamePrimary,
 		AutomationKeyNameSecondary,
 	}
-}
-
-// ToPtr returns a *AutomationKeyName pointing to the current value.
-func (c AutomationKeyName) ToPtr() *AutomationKeyName {
-	return &c
 }
 
 // AutomationKeyPermissions - Automation key permissions.
@@ -94,11 +79,6 @@ func PossibleAutomationKeyPermissionsValues() []AutomationKeyPermissions {
 	}
 }
 
-// ToPtr returns a *AutomationKeyPermissions pointing to the current value.
-func (c AutomationKeyPermissions) ToPtr() *AutomationKeyPermissions {
-	return &c
-}
-
 // ContentSourceType - Gets or sets the content source type.
 type ContentSourceType string
 
@@ -115,11 +95,6 @@ func PossibleContentSourceTypeValues() []ContentSourceType {
 	}
 }
 
-// ToPtr returns a *ContentSourceType pointing to the current value.
-func (c ContentSourceType) ToPtr() *ContentSourceType {
-	return &c
-}
-
 type CountType string
 
 const (
@@ -133,11 +108,6 @@ func PossibleCountTypeValues() []CountType {
 		CountTypeNodeconfiguration,
 		CountTypeStatus,
 	}
-}
-
-// ToPtr returns a *CountType pointing to the current value.
-func (c CountType) ToPtr() *CountType {
-	return &c
 }
 
 // CreatedByType - The type of identity that created the resource.
@@ -160,11 +130,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
-}
-
 // DscConfigurationState - Gets or sets the state of the configuration.
 type DscConfigurationState string
 
@@ -183,11 +148,6 @@ func PossibleDscConfigurationStateValues() []DscConfigurationState {
 	}
 }
 
-// ToPtr returns a *DscConfigurationState pointing to the current value.
-func (c DscConfigurationState) ToPtr() *DscConfigurationState {
-	return &c
-}
-
 // EncryptionKeySourceType - Encryption Key Source
 type EncryptionKeySourceType string
 
@@ -202,11 +162,6 @@ func PossibleEncryptionKeySourceTypeValues() []EncryptionKeySourceType {
 		EncryptionKeySourceTypeMicrosoftAutomation,
 		EncryptionKeySourceTypeMicrosoftKeyvault,
 	}
-}
-
-// ToPtr returns a *EncryptionKeySourceType pointing to the current value.
-func (c EncryptionKeySourceType) ToPtr() *EncryptionKeySourceType {
-	return &c
 }
 
 // GraphRunbookType - Runbook Type
@@ -225,11 +180,6 @@ func PossibleGraphRunbookTypeValues() []GraphRunbookType {
 	}
 }
 
-// ToPtr returns a *GraphRunbookType pointing to the current value.
-func (c GraphRunbookType) ToPtr() *GraphRunbookType {
-	return &c
-}
-
 // GroupTypeEnum - Type of the HybridWorkerGroup.
 type GroupTypeEnum string
 
@@ -244,11 +194,6 @@ func PossibleGroupTypeEnumValues() []GroupTypeEnum {
 		GroupTypeEnumSystem,
 		GroupTypeEnumUser,
 	}
-}
-
-// ToPtr returns a *GroupTypeEnum pointing to the current value.
-func (c GroupTypeEnum) ToPtr() *GroupTypeEnum {
-	return &c
 }
 
 type HTTPStatusCode string
@@ -356,11 +301,6 @@ func PossibleHTTPStatusCodeValues() []HTTPStatusCode {
 	}
 }
 
-// ToPtr returns a *HTTPStatusCode pointing to the current value.
-func (c HTTPStatusCode) ToPtr() *HTTPStatusCode {
-	return &c
-}
-
 // JobProvisioningState - The provisioning state of the resource.
 type JobProvisioningState string
 
@@ -379,11 +319,6 @@ func PossibleJobProvisioningStateValues() []JobProvisioningState {
 		JobProvisioningStateSucceeded,
 		JobProvisioningStateSuspended,
 	}
-}
-
-// ToPtr returns a *JobProvisioningState pointing to the current value.
-func (c JobProvisioningState) ToPtr() *JobProvisioningState {
-	return &c
 }
 
 // JobStatus - Gets or sets the status of the job.
@@ -424,11 +359,6 @@ func PossibleJobStatusValues() []JobStatus {
 	}
 }
 
-// ToPtr returns a *JobStatus pointing to the current value.
-func (c JobStatus) ToPtr() *JobStatus {
-	return &c
-}
-
 // JobStreamType - Gets or sets the stream type.
 type JobStreamType string
 
@@ -455,11 +385,6 @@ func PossibleJobStreamTypeValues() []JobStreamType {
 	}
 }
 
-// ToPtr returns a *JobStreamType pointing to the current value.
-func (c JobStreamType) ToPtr() *JobStreamType {
-	return &c
-}
-
 // LinuxUpdateClasses - Update classifications included in the software update configuration.
 type LinuxUpdateClasses string
 
@@ -478,11 +403,6 @@ func PossibleLinuxUpdateClassesValues() []LinuxUpdateClasses {
 		LinuxUpdateClassesSecurity,
 		LinuxUpdateClassesUnclassified,
 	}
-}
-
-// ToPtr returns a *LinuxUpdateClasses pointing to the current value.
-func (c LinuxUpdateClasses) ToPtr() *LinuxUpdateClasses {
-	return &c
 }
 
 // ModuleProvisioningState - Gets or sets the provisioning state of the module.
@@ -529,11 +449,6 @@ func PossibleModuleProvisioningStateValues() []ModuleProvisioningState {
 	}
 }
 
-// ToPtr returns a *ModuleProvisioningState pointing to the current value.
-func (c ModuleProvisioningState) ToPtr() *ModuleProvisioningState {
-	return &c
-}
-
 // OperatingSystemType - Target operating system for the software update configuration.
 type OperatingSystemType string
 
@@ -548,11 +463,6 @@ func PossibleOperatingSystemTypeValues() []OperatingSystemType {
 		OperatingSystemTypeWindows,
 		OperatingSystemTypeLinux,
 	}
-}
-
-// ToPtr returns a *OperatingSystemType pointing to the current value.
-func (c OperatingSystemType) ToPtr() *OperatingSystemType {
-	return &c
 }
 
 // ProvisioningState - The provisioning state of the job.
@@ -571,11 +481,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 		ProvisioningStateFailed,
 		ProvisioningStateRunning,
 	}
-}
-
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
 }
 
 // ResourceIdentityType - The identity type.
@@ -598,11 +503,6 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	}
 }
 
-// ToPtr returns a *ResourceIdentityType pointing to the current value.
-func (c ResourceIdentityType) ToPtr() *ResourceIdentityType {
-	return &c
-}
-
 // RunbookState - Gets or sets the state of the runbook.
 type RunbookState string
 
@@ -619,11 +519,6 @@ func PossibleRunbookStateValues() []RunbookState {
 		RunbookStateNew,
 		RunbookStatePublished,
 	}
-}
-
-// ToPtr returns a *RunbookState pointing to the current value.
-func (c RunbookState) ToPtr() *RunbookState {
-	return &c
 }
 
 // RunbookTypeEnum - Gets or sets the type of the runbook.
@@ -650,11 +545,6 @@ func PossibleRunbookTypeEnumValues() []RunbookTypeEnum {
 	}
 }
 
-// ToPtr returns a *RunbookTypeEnum pointing to the current value.
-func (c RunbookTypeEnum) ToPtr() *RunbookTypeEnum {
-	return &c
-}
-
 // SKUNameEnum - Gets or sets the SKU name of the account.
 type SKUNameEnum string
 
@@ -669,11 +559,6 @@ func PossibleSKUNameEnumValues() []SKUNameEnum {
 		SKUNameEnumBasic,
 		SKUNameEnumFree,
 	}
-}
-
-// ToPtr returns a *SKUNameEnum pointing to the current value.
-func (c SKUNameEnum) ToPtr() *SKUNameEnum {
-	return &c
 }
 
 // ScheduleDay - Day of the occurrence. Must be one of monday, tuesday, wednesday, thursday, friday, saturday, sunday.
@@ -702,11 +587,6 @@ func PossibleScheduleDayValues() []ScheduleDay {
 	}
 }
 
-// ToPtr returns a *ScheduleDay pointing to the current value.
-func (c ScheduleDay) ToPtr() *ScheduleDay {
-	return &c
-}
-
 // ScheduleFrequency - Gets or sets the frequency of the schedule.
 type ScheduleFrequency string
 
@@ -732,11 +612,6 @@ func PossibleScheduleFrequencyValues() []ScheduleFrequency {
 	}
 }
 
-// ToPtr returns a *ScheduleFrequency pointing to the current value.
-func (c ScheduleFrequency) ToPtr() *ScheduleFrequency {
-	return &c
-}
-
 // SourceType - The source type. Must be one of VsoGit, VsoTfvc, GitHub.
 type SourceType string
 
@@ -755,11 +630,6 @@ func PossibleSourceTypeValues() []SourceType {
 	}
 }
 
-// ToPtr returns a *SourceType pointing to the current value.
-func (c SourceType) ToPtr() *SourceType {
-	return &c
-}
-
 // StreamType - The type of the sync job stream.
 type StreamType string
 
@@ -774,11 +644,6 @@ func PossibleStreamTypeValues() []StreamType {
 		StreamTypeError,
 		StreamTypeOutput,
 	}
-}
-
-// ToPtr returns a *StreamType pointing to the current value.
-func (c StreamType) ToPtr() *StreamType {
-	return &c
 }
 
 // SyncType - The sync type.
@@ -797,11 +662,6 @@ func PossibleSyncTypeValues() []SyncType {
 	}
 }
 
-// ToPtr returns a *SyncType pointing to the current value.
-func (c SyncType) ToPtr() *SyncType {
-	return &c
-}
-
 // TagOperators - Filter VMs by Any or All specified tags.
 type TagOperators string
 
@@ -818,11 +678,6 @@ func PossibleTagOperatorsValues() []TagOperators {
 	}
 }
 
-// ToPtr returns a *TagOperators pointing to the current value.
-func (c TagOperators) ToPtr() *TagOperators {
-	return &c
-}
-
 // TokenType - The token type. Must be either PersonalAccessToken or Oauth.
 type TokenType string
 
@@ -837,11 +692,6 @@ func PossibleTokenTypeValues() []TokenType {
 		TokenTypeOauth,
 		TokenTypePersonalAccessToken,
 	}
-}
-
-// ToPtr returns a *TokenType pointing to the current value.
-func (c TokenType) ToPtr() *TokenType {
-	return &c
 }
 
 // WindowsUpdateClasses - Update classification included in the software update configuration. A comma separated string with
@@ -875,11 +725,6 @@ func PossibleWindowsUpdateClassesValues() []WindowsUpdateClasses {
 	}
 }
 
-// ToPtr returns a *WindowsUpdateClasses pointing to the current value.
-func (c WindowsUpdateClasses) ToPtr() *WindowsUpdateClasses {
-	return &c
-}
-
 // WorkerType - Type of the HybridWorker.
 type WorkerType string
 
@@ -894,9 +739,4 @@ func PossibleWorkerTypeValues() []WorkerType {
 		WorkerTypeHybridV1,
 		WorkerTypeHybridV2,
 	}
-}
-
-// ToPtr returns a *WorkerType pointing to the current value.
-func (c WorkerType) ToPtr() *WorkerType {
-	return &c
 }

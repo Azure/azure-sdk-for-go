@@ -1,5 +1,52 @@
 # Release History
 
+## 0.3.0 (2022-04-11)
+### Breaking Changes
+
+- Function `NewAPISClient` return value(s) have been changed from `(*APISClient)` to `(*APISClient, error)`
+- Function `*APISClient.BeginManageInventoryMetadata` return value(s) have been changed from `(APISClientManageInventoryMetadataPollerResponse, error)` to `(*armruntime.Poller[APISClientManageInventoryMetadataResponse], error)`
+- Function `*APISClient.SearchInventories` return value(s) have been changed from `(*APISClientSearchInventoriesPager)` to `(*runtime.Pager[APISClientSearchInventoriesResponse])`
+- Function `*APISClient.ListOperationsPartner` return value(s) have been changed from `(*APISClientListOperationsPartnerPager)` to `(*runtime.Pager[APISClientListOperationsPartnerResponse])`
+- Type of `ErrorAdditionalInfo.Info` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `AdditionalErrorInfo.Info` has been changed from `map[string]interface{}` to `interface{}`
+- Function `*APISClientManageInventoryMetadataPoller.Done` has been removed
+- Function `ActionType.ToPtr` has been removed
+- Function `ManageLinkOperation.ToPtr` has been removed
+- Function `*APISClientSearchInventoriesPager.Err` has been removed
+- Function `*APISClientManageInventoryMetadataPoller.Poll` has been removed
+- Function `*APISClientListOperationsPartnerPager.NextPage` has been removed
+- Function `StageStatus.ToPtr` has been removed
+- Function `*APISClientManageInventoryMetadataPollerResponse.Resume` has been removed
+- Function `Origin.ToPtr` has been removed
+- Function `OrderItemType.ToPtr` has been removed
+- Function `*APISClientSearchInventoriesPager.PageResponse` has been removed
+- Function `APISClientManageInventoryMetadataPollerResponse.PollUntilDone` has been removed
+- Function `*APISClientSearchInventoriesPager.NextPage` has been removed
+- Function `*APISClientManageInventoryMetadataPoller.FinalResponse` has been removed
+- Function `*APISClientListOperationsPartnerPager.Err` has been removed
+- Function `StageName.ToPtr` has been removed
+- Function `*APISClientManageInventoryMetadataPoller.ResumeToken` has been removed
+- Function `*APISClientListOperationsPartnerPager.PageResponse` has been removed
+- Struct `APISClientListOperationsPartnerPager` has been removed
+- Struct `APISClientListOperationsPartnerResult` has been removed
+- Struct `APISClientManageInventoryMetadataPoller` has been removed
+- Struct `APISClientManageInventoryMetadataPollerResponse` has been removed
+- Struct `APISClientSearchInventoriesPager` has been removed
+- Struct `APISClientSearchInventoriesResult` has been removed
+- Field `APISClientSearchInventoriesResult` of struct `APISClientSearchInventoriesResponse` has been removed
+- Field `RawResponse` of struct `APISClientSearchInventoriesResponse` has been removed
+- Field `RawResponse` of struct `APISClientManageInventoryMetadataResponse` has been removed
+- Field `RawResponse` of struct `APISClientManageLinkResponse` has been removed
+- Field `APISClientListOperationsPartnerResult` of struct `APISClientListOperationsPartnerResponse` has been removed
+- Field `RawResponse` of struct `APISClientListOperationsPartnerResponse` has been removed
+
+### Features Added
+
+- New field `ResumeToken` in struct `APISClientBeginManageInventoryMetadataOptions`
+- New anonymous field `OperationListResult` in struct `APISClientListOperationsPartnerResponse`
+- New anonymous field `PartnerInventoryList` in struct `APISClientSearchInventoriesResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -35,20 +36,24 @@ type Client struct {
 // ID forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *Client {
+func NewClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*Client, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &Client{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CheckNameAvailability - Checks that the redis cache name is valid and is not already in use.
@@ -67,7 +72,7 @@ func (client *Client) CheckNameAvailability(ctx context.Context, parameters Chec
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return ClientCheckNameAvailabilityResponse{}, runtime.NewResponseError(resp)
 	}
-	return ClientCheckNameAvailabilityResponse{RawResponse: resp}, nil
+	return ClientCheckNameAvailabilityResponse{}, nil
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
@@ -94,22 +99,16 @@ func (client *Client) checkNameAvailabilityCreateRequest(ctx context.Context, pa
 // name - The name of the Redis cache.
 // parameters - Parameters supplied to the Create Redis operation.
 // options - ClientBeginCreateOptions contains the optional parameters for the Client.BeginCreate method.
-func (client *Client) BeginCreate(ctx context.Context, resourceGroupName string, name string, parameters CreateParameters, options *ClientBeginCreateOptions) (ClientCreatePollerResponse, error) {
-	resp, err := client.create(ctx, resourceGroupName, name, parameters, options)
-	if err != nil {
-		return ClientCreatePollerResponse{}, err
+func (client *Client) BeginCreate(ctx context.Context, resourceGroupName string, name string, parameters CreateParameters, options *ClientBeginCreateOptions) (*armruntime.Poller[ClientCreateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.create(ctx, resourceGroupName, name, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ClientCreateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ClientCreatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("Client.Create", "", resp, client.pl)
-	if err != nil {
-		return ClientCreatePollerResponse{}, err
-	}
-	result.Poller = &ClientCreatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Create - Create or replace (overwrite/recreate, with potential downtime) an existing Redis cache.
@@ -160,22 +159,16 @@ func (client *Client) createCreateRequest(ctx context.Context, resourceGroupName
 // resourceGroupName - The name of the resource group.
 // name - The name of the Redis cache.
 // options - ClientBeginDeleteOptions contains the optional parameters for the Client.BeginDelete method.
-func (client *Client) BeginDelete(ctx context.Context, resourceGroupName string, name string, options *ClientBeginDeleteOptions) (ClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, name, options)
-	if err != nil {
-		return ClientDeletePollerResponse{}, err
+func (client *Client) BeginDelete(ctx context.Context, resourceGroupName string, name string, options *ClientBeginDeleteOptions) (*armruntime.Poller[ClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, name, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("Client.Delete", "", resp, client.pl)
-	if err != nil {
-		return ClientDeletePollerResponse{}, err
-	}
-	result.Poller = &ClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes a Redis cache.
@@ -227,22 +220,16 @@ func (client *Client) deleteCreateRequest(ctx context.Context, resourceGroupName
 // name - The name of the Redis cache.
 // parameters - Parameters for Redis export operation.
 // options - ClientBeginExportDataOptions contains the optional parameters for the Client.BeginExportData method.
-func (client *Client) BeginExportData(ctx context.Context, resourceGroupName string, name string, parameters ExportRDBParameters, options *ClientBeginExportDataOptions) (ClientExportDataPollerResponse, error) {
-	resp, err := client.exportData(ctx, resourceGroupName, name, parameters, options)
-	if err != nil {
-		return ClientExportDataPollerResponse{}, err
+func (client *Client) BeginExportData(ctx context.Context, resourceGroupName string, name string, parameters ExportRDBParameters, options *ClientBeginExportDataOptions) (*armruntime.Poller[ClientExportDataResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.exportData(ctx, resourceGroupName, name, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ClientExportDataResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ClientExportDataResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ClientExportDataPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("Client.ExportData", "", resp, client.pl)
-	if err != nil {
-		return ClientExportDataPollerResponse{}, err
-	}
-	result.Poller = &ClientExportDataPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // ExportData - Export data from the redis cache to blobs in a container.
@@ -338,7 +325,7 @@ func (client *Client) forceRebootCreateRequest(ctx context.Context, resourceGrou
 
 // forceRebootHandleResponse handles the ForceReboot response.
 func (client *Client) forceRebootHandleResponse(resp *http.Response) (ClientForceRebootResponse, error) {
-	result := ClientForceRebootResponse{RawResponse: resp}
+	result := ClientForceRebootResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ForceRebootResponse); err != nil {
 		return ClientForceRebootResponse{}, err
 	}
@@ -393,7 +380,7 @@ func (client *Client) getCreateRequest(ctx context.Context, resourceGroupName st
 
 // getHandleResponse handles the Get response.
 func (client *Client) getHandleResponse(resp *http.Response) (ClientGetResponse, error) {
-	result := ClientGetResponse{RawResponse: resp}
+	result := ClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceInfo); err != nil {
 		return ClientGetResponse{}, err
 	}
@@ -406,22 +393,16 @@ func (client *Client) getHandleResponse(resp *http.Response) (ClientGetResponse,
 // name - The name of the Redis cache.
 // parameters - Parameters for Redis import operation.
 // options - ClientBeginImportDataOptions contains the optional parameters for the Client.BeginImportData method.
-func (client *Client) BeginImportData(ctx context.Context, resourceGroupName string, name string, parameters ImportRDBParameters, options *ClientBeginImportDataOptions) (ClientImportDataPollerResponse, error) {
-	resp, err := client.importData(ctx, resourceGroupName, name, parameters, options)
-	if err != nil {
-		return ClientImportDataPollerResponse{}, err
+func (client *Client) BeginImportData(ctx context.Context, resourceGroupName string, name string, parameters ImportRDBParameters, options *ClientBeginImportDataOptions) (*armruntime.Poller[ClientImportDataResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.importData(ctx, resourceGroupName, name, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ClientImportDataResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ClientImportDataResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ClientImportDataPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("Client.ImportData", "", resp, client.pl)
-	if err != nil {
-		return ClientImportDataPollerResponse{}, err
-	}
-	result.Poller = &ClientImportDataPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // ImportData - Import data into Redis cache.
@@ -471,16 +452,32 @@ func (client *Client) importDataCreateRequest(ctx context.Context, resourceGroup
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - ClientListByResourceGroupOptions contains the optional parameters for the Client.ListByResourceGroup method.
-func (client *Client) ListByResourceGroup(resourceGroupName string, options *ClientListByResourceGroupOptions) *ClientListByResourceGroupPager {
-	return &ClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *Client) ListByResourceGroup(resourceGroupName string, options *ClientListByResourceGroupOptions) *runtime.Pager[ClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ClientListByResourceGroupResponse]{
+		More: func(page ClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ClientListByResourceGroupResponse) (ClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -507,7 +504,7 @@ func (client *Client) listByResourceGroupCreateRequest(ctx context.Context, reso
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *Client) listByResourceGroupHandleResponse(resp *http.Response) (ClientListByResourceGroupResponse, error) {
-	result := ClientListByResourceGroupResponse{RawResponse: resp}
+	result := ClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListResult); err != nil {
 		return ClientListByResourceGroupResponse{}, err
 	}
@@ -517,16 +514,32 @@ func (client *Client) listByResourceGroupHandleResponse(resp *http.Response) (Cl
 // ListBySubscription - Gets all Redis caches in the specified subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ClientListBySubscriptionOptions contains the optional parameters for the Client.ListBySubscription method.
-func (client *Client) ListBySubscription(options *ClientListBySubscriptionOptions) *ClientListBySubscriptionPager {
-	return &ClientListBySubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySubscriptionCreateRequest(ctx, options)
+func (client *Client) ListBySubscription(options *ClientListBySubscriptionOptions) *runtime.Pager[ClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ClientListBySubscriptionResponse]{
+		More: func(page ClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ClientListBySubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ClientListBySubscriptionResponse) (ClientListBySubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySubscriptionCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ClientListBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
@@ -549,7 +562,7 @@ func (client *Client) listBySubscriptionCreateRequest(ctx context.Context, optio
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
 func (client *Client) listBySubscriptionHandleResponse(resp *http.Response) (ClientListBySubscriptionResponse, error) {
-	result := ClientListBySubscriptionResponse{RawResponse: resp}
+	result := ClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListResult); err != nil {
 		return ClientListBySubscriptionResponse{}, err
 	}
@@ -604,7 +617,7 @@ func (client *Client) listKeysCreateRequest(ctx context.Context, resourceGroupNa
 
 // listKeysHandleResponse handles the ListKeys response.
 func (client *Client) listKeysHandleResponse(resp *http.Response) (ClientListKeysResponse, error) {
-	result := ClientListKeysResponse{RawResponse: resp}
+	result := ClientListKeysResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessKeys); err != nil {
 		return ClientListKeysResponse{}, err
 	}
@@ -618,16 +631,32 @@ func (client *Client) listKeysHandleResponse(resp *http.Response) (ClientListKey
 // history - how many minutes in past to look for upgrade notifications
 // options - ClientListUpgradeNotificationsOptions contains the optional parameters for the Client.ListUpgradeNotifications
 // method.
-func (client *Client) ListUpgradeNotifications(resourceGroupName string, name string, history float64, options *ClientListUpgradeNotificationsOptions) *ClientListUpgradeNotificationsPager {
-	return &ClientListUpgradeNotificationsPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listUpgradeNotificationsCreateRequest(ctx, resourceGroupName, name, history, options)
+func (client *Client) ListUpgradeNotifications(resourceGroupName string, name string, history float64, options *ClientListUpgradeNotificationsOptions) *runtime.Pager[ClientListUpgradeNotificationsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ClientListUpgradeNotificationsResponse]{
+		More: func(page ClientListUpgradeNotificationsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ClientListUpgradeNotificationsResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.NotificationListResponse.NextLink)
+		Fetcher: func(ctx context.Context, page *ClientListUpgradeNotificationsResponse) (ClientListUpgradeNotificationsResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listUpgradeNotificationsCreateRequest(ctx, resourceGroupName, name, history, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ClientListUpgradeNotificationsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ClientListUpgradeNotificationsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ClientListUpgradeNotificationsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listUpgradeNotificationsHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listUpgradeNotificationsCreateRequest creates the ListUpgradeNotifications request.
@@ -659,7 +688,7 @@ func (client *Client) listUpgradeNotificationsCreateRequest(ctx context.Context,
 
 // listUpgradeNotificationsHandleResponse handles the ListUpgradeNotifications response.
 func (client *Client) listUpgradeNotificationsHandleResponse(resp *http.Response) (ClientListUpgradeNotificationsResponse, error) {
-	result := ClientListUpgradeNotificationsResponse{RawResponse: resp}
+	result := ClientListUpgradeNotificationsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NotificationListResponse); err != nil {
 		return ClientListUpgradeNotificationsResponse{}, err
 	}
@@ -715,7 +744,7 @@ func (client *Client) regenerateKeyCreateRequest(ctx context.Context, resourceGr
 
 // regenerateKeyHandleResponse handles the RegenerateKey response.
 func (client *Client) regenerateKeyHandleResponse(resp *http.Response) (ClientRegenerateKeyResponse, error) {
-	result := ClientRegenerateKeyResponse{RawResponse: resp}
+	result := ClientRegenerateKeyResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessKeys); err != nil {
 		return ClientRegenerateKeyResponse{}, err
 	}
@@ -771,7 +800,7 @@ func (client *Client) updateCreateRequest(ctx context.Context, resourceGroupName
 
 // updateHandleResponse handles the Update response.
 func (client *Client) updateHandleResponse(resp *http.Response) (ClientUpdateResponse, error) {
-	result := ClientUpdateResponse{RawResponse: resp}
+	result := ClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceInfo); err != nil {
 		return ClientUpdateResponse{}, err
 	}

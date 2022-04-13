@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,207 +19,245 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/domainservices/armdomainservices"
 )
 
-// x-ms-original-file: specification/domainservices/resource-manager/Microsoft.AAD/stable/2021-05-01/examples/ListDomainServicesBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/domainservices/resource-manager/Microsoft.AAD/stable/2021-05-01/examples/ListDomainServicesBySubscription.json
 func ExampleClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdomainservices.NewClient("<subscription-id>", cred, nil)
+	client, err := armdomainservices.NewClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.List(nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/domainservices/resource-manager/Microsoft.AAD/stable/2021-05-01/examples/ListDomainServicesByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/domainservices/resource-manager/Microsoft.AAD/stable/2021-05-01/examples/ListDomainServicesByResourceGroup.json
 func ExampleClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdomainservices.NewClient("<subscription-id>", cred, nil)
+	client, err := armdomainservices.NewClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/domainservices/resource-manager/Microsoft.AAD/stable/2021-05-01/examples/CreateDomainService.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/domainservices/resource-manager/Microsoft.AAD/stable/2021-05-01/examples/CreateDomainService.json
 func ExampleClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdomainservices.NewClient("<subscription-id>", cred, nil)
+	client, err := armdomainservices.NewClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<domain-service-name>",
 		armdomainservices.DomainService{
 			Properties: &armdomainservices.DomainServiceProperties{
-				DomainName: to.StringPtr("<domain-name>"),
+				DomainName: to.Ptr("<domain-name>"),
 				DomainSecuritySettings: &armdomainservices.DomainSecuritySettings{
-					NtlmV1:            armdomainservices.NtlmV1("Enabled").ToPtr(),
-					SyncNtlmPasswords: armdomainservices.SyncNtlmPasswords("Enabled").ToPtr(),
-					TLSV1:             armdomainservices.TLSV1("Disabled").ToPtr(),
+					NtlmV1:            to.Ptr(armdomainservices.NtlmV1Enabled),
+					SyncNtlmPasswords: to.Ptr(armdomainservices.SyncNtlmPasswordsEnabled),
+					TLSV1:             to.Ptr(armdomainservices.TLSV1Disabled),
 				},
-				FilteredSync: armdomainservices.FilteredSync("Enabled").ToPtr(),
+				FilteredSync: to.Ptr(armdomainservices.FilteredSyncEnabled),
 				LdapsSettings: &armdomainservices.LdapsSettings{
-					ExternalAccess:         armdomainservices.ExternalAccess("Enabled").ToPtr(),
-					Ldaps:                  armdomainservices.Ldaps("Enabled").ToPtr(),
-					PfxCertificate:         to.StringPtr("<pfx-certificate>"),
-					PfxCertificatePassword: to.StringPtr("<pfx-certificate-password>"),
+					ExternalAccess:         to.Ptr(armdomainservices.ExternalAccessEnabled),
+					Ldaps:                  to.Ptr(armdomainservices.LdapsEnabled),
+					PfxCertificate:         to.Ptr("<pfx-certificate>"),
+					PfxCertificatePassword: to.Ptr("<pfx-certificate-password>"),
 				},
 				NotificationSettings: &armdomainservices.NotificationSettings{
 					AdditionalRecipients: []*string{
-						to.StringPtr("jicha@microsoft.com"),
-						to.StringPtr("caalmont@microsoft.com")},
-					NotifyDcAdmins:     armdomainservices.NotifyDcAdmins("Enabled").ToPtr(),
-					NotifyGlobalAdmins: armdomainservices.NotifyGlobalAdmins("Enabled").ToPtr(),
+						to.Ptr("jicha@microsoft.com"),
+						to.Ptr("caalmont@microsoft.com")},
+					NotifyDcAdmins:     to.Ptr(armdomainservices.NotifyDcAdminsEnabled),
+					NotifyGlobalAdmins: to.Ptr(armdomainservices.NotifyGlobalAdminsEnabled),
 				},
 				ReplicaSets: []*armdomainservices.ReplicaSet{
 					{
-						Location: to.StringPtr("<location>"),
-						SubnetID: to.StringPtr("<subnet-id>"),
+						Location: to.Ptr("<location>"),
+						SubnetID: to.Ptr("<subnet-id>"),
 					}},
 			},
 		},
-		nil)
+		&armdomainservices.ClientBeginCreateOrUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/domainservices/resource-manager/Microsoft.AAD/stable/2021-05-01/examples/GetDomainService.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/domainservices/resource-manager/Microsoft.AAD/stable/2021-05-01/examples/GetDomainService.json
 func ExampleClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdomainservices.NewClient("<subscription-id>", cred, nil)
+	client, err := armdomainservices.NewClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<domain-service-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/domainservices/resource-manager/Microsoft.AAD/stable/2021-05-01/examples/DeleteDomainService.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/domainservices/resource-manager/Microsoft.AAD/stable/2021-05-01/examples/DeleteDomainService.json
 func ExampleClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdomainservices.NewClient("<subscription-id>", cred, nil)
+	client, err := armdomainservices.NewClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
 		"<domain-service-name>",
-		nil)
+		&armdomainservices.ClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/domainservices/resource-manager/Microsoft.AAD/stable/2021-05-01/examples/UpdateDomainService.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/domainservices/resource-manager/Microsoft.AAD/stable/2021-05-01/examples/UpdateDomainService.json
 func ExampleClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armdomainservices.NewClient("<subscription-id>", cred, nil)
+	client, err := armdomainservices.NewClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginUpdate(ctx,
 		"<resource-group-name>",
 		"<domain-service-name>",
 		armdomainservices.DomainService{
 			Properties: &armdomainservices.DomainServiceProperties{
 				ConfigDiagnostics: &armdomainservices.ConfigDiagnostics{
-					LastExecuted: to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC1123, "2021-05-05T12:00:23Z;"); return t }()),
+					LastExecuted: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "2021-05-05T12:00:23Z;"); return t }()),
 					ValidatorResults: []*armdomainservices.ConfigDiagnosticsValidatorResult{
 						{
 							Issues: []*armdomainservices.ConfigDiagnosticsValidatorResultIssue{
 								{
 									DescriptionParams: []*string{},
-									ID:                to.StringPtr("<id>"),
+									ID:                to.Ptr("<id>"),
 								}},
-							ReplicaSetSubnetDisplayName: to.StringPtr("<replica-set-subnet-display-name>"),
-							Status:                      armdomainservices.Status("Warning").ToPtr(),
-							ValidatorID:                 to.StringPtr("<validator-id>"),
+							ReplicaSetSubnetDisplayName: to.Ptr("<replica-set-subnet-display-name>"),
+							Status:                      to.Ptr(armdomainservices.StatusWarning),
+							ValidatorID:                 to.Ptr("<validator-id>"),
 						}},
 				},
 				DomainSecuritySettings: &armdomainservices.DomainSecuritySettings{
-					NtlmV1:            armdomainservices.NtlmV1("Enabled").ToPtr(),
-					SyncNtlmPasswords: armdomainservices.SyncNtlmPasswords("Enabled").ToPtr(),
-					TLSV1:             armdomainservices.TLSV1("Disabled").ToPtr(),
+					NtlmV1:            to.Ptr(armdomainservices.NtlmV1Enabled),
+					SyncNtlmPasswords: to.Ptr(armdomainservices.SyncNtlmPasswordsEnabled),
+					TLSV1:             to.Ptr(armdomainservices.TLSV1Disabled),
 				},
-				FilteredSync: armdomainservices.FilteredSync("Enabled").ToPtr(),
+				FilteredSync: to.Ptr(armdomainservices.FilteredSyncEnabled),
 				LdapsSettings: &armdomainservices.LdapsSettings{
-					ExternalAccess:         armdomainservices.ExternalAccess("Enabled").ToPtr(),
-					Ldaps:                  armdomainservices.Ldaps("Enabled").ToPtr(),
-					PfxCertificate:         to.StringPtr("<pfx-certificate>"),
-					PfxCertificatePassword: to.StringPtr("<pfx-certificate-password>"),
+					ExternalAccess:         to.Ptr(armdomainservices.ExternalAccessEnabled),
+					Ldaps:                  to.Ptr(armdomainservices.LdapsEnabled),
+					PfxCertificate:         to.Ptr("<pfx-certificate>"),
+					PfxCertificatePassword: to.Ptr("<pfx-certificate-password>"),
 				},
 				NotificationSettings: &armdomainservices.NotificationSettings{
 					AdditionalRecipients: []*string{
-						to.StringPtr("jicha@microsoft.com"),
-						to.StringPtr("caalmont@microsoft.com")},
-					NotifyDcAdmins:     armdomainservices.NotifyDcAdmins("Enabled").ToPtr(),
-					NotifyGlobalAdmins: armdomainservices.NotifyGlobalAdmins("Enabled").ToPtr(),
+						to.Ptr("jicha@microsoft.com"),
+						to.Ptr("caalmont@microsoft.com")},
+					NotifyDcAdmins:     to.Ptr(armdomainservices.NotifyDcAdminsEnabled),
+					NotifyGlobalAdmins: to.Ptr(armdomainservices.NotifyGlobalAdminsEnabled),
 				},
 				ReplicaSets: []*armdomainservices.ReplicaSet{
 					{
-						Location: to.StringPtr("<location>"),
-						SubnetID: to.StringPtr("<subnet-id>"),
+						Location: to.Ptr("<location>"),
+						SubnetID: to.Ptr("<subnet-id>"),
 					},
 					{
-						Location: to.StringPtr("<location>"),
-						SubnetID: to.StringPtr("<subnet-id>"),
+						Location: to.Ptr("<location>"),
+						SubnetID: to.Ptr("<subnet-id>"),
 					}},
 			},
 		},
-		nil)
+		&armdomainservices.ClientBeginUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ClientUpdateResult)
+	// TODO: use response item
+	_ = res
 }

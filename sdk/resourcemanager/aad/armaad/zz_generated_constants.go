@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,46 +10,43 @@ package armaad
 
 const (
 	moduleName    = "armaad"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
-// Category - Name of a Diagnostic Log category for a resource type this setting is applied to. To obtain the list of Diagnostic
-// Log categories for a resource, first perform a GET diagnostic settings operation.
-type Category string
+// PrivateEndpointConnectionProvisioningState - The current provisioning state.
+type PrivateEndpointConnectionProvisioningState string
 
 const (
-	CategoryAuditLogs  Category = "AuditLogs"
-	CategorySignInLogs Category = "SignInLogs"
+	PrivateEndpointConnectionProvisioningStateFailed       PrivateEndpointConnectionProvisioningState = "Failed"
+	PrivateEndpointConnectionProvisioningStateProvisioning PrivateEndpointConnectionProvisioningState = "Provisioning"
+	PrivateEndpointConnectionProvisioningStateSucceeded    PrivateEndpointConnectionProvisioningState = "Succeeded"
 )
 
-// PossibleCategoryValues returns the possible values for the Category const type.
-func PossibleCategoryValues() []Category {
-	return []Category{
-		CategoryAuditLogs,
-		CategorySignInLogs,
+// PossiblePrivateEndpointConnectionProvisioningStateValues returns the possible values for the PrivateEndpointConnectionProvisioningState const type.
+func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpointConnectionProvisioningState {
+	return []PrivateEndpointConnectionProvisioningState{
+		PrivateEndpointConnectionProvisioningStateFailed,
+		PrivateEndpointConnectionProvisioningStateProvisioning,
+		PrivateEndpointConnectionProvisioningStateSucceeded,
 	}
 }
 
-// ToPtr returns a *Category pointing to the current value.
-func (c Category) ToPtr() *Category {
-	return &c
-}
-
-// CategoryType - The type of the diagnostic settings category.
-type CategoryType string
+// PrivateEndpointServiceConnectionStatus - The private endpoint connection status.
+type PrivateEndpointServiceConnectionStatus string
 
 const (
-	CategoryTypeLogs CategoryType = "Logs"
+	PrivateEndpointServiceConnectionStatusApproved     PrivateEndpointServiceConnectionStatus = "Approved"
+	PrivateEndpointServiceConnectionStatusDisconnected PrivateEndpointServiceConnectionStatus = "Disconnected"
+	PrivateEndpointServiceConnectionStatusPending      PrivateEndpointServiceConnectionStatus = "Pending"
+	PrivateEndpointServiceConnectionStatusRejected     PrivateEndpointServiceConnectionStatus = "Rejected"
 )
 
-// PossibleCategoryTypeValues returns the possible values for the CategoryType const type.
-func PossibleCategoryTypeValues() []CategoryType {
-	return []CategoryType{
-		CategoryTypeLogs,
+// PossiblePrivateEndpointServiceConnectionStatusValues returns the possible values for the PrivateEndpointServiceConnectionStatus const type.
+func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointServiceConnectionStatus {
+	return []PrivateEndpointServiceConnectionStatus{
+		PrivateEndpointServiceConnectionStatusApproved,
+		PrivateEndpointServiceConnectionStatusDisconnected,
+		PrivateEndpointServiceConnectionStatusPending,
+		PrivateEndpointServiceConnectionStatusRejected,
 	}
-}
-
-// ToPtr returns a *CategoryType pointing to the current value.
-func (c CategoryType) ToPtr() *CategoryType {
-	return &c
 }

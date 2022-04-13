@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,22 +17,33 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos"
 )
 
-// x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBRestorableSqlResourceList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBRestorableSqlResourceList.json
 func ExampleRestorableSQLResourcesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcosmos.NewRestorableSQLResourcesClient("<subscription-id>", cred, nil)
-	res, err := client.List(ctx,
-		"<location>",
-		"<instance-id>",
-		&armcosmos.RestorableSQLResourcesClientListOptions{RestoreLocation: to.StringPtr("<restore-location>"),
-			RestoreTimestampInUTC: to.StringPtr("<restore-timestamp-in-utc>"),
-		})
+	client, err := armcosmos.NewRestorableSQLResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to create client: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.RestorableSQLResourcesClientListResult)
+	pager := client.List("<location>",
+		"<instance-id>",
+		&armcosmos.RestorableSQLResourcesClientListOptions{RestoreLocation: to.Ptr("<restore-location>"),
+			RestoreTimestampInUTC: to.Ptr("<restore-timestamp-in-utc>"),
+		})
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+			return
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
+	}
 }

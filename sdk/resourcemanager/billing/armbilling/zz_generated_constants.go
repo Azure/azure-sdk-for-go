@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armbilling
 
 const (
 	moduleName    = "armbilling"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // AcceptanceMode - The mode of acceptance for an agreement.
@@ -29,11 +29,6 @@ func PossibleAcceptanceModeValues() []AcceptanceMode {
 		AcceptanceModeESignEmbedded,
 		AcceptanceModeESignOffline,
 	}
-}
-
-// ToPtr returns a *AcceptanceMode pointing to the current value.
-func (c AcceptanceMode) ToPtr() *AcceptanceMode {
-	return &c
 }
 
 // AccountStatus - The current status of the billing account.
@@ -62,11 +57,6 @@ func PossibleAccountStatusValues() []AccountStatus {
 	}
 }
 
-// ToPtr returns a *AccountStatus pointing to the current value.
-func (c AccountStatus) ToPtr() *AccountStatus {
-	return &c
-}
-
 // AccountType - The type of customer.
 type AccountType string
 
@@ -85,11 +75,6 @@ func PossibleAccountTypeValues() []AccountType {
 	}
 }
 
-// ToPtr returns a *AccountType pointing to the current value.
-func (c AccountType) ToPtr() *AccountType {
-	return &c
-}
-
 // AddressValidationStatus - Status of the address validation.
 type AddressValidationStatus string
 
@@ -104,11 +89,6 @@ func PossibleAddressValidationStatusValues() []AddressValidationStatus {
 		AddressValidationStatusInvalid,
 		AddressValidationStatusValid,
 	}
-}
-
-// ToPtr returns a *AddressValidationStatus pointing to the current value.
-func (c AddressValidationStatus) ToPtr() *AddressValidationStatus {
-	return &c
 }
 
 // AgreementType - The type of agreement.
@@ -131,11 +111,6 @@ func PossibleAgreementTypeValues() []AgreementType {
 	}
 }
 
-// ToPtr returns a *AgreementType pointing to the current value.
-func (c AgreementType) ToPtr() *AgreementType {
-	return &c
-}
-
 // AutoRenew - Indicates whether auto renewal is turned on or off for a product.
 type AutoRenew string
 
@@ -150,11 +125,6 @@ func PossibleAutoRenewValues() []AutoRenew {
 		AutoRenewOff,
 		AutoRenewOn,
 	}
-}
-
-// ToPtr returns a *AutoRenew pointing to the current value.
-func (c AutoRenew) ToPtr() *AutoRenew {
-	return &c
 }
 
 // BillingFrequency - The frequency at which the product will be billed.
@@ -175,11 +145,6 @@ func PossibleBillingFrequencyValues() []BillingFrequency {
 	}
 }
 
-// ToPtr returns a *BillingFrequency pointing to the current value.
-func (c BillingFrequency) ToPtr() *BillingFrequency {
-	return &c
-}
-
 // BillingProfileSpendingLimit - The billing profile spending limit.
 type BillingProfileSpendingLimit string
 
@@ -194,11 +159,6 @@ func PossibleBillingProfileSpendingLimitValues() []BillingProfileSpendingLimit {
 		BillingProfileSpendingLimitOff,
 		BillingProfileSpendingLimitOn,
 	}
-}
-
-// ToPtr returns a *BillingProfileSpendingLimit pointing to the current value.
-func (c BillingProfileSpendingLimit) ToPtr() *BillingProfileSpendingLimit {
-	return &c
 }
 
 // BillingProfileStatus - The status of the billing profile.
@@ -219,11 +179,6 @@ func PossibleBillingProfileStatusValues() []BillingProfileStatus {
 	}
 }
 
-// ToPtr returns a *BillingProfileStatus pointing to the current value.
-func (c BillingProfileStatus) ToPtr() *BillingProfileStatus {
-	return &c
-}
-
 // BillingProfileStatusReasonCode - Reason for the specified billing profile status.
 type BillingProfileStatusReasonCode string
 
@@ -240,11 +195,6 @@ func PossibleBillingProfileStatusReasonCodeValues() []BillingProfileStatusReason
 		BillingProfileStatusReasonCodeSpendingLimitExpired,
 		BillingProfileStatusReasonCodeSpendingLimitReached,
 	}
-}
-
-// ToPtr returns a *BillingProfileStatusReasonCode pointing to the current value.
-func (c BillingProfileStatusReasonCode) ToPtr() *BillingProfileStatusReasonCode {
-	return &c
 }
 
 // BillingRelationshipType - Identifies which services and purchases are paid by a billing profile.
@@ -265,11 +215,6 @@ func PossibleBillingRelationshipTypeValues() []BillingRelationshipType {
 		BillingRelationshipTypeIndirectCustomer,
 		BillingRelationshipTypeIndirectPartner,
 	}
-}
-
-// ToPtr returns a *BillingRelationshipType pointing to the current value.
-func (c BillingRelationshipType) ToPtr() *BillingRelationshipType {
-	return &c
 }
 
 // BillingSubscriptionStatusType - The current billing status of the subscription.
@@ -294,11 +239,6 @@ func PossibleBillingSubscriptionStatusTypeValues() []BillingSubscriptionStatusTy
 	}
 }
 
-// ToPtr returns a *BillingSubscriptionStatusType pointing to the current value.
-func (c BillingSubscriptionStatusType) ToPtr() *BillingSubscriptionStatusType {
-	return &c
-}
-
 // Category - The category of the agreement signed by a customer.
 type Category string
 
@@ -317,11 +257,6 @@ func PossibleCategoryValues() []Category {
 	}
 }
 
-// ToPtr returns a *Category pointing to the current value.
-func (c Category) ToPtr() *Category {
-	return &c
-}
-
 // DocumentSource - The source of the document. ENF for Brazil and DRS for rest of the world.
 type DocumentSource string
 
@@ -336,11 +271,6 @@ func PossibleDocumentSourceValues() []DocumentSource {
 		DocumentSourceDRS,
 		DocumentSourceENF,
 	}
-}
-
-// ToPtr returns a *DocumentSource pointing to the current value.
-func (c DocumentSource) ToPtr() *DocumentSource {
-	return &c
 }
 
 // DocumentType - The type of the document.
@@ -363,11 +293,6 @@ func PossibleDocumentTypeValues() []DocumentType {
 	}
 }
 
-// ToPtr returns a *DocumentType pointing to the current value.
-func (c DocumentType) ToPtr() *DocumentType {
-	return &c
-}
-
 // InvoiceDocumentType - The type of the document.
 type InvoiceDocumentType string
 
@@ -384,11 +309,6 @@ func PossibleInvoiceDocumentTypeValues() []InvoiceDocumentType {
 	}
 }
 
-// ToPtr returns a *InvoiceDocumentType pointing to the current value.
-func (c InvoiceDocumentType) ToPtr() *InvoiceDocumentType {
-	return &c
-}
-
 // InvoiceSectionState - Identifies the state of an invoice section.
 type InvoiceSectionState string
 
@@ -403,11 +323,6 @@ func PossibleInvoiceSectionStateValues() []InvoiceSectionState {
 		InvoiceSectionStateActive,
 		InvoiceSectionStateRestricted,
 	}
-}
-
-// ToPtr returns a *InvoiceSectionState pointing to the current value.
-func (c InvoiceSectionState) ToPtr() *InvoiceSectionState {
-	return &c
 }
 
 // InvoiceStatus - The current status of the invoice.
@@ -430,11 +345,6 @@ func PossibleInvoiceStatusValues() []InvoiceStatus {
 	}
 }
 
-// ToPtr returns a *InvoiceStatus pointing to the current value.
-func (c InvoiceStatus) ToPtr() *InvoiceStatus {
-	return &c
-}
-
 // InvoiceType - Invoice type.
 type InvoiceType string
 
@@ -451,11 +361,6 @@ func PossibleInvoiceTypeValues() []InvoiceType {
 		InvoiceTypeAzureService,
 		InvoiceTypeAzureSupport,
 	}
-}
-
-// ToPtr returns a *InvoiceType pointing to the current value.
-func (c InvoiceType) ToPtr() *InvoiceType {
-	return &c
 }
 
 // MarketplacePurchasesPolicy - The policy that controls whether Azure marketplace purchases are allowed for a billing profile.
@@ -476,11 +381,6 @@ func PossibleMarketplacePurchasesPolicyValues() []MarketplacePurchasesPolicy {
 	}
 }
 
-// ToPtr returns a *MarketplacePurchasesPolicy pointing to the current value.
-func (c MarketplacePurchasesPolicy) ToPtr() *MarketplacePurchasesPolicy {
-	return &c
-}
-
 // PaymentMethodFamily - The family of payment method.
 type PaymentMethodFamily string
 
@@ -499,11 +399,6 @@ func PossiblePaymentMethodFamilyValues() []PaymentMethodFamily {
 		PaymentMethodFamilyCredits,
 		PaymentMethodFamilyNone,
 	}
-}
-
-// ToPtr returns a *PaymentMethodFamily pointing to the current value.
-func (c PaymentMethodFamily) ToPtr() *PaymentMethodFamily {
-	return &c
 }
 
 // ProductStatusType - The current status of the product.
@@ -532,11 +427,6 @@ func PossibleProductStatusTypeValues() []ProductStatusType {
 		ProductStatusTypeInactive,
 		ProductStatusTypePastDue,
 	}
-}
-
-// ToPtr returns a *ProductStatusType pointing to the current value.
-func (c ProductStatusType) ToPtr() *ProductStatusType {
-	return &c
 }
 
 // ProductTransferValidationErrorCode - Error code of the transfer validation response.
@@ -569,11 +459,6 @@ func PossibleProductTransferValidationErrorCodeValues() []ProductTransferValidat
 	}
 }
 
-// ToPtr returns a *ProductTransferValidationErrorCode pointing to the current value.
-func (c ProductTransferValidationErrorCode) ToPtr() *ProductTransferValidationErrorCode {
-	return &c
-}
-
 // ReservationPurchasesPolicy - The policy that controls whether Azure reservation purchases are allowed for a billing profile.
 type ReservationPurchasesPolicy string
 
@@ -588,11 +473,6 @@ func PossibleReservationPurchasesPolicyValues() []ReservationPurchasesPolicy {
 		ReservationPurchasesPolicyAllowed,
 		ReservationPurchasesPolicyNotAllowed,
 	}
-}
-
-// ToPtr returns a *ReservationPurchasesPolicy pointing to the current value.
-func (c ReservationPurchasesPolicy) ToPtr() *ReservationPurchasesPolicy {
-	return &c
 }
 
 // ReservationType - The type of transaction.
@@ -611,11 +491,6 @@ func PossibleReservationTypeValues() []ReservationType {
 	}
 }
 
-// ToPtr returns a *ReservationType pointing to the current value.
-func (c ReservationType) ToPtr() *ReservationType {
-	return &c
-}
-
 // SpendingLimit - The billing profile spending limit.
 type SpendingLimit string
 
@@ -632,11 +507,6 @@ func PossibleSpendingLimitValues() []SpendingLimit {
 	}
 }
 
-// ToPtr returns a *SpendingLimit pointing to the current value.
-func (c SpendingLimit) ToPtr() *SpendingLimit {
-	return &c
-}
-
 // SpendingLimitForBillingProfile - The billing profile spending limit.
 type SpendingLimitForBillingProfile string
 
@@ -651,11 +521,6 @@ func PossibleSpendingLimitForBillingProfileValues() []SpendingLimitForBillingPro
 		SpendingLimitForBillingProfileOff,
 		SpendingLimitForBillingProfileOn,
 	}
-}
-
-// ToPtr returns a *SpendingLimitForBillingProfile pointing to the current value.
-func (c SpendingLimitForBillingProfile) ToPtr() *SpendingLimitForBillingProfile {
-	return &c
 }
 
 // StatusReasonCode - Reason for the specified billing profile status.
@@ -676,11 +541,6 @@ func PossibleStatusReasonCodeValues() []StatusReasonCode {
 	}
 }
 
-// ToPtr returns a *StatusReasonCode pointing to the current value.
-func (c StatusReasonCode) ToPtr() *StatusReasonCode {
-	return &c
-}
-
 // StatusReasonCodeForBillingProfile - Reason for the specified billing profile status.
 type StatusReasonCodeForBillingProfile string
 
@@ -697,11 +557,6 @@ func PossibleStatusReasonCodeForBillingProfileValues() []StatusReasonCodeForBill
 		StatusReasonCodeForBillingProfileSpendingLimitExpired,
 		StatusReasonCodeForBillingProfileSpendingLimitReached,
 	}
-}
-
-// ToPtr returns a *StatusReasonCodeForBillingProfile pointing to the current value.
-func (c StatusReasonCodeForBillingProfile) ToPtr() *StatusReasonCodeForBillingProfile {
-	return &c
 }
 
 // SubscriptionTransferValidationErrorCode - Error code of the transfer validation response.
@@ -756,11 +611,6 @@ func PossibleSubscriptionTransferValidationErrorCodeValues() []SubscriptionTrans
 	}
 }
 
-// ToPtr returns a *SubscriptionTransferValidationErrorCode pointing to the current value.
-func (c SubscriptionTransferValidationErrorCode) ToPtr() *SubscriptionTransferValidationErrorCode {
-	return &c
-}
-
 // TargetCloud - Possible cloud environments.
 type TargetCloud string
 
@@ -779,11 +629,6 @@ func PossibleTargetCloudValues() []TargetCloud {
 	}
 }
 
-// ToPtr returns a *TargetCloud pointing to the current value.
-func (c TargetCloud) ToPtr() *TargetCloud {
-	return &c
-}
-
 // TransactionTypeKind - The kind of transaction. Options are all or reservation.
 type TransactionTypeKind string
 
@@ -798,11 +643,6 @@ func PossibleTransactionTypeKindValues() []TransactionTypeKind {
 		TransactionTypeKindAll,
 		TransactionTypeKindReservation,
 	}
-}
-
-// ToPtr returns a *TransactionTypeKind pointing to the current value.
-func (c TransactionTypeKind) ToPtr() *TransactionTypeKind {
-	return &c
 }
 
 // ViewCharges - The policy that controls whether the users in customer's organization can view charges at pay-as-you-go prices.
@@ -821,11 +661,6 @@ func PossibleViewChargesValues() []ViewCharges {
 	}
 }
 
-// ToPtr returns a *ViewCharges pointing to the current value.
-func (c ViewCharges) ToPtr() *ViewCharges {
-	return &c
-}
-
 // ViewChargesPolicy - The policy that controls whether users with Azure RBAC access to a subscription can view its charges.
 type ViewChargesPolicy string
 
@@ -840,9 +675,4 @@ func PossibleViewChargesPolicyValues() []ViewChargesPolicy {
 		ViewChargesPolicyAllowed,
 		ViewChargesPolicyNotAllowed,
 	}
-}
-
-// ToPtr returns a *ViewChargesPolicy pointing to the current value.
-func (c ViewChargesPolicy) ToPtr() *ViewChargesPolicy {
-	return &c
 }

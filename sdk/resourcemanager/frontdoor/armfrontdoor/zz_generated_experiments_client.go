@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type ExperimentsClient struct {
 // ID forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewExperimentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ExperimentsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewExperimentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ExperimentsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ExperimentsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates an Experiment
@@ -58,22 +63,16 @@ func NewExperimentsClient(subscriptionID string, credential azcore.TokenCredenti
 // parameters - The Experiment resource
 // options - ExperimentsClientBeginCreateOrUpdateOptions contains the optional parameters for the ExperimentsClient.BeginCreateOrUpdate
 // method.
-func (client *ExperimentsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, profileName string, experimentName string, parameters Experiment, options *ExperimentsClientBeginCreateOrUpdateOptions) (ExperimentsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, profileName, experimentName, parameters, options)
-	if err != nil {
-		return ExperimentsClientCreateOrUpdatePollerResponse{}, err
+func (client *ExperimentsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, profileName string, experimentName string, parameters Experiment, options *ExperimentsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[ExperimentsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, profileName, experimentName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ExperimentsClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ExperimentsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ExperimentsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ExperimentsClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return ExperimentsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &ExperimentsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates an Experiment
@@ -129,22 +128,16 @@ func (client *ExperimentsClient) createOrUpdateCreateRequest(ctx context.Context
 // profileName - The Profile identifier associated with the Tenant and Partner
 // experimentName - The Experiment identifier associated with the Experiment
 // options - ExperimentsClientBeginDeleteOptions contains the optional parameters for the ExperimentsClient.BeginDelete method.
-func (client *ExperimentsClient) BeginDelete(ctx context.Context, resourceGroupName string, profileName string, experimentName string, options *ExperimentsClientBeginDeleteOptions) (ExperimentsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, profileName, experimentName, options)
-	if err != nil {
-		return ExperimentsClientDeletePollerResponse{}, err
+func (client *ExperimentsClient) BeginDelete(ctx context.Context, resourceGroupName string, profileName string, experimentName string, options *ExperimentsClientBeginDeleteOptions) (*armruntime.Poller[ExperimentsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, profileName, experimentName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ExperimentsClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ExperimentsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ExperimentsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ExperimentsClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return ExperimentsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &ExperimentsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes an Experiment
@@ -247,7 +240,7 @@ func (client *ExperimentsClient) getCreateRequest(ctx context.Context, resourceG
 
 // getHandleResponse handles the Get response.
 func (client *ExperimentsClient) getHandleResponse(resp *http.Response) (ExperimentsClientGetResponse, error) {
-	result := ExperimentsClientGetResponse{RawResponse: resp}
+	result := ExperimentsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Experiment); err != nil {
 		return ExperimentsClientGetResponse{}, err
 	}
@@ -260,16 +253,32 @@ func (client *ExperimentsClient) getHandleResponse(resp *http.Response) (Experim
 // profileName - The Profile identifier associated with the Tenant and Partner
 // options - ExperimentsClientListByProfileOptions contains the optional parameters for the ExperimentsClient.ListByProfile
 // method.
-func (client *ExperimentsClient) ListByProfile(resourceGroupName string, profileName string, options *ExperimentsClientListByProfileOptions) *ExperimentsClientListByProfilePager {
-	return &ExperimentsClientListByProfilePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByProfileCreateRequest(ctx, resourceGroupName, profileName, options)
+func (client *ExperimentsClient) ListByProfile(resourceGroupName string, profileName string, options *ExperimentsClientListByProfileOptions) *runtime.Pager[ExperimentsClientListByProfileResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ExperimentsClientListByProfileResponse]{
+		More: func(page ExperimentsClientListByProfileResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ExperimentsClientListByProfileResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ExperimentList.NextLink)
+		Fetcher: func(ctx context.Context, page *ExperimentsClientListByProfileResponse) (ExperimentsClientListByProfileResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByProfileCreateRequest(ctx, resourceGroupName, profileName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ExperimentsClientListByProfileResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ExperimentsClientListByProfileResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ExperimentsClientListByProfileResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByProfileHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByProfileCreateRequest creates the ListByProfile request.
@@ -300,7 +309,7 @@ func (client *ExperimentsClient) listByProfileCreateRequest(ctx context.Context,
 
 // listByProfileHandleResponse handles the ListByProfile response.
 func (client *ExperimentsClient) listByProfileHandleResponse(resp *http.Response) (ExperimentsClientListByProfileResponse, error) {
-	result := ExperimentsClientListByProfileResponse{RawResponse: resp}
+	result := ExperimentsClientListByProfileResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExperimentList); err != nil {
 		return ExperimentsClientListByProfileResponse{}, err
 	}
@@ -314,22 +323,16 @@ func (client *ExperimentsClient) listByProfileHandleResponse(resp *http.Response
 // experimentName - The Experiment identifier associated with the Experiment
 // parameters - The Experiment Update Model
 // options - ExperimentsClientBeginUpdateOptions contains the optional parameters for the ExperimentsClient.BeginUpdate method.
-func (client *ExperimentsClient) BeginUpdate(ctx context.Context, resourceGroupName string, profileName string, experimentName string, parameters ExperimentUpdateModel, options *ExperimentsClientBeginUpdateOptions) (ExperimentsClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, profileName, experimentName, parameters, options)
-	if err != nil {
-		return ExperimentsClientUpdatePollerResponse{}, err
+func (client *ExperimentsClient) BeginUpdate(ctx context.Context, resourceGroupName string, profileName string, experimentName string, parameters ExperimentUpdateModel, options *ExperimentsClientBeginUpdateOptions) (*armruntime.Poller[ExperimentsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, profileName, experimentName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ExperimentsClientUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ExperimentsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ExperimentsClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ExperimentsClient.Update", "", resp, client.pl)
-	if err != nil {
-		return ExperimentsClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &ExperimentsClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Updates an Experiment

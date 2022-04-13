@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,117 +17,146 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/advisor/armadvisor"
 )
 
-// x-ms-original-file: specification/advisor/resource-manager/Microsoft.Advisor/stable/2020-01-01/examples/ListConfigurations.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/advisor/resource-manager/Microsoft.Advisor/stable/2020-01-01/examples/ListConfigurations.json
 func ExampleConfigurationsClient_ListBySubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armadvisor.NewConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armadvisor.NewConfigurationsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListBySubscription(nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/advisor/resource-manager/Microsoft.Advisor/stable/2020-01-01/examples/CreateConfiguration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/advisor/resource-manager/Microsoft.Advisor/stable/2020-01-01/examples/CreateConfiguration.json
 func ExampleConfigurationsClient_CreateInSubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armadvisor.NewConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armadvisor.NewConfigurationsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.CreateInSubscription(ctx,
-		armadvisor.ConfigurationName("default"),
+		armadvisor.ConfigurationNameDefault,
 		armadvisor.ConfigData{
 			Properties: &armadvisor.ConfigDataProperties{
 				Digests: []*armadvisor.DigestConfig{
 					{
-						Name:                  to.StringPtr("<name>"),
-						ActionGroupResourceID: to.StringPtr("<action-group-resource-id>"),
+						Name:                  to.Ptr("<name>"),
+						ActionGroupResourceID: to.Ptr("<action-group-resource-id>"),
 						Categories: []*armadvisor.Category{
-							armadvisor.Category("HighAvailability").ToPtr(),
-							armadvisor.Category("Security").ToPtr(),
-							armadvisor.Category("Performance").ToPtr(),
-							armadvisor.Category("Cost").ToPtr(),
-							armadvisor.Category("OperationalExcellence").ToPtr()},
-						Frequency: to.Int32Ptr(30),
-						State:     armadvisor.DigestConfigState("Active").ToPtr(),
-						Language:  to.StringPtr("<language>"),
+							to.Ptr(armadvisor.CategoryHighAvailability),
+							to.Ptr(armadvisor.CategorySecurity),
+							to.Ptr(armadvisor.CategoryPerformance),
+							to.Ptr(armadvisor.CategoryCost),
+							to.Ptr(armadvisor.CategoryOperationalExcellence)},
+						Frequency: to.Ptr[int32](30),
+						State:     to.Ptr(armadvisor.DigestConfigStateActive),
+						Language:  to.Ptr("<language>"),
 					}},
-				Exclude:         to.BoolPtr(true),
-				LowCPUThreshold: armadvisor.CPUThreshold("5").ToPtr(),
+				Exclude:         to.Ptr(true),
+				LowCPUThreshold: to.Ptr(armadvisor.CPUThresholdFive),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ConfigurationsClientCreateInSubscriptionResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/advisor/resource-manager/Microsoft.Advisor/stable/2020-01-01/examples/ListConfigurations.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/advisor/resource-manager/Microsoft.Advisor/stable/2020-01-01/examples/ListConfigurations.json
 func ExampleConfigurationsClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armadvisor.NewConfigurationsClient("<subscription-id>", cred, nil)
-	res, err := client.ListByResourceGroup(ctx,
-		"<resource-group>",
-		nil)
+	client, err := armadvisor.NewConfigurationsClient("<subscription-id>", cred, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to create client: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ConfigurationsClientListByResourceGroupResult)
+	pager := client.ListByResourceGroup("<resource-group>",
+		nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+			return
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
+	}
 }
 
-// x-ms-original-file: specification/advisor/resource-manager/Microsoft.Advisor/stable/2020-01-01/examples/CreateConfiguration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/advisor/resource-manager/Microsoft.Advisor/stable/2020-01-01/examples/CreateConfiguration.json
 func ExampleConfigurationsClient_CreateInResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armadvisor.NewConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armadvisor.NewConfigurationsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.CreateInResourceGroup(ctx,
-		armadvisor.ConfigurationName("default"),
+		armadvisor.ConfigurationNameDefault,
 		"<resource-group>",
 		armadvisor.ConfigData{
 			Properties: &armadvisor.ConfigDataProperties{
 				Digests: []*armadvisor.DigestConfig{
 					{
-						Name:                  to.StringPtr("<name>"),
-						ActionGroupResourceID: to.StringPtr("<action-group-resource-id>"),
+						Name:                  to.Ptr("<name>"),
+						ActionGroupResourceID: to.Ptr("<action-group-resource-id>"),
 						Categories: []*armadvisor.Category{
-							armadvisor.Category("HighAvailability").ToPtr(),
-							armadvisor.Category("Security").ToPtr(),
-							armadvisor.Category("Performance").ToPtr(),
-							armadvisor.Category("Cost").ToPtr(),
-							armadvisor.Category("OperationalExcellence").ToPtr()},
-						Frequency: to.Int32Ptr(30),
-						State:     armadvisor.DigestConfigState("Active").ToPtr(),
-						Language:  to.StringPtr("<language>"),
+							to.Ptr(armadvisor.CategoryHighAvailability),
+							to.Ptr(armadvisor.CategorySecurity),
+							to.Ptr(armadvisor.CategoryPerformance),
+							to.Ptr(armadvisor.CategoryCost),
+							to.Ptr(armadvisor.CategoryOperationalExcellence)},
+						Frequency: to.Ptr[int32](30),
+						State:     to.Ptr(armadvisor.DigestConfigStateActive),
+						Language:  to.Ptr("<language>"),
 					}},
-				Exclude:         to.BoolPtr(true),
-				LowCPUThreshold: armadvisor.CPUThreshold("5").ToPtr(),
+				Exclude:         to.Ptr(true),
+				LowCPUThreshold: to.Ptr(armadvisor.CPUThresholdFive),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ConfigurationsClientCreateInResourceGroupResult)
+	// TODO: use response item
+	_ = res
 }

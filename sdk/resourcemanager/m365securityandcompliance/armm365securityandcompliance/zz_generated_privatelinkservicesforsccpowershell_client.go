@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type PrivateLinkServicesForSCCPowershellClient struct {
 // subscriptionID - The subscription identifier.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewPrivateLinkServicesForSCCPowershellClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PrivateLinkServicesForSCCPowershellClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewPrivateLinkServicesForSCCPowershellClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateLinkServicesForSCCPowershellClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &PrivateLinkServicesForSCCPowershellClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Create or update the metadata of a privateLinkServicesForSCCPowershell instance.
@@ -56,22 +61,18 @@ func NewPrivateLinkServicesForSCCPowershellClient(subscriptionID string, credent
 // privateLinkServicesForSCCPowershellDescription - The service instance metadata.
 // options - PrivateLinkServicesForSCCPowershellClientBeginCreateOrUpdateOptions contains the optional parameters for the
 // PrivateLinkServicesForSCCPowershellClient.BeginCreateOrUpdate method.
-func (client *PrivateLinkServicesForSCCPowershellClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, privateLinkServicesForSCCPowershellDescription PrivateLinkServicesForSCCPowershellDescription, options *PrivateLinkServicesForSCCPowershellClientBeginCreateOrUpdateOptions) (PrivateLinkServicesForSCCPowershellClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, resourceName, privateLinkServicesForSCCPowershellDescription, options)
-	if err != nil {
-		return PrivateLinkServicesForSCCPowershellClientCreateOrUpdatePollerResponse{}, err
+func (client *PrivateLinkServicesForSCCPowershellClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, privateLinkServicesForSCCPowershellDescription PrivateLinkServicesForSCCPowershellDescription, options *PrivateLinkServicesForSCCPowershellClientBeginCreateOrUpdateOptions) (*armruntime.Poller[PrivateLinkServicesForSCCPowershellClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, resourceName, privateLinkServicesForSCCPowershellDescription, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[PrivateLinkServicesForSCCPowershellClientCreateOrUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[PrivateLinkServicesForSCCPowershellClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := PrivateLinkServicesForSCCPowershellClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("PrivateLinkServicesForSCCPowershellClient.CreateOrUpdate", "location", resp, client.pl)
-	if err != nil {
-		return PrivateLinkServicesForSCCPowershellClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &PrivateLinkServicesForSCCPowershellClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Create or update the metadata of a privateLinkServicesForSCCPowershell instance.
@@ -123,22 +124,18 @@ func (client *PrivateLinkServicesForSCCPowershellClient) createOrUpdateCreateReq
 // resourceName - The name of the service instance.
 // options - PrivateLinkServicesForSCCPowershellClientBeginDeleteOptions contains the optional parameters for the PrivateLinkServicesForSCCPowershellClient.BeginDelete
 // method.
-func (client *PrivateLinkServicesForSCCPowershellClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, options *PrivateLinkServicesForSCCPowershellClientBeginDeleteOptions) (PrivateLinkServicesForSCCPowershellClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, resourceName, options)
-	if err != nil {
-		return PrivateLinkServicesForSCCPowershellClientDeletePollerResponse{}, err
+func (client *PrivateLinkServicesForSCCPowershellClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, options *PrivateLinkServicesForSCCPowershellClientBeginDeleteOptions) (*armruntime.Poller[PrivateLinkServicesForSCCPowershellClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, resourceName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[PrivateLinkServicesForSCCPowershellClientDeleteResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[PrivateLinkServicesForSCCPowershellClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := PrivateLinkServicesForSCCPowershellClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("PrivateLinkServicesForSCCPowershellClient.Delete", "location", resp, client.pl)
-	if err != nil {
-		return PrivateLinkServicesForSCCPowershellClientDeletePollerResponse{}, err
-	}
-	result.Poller = &PrivateLinkServicesForSCCPowershellClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Delete a service instance.
@@ -233,7 +230,7 @@ func (client *PrivateLinkServicesForSCCPowershellClient) getCreateRequest(ctx co
 
 // getHandleResponse handles the Get response.
 func (client *PrivateLinkServicesForSCCPowershellClient) getHandleResponse(resp *http.Response) (PrivateLinkServicesForSCCPowershellClientGetResponse, error) {
-	result := PrivateLinkServicesForSCCPowershellClientGetResponse{RawResponse: resp}
+	result := PrivateLinkServicesForSCCPowershellClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkServicesForSCCPowershellDescription); err != nil {
 		return PrivateLinkServicesForSCCPowershellClientGetResponse{}, err
 	}
@@ -244,16 +241,32 @@ func (client *PrivateLinkServicesForSCCPowershellClient) getHandleResponse(resp 
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - PrivateLinkServicesForSCCPowershellClientListOptions contains the optional parameters for the PrivateLinkServicesForSCCPowershellClient.List
 // method.
-func (client *PrivateLinkServicesForSCCPowershellClient) List(options *PrivateLinkServicesForSCCPowershellClientListOptions) *PrivateLinkServicesForSCCPowershellClientListPager {
-	return &PrivateLinkServicesForSCCPowershellClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *PrivateLinkServicesForSCCPowershellClient) List(options *PrivateLinkServicesForSCCPowershellClientListOptions) *runtime.Pager[PrivateLinkServicesForSCCPowershellClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PrivateLinkServicesForSCCPowershellClientListResponse]{
+		More: func(page PrivateLinkServicesForSCCPowershellClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PrivateLinkServicesForSCCPowershellClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PrivateLinkServicesForSCCPowershellDescriptionListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *PrivateLinkServicesForSCCPowershellClientListResponse) (PrivateLinkServicesForSCCPowershellClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return PrivateLinkServicesForSCCPowershellClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PrivateLinkServicesForSCCPowershellClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PrivateLinkServicesForSCCPowershellClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -276,7 +289,7 @@ func (client *PrivateLinkServicesForSCCPowershellClient) listCreateRequest(ctx c
 
 // listHandleResponse handles the List response.
 func (client *PrivateLinkServicesForSCCPowershellClient) listHandleResponse(resp *http.Response) (PrivateLinkServicesForSCCPowershellClientListResponse, error) {
-	result := PrivateLinkServicesForSCCPowershellClientListResponse{RawResponse: resp}
+	result := PrivateLinkServicesForSCCPowershellClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkServicesForSCCPowershellDescriptionListResult); err != nil {
 		return PrivateLinkServicesForSCCPowershellClientListResponse{}, err
 	}
@@ -288,16 +301,32 @@ func (client *PrivateLinkServicesForSCCPowershellClient) listHandleResponse(resp
 // resourceGroupName - The name of the resource group that contains the service instance.
 // options - PrivateLinkServicesForSCCPowershellClientListByResourceGroupOptions contains the optional parameters for the
 // PrivateLinkServicesForSCCPowershellClient.ListByResourceGroup method.
-func (client *PrivateLinkServicesForSCCPowershellClient) ListByResourceGroup(resourceGroupName string, options *PrivateLinkServicesForSCCPowershellClientListByResourceGroupOptions) *PrivateLinkServicesForSCCPowershellClientListByResourceGroupPager {
-	return &PrivateLinkServicesForSCCPowershellClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *PrivateLinkServicesForSCCPowershellClient) ListByResourceGroup(resourceGroupName string, options *PrivateLinkServicesForSCCPowershellClientListByResourceGroupOptions) *runtime.Pager[PrivateLinkServicesForSCCPowershellClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PrivateLinkServicesForSCCPowershellClientListByResourceGroupResponse]{
+		More: func(page PrivateLinkServicesForSCCPowershellClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PrivateLinkServicesForSCCPowershellClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PrivateLinkServicesForSCCPowershellDescriptionListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *PrivateLinkServicesForSCCPowershellClientListByResourceGroupResponse) (PrivateLinkServicesForSCCPowershellClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return PrivateLinkServicesForSCCPowershellClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PrivateLinkServicesForSCCPowershellClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PrivateLinkServicesForSCCPowershellClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -324,7 +353,7 @@ func (client *PrivateLinkServicesForSCCPowershellClient) listByResourceGroupCrea
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *PrivateLinkServicesForSCCPowershellClient) listByResourceGroupHandleResponse(resp *http.Response) (PrivateLinkServicesForSCCPowershellClientListByResourceGroupResponse, error) {
-	result := PrivateLinkServicesForSCCPowershellClientListByResourceGroupResponse{RawResponse: resp}
+	result := PrivateLinkServicesForSCCPowershellClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkServicesForSCCPowershellDescriptionListResult); err != nil {
 		return PrivateLinkServicesForSCCPowershellClientListByResourceGroupResponse{}, err
 	}
@@ -338,22 +367,18 @@ func (client *PrivateLinkServicesForSCCPowershellClient) listByResourceGroupHand
 // servicePatchDescription - The service instance metadata and security metadata.
 // options - PrivateLinkServicesForSCCPowershellClientBeginUpdateOptions contains the optional parameters for the PrivateLinkServicesForSCCPowershellClient.BeginUpdate
 // method.
-func (client *PrivateLinkServicesForSCCPowershellClient) BeginUpdate(ctx context.Context, resourceGroupName string, resourceName string, servicePatchDescription ServicesPatchDescription, options *PrivateLinkServicesForSCCPowershellClientBeginUpdateOptions) (PrivateLinkServicesForSCCPowershellClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, resourceName, servicePatchDescription, options)
-	if err != nil {
-		return PrivateLinkServicesForSCCPowershellClientUpdatePollerResponse{}, err
+func (client *PrivateLinkServicesForSCCPowershellClient) BeginUpdate(ctx context.Context, resourceGroupName string, resourceName string, servicePatchDescription ServicesPatchDescription, options *PrivateLinkServicesForSCCPowershellClientBeginUpdateOptions) (*armruntime.Poller[PrivateLinkServicesForSCCPowershellClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, resourceName, servicePatchDescription, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[PrivateLinkServicesForSCCPowershellClientUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[PrivateLinkServicesForSCCPowershellClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := PrivateLinkServicesForSCCPowershellClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("PrivateLinkServicesForSCCPowershellClient.Update", "location", resp, client.pl)
-	if err != nil {
-		return PrivateLinkServicesForSCCPowershellClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &PrivateLinkServicesForSCCPowershellClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Update the metadata of a privateLinkServicesForSCCPowershell instance.

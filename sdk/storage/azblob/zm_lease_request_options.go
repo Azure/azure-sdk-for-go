@@ -1,3 +1,6 @@
+//go:build go1.18
+// +build go1.18
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -63,7 +66,7 @@ func (o *ChangeLeaseBlobOptions) pointers() (proposedLeaseI *string, modifiedAcc
 	if err != nil {
 		return nil, nil, err
 	}
-	leaseID := to.StringPtr(generatedUuid.String())
+	leaseID := to.Ptr(generatedUuid.String())
 	if o == nil {
 		return leaseID, nil, nil
 	}
@@ -147,7 +150,7 @@ func (o *ChangeLeaseContainerOptions) pointers() (proposedLeaseID *string, modif
 	if err != nil {
 		return nil, nil, err
 	}
-	leaseID := to.StringPtr(generatedUuid.String())
+	leaseID := to.Ptr(generatedUuid.String())
 	if o == nil {
 		return leaseID, nil, err
 	}

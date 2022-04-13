@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type BackupResourceVaultConfigsClient struct {
 // subscriptionID - The subscription Id.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewBackupResourceVaultConfigsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *BackupResourceVaultConfigsClient {
+func NewBackupResourceVaultConfigsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BackupResourceVaultConfigsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &BackupResourceVaultConfigsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Fetches resource vault config.
@@ -98,7 +103,7 @@ func (client *BackupResourceVaultConfigsClient) getCreateRequest(ctx context.Con
 
 // getHandleResponse handles the Get response.
 func (client *BackupResourceVaultConfigsClient) getHandleResponse(resp *http.Response) (BackupResourceVaultConfigsClientGetResponse, error) {
-	result := BackupResourceVaultConfigsClientGetResponse{RawResponse: resp}
+	result := BackupResourceVaultConfigsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackupResourceVaultConfigResource); err != nil {
 		return BackupResourceVaultConfigsClientGetResponse{}, err
 	}
@@ -155,7 +160,7 @@ func (client *BackupResourceVaultConfigsClient) putCreateRequest(ctx context.Con
 
 // putHandleResponse handles the Put response.
 func (client *BackupResourceVaultConfigsClient) putHandleResponse(resp *http.Response) (BackupResourceVaultConfigsClientPutResponse, error) {
-	result := BackupResourceVaultConfigsClientPutResponse{RawResponse: resp}
+	result := BackupResourceVaultConfigsClientPutResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackupResourceVaultConfigResource); err != nil {
 		return BackupResourceVaultConfigsClientPutResponse{}, err
 	}
@@ -212,7 +217,7 @@ func (client *BackupResourceVaultConfigsClient) updateCreateRequest(ctx context.
 
 // updateHandleResponse handles the Update response.
 func (client *BackupResourceVaultConfigsClient) updateHandleResponse(resp *http.Response) (BackupResourceVaultConfigsClientUpdateResponse, error) {
-	result := BackupResourceVaultConfigsClientUpdateResponse{RawResponse: resp}
+	result := BackupResourceVaultConfigsClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackupResourceVaultConfigResource); err != nil {
 		return BackupResourceVaultConfigsClientUpdateResponse{}, err
 	}

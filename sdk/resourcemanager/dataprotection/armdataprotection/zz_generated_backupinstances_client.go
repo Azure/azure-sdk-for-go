@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,52 +34,50 @@ type BackupInstancesClient struct {
 // subscriptionID - The subscription Id.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewBackupInstancesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *BackupInstancesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewBackupInstancesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BackupInstancesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &BackupInstancesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginAdhocBackup - Trigger adhoc backup
 // If the operation fails it returns an *azcore.ResponseError type.
-// vaultName - The name of the backup vault.
 // resourceGroupName - The name of the resource group where the backup vault is present.
+// vaultName - The name of the backup vault.
 // backupInstanceName - The name of the backup instance
 // parameters - Request body for operation
 // options - BackupInstancesClientBeginAdhocBackupOptions contains the optional parameters for the BackupInstancesClient.BeginAdhocBackup
 // method.
-func (client *BackupInstancesClient) BeginAdhocBackup(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, parameters TriggerBackupRequest, options *BackupInstancesClientBeginAdhocBackupOptions) (BackupInstancesClientAdhocBackupPollerResponse, error) {
-	resp, err := client.adhocBackup(ctx, vaultName, resourceGroupName, backupInstanceName, parameters, options)
-	if err != nil {
-		return BackupInstancesClientAdhocBackupPollerResponse{}, err
+func (client *BackupInstancesClient) BeginAdhocBackup(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, parameters TriggerBackupRequest, options *BackupInstancesClientBeginAdhocBackupOptions) (*armruntime.Poller[BackupInstancesClientAdhocBackupResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.adhocBackup(ctx, resourceGroupName, vaultName, backupInstanceName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[BackupInstancesClientAdhocBackupResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[BackupInstancesClientAdhocBackupResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := BackupInstancesClientAdhocBackupPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("BackupInstancesClient.AdhocBackup", "", resp, client.pl)
-	if err != nil {
-		return BackupInstancesClientAdhocBackupPollerResponse{}, err
-	}
-	result.Poller = &BackupInstancesClientAdhocBackupPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // AdhocBackup - Trigger adhoc backup
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *BackupInstancesClient) adhocBackup(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, parameters TriggerBackupRequest, options *BackupInstancesClientBeginAdhocBackupOptions) (*http.Response, error) {
-	req, err := client.adhocBackupCreateRequest(ctx, vaultName, resourceGroupName, backupInstanceName, parameters, options)
+func (client *BackupInstancesClient) adhocBackup(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, parameters TriggerBackupRequest, options *BackupInstancesClientBeginAdhocBackupOptions) (*http.Response, error) {
+	req, err := client.adhocBackupCreateRequest(ctx, resourceGroupName, vaultName, backupInstanceName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -93,20 +92,20 @@ func (client *BackupInstancesClient) adhocBackup(ctx context.Context, vaultName 
 }
 
 // adhocBackupCreateRequest creates the AdhocBackup request.
-func (client *BackupInstancesClient) adhocBackupCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, parameters TriggerBackupRequest, options *BackupInstancesClientBeginAdhocBackupOptions) (*policy.Request, error) {
+func (client *BackupInstancesClient) adhocBackupCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, parameters TriggerBackupRequest, options *BackupInstancesClientBeginAdhocBackupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/backup"
-	if vaultName == "" {
-		return nil, errors.New("parameter vaultName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if vaultName == "" {
+		return nil, errors.New("parameter vaultName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
 	if backupInstanceName == "" {
 		return nil, errors.New("parameter backupInstanceName cannot be empty")
 	}
@@ -116,7 +115,7 @@ func (client *BackupInstancesClient) adhocBackupCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -124,34 +123,28 @@ func (client *BackupInstancesClient) adhocBackupCreateRequest(ctx context.Contex
 
 // BeginCreateOrUpdate - Create or update a backup instance in a backup vault
 // If the operation fails it returns an *azcore.ResponseError type.
-// vaultName - The name of the backup vault.
 // resourceGroupName - The name of the resource group where the backup vault is present.
+// vaultName - The name of the backup vault.
 // backupInstanceName - The name of the backup instance
 // parameters - Request body for operation
 // options - BackupInstancesClientBeginCreateOrUpdateOptions contains the optional parameters for the BackupInstancesClient.BeginCreateOrUpdate
 // method.
-func (client *BackupInstancesClient) BeginCreateOrUpdate(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, parameters BackupInstanceResource, options *BackupInstancesClientBeginCreateOrUpdateOptions) (BackupInstancesClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, vaultName, resourceGroupName, backupInstanceName, parameters, options)
-	if err != nil {
-		return BackupInstancesClientCreateOrUpdatePollerResponse{}, err
+func (client *BackupInstancesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, parameters BackupInstanceResource, options *BackupInstancesClientBeginCreateOrUpdateOptions) (*armruntime.Poller[BackupInstancesClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, vaultName, backupInstanceName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[BackupInstancesClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[BackupInstancesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := BackupInstancesClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("BackupInstancesClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return BackupInstancesClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &BackupInstancesClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Create or update a backup instance in a backup vault
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *BackupInstancesClient) createOrUpdate(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, parameters BackupInstanceResource, options *BackupInstancesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
-	req, err := client.createOrUpdateCreateRequest(ctx, vaultName, resourceGroupName, backupInstanceName, parameters, options)
+func (client *BackupInstancesClient) createOrUpdate(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, parameters BackupInstanceResource, options *BackupInstancesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, vaultName, backupInstanceName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -159,27 +152,27 @@ func (client *BackupInstancesClient) createOrUpdate(ctx context.Context, vaultNa
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
 		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *BackupInstancesClient) createOrUpdateCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, parameters BackupInstanceResource, options *BackupInstancesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *BackupInstancesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, parameters BackupInstanceResource, options *BackupInstancesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}"
-	if vaultName == "" {
-		return nil, errors.New("parameter vaultName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if vaultName == "" {
+		return nil, errors.New("parameter vaultName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
 	if backupInstanceName == "" {
 		return nil, errors.New("parameter backupInstanceName cannot be empty")
 	}
@@ -189,7 +182,7 @@ func (client *BackupInstancesClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -197,33 +190,27 @@ func (client *BackupInstancesClient) createOrUpdateCreateRequest(ctx context.Con
 
 // BeginDelete - Delete a backup instance in a backup vault
 // If the operation fails it returns an *azcore.ResponseError type.
-// vaultName - The name of the backup vault.
 // resourceGroupName - The name of the resource group where the backup vault is present.
+// vaultName - The name of the backup vault.
 // backupInstanceName - The name of the backup instance
 // options - BackupInstancesClientBeginDeleteOptions contains the optional parameters for the BackupInstancesClient.BeginDelete
 // method.
-func (client *BackupInstancesClient) BeginDelete(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, options *BackupInstancesClientBeginDeleteOptions) (BackupInstancesClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, vaultName, resourceGroupName, backupInstanceName, options)
-	if err != nil {
-		return BackupInstancesClientDeletePollerResponse{}, err
+func (client *BackupInstancesClient) BeginDelete(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, options *BackupInstancesClientBeginDeleteOptions) (*armruntime.Poller[BackupInstancesClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, vaultName, backupInstanceName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[BackupInstancesClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[BackupInstancesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := BackupInstancesClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("BackupInstancesClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return BackupInstancesClientDeletePollerResponse{}, err
-	}
-	result.Poller = &BackupInstancesClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Delete a backup instance in a backup vault
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *BackupInstancesClient) deleteOperation(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, options *BackupInstancesClientBeginDeleteOptions) (*http.Response, error) {
-	req, err := client.deleteCreateRequest(ctx, vaultName, resourceGroupName, backupInstanceName, options)
+func (client *BackupInstancesClient) deleteOperation(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, options *BackupInstancesClientBeginDeleteOptions) (*http.Response, error) {
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, vaultName, backupInstanceName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -238,20 +225,20 @@ func (client *BackupInstancesClient) deleteOperation(ctx context.Context, vaultN
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *BackupInstancesClient) deleteCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, options *BackupInstancesClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *BackupInstancesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, options *BackupInstancesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}"
-	if vaultName == "" {
-		return nil, errors.New("parameter vaultName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if vaultName == "" {
+		return nil, errors.New("parameter vaultName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
 	if backupInstanceName == "" {
 		return nil, errors.New("parameter backupInstanceName cannot be empty")
 	}
@@ -261,7 +248,7 @@ func (client *BackupInstancesClient) deleteCreateRequest(ctx context.Context, va
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -269,12 +256,12 @@ func (client *BackupInstancesClient) deleteCreateRequest(ctx context.Context, va
 
 // Get - Gets a backup instance with name in a backup vault
 // If the operation fails it returns an *azcore.ResponseError type.
-// vaultName - The name of the backup vault.
 // resourceGroupName - The name of the resource group where the backup vault is present.
+// vaultName - The name of the backup vault.
 // backupInstanceName - The name of the backup instance
 // options - BackupInstancesClientGetOptions contains the optional parameters for the BackupInstancesClient.Get method.
-func (client *BackupInstancesClient) Get(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, options *BackupInstancesClientGetOptions) (BackupInstancesClientGetResponse, error) {
-	req, err := client.getCreateRequest(ctx, vaultName, resourceGroupName, backupInstanceName, options)
+func (client *BackupInstancesClient) Get(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, options *BackupInstancesClientGetOptions) (BackupInstancesClientGetResponse, error) {
+	req, err := client.getCreateRequest(ctx, resourceGroupName, vaultName, backupInstanceName, options)
 	if err != nil {
 		return BackupInstancesClientGetResponse{}, err
 	}
@@ -289,20 +276,20 @@ func (client *BackupInstancesClient) Get(ctx context.Context, vaultName string, 
 }
 
 // getCreateRequest creates the Get request.
-func (client *BackupInstancesClient) getCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, options *BackupInstancesClientGetOptions) (*policy.Request, error) {
+func (client *BackupInstancesClient) getCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, options *BackupInstancesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}"
-	if vaultName == "" {
-		return nil, errors.New("parameter vaultName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if vaultName == "" {
+		return nil, errors.New("parameter vaultName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
 	if backupInstanceName == "" {
 		return nil, errors.New("parameter backupInstanceName cannot be empty")
 	}
@@ -312,7 +299,7 @@ func (client *BackupInstancesClient) getCreateRequest(ctx context.Context, vault
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -320,51 +307,131 @@ func (client *BackupInstancesClient) getCreateRequest(ctx context.Context, vault
 
 // getHandleResponse handles the Get response.
 func (client *BackupInstancesClient) getHandleResponse(resp *http.Response) (BackupInstancesClientGetResponse, error) {
-	result := BackupInstancesClientGetResponse{RawResponse: resp}
+	result := BackupInstancesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackupInstanceResource); err != nil {
 		return BackupInstancesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// List - Gets a backup instances belonging to a backup vault
+// GetBackupInstanceOperationResult - Get result of backup instance creation operation
 // If the operation fails it returns an *azcore.ResponseError type.
-// vaultName - The name of the backup vault.
 // resourceGroupName - The name of the resource group where the backup vault is present.
-// options - BackupInstancesClientListOptions contains the optional parameters for the BackupInstancesClient.List method.
-func (client *BackupInstancesClient) List(vaultName string, resourceGroupName string, options *BackupInstancesClientListOptions) *BackupInstancesClientListPager {
-	return &BackupInstancesClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, vaultName, resourceGroupName, options)
-		},
-		advancer: func(ctx context.Context, resp BackupInstancesClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.BackupInstanceResourceList.NextLink)
-		},
+// vaultName - The name of the backup vault.
+// options - BackupInstancesClientGetBackupInstanceOperationResultOptions contains the optional parameters for the BackupInstancesClient.GetBackupInstanceOperationResult
+// method.
+func (client *BackupInstancesClient) GetBackupInstanceOperationResult(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, operationID string, options *BackupInstancesClientGetBackupInstanceOperationResultOptions) (BackupInstancesClientGetBackupInstanceOperationResultResponse, error) {
+	req, err := client.getBackupInstanceOperationResultCreateRequest(ctx, resourceGroupName, vaultName, backupInstanceName, operationID, options)
+	if err != nil {
+		return BackupInstancesClientGetBackupInstanceOperationResultResponse{}, err
 	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return BackupInstancesClientGetBackupInstanceOperationResultResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
+		return BackupInstancesClientGetBackupInstanceOperationResultResponse{}, runtime.NewResponseError(resp)
+	}
+	return client.getBackupInstanceOperationResultHandleResponse(resp)
 }
 
-// listCreateRequest creates the List request.
-func (client *BackupInstancesClient) listCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, options *BackupInstancesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances"
-	if vaultName == "" {
-		return nil, errors.New("parameter vaultName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+// getBackupInstanceOperationResultCreateRequest creates the GetBackupInstanceOperationResult request.
+func (client *BackupInstancesClient) getBackupInstanceOperationResultCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, operationID string, options *BackupInstancesClientGetBackupInstanceOperationResultOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/operationResults/{operationId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if vaultName == "" {
+		return nil, errors.New("parameter vaultName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
+	if backupInstanceName == "" {
+		return nil, errors.New("parameter backupInstanceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{backupInstanceName}", url.PathEscape(backupInstanceName))
+	if operationID == "" {
+		return nil, errors.New("parameter operationID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2022-02-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, nil
+}
+
+// getBackupInstanceOperationResultHandleResponse handles the GetBackupInstanceOperationResult response.
+func (client *BackupInstancesClient) getBackupInstanceOperationResultHandleResponse(resp *http.Response) (BackupInstancesClientGetBackupInstanceOperationResultResponse, error) {
+	result := BackupInstancesClientGetBackupInstanceOperationResultResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.BackupInstanceResource); err != nil {
+		return BackupInstancesClientGetBackupInstanceOperationResultResponse{}, err
+	}
+	return result, nil
+}
+
+// List - Gets a backup instances belonging to a backup vault
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group where the backup vault is present.
+// vaultName - The name of the backup vault.
+// options - BackupInstancesClientListOptions contains the optional parameters for the BackupInstancesClient.List method.
+func (client *BackupInstancesClient) List(resourceGroupName string, vaultName string, options *BackupInstancesClientListOptions) *runtime.Pager[BackupInstancesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[BackupInstancesClientListResponse]{
+		More: func(page BackupInstancesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *BackupInstancesClientListResponse) (BackupInstancesClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, vaultName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return BackupInstancesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return BackupInstancesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return BackupInstancesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
+		},
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *BackupInstancesClient) listCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, options *BackupInstancesClientListOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if vaultName == "" {
+		return nil, errors.New("parameter vaultName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -372,11 +439,339 @@ func (client *BackupInstancesClient) listCreateRequest(ctx context.Context, vaul
 
 // listHandleResponse handles the List response.
 func (client *BackupInstancesClient) listHandleResponse(resp *http.Response) (BackupInstancesClientListResponse, error) {
-	result := BackupInstancesClientListResponse{RawResponse: resp}
+	result := BackupInstancesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackupInstanceResourceList); err != nil {
 		return BackupInstancesClientListResponse{}, err
 	}
 	return result, nil
+}
+
+// BeginResumeBackups - This operation will resume backups for backup instance
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group where the backup vault is present.
+// vaultName - The name of the backup vault.
+// options - BackupInstancesClientBeginResumeBackupsOptions contains the optional parameters for the BackupInstancesClient.BeginResumeBackups
+// method.
+func (client *BackupInstancesClient) BeginResumeBackups(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, options *BackupInstancesClientBeginResumeBackupsOptions) (*armruntime.Poller[BackupInstancesClientResumeBackupsResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.resumeBackups(ctx, resourceGroupName, vaultName, backupInstanceName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[BackupInstancesClientResumeBackupsResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[BackupInstancesClientResumeBackupsResponse](options.ResumeToken, client.pl, nil)
+	}
+}
+
+// ResumeBackups - This operation will resume backups for backup instance
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *BackupInstancesClient) resumeBackups(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, options *BackupInstancesClientBeginResumeBackupsOptions) (*http.Response, error) {
+	req, err := client.resumeBackupsCreateRequest(ctx, resourceGroupName, vaultName, backupInstanceName, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(resp)
+	}
+	return resp, nil
+}
+
+// resumeBackupsCreateRequest creates the ResumeBackups request.
+func (client *BackupInstancesClient) resumeBackupsCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, options *BackupInstancesClientBeginResumeBackupsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/resumeBackups"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if vaultName == "" {
+		return nil, errors.New("parameter vaultName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
+	if backupInstanceName == "" {
+		return nil, errors.New("parameter backupInstanceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{backupInstanceName}", url.PathEscape(backupInstanceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-02-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, nil
+}
+
+// BeginResumeProtection - This operation will resume protection for a stopped backup instance
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group where the backup vault is present.
+// vaultName - The name of the backup vault.
+// options - BackupInstancesClientBeginResumeProtectionOptions contains the optional parameters for the BackupInstancesClient.BeginResumeProtection
+// method.
+func (client *BackupInstancesClient) BeginResumeProtection(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, options *BackupInstancesClientBeginResumeProtectionOptions) (*armruntime.Poller[BackupInstancesClientResumeProtectionResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.resumeProtection(ctx, resourceGroupName, vaultName, backupInstanceName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[BackupInstancesClientResumeProtectionResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[BackupInstancesClientResumeProtectionResponse](options.ResumeToken, client.pl, nil)
+	}
+}
+
+// ResumeProtection - This operation will resume protection for a stopped backup instance
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *BackupInstancesClient) resumeProtection(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, options *BackupInstancesClientBeginResumeProtectionOptions) (*http.Response, error) {
+	req, err := client.resumeProtectionCreateRequest(ctx, resourceGroupName, vaultName, backupInstanceName, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(resp)
+	}
+	return resp, nil
+}
+
+// resumeProtectionCreateRequest creates the ResumeProtection request.
+func (client *BackupInstancesClient) resumeProtectionCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, options *BackupInstancesClientBeginResumeProtectionOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/resumeProtection"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if vaultName == "" {
+		return nil, errors.New("parameter vaultName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
+	if backupInstanceName == "" {
+		return nil, errors.New("parameter backupInstanceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{backupInstanceName}", url.PathEscape(backupInstanceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-02-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, nil
+}
+
+// BeginStopProtection - This operation will stop protection of a backup instance and data will be held forever
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group where the backup vault is present.
+// vaultName - The name of the backup vault.
+// options - BackupInstancesClientBeginStopProtectionOptions contains the optional parameters for the BackupInstancesClient.BeginStopProtection
+// method.
+func (client *BackupInstancesClient) BeginStopProtection(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, options *BackupInstancesClientBeginStopProtectionOptions) (*armruntime.Poller[BackupInstancesClientStopProtectionResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.stopProtection(ctx, resourceGroupName, vaultName, backupInstanceName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[BackupInstancesClientStopProtectionResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[BackupInstancesClientStopProtectionResponse](options.ResumeToken, client.pl, nil)
+	}
+}
+
+// StopProtection - This operation will stop protection of a backup instance and data will be held forever
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *BackupInstancesClient) stopProtection(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, options *BackupInstancesClientBeginStopProtectionOptions) (*http.Response, error) {
+	req, err := client.stopProtectionCreateRequest(ctx, resourceGroupName, vaultName, backupInstanceName, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(resp)
+	}
+	return resp, nil
+}
+
+// stopProtectionCreateRequest creates the StopProtection request.
+func (client *BackupInstancesClient) stopProtectionCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, options *BackupInstancesClientBeginStopProtectionOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/stopProtection"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if vaultName == "" {
+		return nil, errors.New("parameter vaultName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
+	if backupInstanceName == "" {
+		return nil, errors.New("parameter backupInstanceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{backupInstanceName}", url.PathEscape(backupInstanceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-02-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, nil
+}
+
+// BeginSuspendBackups - This operation will stop backups for backup instance
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group where the backup vault is present.
+// vaultName - The name of the backup vault.
+// options - BackupInstancesClientBeginSuspendBackupsOptions contains the optional parameters for the BackupInstancesClient.BeginSuspendBackups
+// method.
+func (client *BackupInstancesClient) BeginSuspendBackups(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, options *BackupInstancesClientBeginSuspendBackupsOptions) (*armruntime.Poller[BackupInstancesClientSuspendBackupsResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.suspendBackups(ctx, resourceGroupName, vaultName, backupInstanceName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[BackupInstancesClientSuspendBackupsResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[BackupInstancesClientSuspendBackupsResponse](options.ResumeToken, client.pl, nil)
+	}
+}
+
+// SuspendBackups - This operation will stop backups for backup instance
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *BackupInstancesClient) suspendBackups(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, options *BackupInstancesClientBeginSuspendBackupsOptions) (*http.Response, error) {
+	req, err := client.suspendBackupsCreateRequest(ctx, resourceGroupName, vaultName, backupInstanceName, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(resp)
+	}
+	return resp, nil
+}
+
+// suspendBackupsCreateRequest creates the SuspendBackups request.
+func (client *BackupInstancesClient) suspendBackupsCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, options *BackupInstancesClientBeginSuspendBackupsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/suspendBackups"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if vaultName == "" {
+		return nil, errors.New("parameter vaultName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
+	if backupInstanceName == "" {
+		return nil, errors.New("parameter backupInstanceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{backupInstanceName}", url.PathEscape(backupInstanceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-02-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, nil
+}
+
+// BeginSyncBackupInstance - Sync backup instance again in case of failure This action will retry last failed operation and
+// will bring backup instance to valid state
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group where the backup vault is present.
+// vaultName - The name of the backup vault.
+// parameters - Request body for operation
+// options - BackupInstancesClientBeginSyncBackupInstanceOptions contains the optional parameters for the BackupInstancesClient.BeginSyncBackupInstance
+// method.
+func (client *BackupInstancesClient) BeginSyncBackupInstance(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, parameters SyncBackupInstanceRequest, options *BackupInstancesClientBeginSyncBackupInstanceOptions) (*armruntime.Poller[BackupInstancesClientSyncBackupInstanceResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.syncBackupInstance(ctx, resourceGroupName, vaultName, backupInstanceName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[BackupInstancesClientSyncBackupInstanceResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[BackupInstancesClientSyncBackupInstanceResponse](options.ResumeToken, client.pl, nil)
+	}
+}
+
+// SyncBackupInstance - Sync backup instance again in case of failure This action will retry last failed operation and will
+// bring backup instance to valid state
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *BackupInstancesClient) syncBackupInstance(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, parameters SyncBackupInstanceRequest, options *BackupInstancesClientBeginSyncBackupInstanceOptions) (*http.Response, error) {
+	req, err := client.syncBackupInstanceCreateRequest(ctx, resourceGroupName, vaultName, backupInstanceName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(resp)
+	}
+	return resp, nil
+}
+
+// syncBackupInstanceCreateRequest creates the SyncBackupInstance request.
+func (client *BackupInstancesClient) syncBackupInstanceCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, parameters SyncBackupInstanceRequest, options *BackupInstancesClientBeginSyncBackupInstanceOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/sync"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if vaultName == "" {
+		return nil, errors.New("parameter vaultName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
+	if backupInstanceName == "" {
+		return nil, errors.New("parameter backupInstanceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{backupInstanceName}", url.PathEscape(backupInstanceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-02-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // BeginTriggerRehydrate - rehydrate recovery point for restore for a BackupInstance
@@ -386,22 +781,16 @@ func (client *BackupInstancesClient) listHandleResponse(resp *http.Response) (Ba
 // parameters - Request body for operation
 // options - BackupInstancesClientBeginTriggerRehydrateOptions contains the optional parameters for the BackupInstancesClient.BeginTriggerRehydrate
 // method.
-func (client *BackupInstancesClient) BeginTriggerRehydrate(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, parameters AzureBackupRehydrationRequest, options *BackupInstancesClientBeginTriggerRehydrateOptions) (BackupInstancesClientTriggerRehydratePollerResponse, error) {
-	resp, err := client.triggerRehydrate(ctx, resourceGroupName, vaultName, backupInstanceName, parameters, options)
-	if err != nil {
-		return BackupInstancesClientTriggerRehydratePollerResponse{}, err
+func (client *BackupInstancesClient) BeginTriggerRehydrate(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, parameters AzureBackupRehydrationRequest, options *BackupInstancesClientBeginTriggerRehydrateOptions) (*armruntime.Poller[BackupInstancesClientTriggerRehydrateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.triggerRehydrate(ctx, resourceGroupName, vaultName, backupInstanceName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[BackupInstancesClientTriggerRehydrateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[BackupInstancesClientTriggerRehydrateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := BackupInstancesClientTriggerRehydratePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("BackupInstancesClient.TriggerRehydrate", "", resp, client.pl)
-	if err != nil {
-		return BackupInstancesClientTriggerRehydratePollerResponse{}, err
-	}
-	result.Poller = &BackupInstancesClientTriggerRehydratePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // TriggerRehydrate - rehydrate recovery point for restore for a BackupInstance
@@ -445,7 +834,7 @@ func (client *BackupInstancesClient) triggerRehydrateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -453,34 +842,28 @@ func (client *BackupInstancesClient) triggerRehydrateCreateRequest(ctx context.C
 
 // BeginTriggerRestore - Triggers restore for a BackupInstance
 // If the operation fails it returns an *azcore.ResponseError type.
-// vaultName - The name of the backup vault.
 // resourceGroupName - The name of the resource group where the backup vault is present.
+// vaultName - The name of the backup vault.
 // backupInstanceName - The name of the backup instance
 // parameters - Request body for operation
 // options - BackupInstancesClientBeginTriggerRestoreOptions contains the optional parameters for the BackupInstancesClient.BeginTriggerRestore
 // method.
-func (client *BackupInstancesClient) BeginTriggerRestore(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, parameters AzureBackupRestoreRequestClassification, options *BackupInstancesClientBeginTriggerRestoreOptions) (BackupInstancesClientTriggerRestorePollerResponse, error) {
-	resp, err := client.triggerRestore(ctx, vaultName, resourceGroupName, backupInstanceName, parameters, options)
-	if err != nil {
-		return BackupInstancesClientTriggerRestorePollerResponse{}, err
+func (client *BackupInstancesClient) BeginTriggerRestore(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, parameters AzureBackupRestoreRequestClassification, options *BackupInstancesClientBeginTriggerRestoreOptions) (*armruntime.Poller[BackupInstancesClientTriggerRestoreResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.triggerRestore(ctx, resourceGroupName, vaultName, backupInstanceName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[BackupInstancesClientTriggerRestoreResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[BackupInstancesClientTriggerRestoreResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := BackupInstancesClientTriggerRestorePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("BackupInstancesClient.TriggerRestore", "", resp, client.pl)
-	if err != nil {
-		return BackupInstancesClientTriggerRestorePollerResponse{}, err
-	}
-	result.Poller = &BackupInstancesClientTriggerRestorePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // TriggerRestore - Triggers restore for a BackupInstance
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *BackupInstancesClient) triggerRestore(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, parameters AzureBackupRestoreRequestClassification, options *BackupInstancesClientBeginTriggerRestoreOptions) (*http.Response, error) {
-	req, err := client.triggerRestoreCreateRequest(ctx, vaultName, resourceGroupName, backupInstanceName, parameters, options)
+func (client *BackupInstancesClient) triggerRestore(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, parameters AzureBackupRestoreRequestClassification, options *BackupInstancesClientBeginTriggerRestoreOptions) (*http.Response, error) {
+	req, err := client.triggerRestoreCreateRequest(ctx, resourceGroupName, vaultName, backupInstanceName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -495,20 +878,20 @@ func (client *BackupInstancesClient) triggerRestore(ctx context.Context, vaultNa
 }
 
 // triggerRestoreCreateRequest creates the TriggerRestore request.
-func (client *BackupInstancesClient) triggerRestoreCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, parameters AzureBackupRestoreRequestClassification, options *BackupInstancesClientBeginTriggerRestoreOptions) (*policy.Request, error) {
+func (client *BackupInstancesClient) triggerRestoreCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, parameters AzureBackupRestoreRequestClassification, options *BackupInstancesClientBeginTriggerRestoreOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/restore"
-	if vaultName == "" {
-		return nil, errors.New("parameter vaultName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if vaultName == "" {
+		return nil, errors.New("parameter vaultName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
 	if backupInstanceName == "" {
 		return nil, errors.New("parameter backupInstanceName cannot be empty")
 	}
@@ -518,7 +901,7 @@ func (client *BackupInstancesClient) triggerRestoreCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -526,33 +909,27 @@ func (client *BackupInstancesClient) triggerRestoreCreateRequest(ctx context.Con
 
 // BeginValidateForBackup - Validate whether adhoc backup will be successful or not
 // If the operation fails it returns an *azcore.ResponseError type.
-// vaultName - The name of the backup vault.
 // resourceGroupName - The name of the resource group where the backup vault is present.
+// vaultName - The name of the backup vault.
 // parameters - Request body for operation
 // options - BackupInstancesClientBeginValidateForBackupOptions contains the optional parameters for the BackupInstancesClient.BeginValidateForBackup
 // method.
-func (client *BackupInstancesClient) BeginValidateForBackup(ctx context.Context, vaultName string, resourceGroupName string, parameters ValidateForBackupRequest, options *BackupInstancesClientBeginValidateForBackupOptions) (BackupInstancesClientValidateForBackupPollerResponse, error) {
-	resp, err := client.validateForBackup(ctx, vaultName, resourceGroupName, parameters, options)
-	if err != nil {
-		return BackupInstancesClientValidateForBackupPollerResponse{}, err
+func (client *BackupInstancesClient) BeginValidateForBackup(ctx context.Context, resourceGroupName string, vaultName string, parameters ValidateForBackupRequest, options *BackupInstancesClientBeginValidateForBackupOptions) (*armruntime.Poller[BackupInstancesClientValidateForBackupResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.validateForBackup(ctx, resourceGroupName, vaultName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[BackupInstancesClientValidateForBackupResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[BackupInstancesClientValidateForBackupResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := BackupInstancesClientValidateForBackupPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("BackupInstancesClient.ValidateForBackup", "", resp, client.pl)
-	if err != nil {
-		return BackupInstancesClientValidateForBackupPollerResponse{}, err
-	}
-	result.Poller = &BackupInstancesClientValidateForBackupPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // ValidateForBackup - Validate whether adhoc backup will be successful or not
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *BackupInstancesClient) validateForBackup(ctx context.Context, vaultName string, resourceGroupName string, parameters ValidateForBackupRequest, options *BackupInstancesClientBeginValidateForBackupOptions) (*http.Response, error) {
-	req, err := client.validateForBackupCreateRequest(ctx, vaultName, resourceGroupName, parameters, options)
+func (client *BackupInstancesClient) validateForBackup(ctx context.Context, resourceGroupName string, vaultName string, parameters ValidateForBackupRequest, options *BackupInstancesClientBeginValidateForBackupOptions) (*http.Response, error) {
+	req, err := client.validateForBackupCreateRequest(ctx, resourceGroupName, vaultName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -567,26 +944,26 @@ func (client *BackupInstancesClient) validateForBackup(ctx context.Context, vaul
 }
 
 // validateForBackupCreateRequest creates the ValidateForBackup request.
-func (client *BackupInstancesClient) validateForBackupCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, parameters ValidateForBackupRequest, options *BackupInstancesClientBeginValidateForBackupOptions) (*policy.Request, error) {
+func (client *BackupInstancesClient) validateForBackupCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, parameters ValidateForBackupRequest, options *BackupInstancesClientBeginValidateForBackupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/validateForBackup"
-	if vaultName == "" {
-		return nil, errors.New("parameter vaultName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if vaultName == "" {
+		return nil, errors.New("parameter vaultName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -594,34 +971,28 @@ func (client *BackupInstancesClient) validateForBackupCreateRequest(ctx context.
 
 // BeginValidateForRestore - Validates if Restore can be triggered for a DataSource
 // If the operation fails it returns an *azcore.ResponseError type.
-// vaultName - The name of the backup vault.
 // resourceGroupName - The name of the resource group where the backup vault is present.
+// vaultName - The name of the backup vault.
 // backupInstanceName - The name of the backup instance
 // parameters - Request body for operation
 // options - BackupInstancesClientBeginValidateForRestoreOptions contains the optional parameters for the BackupInstancesClient.BeginValidateForRestore
 // method.
-func (client *BackupInstancesClient) BeginValidateForRestore(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, parameters ValidateRestoreRequestObject, options *BackupInstancesClientBeginValidateForRestoreOptions) (BackupInstancesClientValidateForRestorePollerResponse, error) {
-	resp, err := client.validateForRestore(ctx, vaultName, resourceGroupName, backupInstanceName, parameters, options)
-	if err != nil {
-		return BackupInstancesClientValidateForRestorePollerResponse{}, err
+func (client *BackupInstancesClient) BeginValidateForRestore(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, parameters ValidateRestoreRequestObject, options *BackupInstancesClientBeginValidateForRestoreOptions) (*armruntime.Poller[BackupInstancesClientValidateForRestoreResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.validateForRestore(ctx, resourceGroupName, vaultName, backupInstanceName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[BackupInstancesClientValidateForRestoreResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[BackupInstancesClientValidateForRestoreResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := BackupInstancesClientValidateForRestorePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("BackupInstancesClient.ValidateForRestore", "", resp, client.pl)
-	if err != nil {
-		return BackupInstancesClientValidateForRestorePollerResponse{}, err
-	}
-	result.Poller = &BackupInstancesClientValidateForRestorePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // ValidateForRestore - Validates if Restore can be triggered for a DataSource
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *BackupInstancesClient) validateForRestore(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, parameters ValidateRestoreRequestObject, options *BackupInstancesClientBeginValidateForRestoreOptions) (*http.Response, error) {
-	req, err := client.validateForRestoreCreateRequest(ctx, vaultName, resourceGroupName, backupInstanceName, parameters, options)
+func (client *BackupInstancesClient) validateForRestore(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, parameters ValidateRestoreRequestObject, options *BackupInstancesClientBeginValidateForRestoreOptions) (*http.Response, error) {
+	req, err := client.validateForRestoreCreateRequest(ctx, resourceGroupName, vaultName, backupInstanceName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -636,20 +1007,20 @@ func (client *BackupInstancesClient) validateForRestore(ctx context.Context, vau
 }
 
 // validateForRestoreCreateRequest creates the ValidateForRestore request.
-func (client *BackupInstancesClient) validateForRestoreCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, parameters ValidateRestoreRequestObject, options *BackupInstancesClientBeginValidateForRestoreOptions) (*policy.Request, error) {
+func (client *BackupInstancesClient) validateForRestoreCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, parameters ValidateRestoreRequestObject, options *BackupInstancesClientBeginValidateForRestoreOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/validateRestore"
-	if vaultName == "" {
-		return nil, errors.New("parameter vaultName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if vaultName == "" {
+		return nil, errors.New("parameter vaultName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
 	if backupInstanceName == "" {
 		return nil, errors.New("parameter backupInstanceName cannot be empty")
 	}
@@ -659,7 +1030,7 @@ func (client *BackupInstancesClient) validateForRestoreCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armmaintenance
 
 const (
 	moduleName    = "armmaintenance"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // CreatedByType - The type of identity that created the resource.
@@ -31,11 +31,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
 	}
-}
-
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
 }
 
 // ImpactType - The impact type
@@ -60,11 +55,6 @@ func PossibleImpactTypeValues() []ImpactType {
 		ImpactTypeRedeploy,
 		ImpactTypeRestart,
 	}
-}
-
-// ToPtr returns a *ImpactType pointing to the current value.
-func (c ImpactType) ToPtr() *ImpactType {
-	return &c
 }
 
 // MaintenanceScope - Gets or sets maintenanceScope of the configuration
@@ -98,11 +88,6 @@ func PossibleMaintenanceScopeValues() []MaintenanceScope {
 	}
 }
 
-// ToPtr returns a *MaintenanceScope pointing to the current value.
-func (c MaintenanceScope) ToPtr() *MaintenanceScope {
-	return &c
-}
-
 // RebootOptions - Possible reboot preference as defined by the user based on which it would be decided to reboot the machine
 // or not after the patch operation is completed.
 type RebootOptions string
@@ -122,11 +107,6 @@ func PossibleRebootOptionsValues() []RebootOptions {
 	}
 }
 
-// ToPtr returns a *RebootOptions pointing to the current value.
-func (c RebootOptions) ToPtr() *RebootOptions {
-	return &c
-}
-
 // TaskScope - Global Task execute once when schedule trigger. Resource task execute for each VM.
 type TaskScope string
 
@@ -141,11 +121,6 @@ func PossibleTaskScopeValues() []TaskScope {
 		TaskScopeGlobal,
 		TaskScopeResource,
 	}
-}
-
-// ToPtr returns a *TaskScope pointing to the current value.
-func (c TaskScope) ToPtr() *TaskScope {
-	return &c
 }
 
 // UpdateStatus - The status
@@ -175,11 +150,6 @@ func PossibleUpdateStatusValues() []UpdateStatus {
 	}
 }
 
-// ToPtr returns a *UpdateStatus pointing to the current value.
-func (c UpdateStatus) ToPtr() *UpdateStatus {
-	return &c
-}
-
 // Visibility - Gets or sets the visibility of the configuration. The default value is 'Custom'
 type Visibility string
 
@@ -196,9 +166,4 @@ func PossibleVisibilityValues() []Visibility {
 		VisibilityCustom,
 		VisibilityPublic,
 	}
-}
-
-// ToPtr returns a *Visibility pointing to the current value.
-func (c Visibility) ToPtr() *Visibility {
-	return &c
 }

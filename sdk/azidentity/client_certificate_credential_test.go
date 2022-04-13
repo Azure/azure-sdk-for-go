@@ -39,6 +39,26 @@ var allCertTests = []certTest{
 	newCertTest("pkcs12Encrypted", "testdata/certificate_encrypted_key.pfx", "password"),
 }
 
+func TestParseCertificates_Error(t *testing.T) {
+	for _, path := range []string{
+		"testdata/certificate_empty.pem",         // malformed file (no cert block)
+		"testdata/certificate_encrypted_key.pfx", // requires a password we won't provide
+		"testdata/certificate_nokey.pem",
+		"testdata/certificate-two-keys.pem",
+	} {
+		t.Run(path, func(t *testing.T) {
+			data, err := os.ReadFile(path)
+			if err != nil {
+				t.Fatal(err)
+			}
+			_, _, err = ParseCertificates(data, nil)
+			if err == nil {
+				t.Fatal("expected an error")
+			}
+		})
+	}
+}
+
 func TestClientCertificateCredential_InvalidTenantID(t *testing.T) {
 	test := allCertTests[0]
 	cred, err := NewClientCertificateCredential(badTenantID, fakeClientID, test.certs, test.key, nil)
@@ -141,12 +161,27 @@ func TestClientCertificateCredential_NoPrivateKey(t *testing.T) {
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	options := ClientCertificateCredentialOptions{}
-	options.AuthorityHost = AuthorityHost(srv.URL())
+	options.Cloud.LoginEndpoint = srv.URL()
 	options.Transport = srv
 	var key crypto.PrivateKey
 	_, err := NewClientCertificateCredential(fakeTenantID, fakeClientID, test.certs, key, &options)
 	if err == nil {
 		t.Fatalf("Expected an error but received nil")
+	}
+}
+
+func TestClientCertificateCredential_WrongKey(t *testing.T) {
+	data, err := os.ReadFile("testdata/certificate-wrong-key.pem")
+	if err != nil {
+		t.Fatal(err)
+	}
+	certs, key, err := ParseCertificates(data, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	_, err = NewClientCertificateCredential("tenantID", "clientID", certs, key, nil)
+	if err == nil {
+		t.Fatal("expected an error")
 	}
 }
 

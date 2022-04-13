@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,12 +8,7 @@
 
 package armsecurityinsights
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
 
 // AADCheckRequirements - Represents AAD (Azure Active Directory) requirements check request.
 type AADCheckRequirements struct {
@@ -22,44 +17,6 @@ type AADCheckRequirements struct {
 
 	// AAD (Azure Active Directory) requirements check properties.
 	Properties *AADCheckRequirementsProperties `json:"properties,omitempty"`
-}
-
-// GetDataConnectorsCheckRequirements implements the DataConnectorsCheckRequirementsClassification interface for type AADCheckRequirements.
-func (a *AADCheckRequirements) GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements {
-	return &DataConnectorsCheckRequirements{
-		Kind: a.Kind,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AADCheckRequirements.
-func (a AADCheckRequirements) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["kind"] = DataConnectorKindAzureActiveDirectory
-	populate(objectMap, "properties", a.Properties)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AADCheckRequirements.
-func (a *AADCheckRequirements) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "kind":
-			err = unpopulate(val, &a.Kind)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &a.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // AADCheckRequirementsProperties - AAD (Azure Active Directory) requirements check properties.
@@ -92,69 +49,6 @@ type AADDataConnector struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetDataConnector implements the DataConnectorClassification interface for type AADDataConnector.
-func (a *AADDataConnector) GetDataConnector() *DataConnector {
-	return &DataConnector{
-		Kind:       a.Kind,
-		Etag:       a.Etag,
-		ID:         a.ID,
-		Name:       a.Name,
-		Type:       a.Type,
-		SystemData: a.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AADDataConnector.
-func (a AADDataConnector) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", a.Etag)
-	populate(objectMap, "id", a.ID)
-	objectMap["kind"] = DataConnectorKindAzureActiveDirectory
-	populate(objectMap, "name", a.Name)
-	populate(objectMap, "properties", a.Properties)
-	populate(objectMap, "systemData", a.SystemData)
-	populate(objectMap, "type", a.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AADDataConnector.
-func (a *AADDataConnector) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "etag":
-			err = unpopulate(val, &a.Etag)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &a.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &a.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &a.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &a.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &a.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &a.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // AADDataConnectorProperties - AAD (Azure Active Directory) data connector properties.
 type AADDataConnectorProperties struct {
 	// REQUIRED; The tenant id to connect to, and get the data from.
@@ -171,44 +65,6 @@ type AATPCheckRequirements struct {
 
 	// AATP (Azure Advanced Threat Protection) requirements check properties.
 	Properties *AATPCheckRequirementsProperties `json:"properties,omitempty"`
-}
-
-// GetDataConnectorsCheckRequirements implements the DataConnectorsCheckRequirementsClassification interface for type AATPCheckRequirements.
-func (a *AATPCheckRequirements) GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements {
-	return &DataConnectorsCheckRequirements{
-		Kind: a.Kind,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AATPCheckRequirements.
-func (a AATPCheckRequirements) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["kind"] = DataConnectorKindAzureAdvancedThreatProtection
-	populate(objectMap, "properties", a.Properties)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AATPCheckRequirements.
-func (a *AATPCheckRequirements) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "kind":
-			err = unpopulate(val, &a.Kind)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &a.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // AATPCheckRequirementsProperties - AATP (Azure Advanced Threat Protection) requirements check properties.
@@ -241,69 +97,6 @@ type AATPDataConnector struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetDataConnector implements the DataConnectorClassification interface for type AATPDataConnector.
-func (a *AATPDataConnector) GetDataConnector() *DataConnector {
-	return &DataConnector{
-		Kind:       a.Kind,
-		Etag:       a.Etag,
-		ID:         a.ID,
-		Name:       a.Name,
-		Type:       a.Type,
-		SystemData: a.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AATPDataConnector.
-func (a AATPDataConnector) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", a.Etag)
-	populate(objectMap, "id", a.ID)
-	objectMap["kind"] = DataConnectorKindAzureAdvancedThreatProtection
-	populate(objectMap, "name", a.Name)
-	populate(objectMap, "properties", a.Properties)
-	populate(objectMap, "systemData", a.SystemData)
-	populate(objectMap, "type", a.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AATPDataConnector.
-func (a *AATPDataConnector) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "etag":
-			err = unpopulate(val, &a.Etag)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &a.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &a.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &a.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &a.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &a.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &a.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // AATPDataConnectorProperties - AATP (Azure Advanced Threat Protection) data connector properties.
 type AATPDataConnectorProperties struct {
 	// REQUIRED; The tenant id to connect to, and get the data from.
@@ -329,44 +122,6 @@ type ASCCheckRequirements struct {
 
 	// ASC (Azure Security Center) requirements check properties.
 	Properties *ASCCheckRequirementsProperties `json:"properties,omitempty"`
-}
-
-// GetDataConnectorsCheckRequirements implements the DataConnectorsCheckRequirementsClassification interface for type ASCCheckRequirements.
-func (a *ASCCheckRequirements) GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements {
-	return &DataConnectorsCheckRequirements{
-		Kind: a.Kind,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ASCCheckRequirements.
-func (a ASCCheckRequirements) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["kind"] = DataConnectorKindAzureSecurityCenter
-	populate(objectMap, "properties", a.Properties)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ASCCheckRequirements.
-func (a *ASCCheckRequirements) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "kind":
-			err = unpopulate(val, &a.Kind)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &a.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // ASCCheckRequirementsProperties - ASC (Azure Security Center) requirements check properties.
@@ -399,69 +154,6 @@ type ASCDataConnector struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetDataConnector implements the DataConnectorClassification interface for type ASCDataConnector.
-func (a *ASCDataConnector) GetDataConnector() *DataConnector {
-	return &DataConnector{
-		Kind:       a.Kind,
-		Etag:       a.Etag,
-		ID:         a.ID,
-		Name:       a.Name,
-		Type:       a.Type,
-		SystemData: a.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ASCDataConnector.
-func (a ASCDataConnector) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", a.Etag)
-	populate(objectMap, "id", a.ID)
-	objectMap["kind"] = DataConnectorKindAzureSecurityCenter
-	populate(objectMap, "name", a.Name)
-	populate(objectMap, "properties", a.Properties)
-	populate(objectMap, "systemData", a.SystemData)
-	populate(objectMap, "type", a.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ASCDataConnector.
-func (a *ASCDataConnector) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "etag":
-			err = unpopulate(val, &a.Etag)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &a.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &a.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &a.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &a.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &a.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &a.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ASCDataConnectorProperties - ASC (Azure Security Center) data connector properties.
 type ASCDataConnectorProperties struct {
 	// The available data types for the connector.
@@ -490,64 +182,6 @@ type AccountEntity struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// GetEntity implements the EntityClassification interface for type AccountEntity.
-func (a *AccountEntity) GetEntity() *Entity {
-	return &Entity{
-		Kind:       a.Kind,
-		ID:         a.ID,
-		Name:       a.Name,
-		Type:       a.Type,
-		SystemData: a.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AccountEntity.
-func (a AccountEntity) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", a.ID)
-	objectMap["kind"] = EntityKindAccount
-	populate(objectMap, "name", a.Name)
-	populate(objectMap, "properties", a.Properties)
-	populate(objectMap, "systemData", a.SystemData)
-	populate(objectMap, "type", a.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AccountEntity.
-func (a *AccountEntity) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &a.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &a.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &a.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &a.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &a.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &a.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // AccountEntityProperties - Account entity property bag.
@@ -595,26 +229,6 @@ type AccountEntityProperties struct {
 
 	// READ-ONLY; The user principal name suffix for the account, in some cases it is also the domain name. Examples: contoso.com.
 	UpnSuffix *string `json:"upnSuffix,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AccountEntityProperties.
-func (a AccountEntityProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "aadTenantId", a.AADTenantID)
-	populate(objectMap, "aadUserId", a.AADUserID)
-	populate(objectMap, "accountName", a.AccountName)
-	populate(objectMap, "additionalData", a.AdditionalData)
-	populate(objectMap, "dnsDomain", a.DNSDomain)
-	populate(objectMap, "displayName", a.DisplayName)
-	populate(objectMap, "friendlyName", a.FriendlyName)
-	populate(objectMap, "hostEntityId", a.HostEntityID)
-	populate(objectMap, "isDomainJoined", a.IsDomainJoined)
-	populate(objectMap, "ntDomain", a.NtDomain)
-	populate(objectMap, "objectGuid", a.ObjectGUID)
-	populate(objectMap, "puid", a.Puid)
-	populate(objectMap, "sid", a.Sid)
-	populate(objectMap, "upnSuffix", a.UpnSuffix)
-	return json.Marshal(objectMap)
 }
 
 // ActionPropertiesBase - Action property bag base.
@@ -712,14 +326,6 @@ type ActionsList struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ActionsList.
-func (a ActionsList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
-}
-
 // ActivityCustomEntityQuery - Represents Activity entity query.
 type ActivityCustomEntityQuery struct {
 	// REQUIRED; the entity query kind
@@ -742,69 +348,6 @@ type ActivityCustomEntityQuery struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// GetCustomEntityQuery implements the CustomEntityQueryClassification interface for type ActivityCustomEntityQuery.
-func (a *ActivityCustomEntityQuery) GetCustomEntityQuery() *CustomEntityQuery {
-	return &CustomEntityQuery{
-		Kind:       a.Kind,
-		Etag:       a.Etag,
-		ID:         a.ID,
-		Name:       a.Name,
-		Type:       a.Type,
-		SystemData: a.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ActivityCustomEntityQuery.
-func (a ActivityCustomEntityQuery) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", a.Etag)
-	populate(objectMap, "id", a.ID)
-	objectMap["kind"] = CustomEntityQueryKindActivity
-	populate(objectMap, "name", a.Name)
-	populate(objectMap, "properties", a.Properties)
-	populate(objectMap, "systemData", a.SystemData)
-	populate(objectMap, "type", a.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ActivityCustomEntityQuery.
-func (a *ActivityCustomEntityQuery) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "etag":
-			err = unpopulate(val, &a.Etag)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &a.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &a.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &a.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &a.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &a.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &a.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // ActivityEntityQueriesProperties - Describes activity entity query properties
@@ -843,73 +386,6 @@ type ActivityEntityQueriesProperties struct {
 	LastModifiedTimeUTC *time.Time `json:"lastModifiedTimeUtc,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ActivityEntityQueriesProperties.
-func (a ActivityEntityQueriesProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "content", a.Content)
-	populateTimeRFC3339(objectMap, "createdTimeUtc", a.CreatedTimeUTC)
-	populate(objectMap, "description", a.Description)
-	populate(objectMap, "enabled", a.Enabled)
-	populate(objectMap, "entitiesFilter", a.EntitiesFilter)
-	populate(objectMap, "inputEntityType", a.InputEntityType)
-	populateTimeRFC3339(objectMap, "lastModifiedTimeUtc", a.LastModifiedTimeUTC)
-	populate(objectMap, "queryDefinitions", a.QueryDefinitions)
-	populate(objectMap, "requiredInputFieldsSets", a.RequiredInputFieldsSets)
-	populate(objectMap, "templateName", a.TemplateName)
-	populate(objectMap, "title", a.Title)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ActivityEntityQueriesProperties.
-func (a *ActivityEntityQueriesProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "content":
-			err = unpopulate(val, &a.Content)
-			delete(rawMsg, key)
-		case "createdTimeUtc":
-			err = unpopulateTimeRFC3339(val, &a.CreatedTimeUTC)
-			delete(rawMsg, key)
-		case "description":
-			err = unpopulate(val, &a.Description)
-			delete(rawMsg, key)
-		case "enabled":
-			err = unpopulate(val, &a.Enabled)
-			delete(rawMsg, key)
-		case "entitiesFilter":
-			err = unpopulate(val, &a.EntitiesFilter)
-			delete(rawMsg, key)
-		case "inputEntityType":
-			err = unpopulate(val, &a.InputEntityType)
-			delete(rawMsg, key)
-		case "lastModifiedTimeUtc":
-			err = unpopulateTimeRFC3339(val, &a.LastModifiedTimeUTC)
-			delete(rawMsg, key)
-		case "queryDefinitions":
-			err = unpopulate(val, &a.QueryDefinitions)
-			delete(rawMsg, key)
-		case "requiredInputFieldsSets":
-			err = unpopulate(val, &a.RequiredInputFieldsSets)
-			delete(rawMsg, key)
-		case "templateName":
-			err = unpopulate(val, &a.TemplateName)
-			delete(rawMsg, key)
-		case "title":
-			err = unpopulate(val, &a.Title)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ActivityEntityQueriesPropertiesQueryDefinitions - The Activity query definitions
 type ActivityEntityQueriesPropertiesQueryDefinitions struct {
 	// The Activity query to run on a given entity
@@ -940,69 +416,6 @@ type ActivityEntityQuery struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetEntityQuery implements the EntityQueryClassification interface for type ActivityEntityQuery.
-func (a *ActivityEntityQuery) GetEntityQuery() *EntityQuery {
-	return &EntityQuery{
-		Kind:       a.Kind,
-		Etag:       a.Etag,
-		ID:         a.ID,
-		Name:       a.Name,
-		Type:       a.Type,
-		SystemData: a.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ActivityEntityQuery.
-func (a ActivityEntityQuery) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", a.Etag)
-	populate(objectMap, "id", a.ID)
-	objectMap["kind"] = EntityQueryKindActivity
-	populate(objectMap, "name", a.Name)
-	populate(objectMap, "properties", a.Properties)
-	populate(objectMap, "systemData", a.SystemData)
-	populate(objectMap, "type", a.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ActivityEntityQuery.
-func (a *ActivityEntityQuery) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "etag":
-			err = unpopulate(val, &a.Etag)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &a.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &a.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &a.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &a.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &a.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &a.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ActivityEntityQueryTemplate - Represents Activity entity query.
 type ActivityEntityQueryTemplate struct {
 	// REQUIRED; the entity query template kind
@@ -1022,64 +435,6 @@ type ActivityEntityQueryTemplate struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// GetEntityQueryTemplate implements the EntityQueryTemplateClassification interface for type ActivityEntityQueryTemplate.
-func (a *ActivityEntityQueryTemplate) GetEntityQueryTemplate() *EntityQueryTemplate {
-	return &EntityQueryTemplate{
-		Kind:       a.Kind,
-		ID:         a.ID,
-		Name:       a.Name,
-		Type:       a.Type,
-		SystemData: a.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ActivityEntityQueryTemplate.
-func (a ActivityEntityQueryTemplate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", a.ID)
-	objectMap["kind"] = EntityQueryTemplateKindActivity
-	populate(objectMap, "name", a.Name)
-	populate(objectMap, "properties", a.Properties)
-	populate(objectMap, "systemData", a.SystemData)
-	populate(objectMap, "type", a.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ActivityEntityQueryTemplate.
-func (a *ActivityEntityQueryTemplate) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &a.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &a.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &a.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &a.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &a.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &a.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // ActivityEntityQueryTemplateProperties - Describes activity entity query properties
@@ -1107,20 +462,6 @@ type ActivityEntityQueryTemplateProperties struct {
 
 	// The entity query title
 	Title *string `json:"title,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ActivityEntityQueryTemplateProperties.
-func (a ActivityEntityQueryTemplateProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "content", a.Content)
-	populate(objectMap, "dataTypes", a.DataTypes)
-	populate(objectMap, "description", a.Description)
-	populate(objectMap, "entitiesFilter", a.EntitiesFilter)
-	populate(objectMap, "inputEntityType", a.InputEntityType)
-	populate(objectMap, "queryDefinitions", a.QueryDefinitions)
-	populate(objectMap, "requiredInputFieldsSets", a.RequiredInputFieldsSets)
-	populate(objectMap, "title", a.Title)
-	return json.Marshal(objectMap)
 }
 
 // ActivityEntityQueryTemplatePropertiesQueryDefinitions - The Activity query definitions
@@ -1157,68 +498,6 @@ type ActivityTimelineItem struct {
 
 	// REQUIRED; The activity timeline title.
 	Title *string `json:"title,omitempty"`
-}
-
-// GetEntityTimelineItem implements the EntityTimelineItemClassification interface for type ActivityTimelineItem.
-func (a *ActivityTimelineItem) GetEntityTimelineItem() *EntityTimelineItem {
-	return &EntityTimelineItem{
-		Kind: a.Kind,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ActivityTimelineItem.
-func (a ActivityTimelineItem) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "bucketEndTimeUTC", a.BucketEndTimeUTC)
-	populateTimeRFC3339(objectMap, "bucketStartTimeUTC", a.BucketStartTimeUTC)
-	populate(objectMap, "content", a.Content)
-	populateTimeRFC3339(objectMap, "firstActivityTimeUTC", a.FirstActivityTimeUTC)
-	objectMap["kind"] = EntityTimelineKindActivity
-	populateTimeRFC3339(objectMap, "lastActivityTimeUTC", a.LastActivityTimeUTC)
-	populate(objectMap, "queryId", a.QueryID)
-	populate(objectMap, "title", a.Title)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ActivityTimelineItem.
-func (a *ActivityTimelineItem) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "bucketEndTimeUTC":
-			err = unpopulateTimeRFC3339(val, &a.BucketEndTimeUTC)
-			delete(rawMsg, key)
-		case "bucketStartTimeUTC":
-			err = unpopulateTimeRFC3339(val, &a.BucketStartTimeUTC)
-			delete(rawMsg, key)
-		case "content":
-			err = unpopulate(val, &a.Content)
-			delete(rawMsg, key)
-		case "firstActivityTimeUTC":
-			err = unpopulateTimeRFC3339(val, &a.FirstActivityTimeUTC)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &a.Kind)
-			delete(rawMsg, key)
-		case "lastActivityTimeUTC":
-			err = unpopulateTimeRFC3339(val, &a.LastActivityTimeUTC)
-			delete(rawMsg, key)
-		case "queryId":
-			err = unpopulate(val, &a.QueryID)
-			delete(rawMsg, key)
-		case "title":
-			err = unpopulate(val, &a.Title)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // AlertDetailsOverride - Settings for how to dynamically override alert static details
@@ -1267,9 +546,6 @@ type AlertRule struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetAlertRule implements the AlertRuleClassification interface for type AlertRule.
-func (a *AlertRule) GetAlertRule() *AlertRule { return a }
-
 // AlertRuleTemplateClassification provides polymorphic access to related types.
 // Call the interface's GetAlertRuleTemplate() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -1298,9 +574,6 @@ type AlertRuleTemplate struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetAlertRuleTemplate implements the AlertRuleTemplateClassification interface for type AlertRuleTemplate.
-func (a *AlertRuleTemplate) GetAlertRuleTemplate() *AlertRuleTemplate { return a }
-
 // AlertRuleTemplateDataSource - alert rule template data sources
 type AlertRuleTemplateDataSource struct {
 	// The connector id that provides the following data types
@@ -1308,14 +581,6 @@ type AlertRuleTemplateDataSource struct {
 
 	// The data types used by the alert rule template
 	DataTypes []*string `json:"dataTypes,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AlertRuleTemplateDataSource.
-func (a AlertRuleTemplateDataSource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "connectorId", a.ConnectorID)
-	populate(objectMap, "dataTypes", a.DataTypes)
-	return json.Marshal(objectMap)
 }
 
 // AlertRuleTemplatePropertiesBase - Base alert rule template property bag.
@@ -1340,57 +605,6 @@ type AlertRuleTemplatePropertiesBase struct {
 
 	// READ-ONLY; The last time that this alert rule template has been updated.
 	LastUpdatedDateUTC *time.Time `json:"lastUpdatedDateUTC,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AlertRuleTemplatePropertiesBase.
-func (a AlertRuleTemplatePropertiesBase) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "alertRulesCreatedByTemplateCount", a.AlertRulesCreatedByTemplateCount)
-	populateTimeRFC3339(objectMap, "createdDateUTC", a.CreatedDateUTC)
-	populate(objectMap, "description", a.Description)
-	populate(objectMap, "displayName", a.DisplayName)
-	populateTimeRFC3339(objectMap, "lastUpdatedDateUTC", a.LastUpdatedDateUTC)
-	populate(objectMap, "requiredDataConnectors", a.RequiredDataConnectors)
-	populate(objectMap, "status", a.Status)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AlertRuleTemplatePropertiesBase.
-func (a *AlertRuleTemplatePropertiesBase) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "alertRulesCreatedByTemplateCount":
-			err = unpopulate(val, &a.AlertRulesCreatedByTemplateCount)
-			delete(rawMsg, key)
-		case "createdDateUTC":
-			err = unpopulateTimeRFC3339(val, &a.CreatedDateUTC)
-			delete(rawMsg, key)
-		case "description":
-			err = unpopulate(val, &a.Description)
-			delete(rawMsg, key)
-		case "displayName":
-			err = unpopulate(val, &a.DisplayName)
-			delete(rawMsg, key)
-		case "lastUpdatedDateUTC":
-			err = unpopulateTimeRFC3339(val, &a.LastUpdatedDateUTC)
-			delete(rawMsg, key)
-		case "requiredDataConnectors":
-			err = unpopulate(val, &a.RequiredDataConnectors)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &a.Status)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // AlertRuleTemplateWithMitreProperties - Alert rule template with MITRE property bag.
@@ -1423,65 +637,6 @@ type AlertRuleTemplateWithMitreProperties struct {
 	LastUpdatedDateUTC *time.Time `json:"lastUpdatedDateUTC,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AlertRuleTemplateWithMitreProperties.
-func (a AlertRuleTemplateWithMitreProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "alertRulesCreatedByTemplateCount", a.AlertRulesCreatedByTemplateCount)
-	populateTimeRFC3339(objectMap, "createdDateUTC", a.CreatedDateUTC)
-	populate(objectMap, "description", a.Description)
-	populate(objectMap, "displayName", a.DisplayName)
-	populateTimeRFC3339(objectMap, "lastUpdatedDateUTC", a.LastUpdatedDateUTC)
-	populate(objectMap, "requiredDataConnectors", a.RequiredDataConnectors)
-	populate(objectMap, "status", a.Status)
-	populate(objectMap, "tactics", a.Tactics)
-	populate(objectMap, "techniques", a.Techniques)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AlertRuleTemplateWithMitreProperties.
-func (a *AlertRuleTemplateWithMitreProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "alertRulesCreatedByTemplateCount":
-			err = unpopulate(val, &a.AlertRulesCreatedByTemplateCount)
-			delete(rawMsg, key)
-		case "createdDateUTC":
-			err = unpopulateTimeRFC3339(val, &a.CreatedDateUTC)
-			delete(rawMsg, key)
-		case "description":
-			err = unpopulate(val, &a.Description)
-			delete(rawMsg, key)
-		case "displayName":
-			err = unpopulate(val, &a.DisplayName)
-			delete(rawMsg, key)
-		case "lastUpdatedDateUTC":
-			err = unpopulateTimeRFC3339(val, &a.LastUpdatedDateUTC)
-			delete(rawMsg, key)
-		case "requiredDataConnectors":
-			err = unpopulate(val, &a.RequiredDataConnectors)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &a.Status)
-			delete(rawMsg, key)
-		case "tactics":
-			err = unpopulate(val, &a.Tactics)
-			delete(rawMsg, key)
-		case "techniques":
-			err = unpopulate(val, &a.Techniques)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // AlertRuleTemplatesClientGetOptions contains the optional parameters for the AlertRuleTemplatesClient.Get method.
 type AlertRuleTemplatesClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -1499,37 +654,6 @@ type AlertRuleTemplatesList struct {
 
 	// READ-ONLY; URL to fetch the next set of alert rule templates.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AlertRuleTemplatesList.
-func (a AlertRuleTemplatesList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AlertRuleTemplatesList.
-func (a *AlertRuleTemplatesList) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "nextLink":
-			err = unpopulate(val, &a.NextLink)
-			delete(rawMsg, key)
-		case "value":
-			a.Value, err = unmarshalAlertRuleTemplateClassificationArray(val)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // AlertRulesClientCreateOrUpdateOptions contains the optional parameters for the AlertRulesClient.CreateOrUpdate method.
@@ -1561,37 +685,6 @@ type AlertRulesList struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AlertRulesList.
-func (a AlertRulesList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AlertRulesList.
-func (a *AlertRulesList) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "nextLink":
-			err = unpopulate(val, &a.NextLink)
-			delete(rawMsg, key)
-		case "value":
-			a.Value, err = unmarshalAlertRuleClassificationArray(val)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // AlertsDataTypeOfDataConnector - Alerts data type for data connectors.
 type AlertsDataTypeOfDataConnector struct {
 	// REQUIRED; Alerts data type connection.
@@ -1620,69 +713,6 @@ type Anomalies struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// GetSettings implements the SettingsClassification interface for type Anomalies.
-func (a *Anomalies) GetSettings() *Settings {
-	return &Settings{
-		Kind:       a.Kind,
-		Etag:       a.Etag,
-		ID:         a.ID,
-		Name:       a.Name,
-		Type:       a.Type,
-		SystemData: a.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Anomalies.
-func (a Anomalies) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", a.Etag)
-	populate(objectMap, "id", a.ID)
-	objectMap["kind"] = SettingKindAnomalies
-	populate(objectMap, "name", a.Name)
-	populate(objectMap, "properties", a.Properties)
-	populate(objectMap, "systemData", a.SystemData)
-	populate(objectMap, "type", a.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type Anomalies.
-func (a *Anomalies) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "etag":
-			err = unpopulate(val, &a.Etag)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &a.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &a.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &a.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &a.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &a.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &a.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // AnomaliesSettingsProperties - Anomalies property bag.
@@ -1729,9 +759,6 @@ type AutomationRuleAction struct {
 	Order *int32 `json:"order,omitempty"`
 }
 
-// GetAutomationRuleAction implements the AutomationRuleActionClassification interface for type AutomationRuleAction.
-func (a *AutomationRuleAction) GetAutomationRuleAction() *AutomationRuleAction { return a }
-
 // AutomationRuleConditionClassification provides polymorphic access to related types.
 // Call the interface's GetAutomationRuleCondition() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -1747,9 +774,6 @@ type AutomationRuleCondition struct {
 	ConditionType *ConditionType `json:"conditionType,omitempty"`
 }
 
-// GetAutomationRuleCondition implements the AutomationRuleConditionClassification interface for type AutomationRuleCondition.
-func (a *AutomationRuleCondition) GetAutomationRuleCondition() *AutomationRuleCondition { return a }
-
 // AutomationRuleModifyPropertiesAction - Describes an automation rule action to modify an object's properties
 type AutomationRuleModifyPropertiesAction struct {
 	// REQUIRED; The type of the automation rule action
@@ -1758,49 +782,6 @@ type AutomationRuleModifyPropertiesAction struct {
 	// REQUIRED
 	Order               *int32                    `json:"order,omitempty"`
 	ActionConfiguration *IncidentPropertiesAction `json:"actionConfiguration,omitempty"`
-}
-
-// GetAutomationRuleAction implements the AutomationRuleActionClassification interface for type AutomationRuleModifyPropertiesAction.
-func (a *AutomationRuleModifyPropertiesAction) GetAutomationRuleAction() *AutomationRuleAction {
-	return &AutomationRuleAction{
-		Order:      a.Order,
-		ActionType: a.ActionType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AutomationRuleModifyPropertiesAction.
-func (a AutomationRuleModifyPropertiesAction) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "actionConfiguration", a.ActionConfiguration)
-	objectMap["actionType"] = ActionTypeModifyProperties
-	populate(objectMap, "order", a.Order)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AutomationRuleModifyPropertiesAction.
-func (a *AutomationRuleModifyPropertiesAction) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "actionConfiguration":
-			err = unpopulate(val, &a.ActionConfiguration)
-			delete(rawMsg, key)
-		case "actionType":
-			err = unpopulate(val, &a.ActionType)
-			delete(rawMsg, key)
-		case "order":
-			err = unpopulate(val, &a.Order)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // AutomationRuleProperties - Automation rule properties
@@ -1830,76 +811,12 @@ type AutomationRuleProperties struct {
 	LastModifiedTimeUTC *time.Time `json:"lastModifiedTimeUtc,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AutomationRuleProperties.
-func (a AutomationRuleProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "actions", a.Actions)
-	populate(objectMap, "createdBy", a.CreatedBy)
-	populateTimeRFC3339(objectMap, "createdTimeUtc", a.CreatedTimeUTC)
-	populate(objectMap, "displayName", a.DisplayName)
-	populate(objectMap, "lastModifiedBy", a.LastModifiedBy)
-	populateTimeRFC3339(objectMap, "lastModifiedTimeUtc", a.LastModifiedTimeUTC)
-	populate(objectMap, "order", a.Order)
-	populate(objectMap, "triggeringLogic", a.TriggeringLogic)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AutomationRuleProperties.
-func (a *AutomationRuleProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "actions":
-			a.Actions, err = unmarshalAutomationRuleActionClassificationArray(val)
-			delete(rawMsg, key)
-		case "createdBy":
-			err = unpopulate(val, &a.CreatedBy)
-			delete(rawMsg, key)
-		case "createdTimeUtc":
-			err = unpopulateTimeRFC3339(val, &a.CreatedTimeUTC)
-			delete(rawMsg, key)
-		case "displayName":
-			err = unpopulate(val, &a.DisplayName)
-			delete(rawMsg, key)
-		case "lastModifiedBy":
-			err = unpopulate(val, &a.LastModifiedBy)
-			delete(rawMsg, key)
-		case "lastModifiedTimeUtc":
-			err = unpopulateTimeRFC3339(val, &a.LastModifiedTimeUTC)
-			delete(rawMsg, key)
-		case "order":
-			err = unpopulate(val, &a.Order)
-			delete(rawMsg, key)
-		case "triggeringLogic":
-			err = unpopulate(val, &a.TriggeringLogic)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 type AutomationRulePropertyValuesCondition struct {
 	Operator *AutomationRulePropertyConditionSupportedOperator `json:"operator,omitempty"`
 
 	// The property to evaluate in an automation rule property condition
 	PropertyName   *AutomationRulePropertyConditionSupportedProperty `json:"propertyName,omitempty"`
 	PropertyValues []*string                                         `json:"propertyValues,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AutomationRulePropertyValuesCondition.
-func (a AutomationRulePropertyValuesCondition) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "operator", a.Operator)
-	populate(objectMap, "propertyName", a.PropertyName)
-	populate(objectMap, "propertyValues", a.PropertyValues)
-	return json.Marshal(objectMap)
 }
 
 // AutomationRuleRunPlaybookAction - Describes an automation rule action to run a playbook
@@ -1910,49 +827,6 @@ type AutomationRuleRunPlaybookAction struct {
 	// REQUIRED
 	Order               *int32                    `json:"order,omitempty"`
 	ActionConfiguration *PlaybookActionProperties `json:"actionConfiguration,omitempty"`
-}
-
-// GetAutomationRuleAction implements the AutomationRuleActionClassification interface for type AutomationRuleRunPlaybookAction.
-func (a *AutomationRuleRunPlaybookAction) GetAutomationRuleAction() *AutomationRuleAction {
-	return &AutomationRuleAction{
-		Order:      a.Order,
-		ActionType: a.ActionType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AutomationRuleRunPlaybookAction.
-func (a AutomationRuleRunPlaybookAction) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "actionConfiguration", a.ActionConfiguration)
-	objectMap["actionType"] = ActionTypeRunPlaybook
-	populate(objectMap, "order", a.Order)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AutomationRuleRunPlaybookAction.
-func (a *AutomationRuleRunPlaybookAction) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "actionConfiguration":
-			err = unpopulate(val, &a.ActionConfiguration)
-			delete(rawMsg, key)
-		case "actionType":
-			err = unpopulate(val, &a.ActionType)
-			delete(rawMsg, key)
-		case "order":
-			err = unpopulate(val, &a.Order)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // AutomationRuleTriggeringLogic - Describes automation rule triggering logic
@@ -1971,49 +845,6 @@ type AutomationRuleTriggeringLogic struct {
 
 	// Determines when the automation rule should automatically expire and be disabled.
 	ExpirationTimeUTC *time.Time `json:"expirationTimeUtc,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AutomationRuleTriggeringLogic.
-func (a AutomationRuleTriggeringLogic) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "conditions", a.Conditions)
-	populateTimeRFC3339(objectMap, "expirationTimeUtc", a.ExpirationTimeUTC)
-	populate(objectMap, "isEnabled", a.IsEnabled)
-	populate(objectMap, "triggersOn", a.TriggersOn)
-	populate(objectMap, "triggersWhen", a.TriggersWhen)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AutomationRuleTriggeringLogic.
-func (a *AutomationRuleTriggeringLogic) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "conditions":
-			a.Conditions, err = unmarshalAutomationRuleConditionClassificationArray(val)
-			delete(rawMsg, key)
-		case "expirationTimeUtc":
-			err = unpopulateTimeRFC3339(val, &a.ExpirationTimeUTC)
-			delete(rawMsg, key)
-		case "isEnabled":
-			err = unpopulate(val, &a.IsEnabled)
-			delete(rawMsg, key)
-		case "triggersOn":
-			err = unpopulate(val, &a.TriggersOn)
-			delete(rawMsg, key)
-		case "triggersWhen":
-			err = unpopulate(val, &a.TriggersWhen)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // AutomationRulesClientCreateOrUpdateOptions contains the optional parameters for the AutomationRulesClient.CreateOrUpdate
@@ -2038,23 +869,9 @@ type AutomationRulesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AutomationRulesClientManualTriggerPlaybookOptions contains the optional parameters for the AutomationRulesClient.ManualTriggerPlaybook
-// method.
-type AutomationRulesClientManualTriggerPlaybookOptions struct {
-	RequestBody *ManualTriggerRequestBody
-}
-
 type AutomationRulesList struct {
 	NextLink *string           `json:"nextLink,omitempty"`
 	Value    []*AutomationRule `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AutomationRulesList.
-func (a AutomationRulesList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
 }
 
 // Availability - Connector Availability Status
@@ -2070,40 +887,6 @@ type Availability struct {
 type AwsCloudTrailCheckRequirements struct {
 	// REQUIRED; Describes the kind of connector to be checked.
 	Kind *DataConnectorKind `json:"kind,omitempty"`
-}
-
-// GetDataConnectorsCheckRequirements implements the DataConnectorsCheckRequirementsClassification interface for type AwsCloudTrailCheckRequirements.
-func (a *AwsCloudTrailCheckRequirements) GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements {
-	return &DataConnectorsCheckRequirements{
-		Kind: a.Kind,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AwsCloudTrailCheckRequirements.
-func (a AwsCloudTrailCheckRequirements) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["kind"] = DataConnectorKindAmazonWebServicesCloudTrail
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AwsCloudTrailCheckRequirements.
-func (a *AwsCloudTrailCheckRequirements) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "kind":
-			err = unpopulate(val, &a.Kind)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // AwsCloudTrailDataConnector - Represents Amazon Web Services CloudTrail data connector.
@@ -2128,69 +911,6 @@ type AwsCloudTrailDataConnector struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// GetDataConnector implements the DataConnectorClassification interface for type AwsCloudTrailDataConnector.
-func (a *AwsCloudTrailDataConnector) GetDataConnector() *DataConnector {
-	return &DataConnector{
-		Kind:       a.Kind,
-		Etag:       a.Etag,
-		ID:         a.ID,
-		Name:       a.Name,
-		Type:       a.Type,
-		SystemData: a.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AwsCloudTrailDataConnector.
-func (a AwsCloudTrailDataConnector) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", a.Etag)
-	populate(objectMap, "id", a.ID)
-	objectMap["kind"] = DataConnectorKindAmazonWebServicesCloudTrail
-	populate(objectMap, "name", a.Name)
-	populate(objectMap, "properties", a.Properties)
-	populate(objectMap, "systemData", a.SystemData)
-	populate(objectMap, "type", a.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AwsCloudTrailDataConnector.
-func (a *AwsCloudTrailDataConnector) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "etag":
-			err = unpopulate(val, &a.Etag)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &a.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &a.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &a.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &a.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &a.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &a.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // AwsCloudTrailDataConnectorDataTypes - The available data types for Amazon Web Services CloudTrail data connector.
@@ -2220,40 +940,6 @@ type AwsS3CheckRequirements struct {
 	Kind *DataConnectorKind `json:"kind,omitempty"`
 }
 
-// GetDataConnectorsCheckRequirements implements the DataConnectorsCheckRequirementsClassification interface for type AwsS3CheckRequirements.
-func (a *AwsS3CheckRequirements) GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements {
-	return &DataConnectorsCheckRequirements{
-		Kind: a.Kind,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AwsS3CheckRequirements.
-func (a AwsS3CheckRequirements) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["kind"] = DataConnectorKindAmazonWebServicesS3
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AwsS3CheckRequirements.
-func (a *AwsS3CheckRequirements) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "kind":
-			err = unpopulate(val, &a.Kind)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // AwsS3DataConnector - Represents Amazon Web Services S3 data connector.
 type AwsS3DataConnector struct {
 	// REQUIRED; The data connector kind
@@ -2276,69 +962,6 @@ type AwsS3DataConnector struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// GetDataConnector implements the DataConnectorClassification interface for type AwsS3DataConnector.
-func (a *AwsS3DataConnector) GetDataConnector() *DataConnector {
-	return &DataConnector{
-		Kind:       a.Kind,
-		Etag:       a.Etag,
-		ID:         a.ID,
-		Name:       a.Name,
-		Type:       a.Type,
-		SystemData: a.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AwsS3DataConnector.
-func (a AwsS3DataConnector) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", a.Etag)
-	populate(objectMap, "id", a.ID)
-	objectMap["kind"] = DataConnectorKindAmazonWebServicesS3
-	populate(objectMap, "name", a.Name)
-	populate(objectMap, "properties", a.Properties)
-	populate(objectMap, "systemData", a.SystemData)
-	populate(objectMap, "type", a.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AwsS3DataConnector.
-func (a *AwsS3DataConnector) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "etag":
-			err = unpopulate(val, &a.Etag)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &a.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &a.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &a.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &a.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &a.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &a.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // AwsS3DataConnectorDataTypes - The available data types for Amazon Web Services S3 data connector.
@@ -2368,14 +991,13 @@ type AwsS3DataConnectorProperties struct {
 	SqsUrls []*string `json:"sqsUrls,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AwsS3DataConnectorProperties.
-func (a AwsS3DataConnectorProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "dataTypes", a.DataTypes)
-	populate(objectMap, "destinationTable", a.DestinationTable)
-	populate(objectMap, "roleArn", a.RoleArn)
-	populate(objectMap, "sqsUrls", a.SqsUrls)
-	return json.Marshal(objectMap)
+// AzureDevOpsResourceInfo - Resources created in Azure DevOps repository.
+type AzureDevOpsResourceInfo struct {
+	// Id of the pipeline created for the source-control.
+	PipelineID *string `json:"pipelineId,omitempty"`
+
+	// Id of the service-connection created for the source-control.
+	ServiceConnectionID *string `json:"serviceConnectionId,omitempty"`
 }
 
 // AzureResourceEntity - Represents an azure resource entity.
@@ -2399,64 +1021,6 @@ type AzureResourceEntity struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetEntity implements the EntityClassification interface for type AzureResourceEntity.
-func (a *AzureResourceEntity) GetEntity() *Entity {
-	return &Entity{
-		Kind:       a.Kind,
-		ID:         a.ID,
-		Name:       a.Name,
-		Type:       a.Type,
-		SystemData: a.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AzureResourceEntity.
-func (a AzureResourceEntity) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", a.ID)
-	objectMap["kind"] = EntityKindAzureResource
-	populate(objectMap, "name", a.Name)
-	populate(objectMap, "properties", a.Properties)
-	populate(objectMap, "systemData", a.SystemData)
-	populate(objectMap, "type", a.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AzureResourceEntity.
-func (a *AzureResourceEntity) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &a.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &a.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &a.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &a.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &a.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &a.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // AzureResourceEntityProperties - AzureResource entity property bag.
 type AzureResourceEntityProperties struct {
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
@@ -2471,16 +1035,6 @@ type AzureResourceEntityProperties struct {
 
 	// READ-ONLY; The subscription id of the resource
 	SubscriptionID *string `json:"subscriptionId,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AzureResourceEntityProperties.
-func (a AzureResourceEntityProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalData", a.AdditionalData)
-	populate(objectMap, "friendlyName", a.FriendlyName)
-	populate(objectMap, "resourceId", a.ResourceID)
-	populate(objectMap, "subscriptionId", a.SubscriptionID)
-	return json.Marshal(objectMap)
 }
 
 // Bookmark - Represents a bookmark in Azure Security Insights.
@@ -2518,14 +1072,6 @@ type BookmarkEntityMappings struct {
 	FieldMappings []*EntityFieldMapping `json:"fieldMappings,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type BookmarkEntityMappings.
-func (b BookmarkEntityMappings) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "entityType", b.EntityType)
-	populate(objectMap, "fieldMappings", b.FieldMappings)
-	return json.Marshal(objectMap)
-}
-
 // BookmarkExpandParameters - The parameters required to execute an expand operation on the given bookmark.
 type BookmarkExpandParameters struct {
 	// The end date filter, so the only expansion results returned are before this date.
@@ -2536,41 +1082,6 @@ type BookmarkExpandParameters struct {
 
 	// The start date filter, so the only expansion results returned are after this date.
 	StartTime *time.Time `json:"startTime,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BookmarkExpandParameters.
-func (b BookmarkExpandParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "endTime", b.EndTime)
-	populate(objectMap, "expansionId", b.ExpansionID)
-	populateTimeRFC3339(objectMap, "startTime", b.StartTime)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type BookmarkExpandParameters.
-func (b *BookmarkExpandParameters) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "endTime":
-			err = unpopulateTimeRFC3339(val, &b.EndTime)
-			delete(rawMsg, key)
-		case "expansionId":
-			err = unpopulate(val, &b.ExpansionID)
-			delete(rawMsg, key)
-		case "startTime":
-			err = unpopulateTimeRFC3339(val, &b.StartTime)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // BookmarkExpandResponse - The entity expansion result operation response.
@@ -2591,37 +1102,6 @@ type BookmarkExpandResponseValue struct {
 	Entities []EntityClassification `json:"entities,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type BookmarkExpandResponseValue.
-func (b BookmarkExpandResponseValue) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "edges", b.Edges)
-	populate(objectMap, "entities", b.Entities)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type BookmarkExpandResponseValue.
-func (b *BookmarkExpandResponseValue) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "edges":
-			err = unpopulate(val, &b.Edges)
-			delete(rawMsg, key)
-		case "entities":
-			b.Entities, err = unmarshalEntityClassificationArray(val)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // BookmarkList - List all the bookmarks.
 type BookmarkList struct {
 	// REQUIRED; Array of bookmarks.
@@ -2629,14 +1109,6 @@ type BookmarkList struct {
 
 	// READ-ONLY; URL to fetch the next set of bookmarks.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BookmarkList.
-func (b BookmarkList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", b.NextLink)
-	populate(objectMap, "value", b.Value)
-	return json.Marshal(objectMap)
 }
 
 // BookmarkProperties - Describes bookmark properties
@@ -2688,93 +1160,6 @@ type BookmarkProperties struct {
 
 	// Describes a user that updated the bookmark
 	UpdatedBy *UserInfo `json:"updatedBy,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BookmarkProperties.
-func (b BookmarkProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "created", b.Created)
-	populate(objectMap, "createdBy", b.CreatedBy)
-	populate(objectMap, "displayName", b.DisplayName)
-	populate(objectMap, "entityMappings", b.EntityMappings)
-	populateTimeRFC3339(objectMap, "eventTime", b.EventTime)
-	populate(objectMap, "incidentInfo", b.IncidentInfo)
-	populate(objectMap, "labels", b.Labels)
-	populate(objectMap, "notes", b.Notes)
-	populate(objectMap, "query", b.Query)
-	populateTimeRFC3339(objectMap, "queryEndTime", b.QueryEndTime)
-	populate(objectMap, "queryResult", b.QueryResult)
-	populateTimeRFC3339(objectMap, "queryStartTime", b.QueryStartTime)
-	populate(objectMap, "tactics", b.Tactics)
-	populate(objectMap, "techniques", b.Techniques)
-	populateTimeRFC3339(objectMap, "updated", b.Updated)
-	populate(objectMap, "updatedBy", b.UpdatedBy)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type BookmarkProperties.
-func (b *BookmarkProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "created":
-			err = unpopulateTimeRFC3339(val, &b.Created)
-			delete(rawMsg, key)
-		case "createdBy":
-			err = unpopulate(val, &b.CreatedBy)
-			delete(rawMsg, key)
-		case "displayName":
-			err = unpopulate(val, &b.DisplayName)
-			delete(rawMsg, key)
-		case "entityMappings":
-			err = unpopulate(val, &b.EntityMappings)
-			delete(rawMsg, key)
-		case "eventTime":
-			err = unpopulateTimeRFC3339(val, &b.EventTime)
-			delete(rawMsg, key)
-		case "incidentInfo":
-			err = unpopulate(val, &b.IncidentInfo)
-			delete(rawMsg, key)
-		case "labels":
-			err = unpopulate(val, &b.Labels)
-			delete(rawMsg, key)
-		case "notes":
-			err = unpopulate(val, &b.Notes)
-			delete(rawMsg, key)
-		case "query":
-			err = unpopulate(val, &b.Query)
-			delete(rawMsg, key)
-		case "queryEndTime":
-			err = unpopulateTimeRFC3339(val, &b.QueryEndTime)
-			delete(rawMsg, key)
-		case "queryResult":
-			err = unpopulate(val, &b.QueryResult)
-			delete(rawMsg, key)
-		case "queryStartTime":
-			err = unpopulateTimeRFC3339(val, &b.QueryStartTime)
-			delete(rawMsg, key)
-		case "tactics":
-			err = unpopulate(val, &b.Tactics)
-			delete(rawMsg, key)
-		case "techniques":
-			err = unpopulate(val, &b.Techniques)
-			delete(rawMsg, key)
-		case "updated":
-			err = unpopulateTimeRFC3339(val, &b.Updated)
-			delete(rawMsg, key)
-		case "updatedBy":
-			err = unpopulate(val, &b.UpdatedBy)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // BookmarkRelationsClientCreateOrUpdateOptions contains the optional parameters for the BookmarkRelationsClient.CreateOrUpdate
@@ -2837,72 +1222,6 @@ type BookmarkTimelineItem struct {
 	StartTimeUTC *time.Time `json:"startTimeUtc,omitempty"`
 }
 
-// GetEntityTimelineItem implements the EntityTimelineItemClassification interface for type BookmarkTimelineItem.
-func (b *BookmarkTimelineItem) GetEntityTimelineItem() *EntityTimelineItem {
-	return &EntityTimelineItem{
-		Kind: b.Kind,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BookmarkTimelineItem.
-func (b BookmarkTimelineItem) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "azureResourceId", b.AzureResourceID)
-	populate(objectMap, "createdBy", b.CreatedBy)
-	populate(objectMap, "displayName", b.DisplayName)
-	populateTimeRFC3339(objectMap, "endTimeUtc", b.EndTimeUTC)
-	populateTimeRFC3339(objectMap, "eventTime", b.EventTime)
-	objectMap["kind"] = EntityTimelineKindBookmark
-	populate(objectMap, "labels", b.Labels)
-	populate(objectMap, "notes", b.Notes)
-	populateTimeRFC3339(objectMap, "startTimeUtc", b.StartTimeUTC)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type BookmarkTimelineItem.
-func (b *BookmarkTimelineItem) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "azureResourceId":
-			err = unpopulate(val, &b.AzureResourceID)
-			delete(rawMsg, key)
-		case "createdBy":
-			err = unpopulate(val, &b.CreatedBy)
-			delete(rawMsg, key)
-		case "displayName":
-			err = unpopulate(val, &b.DisplayName)
-			delete(rawMsg, key)
-		case "endTimeUtc":
-			err = unpopulateTimeRFC3339(val, &b.EndTimeUTC)
-			delete(rawMsg, key)
-		case "eventTime":
-			err = unpopulateTimeRFC3339(val, &b.EventTime)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &b.Kind)
-			delete(rawMsg, key)
-		case "labels":
-			err = unpopulate(val, &b.Labels)
-			delete(rawMsg, key)
-		case "notes":
-			err = unpopulate(val, &b.Notes)
-			delete(rawMsg, key)
-		case "startTimeUtc":
-			err = unpopulateTimeRFC3339(val, &b.StartTimeUTC)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // BookmarksClientCreateOrUpdateOptions contains the optional parameters for the BookmarksClient.CreateOrUpdate method.
 type BookmarksClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
@@ -2959,64 +1278,6 @@ type CloudApplicationEntity struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetEntity implements the EntityClassification interface for type CloudApplicationEntity.
-func (c *CloudApplicationEntity) GetEntity() *Entity {
-	return &Entity{
-		Kind:       c.Kind,
-		ID:         c.ID,
-		Name:       c.Name,
-		Type:       c.Type,
-		SystemData: c.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CloudApplicationEntity.
-func (c CloudApplicationEntity) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", c.ID)
-	objectMap["kind"] = EntityKindCloudApplication
-	populate(objectMap, "name", c.Name)
-	populate(objectMap, "properties", c.Properties)
-	populate(objectMap, "systemData", c.SystemData)
-	populate(objectMap, "type", c.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type CloudApplicationEntity.
-func (c *CloudApplicationEntity) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &c.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &c.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &c.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &c.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &c.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &c.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // CloudApplicationEntityProperties - CloudApplication entity property bag.
 type CloudApplicationEntityProperties struct {
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
@@ -3037,15 +1298,19 @@ type CloudApplicationEntityProperties struct {
 	InstanceName *string `json:"instanceName,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CloudApplicationEntityProperties.
-func (c CloudApplicationEntityProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalData", c.AdditionalData)
-	populate(objectMap, "appId", c.AppID)
-	populate(objectMap, "appName", c.AppName)
-	populate(objectMap, "friendlyName", c.FriendlyName)
-	populate(objectMap, "instanceName", c.InstanceName)
-	return json.Marshal(objectMap)
+// CloudError - Error response structure.
+type CloudError struct {
+	// Error data
+	Error *CloudErrorBody `json:"error,omitempty"`
+}
+
+// CloudErrorBody - Error details.
+type CloudErrorBody struct {
+	// READ-ONLY; An identifier for the error. Codes are invariant and are intended to be consumed programmatically.
+	Code *string `json:"code,omitempty" azure:"ro"`
+
+	// READ-ONLY; A message describing the error, intended to be suitable for display in a user interface.
+	Message *string `json:"message,omitempty" azure:"ro"`
 }
 
 // CodelessAPIPollingDataConnector - Represents Codeless API Polling data connector.
@@ -3070,69 +1335,6 @@ type CodelessAPIPollingDataConnector struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// GetDataConnector implements the DataConnectorClassification interface for type CodelessAPIPollingDataConnector.
-func (c *CodelessAPIPollingDataConnector) GetDataConnector() *DataConnector {
-	return &DataConnector{
-		Kind:       c.Kind,
-		Etag:       c.Etag,
-		ID:         c.ID,
-		Name:       c.Name,
-		Type:       c.Type,
-		SystemData: c.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CodelessAPIPollingDataConnector.
-func (c CodelessAPIPollingDataConnector) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", c.Etag)
-	populate(objectMap, "id", c.ID)
-	objectMap["kind"] = DataConnectorKindAPIPolling
-	populate(objectMap, "name", c.Name)
-	populate(objectMap, "properties", c.Properties)
-	populate(objectMap, "systemData", c.SystemData)
-	populate(objectMap, "type", c.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type CodelessAPIPollingDataConnector.
-func (c *CodelessAPIPollingDataConnector) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "etag":
-			err = unpopulate(val, &c.Etag)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &c.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &c.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &c.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &c.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &c.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &c.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // CodelessConnectorPollingAuthProperties - Describe the authentication properties needed to successfully authenticate with
@@ -3280,16 +1482,6 @@ type CodelessConnectorPollingResponseProperties struct {
 	SuccessStatusValue *string `json:"successStatusValue,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CodelessConnectorPollingResponseProperties.
-func (c CodelessConnectorPollingResponseProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "eventsJsonPaths", c.EventsJSONPaths)
-	populate(objectMap, "isGzipCompressed", c.IsGzipCompressed)
-	populate(objectMap, "successStatusJsonPath", c.SuccessStatusJSONPath)
-	populate(objectMap, "successStatusValue", c.SuccessStatusValue)
-	return json.Marshal(objectMap)
-}
-
 // CodelessParameters - Represents Codeless UI data connector
 type CodelessParameters struct {
 	// Config to describe the instructions blade
@@ -3335,38 +1527,12 @@ type CodelessUIConnectorConfigProperties struct {
 	CustomImage *string `json:"customImage,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CodelessUIConnectorConfigProperties.
-func (c CodelessUIConnectorConfigProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "availability", c.Availability)
-	populate(objectMap, "connectivityCriteria", c.ConnectivityCriteria)
-	populate(objectMap, "customImage", c.CustomImage)
-	populate(objectMap, "dataTypes", c.DataTypes)
-	populate(objectMap, "descriptionMarkdown", c.DescriptionMarkdown)
-	populate(objectMap, "graphQueries", c.GraphQueries)
-	populate(objectMap, "graphQueriesTableName", c.GraphQueriesTableName)
-	populate(objectMap, "instructionSteps", c.InstructionSteps)
-	populate(objectMap, "permissions", c.Permissions)
-	populate(objectMap, "publisher", c.Publisher)
-	populate(objectMap, "sampleQueries", c.SampleQueries)
-	populate(objectMap, "title", c.Title)
-	return json.Marshal(objectMap)
-}
-
 type CodelessUIConnectorConfigPropertiesConnectivityCriteriaItem struct {
 	// type of connectivity
 	Type *ConnectivityType `json:"type,omitempty"`
 
 	// Queries for checking connectivity
 	Value []*string `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CodelessUIConnectorConfigPropertiesConnectivityCriteriaItem.
-func (c CodelessUIConnectorConfigPropertiesConnectivityCriteriaItem) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "type", c.Type)
-	populate(objectMap, "value", c.Value)
-	return json.Marshal(objectMap)
 }
 
 type CodelessUIConnectorConfigPropertiesDataTypesItem struct {
@@ -3397,15 +1563,6 @@ type CodelessUIConnectorConfigPropertiesInstructionStepsItem struct {
 
 	// Instruction step title
 	Title *string `json:"title,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CodelessUIConnectorConfigPropertiesInstructionStepsItem.
-func (c CodelessUIConnectorConfigPropertiesInstructionStepsItem) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "description", c.Description)
-	populate(objectMap, "instructions", c.Instructions)
-	populate(objectMap, "title", c.Title)
-	return json.Marshal(objectMap)
 }
 
 type CodelessUIConnectorConfigPropertiesSampleQueriesItem struct {
@@ -3440,69 +1597,6 @@ type CodelessUIDataConnector struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetDataConnector implements the DataConnectorClassification interface for type CodelessUIDataConnector.
-func (c *CodelessUIDataConnector) GetDataConnector() *DataConnector {
-	return &DataConnector{
-		Kind:       c.Kind,
-		Etag:       c.Etag,
-		ID:         c.ID,
-		Name:       c.Name,
-		Type:       c.Type,
-		SystemData: c.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CodelessUIDataConnector.
-func (c CodelessUIDataConnector) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", c.Etag)
-	populate(objectMap, "id", c.ID)
-	objectMap["kind"] = DataConnectorKindGenericUI
-	populate(objectMap, "name", c.Name)
-	populate(objectMap, "properties", c.Properties)
-	populate(objectMap, "systemData", c.SystemData)
-	populate(objectMap, "type", c.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type CodelessUIDataConnector.
-func (c *CodelessUIDataConnector) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "etag":
-			err = unpopulate(val, &c.Etag)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &c.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &c.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &c.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &c.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &c.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &c.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ConnectedEntity - Expansion result connected entities
 type ConnectedEntity struct {
 	// key-value pairs for a connected entity mapping
@@ -3519,14 +1613,6 @@ type ConnectivityCriteria struct {
 
 	// Queries for checking connectivity
 	Value []*string `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ConnectivityCriteria.
-func (c ConnectivityCriteria) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "type", c.Type)
-	populate(objectMap, "value", c.Value)
-	return json.Marshal(objectMap)
 }
 
 // ConnectorInstructionModelBase - Instruction step details
@@ -3577,9 +1663,6 @@ type CustomEntityQuery struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetCustomEntityQuery implements the CustomEntityQueryClassification interface for type CustomEntityQuery.
-func (c *CustomEntityQuery) GetCustomEntityQuery() *CustomEntityQuery { return c }
-
 // Customs permissions required for the connector
 type Customs struct {
 	// Customs permissions description
@@ -3619,64 +1702,6 @@ type DNSEntity struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetEntity implements the EntityClassification interface for type DNSEntity.
-func (d *DNSEntity) GetEntity() *Entity {
-	return &Entity{
-		Kind:       d.Kind,
-		ID:         d.ID,
-		Name:       d.Name,
-		Type:       d.Type,
-		SystemData: d.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DNSEntity.
-func (d DNSEntity) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", d.ID)
-	objectMap["kind"] = EntityKindDNSResolution
-	populate(objectMap, "name", d.Name)
-	populate(objectMap, "properties", d.Properties)
-	populate(objectMap, "systemData", d.SystemData)
-	populate(objectMap, "type", d.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type DNSEntity.
-func (d *DNSEntity) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &d.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &d.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &d.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &d.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &d.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &d.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // DNSEntityProperties - Dns entity property bag.
 type DNSEntityProperties struct {
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
@@ -3699,25 +1724,13 @@ type DNSEntityProperties struct {
 	IPAddressEntityIDs []*string `json:"ipAddressEntityIds,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DNSEntityProperties.
-func (d DNSEntityProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalData", d.AdditionalData)
-	populate(objectMap, "dnsServerIpEntityId", d.DNSServerIPEntityID)
-	populate(objectMap, "domainName", d.DomainName)
-	populate(objectMap, "friendlyName", d.FriendlyName)
-	populate(objectMap, "hostIpAddressEntityId", d.HostIPAddressEntityID)
-	populate(objectMap, "ipAddressEntityIds", d.IPAddressEntityIDs)
-	return json.Marshal(objectMap)
-}
-
 // DataConnectorClassification provides polymorphic access to related types.
 // Call the interface's GetDataConnector() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
 // - *AADDataConnector, *AATPDataConnector, *ASCDataConnector, *AwsCloudTrailDataConnector, *AwsS3DataConnector, *CodelessAPIPollingDataConnector,
-// - *CodelessUIDataConnector, *DataConnector, *Dynamics365DataConnector, *MCASDataConnector, *MDATPDataConnector, *MSTIDataConnector,
-// - *MTPDataConnector, *Office365ProjectDataConnector, *OfficeATPDataConnector, *OfficeDataConnector, *OfficeIRMDataConnector,
-// - *OfficePowerBIDataConnector, *TIDataConnector, *TiTaxiiDataConnector
+// - *CodelessUIDataConnector, *DataConnector, *Dynamics365DataConnector, *IoTDataConnector, *MCASDataConnector, *MDATPDataConnector,
+// - *MSTIDataConnector, *MTPDataConnector, *Office365ProjectDataConnector, *OfficeATPDataConnector, *OfficeDataConnector,
+// - *OfficeIRMDataConnector, *OfficePowerBIDataConnector, *TIDataConnector, *TiTaxiiDataConnector
 type DataConnectorClassification interface {
 	// GetDataConnector returns the DataConnector content of the underlying type.
 	GetDataConnector() *DataConnector
@@ -3744,9 +1757,6 @@ type DataConnector struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetDataConnector implements the DataConnectorClassification interface for type DataConnector.
-func (d *DataConnector) GetDataConnector() *DataConnector { return d }
-
 // DataConnectorConnectBody - Represents Codeless API Polling data connector.
 type DataConnectorConnectBody struct {
 	// The API key of the audit server.
@@ -3772,20 +1782,6 @@ type DataConnectorConnectBody struct {
 	UserName *string `json:"userName,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DataConnectorConnectBody.
-func (d DataConnectorConnectBody) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "apiKey", d.APIKey)
-	populate(objectMap, "authorizationCode", d.AuthorizationCode)
-	populate(objectMap, "clientId", d.ClientID)
-	populate(objectMap, "clientSecret", d.ClientSecret)
-	populate(objectMap, "kind", d.Kind)
-	populate(objectMap, "password", d.Password)
-	populate(objectMap, "requestConfigUserInputValues", d.RequestConfigUserInputValues)
-	populate(objectMap, "userName", d.UserName)
-	return json.Marshal(objectMap)
-}
-
 // DataConnectorDataTypeCommon - Common field for data type in data connectors.
 type DataConnectorDataTypeCommon struct {
 	// REQUIRED; Describe whether this data type connection is enabled or not.
@@ -3799,37 +1795,6 @@ type DataConnectorList struct {
 
 	// READ-ONLY; URL to fetch the next set of data connectors.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DataConnectorList.
-func (d DataConnectorList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", d.NextLink)
-	populate(objectMap, "value", d.Value)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type DataConnectorList.
-func (d *DataConnectorList) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "nextLink":
-			err = unpopulate(val, &d.NextLink)
-			delete(rawMsg, key)
-		case "value":
-			d.Value, err = unmarshalDataConnectorClassificationArray(val)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // DataConnectorRequirementsState - Data connector requirements status.
@@ -3857,8 +1822,8 @@ type DataConnectorWithAlertsProperties struct {
 // Call the interface's GetDataConnectorsCheckRequirements() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
 // - *AADCheckRequirements, *AATPCheckRequirements, *ASCCheckRequirements, *AwsCloudTrailCheckRequirements, *AwsS3CheckRequirements,
-// - *DataConnectorsCheckRequirements, *Dynamics365CheckRequirements, *MCASCheckRequirements, *MDATPCheckRequirements, *MSTICheckRequirements,
-// - *MtpCheckRequirements, *Office365ProjectCheckRequirements, *OfficeATPCheckRequirements, *OfficeIRMCheckRequirements,
+// - *DataConnectorsCheckRequirements, *Dynamics365CheckRequirements, *IoTCheckRequirements, *MCASCheckRequirements, *MDATPCheckRequirements,
+// - *MSTICheckRequirements, *MtpCheckRequirements, *Office365ProjectCheckRequirements, *OfficeATPCheckRequirements, *OfficeIRMCheckRequirements,
 // - *OfficePowerBICheckRequirements, *TICheckRequirements, *TiTaxiiCheckRequirements
 type DataConnectorsCheckRequirementsClassification interface {
 	// GetDataConnectorsCheckRequirements returns the DataConnectorsCheckRequirements content of the underlying type.
@@ -3869,11 +1834,6 @@ type DataConnectorsCheckRequirementsClassification interface {
 type DataConnectorsCheckRequirements struct {
 	// REQUIRED; Describes the kind of connector to be checked.
 	Kind *DataConnectorKind `json:"kind,omitempty"`
-}
-
-// GetDataConnectorsCheckRequirements implements the DataConnectorsCheckRequirementsClassification interface for type DataConnectorsCheckRequirements.
-func (d *DataConnectorsCheckRequirements) GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements {
-	return d
 }
 
 // DataConnectorsCheckRequirementsClientPostOptions contains the optional parameters for the DataConnectorsCheckRequirementsClient.Post
@@ -3919,6 +1879,36 @@ type DataTypeDefinitions struct {
 	DataType *string `json:"dataType,omitempty"`
 }
 
+// Deployment - Description about a deployment.
+type Deployment struct {
+	// Deployment identifier.
+	DeploymentID *string `json:"deploymentId,omitempty"`
+
+	// Url to access repository action logs.
+	DeploymentLogsURL *string `json:"deploymentLogsUrl,omitempty"`
+
+	// The outcome of the deployment.
+	DeploymentResult *DeploymentResult `json:"deploymentResult,omitempty"`
+
+	// Current status of the deployment.
+	DeploymentState *DeploymentState `json:"deploymentState,omitempty"`
+
+	// The time when the deployment finished.
+	DeploymentTime *time.Time `json:"deploymentTime,omitempty"`
+}
+
+// DeploymentInfo - Information regarding a deployment.
+type DeploymentInfo struct {
+	// Deployment information.
+	Deployment *Deployment `json:"deployment,omitempty"`
+
+	// Status while fetching the last deployment.
+	DeploymentFetchStatus *DeploymentFetchStatus `json:"deploymentFetchStatus,omitempty"`
+
+	// Additional details about the deployment that can be shown to the user.
+	Message *string `json:"message,omitempty"`
+}
+
 // DomainWhoisClientGetOptions contains the optional parameters for the DomainWhoisClient.Get method.
 type DomainWhoisClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -3931,44 +1921,6 @@ type Dynamics365CheckRequirements struct {
 
 	// Dynamics365 requirements check properties.
 	Properties *Dynamics365CheckRequirementsProperties `json:"properties,omitempty"`
-}
-
-// GetDataConnectorsCheckRequirements implements the DataConnectorsCheckRequirementsClassification interface for type Dynamics365CheckRequirements.
-func (d *Dynamics365CheckRequirements) GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements {
-	return &DataConnectorsCheckRequirements{
-		Kind: d.Kind,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Dynamics365CheckRequirements.
-func (d Dynamics365CheckRequirements) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["kind"] = DataConnectorKindDynamics365
-	populate(objectMap, "properties", d.Properties)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type Dynamics365CheckRequirements.
-func (d *Dynamics365CheckRequirements) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "kind":
-			err = unpopulate(val, &d.Kind)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &d.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // Dynamics365CheckRequirementsProperties - Dynamics365 requirements check properties.
@@ -3999,69 +1951,6 @@ type Dynamics365DataConnector struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// GetDataConnector implements the DataConnectorClassification interface for type Dynamics365DataConnector.
-func (d *Dynamics365DataConnector) GetDataConnector() *DataConnector {
-	return &DataConnector{
-		Kind:       d.Kind,
-		Etag:       d.Etag,
-		ID:         d.ID,
-		Name:       d.Name,
-		Type:       d.Type,
-		SystemData: d.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Dynamics365DataConnector.
-func (d Dynamics365DataConnector) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", d.Etag)
-	populate(objectMap, "id", d.ID)
-	objectMap["kind"] = DataConnectorKindDynamics365
-	populate(objectMap, "name", d.Name)
-	populate(objectMap, "properties", d.Properties)
-	populate(objectMap, "systemData", d.SystemData)
-	populate(objectMap, "type", d.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type Dynamics365DataConnector.
-func (d *Dynamics365DataConnector) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "etag":
-			err = unpopulate(val, &d.Etag)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &d.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &d.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &d.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &d.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &d.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &d.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // Dynamics365DataConnectorDataTypes - The available data types for Dynamics365 data connector.
@@ -4106,53 +1995,6 @@ type EnrichmentDomainWhois struct {
 	Updated *time.Time `json:"updated,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type EnrichmentDomainWhois.
-func (e EnrichmentDomainWhois) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "created", e.Created)
-	populate(objectMap, "domain", e.Domain)
-	populateTimeRFC3339(objectMap, "expires", e.Expires)
-	populate(objectMap, "parsedWhois", e.ParsedWhois)
-	populate(objectMap, "server", e.Server)
-	populateTimeRFC3339(objectMap, "updated", e.Updated)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type EnrichmentDomainWhois.
-func (e *EnrichmentDomainWhois) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "created":
-			err = unpopulateTimeRFC3339(val, &e.Created)
-			delete(rawMsg, key)
-		case "domain":
-			err = unpopulate(val, &e.Domain)
-			delete(rawMsg, key)
-		case "expires":
-			err = unpopulateTimeRFC3339(val, &e.Expires)
-			delete(rawMsg, key)
-		case "parsedWhois":
-			err = unpopulate(val, &e.ParsedWhois)
-			delete(rawMsg, key)
-		case "server":
-			err = unpopulate(val, &e.Server)
-			delete(rawMsg, key)
-		case "updated":
-			err = unpopulateTimeRFC3339(val, &e.Updated)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // EnrichmentDomainWhoisContact - An individual contact associated with this domain
 type EnrichmentDomainWhoisContact struct {
 	// The city for this contact
@@ -4186,22 +2028,6 @@ type EnrichmentDomainWhoisContact struct {
 	Street []*string `json:"street,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type EnrichmentDomainWhoisContact.
-func (e EnrichmentDomainWhoisContact) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "city", e.City)
-	populate(objectMap, "country", e.Country)
-	populate(objectMap, "email", e.Email)
-	populate(objectMap, "fax", e.Fax)
-	populate(objectMap, "name", e.Name)
-	populate(objectMap, "org", e.Org)
-	populate(objectMap, "phone", e.Phone)
-	populate(objectMap, "postal", e.Postal)
-	populate(objectMap, "state", e.State)
-	populate(objectMap, "street", e.Street)
-	return json.Marshal(objectMap)
-}
-
 // EnrichmentDomainWhoisContacts - The set of contacts associated with this domain
 type EnrichmentDomainWhoisContacts struct {
 	// The admin contact for this whois record
@@ -4230,16 +2056,6 @@ type EnrichmentDomainWhoisDetails struct {
 
 	// The set of status flags for this whois record
 	Statuses []*string `json:"statuses,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type EnrichmentDomainWhoisDetails.
-func (e EnrichmentDomainWhoisDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "contacts", e.Contacts)
-	populate(objectMap, "nameServers", e.NameServers)
-	populate(objectMap, "registrar", e.Registrar)
-	populate(objectMap, "statuses", e.Statuses)
-	return json.Marshal(objectMap)
 }
 
 // EnrichmentDomainWhoisRegistrarDetails - The registrar associated with this domain
@@ -4391,9 +2207,6 @@ type Entity struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetEntity implements the EntityClassification interface for type Entity.
-func (e *Entity) GetEntity() *Entity { return e }
-
 // EntityAnalytics - Settings with single toggle.
 type EntityAnalytics struct {
 	// REQUIRED; The kind of the setting
@@ -4418,73 +2231,10 @@ type EntityAnalytics struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetSettings implements the SettingsClassification interface for type EntityAnalytics.
-func (e *EntityAnalytics) GetSettings() *Settings {
-	return &Settings{
-		Kind:       e.Kind,
-		Etag:       e.Etag,
-		ID:         e.ID,
-		Name:       e.Name,
-		Type:       e.Type,
-		SystemData: e.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type EntityAnalytics.
-func (e EntityAnalytics) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", e.Etag)
-	populate(objectMap, "id", e.ID)
-	objectMap["kind"] = SettingKindEntityAnalytics
-	populate(objectMap, "name", e.Name)
-	populate(objectMap, "properties", e.Properties)
-	populate(objectMap, "systemData", e.SystemData)
-	populate(objectMap, "type", e.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type EntityAnalytics.
-func (e *EntityAnalytics) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "etag":
-			err = unpopulate(val, &e.Etag)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &e.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &e.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &e.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &e.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &e.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &e.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // EntityAnalyticsProperties - EntityAnalytics property bag.
 type EntityAnalyticsProperties struct {
-	// READ-ONLY; Determines whether the setting is enable or disabled.
-	IsEnabled *bool `json:"isEnabled,omitempty" azure:"ro"`
+	// The relevant entity providers that are synced
+	EntityProviders []*EntityProviders `json:"entityProviders,omitempty"`
 }
 
 // EntityCommonProperties - Entity common property bag.
@@ -4497,14 +2247,6 @@ type EntityCommonProperties struct {
 	FriendlyName *string `json:"friendlyName,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type EntityCommonProperties.
-func (e EntityCommonProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalData", e.AdditionalData)
-	populate(objectMap, "friendlyName", e.FriendlyName)
-	return json.Marshal(objectMap)
-}
-
 // EntityEdges - The edge that connects the entity to the other entity.
 type EntityEdges struct {
 	// A bag of custom fields that should be part of the entity and will be presented to the user.
@@ -4512,14 +2254,6 @@ type EntityEdges struct {
 
 	// The target entity Id.
 	TargetEntityID *string `json:"targetEntityId,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type EntityEdges.
-func (e EntityEdges) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalData", e.AdditionalData)
-	populate(objectMap, "targetEntityId", e.TargetEntityID)
-	return json.Marshal(objectMap)
 }
 
 // EntityExpandParameters - The parameters required to execute an expand operation on the given entity.
@@ -4532,41 +2266,6 @@ type EntityExpandParameters struct {
 
 	// The start date filter, so the only expansion results returned are after this date.
 	StartTime *time.Time `json:"startTime,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type EntityExpandParameters.
-func (e EntityExpandParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "endTime", e.EndTime)
-	populate(objectMap, "expansionId", e.ExpansionID)
-	populateTimeRFC3339(objectMap, "startTime", e.StartTime)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type EntityExpandParameters.
-func (e *EntityExpandParameters) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "endTime":
-			err = unpopulateTimeRFC3339(val, &e.EndTime)
-			delete(rawMsg, key)
-		case "expansionId":
-			err = unpopulate(val, &e.ExpansionID)
-			delete(rawMsg, key)
-		case "startTime":
-			err = unpopulateTimeRFC3339(val, &e.StartTime)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // EntityExpandResponse - The entity expansion result operation response.
@@ -4585,37 +2284,6 @@ type EntityExpandResponseValue struct {
 
 	// Array of the expansion result entities.
 	Entities []EntityClassification `json:"entities,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type EntityExpandResponseValue.
-func (e EntityExpandResponseValue) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "edges", e.Edges)
-	populate(objectMap, "entities", e.Entities)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type EntityExpandResponseValue.
-func (e *EntityExpandResponseValue) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "edges":
-			err = unpopulate(val, &e.Edges)
-			delete(rawMsg, key)
-		case "entities":
-			e.Entities, err = unmarshalEntityClassificationArray(val)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // EntityFieldMapping - Map identifiers of a single entity
@@ -4642,45 +2310,6 @@ type EntityGetInsightsParameters struct {
 	InsightQueryIDs []*string `json:"insightQueryIds,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type EntityGetInsightsParameters.
-func (e EntityGetInsightsParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "addDefaultExtendedTimeRange", e.AddDefaultExtendedTimeRange)
-	populateTimeRFC3339(objectMap, "endTime", e.EndTime)
-	populate(objectMap, "insightQueryIds", e.InsightQueryIDs)
-	populateTimeRFC3339(objectMap, "startTime", e.StartTime)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type EntityGetInsightsParameters.
-func (e *EntityGetInsightsParameters) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "addDefaultExtendedTimeRange":
-			err = unpopulate(val, &e.AddDefaultExtendedTimeRange)
-			delete(rawMsg, key)
-		case "endTime":
-			err = unpopulateTimeRFC3339(val, &e.EndTime)
-			delete(rawMsg, key)
-		case "insightQueryIds":
-			err = unpopulate(val, &e.InsightQueryIDs)
-			delete(rawMsg, key)
-		case "startTime":
-			err = unpopulateTimeRFC3339(val, &e.StartTime)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // EntityGetInsightsResponse - The Get Insights result operation response.
 type EntityGetInsightsResponse struct {
 	// The metadata from the get insights operation results.
@@ -4688,14 +2317,6 @@ type EntityGetInsightsResponse struct {
 
 	// The insights result values.
 	Value []*EntityInsightItem `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type EntityGetInsightsResponse.
-func (e EntityGetInsightsResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "metaData", e.MetaData)
-	populate(objectMap, "value", e.Value)
-	return json.Marshal(objectMap)
 }
 
 // EntityInsightItem - Entity insight Item.
@@ -4713,16 +2334,6 @@ type EntityInsightItem struct {
 	TableQueryResults *InsightsTableResult `json:"tableQueryResults,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type EntityInsightItem.
-func (e EntityInsightItem) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "chartQueryResults", e.ChartQueryResults)
-	populate(objectMap, "queryId", e.QueryID)
-	populate(objectMap, "queryTimeInterval", e.QueryTimeInterval)
-	populate(objectMap, "tableQueryResults", e.TableQueryResults)
-	return json.Marshal(objectMap)
-}
-
 // EntityInsightItemQueryTimeInterval - The Time interval that the query actually executed on.
 type EntityInsightItemQueryTimeInterval struct {
 	// Insight query end time
@@ -4730,37 +2341,6 @@ type EntityInsightItemQueryTimeInterval struct {
 
 	// Insight query start time
 	StartTime *time.Time `json:"startTime,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type EntityInsightItemQueryTimeInterval.
-func (e EntityInsightItemQueryTimeInterval) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "endTime", e.EndTime)
-	populateTimeRFC3339(objectMap, "startTime", e.StartTime)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type EntityInsightItemQueryTimeInterval.
-func (e *EntityInsightItemQueryTimeInterval) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "endTime":
-			err = unpopulateTimeRFC3339(val, &e.EndTime)
-			delete(rawMsg, key)
-		case "startTime":
-			err = unpopulateTimeRFC3339(val, &e.StartTime)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // EntityList - List of all the entities.
@@ -4772,37 +2352,6 @@ type EntityList struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type EntityList.
-func (e EntityList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", e.NextLink)
-	populate(objectMap, "value", e.Value)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type EntityList.
-func (e *EntityList) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "nextLink":
-			err = unpopulate(val, &e.NextLink)
-			delete(rawMsg, key)
-		case "value":
-			e.Value, err = unmarshalEntityClassificationArray(val)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // EntityMapping - Single entity mapping for the alert rule
 type EntityMapping struct {
 	// The V3 type of the mapped entity
@@ -4810,14 +2359,6 @@ type EntityMapping struct {
 
 	// array of field mappings for the given entity mapping
 	FieldMappings []*FieldMapping `json:"fieldMappings,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type EntityMapping.
-func (e EntityMapping) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "entityType", e.EntityType)
-	populate(objectMap, "fieldMappings", e.FieldMappings)
-	return json.Marshal(objectMap)
 }
 
 // EntityQueriesClientCreateOrUpdateOptions contains the optional parameters for the EntityQueriesClient.CreateOrUpdate method.
@@ -4871,9 +2412,6 @@ type EntityQuery struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetEntityQuery implements the EntityQueryClassification interface for type EntityQuery.
-func (e *EntityQuery) GetEntityQuery() *EntityQuery { return e }
-
 // EntityQueryItemClassification provides polymorphic access to related types.
 // Call the interface's GetEntityQueryItem() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -4898,9 +2436,6 @@ type EntityQueryItem struct {
 	ID *string `json:"id,omitempty" azure:"ro"`
 }
 
-// GetEntityQueryItem implements the EntityQueryItemClassification interface for type EntityQueryItem.
-func (e *EntityQueryItem) GetEntityQueryItem() *EntityQueryItem { return e }
-
 // EntityQueryItemProperties - An properties abstract Query item for entity
 type EntityQueryItemProperties struct {
 	// Data types for template
@@ -4916,16 +2451,6 @@ type EntityQueryItemProperties struct {
 	RequiredInputFieldsSets [][]*string `json:"requiredInputFieldsSets,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type EntityQueryItemProperties.
-func (e EntityQueryItemProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "dataTypes", e.DataTypes)
-	populate(objectMap, "entitiesFilter", &e.EntitiesFilter)
-	populate(objectMap, "inputEntityType", e.InputEntityType)
-	populate(objectMap, "requiredInputFieldsSets", e.RequiredInputFieldsSets)
-	return json.Marshal(objectMap)
-}
-
 type EntityQueryItemPropertiesDataTypesItem struct {
 	// Data type name
 	DataType *string `json:"dataType,omitempty"`
@@ -4938,37 +2463,6 @@ type EntityQueryList struct {
 
 	// READ-ONLY; URL to fetch the next set of entity queries.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type EntityQueryList.
-func (e EntityQueryList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", e.NextLink)
-	populate(objectMap, "value", e.Value)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type EntityQueryList.
-func (e *EntityQueryList) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "nextLink":
-			err = unpopulate(val, &e.NextLink)
-			delete(rawMsg, key)
-		case "value":
-			e.Value, err = unmarshalEntityQueryClassificationArray(val)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // EntityQueryTemplateClassification provides polymorphic access to related types.
@@ -4998,9 +2492,6 @@ type EntityQueryTemplate struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetEntityQueryTemplate implements the EntityQueryTemplateClassification interface for type EntityQueryTemplate.
-func (e *EntityQueryTemplate) GetEntityQueryTemplate() *EntityQueryTemplate { return e }
-
 // EntityQueryTemplateList - List of all the entity query templates.
 type EntityQueryTemplateList struct {
 	// REQUIRED; Array of entity query templates.
@@ -5008,37 +2499,6 @@ type EntityQueryTemplateList struct {
 
 	// READ-ONLY; URL to fetch the next set of entity query templates.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type EntityQueryTemplateList.
-func (e EntityQueryTemplateList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", e.NextLink)
-	populate(objectMap, "value", e.Value)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type EntityQueryTemplateList.
-func (e *EntityQueryTemplateList) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "nextLink":
-			err = unpopulate(val, &e.NextLink)
-			delete(rawMsg, key)
-		case "value":
-			e.Value, err = unmarshalEntityQueryTemplateClassificationArray(val)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // EntityQueryTemplatesClientGetOptions contains the optional parameters for the EntityQueryTemplatesClient.Get method.
@@ -5072,9 +2532,6 @@ type EntityTimelineItem struct {
 	Kind *EntityTimelineKind `json:"kind,omitempty"`
 }
 
-// GetEntityTimelineItem implements the EntityTimelineItemClassification interface for type EntityTimelineItem.
-func (e *EntityTimelineItem) GetEntityTimelineItem() *EntityTimelineItem { return e }
-
 // EntityTimelineParameters - The parameters required to execute s timeline operation on the given entity.
 type EntityTimelineParameters struct {
 	// REQUIRED; The end timeline date, so the results returned are before this date.
@@ -5090,45 +2547,6 @@ type EntityTimelineParameters struct {
 	NumberOfBucket *int32 `json:"numberOfBucket,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type EntityTimelineParameters.
-func (e EntityTimelineParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "endTime", e.EndTime)
-	populate(objectMap, "kinds", e.Kinds)
-	populate(objectMap, "numberOfBucket", e.NumberOfBucket)
-	populateTimeRFC3339(objectMap, "startTime", e.StartTime)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type EntityTimelineParameters.
-func (e *EntityTimelineParameters) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "endTime":
-			err = unpopulateTimeRFC3339(val, &e.EndTime)
-			delete(rawMsg, key)
-		case "kinds":
-			err = unpopulate(val, &e.Kinds)
-			delete(rawMsg, key)
-		case "numberOfBucket":
-			err = unpopulate(val, &e.NumberOfBucket)
-			delete(rawMsg, key)
-		case "startTime":
-			err = unpopulateTimeRFC3339(val, &e.StartTime)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // EntityTimelineResponse - The entity timeline result operation response.
 type EntityTimelineResponse struct {
 	// The metadata from the timeline operation results.
@@ -5136,37 +2554,6 @@ type EntityTimelineResponse struct {
 
 	// The timeline result values.
 	Value []EntityTimelineItemClassification `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type EntityTimelineResponse.
-func (e EntityTimelineResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "metaData", e.MetaData)
-	populate(objectMap, "value", e.Value)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type EntityTimelineResponse.
-func (e *EntityTimelineResponse) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "metaData":
-			err = unpopulate(val, &e.MetaData)
-			delete(rawMsg, key)
-		case "value":
-			e.Value, err = unmarshalEntityTimelineItemClassificationArray(val)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // EventGroupingSettings - Event grouping settings property bag.
@@ -5196,18 +2583,6 @@ type ExpansionEntityQueriesProperties struct {
 	QueryTemplate *string `json:"queryTemplate,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ExpansionEntityQueriesProperties.
-func (e ExpansionEntityQueriesProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "dataSources", e.DataSources)
-	populate(objectMap, "displayName", e.DisplayName)
-	populate(objectMap, "inputEntityType", e.InputEntityType)
-	populate(objectMap, "inputFields", e.InputFields)
-	populate(objectMap, "outputEntityTypes", e.OutputEntityTypes)
-	populate(objectMap, "queryTemplate", e.QueryTemplate)
-	return json.Marshal(objectMap)
-}
-
 // ExpansionEntityQuery - Represents Expansion entity query.
 type ExpansionEntityQuery struct {
 	// REQUIRED; the entity query kind
@@ -5232,69 +2607,6 @@ type ExpansionEntityQuery struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetEntityQuery implements the EntityQueryClassification interface for type ExpansionEntityQuery.
-func (e *ExpansionEntityQuery) GetEntityQuery() *EntityQuery {
-	return &EntityQuery{
-		Kind:       e.Kind,
-		Etag:       e.Etag,
-		ID:         e.ID,
-		Name:       e.Name,
-		Type:       e.Type,
-		SystemData: e.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ExpansionEntityQuery.
-func (e ExpansionEntityQuery) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", e.Etag)
-	populate(objectMap, "id", e.ID)
-	objectMap["kind"] = EntityQueryKindExpansion
-	populate(objectMap, "name", e.Name)
-	populate(objectMap, "properties", e.Properties)
-	populate(objectMap, "systemData", e.SystemData)
-	populate(objectMap, "type", e.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ExpansionEntityQuery.
-func (e *ExpansionEntityQuery) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "etag":
-			err = unpopulate(val, &e.Etag)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &e.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &e.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &e.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &e.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &e.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &e.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ExpansionResultAggregation - Information of a specific aggregation in the expansion result.
 type ExpansionResultAggregation struct {
 	// REQUIRED; Total number of aggregations of the given kind (and aggregationType if given) in the expansion result.
@@ -5314,13 +2626,6 @@ type ExpansionResultAggregation struct {
 type ExpansionResultsMetadata struct {
 	// Information of the aggregated nodes in the expansion result.
 	Aggregations []*ExpansionResultAggregation `json:"aggregations,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ExpansionResultsMetadata.
-func (e ExpansionResultsMetadata) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "aggregations", e.Aggregations)
-	return json.Marshal(objectMap)
 }
 
 // EyesOn - Settings with single toggle.
@@ -5345,69 +2650,6 @@ type EyesOn struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// GetSettings implements the SettingsClassification interface for type EyesOn.
-func (e *EyesOn) GetSettings() *Settings {
-	return &Settings{
-		Kind:       e.Kind,
-		Etag:       e.Etag,
-		ID:         e.ID,
-		Name:       e.Name,
-		Type:       e.Type,
-		SystemData: e.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type EyesOn.
-func (e EyesOn) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", e.Etag)
-	populate(objectMap, "id", e.ID)
-	objectMap["kind"] = SettingKindEyesOn
-	populate(objectMap, "name", e.Name)
-	populate(objectMap, "properties", e.Properties)
-	populate(objectMap, "systemData", e.SystemData)
-	populate(objectMap, "type", e.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type EyesOn.
-func (e *EyesOn) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "etag":
-			err = unpopulate(val, &e.Etag)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &e.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &e.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &e.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &e.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &e.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &e.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // EyesOnSettingsProperties - EyesOn property bag.
@@ -5446,64 +2688,6 @@ type FileEntity struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetEntity implements the EntityClassification interface for type FileEntity.
-func (f *FileEntity) GetEntity() *Entity {
-	return &Entity{
-		Kind:       f.Kind,
-		ID:         f.ID,
-		Name:       f.Name,
-		Type:       f.Type,
-		SystemData: f.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type FileEntity.
-func (f FileEntity) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", f.ID)
-	objectMap["kind"] = EntityKindFile
-	populate(objectMap, "name", f.Name)
-	populate(objectMap, "properties", f.Properties)
-	populate(objectMap, "systemData", f.SystemData)
-	populate(objectMap, "type", f.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type FileEntity.
-func (f *FileEntity) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &f.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &f.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &f.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &f.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &f.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &f.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // FileEntityProperties - File entity property bag.
 type FileEntityProperties struct {
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
@@ -5524,18 +2708,6 @@ type FileEntityProperties struct {
 
 	// READ-ONLY; The Host entity id which the file belongs to
 	HostEntityID *string `json:"hostEntityId,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type FileEntityProperties.
-func (f FileEntityProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalData", f.AdditionalData)
-	populate(objectMap, "directory", f.Directory)
-	populate(objectMap, "fileHashEntityIds", f.FileHashEntityIDs)
-	populate(objectMap, "fileName", f.FileName)
-	populate(objectMap, "friendlyName", f.FriendlyName)
-	populate(objectMap, "hostEntityId", f.HostEntityID)
-	return json.Marshal(objectMap)
 }
 
 // FileHashEntity - Represents a file hash entity.
@@ -5559,64 +2731,6 @@ type FileHashEntity struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetEntity implements the EntityClassification interface for type FileHashEntity.
-func (f *FileHashEntity) GetEntity() *Entity {
-	return &Entity{
-		Kind:       f.Kind,
-		ID:         f.ID,
-		Name:       f.Name,
-		Type:       f.Type,
-		SystemData: f.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type FileHashEntity.
-func (f FileHashEntity) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", f.ID)
-	objectMap["kind"] = EntityKindFileHash
-	populate(objectMap, "name", f.Name)
-	populate(objectMap, "properties", f.Properties)
-	populate(objectMap, "systemData", f.SystemData)
-	populate(objectMap, "type", f.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type FileHashEntity.
-func (f *FileHashEntity) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &f.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &f.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &f.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &f.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &f.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &f.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // FileHashEntityProperties - FileHash entity property bag.
 type FileHashEntityProperties struct {
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
@@ -5631,16 +2745,6 @@ type FileHashEntityProperties struct {
 
 	// READ-ONLY; The file hash value.
 	HashValue *string `json:"hashValue,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type FileHashEntityProperties.
-func (f FileHashEntityProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalData", f.AdditionalData)
-	populate(objectMap, "algorithm", f.Algorithm)
-	populate(objectMap, "friendlyName", f.FriendlyName)
-	populate(objectMap, "hashValue", f.HashValue)
-	return json.Marshal(objectMap)
 }
 
 // FusionAlertRule - Represents Fusion alert rule.
@@ -5667,69 +2771,6 @@ type FusionAlertRule struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetAlertRule implements the AlertRuleClassification interface for type FusionAlertRule.
-func (f *FusionAlertRule) GetAlertRule() *AlertRule {
-	return &AlertRule{
-		Kind:       f.Kind,
-		Etag:       f.Etag,
-		ID:         f.ID,
-		Name:       f.Name,
-		Type:       f.Type,
-		SystemData: f.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type FusionAlertRule.
-func (f FusionAlertRule) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", f.Etag)
-	populate(objectMap, "id", f.ID)
-	objectMap["kind"] = AlertRuleKindFusion
-	populate(objectMap, "name", f.Name)
-	populate(objectMap, "properties", f.Properties)
-	populate(objectMap, "systemData", f.SystemData)
-	populate(objectMap, "type", f.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type FusionAlertRule.
-func (f *FusionAlertRule) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "etag":
-			err = unpopulate(val, &f.Etag)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &f.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &f.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &f.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &f.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &f.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &f.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // FusionAlertRuleProperties - Fusion alert rule base property bag.
 type FusionAlertRuleProperties struct {
 	// REQUIRED; The Name of the alert rule template used to create this rule.
@@ -5738,11 +2779,11 @@ type FusionAlertRuleProperties struct {
 	// REQUIRED; Determines whether this alert rule is enabled or disabled.
 	Enabled *bool `json:"enabled,omitempty"`
 
-	// REQUIRED; Configuration for all supported source signals in fusion detection.
-	SourceSettings []*FusionSourceSettings `json:"sourceSettings,omitempty"`
-
 	// Configuration to exclude scenarios in fusion detection.
 	ScenarioExclusionPatterns []*FusionScenarioExclusionPattern `json:"scenarioExclusionPatterns,omitempty"`
+
+	// Configuration for all supported source signals in fusion detection.
+	SourceSettings []*FusionSourceSettings `json:"sourceSettings,omitempty"`
 
 	// READ-ONLY; The description of the alert rule.
 	Description *string `json:"description,omitempty" azure:"ro"`
@@ -5761,69 +2802,6 @@ type FusionAlertRuleProperties struct {
 
 	// READ-ONLY; The techniques of the alert rule
 	Techniques []*string `json:"techniques,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type FusionAlertRuleProperties.
-func (f FusionAlertRuleProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "alertRuleTemplateName", f.AlertRuleTemplateName)
-	populate(objectMap, "description", f.Description)
-	populate(objectMap, "displayName", f.DisplayName)
-	populate(objectMap, "enabled", f.Enabled)
-	populateTimeRFC3339(objectMap, "lastModifiedUtc", f.LastModifiedUTC)
-	populate(objectMap, "scenarioExclusionPatterns", f.ScenarioExclusionPatterns)
-	populate(objectMap, "severity", f.Severity)
-	populate(objectMap, "sourceSettings", f.SourceSettings)
-	populate(objectMap, "tactics", f.Tactics)
-	populate(objectMap, "techniques", f.Techniques)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type FusionAlertRuleProperties.
-func (f *FusionAlertRuleProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "alertRuleTemplateName":
-			err = unpopulate(val, &f.AlertRuleTemplateName)
-			delete(rawMsg, key)
-		case "description":
-			err = unpopulate(val, &f.Description)
-			delete(rawMsg, key)
-		case "displayName":
-			err = unpopulate(val, &f.DisplayName)
-			delete(rawMsg, key)
-		case "enabled":
-			err = unpopulate(val, &f.Enabled)
-			delete(rawMsg, key)
-		case "lastModifiedUtc":
-			err = unpopulateTimeRFC3339(val, &f.LastModifiedUTC)
-			delete(rawMsg, key)
-		case "scenarioExclusionPatterns":
-			err = unpopulate(val, &f.ScenarioExclusionPatterns)
-			delete(rawMsg, key)
-		case "severity":
-			err = unpopulate(val, &f.Severity)
-			delete(rawMsg, key)
-		case "sourceSettings":
-			err = unpopulate(val, &f.SourceSettings)
-			delete(rawMsg, key)
-		case "tactics":
-			err = unpopulate(val, &f.Tactics)
-			delete(rawMsg, key)
-		case "techniques":
-			err = unpopulate(val, &f.Techniques)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // FusionAlertRuleTemplate - Represents Fusion alert rule template.
@@ -5847,72 +2825,8 @@ type FusionAlertRuleTemplate struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetAlertRuleTemplate implements the AlertRuleTemplateClassification interface for type FusionAlertRuleTemplate.
-func (f *FusionAlertRuleTemplate) GetAlertRuleTemplate() *AlertRuleTemplate {
-	return &AlertRuleTemplate{
-		Kind:       f.Kind,
-		ID:         f.ID,
-		Name:       f.Name,
-		Type:       f.Type,
-		SystemData: f.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type FusionAlertRuleTemplate.
-func (f FusionAlertRuleTemplate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", f.ID)
-	objectMap["kind"] = AlertRuleKindFusion
-	populate(objectMap, "name", f.Name)
-	populate(objectMap, "properties", f.Properties)
-	populate(objectMap, "systemData", f.SystemData)
-	populate(objectMap, "type", f.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type FusionAlertRuleTemplate.
-func (f *FusionAlertRuleTemplate) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &f.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &f.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &f.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &f.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &f.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &f.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // FusionAlertRuleTemplateProperties - Fusion alert rule template properties
 type FusionAlertRuleTemplateProperties struct {
-	// REQUIRED; The severity for alerts created by this alert rule.
-	Severity *AlertSeverity `json:"severity,omitempty"`
-
-	// REQUIRED; All supported source signal configurations consumed in fusion detection.
-	SourceSettings []*FusionTemplateSourceSetting `json:"sourceSettings,omitempty"`
-
 	// the number of alert rules that were created by this template
 	AlertRulesCreatedByTemplateCount *int32 `json:"alertRulesCreatedByTemplateCount,omitempty"`
 
@@ -5922,13 +2836,19 @@ type FusionAlertRuleTemplateProperties struct {
 	// The display name for alert rule template.
 	DisplayName *string `json:"displayName,omitempty"`
 
-	// The required data sources for this template
+	// The required data connectors for this template
 	RequiredDataConnectors []*AlertRuleTemplateDataSource `json:"requiredDataConnectors,omitempty"`
+
+	// The severity for alerts created by this alert rule.
+	Severity *AlertSeverity `json:"severity,omitempty"`
+
+	// All supported source signal configurations consumed in fusion detection.
+	SourceSettings []*FusionTemplateSourceSetting `json:"sourceSettings,omitempty"`
 
 	// The alert rule template status.
 	Status *TemplateStatus `json:"status,omitempty"`
 
-	// The tactics of the alert rule
+	// The tactics of the alert rule template
 	Tactics []*AttackTactic `json:"tactics,omitempty"`
 
 	// The techniques of the alert rule
@@ -5937,75 +2857,8 @@ type FusionAlertRuleTemplateProperties struct {
 	// READ-ONLY; The time that this alert rule template has been added.
 	CreatedDateUTC *time.Time `json:"createdDateUTC,omitempty" azure:"ro"`
 
-	// READ-ONLY; The last time that this alert rule template has been updated.
+	// READ-ONLY; The time that this alert rule template was last updated.
 	LastUpdatedDateUTC *time.Time `json:"lastUpdatedDateUTC,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type FusionAlertRuleTemplateProperties.
-func (f FusionAlertRuleTemplateProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "alertRulesCreatedByTemplateCount", f.AlertRulesCreatedByTemplateCount)
-	populateTimeRFC3339(objectMap, "createdDateUTC", f.CreatedDateUTC)
-	populate(objectMap, "description", f.Description)
-	populate(objectMap, "displayName", f.DisplayName)
-	populateTimeRFC3339(objectMap, "lastUpdatedDateUTC", f.LastUpdatedDateUTC)
-	populate(objectMap, "requiredDataConnectors", f.RequiredDataConnectors)
-	populate(objectMap, "severity", f.Severity)
-	populate(objectMap, "sourceSettings", f.SourceSettings)
-	populate(objectMap, "status", f.Status)
-	populate(objectMap, "tactics", f.Tactics)
-	populate(objectMap, "techniques", f.Techniques)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type FusionAlertRuleTemplateProperties.
-func (f *FusionAlertRuleTemplateProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "alertRulesCreatedByTemplateCount":
-			err = unpopulate(val, &f.AlertRulesCreatedByTemplateCount)
-			delete(rawMsg, key)
-		case "createdDateUTC":
-			err = unpopulateTimeRFC3339(val, &f.CreatedDateUTC)
-			delete(rawMsg, key)
-		case "description":
-			err = unpopulate(val, &f.Description)
-			delete(rawMsg, key)
-		case "displayName":
-			err = unpopulate(val, &f.DisplayName)
-			delete(rawMsg, key)
-		case "lastUpdatedDateUTC":
-			err = unpopulateTimeRFC3339(val, &f.LastUpdatedDateUTC)
-			delete(rawMsg, key)
-		case "requiredDataConnectors":
-			err = unpopulate(val, &f.RequiredDataConnectors)
-			delete(rawMsg, key)
-		case "severity":
-			err = unpopulate(val, &f.Severity)
-			delete(rawMsg, key)
-		case "sourceSettings":
-			err = unpopulate(val, &f.SourceSettings)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &f.Status)
-			delete(rawMsg, key)
-		case "tactics":
-			err = unpopulate(val, &f.Tactics)
-			delete(rawMsg, key)
-		case "techniques":
-			err = unpopulate(val, &f.Techniques)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // FusionScenarioExclusionPattern - Represents a Fusion scenario exclusion patterns in Fusion detection.
@@ -6027,15 +2880,6 @@ type FusionSourceSettings struct {
 
 	// Configuration for all source subtypes under this source signal consumed in fusion detection.
 	SourceSubTypes []*FusionSourceSubTypeSetting `json:"sourceSubTypes,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type FusionSourceSettings.
-func (f FusionSourceSettings) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "enabled", f.Enabled)
-	populate(objectMap, "sourceName", f.SourceName)
-	populate(objectMap, "sourceSubTypes", f.SourceSubTypes)
-	return json.Marshal(objectMap)
 }
 
 // FusionSourceSubTypeSetting - Represents a supported source subtype configuration under a source signal in Fusion detection.
@@ -6063,14 +2907,6 @@ type FusionSubTypeSeverityFilter struct {
 	IsSupported *bool `json:"isSupported,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type FusionSubTypeSeverityFilter.
-func (f FusionSubTypeSeverityFilter) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "filters", f.Filters)
-	populate(objectMap, "isSupported", f.IsSupported)
-	return json.Marshal(objectMap)
-}
-
 // FusionSubTypeSeverityFiltersItem - Represents a Severity filter setting for a given source subtype consumed in Fusion detection.
 type FusionSubTypeSeverityFiltersItem struct {
 	// REQUIRED; Determines whether this severity is enabled or disabled for this source subtype consumed in Fusion detection.
@@ -6087,14 +2923,6 @@ type FusionTemplateSourceSetting struct {
 
 	// All supported source subtypes under this source signal consumed in fusion detection.
 	SourceSubTypes []*FusionTemplateSourceSubType `json:"sourceSubTypes,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type FusionTemplateSourceSetting.
-func (f FusionTemplateSourceSetting) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "sourceName", f.SourceName)
-	populate(objectMap, "sourceSubTypes", f.SourceSubTypes)
-	return json.Marshal(objectMap)
 }
 
 // FusionTemplateSourceSubType - Represents a source subtype under a source signal consumed in Fusion detection.
@@ -6117,14 +2945,6 @@ type FusionTemplateSubTypeSeverityFilter struct {
 
 	// List of all supported severities for this source subtype consumed in Fusion detection.
 	SeverityFilters []*AlertSeverity `json:"severityFilters,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type FusionTemplateSubTypeSeverityFilter.
-func (f FusionTemplateSubTypeSeverityFilter) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "isSupported", f.IsSupported)
-	populate(objectMap, "severityFilters", f.SeverityFilters)
-	return json.Marshal(objectMap)
 }
 
 // GeoLocation - The geo-location context attached to the ip entity
@@ -6176,45 +2996,16 @@ type GetInsightsResultsMetadata struct {
 	Errors []*GetInsightsError `json:"errors,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type GetInsightsResultsMetadata.
-func (g GetInsightsResultsMetadata) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "errors", g.Errors)
-	populate(objectMap, "totalCount", g.TotalCount)
-	return json.Marshal(objectMap)
-}
-
 // GetQueriesResponse - Retrieve queries for entity result operation response.
 type GetQueriesResponse struct {
 	// The query result values.
 	Value []EntityQueryItemClassification `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type GetQueriesResponse.
-func (g GetQueriesResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", g.Value)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type GetQueriesResponse.
-func (g *GetQueriesResponse) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "value":
-			g.Value, err = unmarshalEntityQueryItemClassificationArray(val)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
+// GitHubResourceInfo - Resources created in GitHub repository.
+type GitHubResourceInfo struct {
+	// GitHub application installation id.
+	AppInstallationID *string `json:"appInstallationId,omitempty"`
 }
 
 // GraphQueries - The graph query to show the current data status
@@ -6256,19 +3047,6 @@ type GroupingConfiguration struct {
 	GroupByEntities []*EntityMappingType `json:"groupByEntities,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type GroupingConfiguration.
-func (g GroupingConfiguration) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "enabled", g.Enabled)
-	populate(objectMap, "groupByAlertDetails", g.GroupByAlertDetails)
-	populate(objectMap, "groupByCustomDetails", g.GroupByCustomDetails)
-	populate(objectMap, "groupByEntities", g.GroupByEntities)
-	populate(objectMap, "lookbackDuration", g.LookbackDuration)
-	populate(objectMap, "matchingMethod", g.MatchingMethod)
-	populate(objectMap, "reopenClosedIncident", g.ReopenClosedIncident)
-	return json.Marshal(objectMap)
-}
-
 // HostEntity - Represents a host entity.
 type HostEntity struct {
 	// REQUIRED; The kind of the entity.
@@ -6288,64 +3066,6 @@ type HostEntity struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// GetEntity implements the EntityClassification interface for type HostEntity.
-func (h *HostEntity) GetEntity() *Entity {
-	return &Entity{
-		Kind:       h.Kind,
-		ID:         h.ID,
-		Name:       h.Name,
-		Type:       h.Type,
-		SystemData: h.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type HostEntity.
-func (h HostEntity) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", h.ID)
-	objectMap["kind"] = EntityKindHost
-	populate(objectMap, "name", h.Name)
-	populate(objectMap, "properties", h.Properties)
-	populate(objectMap, "systemData", h.SystemData)
-	populate(objectMap, "type", h.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type HostEntity.
-func (h *HostEntity) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &h.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &h.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &h.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &h.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &h.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &h.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // HostEntityProperties - Host entity property bag.
@@ -6386,23 +3106,6 @@ type HostEntityProperties struct {
 	OmsAgentID *string `json:"omsAgentID,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type HostEntityProperties.
-func (h HostEntityProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalData", h.AdditionalData)
-	populate(objectMap, "azureID", h.AzureID)
-	populate(objectMap, "dnsDomain", h.DNSDomain)
-	populate(objectMap, "friendlyName", h.FriendlyName)
-	populate(objectMap, "hostName", h.HostName)
-	populate(objectMap, "isDomainJoined", h.IsDomainJoined)
-	populate(objectMap, "netBiosName", h.NetBiosName)
-	populate(objectMap, "ntDomain", h.NtDomain)
-	populate(objectMap, "osFamily", h.OSFamily)
-	populate(objectMap, "osVersion", h.OSVersion)
-	populate(objectMap, "omsAgentID", h.OmsAgentID)
-	return json.Marshal(objectMap)
-}
-
 // HuntingBookmark - Represents a Hunting bookmark entity.
 type HuntingBookmark struct {
 	// REQUIRED; The kind of the entity.
@@ -6422,64 +3125,6 @@ type HuntingBookmark struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// GetEntity implements the EntityClassification interface for type HuntingBookmark.
-func (h *HuntingBookmark) GetEntity() *Entity {
-	return &Entity{
-		Kind:       h.Kind,
-		ID:         h.ID,
-		Name:       h.Name,
-		Type:       h.Type,
-		SystemData: h.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type HuntingBookmark.
-func (h HuntingBookmark) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", h.ID)
-	objectMap["kind"] = EntityKindBookmark
-	populate(objectMap, "name", h.Name)
-	populate(objectMap, "properties", h.Properties)
-	populate(objectMap, "systemData", h.SystemData)
-	populate(objectMap, "type", h.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type HuntingBookmark.
-func (h *HuntingBookmark) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &h.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &h.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &h.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &h.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &h.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &h.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // HuntingBookmarkProperties - Describes bookmark properties
@@ -6525,81 +3170,6 @@ type HuntingBookmarkProperties struct {
 	FriendlyName *string `json:"friendlyName,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type HuntingBookmarkProperties.
-func (h HuntingBookmarkProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalData", h.AdditionalData)
-	populateTimeRFC3339(objectMap, "created", h.Created)
-	populate(objectMap, "createdBy", h.CreatedBy)
-	populate(objectMap, "displayName", h.DisplayName)
-	populateTimeRFC3339(objectMap, "eventTime", h.EventTime)
-	populate(objectMap, "friendlyName", h.FriendlyName)
-	populate(objectMap, "incidentInfo", h.IncidentInfo)
-	populate(objectMap, "labels", h.Labels)
-	populate(objectMap, "notes", h.Notes)
-	populate(objectMap, "query", h.Query)
-	populate(objectMap, "queryResult", h.QueryResult)
-	populateTimeRFC3339(objectMap, "updated", h.Updated)
-	populate(objectMap, "updatedBy", h.UpdatedBy)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type HuntingBookmarkProperties.
-func (h *HuntingBookmarkProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "additionalData":
-			err = unpopulate(val, &h.AdditionalData)
-			delete(rawMsg, key)
-		case "created":
-			err = unpopulateTimeRFC3339(val, &h.Created)
-			delete(rawMsg, key)
-		case "createdBy":
-			err = unpopulate(val, &h.CreatedBy)
-			delete(rawMsg, key)
-		case "displayName":
-			err = unpopulate(val, &h.DisplayName)
-			delete(rawMsg, key)
-		case "eventTime":
-			err = unpopulateTimeRFC3339(val, &h.EventTime)
-			delete(rawMsg, key)
-		case "friendlyName":
-			err = unpopulate(val, &h.FriendlyName)
-			delete(rawMsg, key)
-		case "incidentInfo":
-			err = unpopulate(val, &h.IncidentInfo)
-			delete(rawMsg, key)
-		case "labels":
-			err = unpopulate(val, &h.Labels)
-			delete(rawMsg, key)
-		case "notes":
-			err = unpopulate(val, &h.Notes)
-			delete(rawMsg, key)
-		case "query":
-			err = unpopulate(val, &h.Query)
-			delete(rawMsg, key)
-		case "queryResult":
-			err = unpopulate(val, &h.QueryResult)
-			delete(rawMsg, key)
-		case "updated":
-			err = unpopulateTimeRFC3339(val, &h.Updated)
-			delete(rawMsg, key)
-		case "updatedBy":
-			err = unpopulate(val, &h.UpdatedBy)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // IPEntity - Represents an ip entity.
 type IPEntity struct {
 	// REQUIRED; The kind of the entity.
@@ -6621,64 +3191,6 @@ type IPEntity struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetEntity implements the EntityClassification interface for type IPEntity.
-func (i *IPEntity) GetEntity() *Entity {
-	return &Entity{
-		Kind:       i.Kind,
-		ID:         i.ID,
-		Name:       i.Name,
-		Type:       i.Type,
-		SystemData: i.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type IPEntity.
-func (i IPEntity) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", i.ID)
-	objectMap["kind"] = EntityKindIP
-	populate(objectMap, "name", i.Name)
-	populate(objectMap, "properties", i.Properties)
-	populate(objectMap, "systemData", i.SystemData)
-	populate(objectMap, "type", i.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type IPEntity.
-func (i *IPEntity) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &i.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &i.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &i.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &i.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &i.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &i.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // IPEntityProperties - Ip entity property bag.
 type IPEntityProperties struct {
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
@@ -6696,17 +3208,6 @@ type IPEntityProperties struct {
 
 	// READ-ONLY; A list of TI contexts attached to the ip entity.
 	ThreatIntelligence []*ThreatIntelligence `json:"threatIntelligence,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type IPEntityProperties.
-func (i IPEntityProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalData", i.AdditionalData)
-	populate(objectMap, "address", i.Address)
-	populate(objectMap, "friendlyName", i.FriendlyName)
-	populate(objectMap, "location", i.Location)
-	populate(objectMap, "threatIntelligence", i.ThreatIntelligence)
-	return json.Marshal(objectMap)
 }
 
 // IPGeodataClientGetOptions contains the optional parameters for the IPGeodataClient.Get method.
@@ -6759,43 +3260,16 @@ type IncidentAdditionalData struct {
 	Techniques []*string `json:"techniques,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type IncidentAdditionalData.
-func (i IncidentAdditionalData) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "alertProductNames", i.AlertProductNames)
-	populate(objectMap, "alertsCount", i.AlertsCount)
-	populate(objectMap, "bookmarksCount", i.BookmarksCount)
-	populate(objectMap, "commentsCount", i.CommentsCount)
-	populate(objectMap, "providerIncidentUrl", i.ProviderIncidentURL)
-	populate(objectMap, "tactics", i.Tactics)
-	populate(objectMap, "techniques", i.Techniques)
-	return json.Marshal(objectMap)
-}
-
 // IncidentAlertList - List of incident alerts.
 type IncidentAlertList struct {
 	// REQUIRED; Array of incident alerts.
 	Value []*SecurityAlert `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type IncidentAlertList.
-func (i IncidentAlertList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", i.Value)
-	return json.Marshal(objectMap)
-}
-
 // IncidentBookmarkList - List of incident bookmarks.
 type IncidentBookmarkList struct {
 	// REQUIRED; Array of incident bookmarks.
 	Value []*HuntingBookmark `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type IncidentBookmarkList.
-func (i IncidentBookmarkList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", i.Value)
-	return json.Marshal(objectMap)
 }
 
 // IncidentComment - Represents an incident comment
@@ -6828,14 +3302,6 @@ type IncidentCommentList struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type IncidentCommentList.
-func (i IncidentCommentList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", i.NextLink)
-	populate(objectMap, "value", i.Value)
-	return json.Marshal(objectMap)
-}
-
 // IncidentCommentProperties - Incident comment property bag.
 type IncidentCommentProperties struct {
 	// REQUIRED; The comment message
@@ -6849,45 +3315,6 @@ type IncidentCommentProperties struct {
 
 	// READ-ONLY; The time the comment was updated
 	LastModifiedTimeUTC *time.Time `json:"lastModifiedTimeUtc,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type IncidentCommentProperties.
-func (i IncidentCommentProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "author", i.Author)
-	populateTimeRFC3339(objectMap, "createdTimeUtc", i.CreatedTimeUTC)
-	populateTimeRFC3339(objectMap, "lastModifiedTimeUtc", i.LastModifiedTimeUTC)
-	populate(objectMap, "message", i.Message)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type IncidentCommentProperties.
-func (i *IncidentCommentProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "author":
-			err = unpopulate(val, &i.Author)
-			delete(rawMsg, key)
-		case "createdTimeUtc":
-			err = unpopulateTimeRFC3339(val, &i.CreatedTimeUTC)
-			delete(rawMsg, key)
-		case "lastModifiedTimeUtc":
-			err = unpopulateTimeRFC3339(val, &i.LastModifiedTimeUTC)
-			delete(rawMsg, key)
-		case "message":
-			err = unpopulate(val, &i.Message)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // IncidentCommentsClientCreateOrUpdateOptions contains the optional parameters for the IncidentCommentsClient.CreateOrUpdate
@@ -6938,37 +3365,6 @@ type IncidentEntitiesResponse struct {
 	MetaData []*IncidentEntitiesResultsMetadata `json:"metaData,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type IncidentEntitiesResponse.
-func (i IncidentEntitiesResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "entities", i.Entities)
-	populate(objectMap, "metaData", i.MetaData)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type IncidentEntitiesResponse.
-func (i *IncidentEntitiesResponse) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "entities":
-			i.Entities, err = unmarshalEntityClassificationArray(val)
-			delete(rawMsg, key)
-		case "metaData":
-			err = unpopulate(val, &i.MetaData)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // IncidentEntitiesResultsMetadata - Information of a specific aggregation in the incident related entities result.
 type IncidentEntitiesResultsMetadata struct {
 	// REQUIRED; Total number of aggregations of the given kind in the incident related entities result.
@@ -7011,14 +3407,6 @@ type IncidentList struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type IncidentList.
-func (i IncidentList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", i.NextLink)
-	populate(objectMap, "value", i.Value)
-	return json.Marshal(objectMap)
-}
-
 // IncidentOwnerInfo - Information on the user an incident is assigned to
 type IncidentOwnerInfo struct {
 	// The name of the user the incident is assigned to.
@@ -7030,11 +3418,11 @@ type IncidentOwnerInfo struct {
 	// The object id of the user the incident is assigned to.
 	ObjectID *string `json:"objectId,omitempty"`
 
+	// The type of the owner the incident is assigned to.
+	OwnerType *OwnerType `json:"ownerType,omitempty"`
+
 	// The user principal name of the user the incident is assigned to.
 	UserPrincipalName *string `json:"userPrincipalName,omitempty"`
-
-	// READ-ONLY; The type of the owner the incident is assigned to.
-	OwnerType *OwnerType `json:"ownerType,omitempty" azure:"ro"`
 }
 
 // IncidentProperties - Describes incident properties
@@ -7100,109 +3488,6 @@ type IncidentProperties struct {
 	RelatedAnalyticRuleIDs []*string `json:"relatedAnalyticRuleIds,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type IncidentProperties.
-func (i IncidentProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalData", i.AdditionalData)
-	populate(objectMap, "classification", i.Classification)
-	populate(objectMap, "classificationComment", i.ClassificationComment)
-	populate(objectMap, "classificationReason", i.ClassificationReason)
-	populateTimeRFC3339(objectMap, "createdTimeUtc", i.CreatedTimeUTC)
-	populate(objectMap, "description", i.Description)
-	populateTimeRFC3339(objectMap, "firstActivityTimeUtc", i.FirstActivityTimeUTC)
-	populate(objectMap, "incidentNumber", i.IncidentNumber)
-	populate(objectMap, "incidentUrl", i.IncidentURL)
-	populate(objectMap, "labels", i.Labels)
-	populateTimeRFC3339(objectMap, "lastActivityTimeUtc", i.LastActivityTimeUTC)
-	populateTimeRFC3339(objectMap, "lastModifiedTimeUtc", i.LastModifiedTimeUTC)
-	populate(objectMap, "owner", i.Owner)
-	populate(objectMap, "providerIncidentId", i.ProviderIncidentID)
-	populate(objectMap, "providerName", i.ProviderName)
-	populate(objectMap, "relatedAnalyticRuleIds", i.RelatedAnalyticRuleIDs)
-	populate(objectMap, "severity", i.Severity)
-	populate(objectMap, "status", i.Status)
-	populate(objectMap, "teamInformation", i.TeamInformation)
-	populate(objectMap, "title", i.Title)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type IncidentProperties.
-func (i *IncidentProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "additionalData":
-			err = unpopulate(val, &i.AdditionalData)
-			delete(rawMsg, key)
-		case "classification":
-			err = unpopulate(val, &i.Classification)
-			delete(rawMsg, key)
-		case "classificationComment":
-			err = unpopulate(val, &i.ClassificationComment)
-			delete(rawMsg, key)
-		case "classificationReason":
-			err = unpopulate(val, &i.ClassificationReason)
-			delete(rawMsg, key)
-		case "createdTimeUtc":
-			err = unpopulateTimeRFC3339(val, &i.CreatedTimeUTC)
-			delete(rawMsg, key)
-		case "description":
-			err = unpopulate(val, &i.Description)
-			delete(rawMsg, key)
-		case "firstActivityTimeUtc":
-			err = unpopulateTimeRFC3339(val, &i.FirstActivityTimeUTC)
-			delete(rawMsg, key)
-		case "incidentNumber":
-			err = unpopulate(val, &i.IncidentNumber)
-			delete(rawMsg, key)
-		case "incidentUrl":
-			err = unpopulate(val, &i.IncidentURL)
-			delete(rawMsg, key)
-		case "labels":
-			err = unpopulate(val, &i.Labels)
-			delete(rawMsg, key)
-		case "lastActivityTimeUtc":
-			err = unpopulateTimeRFC3339(val, &i.LastActivityTimeUTC)
-			delete(rawMsg, key)
-		case "lastModifiedTimeUtc":
-			err = unpopulateTimeRFC3339(val, &i.LastModifiedTimeUTC)
-			delete(rawMsg, key)
-		case "owner":
-			err = unpopulate(val, &i.Owner)
-			delete(rawMsg, key)
-		case "providerIncidentId":
-			err = unpopulate(val, &i.ProviderIncidentID)
-			delete(rawMsg, key)
-		case "providerName":
-			err = unpopulate(val, &i.ProviderName)
-			delete(rawMsg, key)
-		case "relatedAnalyticRuleIds":
-			err = unpopulate(val, &i.RelatedAnalyticRuleIDs)
-			delete(rawMsg, key)
-		case "severity":
-			err = unpopulate(val, &i.Severity)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &i.Status)
-			delete(rawMsg, key)
-		case "teamInformation":
-			err = unpopulate(val, &i.TeamInformation)
-			delete(rawMsg, key)
-		case "title":
-			err = unpopulate(val, &i.Title)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 type IncidentPropertiesAction struct {
 	// The reason the incident was closed
 	Classification *IncidentClassification `json:"classification,omitempty"`
@@ -7224,19 +3509,6 @@ type IncidentPropertiesAction struct {
 
 	// The status of the incident
 	Status *IncidentStatus `json:"status,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type IncidentPropertiesAction.
-func (i IncidentPropertiesAction) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "classification", i.Classification)
-	populate(objectMap, "classificationComment", i.ClassificationComment)
-	populate(objectMap, "classificationReason", i.ClassificationReason)
-	populate(objectMap, "labels", i.Labels)
-	populate(objectMap, "owner", i.Owner)
-	populate(objectMap, "severity", i.Severity)
-	populate(objectMap, "status", i.Status)
-	return json.Marshal(objectMap)
 }
 
 // IncidentRelationsClientCreateOrUpdateOptions contains the optional parameters for the IncidentRelationsClient.CreateOrUpdate
@@ -7318,6 +3590,11 @@ type IncidentsClientListOptions struct {
 	Top *int32
 }
 
+// IncidentsClientRunPlaybookOptions contains the optional parameters for the IncidentsClient.RunPlaybook method.
+type IncidentsClientRunPlaybookOptions struct {
+	RequestBody *ManualTriggerRequestBody
+}
+
 // InsightQueryItem - Represents Insight Query.
 type InsightQueryItem struct {
 	// REQUIRED; The kind of the entity query
@@ -7334,59 +3611,6 @@ type InsightQueryItem struct {
 
 	// READ-ONLY; Query Template ARM ID
 	ID *string `json:"id,omitempty" azure:"ro"`
-}
-
-// GetEntityQueryItem implements the EntityQueryItemClassification interface for type InsightQueryItem.
-func (i *InsightQueryItem) GetEntityQueryItem() *EntityQueryItem {
-	return &EntityQueryItem{
-		ID:   i.ID,
-		Name: i.Name,
-		Type: i.Type,
-		Kind: i.Kind,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InsightQueryItem.
-func (i InsightQueryItem) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", i.ID)
-	objectMap["kind"] = EntityQueryKindInsight
-	populate(objectMap, "name", i.Name)
-	populate(objectMap, "properties", i.Properties)
-	populate(objectMap, "type", i.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InsightQueryItem.
-func (i *InsightQueryItem) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &i.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &i.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &i.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &i.Properties)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &i.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // InsightQueryItemProperties - Represents Insight Query.
@@ -7428,24 +3652,6 @@ type InsightQueryItemProperties struct {
 	TableQuery *InsightQueryItemPropertiesTableQuery `json:"tableQuery,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type InsightQueryItemProperties.
-func (i InsightQueryItemProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalQuery", i.AdditionalQuery)
-	populate(objectMap, "baseQuery", i.BaseQuery)
-	populate(objectMap, "chartQuery", &i.ChartQuery)
-	populate(objectMap, "dataTypes", i.DataTypes)
-	populate(objectMap, "defaultTimeRange", i.DefaultTimeRange)
-	populate(objectMap, "description", i.Description)
-	populate(objectMap, "displayName", i.DisplayName)
-	populate(objectMap, "entitiesFilter", &i.EntitiesFilter)
-	populate(objectMap, "inputEntityType", i.InputEntityType)
-	populate(objectMap, "referenceTimeRange", i.ReferenceTimeRange)
-	populate(objectMap, "requiredInputFieldsSets", i.RequiredInputFieldsSets)
-	populate(objectMap, "tableQuery", i.TableQuery)
-	return json.Marshal(objectMap)
-}
-
 // InsightQueryItemPropertiesAdditionalQuery - The activity query definitions.
 type InsightQueryItemPropertiesAdditionalQuery struct {
 	// The insight query.
@@ -7479,14 +3685,6 @@ type InsightQueryItemPropertiesTableQuery struct {
 	QueriesDefinitions []*InsightQueryItemPropertiesTableQueryQueriesDefinitionsItem `json:"queriesDefinitions,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type InsightQueryItemPropertiesTableQuery.
-func (i InsightQueryItemPropertiesTableQuery) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "columnsDefinitions", i.ColumnsDefinitions)
-	populate(objectMap, "queriesDefinitions", i.QueriesDefinitions)
-	return json.Marshal(objectMap)
-}
-
 type InsightQueryItemPropertiesTableQueryColumnsDefinitionsItem struct {
 	// Insight column header.
 	Header *string `json:"header,omitempty"`
@@ -7512,16 +3710,6 @@ type InsightQueryItemPropertiesTableQueryQueriesDefinitionsItem struct {
 	Summarize *string `json:"summarize,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type InsightQueryItemPropertiesTableQueryQueriesDefinitionsItem.
-func (i InsightQueryItemPropertiesTableQueryQueriesDefinitionsItem) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "filter", i.Filter)
-	populate(objectMap, "linkColumnsDefinitions", i.LinkColumnsDefinitions)
-	populate(objectMap, "project", i.Project)
-	populate(objectMap, "summarize", i.Summarize)
-	return json.Marshal(objectMap)
-}
-
 type InsightQueryItemPropertiesTableQueryQueriesDefinitionsPropertiesItemsItem struct {
 	// Insight Link Definition Projected Name.
 	ProjectedName *string `json:"projectedName,omitempty"`
@@ -7537,14 +3725,6 @@ type InsightsTableResult struct {
 
 	// Rows data of the table
 	Rows [][]*string `json:"rows,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InsightsTableResult.
-func (i InsightsTableResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "columns", i.Columns)
-	populate(objectMap, "rows", i.Rows)
-	return json.Marshal(objectMap)
 }
 
 type InsightsTableResultColumnsItem struct {
@@ -7567,21 +3747,60 @@ type InstructionSteps struct {
 	Title *string `json:"title,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type InstructionSteps.
-func (i InstructionSteps) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "description", i.Description)
-	populate(objectMap, "instructions", i.Instructions)
-	populate(objectMap, "title", i.Title)
-	return json.Marshal(objectMap)
-}
-
 type InstructionStepsInstructionsItem struct {
 	// REQUIRED; The kind of the setting
 	Type *SettingType `json:"type,omitempty"`
 
 	// The parameters for the setting
 	Parameters interface{} `json:"parameters,omitempty"`
+}
+
+// IoTCheckRequirements - Represents IoT requirements check request.
+type IoTCheckRequirements struct {
+	// REQUIRED; Describes the kind of connector to be checked.
+	Kind *DataConnectorKind `json:"kind,omitempty"`
+
+	// IoT requirements check properties.
+	Properties *IoTCheckRequirementsProperties `json:"properties,omitempty"`
+}
+
+// IoTCheckRequirementsProperties - IoT requirements check properties.
+type IoTCheckRequirementsProperties struct {
+	// The subscription id to connect to, and get the data from.
+	SubscriptionID *string `json:"subscriptionId,omitempty"`
+}
+
+// IoTDataConnector - Represents IoT data connector.
+type IoTDataConnector struct {
+	// REQUIRED; The data connector kind
+	Kind *DataConnectorKind `json:"kind,omitempty"`
+
+	// Etag of the azure resource
+	Etag *string `json:"etag,omitempty"`
+
+	// IoT data connector properties.
+	Properties *IoTDataConnectorProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// IoTDataConnectorProperties - IoT data connector properties.
+type IoTDataConnectorProperties struct {
+	// The available data types for the connector.
+	DataTypes *AlertsDataTypeOfDataConnector `json:"dataTypes,omitempty"`
+
+	// The subscription id to connect to, and get the data from.
+	SubscriptionID *string `json:"subscriptionId,omitempty"`
 }
 
 // IoTDeviceEntity - Represents an IoT device entity.
@@ -7603,64 +3822,6 @@ type IoTDeviceEntity struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// GetEntity implements the EntityClassification interface for type IoTDeviceEntity.
-func (i *IoTDeviceEntity) GetEntity() *Entity {
-	return &Entity{
-		Kind:       i.Kind,
-		ID:         i.ID,
-		Name:       i.Name,
-		Type:       i.Type,
-		SystemData: i.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type IoTDeviceEntity.
-func (i IoTDeviceEntity) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", i.ID)
-	objectMap["kind"] = EntityKindIoTDevice
-	populate(objectMap, "name", i.Name)
-	populate(objectMap, "properties", i.Properties)
-	populate(objectMap, "systemData", i.SystemData)
-	populate(objectMap, "type", i.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type IoTDeviceEntity.
-func (i *IoTDeviceEntity) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &i.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &i.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &i.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &i.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &i.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &i.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // IoTDeviceEntityProperties - IoTDevice entity property bag.
@@ -7724,31 +3885,6 @@ type IoTDeviceEntityProperties struct {
 	Vendor *string `json:"vendor,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type IoTDeviceEntityProperties.
-func (i IoTDeviceEntityProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalData", i.AdditionalData)
-	populate(objectMap, "deviceId", i.DeviceID)
-	populate(objectMap, "deviceName", i.DeviceName)
-	populate(objectMap, "deviceType", i.DeviceType)
-	populate(objectMap, "edgeId", i.EdgeID)
-	populate(objectMap, "firmwareVersion", i.FirmwareVersion)
-	populate(objectMap, "friendlyName", i.FriendlyName)
-	populate(objectMap, "hostEntityId", i.HostEntityID)
-	populate(objectMap, "ipAddressEntityId", i.IPAddressEntityID)
-	populate(objectMap, "iotHubEntityId", i.IotHubEntityID)
-	populate(objectMap, "iotSecurityAgentId", i.IotSecurityAgentID)
-	populate(objectMap, "macAddress", i.MacAddress)
-	populate(objectMap, "model", i.Model)
-	populate(objectMap, "operatingSystem", i.OperatingSystem)
-	populate(objectMap, "protocols", i.Protocols)
-	populate(objectMap, "serialNumber", i.SerialNumber)
-	populate(objectMap, "source", i.Source)
-	populate(objectMap, "threatIntelligence", i.ThreatIntelligence)
-	populate(objectMap, "vendor", i.Vendor)
-	return json.Marshal(objectMap)
-}
-
 // LastDataReceivedDataType - Data type for last data received
 type LastDataReceivedDataType struct {
 	// Query for indicate last data received
@@ -7765,44 +3901,6 @@ type MCASCheckRequirements struct {
 
 	// MCAS (Microsoft Cloud App Security) requirements check properties.
 	Properties *MCASCheckRequirementsProperties `json:"properties,omitempty"`
-}
-
-// GetDataConnectorsCheckRequirements implements the DataConnectorsCheckRequirementsClassification interface for type MCASCheckRequirements.
-func (m *MCASCheckRequirements) GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements {
-	return &DataConnectorsCheckRequirements{
-		Kind: m.Kind,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type MCASCheckRequirements.
-func (m MCASCheckRequirements) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["kind"] = DataConnectorKindMicrosoftCloudAppSecurity
-	populate(objectMap, "properties", m.Properties)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type MCASCheckRequirements.
-func (m *MCASCheckRequirements) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "kind":
-			err = unpopulate(val, &m.Kind)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &m.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // MCASCheckRequirementsProperties - MCAS (Microsoft Cloud App Security) requirements check properties.
@@ -7835,69 +3933,6 @@ type MCASDataConnector struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetDataConnector implements the DataConnectorClassification interface for type MCASDataConnector.
-func (m *MCASDataConnector) GetDataConnector() *DataConnector {
-	return &DataConnector{
-		Kind:       m.Kind,
-		Etag:       m.Etag,
-		ID:         m.ID,
-		Name:       m.Name,
-		Type:       m.Type,
-		SystemData: m.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type MCASDataConnector.
-func (m MCASDataConnector) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", m.Etag)
-	populate(objectMap, "id", m.ID)
-	objectMap["kind"] = DataConnectorKindMicrosoftCloudAppSecurity
-	populate(objectMap, "name", m.Name)
-	populate(objectMap, "properties", m.Properties)
-	populate(objectMap, "systemData", m.SystemData)
-	populate(objectMap, "type", m.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type MCASDataConnector.
-func (m *MCASDataConnector) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "etag":
-			err = unpopulate(val, &m.Etag)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &m.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &m.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &m.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &m.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &m.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &m.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // MCASDataConnectorDataTypes - The available data types for MCAS (Microsoft Cloud App Security) data connector.
 type MCASDataConnectorDataTypes struct {
 	// REQUIRED; Alerts data type connection.
@@ -7923,44 +3958,6 @@ type MDATPCheckRequirements struct {
 
 	// MDATP (Microsoft Defender Advanced Threat Protection) requirements check properties.
 	Properties *MDATPCheckRequirementsProperties `json:"properties,omitempty"`
-}
-
-// GetDataConnectorsCheckRequirements implements the DataConnectorsCheckRequirementsClassification interface for type MDATPCheckRequirements.
-func (m *MDATPCheckRequirements) GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements {
-	return &DataConnectorsCheckRequirements{
-		Kind: m.Kind,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type MDATPCheckRequirements.
-func (m MDATPCheckRequirements) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["kind"] = DataConnectorKindMicrosoftDefenderAdvancedThreatProtection
-	populate(objectMap, "properties", m.Properties)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type MDATPCheckRequirements.
-func (m *MDATPCheckRequirements) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "kind":
-			err = unpopulate(val, &m.Kind)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &m.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // MDATPCheckRequirementsProperties - MDATP (Microsoft Defender Advanced Threat Protection) requirements check properties.
@@ -7991,69 +3988,6 @@ type MDATPDataConnector struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// GetDataConnector implements the DataConnectorClassification interface for type MDATPDataConnector.
-func (m *MDATPDataConnector) GetDataConnector() *DataConnector {
-	return &DataConnector{
-		Kind:       m.Kind,
-		Etag:       m.Etag,
-		ID:         m.ID,
-		Name:       m.Name,
-		Type:       m.Type,
-		SystemData: m.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type MDATPDataConnector.
-func (m MDATPDataConnector) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", m.Etag)
-	populate(objectMap, "id", m.ID)
-	objectMap["kind"] = DataConnectorKindMicrosoftDefenderAdvancedThreatProtection
-	populate(objectMap, "name", m.Name)
-	populate(objectMap, "properties", m.Properties)
-	populate(objectMap, "systemData", m.SystemData)
-	populate(objectMap, "type", m.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type MDATPDataConnector.
-func (m *MDATPDataConnector) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "etag":
-			err = unpopulate(val, &m.Etag)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &m.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &m.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &m.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &m.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &m.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &m.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // MDATPDataConnectorProperties - MDATP (Microsoft Defender Advanced Threat Protection) data connector properties.
@@ -8089,69 +4023,6 @@ type MLBehaviorAnalyticsAlertRule struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetAlertRule implements the AlertRuleClassification interface for type MLBehaviorAnalyticsAlertRule.
-func (m *MLBehaviorAnalyticsAlertRule) GetAlertRule() *AlertRule {
-	return &AlertRule{
-		Kind:       m.Kind,
-		Etag:       m.Etag,
-		ID:         m.ID,
-		Name:       m.Name,
-		Type:       m.Type,
-		SystemData: m.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type MLBehaviorAnalyticsAlertRule.
-func (m MLBehaviorAnalyticsAlertRule) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", m.Etag)
-	populate(objectMap, "id", m.ID)
-	objectMap["kind"] = AlertRuleKindMLBehaviorAnalytics
-	populate(objectMap, "name", m.Name)
-	populate(objectMap, "properties", m.Properties)
-	populate(objectMap, "systemData", m.SystemData)
-	populate(objectMap, "type", m.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type MLBehaviorAnalyticsAlertRule.
-func (m *MLBehaviorAnalyticsAlertRule) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "etag":
-			err = unpopulate(val, &m.Etag)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &m.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &m.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &m.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &m.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &m.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &m.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // MLBehaviorAnalyticsAlertRuleProperties - MLBehaviorAnalytics alert rule base property bag.
 type MLBehaviorAnalyticsAlertRuleProperties struct {
 	// REQUIRED; The Name of the alert rule template used to create this rule.
@@ -8179,61 +4050,6 @@ type MLBehaviorAnalyticsAlertRuleProperties struct {
 	Techniques []*string `json:"techniques,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type MLBehaviorAnalyticsAlertRuleProperties.
-func (m MLBehaviorAnalyticsAlertRuleProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "alertRuleTemplateName", m.AlertRuleTemplateName)
-	populate(objectMap, "description", m.Description)
-	populate(objectMap, "displayName", m.DisplayName)
-	populate(objectMap, "enabled", m.Enabled)
-	populateTimeRFC3339(objectMap, "lastModifiedUtc", m.LastModifiedUTC)
-	populate(objectMap, "severity", m.Severity)
-	populate(objectMap, "tactics", m.Tactics)
-	populate(objectMap, "techniques", m.Techniques)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type MLBehaviorAnalyticsAlertRuleProperties.
-func (m *MLBehaviorAnalyticsAlertRuleProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "alertRuleTemplateName":
-			err = unpopulate(val, &m.AlertRuleTemplateName)
-			delete(rawMsg, key)
-		case "description":
-			err = unpopulate(val, &m.Description)
-			delete(rawMsg, key)
-		case "displayName":
-			err = unpopulate(val, &m.DisplayName)
-			delete(rawMsg, key)
-		case "enabled":
-			err = unpopulate(val, &m.Enabled)
-			delete(rawMsg, key)
-		case "lastModifiedUtc":
-			err = unpopulateTimeRFC3339(val, &m.LastModifiedUTC)
-			delete(rawMsg, key)
-		case "severity":
-			err = unpopulate(val, &m.Severity)
-			delete(rawMsg, key)
-		case "tactics":
-			err = unpopulate(val, &m.Tactics)
-			delete(rawMsg, key)
-		case "techniques":
-			err = unpopulate(val, &m.Techniques)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // MLBehaviorAnalyticsAlertRuleTemplate - Represents MLBehaviorAnalytics alert rule template.
 type MLBehaviorAnalyticsAlertRuleTemplate struct {
 	// REQUIRED; The kind of the alert rule
@@ -8253,64 +4069,6 @@ type MLBehaviorAnalyticsAlertRuleTemplate struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// GetAlertRuleTemplate implements the AlertRuleTemplateClassification interface for type MLBehaviorAnalyticsAlertRuleTemplate.
-func (m *MLBehaviorAnalyticsAlertRuleTemplate) GetAlertRuleTemplate() *AlertRuleTemplate {
-	return &AlertRuleTemplate{
-		Kind:       m.Kind,
-		ID:         m.ID,
-		Name:       m.Name,
-		Type:       m.Type,
-		SystemData: m.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type MLBehaviorAnalyticsAlertRuleTemplate.
-func (m MLBehaviorAnalyticsAlertRuleTemplate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", m.ID)
-	objectMap["kind"] = AlertRuleKindMLBehaviorAnalytics
-	populate(objectMap, "name", m.Name)
-	populate(objectMap, "properties", m.Properties)
-	populate(objectMap, "systemData", m.SystemData)
-	populate(objectMap, "type", m.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type MLBehaviorAnalyticsAlertRuleTemplate.
-func (m *MLBehaviorAnalyticsAlertRuleTemplate) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &m.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &m.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &m.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &m.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &m.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &m.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // MLBehaviorAnalyticsAlertRuleTemplateProperties - MLBehaviorAnalytics alert rule template properties.
@@ -8346,69 +4104,6 @@ type MLBehaviorAnalyticsAlertRuleTemplateProperties struct {
 	LastUpdatedDateUTC *time.Time `json:"lastUpdatedDateUTC,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type MLBehaviorAnalyticsAlertRuleTemplateProperties.
-func (m MLBehaviorAnalyticsAlertRuleTemplateProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "alertRulesCreatedByTemplateCount", m.AlertRulesCreatedByTemplateCount)
-	populateTimeRFC3339(objectMap, "createdDateUTC", m.CreatedDateUTC)
-	populate(objectMap, "description", m.Description)
-	populate(objectMap, "displayName", m.DisplayName)
-	populateTimeRFC3339(objectMap, "lastUpdatedDateUTC", m.LastUpdatedDateUTC)
-	populate(objectMap, "requiredDataConnectors", m.RequiredDataConnectors)
-	populate(objectMap, "severity", m.Severity)
-	populate(objectMap, "status", m.Status)
-	populate(objectMap, "tactics", m.Tactics)
-	populate(objectMap, "techniques", m.Techniques)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type MLBehaviorAnalyticsAlertRuleTemplateProperties.
-func (m *MLBehaviorAnalyticsAlertRuleTemplateProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "alertRulesCreatedByTemplateCount":
-			err = unpopulate(val, &m.AlertRulesCreatedByTemplateCount)
-			delete(rawMsg, key)
-		case "createdDateUTC":
-			err = unpopulateTimeRFC3339(val, &m.CreatedDateUTC)
-			delete(rawMsg, key)
-		case "description":
-			err = unpopulate(val, &m.Description)
-			delete(rawMsg, key)
-		case "displayName":
-			err = unpopulate(val, &m.DisplayName)
-			delete(rawMsg, key)
-		case "lastUpdatedDateUTC":
-			err = unpopulateTimeRFC3339(val, &m.LastUpdatedDateUTC)
-			delete(rawMsg, key)
-		case "requiredDataConnectors":
-			err = unpopulate(val, &m.RequiredDataConnectors)
-			delete(rawMsg, key)
-		case "severity":
-			err = unpopulate(val, &m.Severity)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &m.Status)
-			delete(rawMsg, key)
-		case "tactics":
-			err = unpopulate(val, &m.Tactics)
-			delete(rawMsg, key)
-		case "techniques":
-			err = unpopulate(val, &m.Techniques)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // MSTICheckRequirements - Represents Microsoft Threat Intelligence requirements check request.
 type MSTICheckRequirements struct {
 	// REQUIRED; Describes the kind of connector to be checked.
@@ -8416,44 +4111,6 @@ type MSTICheckRequirements struct {
 
 	// Microsoft Threat Intelligence requirements check properties.
 	Properties *MSTICheckRequirementsProperties `json:"properties,omitempty"`
-}
-
-// GetDataConnectorsCheckRequirements implements the DataConnectorsCheckRequirementsClassification interface for type MSTICheckRequirements.
-func (m *MSTICheckRequirements) GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements {
-	return &DataConnectorsCheckRequirements{
-		Kind: m.Kind,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type MSTICheckRequirements.
-func (m MSTICheckRequirements) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["kind"] = DataConnectorKindMicrosoftThreatIntelligence
-	populate(objectMap, "properties", m.Properties)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type MSTICheckRequirements.
-func (m *MSTICheckRequirements) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "kind":
-			err = unpopulate(val, &m.Kind)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &m.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // MSTICheckRequirementsProperties - Microsoft Threat Intelligence requirements check properties.
@@ -8484,69 +4141,6 @@ type MSTIDataConnector struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// GetDataConnector implements the DataConnectorClassification interface for type MSTIDataConnector.
-func (m *MSTIDataConnector) GetDataConnector() *DataConnector {
-	return &DataConnector{
-		Kind:       m.Kind,
-		Etag:       m.Etag,
-		ID:         m.ID,
-		Name:       m.Name,
-		Type:       m.Type,
-		SystemData: m.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type MSTIDataConnector.
-func (m MSTIDataConnector) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", m.Etag)
-	populate(objectMap, "id", m.ID)
-	objectMap["kind"] = DataConnectorKindMicrosoftThreatIntelligence
-	populate(objectMap, "name", m.Name)
-	populate(objectMap, "properties", m.Properties)
-	populate(objectMap, "systemData", m.SystemData)
-	populate(objectMap, "type", m.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type MSTIDataConnector.
-func (m *MSTIDataConnector) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "etag":
-			err = unpopulate(val, &m.Etag)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &m.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &m.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &m.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &m.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &m.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &m.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // MSTIDataConnectorDataTypes - The available data types for Microsoft Threat Intelligence Platforms data connector.
@@ -8615,69 +4209,6 @@ type MTPDataConnector struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetDataConnector implements the DataConnectorClassification interface for type MTPDataConnector.
-func (m *MTPDataConnector) GetDataConnector() *DataConnector {
-	return &DataConnector{
-		Kind:       m.Kind,
-		Etag:       m.Etag,
-		ID:         m.ID,
-		Name:       m.Name,
-		Type:       m.Type,
-		SystemData: m.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type MTPDataConnector.
-func (m MTPDataConnector) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", m.Etag)
-	populate(objectMap, "id", m.ID)
-	objectMap["kind"] = DataConnectorKindMicrosoftThreatProtection
-	populate(objectMap, "name", m.Name)
-	populate(objectMap, "properties", m.Properties)
-	populate(objectMap, "systemData", m.SystemData)
-	populate(objectMap, "type", m.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type MTPDataConnector.
-func (m *MTPDataConnector) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "etag":
-			err = unpopulate(val, &m.Etag)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &m.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &m.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &m.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &m.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &m.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &m.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // MTPDataConnectorDataTypes - The available data types for Microsoft Threat Protection Platforms data connector.
 type MTPDataConnectorDataTypes struct {
 	// REQUIRED; Data type for Microsoft Threat Protection Platforms data connector.
@@ -8718,64 +4249,6 @@ type MailClusterEntity struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// GetEntity implements the EntityClassification interface for type MailClusterEntity.
-func (m *MailClusterEntity) GetEntity() *Entity {
-	return &Entity{
-		Kind:       m.Kind,
-		ID:         m.ID,
-		Name:       m.Name,
-		Type:       m.Type,
-		SystemData: m.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type MailClusterEntity.
-func (m MailClusterEntity) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", m.ID)
-	objectMap["kind"] = EntityKindMailCluster
-	populate(objectMap, "name", m.Name)
-	populate(objectMap, "properties", m.Properties)
-	populate(objectMap, "systemData", m.SystemData)
-	populate(objectMap, "type", m.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type MailClusterEntity.
-func (m *MailClusterEntity) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &m.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &m.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &m.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &m.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &m.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &m.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // MailClusterEntityProperties - Mail cluster entity property bag.
@@ -8833,97 +4306,6 @@ type MailClusterEntityProperties struct {
 	Threats []*string `json:"threats,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type MailClusterEntityProperties.
-func (m MailClusterEntityProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalData", m.AdditionalData)
-	populate(objectMap, "clusterGroup", m.ClusterGroup)
-	populateTimeRFC3339(objectMap, "clusterQueryEndTime", m.ClusterQueryEndTime)
-	populateTimeRFC3339(objectMap, "clusterQueryStartTime", m.ClusterQueryStartTime)
-	populate(objectMap, "clusterSourceIdentifier", m.ClusterSourceIdentifier)
-	populate(objectMap, "clusterSourceType", m.ClusterSourceType)
-	populate(objectMap, "countByDeliveryStatus", &m.CountByDeliveryStatus)
-	populate(objectMap, "countByProtectionStatus", &m.CountByProtectionStatus)
-	populate(objectMap, "countByThreatType", &m.CountByThreatType)
-	populate(objectMap, "friendlyName", m.FriendlyName)
-	populate(objectMap, "isVolumeAnomaly", m.IsVolumeAnomaly)
-	populate(objectMap, "mailCount", m.MailCount)
-	populate(objectMap, "networkMessageIds", m.NetworkMessageIDs)
-	populate(objectMap, "query", m.Query)
-	populateTimeRFC3339(objectMap, "queryTime", m.QueryTime)
-	populate(objectMap, "source", m.Source)
-	populate(objectMap, "threats", m.Threats)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type MailClusterEntityProperties.
-func (m *MailClusterEntityProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "additionalData":
-			err = unpopulate(val, &m.AdditionalData)
-			delete(rawMsg, key)
-		case "clusterGroup":
-			err = unpopulate(val, &m.ClusterGroup)
-			delete(rawMsg, key)
-		case "clusterQueryEndTime":
-			err = unpopulateTimeRFC3339(val, &m.ClusterQueryEndTime)
-			delete(rawMsg, key)
-		case "clusterQueryStartTime":
-			err = unpopulateTimeRFC3339(val, &m.ClusterQueryStartTime)
-			delete(rawMsg, key)
-		case "clusterSourceIdentifier":
-			err = unpopulate(val, &m.ClusterSourceIdentifier)
-			delete(rawMsg, key)
-		case "clusterSourceType":
-			err = unpopulate(val, &m.ClusterSourceType)
-			delete(rawMsg, key)
-		case "countByDeliveryStatus":
-			err = unpopulate(val, &m.CountByDeliveryStatus)
-			delete(rawMsg, key)
-		case "countByProtectionStatus":
-			err = unpopulate(val, &m.CountByProtectionStatus)
-			delete(rawMsg, key)
-		case "countByThreatType":
-			err = unpopulate(val, &m.CountByThreatType)
-			delete(rawMsg, key)
-		case "friendlyName":
-			err = unpopulate(val, &m.FriendlyName)
-			delete(rawMsg, key)
-		case "isVolumeAnomaly":
-			err = unpopulate(val, &m.IsVolumeAnomaly)
-			delete(rawMsg, key)
-		case "mailCount":
-			err = unpopulate(val, &m.MailCount)
-			delete(rawMsg, key)
-		case "networkMessageIds":
-			err = unpopulate(val, &m.NetworkMessageIDs)
-			delete(rawMsg, key)
-		case "query":
-			err = unpopulate(val, &m.Query)
-			delete(rawMsg, key)
-		case "queryTime":
-			err = unpopulateTimeRFC3339(val, &m.QueryTime)
-			delete(rawMsg, key)
-		case "source":
-			err = unpopulate(val, &m.Source)
-			delete(rawMsg, key)
-		case "threats":
-			err = unpopulate(val, &m.Threats)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // MailMessageEntity - Represents a mail message entity.
 type MailMessageEntity struct {
 	// REQUIRED; The kind of the entity.
@@ -8943,64 +4325,6 @@ type MailMessageEntity struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// GetEntity implements the EntityClassification interface for type MailMessageEntity.
-func (m *MailMessageEntity) GetEntity() *Entity {
-	return &Entity{
-		Kind:       m.Kind,
-		ID:         m.ID,
-		Name:       m.Name,
-		Type:       m.Type,
-		SystemData: m.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type MailMessageEntity.
-func (m MailMessageEntity) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", m.ID)
-	objectMap["kind"] = EntityKindMailMessage
-	populate(objectMap, "name", m.Name)
-	populate(objectMap, "properties", m.Properties)
-	populate(objectMap, "systemData", m.SystemData)
-	populate(objectMap, "type", m.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type MailMessageEntity.
-func (m *MailMessageEntity) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &m.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &m.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &m.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &m.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &m.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &m.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // MailMessageEntityProperties - Mail message entity property bag.
@@ -9089,137 +4413,6 @@ type MailMessageEntityProperties struct {
 	Urls []*string `json:"urls,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type MailMessageEntityProperties.
-func (m MailMessageEntityProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalData", m.AdditionalData)
-	populate(objectMap, "antispamDirection", m.AntispamDirection)
-	populate(objectMap, "bodyFingerprintBin1", m.BodyFingerprintBin1)
-	populate(objectMap, "bodyFingerprintBin2", m.BodyFingerprintBin2)
-	populate(objectMap, "bodyFingerprintBin3", m.BodyFingerprintBin3)
-	populate(objectMap, "bodyFingerprintBin4", m.BodyFingerprintBin4)
-	populate(objectMap, "bodyFingerprintBin5", m.BodyFingerprintBin5)
-	populate(objectMap, "deliveryAction", m.DeliveryAction)
-	populate(objectMap, "deliveryLocation", m.DeliveryLocation)
-	populate(objectMap, "fileEntityIds", m.FileEntityIDs)
-	populate(objectMap, "friendlyName", m.FriendlyName)
-	populate(objectMap, "internetMessageId", m.InternetMessageID)
-	populate(objectMap, "language", m.Language)
-	populate(objectMap, "networkMessageId", m.NetworkMessageID)
-	populate(objectMap, "p1Sender", m.P1Sender)
-	populate(objectMap, "p1SenderDisplayName", m.P1SenderDisplayName)
-	populate(objectMap, "p1SenderDomain", m.P1SenderDomain)
-	populate(objectMap, "p2Sender", m.P2Sender)
-	populate(objectMap, "p2SenderDisplayName", m.P2SenderDisplayName)
-	populate(objectMap, "p2SenderDomain", m.P2SenderDomain)
-	populateTimeRFC3339(objectMap, "receiveDate", m.ReceiveDate)
-	populate(objectMap, "recipient", m.Recipient)
-	populate(objectMap, "senderIP", m.SenderIP)
-	populate(objectMap, "subject", m.Subject)
-	populate(objectMap, "threatDetectionMethods", m.ThreatDetectionMethods)
-	populate(objectMap, "threats", m.Threats)
-	populate(objectMap, "urls", m.Urls)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type MailMessageEntityProperties.
-func (m *MailMessageEntityProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "additionalData":
-			err = unpopulate(val, &m.AdditionalData)
-			delete(rawMsg, key)
-		case "antispamDirection":
-			err = unpopulate(val, &m.AntispamDirection)
-			delete(rawMsg, key)
-		case "bodyFingerprintBin1":
-			err = unpopulate(val, &m.BodyFingerprintBin1)
-			delete(rawMsg, key)
-		case "bodyFingerprintBin2":
-			err = unpopulate(val, &m.BodyFingerprintBin2)
-			delete(rawMsg, key)
-		case "bodyFingerprintBin3":
-			err = unpopulate(val, &m.BodyFingerprintBin3)
-			delete(rawMsg, key)
-		case "bodyFingerprintBin4":
-			err = unpopulate(val, &m.BodyFingerprintBin4)
-			delete(rawMsg, key)
-		case "bodyFingerprintBin5":
-			err = unpopulate(val, &m.BodyFingerprintBin5)
-			delete(rawMsg, key)
-		case "deliveryAction":
-			err = unpopulate(val, &m.DeliveryAction)
-			delete(rawMsg, key)
-		case "deliveryLocation":
-			err = unpopulate(val, &m.DeliveryLocation)
-			delete(rawMsg, key)
-		case "fileEntityIds":
-			err = unpopulate(val, &m.FileEntityIDs)
-			delete(rawMsg, key)
-		case "friendlyName":
-			err = unpopulate(val, &m.FriendlyName)
-			delete(rawMsg, key)
-		case "internetMessageId":
-			err = unpopulate(val, &m.InternetMessageID)
-			delete(rawMsg, key)
-		case "language":
-			err = unpopulate(val, &m.Language)
-			delete(rawMsg, key)
-		case "networkMessageId":
-			err = unpopulate(val, &m.NetworkMessageID)
-			delete(rawMsg, key)
-		case "p1Sender":
-			err = unpopulate(val, &m.P1Sender)
-			delete(rawMsg, key)
-		case "p1SenderDisplayName":
-			err = unpopulate(val, &m.P1SenderDisplayName)
-			delete(rawMsg, key)
-		case "p1SenderDomain":
-			err = unpopulate(val, &m.P1SenderDomain)
-			delete(rawMsg, key)
-		case "p2Sender":
-			err = unpopulate(val, &m.P2Sender)
-			delete(rawMsg, key)
-		case "p2SenderDisplayName":
-			err = unpopulate(val, &m.P2SenderDisplayName)
-			delete(rawMsg, key)
-		case "p2SenderDomain":
-			err = unpopulate(val, &m.P2SenderDomain)
-			delete(rawMsg, key)
-		case "receiveDate":
-			err = unpopulateTimeRFC3339(val, &m.ReceiveDate)
-			delete(rawMsg, key)
-		case "recipient":
-			err = unpopulate(val, &m.Recipient)
-			delete(rawMsg, key)
-		case "senderIP":
-			err = unpopulate(val, &m.SenderIP)
-			delete(rawMsg, key)
-		case "subject":
-			err = unpopulate(val, &m.Subject)
-			delete(rawMsg, key)
-		case "threatDetectionMethods":
-			err = unpopulate(val, &m.ThreatDetectionMethods)
-			delete(rawMsg, key)
-		case "threats":
-			err = unpopulate(val, &m.Threats)
-			delete(rawMsg, key)
-		case "urls":
-			err = unpopulate(val, &m.Urls)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // MailboxEntity - Represents a mailbox entity.
 type MailboxEntity struct {
 	// REQUIRED; The kind of the entity.
@@ -9239,64 +4432,6 @@ type MailboxEntity struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// GetEntity implements the EntityClassification interface for type MailboxEntity.
-func (m *MailboxEntity) GetEntity() *Entity {
-	return &Entity{
-		Kind:       m.Kind,
-		ID:         m.ID,
-		Name:       m.Name,
-		Type:       m.Type,
-		SystemData: m.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type MailboxEntity.
-func (m MailboxEntity) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", m.ID)
-	objectMap["kind"] = EntityKindMailbox
-	populate(objectMap, "name", m.Name)
-	populate(objectMap, "properties", m.Properties)
-	populate(objectMap, "systemData", m.SystemData)
-	populate(objectMap, "type", m.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type MailboxEntity.
-func (m *MailboxEntity) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &m.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &m.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &m.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &m.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &m.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &m.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // MailboxEntityProperties - Mailbox entity property bag.
@@ -9322,18 +4457,6 @@ type MailboxEntityProperties struct {
 	Upn *string `json:"upn,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type MailboxEntityProperties.
-func (m MailboxEntityProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalData", m.AdditionalData)
-	populate(objectMap, "displayName", m.DisplayName)
-	populate(objectMap, "externalDirectoryObjectId", m.ExternalDirectoryObjectID)
-	populate(objectMap, "friendlyName", m.FriendlyName)
-	populate(objectMap, "mailboxPrimaryAddress", m.MailboxPrimaryAddress)
-	populate(objectMap, "upn", m.Upn)
-	return json.Marshal(objectMap)
-}
-
 // MalwareEntity - Represents a malware entity.
 type MalwareEntity struct {
 	// REQUIRED; The kind of the entity.
@@ -9353,64 +4476,6 @@ type MalwareEntity struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// GetEntity implements the EntityClassification interface for type MalwareEntity.
-func (m *MalwareEntity) GetEntity() *Entity {
-	return &Entity{
-		Kind:       m.Kind,
-		ID:         m.ID,
-		Name:       m.Name,
-		Type:       m.Type,
-		SystemData: m.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type MalwareEntity.
-func (m MalwareEntity) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", m.ID)
-	objectMap["kind"] = EntityKindMalware
-	populate(objectMap, "name", m.Name)
-	populate(objectMap, "properties", m.Properties)
-	populate(objectMap, "systemData", m.SystemData)
-	populate(objectMap, "type", m.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type MalwareEntity.
-func (m *MalwareEntity) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &m.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &m.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &m.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &m.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &m.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &m.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // MalwareEntityProperties - Malware entity property bag.
@@ -9433,18 +4498,6 @@ type MalwareEntityProperties struct {
 
 	// READ-ONLY; List of linked process entity identifiers on which the malware was found.
 	ProcessEntityIDs []*string `json:"processEntityIds,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type MalwareEntityProperties.
-func (m MalwareEntityProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalData", m.AdditionalData)
-	populate(objectMap, "category", m.Category)
-	populate(objectMap, "fileEntityIds", m.FileEntityIDs)
-	populate(objectMap, "friendlyName", m.FriendlyName)
-	populate(objectMap, "malwareName", m.MalwareName)
-	populate(objectMap, "processEntityIds", m.ProcessEntityIDs)
-	return json.Marshal(objectMap)
 }
 
 type ManualTriggerRequestBody struct {
@@ -9471,14 +4524,6 @@ type MetadataCategories struct {
 
 	// Industry verticals for the solution content item
 	Verticals []*string `json:"verticals,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type MetadataCategories.
-func (m MetadataCategories) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "domains", m.Domains)
-	populate(objectMap, "verticals", m.Verticals)
-	return json.Marshal(objectMap)
 }
 
 // MetadataClientCreateOptions contains the optional parameters for the MetadataClient.Create method.
@@ -9538,18 +4583,6 @@ type MetadataDependencies struct {
 	Version *string `json:"version,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type MetadataDependencies.
-func (m MetadataDependencies) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "contentId", m.ContentID)
-	populate(objectMap, "criteria", m.Criteria)
-	populate(objectMap, "kind", m.Kind)
-	populate(objectMap, "name", m.Name)
-	populate(objectMap, "operator", m.Operator)
-	populate(objectMap, "version", m.Version)
-	return json.Marshal(objectMap)
-}
-
 // MetadataList - List of all the metadata.
 type MetadataList struct {
 	// REQUIRED; Array of metadata.
@@ -9557,14 +4590,6 @@ type MetadataList struct {
 
 	// READ-ONLY; URL to fetch the next page of metadata.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type MetadataList.
-func (m MetadataList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", m.NextLink)
-	populate(objectMap, "value", m.Value)
-	return json.Marshal(objectMap)
 }
 
 // MetadataModel - Metadata resource definition.
@@ -9609,18 +4634,6 @@ type MetadataPatch struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type MetadataPatch.
-func (m MetadataPatch) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", m.Etag)
-	populate(objectMap, "id", m.ID)
-	populate(objectMap, "name", m.Name)
-	populate(objectMap, "properties", m.Properties)
-	populate(objectMap, "systemData", m.SystemData)
-	populate(objectMap, "type", m.Type)
-	return json.Marshal(objectMap)
-}
-
 // MetadataProperties - Metadata property bag.
 type MetadataProperties struct {
 	// REQUIRED; The kind of content the metadata is for.
@@ -9641,6 +4654,12 @@ type MetadataProperties struct {
 	// resource name
 	ContentID *string `json:"contentId,omitempty"`
 
+	// Schema version of the content. Can be used to distinguish between different flow based on the schema version
+	ContentSchemaVersion *string `json:"contentSchemaVersion,omitempty"`
+
+	// The custom version of the content. A optional free text
+	CustomVersion *string `json:"customVersion,omitempty"`
+
 	// Dependencies for the content item, what other content items it requires to work. Can describe more complex dependencies
 	// using a recursive/nested structure. For a single dependency an id/kind/version
 	// can be supplied or operator/criteria for complex formats.
@@ -9649,8 +4668,17 @@ type MetadataProperties struct {
 	// first publish date solution content item
 	FirstPublishDate *time.Time `json:"firstPublishDate,omitempty"`
 
+	// the icon identifier. this id can later be fetched from the solution template
+	Icon *string `json:"icon,omitempty"`
+
 	// last publish date for the solution content item
 	LastPublishDate *time.Time `json:"lastPublishDate,omitempty"`
+
+	// preview image file names. These will be taken from the solution artifacts
+	PreviewImages []*string `json:"previewImages,omitempty"`
+
+	// preview image file names. These will be taken from the solution artifacts. used for dark theme support
+	PreviewImagesDark []*string `json:"previewImagesDark,omitempty"`
 
 	// Providers for the solution content item
 	Providers []*string `json:"providers,omitempty"`
@@ -9661,81 +4689,16 @@ type MetadataProperties struct {
 	// Support information for the metadata - type, name, contact information
 	Support *MetadataSupport `json:"support,omitempty"`
 
+	// the tactics the resource covers
+	ThreatAnalysisTactics []*string `json:"threatAnalysisTactics,omitempty"`
+
+	// the techniques the resource covers, these have to be aligned with the tactics being used
+	ThreatAnalysisTechniques []*string `json:"threatAnalysisTechniques,omitempty"`
+
 	// Version of the content. Default and recommended format is numeric (e.g. 1, 1.0, 1.0.0, 1.0.0.0), following ARM template
 	// best practices. Can also be any string, but then we cannot guarantee any version
 	// checks
 	Version *string `json:"version,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type MetadataProperties.
-func (m MetadataProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "author", m.Author)
-	populate(objectMap, "categories", m.Categories)
-	populate(objectMap, "contentId", m.ContentID)
-	populate(objectMap, "dependencies", m.Dependencies)
-	populateDateType(objectMap, "firstPublishDate", m.FirstPublishDate)
-	populate(objectMap, "kind", m.Kind)
-	populateDateType(objectMap, "lastPublishDate", m.LastPublishDate)
-	populate(objectMap, "parentId", m.ParentID)
-	populate(objectMap, "providers", m.Providers)
-	populate(objectMap, "source", m.Source)
-	populate(objectMap, "support", m.Support)
-	populate(objectMap, "version", m.Version)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type MetadataProperties.
-func (m *MetadataProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "author":
-			err = unpopulate(val, &m.Author)
-			delete(rawMsg, key)
-		case "categories":
-			err = unpopulate(val, &m.Categories)
-			delete(rawMsg, key)
-		case "contentId":
-			err = unpopulate(val, &m.ContentID)
-			delete(rawMsg, key)
-		case "dependencies":
-			err = unpopulate(val, &m.Dependencies)
-			delete(rawMsg, key)
-		case "firstPublishDate":
-			err = unpopulateDateType(val, &m.FirstPublishDate)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &m.Kind)
-			delete(rawMsg, key)
-		case "lastPublishDate":
-			err = unpopulateDateType(val, &m.LastPublishDate)
-			delete(rawMsg, key)
-		case "parentId":
-			err = unpopulate(val, &m.ParentID)
-			delete(rawMsg, key)
-		case "providers":
-			err = unpopulate(val, &m.Providers)
-			delete(rawMsg, key)
-		case "source":
-			err = unpopulate(val, &m.Source)
-			delete(rawMsg, key)
-		case "support":
-			err = unpopulate(val, &m.Support)
-			delete(rawMsg, key)
-		case "version":
-			err = unpopulate(val, &m.Version)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // MetadataPropertiesPatch - Metadata property bag for patch requests. This is the same as the MetadataProperties, but with
@@ -9752,6 +4715,12 @@ type MetadataPropertiesPatch struct {
 	// resource name
 	ContentID *string `json:"contentId,omitempty"`
 
+	// Schema version of the content. Can be used to distinguish between different flow based on the schema version
+	ContentSchemaVersion *string `json:"contentSchemaVersion,omitempty"`
+
+	// The custom version of the content. A optional free text
+	CustomVersion *string `json:"customVersion,omitempty"`
+
 	// Dependencies for the content item, what other content items it requires to work. Can describe more complex dependencies
 	// using a recursive/nested structure. For a single dependency an id/kind/version
 	// can be supplied or operator/criteria for complex formats.
@@ -9759,6 +4728,9 @@ type MetadataPropertiesPatch struct {
 
 	// first publish date solution content item
 	FirstPublishDate *time.Time `json:"firstPublishDate,omitempty"`
+
+	// the icon identifier. this id can later be fetched from the solution template
+	Icon *string `json:"icon,omitempty"`
 
 	// The kind of content the metadata is for.
 	Kind *Kind `json:"kind,omitempty"`
@@ -9770,6 +4742,12 @@ type MetadataPropertiesPatch struct {
 	// and resource group)
 	ParentID *string `json:"parentId,omitempty"`
 
+	// preview image file names. These will be taken from the solution artifacts
+	PreviewImages []*string `json:"previewImages,omitempty"`
+
+	// preview image file names. These will be taken from the solution artifacts. used for dark theme support
+	PreviewImagesDark []*string `json:"previewImagesDark,omitempty"`
+
 	// Providers for the solution content item
 	Providers []*string `json:"providers,omitempty"`
 
@@ -9779,81 +4757,16 @@ type MetadataPropertiesPatch struct {
 	// Support information for the metadata - type, name, contact information
 	Support *MetadataSupport `json:"support,omitempty"`
 
+	// the tactics the resource covers
+	ThreatAnalysisTactics []*string `json:"threatAnalysisTactics,omitempty"`
+
+	// the techniques the resource covers, these have to be aligned with the tactics being used
+	ThreatAnalysisTechniques []*string `json:"threatAnalysisTechniques,omitempty"`
+
 	// Version of the content. Default and recommended format is numeric (e.g. 1, 1.0, 1.0.0, 1.0.0.0), following ARM template
 	// best practices. Can also be any string, but then we cannot guarantee any version
 	// checks
 	Version *string `json:"version,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type MetadataPropertiesPatch.
-func (m MetadataPropertiesPatch) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "author", m.Author)
-	populate(objectMap, "categories", m.Categories)
-	populate(objectMap, "contentId", m.ContentID)
-	populate(objectMap, "dependencies", m.Dependencies)
-	populateDateType(objectMap, "firstPublishDate", m.FirstPublishDate)
-	populate(objectMap, "kind", m.Kind)
-	populateDateType(objectMap, "lastPublishDate", m.LastPublishDate)
-	populate(objectMap, "parentId", m.ParentID)
-	populate(objectMap, "providers", m.Providers)
-	populate(objectMap, "source", m.Source)
-	populate(objectMap, "support", m.Support)
-	populate(objectMap, "version", m.Version)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type MetadataPropertiesPatch.
-func (m *MetadataPropertiesPatch) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "author":
-			err = unpopulate(val, &m.Author)
-			delete(rawMsg, key)
-		case "categories":
-			err = unpopulate(val, &m.Categories)
-			delete(rawMsg, key)
-		case "contentId":
-			err = unpopulate(val, &m.ContentID)
-			delete(rawMsg, key)
-		case "dependencies":
-			err = unpopulate(val, &m.Dependencies)
-			delete(rawMsg, key)
-		case "firstPublishDate":
-			err = unpopulateDateType(val, &m.FirstPublishDate)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &m.Kind)
-			delete(rawMsg, key)
-		case "lastPublishDate":
-			err = unpopulateDateType(val, &m.LastPublishDate)
-			delete(rawMsg, key)
-		case "parentId":
-			err = unpopulate(val, &m.ParentID)
-			delete(rawMsg, key)
-		case "providers":
-			err = unpopulate(val, &m.Providers)
-			delete(rawMsg, key)
-		case "source":
-			err = unpopulate(val, &m.Source)
-			delete(rawMsg, key)
-		case "support":
-			err = unpopulate(val, &m.Support)
-			delete(rawMsg, key)
-		case "version":
-			err = unpopulate(val, &m.Version)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // MetadataSource - The original source of the content item, where it comes from.
@@ -9907,69 +4820,6 @@ type MicrosoftSecurityIncidentCreationAlertRule struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetAlertRule implements the AlertRuleClassification interface for type MicrosoftSecurityIncidentCreationAlertRule.
-func (m *MicrosoftSecurityIncidentCreationAlertRule) GetAlertRule() *AlertRule {
-	return &AlertRule{
-		Kind:       m.Kind,
-		Etag:       m.Etag,
-		ID:         m.ID,
-		Name:       m.Name,
-		Type:       m.Type,
-		SystemData: m.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type MicrosoftSecurityIncidentCreationAlertRule.
-func (m MicrosoftSecurityIncidentCreationAlertRule) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", m.Etag)
-	populate(objectMap, "id", m.ID)
-	objectMap["kind"] = AlertRuleKindMicrosoftSecurityIncidentCreation
-	populate(objectMap, "name", m.Name)
-	populate(objectMap, "properties", m.Properties)
-	populate(objectMap, "systemData", m.SystemData)
-	populate(objectMap, "type", m.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type MicrosoftSecurityIncidentCreationAlertRule.
-func (m *MicrosoftSecurityIncidentCreationAlertRule) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "etag":
-			err = unpopulate(val, &m.Etag)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &m.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &m.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &m.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &m.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &m.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &m.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // MicrosoftSecurityIncidentCreationAlertRuleCommonProperties - MicrosoftSecurityIncidentCreation rule common property bag.
 type MicrosoftSecurityIncidentCreationAlertRuleCommonProperties struct {
 	// REQUIRED; The alerts' productName on which the cases will be generated
@@ -9983,16 +4833,6 @@ type MicrosoftSecurityIncidentCreationAlertRuleCommonProperties struct {
 
 	// the alerts' severities on which the cases will be generated
 	SeveritiesFilter []*AlertSeverity `json:"severitiesFilter,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type MicrosoftSecurityIncidentCreationAlertRuleCommonProperties.
-func (m MicrosoftSecurityIncidentCreationAlertRuleCommonProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "displayNamesExcludeFilter", m.DisplayNamesExcludeFilter)
-	populate(objectMap, "displayNamesFilter", m.DisplayNamesFilter)
-	populate(objectMap, "productFilter", m.ProductFilter)
-	populate(objectMap, "severitiesFilter", m.SeveritiesFilter)
-	return json.Marshal(objectMap)
 }
 
 // MicrosoftSecurityIncidentCreationAlertRuleProperties - MicrosoftSecurityIncidentCreation rule property bag.
@@ -10025,65 +4865,6 @@ type MicrosoftSecurityIncidentCreationAlertRuleProperties struct {
 	LastModifiedUTC *time.Time `json:"lastModifiedUtc,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type MicrosoftSecurityIncidentCreationAlertRuleProperties.
-func (m MicrosoftSecurityIncidentCreationAlertRuleProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "alertRuleTemplateName", m.AlertRuleTemplateName)
-	populate(objectMap, "description", m.Description)
-	populate(objectMap, "displayName", m.DisplayName)
-	populate(objectMap, "displayNamesExcludeFilter", m.DisplayNamesExcludeFilter)
-	populate(objectMap, "displayNamesFilter", m.DisplayNamesFilter)
-	populate(objectMap, "enabled", m.Enabled)
-	populateTimeRFC3339(objectMap, "lastModifiedUtc", m.LastModifiedUTC)
-	populate(objectMap, "productFilter", m.ProductFilter)
-	populate(objectMap, "severitiesFilter", m.SeveritiesFilter)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type MicrosoftSecurityIncidentCreationAlertRuleProperties.
-func (m *MicrosoftSecurityIncidentCreationAlertRuleProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "alertRuleTemplateName":
-			err = unpopulate(val, &m.AlertRuleTemplateName)
-			delete(rawMsg, key)
-		case "description":
-			err = unpopulate(val, &m.Description)
-			delete(rawMsg, key)
-		case "displayName":
-			err = unpopulate(val, &m.DisplayName)
-			delete(rawMsg, key)
-		case "displayNamesExcludeFilter":
-			err = unpopulate(val, &m.DisplayNamesExcludeFilter)
-			delete(rawMsg, key)
-		case "displayNamesFilter":
-			err = unpopulate(val, &m.DisplayNamesFilter)
-			delete(rawMsg, key)
-		case "enabled":
-			err = unpopulate(val, &m.Enabled)
-			delete(rawMsg, key)
-		case "lastModifiedUtc":
-			err = unpopulateTimeRFC3339(val, &m.LastModifiedUTC)
-			delete(rawMsg, key)
-		case "productFilter":
-			err = unpopulate(val, &m.ProductFilter)
-			delete(rawMsg, key)
-		case "severitiesFilter":
-			err = unpopulate(val, &m.SeveritiesFilter)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // MicrosoftSecurityIncidentCreationAlertRuleTemplate - Represents MicrosoftSecurityIncidentCreation rule template.
 type MicrosoftSecurityIncidentCreationAlertRuleTemplate struct {
 	// REQUIRED; The kind of the alert rule
@@ -10105,69 +4886,8 @@ type MicrosoftSecurityIncidentCreationAlertRuleTemplate struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetAlertRuleTemplate implements the AlertRuleTemplateClassification interface for type MicrosoftSecurityIncidentCreationAlertRuleTemplate.
-func (m *MicrosoftSecurityIncidentCreationAlertRuleTemplate) GetAlertRuleTemplate() *AlertRuleTemplate {
-	return &AlertRuleTemplate{
-		Kind:       m.Kind,
-		ID:         m.ID,
-		Name:       m.Name,
-		Type:       m.Type,
-		SystemData: m.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type MicrosoftSecurityIncidentCreationAlertRuleTemplate.
-func (m MicrosoftSecurityIncidentCreationAlertRuleTemplate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", m.ID)
-	objectMap["kind"] = AlertRuleKindMicrosoftSecurityIncidentCreation
-	populate(objectMap, "name", m.Name)
-	populate(objectMap, "properties", m.Properties)
-	populate(objectMap, "systemData", m.SystemData)
-	populate(objectMap, "type", m.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type MicrosoftSecurityIncidentCreationAlertRuleTemplate.
-func (m *MicrosoftSecurityIncidentCreationAlertRuleTemplate) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &m.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &m.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &m.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &m.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &m.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &m.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties - MicrosoftSecurityIncidentCreation rule template properties
 type MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties struct {
-	// REQUIRED; The alerts' productName on which the cases will be generated
-	ProductFilter *MicrosoftSecurityProductName `json:"productFilter,omitempty"`
-
 	// the number of alert rules that were created by this template
 	AlertRulesCreatedByTemplateCount *int32 `json:"alertRulesCreatedByTemplateCount,omitempty"`
 
@@ -10182,6 +4902,9 @@ type MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties struct {
 
 	// the alerts' displayNames on which the cases will be generated
 	DisplayNamesFilter []*string `json:"displayNamesFilter,omitempty"`
+
+	// The alerts' productName on which the cases will be generated
+	ProductFilter *MicrosoftSecurityProductName `json:"productFilter,omitempty"`
 
 	// The required data sources for this template
 	RequiredDataConnectors []*AlertRuleTemplateDataSource `json:"requiredDataConnectors,omitempty"`
@@ -10199,73 +4922,6 @@ type MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties struct {
 	LastUpdatedDateUTC *time.Time `json:"lastUpdatedDateUTC,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties.
-func (m MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "alertRulesCreatedByTemplateCount", m.AlertRulesCreatedByTemplateCount)
-	populateTimeRFC3339(objectMap, "createdDateUTC", m.CreatedDateUTC)
-	populate(objectMap, "description", m.Description)
-	populate(objectMap, "displayName", m.DisplayName)
-	populate(objectMap, "displayNamesExcludeFilter", m.DisplayNamesExcludeFilter)
-	populate(objectMap, "displayNamesFilter", m.DisplayNamesFilter)
-	populateTimeRFC3339(objectMap, "lastUpdatedDateUTC", m.LastUpdatedDateUTC)
-	populate(objectMap, "productFilter", m.ProductFilter)
-	populate(objectMap, "requiredDataConnectors", m.RequiredDataConnectors)
-	populate(objectMap, "severitiesFilter", m.SeveritiesFilter)
-	populate(objectMap, "status", m.Status)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties.
-func (m *MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "alertRulesCreatedByTemplateCount":
-			err = unpopulate(val, &m.AlertRulesCreatedByTemplateCount)
-			delete(rawMsg, key)
-		case "createdDateUTC":
-			err = unpopulateTimeRFC3339(val, &m.CreatedDateUTC)
-			delete(rawMsg, key)
-		case "description":
-			err = unpopulate(val, &m.Description)
-			delete(rawMsg, key)
-		case "displayName":
-			err = unpopulate(val, &m.DisplayName)
-			delete(rawMsg, key)
-		case "displayNamesExcludeFilter":
-			err = unpopulate(val, &m.DisplayNamesExcludeFilter)
-			delete(rawMsg, key)
-		case "displayNamesFilter":
-			err = unpopulate(val, &m.DisplayNamesFilter)
-			delete(rawMsg, key)
-		case "lastUpdatedDateUTC":
-			err = unpopulateTimeRFC3339(val, &m.LastUpdatedDateUTC)
-			delete(rawMsg, key)
-		case "productFilter":
-			err = unpopulate(val, &m.ProductFilter)
-			delete(rawMsg, key)
-		case "requiredDataConnectors":
-			err = unpopulate(val, &m.RequiredDataConnectors)
-			delete(rawMsg, key)
-		case "severitiesFilter":
-			err = unpopulate(val, &m.SeveritiesFilter)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &m.Status)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // MtpCheckRequirements - Represents MTP (Microsoft Threat Protection) requirements check request.
 type MtpCheckRequirements struct {
 	// REQUIRED; Describes the kind of connector to be checked.
@@ -10273,44 +4929,6 @@ type MtpCheckRequirements struct {
 
 	// MTP (Microsoft Threat Protection) requirements check properties.
 	Properties *MTPCheckRequirementsProperties `json:"properties,omitempty"`
-}
-
-// GetDataConnectorsCheckRequirements implements the DataConnectorsCheckRequirementsClassification interface for type MtpCheckRequirements.
-func (m *MtpCheckRequirements) GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements {
-	return &DataConnectorsCheckRequirements{
-		Kind: m.Kind,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type MtpCheckRequirements.
-func (m MtpCheckRequirements) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["kind"] = DataConnectorKindMicrosoftThreatProtection
-	populate(objectMap, "properties", m.Properties)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type MtpCheckRequirements.
-func (m *MtpCheckRequirements) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "kind":
-			err = unpopulate(val, &m.Kind)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &m.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // NrtAlertRule - Represents NRT alert rule.
@@ -10337,69 +4955,6 @@ type NrtAlertRule struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetAlertRule implements the AlertRuleClassification interface for type NrtAlertRule.
-func (n *NrtAlertRule) GetAlertRule() *AlertRule {
-	return &AlertRule{
-		Kind:       n.Kind,
-		Etag:       n.Etag,
-		ID:         n.ID,
-		Name:       n.Name,
-		Type:       n.Type,
-		SystemData: n.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type NrtAlertRule.
-func (n NrtAlertRule) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", n.Etag)
-	populate(objectMap, "id", n.ID)
-	objectMap["kind"] = AlertRuleKindNRT
-	populate(objectMap, "name", n.Name)
-	populate(objectMap, "properties", n.Properties)
-	populate(objectMap, "systemData", n.SystemData)
-	populate(objectMap, "type", n.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type NrtAlertRule.
-func (n *NrtAlertRule) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "etag":
-			err = unpopulate(val, &n.Etag)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &n.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &n.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &n.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &n.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &n.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &n.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // NrtAlertRuleProperties - Nrt alert rule base property bag.
 type NrtAlertRuleProperties struct {
 	// REQUIRED; The display name for alerts created by this alert rule.
@@ -10407,6 +4962,12 @@ type NrtAlertRuleProperties struct {
 
 	// REQUIRED; Determines whether this alert rule is enabled or disabled.
 	Enabled *bool `json:"enabled,omitempty"`
+
+	// REQUIRED; The query that creates alerts for this rule.
+	Query *string `json:"query,omitempty"`
+
+	// REQUIRED; The severity for alerts created by this alert rule.
+	Severity *AlertSeverity `json:"severity,omitempty"`
 
 	// REQUIRED; The suppression (in ISO 8601 duration format) to wait since last time this alert rule been triggered.
 	SuppressionDuration *string `json:"suppressionDuration,omitempty"`
@@ -10432,12 +4993,6 @@ type NrtAlertRuleProperties struct {
 	// The settings of the incidents that created from alerts triggered by this analytics rule
 	IncidentConfiguration *IncidentConfiguration `json:"incidentConfiguration,omitempty"`
 
-	// The query that creates alerts for this rule.
-	Query *string `json:"query,omitempty"`
-
-	// The severity for alerts created by this alert rule.
-	Severity *AlertSeverity `json:"severity,omitempty"`
-
 	// The tactics of the alert rule
 	Tactics []*AttackTactic `json:"tactics,omitempty"`
 
@@ -10449,93 +5004,6 @@ type NrtAlertRuleProperties struct {
 
 	// READ-ONLY; The last time that this alert rule has been modified.
 	LastModifiedUTC *time.Time `json:"lastModifiedUtc,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type NrtAlertRuleProperties.
-func (n NrtAlertRuleProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "alertDetailsOverride", n.AlertDetailsOverride)
-	populate(objectMap, "alertRuleTemplateName", n.AlertRuleTemplateName)
-	populate(objectMap, "customDetails", n.CustomDetails)
-	populate(objectMap, "description", n.Description)
-	populate(objectMap, "displayName", n.DisplayName)
-	populate(objectMap, "enabled", n.Enabled)
-	populate(objectMap, "entityMappings", n.EntityMappings)
-	populate(objectMap, "incidentConfiguration", n.IncidentConfiguration)
-	populateTimeRFC3339(objectMap, "lastModifiedUtc", n.LastModifiedUTC)
-	populate(objectMap, "query", n.Query)
-	populate(objectMap, "severity", n.Severity)
-	populate(objectMap, "suppressionDuration", n.SuppressionDuration)
-	populate(objectMap, "suppressionEnabled", n.SuppressionEnabled)
-	populate(objectMap, "tactics", n.Tactics)
-	populate(objectMap, "techniques", n.Techniques)
-	populate(objectMap, "templateVersion", n.TemplateVersion)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type NrtAlertRuleProperties.
-func (n *NrtAlertRuleProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "alertDetailsOverride":
-			err = unpopulate(val, &n.AlertDetailsOverride)
-			delete(rawMsg, key)
-		case "alertRuleTemplateName":
-			err = unpopulate(val, &n.AlertRuleTemplateName)
-			delete(rawMsg, key)
-		case "customDetails":
-			err = unpopulate(val, &n.CustomDetails)
-			delete(rawMsg, key)
-		case "description":
-			err = unpopulate(val, &n.Description)
-			delete(rawMsg, key)
-		case "displayName":
-			err = unpopulate(val, &n.DisplayName)
-			delete(rawMsg, key)
-		case "enabled":
-			err = unpopulate(val, &n.Enabled)
-			delete(rawMsg, key)
-		case "entityMappings":
-			err = unpopulate(val, &n.EntityMappings)
-			delete(rawMsg, key)
-		case "incidentConfiguration":
-			err = unpopulate(val, &n.IncidentConfiguration)
-			delete(rawMsg, key)
-		case "lastModifiedUtc":
-			err = unpopulateTimeRFC3339(val, &n.LastModifiedUTC)
-			delete(rawMsg, key)
-		case "query":
-			err = unpopulate(val, &n.Query)
-			delete(rawMsg, key)
-		case "severity":
-			err = unpopulate(val, &n.Severity)
-			delete(rawMsg, key)
-		case "suppressionDuration":
-			err = unpopulate(val, &n.SuppressionDuration)
-			delete(rawMsg, key)
-		case "suppressionEnabled":
-			err = unpopulate(val, &n.SuppressionEnabled)
-			delete(rawMsg, key)
-		case "tactics":
-			err = unpopulate(val, &n.Tactics)
-			delete(rawMsg, key)
-		case "techniques":
-			err = unpopulate(val, &n.Techniques)
-			delete(rawMsg, key)
-		case "templateVersion":
-			err = unpopulate(val, &n.TemplateVersion)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // NrtAlertRuleTemplate - Represents NRT alert rule template.
@@ -10557,64 +5025,6 @@ type NrtAlertRuleTemplate struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// GetAlertRuleTemplate implements the AlertRuleTemplateClassification interface for type NrtAlertRuleTemplate.
-func (n *NrtAlertRuleTemplate) GetAlertRuleTemplate() *AlertRuleTemplate {
-	return &AlertRuleTemplate{
-		Kind:       n.Kind,
-		ID:         n.ID,
-		Name:       n.Name,
-		Type:       n.Type,
-		SystemData: n.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type NrtAlertRuleTemplate.
-func (n NrtAlertRuleTemplate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", n.ID)
-	objectMap["kind"] = AlertRuleKindNRT
-	populate(objectMap, "name", n.Name)
-	populate(objectMap, "properties", n.Properties)
-	populate(objectMap, "systemData", n.SystemData)
-	populate(objectMap, "type", n.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type NrtAlertRuleTemplate.
-func (n *NrtAlertRuleTemplate) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &n.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &n.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &n.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &n.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &n.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &n.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // NrtAlertRuleTemplateProperties - NRT alert rule template properties
@@ -10665,89 +5075,6 @@ type NrtAlertRuleTemplateProperties struct {
 	LastUpdatedDateUTC *time.Time `json:"lastUpdatedDateUTC,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type NrtAlertRuleTemplateProperties.
-func (n NrtAlertRuleTemplateProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "alertDetailsOverride", n.AlertDetailsOverride)
-	populate(objectMap, "alertRulesCreatedByTemplateCount", n.AlertRulesCreatedByTemplateCount)
-	populateTimeRFC3339(objectMap, "createdDateUTC", n.CreatedDateUTC)
-	populate(objectMap, "customDetails", n.CustomDetails)
-	populate(objectMap, "description", n.Description)
-	populate(objectMap, "displayName", n.DisplayName)
-	populate(objectMap, "entityMappings", n.EntityMappings)
-	populateTimeRFC3339(objectMap, "lastUpdatedDateUTC", n.LastUpdatedDateUTC)
-	populate(objectMap, "query", n.Query)
-	populate(objectMap, "requiredDataConnectors", n.RequiredDataConnectors)
-	populate(objectMap, "severity", n.Severity)
-	populate(objectMap, "status", n.Status)
-	populate(objectMap, "tactics", n.Tactics)
-	populate(objectMap, "techniques", n.Techniques)
-	populate(objectMap, "version", n.Version)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type NrtAlertRuleTemplateProperties.
-func (n *NrtAlertRuleTemplateProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "alertDetailsOverride":
-			err = unpopulate(val, &n.AlertDetailsOverride)
-			delete(rawMsg, key)
-		case "alertRulesCreatedByTemplateCount":
-			err = unpopulate(val, &n.AlertRulesCreatedByTemplateCount)
-			delete(rawMsg, key)
-		case "createdDateUTC":
-			err = unpopulateTimeRFC3339(val, &n.CreatedDateUTC)
-			delete(rawMsg, key)
-		case "customDetails":
-			err = unpopulate(val, &n.CustomDetails)
-			delete(rawMsg, key)
-		case "description":
-			err = unpopulate(val, &n.Description)
-			delete(rawMsg, key)
-		case "displayName":
-			err = unpopulate(val, &n.DisplayName)
-			delete(rawMsg, key)
-		case "entityMappings":
-			err = unpopulate(val, &n.EntityMappings)
-			delete(rawMsg, key)
-		case "lastUpdatedDateUTC":
-			err = unpopulateTimeRFC3339(val, &n.LastUpdatedDateUTC)
-			delete(rawMsg, key)
-		case "query":
-			err = unpopulate(val, &n.Query)
-			delete(rawMsg, key)
-		case "requiredDataConnectors":
-			err = unpopulate(val, &n.RequiredDataConnectors)
-			delete(rawMsg, key)
-		case "severity":
-			err = unpopulate(val, &n.Severity)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &n.Status)
-			delete(rawMsg, key)
-		case "tactics":
-			err = unpopulate(val, &n.Tactics)
-			delete(rawMsg, key)
-		case "techniques":
-			err = unpopulate(val, &n.Techniques)
-			delete(rawMsg, key)
-		case "version":
-			err = unpopulate(val, &n.Version)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // Office365ProjectCheckRequirements - Represents Office365 Project requirements check request.
 type Office365ProjectCheckRequirements struct {
 	// REQUIRED; Describes the kind of connector to be checked.
@@ -10755,44 +5082,6 @@ type Office365ProjectCheckRequirements struct {
 
 	// Office365 Project requirements check properties.
 	Properties *Office365ProjectCheckRequirementsProperties `json:"properties,omitempty"`
-}
-
-// GetDataConnectorsCheckRequirements implements the DataConnectorsCheckRequirementsClassification interface for type Office365ProjectCheckRequirements.
-func (o *Office365ProjectCheckRequirements) GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements {
-	return &DataConnectorsCheckRequirements{
-		Kind: o.Kind,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Office365ProjectCheckRequirements.
-func (o Office365ProjectCheckRequirements) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["kind"] = DataConnectorKindOffice365Project
-	populate(objectMap, "properties", o.Properties)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type Office365ProjectCheckRequirements.
-func (o *Office365ProjectCheckRequirements) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "kind":
-			err = unpopulate(val, &o.Kind)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &o.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // Office365ProjectCheckRequirementsProperties - Office365 Project requirements check properties.
@@ -10837,69 +5126,6 @@ type Office365ProjectDataConnector struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetDataConnector implements the DataConnectorClassification interface for type Office365ProjectDataConnector.
-func (o *Office365ProjectDataConnector) GetDataConnector() *DataConnector {
-	return &DataConnector{
-		Kind:       o.Kind,
-		Etag:       o.Etag,
-		ID:         o.ID,
-		Name:       o.Name,
-		Type:       o.Type,
-		SystemData: o.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Office365ProjectDataConnector.
-func (o Office365ProjectDataConnector) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", o.Etag)
-	populate(objectMap, "id", o.ID)
-	objectMap["kind"] = DataConnectorKindOffice365Project
-	populate(objectMap, "name", o.Name)
-	populate(objectMap, "properties", o.Properties)
-	populate(objectMap, "systemData", o.SystemData)
-	populate(objectMap, "type", o.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type Office365ProjectDataConnector.
-func (o *Office365ProjectDataConnector) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "etag":
-			err = unpopulate(val, &o.Etag)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &o.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &o.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &o.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &o.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &o.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &o.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // Office365ProjectDataConnectorProperties - Office Microsoft Project data connector properties.
 type Office365ProjectDataConnectorProperties struct {
 	// REQUIRED; The available data types for the connector.
@@ -10916,44 +5142,6 @@ type OfficeATPCheckRequirements struct {
 
 	// OfficeATP (Office 365 Advanced Threat Protection) requirements check properties.
 	Properties *OfficeATPCheckRequirementsProperties `json:"properties,omitempty"`
-}
-
-// GetDataConnectorsCheckRequirements implements the DataConnectorsCheckRequirementsClassification interface for type OfficeATPCheckRequirements.
-func (o *OfficeATPCheckRequirements) GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements {
-	return &DataConnectorsCheckRequirements{
-		Kind: o.Kind,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OfficeATPCheckRequirements.
-func (o OfficeATPCheckRequirements) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["kind"] = DataConnectorKindOfficeATP
-	populate(objectMap, "properties", o.Properties)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type OfficeATPCheckRequirements.
-func (o *OfficeATPCheckRequirements) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "kind":
-			err = unpopulate(val, &o.Kind)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &o.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // OfficeATPCheckRequirementsProperties - OfficeATP (Office 365 Advanced Threat Protection) requirements check properties.
@@ -10984,69 +5172,6 @@ type OfficeATPDataConnector struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// GetDataConnector implements the DataConnectorClassification interface for type OfficeATPDataConnector.
-func (o *OfficeATPDataConnector) GetDataConnector() *DataConnector {
-	return &DataConnector{
-		Kind:       o.Kind,
-		Etag:       o.Etag,
-		ID:         o.ID,
-		Name:       o.Name,
-		Type:       o.Type,
-		SystemData: o.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OfficeATPDataConnector.
-func (o OfficeATPDataConnector) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", o.Etag)
-	populate(objectMap, "id", o.ID)
-	objectMap["kind"] = DataConnectorKindOfficeATP
-	populate(objectMap, "name", o.Name)
-	populate(objectMap, "properties", o.Properties)
-	populate(objectMap, "systemData", o.SystemData)
-	populate(objectMap, "type", o.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type OfficeATPDataConnector.
-func (o *OfficeATPDataConnector) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "etag":
-			err = unpopulate(val, &o.Etag)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &o.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &o.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &o.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &o.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &o.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &o.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // OfficeATPDataConnectorProperties - OfficeATP (Office 365 Advanced Threat Protection) data connector properties.
@@ -11083,14 +5208,6 @@ type OfficeConsentList struct {
 
 	// READ-ONLY; URL to fetch the next set of office consents.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OfficeConsentList.
-func (o OfficeConsentList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
 }
 
 // OfficeConsentProperties - Consent property bag.
@@ -11141,69 +5258,6 @@ type OfficeDataConnector struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetDataConnector implements the DataConnectorClassification interface for type OfficeDataConnector.
-func (o *OfficeDataConnector) GetDataConnector() *DataConnector {
-	return &DataConnector{
-		Kind:       o.Kind,
-		Etag:       o.Etag,
-		ID:         o.ID,
-		Name:       o.Name,
-		Type:       o.Type,
-		SystemData: o.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OfficeDataConnector.
-func (o OfficeDataConnector) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", o.Etag)
-	populate(objectMap, "id", o.ID)
-	objectMap["kind"] = DataConnectorKindOffice365
-	populate(objectMap, "name", o.Name)
-	populate(objectMap, "properties", o.Properties)
-	populate(objectMap, "systemData", o.SystemData)
-	populate(objectMap, "type", o.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type OfficeDataConnector.
-func (o *OfficeDataConnector) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "etag":
-			err = unpopulate(val, &o.Etag)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &o.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &o.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &o.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &o.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &o.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &o.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // OfficeDataConnectorDataTypes - The available data types for office data connector.
 type OfficeDataConnectorDataTypes struct {
 	// REQUIRED; Exchange data type connection.
@@ -11252,44 +5306,6 @@ type OfficeIRMCheckRequirements struct {
 	Properties *OfficeIRMCheckRequirementsProperties `json:"properties,omitempty"`
 }
 
-// GetDataConnectorsCheckRequirements implements the DataConnectorsCheckRequirementsClassification interface for type OfficeIRMCheckRequirements.
-func (o *OfficeIRMCheckRequirements) GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements {
-	return &DataConnectorsCheckRequirements{
-		Kind: o.Kind,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OfficeIRMCheckRequirements.
-func (o OfficeIRMCheckRequirements) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["kind"] = DataConnectorKindOfficeIRM
-	populate(objectMap, "properties", o.Properties)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type OfficeIRMCheckRequirements.
-func (o *OfficeIRMCheckRequirements) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "kind":
-			err = unpopulate(val, &o.Kind)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &o.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // OfficeIRMCheckRequirementsProperties - OfficeIRM (Microsoft Insider Risk Management) requirements check properties.
 type OfficeIRMCheckRequirementsProperties struct {
 	// REQUIRED; The tenant id to connect to, and get the data from.
@@ -11320,69 +5336,6 @@ type OfficeIRMDataConnector struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetDataConnector implements the DataConnectorClassification interface for type OfficeIRMDataConnector.
-func (o *OfficeIRMDataConnector) GetDataConnector() *DataConnector {
-	return &DataConnector{
-		Kind:       o.Kind,
-		Etag:       o.Etag,
-		ID:         o.ID,
-		Name:       o.Name,
-		Type:       o.Type,
-		SystemData: o.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OfficeIRMDataConnector.
-func (o OfficeIRMDataConnector) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", o.Etag)
-	populate(objectMap, "id", o.ID)
-	objectMap["kind"] = DataConnectorKindOfficeIRM
-	populate(objectMap, "name", o.Name)
-	populate(objectMap, "properties", o.Properties)
-	populate(objectMap, "systemData", o.SystemData)
-	populate(objectMap, "type", o.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type OfficeIRMDataConnector.
-func (o *OfficeIRMDataConnector) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "etag":
-			err = unpopulate(val, &o.Etag)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &o.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &o.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &o.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &o.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &o.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &o.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // OfficeIRMDataConnectorProperties - OfficeIRM (Microsoft Insider Risk Management) data connector properties.
 type OfficeIRMDataConnectorProperties struct {
 	// REQUIRED; The tenant id to connect to, and get the data from.
@@ -11399,44 +5352,6 @@ type OfficePowerBICheckRequirements struct {
 
 	// Office Power BI requirements check properties.
 	Properties *OfficePowerBICheckRequirementsProperties `json:"properties,omitempty"`
-}
-
-// GetDataConnectorsCheckRequirements implements the DataConnectorsCheckRequirementsClassification interface for type OfficePowerBICheckRequirements.
-func (o *OfficePowerBICheckRequirements) GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements {
-	return &DataConnectorsCheckRequirements{
-		Kind: o.Kind,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OfficePowerBICheckRequirements.
-func (o OfficePowerBICheckRequirements) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["kind"] = DataConnectorKindOfficePowerBI
-	populate(objectMap, "properties", o.Properties)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type OfficePowerBICheckRequirements.
-func (o *OfficePowerBICheckRequirements) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "kind":
-			err = unpopulate(val, &o.Kind)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &o.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // OfficePowerBICheckRequirementsProperties - Office PowerBI requirements check properties.
@@ -11479,69 +5394,6 @@ type OfficePowerBIDataConnector struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// GetDataConnector implements the DataConnectorClassification interface for type OfficePowerBIDataConnector.
-func (o *OfficePowerBIDataConnector) GetDataConnector() *DataConnector {
-	return &DataConnector{
-		Kind:       o.Kind,
-		Etag:       o.Etag,
-		ID:         o.ID,
-		Name:       o.Name,
-		Type:       o.Type,
-		SystemData: o.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OfficePowerBIDataConnector.
-func (o OfficePowerBIDataConnector) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", o.Etag)
-	populate(objectMap, "id", o.ID)
-	objectMap["kind"] = DataConnectorKindOfficePowerBI
-	populate(objectMap, "name", o.Name)
-	populate(objectMap, "properties", o.Properties)
-	populate(objectMap, "systemData", o.SystemData)
-	populate(objectMap, "type", o.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type OfficePowerBIDataConnector.
-func (o *OfficePowerBIDataConnector) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "etag":
-			err = unpopulate(val, &o.Etag)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &o.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &o.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &o.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &o.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &o.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &o.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // OfficePowerBIDataConnectorProperties - Office Microsoft PowerBI data connector properties.
@@ -11597,14 +5449,6 @@ type OperationsList struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationsList.
-func (o OperationsList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
-}
-
 // Permissions required for the connector
 type Permissions struct {
 	// Customs permissions required for the connector
@@ -11612,14 +5456,6 @@ type Permissions struct {
 
 	// Resource provider permissions required for the connector
 	ResourceProvider []*PermissionsResourceProviderItem `json:"resourceProvider,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Permissions.
-func (p Permissions) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "customs", p.Customs)
-	populate(objectMap, "resourceProvider", p.ResourceProvider)
-	return json.Marshal(objectMap)
 }
 
 type PermissionsCustomsItem struct {
@@ -11676,64 +5512,6 @@ type ProcessEntity struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetEntity implements the EntityClassification interface for type ProcessEntity.
-func (p *ProcessEntity) GetEntity() *Entity {
-	return &Entity{
-		Kind:       p.Kind,
-		ID:         p.ID,
-		Name:       p.Name,
-		Type:       p.Type,
-		SystemData: p.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ProcessEntity.
-func (p ProcessEntity) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", p.ID)
-	objectMap["kind"] = EntityKindProcess
-	populate(objectMap, "name", p.Name)
-	populate(objectMap, "properties", p.Properties)
-	populate(objectMap, "systemData", p.SystemData)
-	populate(objectMap, "type", p.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ProcessEntity.
-func (p *ProcessEntity) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &p.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &p.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &p.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &p.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &p.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &p.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ProcessEntityProperties - Process entity property bag.
 type ProcessEntityProperties struct {
 	// The elevation token associated with the process.
@@ -11771,73 +5549,6 @@ type ProcessEntityProperties struct {
 	ProcessID *string `json:"processId,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ProcessEntityProperties.
-func (p ProcessEntityProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "accountEntityId", p.AccountEntityID)
-	populate(objectMap, "additionalData", p.AdditionalData)
-	populate(objectMap, "commandLine", p.CommandLine)
-	populateTimeRFC3339(objectMap, "creationTimeUtc", p.CreationTimeUTC)
-	populate(objectMap, "elevationToken", p.ElevationToken)
-	populate(objectMap, "friendlyName", p.FriendlyName)
-	populate(objectMap, "hostEntityId", p.HostEntityID)
-	populate(objectMap, "hostLogonSessionEntityId", p.HostLogonSessionEntityID)
-	populate(objectMap, "imageFileEntityId", p.ImageFileEntityID)
-	populate(objectMap, "parentProcessEntityId", p.ParentProcessEntityID)
-	populate(objectMap, "processId", p.ProcessID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ProcessEntityProperties.
-func (p *ProcessEntityProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "accountEntityId":
-			err = unpopulate(val, &p.AccountEntityID)
-			delete(rawMsg, key)
-		case "additionalData":
-			err = unpopulate(val, &p.AdditionalData)
-			delete(rawMsg, key)
-		case "commandLine":
-			err = unpopulate(val, &p.CommandLine)
-			delete(rawMsg, key)
-		case "creationTimeUtc":
-			err = unpopulateTimeRFC3339(val, &p.CreationTimeUTC)
-			delete(rawMsg, key)
-		case "elevationToken":
-			err = unpopulate(val, &p.ElevationToken)
-			delete(rawMsg, key)
-		case "friendlyName":
-			err = unpopulate(val, &p.FriendlyName)
-			delete(rawMsg, key)
-		case "hostEntityId":
-			err = unpopulate(val, &p.HostEntityID)
-			delete(rawMsg, key)
-		case "hostLogonSessionEntityId":
-			err = unpopulate(val, &p.HostLogonSessionEntityID)
-			delete(rawMsg, key)
-		case "imageFileEntityId":
-			err = unpopulate(val, &p.ImageFileEntityID)
-			delete(rawMsg, key)
-		case "parentProcessEntityId":
-			err = unpopulate(val, &p.ParentProcessEntityID)
-			delete(rawMsg, key)
-		case "processId":
-			err = unpopulate(val, &p.ProcessID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ProductSettingsClientDeleteOptions contains the optional parameters for the ProductSettingsClient.Delete method.
 type ProductSettingsClientDeleteOptions struct {
 	// placeholder for future optional parameters
@@ -11865,182 +5576,6 @@ type PropertyConditionProperties struct {
 	ConditionProperties *AutomationRulePropertyValuesCondition `json:"conditionProperties,omitempty"`
 }
 
-// GetAutomationRuleCondition implements the AutomationRuleConditionClassification interface for type PropertyConditionProperties.
-func (p *PropertyConditionProperties) GetAutomationRuleCondition() *AutomationRuleCondition {
-	return &AutomationRuleCondition{
-		ConditionType: p.ConditionType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PropertyConditionProperties.
-func (p PropertyConditionProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "conditionProperties", p.ConditionProperties)
-	objectMap["conditionType"] = ConditionTypeProperty
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type PropertyConditionProperties.
-func (p *PropertyConditionProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "conditionProperties":
-			err = unpopulate(val, &p.ConditionProperties)
-			delete(rawMsg, key)
-		case "conditionType":
-			err = unpopulate(val, &p.ConditionType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// QueryBasedAlertRuleProperties - Query based alert rule base property bag.
-type QueryBasedAlertRuleProperties struct {
-	// REQUIRED; The display name for alerts created by this alert rule.
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// REQUIRED; Determines whether this alert rule is enabled or disabled.
-	Enabled *bool `json:"enabled,omitempty"`
-
-	// REQUIRED; The suppression (in ISO 8601 duration format) to wait since last time this alert rule been triggered.
-	SuppressionDuration *string `json:"suppressionDuration,omitempty"`
-
-	// REQUIRED; Determines whether the suppression for this alert rule is enabled or disabled.
-	SuppressionEnabled *bool `json:"suppressionEnabled,omitempty"`
-
-	// The alert details override settings
-	AlertDetailsOverride *AlertDetailsOverride `json:"alertDetailsOverride,omitempty"`
-
-	// The Name of the alert rule template used to create this rule.
-	AlertRuleTemplateName *string `json:"alertRuleTemplateName,omitempty"`
-
-	// Dictionary of string key-value pairs of columns to be attached to the alert
-	CustomDetails map[string]*string `json:"customDetails,omitempty"`
-
-	// The description of the alert rule.
-	Description *string `json:"description,omitempty"`
-
-	// Array of the entity mappings of the alert rule
-	EntityMappings []*EntityMapping `json:"entityMappings,omitempty"`
-
-	// The settings of the incidents that created from alerts triggered by this analytics rule
-	IncidentConfiguration *IncidentConfiguration `json:"incidentConfiguration,omitempty"`
-
-	// The query that creates alerts for this rule.
-	Query *string `json:"query,omitempty"`
-
-	// The severity for alerts created by this alert rule.
-	Severity *AlertSeverity `json:"severity,omitempty"`
-
-	// The tactics of the alert rule
-	Tactics []*AttackTactic `json:"tactics,omitempty"`
-
-	// The techniques of the alert rule
-	Techniques []*string `json:"techniques,omitempty"`
-
-	// The version of the alert rule template used to create this rule - in format , where all are numbers, for example 0
-	TemplateVersion *string `json:"templateVersion,omitempty"`
-
-	// READ-ONLY; The last time that this alert rule has been modified.
-	LastModifiedUTC *time.Time `json:"lastModifiedUtc,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type QueryBasedAlertRuleProperties.
-func (q QueryBasedAlertRuleProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "alertDetailsOverride", q.AlertDetailsOverride)
-	populate(objectMap, "alertRuleTemplateName", q.AlertRuleTemplateName)
-	populate(objectMap, "customDetails", q.CustomDetails)
-	populate(objectMap, "description", q.Description)
-	populate(objectMap, "displayName", q.DisplayName)
-	populate(objectMap, "enabled", q.Enabled)
-	populate(objectMap, "entityMappings", q.EntityMappings)
-	populate(objectMap, "incidentConfiguration", q.IncidentConfiguration)
-	populateTimeRFC3339(objectMap, "lastModifiedUtc", q.LastModifiedUTC)
-	populate(objectMap, "query", q.Query)
-	populate(objectMap, "severity", q.Severity)
-	populate(objectMap, "suppressionDuration", q.SuppressionDuration)
-	populate(objectMap, "suppressionEnabled", q.SuppressionEnabled)
-	populate(objectMap, "tactics", q.Tactics)
-	populate(objectMap, "techniques", q.Techniques)
-	populate(objectMap, "templateVersion", q.TemplateVersion)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type QueryBasedAlertRuleProperties.
-func (q *QueryBasedAlertRuleProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "alertDetailsOverride":
-			err = unpopulate(val, &q.AlertDetailsOverride)
-			delete(rawMsg, key)
-		case "alertRuleTemplateName":
-			err = unpopulate(val, &q.AlertRuleTemplateName)
-			delete(rawMsg, key)
-		case "customDetails":
-			err = unpopulate(val, &q.CustomDetails)
-			delete(rawMsg, key)
-		case "description":
-			err = unpopulate(val, &q.Description)
-			delete(rawMsg, key)
-		case "displayName":
-			err = unpopulate(val, &q.DisplayName)
-			delete(rawMsg, key)
-		case "enabled":
-			err = unpopulate(val, &q.Enabled)
-			delete(rawMsg, key)
-		case "entityMappings":
-			err = unpopulate(val, &q.EntityMappings)
-			delete(rawMsg, key)
-		case "incidentConfiguration":
-			err = unpopulate(val, &q.IncidentConfiguration)
-			delete(rawMsg, key)
-		case "lastModifiedUtc":
-			err = unpopulateTimeRFC3339(val, &q.LastModifiedUTC)
-			delete(rawMsg, key)
-		case "query":
-			err = unpopulate(val, &q.Query)
-			delete(rawMsg, key)
-		case "severity":
-			err = unpopulate(val, &q.Severity)
-			delete(rawMsg, key)
-		case "suppressionDuration":
-			err = unpopulate(val, &q.SuppressionDuration)
-			delete(rawMsg, key)
-		case "suppressionEnabled":
-			err = unpopulate(val, &q.SuppressionEnabled)
-			delete(rawMsg, key)
-		case "tactics":
-			err = unpopulate(val, &q.Tactics)
-			delete(rawMsg, key)
-		case "techniques":
-			err = unpopulate(val, &q.Techniques)
-			delete(rawMsg, key)
-		case "templateVersion":
-			err = unpopulate(val, &q.TemplateVersion)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // QueryBasedAlertRuleTemplateProperties - Query based alert rule template base property bag.
 type QueryBasedAlertRuleTemplateProperties struct {
 	// The alert details override settings
@@ -12060,18 +5595,6 @@ type QueryBasedAlertRuleTemplateProperties struct {
 
 	// The version of this template - in format , where all are numbers. For example .
 	Version *string `json:"version,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type QueryBasedAlertRuleTemplateProperties.
-func (q QueryBasedAlertRuleTemplateProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "alertDetailsOverride", q.AlertDetailsOverride)
-	populate(objectMap, "customDetails", q.CustomDetails)
-	populate(objectMap, "entityMappings", q.EntityMappings)
-	populate(objectMap, "query", q.Query)
-	populate(objectMap, "severity", q.Severity)
-	populate(objectMap, "version", q.Version)
-	return json.Marshal(objectMap)
 }
 
 // RegistryKeyEntity - Represents a registry key entity.
@@ -12095,64 +5618,6 @@ type RegistryKeyEntity struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetEntity implements the EntityClassification interface for type RegistryKeyEntity.
-func (r *RegistryKeyEntity) GetEntity() *Entity {
-	return &Entity{
-		Kind:       r.Kind,
-		ID:         r.ID,
-		Name:       r.Name,
-		Type:       r.Type,
-		SystemData: r.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RegistryKeyEntity.
-func (r RegistryKeyEntity) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", r.ID)
-	objectMap["kind"] = EntityKindRegistryKey
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "properties", r.Properties)
-	populate(objectMap, "systemData", r.SystemData)
-	populate(objectMap, "type", r.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type RegistryKeyEntity.
-func (r *RegistryKeyEntity) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &r.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &r.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &r.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &r.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &r.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &r.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // RegistryKeyEntityProperties - RegistryKey entity property bag.
 type RegistryKeyEntityProperties struct {
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
@@ -12167,16 +5632,6 @@ type RegistryKeyEntityProperties struct {
 
 	// READ-ONLY; The registry key path.
 	Key *string `json:"key,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RegistryKeyEntityProperties.
-func (r RegistryKeyEntityProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalData", r.AdditionalData)
-	populate(objectMap, "friendlyName", r.FriendlyName)
-	populate(objectMap, "hive", r.Hive)
-	populate(objectMap, "key", r.Key)
-	return json.Marshal(objectMap)
 }
 
 // RegistryValueEntity - Represents a registry value entity.
@@ -12200,64 +5655,6 @@ type RegistryValueEntity struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetEntity implements the EntityClassification interface for type RegistryValueEntity.
-func (r *RegistryValueEntity) GetEntity() *Entity {
-	return &Entity{
-		Kind:       r.Kind,
-		ID:         r.ID,
-		Name:       r.Name,
-		Type:       r.Type,
-		SystemData: r.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RegistryValueEntity.
-func (r RegistryValueEntity) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", r.ID)
-	objectMap["kind"] = EntityKindRegistryValue
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "properties", r.Properties)
-	populate(objectMap, "systemData", r.SystemData)
-	populate(objectMap, "type", r.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type RegistryValueEntity.
-func (r *RegistryValueEntity) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &r.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &r.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &r.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &r.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &r.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &r.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // RegistryValueEntityProperties - RegistryValue entity property bag.
 type RegistryValueEntityProperties struct {
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
@@ -12279,18 +5676,6 @@ type RegistryValueEntityProperties struct {
 	// READ-ONLY; Specifies the data types to use when storing values in the registry, or identifies the data type of a value
 	// in the registry.
 	ValueType *RegistryValueKind `json:"valueType,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RegistryValueEntityProperties.
-func (r RegistryValueEntityProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalData", r.AdditionalData)
-	populate(objectMap, "friendlyName", r.FriendlyName)
-	populate(objectMap, "keyEntityId", r.KeyEntityID)
-	populate(objectMap, "valueData", r.ValueData)
-	populate(objectMap, "valueName", r.ValueName)
-	populate(objectMap, "valueType", r.ValueType)
-	return json.Marshal(objectMap)
 }
 
 // Relation - Represents a relation between two resources
@@ -12323,14 +5708,6 @@ type RelationList struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type RelationList.
-func (r RelationList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", r.NextLink)
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
-}
-
 // RelationProperties - Relation property bag.
 type RelationProperties struct {
 	// REQUIRED; The resource ID of the related resource
@@ -12358,15 +5735,6 @@ type Repo struct {
 	URL *string `json:"url,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Repo.
-func (r Repo) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "branches", r.Branches)
-	populate(objectMap, "fullName", r.FullName)
-	populate(objectMap, "url", r.URL)
-	return json.Marshal(objectMap)
-}
-
 // RepoList - List all the source controls.
 type RepoList struct {
 	// REQUIRED; Array of repositories.
@@ -12374,14 +5742,6 @@ type RepoList struct {
 
 	// READ-ONLY; URL to fetch the next set of repositories.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RepoList.
-func (r RepoList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", r.NextLink)
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
 }
 
 // Repository - metadata of a repository.
@@ -12402,15 +5762,16 @@ type Repository struct {
 	URL *string `json:"url,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Repository.
-func (r Repository) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "branch", r.Branch)
-	populate(objectMap, "deploymentLogsUrl", r.DeploymentLogsURL)
-	populate(objectMap, "displayUrl", r.DisplayURL)
-	populate(objectMap, "pathMapping", r.PathMapping)
-	populate(objectMap, "url", r.URL)
-	return json.Marshal(objectMap)
+// RepositoryResourceInfo - Resources created in user's repository for the source-control.
+type RepositoryResourceInfo struct {
+	// Resources created in Azure DevOps for this source-control.
+	AzureDevOpsResourceInfo *AzureDevOpsResourceInfo `json:"azureDevOpsResourceInfo,omitempty"`
+
+	// Resources created in GitHub for this source-control.
+	GitHubResourceInfo *GitHubResourceInfo `json:"gitHubResourceInfo,omitempty"`
+
+	// The webhook object created for the source-control.
+	Webhook *Webhook `json:"webhook,omitempty"`
 }
 
 // RequiredPermissions - Required permissions for the connector
@@ -12479,6 +5840,15 @@ type ResourceWithEtag struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// SKU - The pricing tier of the solution
+type SKU struct {
+	// The amount of reservation level
+	CapacityReservationLevel *int32 `json:"capacityReservationLevel,omitempty"`
+
+	// The kind of the tier
+	Name *SKUKind `json:"name,omitempty"`
+}
+
 // SampleQueries - The sample queries for the connector
 type SampleQueries struct {
 	// The sample query description
@@ -12512,79 +5882,31 @@ type ScheduledAlertRule struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetAlertRule implements the AlertRuleClassification interface for type ScheduledAlertRule.
-func (s *ScheduledAlertRule) GetAlertRule() *AlertRule {
-	return &AlertRule{
-		Kind:       s.Kind,
-		Etag:       s.Etag,
-		ID:         s.ID,
-		Name:       s.Name,
-		Type:       s.Type,
-		SystemData: s.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ScheduledAlertRule.
-func (s ScheduledAlertRule) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", s.Etag)
-	populate(objectMap, "id", s.ID)
-	objectMap["kind"] = AlertRuleKindScheduled
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "properties", s.Properties)
-	populate(objectMap, "systemData", s.SystemData)
-	populate(objectMap, "type", s.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ScheduledAlertRule.
-func (s *ScheduledAlertRule) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "etag":
-			err = unpopulate(val, &s.Etag)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &s.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &s.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &s.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &s.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &s.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &s.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ScheduledAlertRuleCommonProperties - Scheduled alert rule template property bag.
 type ScheduledAlertRuleCommonProperties struct {
+	// The alert details override settings
+	AlertDetailsOverride *AlertDetailsOverride `json:"alertDetailsOverride,omitempty"`
+
+	// Dictionary of string key-value pairs of columns to be attached to the alert
+	CustomDetails map[string]*string `json:"customDetails,omitempty"`
+
+	// Array of the entity mappings of the alert rule
+	EntityMappings []*EntityMapping `json:"entityMappings,omitempty"`
+
 	// The event grouping settings.
 	EventGroupingSettings *EventGroupingSettings `json:"eventGroupingSettings,omitempty"`
+
+	// The query that creates alerts for this rule.
+	Query *string `json:"query,omitempty"`
 
 	// The frequency (in ISO 8601 duration format) for this alert rule to run.
 	QueryFrequency *string `json:"queryFrequency,omitempty"`
 
 	// The period (in ISO 8601 duration format) that this alert rule looks at.
 	QueryPeriod *string `json:"queryPeriod,omitempty"`
+
+	// The severity for alerts created by this alert rule.
+	Severity *AlertSeverity `json:"severity,omitempty"`
 
 	// The operation against the threshold that triggers alert rule.
 	TriggerOperator *TriggerOperator `json:"triggerOperator,omitempty"`
@@ -12659,113 +5981,6 @@ type ScheduledAlertRuleProperties struct {
 	LastModifiedUTC *time.Time `json:"lastModifiedUtc,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ScheduledAlertRuleProperties.
-func (s ScheduledAlertRuleProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "alertDetailsOverride", s.AlertDetailsOverride)
-	populate(objectMap, "alertRuleTemplateName", s.AlertRuleTemplateName)
-	populate(objectMap, "customDetails", s.CustomDetails)
-	populate(objectMap, "description", s.Description)
-	populate(objectMap, "displayName", s.DisplayName)
-	populate(objectMap, "enabled", s.Enabled)
-	populate(objectMap, "entityMappings", s.EntityMappings)
-	populate(objectMap, "eventGroupingSettings", s.EventGroupingSettings)
-	populate(objectMap, "incidentConfiguration", s.IncidentConfiguration)
-	populateTimeRFC3339(objectMap, "lastModifiedUtc", s.LastModifiedUTC)
-	populate(objectMap, "query", s.Query)
-	populate(objectMap, "queryFrequency", s.QueryFrequency)
-	populate(objectMap, "queryPeriod", s.QueryPeriod)
-	populate(objectMap, "severity", s.Severity)
-	populate(objectMap, "suppressionDuration", s.SuppressionDuration)
-	populate(objectMap, "suppressionEnabled", s.SuppressionEnabled)
-	populate(objectMap, "tactics", s.Tactics)
-	populate(objectMap, "techniques", s.Techniques)
-	populate(objectMap, "templateVersion", s.TemplateVersion)
-	populate(objectMap, "triggerOperator", s.TriggerOperator)
-	populate(objectMap, "triggerThreshold", s.TriggerThreshold)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ScheduledAlertRuleProperties.
-func (s *ScheduledAlertRuleProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "alertDetailsOverride":
-			err = unpopulate(val, &s.AlertDetailsOverride)
-			delete(rawMsg, key)
-		case "alertRuleTemplateName":
-			err = unpopulate(val, &s.AlertRuleTemplateName)
-			delete(rawMsg, key)
-		case "customDetails":
-			err = unpopulate(val, &s.CustomDetails)
-			delete(rawMsg, key)
-		case "description":
-			err = unpopulate(val, &s.Description)
-			delete(rawMsg, key)
-		case "displayName":
-			err = unpopulate(val, &s.DisplayName)
-			delete(rawMsg, key)
-		case "enabled":
-			err = unpopulate(val, &s.Enabled)
-			delete(rawMsg, key)
-		case "entityMappings":
-			err = unpopulate(val, &s.EntityMappings)
-			delete(rawMsg, key)
-		case "eventGroupingSettings":
-			err = unpopulate(val, &s.EventGroupingSettings)
-			delete(rawMsg, key)
-		case "incidentConfiguration":
-			err = unpopulate(val, &s.IncidentConfiguration)
-			delete(rawMsg, key)
-		case "lastModifiedUtc":
-			err = unpopulateTimeRFC3339(val, &s.LastModifiedUTC)
-			delete(rawMsg, key)
-		case "query":
-			err = unpopulate(val, &s.Query)
-			delete(rawMsg, key)
-		case "queryFrequency":
-			err = unpopulate(val, &s.QueryFrequency)
-			delete(rawMsg, key)
-		case "queryPeriod":
-			err = unpopulate(val, &s.QueryPeriod)
-			delete(rawMsg, key)
-		case "severity":
-			err = unpopulate(val, &s.Severity)
-			delete(rawMsg, key)
-		case "suppressionDuration":
-			err = unpopulate(val, &s.SuppressionDuration)
-			delete(rawMsg, key)
-		case "suppressionEnabled":
-			err = unpopulate(val, &s.SuppressionEnabled)
-			delete(rawMsg, key)
-		case "tactics":
-			err = unpopulate(val, &s.Tactics)
-			delete(rawMsg, key)
-		case "techniques":
-			err = unpopulate(val, &s.Techniques)
-			delete(rawMsg, key)
-		case "templateVersion":
-			err = unpopulate(val, &s.TemplateVersion)
-			delete(rawMsg, key)
-		case "triggerOperator":
-			err = unpopulate(val, &s.TriggerOperator)
-			delete(rawMsg, key)
-		case "triggerThreshold":
-			err = unpopulate(val, &s.TriggerThreshold)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ScheduledAlertRuleTemplate - Represents scheduled alert rule template.
 type ScheduledAlertRuleTemplate struct {
 	// REQUIRED; The kind of the alert rule
@@ -12785,64 +6000,6 @@ type ScheduledAlertRuleTemplate struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// GetAlertRuleTemplate implements the AlertRuleTemplateClassification interface for type ScheduledAlertRuleTemplate.
-func (s *ScheduledAlertRuleTemplate) GetAlertRuleTemplate() *AlertRuleTemplate {
-	return &AlertRuleTemplate{
-		Kind:       s.Kind,
-		ID:         s.ID,
-		Name:       s.Name,
-		Type:       s.Type,
-		SystemData: s.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ScheduledAlertRuleTemplate.
-func (s ScheduledAlertRuleTemplate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", s.ID)
-	objectMap["kind"] = AlertRuleKindScheduled
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "properties", s.Properties)
-	populate(objectMap, "systemData", s.SystemData)
-	populate(objectMap, "type", s.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ScheduledAlertRuleTemplate.
-func (s *ScheduledAlertRuleTemplate) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &s.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &s.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &s.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &s.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &s.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &s.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // ScheduledAlertRuleTemplateProperties - Scheduled alert rule template properties
@@ -12877,7 +6034,7 @@ type ScheduledAlertRuleTemplateProperties struct {
 	// The period (in ISO 8601 duration format) that this alert rule looks at.
 	QueryPeriod *string `json:"queryPeriod,omitempty"`
 
-	// The required data sources for this template
+	// The required data connectors for this template
 	RequiredDataConnectors []*AlertRuleTemplateDataSource `json:"requiredDataConnectors,omitempty"`
 
 	// The severity for alerts created by this alert rule.
@@ -12886,7 +6043,7 @@ type ScheduledAlertRuleTemplateProperties struct {
 	// The alert rule template status.
 	Status *TemplateStatus `json:"status,omitempty"`
 
-	// The tactics of the alert rule
+	// The tactics of the alert rule template
 	Tactics []*AttackTactic `json:"tactics,omitempty"`
 
 	// The techniques of the alert rule
@@ -12904,111 +6061,8 @@ type ScheduledAlertRuleTemplateProperties struct {
 	// READ-ONLY; The time that this alert rule template has been added.
 	CreatedDateUTC *time.Time `json:"createdDateUTC,omitempty" azure:"ro"`
 
-	// READ-ONLY; The last time that this alert rule template has been updated.
+	// READ-ONLY; The time that this alert rule template was last updated.
 	LastUpdatedDateUTC *time.Time `json:"lastUpdatedDateUTC,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ScheduledAlertRuleTemplateProperties.
-func (s ScheduledAlertRuleTemplateProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "alertDetailsOverride", s.AlertDetailsOverride)
-	populate(objectMap, "alertRulesCreatedByTemplateCount", s.AlertRulesCreatedByTemplateCount)
-	populateTimeRFC3339(objectMap, "createdDateUTC", s.CreatedDateUTC)
-	populate(objectMap, "customDetails", s.CustomDetails)
-	populate(objectMap, "description", s.Description)
-	populate(objectMap, "displayName", s.DisplayName)
-	populate(objectMap, "entityMappings", s.EntityMappings)
-	populate(objectMap, "eventGroupingSettings", s.EventGroupingSettings)
-	populateTimeRFC3339(objectMap, "lastUpdatedDateUTC", s.LastUpdatedDateUTC)
-	populate(objectMap, "query", s.Query)
-	populate(objectMap, "queryFrequency", s.QueryFrequency)
-	populate(objectMap, "queryPeriod", s.QueryPeriod)
-	populate(objectMap, "requiredDataConnectors", s.RequiredDataConnectors)
-	populate(objectMap, "severity", s.Severity)
-	populate(objectMap, "status", s.Status)
-	populate(objectMap, "tactics", s.Tactics)
-	populate(objectMap, "techniques", s.Techniques)
-	populate(objectMap, "triggerOperator", s.TriggerOperator)
-	populate(objectMap, "triggerThreshold", s.TriggerThreshold)
-	populate(objectMap, "version", s.Version)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ScheduledAlertRuleTemplateProperties.
-func (s *ScheduledAlertRuleTemplateProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "alertDetailsOverride":
-			err = unpopulate(val, &s.AlertDetailsOverride)
-			delete(rawMsg, key)
-		case "alertRulesCreatedByTemplateCount":
-			err = unpopulate(val, &s.AlertRulesCreatedByTemplateCount)
-			delete(rawMsg, key)
-		case "createdDateUTC":
-			err = unpopulateTimeRFC3339(val, &s.CreatedDateUTC)
-			delete(rawMsg, key)
-		case "customDetails":
-			err = unpopulate(val, &s.CustomDetails)
-			delete(rawMsg, key)
-		case "description":
-			err = unpopulate(val, &s.Description)
-			delete(rawMsg, key)
-		case "displayName":
-			err = unpopulate(val, &s.DisplayName)
-			delete(rawMsg, key)
-		case "entityMappings":
-			err = unpopulate(val, &s.EntityMappings)
-			delete(rawMsg, key)
-		case "eventGroupingSettings":
-			err = unpopulate(val, &s.EventGroupingSettings)
-			delete(rawMsg, key)
-		case "lastUpdatedDateUTC":
-			err = unpopulateTimeRFC3339(val, &s.LastUpdatedDateUTC)
-			delete(rawMsg, key)
-		case "query":
-			err = unpopulate(val, &s.Query)
-			delete(rawMsg, key)
-		case "queryFrequency":
-			err = unpopulate(val, &s.QueryFrequency)
-			delete(rawMsg, key)
-		case "queryPeriod":
-			err = unpopulate(val, &s.QueryPeriod)
-			delete(rawMsg, key)
-		case "requiredDataConnectors":
-			err = unpopulate(val, &s.RequiredDataConnectors)
-			delete(rawMsg, key)
-		case "severity":
-			err = unpopulate(val, &s.Severity)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &s.Status)
-			delete(rawMsg, key)
-		case "tactics":
-			err = unpopulate(val, &s.Tactics)
-			delete(rawMsg, key)
-		case "techniques":
-			err = unpopulate(val, &s.Techniques)
-			delete(rawMsg, key)
-		case "triggerOperator":
-			err = unpopulate(val, &s.TriggerOperator)
-			delete(rawMsg, key)
-		case "triggerThreshold":
-			err = unpopulate(val, &s.TriggerThreshold)
-			delete(rawMsg, key)
-		case "version":
-			err = unpopulate(val, &s.Version)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // SecurityAlert - Represents a security alert entity.
@@ -13030,64 +6084,6 @@ type SecurityAlert struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// GetEntity implements the EntityClassification interface for type SecurityAlert.
-func (s *SecurityAlert) GetEntity() *Entity {
-	return &Entity{
-		Kind:       s.Kind,
-		ID:         s.ID,
-		Name:       s.Name,
-		Type:       s.Type,
-		SystemData: s.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SecurityAlert.
-func (s SecurityAlert) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", s.ID)
-	objectMap["kind"] = EntityKindSecurityAlert
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "properties", s.Properties)
-	populate(objectMap, "systemData", s.SystemData)
-	populate(objectMap, "type", s.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SecurityAlert.
-func (s *SecurityAlert) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &s.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &s.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &s.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &s.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &s.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &s.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // SecurityAlertProperties - SecurityAlert entity property bag.
@@ -13176,137 +6172,6 @@ type SecurityAlertProperties struct {
 	VendorName *string `json:"vendorName,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SecurityAlertProperties.
-func (s SecurityAlertProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalData", s.AdditionalData)
-	populate(objectMap, "alertDisplayName", s.AlertDisplayName)
-	populate(objectMap, "alertLink", s.AlertLink)
-	populate(objectMap, "alertType", s.AlertType)
-	populate(objectMap, "compromisedEntity", s.CompromisedEntity)
-	populate(objectMap, "confidenceLevel", s.ConfidenceLevel)
-	populate(objectMap, "confidenceReasons", s.ConfidenceReasons)
-	populate(objectMap, "confidenceScore", s.ConfidenceScore)
-	populate(objectMap, "confidenceScoreStatus", s.ConfidenceScoreStatus)
-	populate(objectMap, "description", s.Description)
-	populateTimeRFC3339(objectMap, "endTimeUtc", s.EndTimeUTC)
-	populate(objectMap, "friendlyName", s.FriendlyName)
-	populate(objectMap, "intent", s.Intent)
-	populateTimeRFC3339(objectMap, "processingEndTime", s.ProcessingEndTime)
-	populate(objectMap, "productComponentName", s.ProductComponentName)
-	populate(objectMap, "productName", s.ProductName)
-	populate(objectMap, "productVersion", s.ProductVersion)
-	populate(objectMap, "providerAlertId", s.ProviderAlertID)
-	populate(objectMap, "remediationSteps", s.RemediationSteps)
-	populate(objectMap, "resourceIdentifiers", s.ResourceIdentifiers)
-	populate(objectMap, "severity", s.Severity)
-	populateTimeRFC3339(objectMap, "startTimeUtc", s.StartTimeUTC)
-	populate(objectMap, "status", s.Status)
-	populate(objectMap, "systemAlertId", s.SystemAlertID)
-	populate(objectMap, "tactics", s.Tactics)
-	populateTimeRFC3339(objectMap, "timeGenerated", s.TimeGenerated)
-	populate(objectMap, "vendorName", s.VendorName)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SecurityAlertProperties.
-func (s *SecurityAlertProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "additionalData":
-			err = unpopulate(val, &s.AdditionalData)
-			delete(rawMsg, key)
-		case "alertDisplayName":
-			err = unpopulate(val, &s.AlertDisplayName)
-			delete(rawMsg, key)
-		case "alertLink":
-			err = unpopulate(val, &s.AlertLink)
-			delete(rawMsg, key)
-		case "alertType":
-			err = unpopulate(val, &s.AlertType)
-			delete(rawMsg, key)
-		case "compromisedEntity":
-			err = unpopulate(val, &s.CompromisedEntity)
-			delete(rawMsg, key)
-		case "confidenceLevel":
-			err = unpopulate(val, &s.ConfidenceLevel)
-			delete(rawMsg, key)
-		case "confidenceReasons":
-			err = unpopulate(val, &s.ConfidenceReasons)
-			delete(rawMsg, key)
-		case "confidenceScore":
-			err = unpopulate(val, &s.ConfidenceScore)
-			delete(rawMsg, key)
-		case "confidenceScoreStatus":
-			err = unpopulate(val, &s.ConfidenceScoreStatus)
-			delete(rawMsg, key)
-		case "description":
-			err = unpopulate(val, &s.Description)
-			delete(rawMsg, key)
-		case "endTimeUtc":
-			err = unpopulateTimeRFC3339(val, &s.EndTimeUTC)
-			delete(rawMsg, key)
-		case "friendlyName":
-			err = unpopulate(val, &s.FriendlyName)
-			delete(rawMsg, key)
-		case "intent":
-			err = unpopulate(val, &s.Intent)
-			delete(rawMsg, key)
-		case "processingEndTime":
-			err = unpopulateTimeRFC3339(val, &s.ProcessingEndTime)
-			delete(rawMsg, key)
-		case "productComponentName":
-			err = unpopulate(val, &s.ProductComponentName)
-			delete(rawMsg, key)
-		case "productName":
-			err = unpopulate(val, &s.ProductName)
-			delete(rawMsg, key)
-		case "productVersion":
-			err = unpopulate(val, &s.ProductVersion)
-			delete(rawMsg, key)
-		case "providerAlertId":
-			err = unpopulate(val, &s.ProviderAlertID)
-			delete(rawMsg, key)
-		case "remediationSteps":
-			err = unpopulate(val, &s.RemediationSteps)
-			delete(rawMsg, key)
-		case "resourceIdentifiers":
-			err = unpopulate(val, &s.ResourceIdentifiers)
-			delete(rawMsg, key)
-		case "severity":
-			err = unpopulate(val, &s.Severity)
-			delete(rawMsg, key)
-		case "startTimeUtc":
-			err = unpopulateTimeRFC3339(val, &s.StartTimeUTC)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &s.Status)
-			delete(rawMsg, key)
-		case "systemAlertId":
-			err = unpopulate(val, &s.SystemAlertID)
-			delete(rawMsg, key)
-		case "tactics":
-			err = unpopulate(val, &s.Tactics)
-			delete(rawMsg, key)
-		case "timeGenerated":
-			err = unpopulateTimeRFC3339(val, &s.TimeGenerated)
-			delete(rawMsg, key)
-		case "vendorName":
-			err = unpopulate(val, &s.VendorName)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // SecurityAlertPropertiesConfidenceReasonsItem - confidence reason item
 type SecurityAlertPropertiesConfidenceReasonsItem struct {
 	// READ-ONLY; The reason's description
@@ -13349,76 +6214,6 @@ type SecurityAlertTimelineItem struct {
 	ProductName *string `json:"productName,omitempty"`
 }
 
-// GetEntityTimelineItem implements the EntityTimelineItemClassification interface for type SecurityAlertTimelineItem.
-func (s *SecurityAlertTimelineItem) GetEntityTimelineItem() *EntityTimelineItem {
-	return &EntityTimelineItem{
-		Kind: s.Kind,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SecurityAlertTimelineItem.
-func (s SecurityAlertTimelineItem) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "alertType", s.AlertType)
-	populate(objectMap, "azureResourceId", s.AzureResourceID)
-	populate(objectMap, "description", s.Description)
-	populate(objectMap, "displayName", s.DisplayName)
-	populateTimeRFC3339(objectMap, "endTimeUtc", s.EndTimeUTC)
-	objectMap["kind"] = EntityTimelineKindSecurityAlert
-	populate(objectMap, "productName", s.ProductName)
-	populate(objectMap, "severity", s.Severity)
-	populateTimeRFC3339(objectMap, "startTimeUtc", s.StartTimeUTC)
-	populateTimeRFC3339(objectMap, "timeGenerated", s.TimeGenerated)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SecurityAlertTimelineItem.
-func (s *SecurityAlertTimelineItem) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "alertType":
-			err = unpopulate(val, &s.AlertType)
-			delete(rawMsg, key)
-		case "azureResourceId":
-			err = unpopulate(val, &s.AzureResourceID)
-			delete(rawMsg, key)
-		case "description":
-			err = unpopulate(val, &s.Description)
-			delete(rawMsg, key)
-		case "displayName":
-			err = unpopulate(val, &s.DisplayName)
-			delete(rawMsg, key)
-		case "endTimeUtc":
-			err = unpopulateTimeRFC3339(val, &s.EndTimeUTC)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &s.Kind)
-			delete(rawMsg, key)
-		case "productName":
-			err = unpopulate(val, &s.ProductName)
-			delete(rawMsg, key)
-		case "severity":
-			err = unpopulate(val, &s.Severity)
-			delete(rawMsg, key)
-		case "startTimeUtc":
-			err = unpopulateTimeRFC3339(val, &s.StartTimeUTC)
-			delete(rawMsg, key)
-		case "timeGenerated":
-			err = unpopulateTimeRFC3339(val, &s.TimeGenerated)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // SecurityGroupEntity - Represents a security group entity.
 type SecurityGroupEntity struct {
 	// REQUIRED; The kind of the entity.
@@ -13440,64 +6235,6 @@ type SecurityGroupEntity struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetEntity implements the EntityClassification interface for type SecurityGroupEntity.
-func (s *SecurityGroupEntity) GetEntity() *Entity {
-	return &Entity{
-		Kind:       s.Kind,
-		ID:         s.ID,
-		Name:       s.Name,
-		Type:       s.Type,
-		SystemData: s.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SecurityGroupEntity.
-func (s SecurityGroupEntity) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", s.ID)
-	objectMap["kind"] = EntityKindSecurityGroup
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "properties", s.Properties)
-	populate(objectMap, "systemData", s.SystemData)
-	populate(objectMap, "type", s.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SecurityGroupEntity.
-func (s *SecurityGroupEntity) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &s.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &s.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &s.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &s.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &s.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &s.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // SecurityGroupEntityProperties - SecurityGroup entity property bag.
 type SecurityGroupEntityProperties struct {
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
@@ -13515,17 +6252,6 @@ type SecurityGroupEntityProperties struct {
 
 	// READ-ONLY; The SID attribute is a single-value attribute that specifies the security identifier (SID) of the group
 	Sid *string `json:"sid,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SecurityGroupEntityProperties.
-func (s SecurityGroupEntityProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalData", s.AdditionalData)
-	populate(objectMap, "distinguishedName", s.DistinguishedName)
-	populate(objectMap, "friendlyName", s.FriendlyName)
-	populate(objectMap, "objectGuid", s.ObjectGUID)
-	populate(objectMap, "sid", s.Sid)
-	return json.Marshal(objectMap)
 }
 
 // SentinelOnboardingState - Sentinel onboarding state
@@ -13585,44 +6311,10 @@ type SentinelOnboardingStatesList struct {
 	Value []*SentinelOnboardingState `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SentinelOnboardingStatesList.
-func (s SentinelOnboardingStatesList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
-}
-
 // SettingList - List of all the settings.
 type SettingList struct {
 	// REQUIRED; Array of settings.
 	Value []SettingsClassification `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SettingList.
-func (s SettingList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SettingList.
-func (s *SettingList) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "value":
-			s.Value, err = unmarshalSettingsClassificationArray(val)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // SettingsClassification provides polymorphic access to related types.
@@ -13654,9 +6346,6 @@ type Settings struct {
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
-
-// GetSettings implements the SettingsClassification interface for type Settings.
-func (s *Settings) GetSettings() *Settings { return s }
 
 // SourceControl - Represents a SourceControl in Azure Security Insights.
 type SourceControl struct {
@@ -13694,14 +6383,6 @@ type SourceControlList struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SourceControlList.
-func (s SourceControlList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
-}
-
 // SourceControlProperties - Describes source control properties
 type SourceControlProperties struct {
 	// REQUIRED; Array of source control content types.
@@ -13721,18 +6402,15 @@ type SourceControlProperties struct {
 
 	// The id (a Guid) of the source control
 	ID *string `json:"id,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type SourceControlProperties.
-func (s SourceControlProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "contentTypes", s.ContentTypes)
-	populate(objectMap, "description", s.Description)
-	populate(objectMap, "displayName", s.DisplayName)
-	populate(objectMap, "id", s.ID)
-	populate(objectMap, "repoType", s.RepoType)
-	populate(objectMap, "repository", s.Repository)
-	return json.Marshal(objectMap)
+	// Information regarding the latest deployment for the source control.
+	LastDeploymentInfo *DeploymentInfo `json:"lastDeploymentInfo,omitempty"`
+
+	// Information regarding the resources created in user's repository.
+	RepositoryResourceInfo *RepositoryResourceInfo `json:"repositoryResourceInfo,omitempty"`
+
+	// The version number associated with the source control
+	Version *Version `json:"version,omitempty"`
 }
 
 // SourceControlsClientCreateOptions contains the optional parameters for the SourceControlsClient.Create method.
@@ -13776,64 +6454,6 @@ type SubmissionMailEntity struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetEntity implements the EntityClassification interface for type SubmissionMailEntity.
-func (s *SubmissionMailEntity) GetEntity() *Entity {
-	return &Entity{
-		Kind:       s.Kind,
-		ID:         s.ID,
-		Name:       s.Name,
-		Type:       s.Type,
-		SystemData: s.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SubmissionMailEntity.
-func (s SubmissionMailEntity) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", s.ID)
-	objectMap["kind"] = EntityKindSubmissionMail
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "properties", s.Properties)
-	populate(objectMap, "systemData", s.SystemData)
-	populate(objectMap, "type", s.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SubmissionMailEntity.
-func (s *SubmissionMailEntity) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &s.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &s.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &s.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &s.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &s.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &s.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // SubmissionMailEntityProperties - Submission mail entity property bag.
 type SubmissionMailEntityProperties struct {
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
@@ -13874,77 +6494,6 @@ type SubmissionMailEntityProperties struct {
 	Timestamp *time.Time `json:"timestamp,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SubmissionMailEntityProperties.
-func (s SubmissionMailEntityProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalData", s.AdditionalData)
-	populate(objectMap, "friendlyName", s.FriendlyName)
-	populate(objectMap, "networkMessageId", s.NetworkMessageID)
-	populate(objectMap, "recipient", s.Recipient)
-	populate(objectMap, "reportType", s.ReportType)
-	populate(objectMap, "sender", s.Sender)
-	populate(objectMap, "senderIp", s.SenderIP)
-	populate(objectMap, "subject", s.Subject)
-	populateTimeRFC3339(objectMap, "submissionDate", s.SubmissionDate)
-	populate(objectMap, "submissionId", s.SubmissionID)
-	populate(objectMap, "submitter", s.Submitter)
-	populateTimeRFC3339(objectMap, "timestamp", s.Timestamp)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SubmissionMailEntityProperties.
-func (s *SubmissionMailEntityProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "additionalData":
-			err = unpopulate(val, &s.AdditionalData)
-			delete(rawMsg, key)
-		case "friendlyName":
-			err = unpopulate(val, &s.FriendlyName)
-			delete(rawMsg, key)
-		case "networkMessageId":
-			err = unpopulate(val, &s.NetworkMessageID)
-			delete(rawMsg, key)
-		case "recipient":
-			err = unpopulate(val, &s.Recipient)
-			delete(rawMsg, key)
-		case "reportType":
-			err = unpopulate(val, &s.ReportType)
-			delete(rawMsg, key)
-		case "sender":
-			err = unpopulate(val, &s.Sender)
-			delete(rawMsg, key)
-		case "senderIp":
-			err = unpopulate(val, &s.SenderIP)
-			delete(rawMsg, key)
-		case "subject":
-			err = unpopulate(val, &s.Subject)
-			delete(rawMsg, key)
-		case "submissionDate":
-			err = unpopulateTimeRFC3339(val, &s.SubmissionDate)
-			delete(rawMsg, key)
-		case "submissionId":
-			err = unpopulate(val, &s.SubmissionID)
-			delete(rawMsg, key)
-		case "submitter":
-			err = unpopulate(val, &s.Submitter)
-			delete(rawMsg, key)
-		case "timestamp":
-			err = unpopulateTimeRFC3339(val, &s.Timestamp)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
@@ -13966,53 +6515,6 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SystemData.
-func (s SystemData) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
-	populate(objectMap, "createdBy", s.CreatedBy)
-	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
-	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
-	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SystemData.
-func (s *SystemData) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdAt":
-			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
-			delete(rawMsg, key)
-		case "createdBy":
-			err = unpopulate(val, &s.CreatedBy)
-			delete(rawMsg, key)
-		case "createdByType":
-			err = unpopulate(val, &s.CreatedByType)
-			delete(rawMsg, key)
-		case "lastModifiedAt":
-			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
-			delete(rawMsg, key)
-		case "lastModifiedBy":
-			err = unpopulate(val, &s.LastModifiedBy)
-			delete(rawMsg, key)
-		case "lastModifiedByType":
-			err = unpopulate(val, &s.LastModifiedByType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // TICheckRequirements - Threat Intelligence Platforms data connector check requirements
 type TICheckRequirements struct {
 	// REQUIRED; Describes the kind of connector to be checked.
@@ -14020,44 +6522,6 @@ type TICheckRequirements struct {
 
 	// Threat Intelligence Platforms data connector check required properties
 	Properties *TICheckRequirementsProperties `json:"properties,omitempty"`
-}
-
-// GetDataConnectorsCheckRequirements implements the DataConnectorsCheckRequirementsClassification interface for type TICheckRequirements.
-func (t *TICheckRequirements) GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements {
-	return &DataConnectorsCheckRequirements{
-		Kind: t.Kind,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type TICheckRequirements.
-func (t TICheckRequirements) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["kind"] = DataConnectorKindThreatIntelligence
-	populate(objectMap, "properties", t.Properties)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type TICheckRequirements.
-func (t *TICheckRequirements) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "kind":
-			err = unpopulate(val, &t.Kind)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &t.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // TICheckRequirementsProperties - Threat Intelligence Platforms data connector required properties.
@@ -14090,69 +6554,6 @@ type TIDataConnector struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetDataConnector implements the DataConnectorClassification interface for type TIDataConnector.
-func (t *TIDataConnector) GetDataConnector() *DataConnector {
-	return &DataConnector{
-		Kind:       t.Kind,
-		Etag:       t.Etag,
-		ID:         t.ID,
-		Name:       t.Name,
-		Type:       t.Type,
-		SystemData: t.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type TIDataConnector.
-func (t TIDataConnector) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", t.Etag)
-	populate(objectMap, "id", t.ID)
-	objectMap["kind"] = DataConnectorKindThreatIntelligence
-	populate(objectMap, "name", t.Name)
-	populate(objectMap, "properties", t.Properties)
-	populate(objectMap, "systemData", t.SystemData)
-	populate(objectMap, "type", t.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type TIDataConnector.
-func (t *TIDataConnector) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "etag":
-			err = unpopulate(val, &t.Etag)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &t.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &t.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &t.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &t.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &t.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &t.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // TIDataConnectorDataTypes - The available data types for TI (Threat Intelligence) data connector.
 type TIDataConnectorDataTypes struct {
 	// REQUIRED; Data type for indicators connection.
@@ -14177,41 +6578,6 @@ type TIDataConnectorProperties struct {
 	TipLookbackPeriod *time.Time `json:"tipLookbackPeriod,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type TIDataConnectorProperties.
-func (t TIDataConnectorProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "dataTypes", t.DataTypes)
-	populate(objectMap, "tenantId", t.TenantID)
-	populateTimeRFC3339(objectMap, "tipLookbackPeriod", t.TipLookbackPeriod)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type TIDataConnectorProperties.
-func (t *TIDataConnectorProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "dataTypes":
-			err = unpopulate(val, &t.DataTypes)
-			delete(rawMsg, key)
-		case "tenantId":
-			err = unpopulate(val, &t.TenantID)
-			delete(rawMsg, key)
-		case "tipLookbackPeriod":
-			err = unpopulateTimeRFC3339(val, &t.TipLookbackPeriod)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // TeamInformation - Describes team information
 type TeamInformation struct {
 	// READ-ONLY; The description of the team
@@ -14230,49 +6596,6 @@ type TeamInformation struct {
 	TeamID *string `json:"teamId,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type TeamInformation.
-func (t TeamInformation) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "description", t.Description)
-	populate(objectMap, "name", t.Name)
-	populate(objectMap, "primaryChannelUrl", t.PrimaryChannelURL)
-	populateTimeRFC3339(objectMap, "teamCreationTimeUtc", t.TeamCreationTimeUTC)
-	populate(objectMap, "teamId", t.TeamID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type TeamInformation.
-func (t *TeamInformation) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "description":
-			err = unpopulate(val, &t.Description)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &t.Name)
-			delete(rawMsg, key)
-		case "primaryChannelUrl":
-			err = unpopulate(val, &t.PrimaryChannelURL)
-			delete(rawMsg, key)
-		case "teamCreationTimeUtc":
-			err = unpopulateTimeRFC3339(val, &t.TeamCreationTimeUTC)
-			delete(rawMsg, key)
-		case "teamId":
-			err = unpopulate(val, &t.TeamID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // TeamProperties - Describes team properties
 type TeamProperties struct {
 	// REQUIRED; The name of the team
@@ -14286,16 +6609,6 @@ type TeamProperties struct {
 
 	// The description of the team
 	TeamDescription *string `json:"teamDescription,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type TeamProperties.
-func (t TeamProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "groupIds", t.GroupIDs)
-	populate(objectMap, "memberIds", t.MemberIDs)
-	populate(objectMap, "teamDescription", t.TeamDescription)
-	populate(objectMap, "teamName", t.TeamName)
-	return json.Marshal(objectMap)
 }
 
 // ThreatIntelligence property bag.
@@ -14343,69 +6656,6 @@ type ThreatIntelligenceAlertRule struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetAlertRule implements the AlertRuleClassification interface for type ThreatIntelligenceAlertRule.
-func (t *ThreatIntelligenceAlertRule) GetAlertRule() *AlertRule {
-	return &AlertRule{
-		Kind:       t.Kind,
-		Etag:       t.Etag,
-		ID:         t.ID,
-		Name:       t.Name,
-		Type:       t.Type,
-		SystemData: t.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ThreatIntelligenceAlertRule.
-func (t ThreatIntelligenceAlertRule) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", t.Etag)
-	populate(objectMap, "id", t.ID)
-	objectMap["kind"] = AlertRuleKindThreatIntelligence
-	populate(objectMap, "name", t.Name)
-	populate(objectMap, "properties", t.Properties)
-	populate(objectMap, "systemData", t.SystemData)
-	populate(objectMap, "type", t.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ThreatIntelligenceAlertRule.
-func (t *ThreatIntelligenceAlertRule) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "etag":
-			err = unpopulate(val, &t.Etag)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &t.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &t.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &t.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &t.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &t.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &t.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ThreatIntelligenceAlertRuleProperties - Threat Intelligence alert rule base property bag.
 type ThreatIntelligenceAlertRuleProperties struct {
 	// REQUIRED; The Name of the alert rule template used to create this rule.
@@ -14433,61 +6683,6 @@ type ThreatIntelligenceAlertRuleProperties struct {
 	Techniques []*string `json:"techniques,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ThreatIntelligenceAlertRuleProperties.
-func (t ThreatIntelligenceAlertRuleProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "alertRuleTemplateName", t.AlertRuleTemplateName)
-	populate(objectMap, "description", t.Description)
-	populate(objectMap, "displayName", t.DisplayName)
-	populate(objectMap, "enabled", t.Enabled)
-	populateTimeRFC3339(objectMap, "lastModifiedUtc", t.LastModifiedUTC)
-	populate(objectMap, "severity", t.Severity)
-	populate(objectMap, "tactics", t.Tactics)
-	populate(objectMap, "techniques", t.Techniques)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ThreatIntelligenceAlertRuleProperties.
-func (t *ThreatIntelligenceAlertRuleProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "alertRuleTemplateName":
-			err = unpopulate(val, &t.AlertRuleTemplateName)
-			delete(rawMsg, key)
-		case "description":
-			err = unpopulate(val, &t.Description)
-			delete(rawMsg, key)
-		case "displayName":
-			err = unpopulate(val, &t.DisplayName)
-			delete(rawMsg, key)
-		case "enabled":
-			err = unpopulate(val, &t.Enabled)
-			delete(rawMsg, key)
-		case "lastModifiedUtc":
-			err = unpopulateTimeRFC3339(val, &t.LastModifiedUTC)
-			delete(rawMsg, key)
-		case "severity":
-			err = unpopulate(val, &t.Severity)
-			delete(rawMsg, key)
-		case "tactics":
-			err = unpopulate(val, &t.Tactics)
-			delete(rawMsg, key)
-		case "techniques":
-			err = unpopulate(val, &t.Techniques)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ThreatIntelligenceAlertRuleTemplate - Represents Threat Intelligence alert rule template.
 type ThreatIntelligenceAlertRuleTemplate struct {
 	// REQUIRED; The kind of the alert rule
@@ -14507,64 +6702,6 @@ type ThreatIntelligenceAlertRuleTemplate struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// GetAlertRuleTemplate implements the AlertRuleTemplateClassification interface for type ThreatIntelligenceAlertRuleTemplate.
-func (t *ThreatIntelligenceAlertRuleTemplate) GetAlertRuleTemplate() *AlertRuleTemplate {
-	return &AlertRuleTemplate{
-		Kind:       t.Kind,
-		ID:         t.ID,
-		Name:       t.Name,
-		Type:       t.Type,
-		SystemData: t.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ThreatIntelligenceAlertRuleTemplate.
-func (t ThreatIntelligenceAlertRuleTemplate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", t.ID)
-	objectMap["kind"] = AlertRuleKindThreatIntelligence
-	populate(objectMap, "name", t.Name)
-	populate(objectMap, "properties", t.Properties)
-	populate(objectMap, "systemData", t.SystemData)
-	populate(objectMap, "type", t.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ThreatIntelligenceAlertRuleTemplate.
-func (t *ThreatIntelligenceAlertRuleTemplate) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &t.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &t.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &t.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &t.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &t.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &t.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // ThreatIntelligenceAlertRuleTemplateProperties - Threat Intelligence alert rule template properties
@@ -14600,80 +6737,10 @@ type ThreatIntelligenceAlertRuleTemplateProperties struct {
 	LastUpdatedDateUTC *time.Time `json:"lastUpdatedDateUTC,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ThreatIntelligenceAlertRuleTemplateProperties.
-func (t ThreatIntelligenceAlertRuleTemplateProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "alertRulesCreatedByTemplateCount", t.AlertRulesCreatedByTemplateCount)
-	populateTimeRFC3339(objectMap, "createdDateUTC", t.CreatedDateUTC)
-	populate(objectMap, "description", t.Description)
-	populate(objectMap, "displayName", t.DisplayName)
-	populateTimeRFC3339(objectMap, "lastUpdatedDateUTC", t.LastUpdatedDateUTC)
-	populate(objectMap, "requiredDataConnectors", t.RequiredDataConnectors)
-	populate(objectMap, "severity", t.Severity)
-	populate(objectMap, "status", t.Status)
-	populate(objectMap, "tactics", t.Tactics)
-	populate(objectMap, "techniques", t.Techniques)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ThreatIntelligenceAlertRuleTemplateProperties.
-func (t *ThreatIntelligenceAlertRuleTemplateProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "alertRulesCreatedByTemplateCount":
-			err = unpopulate(val, &t.AlertRulesCreatedByTemplateCount)
-			delete(rawMsg, key)
-		case "createdDateUTC":
-			err = unpopulateTimeRFC3339(val, &t.CreatedDateUTC)
-			delete(rawMsg, key)
-		case "description":
-			err = unpopulate(val, &t.Description)
-			delete(rawMsg, key)
-		case "displayName":
-			err = unpopulate(val, &t.DisplayName)
-			delete(rawMsg, key)
-		case "lastUpdatedDateUTC":
-			err = unpopulateTimeRFC3339(val, &t.LastUpdatedDateUTC)
-			delete(rawMsg, key)
-		case "requiredDataConnectors":
-			err = unpopulate(val, &t.RequiredDataConnectors)
-			delete(rawMsg, key)
-		case "severity":
-			err = unpopulate(val, &t.Severity)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &t.Status)
-			delete(rawMsg, key)
-		case "tactics":
-			err = unpopulate(val, &t.Tactics)
-			delete(rawMsg, key)
-		case "techniques":
-			err = unpopulate(val, &t.Techniques)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ThreatIntelligenceAppendTags - Array of tags to be appended to the threat intelligence indicator.
 type ThreatIntelligenceAppendTags struct {
 	// List of tags to be appended.
 	ThreatIntelligenceTags []*string `json:"threatIntelligenceTags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ThreatIntelligenceAppendTags.
-func (t ThreatIntelligenceAppendTags) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "threatIntelligenceTags", t.ThreatIntelligenceTags)
-	return json.Marshal(objectMap)
 }
 
 // ThreatIntelligenceExternalReference - Describes external reference
@@ -14692,17 +6759,6 @@ type ThreatIntelligenceExternalReference struct {
 
 	// External reference URL
 	URL *string `json:"url,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ThreatIntelligenceExternalReference.
-func (t ThreatIntelligenceExternalReference) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "description", t.Description)
-	populate(objectMap, "externalId", t.ExternalID)
-	populate(objectMap, "hashes", t.Hashes)
-	populate(objectMap, "sourceName", t.SourceName)
-	populate(objectMap, "url", t.URL)
-	return json.Marshal(objectMap)
 }
 
 // ThreatIntelligenceFilteringCriteria - Filtering criteria for querying threat intelligence indicators.
@@ -14747,25 +6803,6 @@ type ThreatIntelligenceFilteringCriteria struct {
 	ThreatTypes []*string `json:"threatTypes,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ThreatIntelligenceFilteringCriteria.
-func (t ThreatIntelligenceFilteringCriteria) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "ids", t.IDs)
-	populate(objectMap, "includeDisabled", t.IncludeDisabled)
-	populate(objectMap, "keywords", t.Keywords)
-	populate(objectMap, "maxConfidence", t.MaxConfidence)
-	populate(objectMap, "maxValidUntil", t.MaxValidUntil)
-	populate(objectMap, "minConfidence", t.MinConfidence)
-	populate(objectMap, "minValidUntil", t.MinValidUntil)
-	populate(objectMap, "pageSize", t.PageSize)
-	populate(objectMap, "patternTypes", t.PatternTypes)
-	populate(objectMap, "skipToken", t.SkipToken)
-	populate(objectMap, "sortBy", t.SortBy)
-	populate(objectMap, "sources", t.Sources)
-	populate(objectMap, "threatTypes", t.ThreatTypes)
-	return json.Marshal(objectMap)
-}
-
 // ThreatIntelligenceGranularMarkingModel - Describes threat granular marking model entity
 type ThreatIntelligenceGranularMarkingModel struct {
 	// Language granular marking model
@@ -14776,15 +6813,6 @@ type ThreatIntelligenceGranularMarkingModel struct {
 
 	// granular marking model selectors
 	Selectors []*string `json:"selectors,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ThreatIntelligenceGranularMarkingModel.
-func (t ThreatIntelligenceGranularMarkingModel) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "language", t.Language)
-	populate(objectMap, "markingRef", t.MarkingRef)
-	populate(objectMap, "selectors", t.Selectors)
-	return json.Marshal(objectMap)
 }
 
 // ThreatIntelligenceIndicatorClientAppendTagsOptions contains the optional parameters for the ThreatIntelligenceIndicatorClient.AppendTags
@@ -14857,130 +6885,6 @@ type ThreatIntelligenceIndicatorModel struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// GetThreatIntelligenceInformation implements the ThreatIntelligenceInformationClassification interface for type ThreatIntelligenceIndicatorModel.
-func (t *ThreatIntelligenceIndicatorModel) GetThreatIntelligenceInformation() *ThreatIntelligenceInformation {
-	return &ThreatIntelligenceInformation{
-		Etag:       t.Etag,
-		Kind:       t.Kind,
-		ID:         t.ID,
-		Name:       t.Name,
-		Type:       t.Type,
-		SystemData: t.SystemData,
-	}
-}
-
-// GetThreatIntelligenceResourceKind implements the ThreatIntelligenceResourceKindClassification interface for type ThreatIntelligenceIndicatorModel.
-func (t *ThreatIntelligenceIndicatorModel) GetThreatIntelligenceResourceKind() *ThreatIntelligenceResourceKind {
-	return &ThreatIntelligenceResourceKind{
-		Kind: t.Kind,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ThreatIntelligenceIndicatorModel.
-func (t ThreatIntelligenceIndicatorModel) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", t.Etag)
-	populate(objectMap, "id", t.ID)
-	objectMap["kind"] = ThreatIntelligenceResourceKindEnumIndicator
-	populate(objectMap, "name", t.Name)
-	populate(objectMap, "properties", t.Properties)
-	populate(objectMap, "systemData", t.SystemData)
-	populate(objectMap, "type", t.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ThreatIntelligenceIndicatorModel.
-func (t *ThreatIntelligenceIndicatorModel) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "etag":
-			err = unpopulate(val, &t.Etag)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &t.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &t.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &t.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &t.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &t.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &t.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// ThreatIntelligenceIndicatorModelForRequestBody - Threat intelligence indicator entity used in request body.
-type ThreatIntelligenceIndicatorModelForRequestBody struct {
-	// REQUIRED; The kind of the entity.
-	Kind *ThreatIntelligenceResourceKindEnum `json:"kind,omitempty"`
-
-	// Etag of the azure resource
-	Etag *string `json:"etag,omitempty"`
-
-	// Threat Intelligence Entity properties
-	Properties *ThreatIntelligenceIndicatorProperties `json:"properties,omitempty"`
-}
-
-// GetThreatIntelligenceResourceKind implements the ThreatIntelligenceResourceKindClassification interface for type ThreatIntelligenceIndicatorModelForRequestBody.
-func (t *ThreatIntelligenceIndicatorModelForRequestBody) GetThreatIntelligenceResourceKind() *ThreatIntelligenceResourceKind {
-	return &ThreatIntelligenceResourceKind{
-		Kind: t.Kind,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ThreatIntelligenceIndicatorModelForRequestBody.
-func (t ThreatIntelligenceIndicatorModelForRequestBody) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", t.Etag)
-	objectMap["kind"] = ThreatIntelligenceResourceKindEnumIndicator
-	populate(objectMap, "properties", t.Properties)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ThreatIntelligenceIndicatorModelForRequestBody.
-func (t *ThreatIntelligenceIndicatorModelForRequestBody) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "etag":
-			err = unpopulate(val, &t.Etag)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &t.Kind)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &t.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // ThreatIntelligenceIndicatorProperties - Describes threat intelligence entity properties
@@ -15077,42 +6981,6 @@ type ThreatIntelligenceIndicatorProperties struct {
 	FriendlyName *string `json:"friendlyName,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ThreatIntelligenceIndicatorProperties.
-func (t ThreatIntelligenceIndicatorProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalData", t.AdditionalData)
-	populate(objectMap, "confidence", t.Confidence)
-	populate(objectMap, "created", t.Created)
-	populate(objectMap, "createdByRef", t.CreatedByRef)
-	populate(objectMap, "defanged", t.Defanged)
-	populate(objectMap, "description", t.Description)
-	populate(objectMap, "displayName", t.DisplayName)
-	populate(objectMap, "extensions", t.Extensions)
-	populate(objectMap, "externalId", t.ExternalID)
-	populate(objectMap, "externalLastUpdatedTimeUtc", t.ExternalLastUpdatedTimeUTC)
-	populate(objectMap, "externalReferences", t.ExternalReferences)
-	populate(objectMap, "friendlyName", t.FriendlyName)
-	populate(objectMap, "granularMarkings", t.GranularMarkings)
-	populate(objectMap, "indicatorTypes", t.IndicatorTypes)
-	populate(objectMap, "killChainPhases", t.KillChainPhases)
-	populate(objectMap, "labels", t.Labels)
-	populate(objectMap, "language", t.Language)
-	populate(objectMap, "lastUpdatedTimeUtc", t.LastUpdatedTimeUTC)
-	populate(objectMap, "modified", t.Modified)
-	populate(objectMap, "objectMarkingRefs", t.ObjectMarkingRefs)
-	populate(objectMap, "parsedPattern", t.ParsedPattern)
-	populate(objectMap, "pattern", t.Pattern)
-	populate(objectMap, "patternType", t.PatternType)
-	populate(objectMap, "patternVersion", t.PatternVersion)
-	populate(objectMap, "revoked", t.Revoked)
-	populate(objectMap, "source", t.Source)
-	populate(objectMap, "threatIntelligenceTags", t.ThreatIntelligenceTags)
-	populate(objectMap, "threatTypes", t.ThreatTypes)
-	populate(objectMap, "validFrom", t.ValidFrom)
-	populate(objectMap, "validUntil", t.ValidUntil)
-	return json.Marshal(objectMap)
-}
-
 // ThreatIntelligenceIndicatorsClientListOptions contains the optional parameters for the ThreatIntelligenceIndicatorsClient.List
 // method.
 type ThreatIntelligenceIndicatorsClientListOptions struct {
@@ -15133,7 +7001,6 @@ type ThreatIntelligenceIndicatorsClientListOptions struct {
 // Use a type switch to determine the concrete type.  The possible types are:
 // - *ThreatIntelligenceIndicatorModel, *ThreatIntelligenceInformation
 type ThreatIntelligenceInformationClassification interface {
-	ThreatIntelligenceResourceKindClassification
 	// GetThreatIntelligenceInformation returns the ThreatIntelligenceInformation content of the underlying type.
 	GetThreatIntelligenceInformation() *ThreatIntelligenceInformation
 }
@@ -15159,65 +7026,6 @@ type ThreatIntelligenceInformation struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetThreatIntelligenceInformation implements the ThreatIntelligenceInformationClassification interface for type ThreatIntelligenceInformation.
-func (t *ThreatIntelligenceInformation) GetThreatIntelligenceInformation() *ThreatIntelligenceInformation {
-	return t
-}
-
-// GetThreatIntelligenceResourceKind implements the ThreatIntelligenceResourceKindClassification interface for type ThreatIntelligenceInformation.
-func (t *ThreatIntelligenceInformation) GetThreatIntelligenceResourceKind() *ThreatIntelligenceResourceKind {
-	return &ThreatIntelligenceResourceKind{
-		Kind: t.Kind,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ThreatIntelligenceInformation.
-func (t ThreatIntelligenceInformation) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", t.Etag)
-	populate(objectMap, "id", t.ID)
-	objectMap["kind"] = "ThreatIntelligenceInformation"
-	populate(objectMap, "name", t.Name)
-	populate(objectMap, "systemData", t.SystemData)
-	populate(objectMap, "type", t.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ThreatIntelligenceInformation.
-func (t *ThreatIntelligenceInformation) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "etag":
-			err = unpopulate(val, &t.Etag)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &t.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &t.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &t.Name)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &t.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &t.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ThreatIntelligenceInformationList - List of all the threat intelligence information objects.
 type ThreatIntelligenceInformationList struct {
 	// REQUIRED; Array of threat intelligence information objects.
@@ -15225,37 +7033,6 @@ type ThreatIntelligenceInformationList struct {
 
 	// READ-ONLY; URL to fetch the next set of information objects.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ThreatIntelligenceInformationList.
-func (t ThreatIntelligenceInformationList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", t.NextLink)
-	populate(objectMap, "value", t.Value)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ThreatIntelligenceInformationList.
-func (t *ThreatIntelligenceInformationList) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "nextLink":
-			err = unpopulate(val, &t.NextLink)
-			delete(rawMsg, key)
-		case "value":
-			t.Value, err = unmarshalThreatIntelligenceInformationClassificationArray(val)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // ThreatIntelligenceKillChainPhase - Describes threat kill chain phase entity
@@ -15282,16 +7059,6 @@ type ThreatIntelligenceMetric struct {
 	ThreatTypeMetrics []*ThreatIntelligenceMetricEntity `json:"threatTypeMetrics,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ThreatIntelligenceMetric.
-func (t ThreatIntelligenceMetric) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "lastUpdatedTimeUtc", t.LastUpdatedTimeUTC)
-	populate(objectMap, "patternTypeMetrics", t.PatternTypeMetrics)
-	populate(objectMap, "sourceMetrics", t.SourceMetrics)
-	populate(objectMap, "threatTypeMetrics", t.ThreatTypeMetrics)
-	return json.Marshal(objectMap)
-}
-
 // ThreatIntelligenceMetricEntity - Describes threat intelligence metric entity
 type ThreatIntelligenceMetricEntity struct {
 	// Metric name
@@ -15313,13 +7080,6 @@ type ThreatIntelligenceMetricsList struct {
 	Value []*ThreatIntelligenceMetrics `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ThreatIntelligenceMetricsList.
-func (t ThreatIntelligenceMetricsList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", t.Value)
-	return json.Marshal(objectMap)
-}
-
 // ThreatIntelligenceParsedPattern - Describes parsed pattern entity
 type ThreatIntelligenceParsedPattern struct {
 	// Pattern type key
@@ -15329,14 +7089,6 @@ type ThreatIntelligenceParsedPattern struct {
 	PatternTypeValues []*ThreatIntelligenceParsedPatternTypeValue `json:"patternTypeValues,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ThreatIntelligenceParsedPattern.
-func (t ThreatIntelligenceParsedPattern) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "patternTypeKey", t.PatternTypeKey)
-	populate(objectMap, "patternTypeValues", t.PatternTypeValues)
-	return json.Marshal(objectMap)
-}
-
 // ThreatIntelligenceParsedPatternTypeValue - Describes threat kill chain phase entity
 type ThreatIntelligenceParsedPatternTypeValue struct {
 	// Value of parsed pattern
@@ -15344,26 +7096,6 @@ type ThreatIntelligenceParsedPatternTypeValue struct {
 
 	// Type of the value
 	ValueType *string `json:"valueType,omitempty"`
-}
-
-// ThreatIntelligenceResourceKindClassification provides polymorphic access to related types.
-// Call the interface's GetThreatIntelligenceResourceKind() method to access the common type.
-// Use a type switch to determine the concrete type.  The possible types are:
-// - *ThreatIntelligenceIndicatorModel, *ThreatIntelligenceInformation, *ThreatIntelligenceResourceKind
-type ThreatIntelligenceResourceKindClassification interface {
-	// GetThreatIntelligenceResourceKind returns the ThreatIntelligenceResourceKind content of the underlying type.
-	GetThreatIntelligenceResourceKind() *ThreatIntelligenceResourceKind
-}
-
-// ThreatIntelligenceResourceKind - Describes an entity with kind.
-type ThreatIntelligenceResourceKind struct {
-	// REQUIRED; The kind of the entity.
-	Kind *ThreatIntelligenceResourceKindEnum `json:"kind,omitempty"`
-}
-
-// GetThreatIntelligenceResourceKind implements the ThreatIntelligenceResourceKindClassification interface for type ThreatIntelligenceResourceKind.
-func (t *ThreatIntelligenceResourceKind) GetThreatIntelligenceResourceKind() *ThreatIntelligenceResourceKind {
-	return t
 }
 
 // ThreatIntelligenceSortingCriteria - List of available columns for sorting
@@ -15382,44 +7114,6 @@ type TiTaxiiCheckRequirements struct {
 
 	// Threat Intelligence TAXII check required properties.
 	Properties *TiTaxiiCheckRequirementsProperties `json:"properties,omitempty"`
-}
-
-// GetDataConnectorsCheckRequirements implements the DataConnectorsCheckRequirementsClassification interface for type TiTaxiiCheckRequirements.
-func (t *TiTaxiiCheckRequirements) GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements {
-	return &DataConnectorsCheckRequirements{
-		Kind: t.Kind,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type TiTaxiiCheckRequirements.
-func (t TiTaxiiCheckRequirements) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["kind"] = DataConnectorKindThreatIntelligenceTaxii
-	populate(objectMap, "properties", t.Properties)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type TiTaxiiCheckRequirements.
-func (t *TiTaxiiCheckRequirements) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "kind":
-			err = unpopulate(val, &t.Kind)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &t.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // TiTaxiiCheckRequirementsProperties - Threat Intelligence TAXII data connector required properties.
@@ -15450,69 +7144,6 @@ type TiTaxiiDataConnector struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// GetDataConnector implements the DataConnectorClassification interface for type TiTaxiiDataConnector.
-func (t *TiTaxiiDataConnector) GetDataConnector() *DataConnector {
-	return &DataConnector{
-		Kind:       t.Kind,
-		Etag:       t.Etag,
-		ID:         t.ID,
-		Name:       t.Name,
-		Type:       t.Type,
-		SystemData: t.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type TiTaxiiDataConnector.
-func (t TiTaxiiDataConnector) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", t.Etag)
-	populate(objectMap, "id", t.ID)
-	objectMap["kind"] = DataConnectorKindThreatIntelligenceTaxii
-	populate(objectMap, "name", t.Name)
-	populate(objectMap, "properties", t.Properties)
-	populate(objectMap, "systemData", t.SystemData)
-	populate(objectMap, "type", t.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type TiTaxiiDataConnector.
-func (t *TiTaxiiDataConnector) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "etag":
-			err = unpopulate(val, &t.Etag)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &t.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &t.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &t.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &t.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &t.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &t.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // TiTaxiiDataConnectorDataTypes - The available data types for Threat Intelligence TAXII data connector.
@@ -15560,69 +7191,6 @@ type TiTaxiiDataConnectorProperties struct {
 	WorkspaceID *string `json:"workspaceId,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type TiTaxiiDataConnectorProperties.
-func (t TiTaxiiDataConnectorProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "collectionId", t.CollectionID)
-	populate(objectMap, "dataTypes", t.DataTypes)
-	populate(objectMap, "friendlyName", t.FriendlyName)
-	populate(objectMap, "password", t.Password)
-	populate(objectMap, "pollingFrequency", t.PollingFrequency)
-	populateTimeRFC3339(objectMap, "taxiiLookbackPeriod", t.TaxiiLookbackPeriod)
-	populate(objectMap, "taxiiServer", t.TaxiiServer)
-	populate(objectMap, "tenantId", t.TenantID)
-	populate(objectMap, "userName", t.UserName)
-	populate(objectMap, "workspaceId", t.WorkspaceID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type TiTaxiiDataConnectorProperties.
-func (t *TiTaxiiDataConnectorProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "collectionId":
-			err = unpopulate(val, &t.CollectionID)
-			delete(rawMsg, key)
-		case "dataTypes":
-			err = unpopulate(val, &t.DataTypes)
-			delete(rawMsg, key)
-		case "friendlyName":
-			err = unpopulate(val, &t.FriendlyName)
-			delete(rawMsg, key)
-		case "password":
-			err = unpopulate(val, &t.Password)
-			delete(rawMsg, key)
-		case "pollingFrequency":
-			err = unpopulate(val, &t.PollingFrequency)
-			delete(rawMsg, key)
-		case "taxiiLookbackPeriod":
-			err = unpopulateTimeRFC3339(val, &t.TaxiiLookbackPeriod)
-			delete(rawMsg, key)
-		case "taxiiServer":
-			err = unpopulate(val, &t.TaxiiServer)
-			delete(rawMsg, key)
-		case "tenantId":
-			err = unpopulate(val, &t.TenantID)
-			delete(rawMsg, key)
-		case "userName":
-			err = unpopulate(val, &t.UserName)
-			delete(rawMsg, key)
-		case "workspaceId":
-			err = unpopulate(val, &t.WorkspaceID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // TimelineAggregation - timeline aggregation information per kind
 type TimelineAggregation struct {
 	// REQUIRED; the total items found for a kind
@@ -15656,15 +7224,6 @@ type TimelineResultsMetadata struct {
 	Errors []*TimelineError `json:"errors,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type TimelineResultsMetadata.
-func (t TimelineResultsMetadata) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "aggregations", t.Aggregations)
-	populate(objectMap, "errors", t.Errors)
-	populate(objectMap, "totalCount", t.TotalCount)
-	return json.Marshal(objectMap)
-}
-
 // URLEntity - Represents a url entity.
 type URLEntity struct {
 	// REQUIRED; The kind of the entity.
@@ -15686,64 +7245,6 @@ type URLEntity struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetEntity implements the EntityClassification interface for type URLEntity.
-func (u *URLEntity) GetEntity() *Entity {
-	return &Entity{
-		Kind:       u.Kind,
-		ID:         u.ID,
-		Name:       u.Name,
-		Type:       u.Type,
-		SystemData: u.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type URLEntity.
-func (u URLEntity) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", u.ID)
-	objectMap["kind"] = EntityKindURL
-	populate(objectMap, "name", u.Name)
-	populate(objectMap, "properties", u.Properties)
-	populate(objectMap, "systemData", u.SystemData)
-	populate(objectMap, "type", u.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type URLEntity.
-func (u *URLEntity) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &u.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &u.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &u.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &u.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &u.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &u.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // URLEntityProperties - Url entity property bag.
 type URLEntityProperties struct {
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
@@ -15755,15 +7256,6 @@ type URLEntityProperties struct {
 
 	// READ-ONLY; A full URL the entity points to
 	URL *string `json:"url,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type URLEntityProperties.
-func (u URLEntityProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalData", u.AdditionalData)
-	populate(objectMap, "friendlyName", u.FriendlyName)
-	populate(objectMap, "url", u.URL)
-	return json.Marshal(objectMap)
 }
 
 // Ueba - Settings with single toggle.
@@ -15790,80 +7282,10 @@ type Ueba struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetSettings implements the SettingsClassification interface for type Ueba.
-func (u *Ueba) GetSettings() *Settings {
-	return &Settings{
-		Kind:       u.Kind,
-		Etag:       u.Etag,
-		ID:         u.ID,
-		Name:       u.Name,
-		Type:       u.Type,
-		SystemData: u.SystemData,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Ueba.
-func (u Ueba) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", u.Etag)
-	populate(objectMap, "id", u.ID)
-	objectMap["kind"] = SettingKindUeba
-	populate(objectMap, "name", u.Name)
-	populate(objectMap, "properties", u.Properties)
-	populate(objectMap, "systemData", u.SystemData)
-	populate(objectMap, "type", u.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type Ueba.
-func (u *Ueba) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "etag":
-			err = unpopulate(val, &u.Etag)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &u.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &u.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &u.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &u.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &u.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &u.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // UebaProperties - Ueba property bag.
 type UebaProperties struct {
 	// The relevant data sources that enriched by ueba
 	DataSources []*UebaDataSources `json:"dataSources,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type UebaProperties.
-func (u UebaProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "dataSources", u.DataSources)
-	return json.Marshal(objectMap)
 }
 
 // UserInfo - User information that made some action
@@ -15929,18 +7351,10 @@ type WatchlistItemList struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type WatchlistItemList.
-func (w WatchlistItemList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", w.NextLink)
-	populate(objectMap, "value", w.Value)
-	return json.Marshal(objectMap)
-}
-
 // WatchlistItemProperties - Describes watchlist item properties
 type WatchlistItemProperties struct {
 	// REQUIRED; key-value pairs for a watchlist item
-	ItemsKeyValue interface{} `json:"itemsKeyValue,omitempty"`
+	ItemsKeyValue map[string]interface{} `json:"itemsKeyValue,omitempty"`
 
 	// The time the watchlist item was created
 	Created *time.Time `json:"created,omitempty"`
@@ -15949,7 +7363,7 @@ type WatchlistItemProperties struct {
 	CreatedBy *UserInfo `json:"createdBy,omitempty"`
 
 	// key-value pairs for a watchlist item entity mapping
-	EntityMapping interface{} `json:"entityMapping,omitempty"`
+	EntityMapping map[string]interface{} `json:"entityMapping,omitempty"`
 
 	// A flag that indicates if the watchlist item is deleted or not
 	IsDeleted *bool `json:"isDeleted,omitempty"`
@@ -15970,69 +7384,6 @@ type WatchlistItemProperties struct {
 	WatchlistItemType *string `json:"watchlistItemType,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type WatchlistItemProperties.
-func (w WatchlistItemProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "created", w.Created)
-	populate(objectMap, "createdBy", w.CreatedBy)
-	populate(objectMap, "entityMapping", &w.EntityMapping)
-	populate(objectMap, "isDeleted", w.IsDeleted)
-	populate(objectMap, "itemsKeyValue", &w.ItemsKeyValue)
-	populate(objectMap, "tenantId", w.TenantID)
-	populateTimeRFC3339(objectMap, "updated", w.Updated)
-	populate(objectMap, "updatedBy", w.UpdatedBy)
-	populate(objectMap, "watchlistItemId", w.WatchlistItemID)
-	populate(objectMap, "watchlistItemType", w.WatchlistItemType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type WatchlistItemProperties.
-func (w *WatchlistItemProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "created":
-			err = unpopulateTimeRFC3339(val, &w.Created)
-			delete(rawMsg, key)
-		case "createdBy":
-			err = unpopulate(val, &w.CreatedBy)
-			delete(rawMsg, key)
-		case "entityMapping":
-			err = unpopulate(val, &w.EntityMapping)
-			delete(rawMsg, key)
-		case "isDeleted":
-			err = unpopulate(val, &w.IsDeleted)
-			delete(rawMsg, key)
-		case "itemsKeyValue":
-			err = unpopulate(val, &w.ItemsKeyValue)
-			delete(rawMsg, key)
-		case "tenantId":
-			err = unpopulate(val, &w.TenantID)
-			delete(rawMsg, key)
-		case "updated":
-			err = unpopulateTimeRFC3339(val, &w.Updated)
-			delete(rawMsg, key)
-		case "updatedBy":
-			err = unpopulate(val, &w.UpdatedBy)
-			delete(rawMsg, key)
-		case "watchlistItemId":
-			err = unpopulate(val, &w.WatchlistItemID)
-			delete(rawMsg, key)
-		case "watchlistItemType":
-			err = unpopulate(val, &w.WatchlistItemType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // WatchlistItemsClientCreateOrUpdateOptions contains the optional parameters for the WatchlistItemsClient.CreateOrUpdate
 // method.
 type WatchlistItemsClientCreateOrUpdateOptions struct {
@@ -16051,7 +7402,10 @@ type WatchlistItemsClientGetOptions struct {
 
 // WatchlistItemsClientListOptions contains the optional parameters for the WatchlistItemsClient.List method.
 type WatchlistItemsClientListOptions struct {
-	// placeholder for future optional parameters
+	// Skiptoken is only used if a previous operation returned a partial result. If a previous response contains a nextLink element,
+	// the value of the nextLink element will include a skiptoken parameter that
+	// specifies a starting point to use for subsequent calls. Optional.
+	SkipToken *string
 }
 
 // WatchlistList - List all the watchlists.
@@ -16061,14 +7415,6 @@ type WatchlistList struct {
 
 	// READ-ONLY; URL to fetch the next set of watchlists.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type WatchlistList.
-func (w WatchlistList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", w.NextLink)
-	populate(objectMap, "value", w.Value)
-	return json.Marshal(objectMap)
 }
 
 // WatchlistProperties - Describes watchlist properties
@@ -16083,9 +7429,6 @@ type WatchlistProperties struct {
 
 	// REQUIRED; The provider of the watchlist
 	Provider *string `json:"provider,omitempty"`
-
-	// REQUIRED; The source of the watchlist
-	Source *Source `json:"source,omitempty"`
 
 	// The content type of the raw content. Example : text/csv or text/tsv
 	ContentType *string `json:"contentType,omitempty"`
@@ -16115,6 +7458,12 @@ type WatchlistProperties struct {
 	// file that will parsed by the endpoint
 	RawContent *string `json:"rawContent,omitempty"`
 
+	// The filename of the watchlist, called 'source'
+	Source *string `json:"source,omitempty"`
+
+	// The sourceType of the watchlist
+	SourceType *SourceType `json:"sourceType,omitempty"`
+
 	// The tenantId where the watchlist belongs to
 	TenantID *string `json:"tenantId,omitempty"`
 
@@ -16134,118 +7483,8 @@ type WatchlistProperties struct {
 	// The id (a Guid) of the watchlist
 	WatchlistID *string `json:"watchlistId,omitempty"`
 
-	// The number of Watchlist Items in the Watchlist
-	WatchlistItemsCount *int32 `json:"watchlistItemsCount,omitempty"`
-
 	// The type of the watchlist
 	WatchlistType *string `json:"watchlistType,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type WatchlistProperties.
-func (w WatchlistProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "contentType", w.ContentType)
-	populateTimeRFC3339(objectMap, "created", w.Created)
-	populate(objectMap, "createdBy", w.CreatedBy)
-	populate(objectMap, "defaultDuration", w.DefaultDuration)
-	populate(objectMap, "description", w.Description)
-	populate(objectMap, "displayName", w.DisplayName)
-	populate(objectMap, "isDeleted", w.IsDeleted)
-	populate(objectMap, "itemsSearchKey", w.ItemsSearchKey)
-	populate(objectMap, "labels", w.Labels)
-	populate(objectMap, "numberOfLinesToSkip", w.NumberOfLinesToSkip)
-	populate(objectMap, "provider", w.Provider)
-	populate(objectMap, "rawContent", w.RawContent)
-	populate(objectMap, "source", w.Source)
-	populate(objectMap, "tenantId", w.TenantID)
-	populateTimeRFC3339(objectMap, "updated", w.Updated)
-	populate(objectMap, "updatedBy", w.UpdatedBy)
-	populate(objectMap, "uploadStatus", w.UploadStatus)
-	populate(objectMap, "watchlistAlias", w.WatchlistAlias)
-	populate(objectMap, "watchlistId", w.WatchlistID)
-	populate(objectMap, "watchlistItemsCount", w.WatchlistItemsCount)
-	populate(objectMap, "watchlistType", w.WatchlistType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type WatchlistProperties.
-func (w *WatchlistProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "contentType":
-			err = unpopulate(val, &w.ContentType)
-			delete(rawMsg, key)
-		case "created":
-			err = unpopulateTimeRFC3339(val, &w.Created)
-			delete(rawMsg, key)
-		case "createdBy":
-			err = unpopulate(val, &w.CreatedBy)
-			delete(rawMsg, key)
-		case "defaultDuration":
-			err = unpopulate(val, &w.DefaultDuration)
-			delete(rawMsg, key)
-		case "description":
-			err = unpopulate(val, &w.Description)
-			delete(rawMsg, key)
-		case "displayName":
-			err = unpopulate(val, &w.DisplayName)
-			delete(rawMsg, key)
-		case "isDeleted":
-			err = unpopulate(val, &w.IsDeleted)
-			delete(rawMsg, key)
-		case "itemsSearchKey":
-			err = unpopulate(val, &w.ItemsSearchKey)
-			delete(rawMsg, key)
-		case "labels":
-			err = unpopulate(val, &w.Labels)
-			delete(rawMsg, key)
-		case "numberOfLinesToSkip":
-			err = unpopulate(val, &w.NumberOfLinesToSkip)
-			delete(rawMsg, key)
-		case "provider":
-			err = unpopulate(val, &w.Provider)
-			delete(rawMsg, key)
-		case "rawContent":
-			err = unpopulate(val, &w.RawContent)
-			delete(rawMsg, key)
-		case "source":
-			err = unpopulate(val, &w.Source)
-			delete(rawMsg, key)
-		case "tenantId":
-			err = unpopulate(val, &w.TenantID)
-			delete(rawMsg, key)
-		case "updated":
-			err = unpopulateTimeRFC3339(val, &w.Updated)
-			delete(rawMsg, key)
-		case "updatedBy":
-			err = unpopulate(val, &w.UpdatedBy)
-			delete(rawMsg, key)
-		case "uploadStatus":
-			err = unpopulate(val, &w.UploadStatus)
-			delete(rawMsg, key)
-		case "watchlistAlias":
-			err = unpopulate(val, &w.WatchlistAlias)
-			delete(rawMsg, key)
-		case "watchlistId":
-			err = unpopulate(val, &w.WatchlistID)
-			delete(rawMsg, key)
-		case "watchlistItemsCount":
-			err = unpopulate(val, &w.WatchlistItemsCount)
-			delete(rawMsg, key)
-		case "watchlistType":
-			err = unpopulate(val, &w.WatchlistType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // WatchlistsClientCreateOrUpdateOptions contains the optional parameters for the WatchlistsClient.CreateOrUpdate method.
@@ -16265,22 +7504,23 @@ type WatchlistsClientGetOptions struct {
 
 // WatchlistsClientListOptions contains the optional parameters for the WatchlistsClient.List method.
 type WatchlistsClientListOptions struct {
-	// placeholder for future optional parameters
+	// Skiptoken is only used if a previous operation returned a partial result. If a previous response contains a nextLink element,
+	// the value of the nextLink element will include a skiptoken parameter that
+	// specifies a starting point to use for subsequent calls. Optional.
+	SkipToken *string
 }
 
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
+// Webhook - Detail about the webhook object.
+type Webhook struct {
+	// A flag to instruct the backend service to rotate webhook secret.
+	RotateWebhookSecret *bool `json:"rotateWebhookSecret,omitempty"`
 
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
+	// Unique identifier for the webhook.
+	WebhookID *string `json:"webhookId,omitempty"`
+
+	// Time when the webhook secret was updated.
+	WebhookSecretUpdateTime *string `json:"webhookSecretUpdateTime,omitempty"`
+
+	// URL that gets invoked by the webhook.
+	WebhookURL *string `json:"webhookUrl,omitempty"`
 }

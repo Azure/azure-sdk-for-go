@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,108 +17,132 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights"
 )
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-10-01-preview/examples/sourcecontrols/GetSourceControls.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/sourcecontrols/GetSourceControls.json
 func ExampleSourceControlsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurityinsights.NewSourceControlsClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewSourceControlsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.List("<resource-group-name>",
 		"<workspace-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-10-01-preview/examples/sourcecontrols/GetSourceControlById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/sourcecontrols/GetSourceControlById.json
 func ExampleSourceControlsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurityinsights.NewSourceControlsClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewSourceControlsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		"<source-control-id>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.SourceControlsClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-10-01-preview/examples/sourcecontrols/DeleteSourceControl.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/sourcecontrols/DeleteSourceControl.json
 func ExampleSourceControlsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurityinsights.NewSourceControlsClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewSourceControlsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Delete(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		"<source-control-id>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-10-01-preview/examples/sourcecontrols/CreateSourceControl.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/sourcecontrols/CreateSourceControl.json
 func ExampleSourceControlsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurityinsights.NewSourceControlsClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewSourceControlsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Create(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		"<source-control-id>",
 		armsecurityinsights.SourceControl{
-			Etag: to.StringPtr("<etag>"),
+			Etag: to.Ptr("<etag>"),
 			Properties: &armsecurityinsights.SourceControlProperties{
-				Description: to.StringPtr("<description>"),
+				Description: to.Ptr("<description>"),
 				ContentTypes: []*armsecurityinsights.ContentType{
-					armsecurityinsights.ContentType("AnalyticRules").ToPtr(),
-					armsecurityinsights.ContentType("Workbook").ToPtr()},
-				DisplayName: to.StringPtr("<display-name>"),
-				RepoType:    armsecurityinsights.RepoType("Github").ToPtr(),
+					to.Ptr(armsecurityinsights.ContentType("AnalyticRules")),
+					to.Ptr(armsecurityinsights.ContentTypeWorkbook)},
+				DisplayName: to.Ptr("<display-name>"),
+				RepoType:    to.Ptr(armsecurityinsights.RepoTypeGithub),
 				Repository: &armsecurityinsights.Repository{
-					Branch:     to.StringPtr("<branch>"),
-					DisplayURL: to.StringPtr("<display-url>"),
+					Branch:     to.Ptr("<branch>"),
+					DisplayURL: to.Ptr("<display-url>"),
 					PathMapping: []*armsecurityinsights.ContentPathMap{
 						{
-							Path:        to.StringPtr("<path>"),
-							ContentType: armsecurityinsights.ContentType("AnalyticRules").ToPtr(),
+							Path:        to.Ptr("<path>"),
+							ContentType: to.Ptr(armsecurityinsights.ContentType("AnalyticRules")),
 						},
 						{
-							Path:        to.StringPtr("<path>"),
-							ContentType: armsecurityinsights.ContentType("Workbook").ToPtr(),
+							Path:        to.Ptr("<path>"),
+							ContentType: to.Ptr(armsecurityinsights.ContentTypeWorkbook),
 						}},
-					URL: to.StringPtr("<url>"),
+					URL: to.Ptr("<url>"),
 				},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.SourceControlsClientCreateResult)
+	// TODO: use response item
+	_ = res
 }

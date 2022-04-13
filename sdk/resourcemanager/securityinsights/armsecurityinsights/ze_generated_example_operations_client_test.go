@@ -16,29 +16,29 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/entities/relations/GetEntityRelationByName.json
-func ExampleEntityRelationsClient_GetRelation() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/operations/ListOperations.json
+func ExampleOperationsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 		return
 	}
 	ctx := context.Background()
-	client, err := armsecurityinsights.NewEntityRelationsClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewOperationsClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	res, err := client.GetRelation(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<entity-id>",
-		"<relation-name>",
-		nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-		return
+	pager := client.List(nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+			return
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
 	}
-	// TODO: use response item
-	_ = res
 }

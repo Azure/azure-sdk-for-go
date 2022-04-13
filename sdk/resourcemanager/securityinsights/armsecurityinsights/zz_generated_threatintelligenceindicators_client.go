@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type ThreatIntelligenceIndicatorsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewThreatIntelligenceIndicatorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ThreatIntelligenceIndicatorsClient {
+func NewThreatIntelligenceIndicatorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ThreatIntelligenceIndicatorsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ThreatIntelligenceIndicatorsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // List - Get all threat intelligence indicators.
@@ -56,16 +61,32 @@ func NewThreatIntelligenceIndicatorsClient(subscriptionID string, credential azc
 // workspaceName - The name of the workspace.
 // options - ThreatIntelligenceIndicatorsClientListOptions contains the optional parameters for the ThreatIntelligenceIndicatorsClient.List
 // method.
-func (client *ThreatIntelligenceIndicatorsClient) List(resourceGroupName string, workspaceName string, options *ThreatIntelligenceIndicatorsClientListOptions) *ThreatIntelligenceIndicatorsClientListPager {
-	return &ThreatIntelligenceIndicatorsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, workspaceName, options)
+func (client *ThreatIntelligenceIndicatorsClient) List(resourceGroupName string, workspaceName string, options *ThreatIntelligenceIndicatorsClientListOptions) *runtime.Pager[ThreatIntelligenceIndicatorsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ThreatIntelligenceIndicatorsClientListResponse]{
+		More: func(page ThreatIntelligenceIndicatorsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ThreatIntelligenceIndicatorsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ThreatIntelligenceInformationList.NextLink)
+		Fetcher: func(ctx context.Context, page *ThreatIntelligenceIndicatorsClientListResponse) (ThreatIntelligenceIndicatorsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, workspaceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ThreatIntelligenceIndicatorsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ThreatIntelligenceIndicatorsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ThreatIntelligenceIndicatorsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -88,7 +109,7 @@ func (client *ThreatIntelligenceIndicatorsClient) listCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -108,7 +129,7 @@ func (client *ThreatIntelligenceIndicatorsClient) listCreateRequest(ctx context.
 
 // listHandleResponse handles the List response.
 func (client *ThreatIntelligenceIndicatorsClient) listHandleResponse(resp *http.Response) (ThreatIntelligenceIndicatorsClientListResponse, error) {
-	result := ThreatIntelligenceIndicatorsClientListResponse{RawResponse: resp}
+	result := ThreatIntelligenceIndicatorsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ThreatIntelligenceInformationList); err != nil {
 		return ThreatIntelligenceIndicatorsClientListResponse{}, err
 	}

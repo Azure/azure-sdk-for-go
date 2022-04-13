@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ThreatIntelligenceIndicatorClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewThreatIntelligenceIndicatorClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ThreatIntelligenceIndicatorClient {
+func NewThreatIntelligenceIndicatorClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ThreatIntelligenceIndicatorClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ThreatIntelligenceIndicatorClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // AppendTags - Append tags to a threat intelligence indicator.
@@ -69,7 +74,7 @@ func (client *ThreatIntelligenceIndicatorClient) AppendTags(ctx context.Context,
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return ThreatIntelligenceIndicatorClientAppendTagsResponse{}, runtime.NewResponseError(resp)
 	}
-	return ThreatIntelligenceIndicatorClientAppendTagsResponse{RawResponse: resp}, nil
+	return ThreatIntelligenceIndicatorClientAppendTagsResponse{}, nil
 }
 
 // appendTagsCreateRequest creates the AppendTags request.
@@ -96,7 +101,7 @@ func (client *ThreatIntelligenceIndicatorClient) appendTagsCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, threatIntelligenceAppendTags)
@@ -110,7 +115,7 @@ func (client *ThreatIntelligenceIndicatorClient) appendTagsCreateRequest(ctx con
 // threatIntelligenceProperties - Properties of threat intelligence indicators to create and update.
 // options - ThreatIntelligenceIndicatorClientCreateOptions contains the optional parameters for the ThreatIntelligenceIndicatorClient.Create
 // method.
-func (client *ThreatIntelligenceIndicatorClient) Create(ctx context.Context, resourceGroupName string, workspaceName string, name string, threatIntelligenceProperties ThreatIntelligenceIndicatorModelForRequestBody, options *ThreatIntelligenceIndicatorClientCreateOptions) (ThreatIntelligenceIndicatorClientCreateResponse, error) {
+func (client *ThreatIntelligenceIndicatorClient) Create(ctx context.Context, resourceGroupName string, workspaceName string, name string, threatIntelligenceProperties ThreatIntelligenceIndicatorModel, options *ThreatIntelligenceIndicatorClientCreateOptions) (ThreatIntelligenceIndicatorClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, workspaceName, name, threatIntelligenceProperties, options)
 	if err != nil {
 		return ThreatIntelligenceIndicatorClientCreateResponse{}, err
@@ -126,7 +131,7 @@ func (client *ThreatIntelligenceIndicatorClient) Create(ctx context.Context, res
 }
 
 // createCreateRequest creates the Create request.
-func (client *ThreatIntelligenceIndicatorClient) createCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, threatIntelligenceProperties ThreatIntelligenceIndicatorModelForRequestBody, options *ThreatIntelligenceIndicatorClientCreateOptions) (*policy.Request, error) {
+func (client *ThreatIntelligenceIndicatorClient) createCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, threatIntelligenceProperties ThreatIntelligenceIndicatorModel, options *ThreatIntelligenceIndicatorClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/threatIntelligence/main/indicators/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -149,7 +154,7 @@ func (client *ThreatIntelligenceIndicatorClient) createCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, threatIntelligenceProperties)
@@ -157,7 +162,7 @@ func (client *ThreatIntelligenceIndicatorClient) createCreateRequest(ctx context
 
 // createHandleResponse handles the Create response.
 func (client *ThreatIntelligenceIndicatorClient) createHandleResponse(resp *http.Response) (ThreatIntelligenceIndicatorClientCreateResponse, error) {
-	result := ThreatIntelligenceIndicatorClientCreateResponse{RawResponse: resp}
+	result := ThreatIntelligenceIndicatorClientCreateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
 		return ThreatIntelligenceIndicatorClientCreateResponse{}, err
 	}
@@ -171,7 +176,7 @@ func (client *ThreatIntelligenceIndicatorClient) createHandleResponse(resp *http
 // threatIntelligenceProperties - Properties of threat intelligence indicators to create and update.
 // options - ThreatIntelligenceIndicatorClientCreateIndicatorOptions contains the optional parameters for the ThreatIntelligenceIndicatorClient.CreateIndicator
 // method.
-func (client *ThreatIntelligenceIndicatorClient) CreateIndicator(ctx context.Context, resourceGroupName string, workspaceName string, threatIntelligenceProperties ThreatIntelligenceIndicatorModelForRequestBody, options *ThreatIntelligenceIndicatorClientCreateIndicatorOptions) (ThreatIntelligenceIndicatorClientCreateIndicatorResponse, error) {
+func (client *ThreatIntelligenceIndicatorClient) CreateIndicator(ctx context.Context, resourceGroupName string, workspaceName string, threatIntelligenceProperties ThreatIntelligenceIndicatorModel, options *ThreatIntelligenceIndicatorClientCreateIndicatorOptions) (ThreatIntelligenceIndicatorClientCreateIndicatorResponse, error) {
 	req, err := client.createIndicatorCreateRequest(ctx, resourceGroupName, workspaceName, threatIntelligenceProperties, options)
 	if err != nil {
 		return ThreatIntelligenceIndicatorClientCreateIndicatorResponse{}, err
@@ -187,7 +192,7 @@ func (client *ThreatIntelligenceIndicatorClient) CreateIndicator(ctx context.Con
 }
 
 // createIndicatorCreateRequest creates the CreateIndicator request.
-func (client *ThreatIntelligenceIndicatorClient) createIndicatorCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, threatIntelligenceProperties ThreatIntelligenceIndicatorModelForRequestBody, options *ThreatIntelligenceIndicatorClientCreateIndicatorOptions) (*policy.Request, error) {
+func (client *ThreatIntelligenceIndicatorClient) createIndicatorCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, threatIntelligenceProperties ThreatIntelligenceIndicatorModel, options *ThreatIntelligenceIndicatorClientCreateIndicatorOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/threatIntelligence/main/createIndicator"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -206,7 +211,7 @@ func (client *ThreatIntelligenceIndicatorClient) createIndicatorCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, threatIntelligenceProperties)
@@ -214,7 +219,7 @@ func (client *ThreatIntelligenceIndicatorClient) createIndicatorCreateRequest(ct
 
 // createIndicatorHandleResponse handles the CreateIndicator response.
 func (client *ThreatIntelligenceIndicatorClient) createIndicatorHandleResponse(resp *http.Response) (ThreatIntelligenceIndicatorClientCreateIndicatorResponse, error) {
-	result := ThreatIntelligenceIndicatorClientCreateIndicatorResponse{RawResponse: resp}
+	result := ThreatIntelligenceIndicatorClientCreateIndicatorResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
 		return ThreatIntelligenceIndicatorClientCreateIndicatorResponse{}, err
 	}
@@ -240,7 +245,7 @@ func (client *ThreatIntelligenceIndicatorClient) Delete(ctx context.Context, res
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return ThreatIntelligenceIndicatorClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ThreatIntelligenceIndicatorClientDeleteResponse{RawResponse: resp}, nil
+	return ThreatIntelligenceIndicatorClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -267,7 +272,7 @@ func (client *ThreatIntelligenceIndicatorClient) deleteCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -319,7 +324,7 @@ func (client *ThreatIntelligenceIndicatorClient) getCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -327,7 +332,7 @@ func (client *ThreatIntelligenceIndicatorClient) getCreateRequest(ctx context.Co
 
 // getHandleResponse handles the Get response.
 func (client *ThreatIntelligenceIndicatorClient) getHandleResponse(resp *http.Response) (ThreatIntelligenceIndicatorClientGetResponse, error) {
-	result := ThreatIntelligenceIndicatorClientGetResponse{RawResponse: resp}
+	result := ThreatIntelligenceIndicatorClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
 		return ThreatIntelligenceIndicatorClientGetResponse{}, err
 	}
@@ -341,16 +346,32 @@ func (client *ThreatIntelligenceIndicatorClient) getHandleResponse(resp *http.Re
 // threatIntelligenceFilteringCriteria - Filtering criteria for querying threat intelligence indicators.
 // options - ThreatIntelligenceIndicatorClientQueryIndicatorsOptions contains the optional parameters for the ThreatIntelligenceIndicatorClient.QueryIndicators
 // method.
-func (client *ThreatIntelligenceIndicatorClient) QueryIndicators(resourceGroupName string, workspaceName string, threatIntelligenceFilteringCriteria ThreatIntelligenceFilteringCriteria, options *ThreatIntelligenceIndicatorClientQueryIndicatorsOptions) *ThreatIntelligenceIndicatorClientQueryIndicatorsPager {
-	return &ThreatIntelligenceIndicatorClientQueryIndicatorsPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.queryIndicatorsCreateRequest(ctx, resourceGroupName, workspaceName, threatIntelligenceFilteringCriteria, options)
+func (client *ThreatIntelligenceIndicatorClient) QueryIndicators(resourceGroupName string, workspaceName string, threatIntelligenceFilteringCriteria ThreatIntelligenceFilteringCriteria, options *ThreatIntelligenceIndicatorClientQueryIndicatorsOptions) *runtime.Pager[ThreatIntelligenceIndicatorClientQueryIndicatorsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ThreatIntelligenceIndicatorClientQueryIndicatorsResponse]{
+		More: func(page ThreatIntelligenceIndicatorClientQueryIndicatorsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ThreatIntelligenceIndicatorClientQueryIndicatorsResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ThreatIntelligenceInformationList.NextLink)
+		Fetcher: func(ctx context.Context, page *ThreatIntelligenceIndicatorClientQueryIndicatorsResponse) (ThreatIntelligenceIndicatorClientQueryIndicatorsResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.queryIndicatorsCreateRequest(ctx, resourceGroupName, workspaceName, threatIntelligenceFilteringCriteria, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ThreatIntelligenceIndicatorClientQueryIndicatorsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ThreatIntelligenceIndicatorClientQueryIndicatorsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ThreatIntelligenceIndicatorClientQueryIndicatorsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.queryIndicatorsHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // queryIndicatorsCreateRequest creates the QueryIndicators request.
@@ -373,7 +394,7 @@ func (client *ThreatIntelligenceIndicatorClient) queryIndicatorsCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, threatIntelligenceFilteringCriteria)
@@ -381,7 +402,7 @@ func (client *ThreatIntelligenceIndicatorClient) queryIndicatorsCreateRequest(ct
 
 // queryIndicatorsHandleResponse handles the QueryIndicators response.
 func (client *ThreatIntelligenceIndicatorClient) queryIndicatorsHandleResponse(resp *http.Response) (ThreatIntelligenceIndicatorClientQueryIndicatorsResponse, error) {
-	result := ThreatIntelligenceIndicatorClientQueryIndicatorsResponse{RawResponse: resp}
+	result := ThreatIntelligenceIndicatorClientQueryIndicatorsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ThreatIntelligenceInformationList); err != nil {
 		return ThreatIntelligenceIndicatorClientQueryIndicatorsResponse{}, err
 	}
@@ -396,7 +417,7 @@ func (client *ThreatIntelligenceIndicatorClient) queryIndicatorsHandleResponse(r
 // threatIntelligenceReplaceTags - Tags in the threat intelligence indicator to be replaced.
 // options - ThreatIntelligenceIndicatorClientReplaceTagsOptions contains the optional parameters for the ThreatIntelligenceIndicatorClient.ReplaceTags
 // method.
-func (client *ThreatIntelligenceIndicatorClient) ReplaceTags(ctx context.Context, resourceGroupName string, workspaceName string, name string, threatIntelligenceReplaceTags ThreatIntelligenceIndicatorModelForRequestBody, options *ThreatIntelligenceIndicatorClientReplaceTagsOptions) (ThreatIntelligenceIndicatorClientReplaceTagsResponse, error) {
+func (client *ThreatIntelligenceIndicatorClient) ReplaceTags(ctx context.Context, resourceGroupName string, workspaceName string, name string, threatIntelligenceReplaceTags ThreatIntelligenceIndicatorModel, options *ThreatIntelligenceIndicatorClientReplaceTagsOptions) (ThreatIntelligenceIndicatorClientReplaceTagsResponse, error) {
 	req, err := client.replaceTagsCreateRequest(ctx, resourceGroupName, workspaceName, name, threatIntelligenceReplaceTags, options)
 	if err != nil {
 		return ThreatIntelligenceIndicatorClientReplaceTagsResponse{}, err
@@ -412,7 +433,7 @@ func (client *ThreatIntelligenceIndicatorClient) ReplaceTags(ctx context.Context
 }
 
 // replaceTagsCreateRequest creates the ReplaceTags request.
-func (client *ThreatIntelligenceIndicatorClient) replaceTagsCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, threatIntelligenceReplaceTags ThreatIntelligenceIndicatorModelForRequestBody, options *ThreatIntelligenceIndicatorClientReplaceTagsOptions) (*policy.Request, error) {
+func (client *ThreatIntelligenceIndicatorClient) replaceTagsCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, threatIntelligenceReplaceTags ThreatIntelligenceIndicatorModel, options *ThreatIntelligenceIndicatorClientReplaceTagsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/threatIntelligence/main/indicators/{name}/replaceTags"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -435,7 +456,7 @@ func (client *ThreatIntelligenceIndicatorClient) replaceTagsCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, threatIntelligenceReplaceTags)
@@ -443,7 +464,7 @@ func (client *ThreatIntelligenceIndicatorClient) replaceTagsCreateRequest(ctx co
 
 // replaceTagsHandleResponse handles the ReplaceTags response.
 func (client *ThreatIntelligenceIndicatorClient) replaceTagsHandleResponse(resp *http.Response) (ThreatIntelligenceIndicatorClientReplaceTagsResponse, error) {
-	result := ThreatIntelligenceIndicatorClientReplaceTagsResponse{RawResponse: resp}
+	result := ThreatIntelligenceIndicatorClientReplaceTagsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
 		return ThreatIntelligenceIndicatorClientReplaceTagsResponse{}, err
 	}

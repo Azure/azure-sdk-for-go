@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,26 +17,33 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights"
 )
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-10-01-preview/examples/dataConnectors/CheckRequirementsAzureActiveDirectoryNoAuthorization.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/dataConnectors/CheckRequirementsAzureActiveDirectoryNoAuthorization.json
 func ExampleDataConnectorsCheckRequirementsClient_Post() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurityinsights.NewDataConnectorsCheckRequirementsClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewDataConnectorsCheckRequirementsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Post(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		&armsecurityinsights.AADCheckRequirements{
-			Kind: armsecurityinsights.DataConnectorKind("AzureActiveDirectory").ToPtr(),
+			Kind: to.Ptr(armsecurityinsights.DataConnectorKindAzureActiveDirectory),
 			Properties: &armsecurityinsights.AADCheckRequirementsProperties{
-				TenantID: to.StringPtr("<tenant-id>"),
+				TenantID: to.Ptr("<tenant-id>"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.DataConnectorsCheckRequirementsClientPostResult)
+	// TODO: use response item
+	_ = res
 }

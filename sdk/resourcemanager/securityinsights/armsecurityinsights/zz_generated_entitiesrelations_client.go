@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type EntitiesRelationsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewEntitiesRelationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *EntitiesRelationsClient {
+func NewEntitiesRelationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EntitiesRelationsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &EntitiesRelationsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // List - Gets all relations of an entity.
@@ -56,16 +61,32 @@ func NewEntitiesRelationsClient(subscriptionID string, credential azcore.TokenCr
 // workspaceName - The name of the workspace.
 // entityID - entity ID
 // options - EntitiesRelationsClientListOptions contains the optional parameters for the EntitiesRelationsClient.List method.
-func (client *EntitiesRelationsClient) List(resourceGroupName string, workspaceName string, entityID string, options *EntitiesRelationsClientListOptions) *EntitiesRelationsClientListPager {
-	return &EntitiesRelationsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, workspaceName, entityID, options)
+func (client *EntitiesRelationsClient) List(resourceGroupName string, workspaceName string, entityID string, options *EntitiesRelationsClientListOptions) *runtime.Pager[EntitiesRelationsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[EntitiesRelationsClientListResponse]{
+		More: func(page EntitiesRelationsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp EntitiesRelationsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.RelationList.NextLink)
+		Fetcher: func(ctx context.Context, page *EntitiesRelationsClientListResponse) (EntitiesRelationsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, workspaceName, entityID, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return EntitiesRelationsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return EntitiesRelationsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return EntitiesRelationsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -92,7 +113,7 @@ func (client *EntitiesRelationsClient) listCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -112,7 +133,7 @@ func (client *EntitiesRelationsClient) listCreateRequest(ctx context.Context, re
 
 // listHandleResponse handles the List response.
 func (client *EntitiesRelationsClient) listHandleResponse(resp *http.Response) (EntitiesRelationsClientListResponse, error) {
-	result := EntitiesRelationsClientListResponse{RawResponse: resp}
+	result := EntitiesRelationsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RelationList); err != nil {
 		return EntitiesRelationsClientListResponse{}, err
 	}

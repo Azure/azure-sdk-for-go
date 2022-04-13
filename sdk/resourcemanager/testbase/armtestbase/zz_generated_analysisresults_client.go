@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type AnalysisResultsClient struct {
 // subscriptionID - The Azure subscription ID. This is a GUID-formatted string.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewAnalysisResultsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AnalysisResultsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewAnalysisResultsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AnalysisResultsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &AnalysisResultsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Gets an Analysis Result of a Test Result by name.
@@ -112,7 +117,7 @@ func (client *AnalysisResultsClient) getCreateRequest(ctx context.Context, resou
 
 // getHandleResponse handles the Get response.
 func (client *AnalysisResultsClient) getHandleResponse(resp *http.Response) (AnalysisResultsClientGetResponse, error) {
-	result := AnalysisResultsClientGetResponse{RawResponse: resp}
+	result := AnalysisResultsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AnalysisResultSingletonResource); err != nil {
 		return AnalysisResultsClientGetResponse{}, err
 	}
@@ -128,19 +133,26 @@ func (client *AnalysisResultsClient) getHandleResponse(resp *http.Response) (Ana
 // testResultName - The Test Result Name. It equals to {osName}-{TestResultId} string.
 // analysisResultType - The type of the Analysis Result of a Test Result.
 // options - AnalysisResultsClientListOptions contains the optional parameters for the AnalysisResultsClient.List method.
-func (client *AnalysisResultsClient) List(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, testResultName string, analysisResultType AnalysisResultType, options *AnalysisResultsClientListOptions) (AnalysisResultsClientListResponse, error) {
-	req, err := client.listCreateRequest(ctx, resourceGroupName, testBaseAccountName, packageName, testResultName, analysisResultType, options)
-	if err != nil {
-		return AnalysisResultsClientListResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return AnalysisResultsClientListResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AnalysisResultsClientListResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listHandleResponse(resp)
+func (client *AnalysisResultsClient) List(resourceGroupName string, testBaseAccountName string, packageName string, testResultName string, analysisResultType AnalysisResultType, options *AnalysisResultsClientListOptions) *runtime.Pager[AnalysisResultsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AnalysisResultsClientListResponse]{
+		More: func(page AnalysisResultsClientListResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *AnalysisResultsClientListResponse) (AnalysisResultsClientListResponse, error) {
+			req, err := client.listCreateRequest(ctx, resourceGroupName, testBaseAccountName, packageName, testResultName, analysisResultType, options)
+			if err != nil {
+				return AnalysisResultsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AnalysisResultsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AnalysisResultsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
+		},
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -180,7 +192,7 @@ func (client *AnalysisResultsClient) listCreateRequest(ctx context.Context, reso
 
 // listHandleResponse handles the List response.
 func (client *AnalysisResultsClient) listHandleResponse(resp *http.Response) (AnalysisResultsClientListResponse, error) {
-	result := AnalysisResultsClientListResponse{RawResponse: resp}
+	result := AnalysisResultsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AnalysisResultListResult); err != nil {
 		return AnalysisResultsClientListResponse{}, err
 	}

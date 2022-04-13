@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -31,19 +32,23 @@ type QuotaClient struct {
 // NewQuotaClient creates a new instance of QuotaClient with the specified values.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewQuotaClient(credential azcore.TokenCredential, options *arm.ClientOptions) *QuotaClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewQuotaClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*QuotaClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &QuotaClient{
-		host: string(cp.Endpoint),
-		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host: ep,
+		pl:   pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Create or update the quota (service limits) of a resource to the requested value. Steps:
@@ -64,22 +69,18 @@ func NewQuotaClient(credential azcore.TokenCredential, options *arm.ClientOption
 // createQuotaRequest - Quota requests payload.
 // options - QuotaClientBeginCreateOrUpdateOptions contains the optional parameters for the QuotaClient.BeginCreateOrUpdate
 // method.
-func (client *QuotaClient) BeginCreateOrUpdate(ctx context.Context, subscriptionID string, providerID string, location string, resourceName string, createQuotaRequest CurrentQuotaLimitBase, options *QuotaClientBeginCreateOrUpdateOptions) (QuotaClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, subscriptionID, providerID, location, resourceName, createQuotaRequest, options)
-	if err != nil {
-		return QuotaClientCreateOrUpdatePollerResponse{}, err
+func (client *QuotaClient) BeginCreateOrUpdate(ctx context.Context, subscriptionID string, providerID string, location string, resourceName string, createQuotaRequest CurrentQuotaLimitBase, options *QuotaClientBeginCreateOrUpdateOptions) (*armruntime.Poller[QuotaClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, subscriptionID, providerID, location, resourceName, createQuotaRequest, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[QuotaClientCreateOrUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaOriginalURI,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[QuotaClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := QuotaClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("QuotaClient.CreateOrUpdate", "location", resp, client.pl)
-	if err != nil {
-		return QuotaClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &QuotaClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Create or update the quota (service limits) of a resource to the requested value. Steps:
@@ -193,7 +194,7 @@ func (client *QuotaClient) getCreateRequest(ctx context.Context, subscriptionID 
 
 // getHandleResponse handles the Get response.
 func (client *QuotaClient) getHandleResponse(resp *http.Response) (QuotaClientGetResponse, error) {
-	result := QuotaClientGetResponse{RawResponse: resp}
+	result := QuotaClientGetResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -210,16 +211,32 @@ func (client *QuotaClient) getHandleResponse(resp *http.Response) (QuotaClientGe
 // providerID - Azure resource provider ID.
 // location - Azure region.
 // options - QuotaClientListOptions contains the optional parameters for the QuotaClient.List method.
-func (client *QuotaClient) List(subscriptionID string, providerID string, location string, options *QuotaClientListOptions) *QuotaClientListPager {
-	return &QuotaClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, subscriptionID, providerID, location, options)
+func (client *QuotaClient) List(subscriptionID string, providerID string, location string, options *QuotaClientListOptions) *runtime.Pager[QuotaClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[QuotaClientListResponse]{
+		More: func(page QuotaClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp QuotaClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.QuotaLimits.NextLink)
+		Fetcher: func(ctx context.Context, page *QuotaClientListResponse) (QuotaClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, subscriptionID, providerID, location, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return QuotaClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return QuotaClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return QuotaClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -250,7 +267,7 @@ func (client *QuotaClient) listCreateRequest(ctx context.Context, subscriptionID
 
 // listHandleResponse handles the List response.
 func (client *QuotaClient) listHandleResponse(resp *http.Response) (QuotaClientListResponse, error) {
-	result := QuotaClientListResponse{RawResponse: resp}
+	result := QuotaClientListResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -273,22 +290,18 @@ func (client *QuotaClient) listHandleResponse(resp *http.Response) (QuotaClientL
 // for Microsoft.MachineLearningServices
 // createQuotaRequest - Payload for the quota request.
 // options - QuotaClientBeginUpdateOptions contains the optional parameters for the QuotaClient.BeginUpdate method.
-func (client *QuotaClient) BeginUpdate(ctx context.Context, subscriptionID string, providerID string, location string, resourceName string, createQuotaRequest CurrentQuotaLimitBase, options *QuotaClientBeginUpdateOptions) (QuotaClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, subscriptionID, providerID, location, resourceName, createQuotaRequest, options)
-	if err != nil {
-		return QuotaClientUpdatePollerResponse{}, err
+func (client *QuotaClient) BeginUpdate(ctx context.Context, subscriptionID string, providerID string, location string, resourceName string, createQuotaRequest CurrentQuotaLimitBase, options *QuotaClientBeginUpdateOptions) (*armruntime.Poller[QuotaClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, subscriptionID, providerID, location, resourceName, createQuotaRequest, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[QuotaClientUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaOriginalURI,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[QuotaClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := QuotaClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("QuotaClient.Update", "location", resp, client.pl)
-	if err != nil {
-		return QuotaClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &QuotaClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Update the quota (service limits) of this resource to the requested value.

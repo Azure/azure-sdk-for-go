@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type SQLPoolTablesClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewSQLPoolTablesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SQLPoolTablesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewSQLPoolTablesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SQLPoolTablesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &SQLPoolTablesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Get Sql pool table
@@ -112,7 +117,7 @@ func (client *SQLPoolTablesClient) getCreateRequest(ctx context.Context, resourc
 
 // getHandleResponse handles the Get response.
 func (client *SQLPoolTablesClient) getHandleResponse(resp *http.Response) (SQLPoolTablesClientGetResponse, error) {
-	result := SQLPoolTablesClientGetResponse{RawResponse: resp}
+	result := SQLPoolTablesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLPoolTable); err != nil {
 		return SQLPoolTablesClientGetResponse{}, err
 	}
@@ -127,16 +132,32 @@ func (client *SQLPoolTablesClient) getHandleResponse(resp *http.Response) (SQLPo
 // schemaName - The name of the schema.
 // options - SQLPoolTablesClientListBySchemaOptions contains the optional parameters for the SQLPoolTablesClient.ListBySchema
 // method.
-func (client *SQLPoolTablesClient) ListBySchema(resourceGroupName string, workspaceName string, sqlPoolName string, schemaName string, options *SQLPoolTablesClientListBySchemaOptions) *SQLPoolTablesClientListBySchemaPager {
-	return &SQLPoolTablesClientListBySchemaPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySchemaCreateRequest(ctx, resourceGroupName, workspaceName, sqlPoolName, schemaName, options)
+func (client *SQLPoolTablesClient) ListBySchema(resourceGroupName string, workspaceName string, sqlPoolName string, schemaName string, options *SQLPoolTablesClientListBySchemaOptions) *runtime.Pager[SQLPoolTablesClientListBySchemaResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SQLPoolTablesClientListBySchemaResponse]{
+		More: func(page SQLPoolTablesClientListBySchemaResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SQLPoolTablesClientListBySchemaResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SQLPoolTableListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *SQLPoolTablesClientListBySchemaResponse) (SQLPoolTablesClientListBySchemaResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySchemaCreateRequest(ctx, resourceGroupName, workspaceName, sqlPoolName, schemaName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SQLPoolTablesClientListBySchemaResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SQLPoolTablesClientListBySchemaResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SQLPoolTablesClientListBySchemaResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySchemaHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySchemaCreateRequest creates the ListBySchema request.
@@ -178,7 +199,7 @@ func (client *SQLPoolTablesClient) listBySchemaCreateRequest(ctx context.Context
 
 // listBySchemaHandleResponse handles the ListBySchema response.
 func (client *SQLPoolTablesClient) listBySchemaHandleResponse(resp *http.Response) (SQLPoolTablesClientListBySchemaResponse, error) {
-	result := SQLPoolTablesClientListBySchemaResponse{RawResponse: resp}
+	result := SQLPoolTablesClientListBySchemaResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLPoolTableListResult); err != nil {
 		return SQLPoolTablesClientListBySchemaResponse{}, err
 	}

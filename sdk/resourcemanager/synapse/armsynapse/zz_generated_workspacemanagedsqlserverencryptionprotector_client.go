@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type WorkspaceManagedSQLServerEncryptionProtectorClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewWorkspaceManagedSQLServerEncryptionProtectorClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *WorkspaceManagedSQLServerEncryptionProtectorClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewWorkspaceManagedSQLServerEncryptionProtectorClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkspaceManagedSQLServerEncryptionProtectorClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &WorkspaceManagedSQLServerEncryptionProtectorClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Updates workspace managed sql server's encryption protector.
@@ -57,22 +62,16 @@ func NewWorkspaceManagedSQLServerEncryptionProtectorClient(subscriptionID string
 // parameters - The requested encryption protector resource state.
 // options - WorkspaceManagedSQLServerEncryptionProtectorClientBeginCreateOrUpdateOptions contains the optional parameters
 // for the WorkspaceManagedSQLServerEncryptionProtectorClient.BeginCreateOrUpdate method.
-func (client *WorkspaceManagedSQLServerEncryptionProtectorClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, encryptionProtectorName EncryptionProtectorName, parameters EncryptionProtector, options *WorkspaceManagedSQLServerEncryptionProtectorClientBeginCreateOrUpdateOptions) (WorkspaceManagedSQLServerEncryptionProtectorClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, workspaceName, encryptionProtectorName, parameters, options)
-	if err != nil {
-		return WorkspaceManagedSQLServerEncryptionProtectorClientCreateOrUpdatePollerResponse{}, err
+func (client *WorkspaceManagedSQLServerEncryptionProtectorClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, encryptionProtectorName EncryptionProtectorName, parameters EncryptionProtector, options *WorkspaceManagedSQLServerEncryptionProtectorClientBeginCreateOrUpdateOptions) (*armruntime.Poller[WorkspaceManagedSQLServerEncryptionProtectorClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, workspaceName, encryptionProtectorName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[WorkspaceManagedSQLServerEncryptionProtectorClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[WorkspaceManagedSQLServerEncryptionProtectorClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := WorkspaceManagedSQLServerEncryptionProtectorClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("WorkspaceManagedSQLServerEncryptionProtectorClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return WorkspaceManagedSQLServerEncryptionProtectorClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &WorkspaceManagedSQLServerEncryptionProtectorClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Updates workspace managed sql server's encryption protector.
@@ -176,7 +175,7 @@ func (client *WorkspaceManagedSQLServerEncryptionProtectorClient) getCreateReque
 
 // getHandleResponse handles the Get response.
 func (client *WorkspaceManagedSQLServerEncryptionProtectorClient) getHandleResponse(resp *http.Response) (WorkspaceManagedSQLServerEncryptionProtectorClientGetResponse, error) {
-	result := WorkspaceManagedSQLServerEncryptionProtectorClientGetResponse{RawResponse: resp}
+	result := WorkspaceManagedSQLServerEncryptionProtectorClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EncryptionProtector); err != nil {
 		return WorkspaceManagedSQLServerEncryptionProtectorClientGetResponse{}, err
 	}
@@ -189,16 +188,32 @@ func (client *WorkspaceManagedSQLServerEncryptionProtectorClient) getHandleRespo
 // workspaceName - The name of the workspace.
 // options - WorkspaceManagedSQLServerEncryptionProtectorClientListOptions contains the optional parameters for the WorkspaceManagedSQLServerEncryptionProtectorClient.List
 // method.
-func (client *WorkspaceManagedSQLServerEncryptionProtectorClient) List(resourceGroupName string, workspaceName string, options *WorkspaceManagedSQLServerEncryptionProtectorClientListOptions) *WorkspaceManagedSQLServerEncryptionProtectorClientListPager {
-	return &WorkspaceManagedSQLServerEncryptionProtectorClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, workspaceName, options)
+func (client *WorkspaceManagedSQLServerEncryptionProtectorClient) List(resourceGroupName string, workspaceName string, options *WorkspaceManagedSQLServerEncryptionProtectorClientListOptions) *runtime.Pager[WorkspaceManagedSQLServerEncryptionProtectorClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[WorkspaceManagedSQLServerEncryptionProtectorClientListResponse]{
+		More: func(page WorkspaceManagedSQLServerEncryptionProtectorClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp WorkspaceManagedSQLServerEncryptionProtectorClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.EncryptionProtectorListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *WorkspaceManagedSQLServerEncryptionProtectorClientListResponse) (WorkspaceManagedSQLServerEncryptionProtectorClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, workspaceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return WorkspaceManagedSQLServerEncryptionProtectorClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return WorkspaceManagedSQLServerEncryptionProtectorClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return WorkspaceManagedSQLServerEncryptionProtectorClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -229,7 +244,7 @@ func (client *WorkspaceManagedSQLServerEncryptionProtectorClient) listCreateRequ
 
 // listHandleResponse handles the List response.
 func (client *WorkspaceManagedSQLServerEncryptionProtectorClient) listHandleResponse(resp *http.Response) (WorkspaceManagedSQLServerEncryptionProtectorClientListResponse, error) {
-	result := WorkspaceManagedSQLServerEncryptionProtectorClientListResponse{RawResponse: resp}
+	result := WorkspaceManagedSQLServerEncryptionProtectorClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EncryptionProtectorListResult); err != nil {
 		return WorkspaceManagedSQLServerEncryptionProtectorClientListResponse{}, err
 	}
@@ -243,22 +258,16 @@ func (client *WorkspaceManagedSQLServerEncryptionProtectorClient) listHandleResp
 // encryptionProtectorName - The name of the encryption protector.
 // options - WorkspaceManagedSQLServerEncryptionProtectorClientBeginRevalidateOptions contains the optional parameters for
 // the WorkspaceManagedSQLServerEncryptionProtectorClient.BeginRevalidate method.
-func (client *WorkspaceManagedSQLServerEncryptionProtectorClient) BeginRevalidate(ctx context.Context, resourceGroupName string, workspaceName string, encryptionProtectorName EncryptionProtectorName, options *WorkspaceManagedSQLServerEncryptionProtectorClientBeginRevalidateOptions) (WorkspaceManagedSQLServerEncryptionProtectorClientRevalidatePollerResponse, error) {
-	resp, err := client.revalidate(ctx, resourceGroupName, workspaceName, encryptionProtectorName, options)
-	if err != nil {
-		return WorkspaceManagedSQLServerEncryptionProtectorClientRevalidatePollerResponse{}, err
+func (client *WorkspaceManagedSQLServerEncryptionProtectorClient) BeginRevalidate(ctx context.Context, resourceGroupName string, workspaceName string, encryptionProtectorName EncryptionProtectorName, options *WorkspaceManagedSQLServerEncryptionProtectorClientBeginRevalidateOptions) (*armruntime.Poller[WorkspaceManagedSQLServerEncryptionProtectorClientRevalidateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.revalidate(ctx, resourceGroupName, workspaceName, encryptionProtectorName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[WorkspaceManagedSQLServerEncryptionProtectorClientRevalidateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[WorkspaceManagedSQLServerEncryptionProtectorClientRevalidateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := WorkspaceManagedSQLServerEncryptionProtectorClientRevalidatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("WorkspaceManagedSQLServerEncryptionProtectorClient.Revalidate", "", resp, client.pl)
-	if err != nil {
-		return WorkspaceManagedSQLServerEncryptionProtectorClientRevalidatePollerResponse{}, err
-	}
-	result.Poller = &WorkspaceManagedSQLServerEncryptionProtectorClientRevalidatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Revalidate - Revalidates workspace managed sql server's existing encryption protector.

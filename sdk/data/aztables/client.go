@@ -656,7 +656,7 @@ func (t *Client) SetAccessPolicy(ctx context.Context, options *SetAccessPolicyOp
 		options = &SetAccessPolicyOptions{}
 	}
 	response, err := t.client.SetAccessPolicy(ctx, t.name, generated.Enum4ACL, options.toGenerated())
-	if err != nil && options != nil && len(options.TableACL) > 5 {
+	if err != nil && len(options.TableACL) > 5 {
 		err = errTooManyAccessPoliciesError
 	}
 	return setAccessPolicyResponseFromGenerated(&response), err

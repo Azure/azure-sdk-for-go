@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type DedicatedCloudServicesClient struct {
 // subscriptionID - The subscription ID.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewDedicatedCloudServicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DedicatedCloudServicesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewDedicatedCloudServicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DedicatedCloudServicesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &DedicatedCloudServicesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Create dedicate cloud service
@@ -100,7 +105,7 @@ func (client *DedicatedCloudServicesClient) createOrUpdateCreateRequest(ctx cont
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *DedicatedCloudServicesClient) createOrUpdateHandleResponse(resp *http.Response) (DedicatedCloudServicesClientCreateOrUpdateResponse, error) {
-	result := DedicatedCloudServicesClientCreateOrUpdateResponse{RawResponse: resp}
+	result := DedicatedCloudServicesClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DedicatedCloudService); err != nil {
 		return DedicatedCloudServicesClientCreateOrUpdateResponse{}, err
 	}
@@ -113,22 +118,16 @@ func (client *DedicatedCloudServicesClient) createOrUpdateHandleResponse(resp *h
 // dedicatedCloudServiceName - dedicated cloud service name
 // options - DedicatedCloudServicesClientBeginDeleteOptions contains the optional parameters for the DedicatedCloudServicesClient.BeginDelete
 // method.
-func (client *DedicatedCloudServicesClient) BeginDelete(ctx context.Context, resourceGroupName string, dedicatedCloudServiceName string, options *DedicatedCloudServicesClientBeginDeleteOptions) (DedicatedCloudServicesClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, dedicatedCloudServiceName, options)
-	if err != nil {
-		return DedicatedCloudServicesClientDeletePollerResponse{}, err
+func (client *DedicatedCloudServicesClient) BeginDelete(ctx context.Context, resourceGroupName string, dedicatedCloudServiceName string, options *DedicatedCloudServicesClientBeginDeleteOptions) (*armruntime.Poller[DedicatedCloudServicesClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, dedicatedCloudServiceName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[DedicatedCloudServicesClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[DedicatedCloudServicesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DedicatedCloudServicesClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DedicatedCloudServicesClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return DedicatedCloudServicesClientDeletePollerResponse{}, err
-	}
-	result.Poller = &DedicatedCloudServicesClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Delete dedicate cloud service
@@ -223,7 +222,7 @@ func (client *DedicatedCloudServicesClient) getCreateRequest(ctx context.Context
 
 // getHandleResponse handles the Get response.
 func (client *DedicatedCloudServicesClient) getHandleResponse(resp *http.Response) (DedicatedCloudServicesClientGetResponse, error) {
-	result := DedicatedCloudServicesClientGetResponse{RawResponse: resp}
+	result := DedicatedCloudServicesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DedicatedCloudService); err != nil {
 		return DedicatedCloudServicesClientGetResponse{}, err
 	}
@@ -235,16 +234,32 @@ func (client *DedicatedCloudServicesClient) getHandleResponse(resp *http.Respons
 // resourceGroupName - The name of the resource group
 // options - DedicatedCloudServicesClientListByResourceGroupOptions contains the optional parameters for the DedicatedCloudServicesClient.ListByResourceGroup
 // method.
-func (client *DedicatedCloudServicesClient) ListByResourceGroup(resourceGroupName string, options *DedicatedCloudServicesClientListByResourceGroupOptions) *DedicatedCloudServicesClientListByResourceGroupPager {
-	return &DedicatedCloudServicesClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *DedicatedCloudServicesClient) ListByResourceGroup(resourceGroupName string, options *DedicatedCloudServicesClientListByResourceGroupOptions) *runtime.Pager[DedicatedCloudServicesClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DedicatedCloudServicesClientListByResourceGroupResponse]{
+		More: func(page DedicatedCloudServicesClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DedicatedCloudServicesClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DedicatedCloudServiceListResponse.NextLink)
+		Fetcher: func(ctx context.Context, page *DedicatedCloudServicesClientListByResourceGroupResponse) (DedicatedCloudServicesClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DedicatedCloudServicesClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DedicatedCloudServicesClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DedicatedCloudServicesClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -280,7 +295,7 @@ func (client *DedicatedCloudServicesClient) listByResourceGroupCreateRequest(ctx
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *DedicatedCloudServicesClient) listByResourceGroupHandleResponse(resp *http.Response) (DedicatedCloudServicesClientListByResourceGroupResponse, error) {
-	result := DedicatedCloudServicesClientListByResourceGroupResponse{RawResponse: resp}
+	result := DedicatedCloudServicesClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DedicatedCloudServiceListResponse); err != nil {
 		return DedicatedCloudServicesClientListByResourceGroupResponse{}, err
 	}
@@ -291,16 +306,32 @@ func (client *DedicatedCloudServicesClient) listByResourceGroupHandleResponse(re
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - DedicatedCloudServicesClientListBySubscriptionOptions contains the optional parameters for the DedicatedCloudServicesClient.ListBySubscription
 // method.
-func (client *DedicatedCloudServicesClient) ListBySubscription(options *DedicatedCloudServicesClientListBySubscriptionOptions) *DedicatedCloudServicesClientListBySubscriptionPager {
-	return &DedicatedCloudServicesClientListBySubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySubscriptionCreateRequest(ctx, options)
+func (client *DedicatedCloudServicesClient) ListBySubscription(options *DedicatedCloudServicesClientListBySubscriptionOptions) *runtime.Pager[DedicatedCloudServicesClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DedicatedCloudServicesClientListBySubscriptionResponse]{
+		More: func(page DedicatedCloudServicesClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DedicatedCloudServicesClientListBySubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DedicatedCloudServiceListResponse.NextLink)
+		Fetcher: func(ctx context.Context, page *DedicatedCloudServicesClientListBySubscriptionResponse) (DedicatedCloudServicesClientListBySubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySubscriptionCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DedicatedCloudServicesClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DedicatedCloudServicesClientListBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DedicatedCloudServicesClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
@@ -332,7 +363,7 @@ func (client *DedicatedCloudServicesClient) listBySubscriptionCreateRequest(ctx 
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
 func (client *DedicatedCloudServicesClient) listBySubscriptionHandleResponse(resp *http.Response) (DedicatedCloudServicesClientListBySubscriptionResponse, error) {
-	result := DedicatedCloudServicesClientListBySubscriptionResponse{RawResponse: resp}
+	result := DedicatedCloudServicesClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DedicatedCloudServiceListResponse); err != nil {
 		return DedicatedCloudServicesClientListBySubscriptionResponse{}, err
 	}
@@ -389,7 +420,7 @@ func (client *DedicatedCloudServicesClient) updateCreateRequest(ctx context.Cont
 
 // updateHandleResponse handles the Update response.
 func (client *DedicatedCloudServicesClient) updateHandleResponse(resp *http.Response) (DedicatedCloudServicesClientUpdateResponse, error) {
-	result := DedicatedCloudServicesClientUpdateResponse{RawResponse: resp}
+	result := DedicatedCloudServicesClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DedicatedCloudService); err != nil {
 		return DedicatedCloudServicesClientUpdateResponse{}, err
 	}

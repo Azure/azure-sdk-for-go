@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,39 +28,41 @@ import (
 type OperationsClient struct {
 	host           string
 	subscriptionID string
-	referer        string
 	pl             runtime.Pipeline
 }
 
 // NewOperationsClient creates a new instance of OperationsClient with the specified values.
 // subscriptionID - The subscription ID.
-// referer - referer url
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewOperationsClient(subscriptionID string, referer string, credential azcore.TokenCredential, options *arm.ClientOptions) *OperationsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewOperationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OperationsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &OperationsClient{
 		subscriptionID: subscriptionID,
-		referer:        referer,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Return an async operation
 // If the operation fails it returns an *azcore.ResponseError type.
 // regionID - The region Id (westus, eastus)
+// referer - referer url
 // operationID - operation id
 // options - OperationsClientGetOptions contains the optional parameters for the OperationsClient.Get method.
-func (client *OperationsClient) Get(ctx context.Context, regionID string, operationID string, options *OperationsClientGetOptions) (OperationsClientGetResponse, error) {
-	req, err := client.getCreateRequest(ctx, regionID, operationID, options)
+func (client *OperationsClient) Get(ctx context.Context, regionID string, referer string, operationID string, options *OperationsClientGetOptions) (OperationsClientGetResponse, error) {
+	req, err := client.getCreateRequest(ctx, regionID, referer, operationID, options)
 	if err != nil {
 		return OperationsClientGetResponse{}, err
 	}
@@ -74,7 +77,7 @@ func (client *OperationsClient) Get(ctx context.Context, regionID string, operat
 }
 
 // getCreateRequest creates the Get request.
-func (client *OperationsClient) getCreateRequest(ctx context.Context, regionID string, operationID string, options *OperationsClientGetOptions) (*policy.Request, error) {
+func (client *OperationsClient) getCreateRequest(ctx context.Context, regionID string, referer string, operationID string, options *OperationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.VMwareCloudSimple/locations/{regionId}/operationResults/{operationId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -95,14 +98,14 @@ func (client *OperationsClient) getCreateRequest(ctx context.Context, regionID s
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Referer", client.referer)
+	req.Raw().Header.Set("Referer", referer)
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
 func (client *OperationsClient) getHandleResponse(resp *http.Response) (OperationsClientGetResponse, error) {
-	result := OperationsClientGetResponse{RawResponse: resp}
+	result := OperationsClientGetResponse{}
 	if val := resp.Header.Get("Location"); val != "" {
 		result.Location = &val
 	}
@@ -123,16 +126,32 @@ func (client *OperationsClient) getHandleResponse(resp *http.Response) (Operatio
 // List - Return list of operations
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
-func (client *OperationsClient) List(options *OperationsClientListOptions) *OperationsClientListPager {
-	return &OperationsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *OperationsClient) List(options *OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[OperationsClientListResponse]{
+		More: func(page OperationsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp OperationsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AvailableOperationsListResponse.NextLink)
+		Fetcher: func(ctx context.Context, page *OperationsClientListResponse) (OperationsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return OperationsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return OperationsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return OperationsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -151,7 +170,7 @@ func (client *OperationsClient) listCreateRequest(ctx context.Context, options *
 
 // listHandleResponse handles the List response.
 func (client *OperationsClient) listHandleResponse(resp *http.Response) (OperationsClientListResponse, error) {
-	result := OperationsClientListResponse{RawResponse: resp}
+	result := OperationsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AvailableOperationsListResponse); err != nil {
 		return OperationsClientListResponse{}, err
 	}

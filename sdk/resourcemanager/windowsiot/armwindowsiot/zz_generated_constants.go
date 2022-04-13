@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armwindowsiot
 
 const (
 	moduleName    = "armwindowsiot"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // ServiceNameUnavailabilityReason - The reason for unavailability.
@@ -27,9 +27,4 @@ func PossibleServiceNameUnavailabilityReasonValues() []ServiceNameUnavailability
 		ServiceNameUnavailabilityReasonInvalid,
 		ServiceNameUnavailabilityReasonAlreadyExists,
 	}
-}
-
-// ToPtr returns a *ServiceNameUnavailabilityReason pointing to the current value.
-func (c ServiceNameUnavailabilityReason) ToPtr() *ServiceNameUnavailabilityReason {
-	return &c
 }

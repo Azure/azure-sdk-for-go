@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type VirtualMachineTemplatesClient struct {
 // subscriptionID - The subscription ID.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewVirtualMachineTemplatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VirtualMachineTemplatesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewVirtualMachineTemplatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VirtualMachineTemplatesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &VirtualMachineTemplatesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Returns virtual machine templates by its name
@@ -103,7 +108,7 @@ func (client *VirtualMachineTemplatesClient) getCreateRequest(ctx context.Contex
 
 // getHandleResponse handles the Get response.
 func (client *VirtualMachineTemplatesClient) getHandleResponse(resp *http.Response) (VirtualMachineTemplatesClientGetResponse, error) {
-	result := VirtualMachineTemplatesClientGetResponse{RawResponse: resp}
+	result := VirtualMachineTemplatesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineTemplate); err != nil {
 		return VirtualMachineTemplatesClientGetResponse{}, err
 	}
@@ -117,16 +122,32 @@ func (client *VirtualMachineTemplatesClient) getHandleResponse(resp *http.Respon
 // resourcePoolName - Resource pool used to derive vSphere cluster which contains VM templates
 // options - VirtualMachineTemplatesClientListOptions contains the optional parameters for the VirtualMachineTemplatesClient.List
 // method.
-func (client *VirtualMachineTemplatesClient) List(pcName string, regionID string, resourcePoolName string, options *VirtualMachineTemplatesClientListOptions) *VirtualMachineTemplatesClientListPager {
-	return &VirtualMachineTemplatesClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, pcName, regionID, resourcePoolName, options)
+func (client *VirtualMachineTemplatesClient) List(pcName string, regionID string, resourcePoolName string, options *VirtualMachineTemplatesClientListOptions) *runtime.Pager[VirtualMachineTemplatesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[VirtualMachineTemplatesClientListResponse]{
+		More: func(page VirtualMachineTemplatesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp VirtualMachineTemplatesClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.VirtualMachineTemplateListResponse.NextLink)
+		Fetcher: func(ctx context.Context, page *VirtualMachineTemplatesClientListResponse) (VirtualMachineTemplatesClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, pcName, regionID, resourcePoolName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return VirtualMachineTemplatesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return VirtualMachineTemplatesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return VirtualMachineTemplatesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -158,7 +179,7 @@ func (client *VirtualMachineTemplatesClient) listCreateRequest(ctx context.Conte
 
 // listHandleResponse handles the List response.
 func (client *VirtualMachineTemplatesClient) listHandleResponse(resp *http.Response) (VirtualMachineTemplatesClientListResponse, error) {
-	result := VirtualMachineTemplatesClientListResponse{RawResponse: resp}
+	result := VirtualMachineTemplatesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineTemplateListResponse); err != nil {
 		return VirtualMachineTemplatesClientListResponse{}, err
 	}

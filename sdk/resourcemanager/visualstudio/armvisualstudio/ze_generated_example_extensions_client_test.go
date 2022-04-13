@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,119 +17,153 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/visualstudio/armvisualstudio"
 )
 
-// x-ms-original-file: specification/visualstudio/resource-manager/Microsoft.VisualStudio/preview/2014-04-01-preview/examples/GetExtensionResources_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/visualstudio/resource-manager/Microsoft.VisualStudio/preview/2014-04-01-preview/examples/GetExtensionResources_List.json
 func ExampleExtensionsClient_ListByAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armvisualstudio.NewExtensionsClient("<subscription-id>", cred, nil)
+	client, err := armvisualstudio.NewExtensionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.ListByAccount(ctx,
 		"<resource-group-name>",
 		"<account-resource-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ExtensionsClientListByAccountResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/visualstudio/resource-manager/Microsoft.VisualStudio/preview/2014-04-01-preview/examples/CreateExtensionResource.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/visualstudio/resource-manager/Microsoft.VisualStudio/preview/2014-04-01-preview/examples/CreateExtensionResource.json
 func ExampleExtensionsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armvisualstudio.NewExtensionsClient("<subscription-id>", cred, nil)
+	client, err := armvisualstudio.NewExtensionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Create(ctx,
 		"<resource-group-name>",
 		"<account-resource-name>",
 		"<extension-resource-name>",
 		armvisualstudio.ExtensionResourceRequest{
-			Location: to.StringPtr("<location>"),
+			Location: to.Ptr("<location>"),
 			Plan: &armvisualstudio.ExtensionResourcePlan{
-				Name:          to.StringPtr("<name>"),
-				Product:       to.StringPtr("<product>"),
-				PromotionCode: to.StringPtr("<promotion-code>"),
-				Publisher:     to.StringPtr("<publisher>"),
-				Version:       to.StringPtr("<version>"),
+				Name:          to.Ptr("<name>"),
+				Product:       to.Ptr("<product>"),
+				PromotionCode: to.Ptr("<promotion-code>"),
+				Publisher:     to.Ptr("<publisher>"),
+				Version:       to.Ptr("<version>"),
 			},
 			Properties: map[string]*string{},
 			Tags:       map[string]*string{},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ExtensionsClientCreateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/visualstudio/resource-manager/Microsoft.VisualStudio/preview/2014-04-01-preview/examples/DeleteExtensionResource.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/visualstudio/resource-manager/Microsoft.VisualStudio/preview/2014-04-01-preview/examples/DeleteExtensionResource.json
 func ExampleExtensionsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armvisualstudio.NewExtensionsClient("<subscription-id>", cred, nil)
+	client, err := armvisualstudio.NewExtensionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Delete(ctx,
 		"<resource-group-name>",
 		"<account-resource-name>",
 		"<extension-resource-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/visualstudio/resource-manager/Microsoft.VisualStudio/preview/2014-04-01-preview/examples/GetExtensionResource.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/visualstudio/resource-manager/Microsoft.VisualStudio/preview/2014-04-01-preview/examples/GetExtensionResource.json
 func ExampleExtensionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armvisualstudio.NewExtensionsClient("<subscription-id>", cred, nil)
+	client, err := armvisualstudio.NewExtensionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<account-resource-name>",
 		"<extension-resource-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ExtensionsClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/visualstudio/resource-manager/Microsoft.VisualStudio/preview/2014-04-01-preview/examples/UpdateExtensionResource.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/visualstudio/resource-manager/Microsoft.VisualStudio/preview/2014-04-01-preview/examples/UpdateExtensionResource.json
 func ExampleExtensionsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armvisualstudio.NewExtensionsClient("<subscription-id>", cred, nil)
+	client, err := armvisualstudio.NewExtensionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Update(ctx,
 		"<resource-group-name>",
 		"<account-resource-name>",
 		"<extension-resource-name>",
 		armvisualstudio.ExtensionResourceRequest{
-			Location: to.StringPtr("<location>"),
+			Location: to.Ptr("<location>"),
 			Plan: &armvisualstudio.ExtensionResourcePlan{
-				Name:          to.StringPtr("<name>"),
-				Product:       to.StringPtr("<product>"),
-				PromotionCode: to.StringPtr("<promotion-code>"),
-				Publisher:     to.StringPtr("<publisher>"),
-				Version:       to.StringPtr("<version>"),
+				Name:          to.Ptr("<name>"),
+				Product:       to.Ptr("<product>"),
+				PromotionCode: to.Ptr("<promotion-code>"),
+				Publisher:     to.Ptr("<publisher>"),
+				Version:       to.Ptr("<version>"),
 			},
 			Properties: map[string]*string{},
 			Tags:       map[string]*string{},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ExtensionsClientUpdateResult)
+	// TODO: use response item
+	_ = res
 }

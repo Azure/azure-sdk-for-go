@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,14 +19,19 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloadmonitor/armworkloadmonitor"
 )
 
-// x-ms-original-file: specification/workloadmonitor/resource-manager/Microsoft.WorkloadMonitor/preview/2020-01-13-preview/examples/MonitorList_GetDefault.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/workloadmonitor/resource-manager/Microsoft.WorkloadMonitor/preview/2020-01-13-preview/examples/MonitorList_GetDefault.json
 func ExampleHealthMonitorsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armworkloadmonitor.NewHealthMonitorsClient(cred, nil)
+	client, err := armworkloadmonitor.NewHealthMonitorsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.List("<subscription-id>",
 		"<resource-group-name>",
 		"<provider-name>",
@@ -35,28 +40,32 @@ func ExampleHealthMonitorsClient_List() {
 		&armworkloadmonitor.HealthMonitorsClientListOptions{Filter: nil,
 			Expand: nil,
 		})
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/workloadmonitor/resource-manager/Microsoft.WorkloadMonitor/preview/2020-01-13-preview/examples/Monitor_GetDefault.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/workloadmonitor/resource-manager/Microsoft.WorkloadMonitor/preview/2020-01-13-preview/examples/Monitor_GetDefault.json
 func ExampleHealthMonitorsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armworkloadmonitor.NewHealthMonitorsClient(cred, nil)
+	client, err := armworkloadmonitor.NewHealthMonitorsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<subscription-id>",
 		"<resource-group-name>",
@@ -66,19 +75,26 @@ func ExampleHealthMonitorsClient_Get() {
 		"<monitor-id>",
 		&armworkloadmonitor.HealthMonitorsClientGetOptions{Expand: nil})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.HealthMonitorsClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/workloadmonitor/resource-manager/Microsoft.WorkloadMonitor/preview/2020-01-13-preview/examples/MonitorHistory_GetDefault.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/workloadmonitor/resource-manager/Microsoft.WorkloadMonitor/preview/2020-01-13-preview/examples/MonitorHistory_GetDefault.json
 func ExampleHealthMonitorsClient_ListStateChanges() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armworkloadmonitor.NewHealthMonitorsClient(cred, nil)
+	client, err := armworkloadmonitor.NewHealthMonitorsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListStateChanges("<subscription-id>",
 		"<resource-group-name>",
 		"<provider-name>",
@@ -87,31 +103,35 @@ func ExampleHealthMonitorsClient_ListStateChanges() {
 		"<monitor-id>",
 		&armworkloadmonitor.HealthMonitorsClientListStateChangesOptions{Filter: nil,
 			Expand:            nil,
-			StartTimestampUTC: to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-19T19:24:14Z"); return t }()),
-			EndTimestampUTC:   to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-20T01:24:14Z"); return t }()),
+			StartTimestampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-19T19:24:14Z"); return t }()),
+			EndTimestampUTC:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-20T01:24:14Z"); return t }()),
 		})
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/workloadmonitor/resource-manager/Microsoft.WorkloadMonitor/preview/2020-01-13-preview/examples/MonitorStateChange_GetDefault.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/workloadmonitor/resource-manager/Microsoft.WorkloadMonitor/preview/2020-01-13-preview/examples/MonitorStateChange_GetDefault.json
 func ExampleHealthMonitorsClient_GetStateChange() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armworkloadmonitor.NewHealthMonitorsClient(cred, nil)
+	client, err := armworkloadmonitor.NewHealthMonitorsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GetStateChange(ctx,
 		"<subscription-id>",
 		"<resource-group-name>",
@@ -122,7 +142,9 @@ func ExampleHealthMonitorsClient_GetStateChange() {
 		"<timestamp-unix>",
 		&armworkloadmonitor.HealthMonitorsClientGetStateChangeOptions{Expand: nil})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.HealthMonitorsClientGetStateChangeResult)
+	// TODO: use response item
+	_ = res
 }

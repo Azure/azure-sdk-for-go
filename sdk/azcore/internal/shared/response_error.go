@@ -75,7 +75,7 @@ func extractErrorCodeJSON(body []byte) string {
 
 func extractErrorCodeXML(body []byte) string {
 	// regular expression is much easier than dealing with the XML parser
-	rx := regexp.MustCompile(`<[c|C]ode>\s*(\w+)\s*<\/[c|C]ode>`)
+	rx := regexp.MustCompile(`<(?:\w+:)?[c|C]ode>\s*(\w+)\s*<\/(?:\w+:)?[c|C]ode>`)
 	res := rx.FindStringSubmatch(string(body))
 	if len(res) != 2 {
 		return ""

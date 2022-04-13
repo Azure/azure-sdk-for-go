@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type DedicatedHostGroupsClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewDedicatedHostGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DedicatedHostGroupsClient {
+func NewDedicatedHostGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DedicatedHostGroupsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &DedicatedHostGroupsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Create or update a dedicated host group. For details of Dedicated Host and Dedicated Host Groups please
@@ -101,7 +106,7 @@ func (client *DedicatedHostGroupsClient) createOrUpdateCreateRequest(ctx context
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *DedicatedHostGroupsClient) createOrUpdateHandleResponse(resp *http.Response) (DedicatedHostGroupsClientCreateOrUpdateResponse, error) {
-	result := DedicatedHostGroupsClientCreateOrUpdateResponse{RawResponse: resp}
+	result := DedicatedHostGroupsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DedicatedHostGroup); err != nil {
 		return DedicatedHostGroupsClientCreateOrUpdateResponse{}, err
 	}
@@ -126,7 +131,7 @@ func (client *DedicatedHostGroupsClient) Delete(ctx context.Context, resourceGro
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return DedicatedHostGroupsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return DedicatedHostGroupsClientDeleteResponse{RawResponse: resp}, nil
+	return DedicatedHostGroupsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -206,7 +211,7 @@ func (client *DedicatedHostGroupsClient) getCreateRequest(ctx context.Context, r
 
 // getHandleResponse handles the Get response.
 func (client *DedicatedHostGroupsClient) getHandleResponse(resp *http.Response) (DedicatedHostGroupsClientGetResponse, error) {
-	result := DedicatedHostGroupsClientGetResponse{RawResponse: resp}
+	result := DedicatedHostGroupsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DedicatedHostGroup); err != nil {
 		return DedicatedHostGroupsClientGetResponse{}, err
 	}
@@ -219,16 +224,32 @@ func (client *DedicatedHostGroupsClient) getHandleResponse(resp *http.Response) 
 // resourceGroupName - The name of the resource group.
 // options - DedicatedHostGroupsClientListByResourceGroupOptions contains the optional parameters for the DedicatedHostGroupsClient.ListByResourceGroup
 // method.
-func (client *DedicatedHostGroupsClient) ListByResourceGroup(resourceGroupName string, options *DedicatedHostGroupsClientListByResourceGroupOptions) *DedicatedHostGroupsClientListByResourceGroupPager {
-	return &DedicatedHostGroupsClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *DedicatedHostGroupsClient) ListByResourceGroup(resourceGroupName string, options *DedicatedHostGroupsClientListByResourceGroupOptions) *runtime.Pager[DedicatedHostGroupsClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DedicatedHostGroupsClientListByResourceGroupResponse]{
+		More: func(page DedicatedHostGroupsClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DedicatedHostGroupsClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DedicatedHostGroupListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *DedicatedHostGroupsClientListByResourceGroupResponse) (DedicatedHostGroupsClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DedicatedHostGroupsClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DedicatedHostGroupsClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DedicatedHostGroupsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -255,7 +276,7 @@ func (client *DedicatedHostGroupsClient) listByResourceGroupCreateRequest(ctx co
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *DedicatedHostGroupsClient) listByResourceGroupHandleResponse(resp *http.Response) (DedicatedHostGroupsClientListByResourceGroupResponse, error) {
-	result := DedicatedHostGroupsClientListByResourceGroupResponse{RawResponse: resp}
+	result := DedicatedHostGroupsClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DedicatedHostGroupListResult); err != nil {
 		return DedicatedHostGroupsClientListByResourceGroupResponse{}, err
 	}
@@ -267,16 +288,32 @@ func (client *DedicatedHostGroupsClient) listByResourceGroupHandleResponse(resp 
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - DedicatedHostGroupsClientListBySubscriptionOptions contains the optional parameters for the DedicatedHostGroupsClient.ListBySubscription
 // method.
-func (client *DedicatedHostGroupsClient) ListBySubscription(options *DedicatedHostGroupsClientListBySubscriptionOptions) *DedicatedHostGroupsClientListBySubscriptionPager {
-	return &DedicatedHostGroupsClientListBySubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySubscriptionCreateRequest(ctx, options)
+func (client *DedicatedHostGroupsClient) ListBySubscription(options *DedicatedHostGroupsClientListBySubscriptionOptions) *runtime.Pager[DedicatedHostGroupsClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DedicatedHostGroupsClientListBySubscriptionResponse]{
+		More: func(page DedicatedHostGroupsClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DedicatedHostGroupsClientListBySubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DedicatedHostGroupListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *DedicatedHostGroupsClientListBySubscriptionResponse) (DedicatedHostGroupsClientListBySubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySubscriptionCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DedicatedHostGroupsClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DedicatedHostGroupsClientListBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DedicatedHostGroupsClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
@@ -299,7 +336,7 @@ func (client *DedicatedHostGroupsClient) listBySubscriptionCreateRequest(ctx con
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
 func (client *DedicatedHostGroupsClient) listBySubscriptionHandleResponse(resp *http.Response) (DedicatedHostGroupsClientListBySubscriptionResponse, error) {
-	result := DedicatedHostGroupsClientListBySubscriptionResponse{RawResponse: resp}
+	result := DedicatedHostGroupsClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DedicatedHostGroupListResult); err != nil {
 		return DedicatedHostGroupsClientListBySubscriptionResponse{}, err
 	}
@@ -356,7 +393,7 @@ func (client *DedicatedHostGroupsClient) updateCreateRequest(ctx context.Context
 
 // updateHandleResponse handles the Update response.
 func (client *DedicatedHostGroupsClient) updateHandleResponse(resp *http.Response) (DedicatedHostGroupsClientUpdateResponse, error) {
-	result := DedicatedHostGroupsClientUpdateResponse{RawResponse: resp}
+	result := DedicatedHostGroupsClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DedicatedHostGroup); err != nil {
 		return DedicatedHostGroupsClientUpdateResponse{}, err
 	}

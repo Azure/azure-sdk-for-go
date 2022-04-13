@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -52,20 +52,21 @@ func TestAvailabilitySetsClient(t *testing.T) {
 
 func (testsuite *AvailabilitySetsClientTestSuite) TestAvailabilitySetsCRUD() {
 	// create availability sets
-	client := armcompute.NewAvailabilitySetsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
+	client, err := armcompute.NewAvailabilitySetsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
 	name := "go-test-availability"
 	resp, err := client.CreateOrUpdate(
 		testsuite.ctx,
 		testsuite.resourceGroupName,
 		name,
 		armcompute.AvailabilitySet{
-			Location: to.StringPtr("westus"),
+			Location: to.Ptr("westus"),
 			SKU: &armcompute.SKU{
-				Name: to.StringPtr(string(armcompute.AvailabilitySetSKUTypesAligned)),
+				Name: to.Ptr(string(armcompute.AvailabilitySetSKUTypesAligned)),
 			},
 			Properties: &armcompute.AvailabilitySetProperties{
-				PlatformFaultDomainCount:  to.Int32Ptr(1),
-				PlatformUpdateDomainCount: to.Int32Ptr(1),
+				PlatformFaultDomainCount:  to.Ptr[int32](1),
+				PlatformUpdateDomainCount: to.Ptr[int32](1),
 			},
 		},
 		nil,
@@ -80,17 +81,15 @@ func (testsuite *AvailabilitySetsClientTestSuite) TestAvailabilitySetsCRUD() {
 
 	// list
 	listPager := client.List(testsuite.resourceGroupName, nil)
-	testsuite.Require().Equal(listPager.Err(), nil)
+	testsuite.Require().True(listPager.More())
 
 	// list available size
-	listResp, err := client.ListAvailableSizes(testsuite.ctx, testsuite.resourceGroupName, name, nil)
-	testsuite.Require().NoError(err)
-	testsuite.Require().Equal(listResp.RawResponse.StatusCode, 200)
+	listResp := client.ListAvailableSizes(testsuite.resourceGroupName, name, nil)
+	testsuite.Require().True(listResp.More())
 
 	// list by subscription
 	listBySubscription := client.ListBySubscription(nil)
-	testsuite.Require().NoError(err)
-	testsuite.Require().Equal(true, listBySubscription.NextPage(context.Background()))
+	testsuite.Require().True(listBySubscription.More())
 
 	// update
 	updateResp, err := client.Update(
@@ -99,7 +98,7 @@ func (testsuite *AvailabilitySetsClientTestSuite) TestAvailabilitySetsCRUD() {
 		name,
 		armcompute.AvailabilitySetUpdate{
 			Tags: map[string]*string{
-				"tag": to.StringPtr("value"),
+				"tag": to.Ptr("value"),
 			},
 		},
 		nil,
@@ -108,7 +107,6 @@ func (testsuite *AvailabilitySetsClientTestSuite) TestAvailabilitySetsCRUD() {
 	testsuite.Require().Equal(name, *updateResp.Name)
 
 	// delete
-	delResp, err := client.Delete(testsuite.ctx, testsuite.resourceGroupName, name, nil)
+	_, err = client.Delete(testsuite.ctx, testsuite.resourceGroupName, name, nil)
 	testsuite.Require().NoError(err)
-	testsuite.Require().Equal(200, delResp.RawResponse.StatusCode)
 }

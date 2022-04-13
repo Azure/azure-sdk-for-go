@@ -118,6 +118,8 @@ func createTableResponseFromGen(g *generated.TableClientCreateResponse) CreateTa
 
 // CreateTable creates the table with the tableName specified when NewClient was called. If the service returns a non-successful
 // HTTP status code, the function returns an *azcore.ResponseError type. Specify nil for options if you want to use the default options.
+// NOTE: creating a table with the same name as a table that's in the process of being deleted will return an *azcore.ResponseError
+// with error code TableBeingDeleted and status code http.StatusConflict.
 func (t *Client) CreateTable(ctx context.Context, options *CreateTableOptions) (CreateTableResponse, error) {
 	if options == nil {
 		options = &CreateTableOptions{}
@@ -128,6 +130,8 @@ func (t *Client) CreateTable(ctx context.Context, options *CreateTableOptions) (
 
 // Delete deletes the table with the tableName specified when NewClient was called. If the service returns a non-successful HTTP status
 // code, the function returns an *azcore.ResponseError type. Specify nil for options if you want to use the default options.
+// NOTE: deleting a table can take up to 40 seconds or more to complete.  If a table with the same name is created while the delete is still
+// in progress, an *azcore.ResponseError is returned with error code TableBeingDeleted and status code http.StatusConflict.
 func (t *Client) Delete(ctx context.Context, options *DeleteTableOptions) (DeleteTableResponse, error) {
 	return t.service.DeleteTable(ctx, t.name, options)
 }

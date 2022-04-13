@@ -79,7 +79,7 @@ func peekSingleMessageForTest(t *testing.T, receiver *Receiver) *ReceivedMessage
 
 	// Peek, unlike Receive, doesn't block until at least one message has arrived, so we have to poll
 	// to get a similar effect.
-	err := utils.Retry(context.Background(), "peek", func(ctx context.Context, args *utils.RetryFnArgs) error {
+	err := utils.Retry(context.Background(), EventReceiver, "peekSingleForTest", func(ctx context.Context, args *utils.RetryFnArgs) error {
 		peekedMessages, err := receiver.PeekMessages(context.Background(), 1, nil)
 		require.NoError(t, err)
 

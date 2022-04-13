@@ -210,7 +210,7 @@ type ReceiveDeferredMessagesOptions struct {
 func (r *Receiver) ReceiveDeferredMessages(ctx context.Context, sequenceNumbers []int64, options *ReceiveDeferredMessagesOptions) ([]*ReceivedMessage, error) {
 	var receivedMessages []*ReceivedMessage
 
-	err := r.amqpLinks.Retry(ctx, "receiveDeferredMessage", func(ctx context.Context, lwid *internal.LinksWithID, args *utils.RetryFnArgs) error {
+	err := r.amqpLinks.Retry(ctx, EventReceiver, "receiveDeferredMessages", func(ctx context.Context, lwid *internal.LinksWithID, args *utils.RetryFnArgs) error {
 		amqpMessages, err := internal.ReceiveDeferred(ctx, lwid.RPC, r.receiveMode, sequenceNumbers)
 
 		if err != nil {
@@ -248,7 +248,7 @@ type PeekMessagesOptions struct {
 func (r *Receiver) PeekMessages(ctx context.Context, maxMessageCount int, options *PeekMessagesOptions) ([]*ReceivedMessage, error) {
 	var receivedMessages []*ReceivedMessage
 
-	err := r.amqpLinks.Retry(ctx, "peekMessages", func(ctx context.Context, links *internal.LinksWithID, args *utils.RetryFnArgs) error {
+	err := r.amqpLinks.Retry(ctx, EventReceiver, "peekMessages", func(ctx context.Context, links *internal.LinksWithID, args *utils.RetryFnArgs) error {
 		var sequenceNumber = r.lastPeekedSequenceNumber + 1
 		updateInternalSequenceNumber := true
 
@@ -291,7 +291,7 @@ type RenewMessageLockOptions struct {
 
 // RenewMessageLock renews the lock on a message, updating the `LockedUntil` field on `msg`.
 func (r *Receiver) RenewMessageLock(ctx context.Context, msg *ReceivedMessage, options *RenewMessageLockOptions) error {
-	return r.amqpLinks.Retry(ctx, "renewMessageLock", func(ctx context.Context, linksWithVersion *internal.LinksWithID, args *utils.RetryFnArgs) error {
+	return r.amqpLinks.Retry(ctx, EventReceiver, "renewMessageLock", func(ctx context.Context, linksWithVersion *internal.LinksWithID, args *utils.RetryFnArgs) error {
 		newExpirationTime, err := internal.RenewLocks(ctx, linksWithVersion.RPC, msg.rawAMQPMessage.LinkName(), []amqp.UUID{
 			(amqp.UUID)(msg.LockToken),
 		})
@@ -342,7 +342,7 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 
 	var linksWithID *internal.LinksWithID
 
-	err := r.amqpLinks.Retry(ctx, "receiveMessages.getlinks", func(ctx context.Context, lwid *internal.LinksWithID, args *utils.RetryFnArgs) error {
+	err := r.amqpLinks.Retry(ctx, EventReceiver, "receiveMessages.getlinks", func(ctx context.Context, lwid *internal.LinksWithID, args *utils.RetryFnArgs) error {
 		linksWithID = lwid
 		return nil
 	}, utils.RetryOptions(r.retryOptions))

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,386 +19,452 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/signalr/armsignalr"
 )
 
-// x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalR_CheckNameAvailability.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalR_CheckNameAvailability.json
 func ExampleClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsignalr.NewClient("<subscription-id>", cred, nil)
+	client, err := armsignalr.NewClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.CheckNameAvailability(ctx,
 		"<location>",
 		armsignalr.NameAvailabilityParameters{
-			Name: to.StringPtr("<name>"),
-			Type: to.StringPtr("<type>"),
+			Name: to.Ptr("<name>"),
+			Type: to.Ptr("<type>"),
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ClientCheckNameAvailabilityResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalR_ListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalR_ListBySubscription.json
 func ExampleClient_ListBySubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsignalr.NewClient("<subscription-id>", cred, nil)
+	client, err := armsignalr.NewClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListBySubscription(nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalR_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalR_ListByResourceGroup.json
 func ExampleClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsignalr.NewClient("<subscription-id>", cred, nil)
+	client, err := armsignalr.NewClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalR_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalR_Get.json
 func ExampleClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsignalr.NewClient("<subscription-id>", cred, nil)
+	client, err := armsignalr.NewClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalR_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalR_CreateOrUpdate.json
 func ExampleClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsignalr.NewClient("<subscription-id>", cred, nil)
+	client, err := armsignalr.NewClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		armsignalr.ResourceInfo{
-			Location: to.StringPtr("<location>"),
+			Location: to.Ptr("<location>"),
 			Tags: map[string]*string{
-				"key1": to.StringPtr("value1"),
+				"key1": to.Ptr("value1"),
 			},
 			Identity: &armsignalr.ManagedIdentity{
-				Type: armsignalr.ManagedIdentityType("SystemAssigned").ToPtr(),
+				Type: to.Ptr(armsignalr.ManagedIdentityTypeSystemAssigned),
 			},
-			Kind: armsignalr.ServiceKind("SignalR").ToPtr(),
+			Kind: to.Ptr(armsignalr.ServiceKindSignalR),
 			Properties: &armsignalr.Properties{
 				Cors: &armsignalr.CorsSettings{
 					AllowedOrigins: []*string{
-						to.StringPtr("https://foo.com"),
-						to.StringPtr("https://bar.com")},
+						to.Ptr("https://foo.com"),
+						to.Ptr("https://bar.com")},
 				},
-				DisableAADAuth:   to.BoolPtr(false),
-				DisableLocalAuth: to.BoolPtr(false),
+				DisableAADAuth:   to.Ptr(false),
+				DisableLocalAuth: to.Ptr(false),
 				Features: []*armsignalr.Feature{
 					{
-						Flag:       armsignalr.FeatureFlags("ServiceMode").ToPtr(),
+						Flag:       to.Ptr(armsignalr.FeatureFlagsServiceMode),
 						Properties: map[string]*string{},
-						Value:      to.StringPtr("<value>"),
+						Value:      to.Ptr("<value>"),
 					},
 					{
-						Flag:       armsignalr.FeatureFlags("EnableConnectivityLogs").ToPtr(),
+						Flag:       to.Ptr(armsignalr.FeatureFlagsEnableConnectivityLogs),
 						Properties: map[string]*string{},
-						Value:      to.StringPtr("<value>"),
+						Value:      to.Ptr("<value>"),
 					},
 					{
-						Flag:       armsignalr.FeatureFlags("EnableMessagingLogs").ToPtr(),
+						Flag:       to.Ptr(armsignalr.FeatureFlagsEnableMessagingLogs),
 						Properties: map[string]*string{},
-						Value:      to.StringPtr("<value>"),
+						Value:      to.Ptr("<value>"),
 					},
 					{
-						Flag:       armsignalr.FeatureFlags("EnableLiveTrace").ToPtr(),
+						Flag:       to.Ptr(armsignalr.FeatureFlagsEnableLiveTrace),
 						Properties: map[string]*string{},
-						Value:      to.StringPtr("<value>"),
+						Value:      to.Ptr("<value>"),
 					}},
 				LiveTraceConfiguration: &armsignalr.LiveTraceConfiguration{
 					Categories: []*armsignalr.LiveTraceCategory{
 						{
-							Name:    to.StringPtr("<name>"),
-							Enabled: to.StringPtr("<enabled>"),
+							Name:    to.Ptr("<name>"),
+							Enabled: to.Ptr("<enabled>"),
 						}},
-					Enabled: to.StringPtr("<enabled>"),
+					Enabled: to.Ptr("<enabled>"),
 				},
 				NetworkACLs: &armsignalr.NetworkACLs{
-					DefaultAction: armsignalr.ACLAction("Deny").ToPtr(),
+					DefaultAction: to.Ptr(armsignalr.ACLActionDeny),
 					PrivateEndpoints: []*armsignalr.PrivateEndpointACL{
 						{
 							Allow: []*armsignalr.SignalRRequestType{
-								armsignalr.SignalRRequestType("ServerConnection").ToPtr()},
-							Name: to.StringPtr("<name>"),
+								to.Ptr(armsignalr.SignalRRequestTypeServerConnection)},
+							Name: to.Ptr("<name>"),
 						}},
 					PublicNetwork: &armsignalr.NetworkACL{
 						Allow: []*armsignalr.SignalRRequestType{
-							armsignalr.SignalRRequestType("ClientConnection").ToPtr()},
+							to.Ptr(armsignalr.SignalRRequestTypeClientConnection)},
 					},
 				},
-				PublicNetworkAccess: to.StringPtr("<public-network-access>"),
+				PublicNetworkAccess: to.Ptr("<public-network-access>"),
 				TLS: &armsignalr.TLSSettings{
-					ClientCertEnabled: to.BoolPtr(false),
+					ClientCertEnabled: to.Ptr(false),
 				},
 				Upstream: &armsignalr.ServerlessUpstreamSettings{
 					Templates: []*armsignalr.UpstreamTemplate{
 						{
 							Auth: &armsignalr.UpstreamAuthSettings{
-								Type: armsignalr.UpstreamAuthType("ManagedIdentity").ToPtr(),
+								Type: to.Ptr(armsignalr.UpstreamAuthTypeManagedIdentity),
 								ManagedIdentity: &armsignalr.ManagedIdentitySettings{
-									Resource: to.StringPtr("<resource>"),
+									Resource: to.Ptr("<resource>"),
 								},
 							},
-							CategoryPattern: to.StringPtr("<category-pattern>"),
-							EventPattern:    to.StringPtr("<event-pattern>"),
-							HubPattern:      to.StringPtr("<hub-pattern>"),
-							URLTemplate:     to.StringPtr("<urltemplate>"),
+							CategoryPattern: to.Ptr("<category-pattern>"),
+							EventPattern:    to.Ptr("<event-pattern>"),
+							HubPattern:      to.Ptr("<hub-pattern>"),
+							URLTemplate:     to.Ptr("<urltemplate>"),
 						}},
 				},
 			},
 			SKU: &armsignalr.ResourceSKU{
-				Name:     to.StringPtr("<name>"),
-				Capacity: to.Int32Ptr(1),
-				Tier:     armsignalr.SignalRSKUTier("Standard").ToPtr(),
+				Name:     to.Ptr("<name>"),
+				Capacity: to.Ptr[int32](1),
+				Tier:     to.Ptr(armsignalr.SignalRSKUTierStandard),
 			},
 		},
-		nil)
+		&armsignalr.ClientBeginCreateOrUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalR_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalR_Delete.json
 func ExampleClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsignalr.NewClient("<subscription-id>", cred, nil)
+	client, err := armsignalr.NewClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
-		nil)
+		&armsignalr.ClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalR_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalR_Update.json
 func ExampleClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsignalr.NewClient("<subscription-id>", cred, nil)
+	client, err := armsignalr.NewClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginUpdate(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		armsignalr.ResourceInfo{
-			Location: to.StringPtr("<location>"),
+			Location: to.Ptr("<location>"),
 			Tags: map[string]*string{
-				"key1": to.StringPtr("value1"),
+				"key1": to.Ptr("value1"),
 			},
 			Identity: &armsignalr.ManagedIdentity{
-				Type: armsignalr.ManagedIdentityType("SystemAssigned").ToPtr(),
+				Type: to.Ptr(armsignalr.ManagedIdentityTypeSystemAssigned),
 			},
-			Kind: armsignalr.ServiceKind("SignalR").ToPtr(),
+			Kind: to.Ptr(armsignalr.ServiceKindSignalR),
 			Properties: &armsignalr.Properties{
 				Cors: &armsignalr.CorsSettings{
 					AllowedOrigins: []*string{
-						to.StringPtr("https://foo.com"),
-						to.StringPtr("https://bar.com")},
+						to.Ptr("https://foo.com"),
+						to.Ptr("https://bar.com")},
 				},
-				DisableAADAuth:   to.BoolPtr(false),
-				DisableLocalAuth: to.BoolPtr(false),
+				DisableAADAuth:   to.Ptr(false),
+				DisableLocalAuth: to.Ptr(false),
 				Features: []*armsignalr.Feature{
 					{
-						Flag:       armsignalr.FeatureFlags("ServiceMode").ToPtr(),
+						Flag:       to.Ptr(armsignalr.FeatureFlagsServiceMode),
 						Properties: map[string]*string{},
-						Value:      to.StringPtr("<value>"),
+						Value:      to.Ptr("<value>"),
 					},
 					{
-						Flag:       armsignalr.FeatureFlags("EnableConnectivityLogs").ToPtr(),
+						Flag:       to.Ptr(armsignalr.FeatureFlagsEnableConnectivityLogs),
 						Properties: map[string]*string{},
-						Value:      to.StringPtr("<value>"),
+						Value:      to.Ptr("<value>"),
 					},
 					{
-						Flag:       armsignalr.FeatureFlags("EnableMessagingLogs").ToPtr(),
+						Flag:       to.Ptr(armsignalr.FeatureFlagsEnableMessagingLogs),
 						Properties: map[string]*string{},
-						Value:      to.StringPtr("<value>"),
+						Value:      to.Ptr("<value>"),
 					},
 					{
-						Flag:       armsignalr.FeatureFlags("EnableLiveTrace").ToPtr(),
+						Flag:       to.Ptr(armsignalr.FeatureFlagsEnableLiveTrace),
 						Properties: map[string]*string{},
-						Value:      to.StringPtr("<value>"),
+						Value:      to.Ptr("<value>"),
 					}},
 				LiveTraceConfiguration: &armsignalr.LiveTraceConfiguration{
 					Categories: []*armsignalr.LiveTraceCategory{
 						{
-							Name:    to.StringPtr("<name>"),
-							Enabled: to.StringPtr("<enabled>"),
+							Name:    to.Ptr("<name>"),
+							Enabled: to.Ptr("<enabled>"),
 						}},
-					Enabled: to.StringPtr("<enabled>"),
+					Enabled: to.Ptr("<enabled>"),
 				},
 				NetworkACLs: &armsignalr.NetworkACLs{
-					DefaultAction: armsignalr.ACLAction("Deny").ToPtr(),
+					DefaultAction: to.Ptr(armsignalr.ACLActionDeny),
 					PrivateEndpoints: []*armsignalr.PrivateEndpointACL{
 						{
 							Allow: []*armsignalr.SignalRRequestType{
-								armsignalr.SignalRRequestType("ServerConnection").ToPtr()},
-							Name: to.StringPtr("<name>"),
+								to.Ptr(armsignalr.SignalRRequestTypeServerConnection)},
+							Name: to.Ptr("<name>"),
 						}},
 					PublicNetwork: &armsignalr.NetworkACL{
 						Allow: []*armsignalr.SignalRRequestType{
-							armsignalr.SignalRRequestType("ClientConnection").ToPtr()},
+							to.Ptr(armsignalr.SignalRRequestTypeClientConnection)},
 					},
 				},
-				PublicNetworkAccess: to.StringPtr("<public-network-access>"),
+				PublicNetworkAccess: to.Ptr("<public-network-access>"),
 				TLS: &armsignalr.TLSSettings{
-					ClientCertEnabled: to.BoolPtr(false),
+					ClientCertEnabled: to.Ptr(false),
 				},
 				Upstream: &armsignalr.ServerlessUpstreamSettings{
 					Templates: []*armsignalr.UpstreamTemplate{
 						{
 							Auth: &armsignalr.UpstreamAuthSettings{
-								Type: armsignalr.UpstreamAuthType("ManagedIdentity").ToPtr(),
+								Type: to.Ptr(armsignalr.UpstreamAuthTypeManagedIdentity),
 								ManagedIdentity: &armsignalr.ManagedIdentitySettings{
-									Resource: to.StringPtr("<resource>"),
+									Resource: to.Ptr("<resource>"),
 								},
 							},
-							CategoryPattern: to.StringPtr("<category-pattern>"),
-							EventPattern:    to.StringPtr("<event-pattern>"),
-							HubPattern:      to.StringPtr("<hub-pattern>"),
-							URLTemplate:     to.StringPtr("<urltemplate>"),
+							CategoryPattern: to.Ptr("<category-pattern>"),
+							EventPattern:    to.Ptr("<event-pattern>"),
+							HubPattern:      to.Ptr("<hub-pattern>"),
+							URLTemplate:     to.Ptr("<urltemplate>"),
 						}},
 				},
 			},
 			SKU: &armsignalr.ResourceSKU{
-				Name:     to.StringPtr("<name>"),
-				Capacity: to.Int32Ptr(1),
-				Tier:     armsignalr.SignalRSKUTier("Standard").ToPtr(),
+				Name:     to.Ptr("<name>"),
+				Capacity: to.Ptr[int32](1),
+				Tier:     to.Ptr(armsignalr.SignalRSKUTierStandard),
 			},
 		},
-		nil)
+		&armsignalr.ClientBeginUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ClientUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalR_ListKeys.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalR_ListKeys.json
 func ExampleClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsignalr.NewClient("<subscription-id>", cred, nil)
+	client, err := armsignalr.NewClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.ListKeys(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ClientListKeysResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalR_RegenerateKey.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalR_RegenerateKey.json
 func ExampleClient_BeginRegenerateKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsignalr.NewClient("<subscription-id>", cred, nil)
+	client, err := armsignalr.NewClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginRegenerateKey(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		armsignalr.RegenerateKeyParameters{
-			KeyType: armsignalr.KeyType("Primary").ToPtr(),
+			KeyType: to.Ptr(armsignalr.KeyTypePrimary),
 		},
-		nil)
+		&armsignalr.ClientBeginRegenerateKeyOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalR_Restart.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalR_Restart.json
 func ExampleClient_BeginRestart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsignalr.NewClient("<subscription-id>", cred, nil)
+	client, err := armsignalr.NewClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginRestart(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
-		nil)
+		&armsignalr.ClientBeginRestartOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }

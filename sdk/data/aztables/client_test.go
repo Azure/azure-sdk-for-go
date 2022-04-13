@@ -12,6 +12,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
@@ -548,16 +550,25 @@ func TestAzurite(t *testing.T) {
 	require.Equal(t, 1, count)
 }
 
+type fakeTokenCred struct{}
+
+func (f fakeTokenCred) GetToken(ctx context.Context, options policy.TokenRequestOptions) (*azcore.AccessToken, error) {
+	return &azcore.AccessToken{Token: "token", ExpiresOn: time.Date(2042, 1, 1, 1, 1, 1, 1, time.UTC)}, nil
+}
+
 func TestMultiTenantAuth(t *testing.T) {
-	recording.LiveOnly(t)
-
-	cred, err := azidentity.NewClientSecretCredential(
-		os.Getenv("AZTABLES_TENANT_ID"),
-		os.Getenv("AZTABLES_CLIENT_ID"),
-		os.Getenv("AZTABLES_CLIENT_SECRET"),
-		nil)
-	require.NoError(t, err)
-
+	var cred azcore.TokenCredential
+	var err error
+	if recording.GetRecordMode() == "record" {
+		cred = fakeTokenCred{}
+	} else {
+		cred, err = azidentity.NewClientSecretCredential(
+			os.Getenv("AZTABLES_TENANT_ID"),
+			os.Getenv("AZTABLES_CLIENT_ID"),
+			os.Getenv("AZTABLES_CLIENT_SECRET"),
+			nil)
+		require.NoError(t, err)
+	}
 	accountName := recording.GetEnvVariable("TABLES_STORAGE_ACCOUNT_NAME", "fakeaccount")
 
 	client, err := NewClient(fmt.Sprintf("https://%s.table.core.windows.net/MyTable", accountName), cred, nil)

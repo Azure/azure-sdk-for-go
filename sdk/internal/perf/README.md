@@ -1,12 +1,12 @@
 # Performance Testing Framework
-The `perf` sub-module provides a singular framework for writing performance tests.
+The `perf` sub-module provides a framework for writing and running performance tests.
 
 ## Default Command Options
 
 | Flag | Short Flag | Default Value | Description |
 | -----| ---------- | ------------- | ----------- |
 | `--duration` | `-d` | 10 seconds | How long to run an individual performance test |
-| `--test-proxies` | `-x` | N/A | A semicolon separated list of proxy urls. If you want to run normally omit this flag |
+| `--test-proxies` | `-x` | N/A | A semicolon separated list of proxy urls. |
 | `--warmup` | `-w` | 3 seconds| How long to allow the connection to warm up. |
 
 
@@ -14,7 +14,7 @@ The `perf` sub-module provides a singular framework for writing performance test
 
 1. Create a performance test directory at `testdata/perf` within your module. For example, the storage performance tests live in `sdk/storage/azblob/testdata/perf`.
 
-2. Run `go mod init` to create a new module.
+2. Run `go mod init` to create a new module. Add the `sdk/internal` module and the module you are testing for to your go.mod file and run `go mod tidy`
 
 3. Create a `struct` that maintains all global values for the performance test (ie. account name, blob name, etc.).
 
@@ -34,6 +34,7 @@ import (
 )
 
 // uploadTestRegister registers flags for the "UploadBlobTest"
+// This is optional and does not to be included for every test.
 func uploadTestRegister() {
 	flag.IntVar(&uploadTestOpts.size, "size", 10240, "Size in bytes of data to be transferred in upload or download tests. Default is 10240.")
 }
@@ -51,12 +52,39 @@ func main() {
 The following walks through the `azblob` Blob Upload performance test:
 
 #### `GlobalPerfTest` Interface
-This struct handles global set up for your account and spawning structs for each `goroutine`. Make sure to embed the `perf.PerfTestOptions` struct in your global struct.
+This struct handles global set up for your account and spawning structs for each `goroutine`. Make sure to embed the `perf.PerfTestOptions` struct in your global struct. The `NewUploadTest` will be run once per process and is used to spawn each parallel test.
 ```go
 type uploadTestGlobal struct {
 	perf.PerfTestOptions
-	containerName string
-	blobName      string
+	containerName         string
+	blobName              string
+	globalContainerClient azblob.ContainerClient
+}
+
+// NewUploadTest is called once per process
+func NewUploadTest(ctx context.Context, options perf.PerfTestOptions) (perf.GlobalPerfTest, error) {
+	u := &uploadTestGlobal{
+		PerfTestOptions: options,
+		containerName:   "uploadcontainer",
+		blobName:        "uploadblob",
+	}
+
+	connStr, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
+	if !ok {
+		return nil, fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
+	}
+
+	containerClient, err := azblob.NewContainerClientFromConnectionString(connStr, u.containerName, nil)
+	if err != nil {
+		return nil, err
+	}
+	u.globalContainerClient = containerClient
+	_, err = u.globalContainerClient.Create(context.Background(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return u, nil
 }
 ```
 
@@ -80,6 +108,14 @@ func (m *uploadTestGlobal) GlobalCleanup(ctx context.Context) error {
 
 `NewPerfTest` is called once per `goroutine`, and creates a new `PerfTest` interface which will be used by each goroutine. This method should also include the setup for the eventual returned struct.
 ```go
+// uploadPerfTest implements perf.PerfTest and is used to test performance of your event
+type uploadPerfTest struct {
+	*uploadTestGlobal
+	perf.PerfTestOptions
+	data       io.ReadSeekCloser
+	blobClient azblob.BlockBlobClient
+}
+
 // NewPerfTest is called once per goroutine
 func (g *uploadTestGlobal) NewPerfTest(ctx context.Context, options *perf.PerfTestOptions) (perf.PerfTest, error) {
 	u := &uploadPerfTest{
@@ -116,7 +152,7 @@ func (g *uploadTestGlobal) NewPerfTest(ctx context.Context, options *perf.PerfTe
 ```
 
 #### `PerfTest` Interface
-The `PerfTest` interface is an interface that is responsible for running a single performance test. Each performance test in run within a single `goroutine`, these `goroutine`s are created by the `perf` framework. The `Run` method is the method that is being measured and the `Cleanup` method is responsible for cleanup work after each goroutine.
+The `PerfTest` interface is an interface that is responsible for running a single performance test. Each performance test in run within a single `goroutine`, these `goroutine`s are created by the `perf` framework. The `Run` method is the method that is being measured and the `Cleanup` method is responsible for cleanup work after each goroutine completes or errors out.
 
 ```go
 func (m *uploadPerfTest) Run(ctx context.Context) error {
@@ -246,5 +282,12 @@ To specify flags for a performance test, add them after the first argument:
 ```pwsh
 go run . CreateEntityTest --duration 7 --test-proxies https://localhost:5001 --num-blobs 100
 ```
+
+To run against multiple proxies and with multiple parallel tests running at the same time use the `-p/--parallel` flag
+```pwsh
+go run . CreateEntityTest --duration 7 --parallel 4 --test-proxies "https://localhost:5001;http://localhost:5000" --num-blobs 100
+```
+
+This runs four goroutines of the same test and splits the traffic to two different proxy addresses. The first and third routine will target `https://localhost:5001`, the second and fourth will use `http://localhost:5000`.
 
 For help run `go run . --help`. A list of registered performance tests, global command flags, and local command flags will print out.

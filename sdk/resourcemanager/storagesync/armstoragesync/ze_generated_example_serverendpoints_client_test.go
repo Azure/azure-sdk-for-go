@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,14 +19,19 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagesync/armstoragesync"
 )
 
-// x-ms-original-file: specification/storagesync/resource-manager/Microsoft.StorageSync/stable/2020-09-01/examples/ServerEndpoints_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storagesync/resource-manager/Microsoft.StorageSync/stable/2020-09-01/examples/ServerEndpoints_Create.json
 func ExampleServerEndpointsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstoragesync.NewServerEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armstoragesync.NewServerEndpointsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreate(ctx,
 		"<resource-group-name>",
 		"<storage-sync-service-name>",
@@ -34,37 +39,45 @@ func ExampleServerEndpointsClient_BeginCreate() {
 		"<server-endpoint-name>",
 		armstoragesync.ServerEndpointCreateParameters{
 			Properties: &armstoragesync.ServerEndpointCreateParametersProperties{
-				CloudTiering:                 armstoragesync.FeatureStatus("off").ToPtr(),
-				InitialDownloadPolicy:        armstoragesync.InitialDownloadPolicy("NamespaceThenModifiedFiles").ToPtr(),
-				InitialUploadPolicy:          armstoragesync.InitialUploadPolicy("ServerAuthoritative").ToPtr(),
-				LocalCacheMode:               armstoragesync.LocalCacheMode("UpdateLocallyCachedFiles").ToPtr(),
-				OfflineDataTransfer:          armstoragesync.FeatureStatus("on").ToPtr(),
-				OfflineDataTransferShareName: to.StringPtr("<offline-data-transfer-share-name>"),
-				ServerLocalPath:              to.StringPtr("<server-local-path>"),
-				ServerResourceID:             to.StringPtr("<server-resource-id>"),
-				TierFilesOlderThanDays:       to.Int32Ptr(0),
-				VolumeFreeSpacePercent:       to.Int32Ptr(100),
+				CloudTiering:                 to.Ptr(armstoragesync.FeatureStatusOff),
+				InitialDownloadPolicy:        to.Ptr(armstoragesync.InitialDownloadPolicyNamespaceThenModifiedFiles),
+				InitialUploadPolicy:          to.Ptr(armstoragesync.InitialUploadPolicyServerAuthoritative),
+				LocalCacheMode:               to.Ptr(armstoragesync.LocalCacheModeUpdateLocallyCachedFiles),
+				OfflineDataTransfer:          to.Ptr(armstoragesync.FeatureStatusOn),
+				OfflineDataTransferShareName: to.Ptr("<offline-data-transfer-share-name>"),
+				ServerLocalPath:              to.Ptr("<server-local-path>"),
+				ServerResourceID:             to.Ptr("<server-resource-id>"),
+				TierFilesOlderThanDays:       to.Ptr[int32](0),
+				VolumeFreeSpacePercent:       to.Ptr[int32](100),
 			},
 		},
-		nil)
+		&armstoragesync.ServerEndpointsClientBeginCreateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ServerEndpointsClientCreateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/storagesync/resource-manager/Microsoft.StorageSync/stable/2020-09-01/examples/ServerEndpoints_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storagesync/resource-manager/Microsoft.StorageSync/stable/2020-09-01/examples/ServerEndpoints_Update.json
 func ExampleServerEndpointsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstoragesync.NewServerEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armstoragesync.NewServerEndpointsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginUpdate(ctx,
 		"<resource-group-name>",
 		"<storage-sync-service-name>",
@@ -72,32 +85,41 @@ func ExampleServerEndpointsClient_BeginUpdate() {
 		"<server-endpoint-name>",
 		&armstoragesync.ServerEndpointsClientBeginUpdateOptions{Parameters: &armstoragesync.ServerEndpointUpdateParameters{
 			Properties: &armstoragesync.ServerEndpointUpdateProperties{
-				CloudTiering:           armstoragesync.FeatureStatus("off").ToPtr(),
-				LocalCacheMode:         armstoragesync.LocalCacheMode("UpdateLocallyCachedFiles").ToPtr(),
-				OfflineDataTransfer:    armstoragesync.FeatureStatus("off").ToPtr(),
-				TierFilesOlderThanDays: to.Int32Ptr(0),
-				VolumeFreeSpacePercent: to.Int32Ptr(100),
+				CloudTiering:           to.Ptr(armstoragesync.FeatureStatusOff),
+				LocalCacheMode:         to.Ptr(armstoragesync.LocalCacheModeUpdateLocallyCachedFiles),
+				OfflineDataTransfer:    to.Ptr(armstoragesync.FeatureStatusOff),
+				TierFilesOlderThanDays: to.Ptr[int32](0),
+				VolumeFreeSpacePercent: to.Ptr[int32](100),
 			},
 		},
+			ResumeToken: "",
 		})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ServerEndpointsClientUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/storagesync/resource-manager/Microsoft.StorageSync/stable/2020-09-01/examples/ServerEndpoints_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storagesync/resource-manager/Microsoft.StorageSync/stable/2020-09-01/examples/ServerEndpoints_Get.json
 func ExampleServerEndpointsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstoragesync.NewServerEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armstoragesync.NewServerEndpointsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<storage-sync-service-name>",
@@ -105,76 +127,103 @@ func ExampleServerEndpointsClient_Get() {
 		"<server-endpoint-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ServerEndpointsClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/storagesync/resource-manager/Microsoft.StorageSync/stable/2020-09-01/examples/ServerEndpoints_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storagesync/resource-manager/Microsoft.StorageSync/stable/2020-09-01/examples/ServerEndpoints_Delete.json
 func ExampleServerEndpointsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstoragesync.NewServerEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armstoragesync.NewServerEndpointsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
 		"<storage-sync-service-name>",
 		"<sync-group-name>",
 		"<server-endpoint-name>",
-		nil)
+		&armstoragesync.ServerEndpointsClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/storagesync/resource-manager/Microsoft.StorageSync/stable/2020-09-01/examples/ServerEndpoints_ListBySyncGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storagesync/resource-manager/Microsoft.StorageSync/stable/2020-09-01/examples/ServerEndpoints_ListBySyncGroup.json
 func ExampleServerEndpointsClient_ListBySyncGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstoragesync.NewServerEndpointsClient("<subscription-id>", cred, nil)
-	res, err := client.ListBySyncGroup(ctx,
-		"<resource-group-name>",
+	client, err := armstoragesync.NewServerEndpointsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
+	pager := client.ListBySyncGroup("<resource-group-name>",
 		"<storage-sync-service-name>",
 		"<sync-group-name>",
 		nil)
-	if err != nil {
-		log.Fatal(err)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+			return
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
 	}
-	log.Printf("Response result: %#v\n", res.ServerEndpointsClientListBySyncGroupResult)
 }
 
-// x-ms-original-file: specification/storagesync/resource-manager/Microsoft.StorageSync/stable/2020-09-01/examples/ServerEndpoints_Recall.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storagesync/resource-manager/Microsoft.StorageSync/stable/2020-09-01/examples/ServerEndpoints_Recall.json
 func ExampleServerEndpointsClient_BeginRecallAction() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armstoragesync.NewServerEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armstoragesync.NewServerEndpointsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginRecallAction(ctx,
 		"<resource-group-name>",
 		"<storage-sync-service-name>",
 		"<sync-group-name>",
 		"<server-endpoint-name>",
 		armstoragesync.RecallActionParameters{
-			Pattern:    to.StringPtr("<pattern>"),
-			RecallPath: to.StringPtr("<recall-path>"),
+			Pattern:    to.Ptr("<pattern>"),
+			RecallPath: to.Ptr("<recall-path>"),
 		},
-		nil)
+		&armstoragesync.ServerEndpointsClientBeginRecallActionOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,14 +19,19 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabric/armservicefabric"
 )
 
-// x-ms-original-file: specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/ServiceGetOperation_example.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/ServiceGetOperation_example.json
 func ExampleServicesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armservicefabric.NewServicesClient("<subscription-id>", cred, nil)
+	client, err := armservicefabric.NewServicesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
@@ -34,19 +39,26 @@ func ExampleServicesClient_Get() {
 		"<service-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ServicesClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/ServicePutOperation_example_max.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/ServicePutOperation_example_max.json
 func ExampleServicesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armservicefabric.NewServicesClient("<subscription-id>", cred, nil)
+	client, err := armservicefabric.NewServicesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
@@ -57,45 +69,52 @@ func ExampleServicesClient_BeginCreateOrUpdate() {
 			Properties: &armservicefabric.StatelessServiceProperties{
 				CorrelationScheme: []*armservicefabric.ServiceCorrelationDescription{
 					{
-						Scheme:      armservicefabric.ServiceCorrelationScheme("Affinity").ToPtr(),
-						ServiceName: to.StringPtr("<service-name>"),
+						Scheme:      to.Ptr(armservicefabric.ServiceCorrelationSchemeAffinity),
+						ServiceName: to.Ptr("<service-name>"),
 					}},
-				DefaultMoveCost:      armservicefabric.MoveCost("Medium").ToPtr(),
-				PlacementConstraints: to.StringPtr("<placement-constraints>"),
+				DefaultMoveCost:      to.Ptr(armservicefabric.MoveCostMedium),
+				PlacementConstraints: to.Ptr("<placement-constraints>"),
 				ServiceLoadMetrics: []*armservicefabric.ServiceLoadMetricDescription{
 					{
-						Name:   to.StringPtr("<name>"),
-						Weight: armservicefabric.ServiceLoadMetricWeight("Low").ToPtr(),
+						Name:   to.Ptr("<name>"),
+						Weight: to.Ptr(armservicefabric.ServiceLoadMetricWeightLow),
 					}},
 				ServicePlacementPolicies: []armservicefabric.ServicePlacementPolicyDescriptionClassification{},
 				PartitionDescription: &armservicefabric.SingletonPartitionSchemeDescription{
-					PartitionScheme: armservicefabric.PartitionScheme("Singleton").ToPtr(),
+					PartitionScheme: to.Ptr(armservicefabric.PartitionSchemeSingleton),
 				},
-				ServiceDNSName:               to.StringPtr("<service-dnsname>"),
-				ServiceKind:                  armservicefabric.ServiceKind("Stateless").ToPtr(),
-				ServicePackageActivationMode: armservicefabric.ArmServicePackageActivationMode("SharedProcess").ToPtr(),
-				ServiceTypeName:              to.StringPtr("<service-type-name>"),
-				InstanceCount:                to.Int32Ptr(5),
+				ServiceDNSName:               to.Ptr("<service-dnsname>"),
+				ServiceKind:                  to.Ptr(armservicefabric.ServiceKindStateless),
+				ServicePackageActivationMode: to.Ptr(armservicefabric.ArmServicePackageActivationModeSharedProcess),
+				ServiceTypeName:              to.Ptr("<service-type-name>"),
+				InstanceCount:                to.Ptr[int32](5),
 			},
 		},
-		nil)
+		&armservicefabric.ServicesClientBeginCreateOrUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/ServicePatchOperation_example.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/ServicePatchOperation_example.json
 func ExampleServicesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armservicefabric.NewServicesClient("<subscription-id>", cred, nil)
+	client, err := armservicefabric.NewServicesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginUpdate(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
@@ -106,60 +125,76 @@ func ExampleServicesClient_BeginUpdate() {
 			Properties: &armservicefabric.StatelessServiceUpdateProperties{
 				ServiceLoadMetrics: []*armservicefabric.ServiceLoadMetricDescription{
 					{
-						Name:   to.StringPtr("<name>"),
-						Weight: armservicefabric.ServiceLoadMetricWeight("Low").ToPtr(),
+						Name:   to.Ptr("<name>"),
+						Weight: to.Ptr(armservicefabric.ServiceLoadMetricWeightLow),
 					}},
-				ServiceKind: armservicefabric.ServiceKind("Stateless").ToPtr(),
+				ServiceKind: to.Ptr(armservicefabric.ServiceKindStateless),
 			},
 		},
-		nil)
+		&armservicefabric.ServicesClientBeginUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/ServiceDeleteOperation_example.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/ServiceDeleteOperation_example.json
 func ExampleServicesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armservicefabric.NewServicesClient("<subscription-id>", cred, nil)
+	client, err := armservicefabric.NewServicesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
 		"<application-name>",
 		"<service-name>",
-		nil)
+		&armservicefabric.ServicesClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/ServiceListOperation_example.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/ServiceListOperation_example.json
 func ExampleServicesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armservicefabric.NewServicesClient("<subscription-id>", cred, nil)
+	client, err := armservicefabric.NewServicesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.List(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
 		"<application-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ServicesClientListResult)
+	// TODO: use response item
+	_ = res
 }

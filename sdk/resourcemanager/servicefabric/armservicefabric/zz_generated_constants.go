@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armservicefabric
 
 const (
 	moduleName    = "armservicefabric"
-	moduleVersion = "v0.4.0"
+	moduleVersion = "v0.5.0"
 )
 
 // AddOnFeatures - Available cluster add-on features
@@ -33,11 +33,6 @@ func PossibleAddOnFeaturesValues() []AddOnFeatures {
 	}
 }
 
-// ToPtr returns a *AddOnFeatures pointing to the current value.
-func (c AddOnFeatures) ToPtr() *AddOnFeatures {
-	return &c
-}
-
 // ArmServicePackageActivationMode - The activation Mode of the service package
 type ArmServicePackageActivationMode string
 
@@ -55,11 +50,6 @@ func PossibleArmServicePackageActivationModeValues() []ArmServicePackageActivati
 		ArmServicePackageActivationModeExclusiveProcess,
 		ArmServicePackageActivationModeSharedProcess,
 	}
-}
-
-// ToPtr returns a *ArmServicePackageActivationMode pointing to the current value.
-func (c ArmServicePackageActivationMode) ToPtr() *ArmServicePackageActivationMode {
-	return &c
 }
 
 // ArmUpgradeFailureAction - The activation Mode of the service package
@@ -82,11 +72,6 @@ func PossibleArmUpgradeFailureActionValues() []ArmUpgradeFailureAction {
 	}
 }
 
-// ToPtr returns a *ArmUpgradeFailureAction pointing to the current value.
-func (c ArmUpgradeFailureAction) ToPtr() *ArmUpgradeFailureAction {
-	return &c
-}
-
 // ClusterEnvironment - Cluster operating system, the default will be Windows
 type ClusterEnvironment string
 
@@ -101,11 +86,6 @@ func PossibleClusterEnvironmentValues() []ClusterEnvironment {
 		ClusterEnvironmentLinux,
 		ClusterEnvironmentWindows,
 	}
-}
-
-// ToPtr returns a *ClusterEnvironment pointing to the current value.
-func (c ClusterEnvironment) ToPtr() *ClusterEnvironment {
-	return &c
 }
 
 // ClusterState - The current state of the cluster.
@@ -156,11 +136,6 @@ func PossibleClusterStateValues() []ClusterState {
 	}
 }
 
-// ToPtr returns a *ClusterState pointing to the current value.
-func (c ClusterState) ToPtr() *ClusterState {
-	return &c
-}
-
 // ClusterUpgradeCadence - Indicates when new cluster runtime version upgrades will be applied after they are released. By
 // default is Wave0.
 type ClusterUpgradeCadence string
@@ -186,11 +161,6 @@ func PossibleClusterUpgradeCadenceValues() []ClusterUpgradeCadence {
 	}
 }
 
-// ToPtr returns a *ClusterUpgradeCadence pointing to the current value.
-func (c ClusterUpgradeCadence) ToPtr() *ClusterUpgradeCadence {
-	return &c
-}
-
 type ClusterVersionsEnvironment string
 
 const (
@@ -204,11 +174,6 @@ func PossibleClusterVersionsEnvironmentValues() []ClusterVersionsEnvironment {
 		ClusterVersionsEnvironmentLinux,
 		ClusterVersionsEnvironmentWindows,
 	}
-}
-
-// ToPtr returns a *ClusterVersionsEnvironment pointing to the current value.
-func (c ClusterVersionsEnvironment) ToPtr() *ClusterVersionsEnvironment {
-	return &c
 }
 
 // DurabilityLevel - The durability level of the node type. Learn about DurabilityLevel [https://docs.microsoft.com/azure/service-fabric/service-fabric-cluster-capacity].
@@ -231,11 +196,6 @@ func PossibleDurabilityLevelValues() []DurabilityLevel {
 		DurabilityLevelGold,
 		DurabilityLevelSilver,
 	}
-}
-
-// ToPtr returns a *DurabilityLevel pointing to the current value.
-func (c DurabilityLevel) ToPtr() *DurabilityLevel {
-	return &c
 }
 
 // ManagedIdentityType - The type of managed identity for the resource.
@@ -263,11 +223,6 @@ func PossibleManagedIdentityTypeValues() []ManagedIdentityType {
 	}
 }
 
-// ToPtr returns a *ManagedIdentityType pointing to the current value.
-func (c ManagedIdentityType) ToPtr() *ManagedIdentityType {
-	return &c
-}
-
 // MoveCost - Specifies the move cost for the service.
 type MoveCost string
 
@@ -292,11 +247,6 @@ func PossibleMoveCostValues() []MoveCost {
 	}
 }
 
-// ToPtr returns a *MoveCost pointing to the current value.
-func (c MoveCost) ToPtr() *MoveCost {
-	return &c
-}
-
 // NotificationCategory - The category of notification.
 type NotificationCategory string
 
@@ -310,11 +260,6 @@ func PossibleNotificationCategoryValues() []NotificationCategory {
 	return []NotificationCategory{
 		NotificationCategoryWaveProgress,
 	}
-}
-
-// ToPtr returns a *NotificationCategory pointing to the current value.
-func (c NotificationCategory) ToPtr() *NotificationCategory {
-	return &c
 }
 
 // NotificationChannel - The notification channel indicates the type of receivers subscribed to the notification, either user
@@ -338,11 +283,6 @@ func PossibleNotificationChannelValues() []NotificationChannel {
 	}
 }
 
-// ToPtr returns a *NotificationChannel pointing to the current value.
-func (c NotificationChannel) ToPtr() *NotificationChannel {
-	return &c
-}
-
 // NotificationLevel - The level of notification.
 type NotificationLevel string
 
@@ -359,11 +299,6 @@ func PossibleNotificationLevelValues() []NotificationLevel {
 		NotificationLevelAll,
 		NotificationLevelCritical,
 	}
-}
-
-// ToPtr returns a *NotificationLevel pointing to the current value.
-func (c NotificationLevel) ToPtr() *NotificationLevel {
-	return &c
 }
 
 // PartitionScheme - Enumerates the ways that a service can be partitioned.
@@ -394,11 +329,6 @@ func PossiblePartitionSchemeValues() []PartitionScheme {
 	}
 }
 
-// ToPtr returns a *PartitionScheme pointing to the current value.
-func (c PartitionScheme) ToPtr() *PartitionScheme {
-	return &c
-}
-
 // ProvisioningState - The provisioning state of the cluster resource.
 type ProvisioningState string
 
@@ -417,11 +347,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 		ProvisioningStateSucceeded,
 		ProvisioningStateUpdating,
 	}
-}
-
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
 }
 
 // ReliabilityLevel - The reliability level sets the replica set size of system services. Learn about ReliabilityLevel [https://docs.microsoft.com/azure/service-fabric/service-fabric-cluster-capacity].
@@ -449,11 +374,6 @@ func PossibleReliabilityLevelValues() []ReliabilityLevel {
 		ReliabilityLevelPlatinum,
 		ReliabilityLevelSilver,
 	}
-}
-
-// ToPtr returns a *ReliabilityLevel pointing to the current value.
-func (c ReliabilityLevel) ToPtr() *ReliabilityLevel {
-	return &c
 }
 
 // RollingUpgradeMode - The mode used to monitor health during a rolling upgrade. The values are UnmonitoredAuto, UnmonitoredManual,
@@ -485,11 +405,6 @@ func PossibleRollingUpgradeModeValues() []RollingUpgradeMode {
 	}
 }
 
-// ToPtr returns a *RollingUpgradeMode pointing to the current value.
-func (c RollingUpgradeMode) ToPtr() *RollingUpgradeMode {
-	return &c
-}
-
 // ServiceCorrelationScheme - The service correlation scheme.
 type ServiceCorrelationScheme string
 
@@ -519,11 +434,6 @@ func PossibleServiceCorrelationSchemeValues() []ServiceCorrelationScheme {
 	}
 }
 
-// ToPtr returns a *ServiceCorrelationScheme pointing to the current value.
-func (c ServiceCorrelationScheme) ToPtr() *ServiceCorrelationScheme {
-	return &c
-}
-
 // ServiceKind - The kind of service (Stateless or Stateful).
 type ServiceKind string
 
@@ -545,11 +455,6 @@ func PossibleServiceKindValues() []ServiceKind {
 		ServiceKindStateful,
 		ServiceKindStateless,
 	}
-}
-
-// ToPtr returns a *ServiceKind pointing to the current value.
-func (c ServiceKind) ToPtr() *ServiceKind {
-	return &c
 }
 
 // ServiceLoadMetricWeight - Determines the metric weight relative to the other metrics that are configured for this service.
@@ -576,11 +481,6 @@ func PossibleServiceLoadMetricWeightValues() []ServiceLoadMetricWeight {
 		ServiceLoadMetricWeightMedium,
 		ServiceLoadMetricWeightZero,
 	}
-}
-
-// ToPtr returns a *ServiceLoadMetricWeight pointing to the current value.
-func (c ServiceLoadMetricWeight) ToPtr() *ServiceLoadMetricWeight {
-	return &c
 }
 
 // ServicePlacementPolicyType - The type of placement policy for a service fabric service. Following are the possible values.
@@ -622,11 +522,6 @@ func PossibleServicePlacementPolicyTypeValues() []ServicePlacementPolicyType {
 	}
 }
 
-// ToPtr returns a *ServicePlacementPolicyType pointing to the current value.
-func (c ServicePlacementPolicyType) ToPtr() *ServicePlacementPolicyType {
-	return &c
-}
-
 // SfZonalUpgradeMode - This property controls the logical grouping of VMs in upgrade domains (UDs). This property can't be
 // modified if a node type with multiple Availability Zones is already present in the cluster.
 type SfZonalUpgradeMode string
@@ -649,11 +544,6 @@ func PossibleSfZonalUpgradeModeValues() []SfZonalUpgradeMode {
 		SfZonalUpgradeModeHierarchical,
 		SfZonalUpgradeModeParallel,
 	}
-}
-
-// ToPtr returns a *SfZonalUpgradeMode pointing to the current value.
-func (c SfZonalUpgradeMode) ToPtr() *SfZonalUpgradeMode {
-	return &c
 }
 
 // StoreName - The local certificate store location.
@@ -684,11 +574,6 @@ func PossibleStoreNameValues() []StoreName {
 	}
 }
 
-// ToPtr returns a *StoreName pointing to the current value.
-func (c StoreName) ToPtr() *StoreName {
-	return &c
-}
-
 // UpgradeMode - The upgrade mode of the cluster when new Service Fabric runtime version is available.
 type UpgradeMode string
 
@@ -707,11 +592,6 @@ func PossibleUpgradeModeValues() []UpgradeMode {
 		UpgradeModeAutomatic,
 		UpgradeModeManual,
 	}
-}
-
-// ToPtr returns a *UpgradeMode pointing to the current value.
-func (c UpgradeMode) ToPtr() *UpgradeMode {
-	return &c
 }
 
 // VmssZonalUpgradeMode - This property defines the upgrade mode for the virtual machine scale set, it is mandatory if a node
@@ -733,9 +613,4 @@ func PossibleVmssZonalUpgradeModeValues() []VmssZonalUpgradeMode {
 		VmssZonalUpgradeModeHierarchical,
 		VmssZonalUpgradeModeParallel,
 	}
-}
-
-// ToPtr returns a *VmssZonalUpgradeMode pointing to the current value.
-func (c VmssZonalUpgradeMode) ToPtr() *VmssZonalUpgradeMode {
-	return &c
 }

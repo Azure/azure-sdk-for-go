@@ -1,5 +1,78 @@
 # Release History
 
+## 0.3.0 (2022-04-13)
+### Breaking Changes
+
+- Function `*OperationsClient.List` parameter(s) have been changed from `(context.Context, *OperationsClientListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(OperationsClientListResponse, error)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `NewBitLockerKeysClient` return value(s) have been changed from `(*BitLockerKeysClient)` to `(*BitLockerKeysClient, error)`
+- Function `*JobsClient.ListByResourceGroup` return value(s) have been changed from `(*JobsClientListByResourceGroupPager)` to `(*runtime.Pager[JobsClientListByResourceGroupResponse])`
+- Function `*BitLockerKeysClient.List` parameter(s) have been changed from `(context.Context, string, string, *BitLockerKeysClientListOptions)` to `(string, string, *BitLockerKeysClientListOptions)`
+- Function `*BitLockerKeysClient.List` return value(s) have been changed from `(BitLockerKeysClientListResponse, error)` to `(*runtime.Pager[BitLockerKeysClientListResponse])`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `NewJobsClient` return value(s) have been changed from `(*JobsClient)` to `(*JobsClient, error)`
+- Function `*JobsClient.ListBySubscription` return value(s) have been changed from `(*JobsClientListBySubscriptionPager)` to `(*runtime.Pager[JobsClientListBySubscriptionResponse])`
+- Function `NewLocationsClient` return value(s) have been changed from `(*LocationsClient)` to `(*LocationsClient, error)`
+- Function `*LocationsClient.List` parameter(s) have been changed from `(context.Context, *LocationsClientListOptions)` to `(*LocationsClientListOptions)`
+- Function `*LocationsClient.List` return value(s) have been changed from `(LocationsClientListResponse, error)` to `(*runtime.Pager[LocationsClientListResponse])`
+- Type of `PutJobParameters.Tags` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `UpdateJobParameters.Tags` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `JobResponse.Tags` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `ErrorResponseError.Innererror` has been changed from `map[string]interface{}` to `interface{}`
+- Function `IdentityType.ToPtr` has been removed
+- Function `DriveState.ToPtr` has been removed
+- Function `*JobsClientListBySubscriptionPager.PageResponse` has been removed
+- Function `EncryptionKekType.ToPtr` has been removed
+- Function `*JobsClientListByResourceGroupPager.Err` has been removed
+- Function `*JobsClientListBySubscriptionPager.NextPage` has been removed
+- Function `CreatedByType.ToPtr` has been removed
+- Function `*JobsClientListBySubscriptionPager.Err` has been removed
+- Function `*JobsClientListByResourceGroupPager.NextPage` has been removed
+- Function `*JobsClientListByResourceGroupPager.PageResponse` has been removed
+- Struct `BitLockerKeysClientListResult` has been removed
+- Struct `JobsClientCreateResult` has been removed
+- Struct `JobsClientGetResult` has been removed
+- Struct `JobsClientListByResourceGroupPager` has been removed
+- Struct `JobsClientListByResourceGroupResult` has been removed
+- Struct `JobsClientListBySubscriptionPager` has been removed
+- Struct `JobsClientListBySubscriptionResult` has been removed
+- Struct `JobsClientUpdateResult` has been removed
+- Struct `LocationsClientGetResult` has been removed
+- Struct `LocationsClientListResult` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `JobsClientListByResourceGroupResult` of struct `JobsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `JobsClientListByResourceGroupResponse` has been removed
+- Field `JobsClientUpdateResult` of struct `JobsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `JobsClientUpdateResponse` has been removed
+- Field `JobsClientGetResult` of struct `JobsClientGetResponse` has been removed
+- Field `RawResponse` of struct `JobsClientGetResponse` has been removed
+- Field `RawResponse` of struct `JobsClientDeleteResponse` has been removed
+- Field `JobsClientListBySubscriptionResult` of struct `JobsClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `JobsClientListBySubscriptionResponse` has been removed
+- Field `LocationsClientListResult` of struct `LocationsClientListResponse` has been removed
+- Field `RawResponse` of struct `LocationsClientListResponse` has been removed
+- Field `LocationsClientGetResult` of struct `LocationsClientGetResponse` has been removed
+- Field `RawResponse` of struct `LocationsClientGetResponse` has been removed
+- Field `BitLockerKeysClientListResult` of struct `BitLockerKeysClientListResponse` has been removed
+- Field `RawResponse` of struct `BitLockerKeysClientListResponse` has been removed
+- Field `JobsClientCreateResult` of struct `JobsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `JobsClientCreateResponse` has been removed
+
+### Features Added
+
+- New anonymous field `ListJobsResponse` in struct `JobsClientListBySubscriptionResponse`
+- New anonymous field `GetBitLockerKeysResponse` in struct `BitLockerKeysClientListResponse`
+- New anonymous field `JobResponse` in struct `JobsClientCreateResponse`
+- New anonymous field `ListOperationsResponse` in struct `OperationsClientListResponse`
+- New anonymous field `ListJobsResponse` in struct `JobsClientListByResourceGroupResponse`
+- New anonymous field `JobResponse` in struct `JobsClientUpdateResponse`
+- New anonymous field `JobResponse` in struct `JobsClientGetResponse`
+- New anonymous field `LocationsResponse` in struct `LocationsClientListResponse`
+- New anonymous field `Location` in struct `LocationsClientGetResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

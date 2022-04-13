@@ -1,5 +1,387 @@
 # Release History
 
+## 0.3.0 (2022-04-13)
+### Breaking Changes
+
+- Function `NewTestSummariesClient` return value(s) have been changed from `(*TestSummariesClient)` to `(*TestSummariesClient, error)`
+- Function `*PackagesClient.BeginHardDelete` return value(s) have been changed from `(PackagesClientHardDeletePollerResponse, error)` to `(*armruntime.Poller[PackagesClientHardDeleteResponse], error)`
+- Function `*CustomerEventsClient.BeginDelete` return value(s) have been changed from `(CustomerEventsClientDeletePollerResponse, error)` to `(*armruntime.Poller[CustomerEventsClientDeleteResponse], error)`
+- Function `*PackagesClient.BeginUpdate` return value(s) have been changed from `(PackagesClientUpdatePollerResponse, error)` to `(*armruntime.Poller[PackagesClientUpdateResponse], error)`
+- Function `*FlightingRingsClient.List` return value(s) have been changed from `(*FlightingRingsClientListPager)` to `(*runtime.Pager[FlightingRingsClientListResponse])`
+- Function `NewTestResultsClient` return value(s) have been changed from `(*TestResultsClient)` to `(*TestResultsClient, error)`
+- Function `*AccountsClient.ListByResourceGroup` return value(s) have been changed from `(*AccountsClientListByResourceGroupPager)` to `(*runtime.Pager[AccountsClientListByResourceGroupResponse])`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `*EmailEventsClient.List` return value(s) have been changed from `(*EmailEventsClientListPager)` to `(*runtime.Pager[EmailEventsClientListResponse])`
+- Function `*TestSummariesClient.List` return value(s) have been changed from `(*TestSummariesClientListPager)` to `(*runtime.Pager[TestSummariesClientListResponse])`
+- Function `*TestTypesClient.List` return value(s) have been changed from `(*TestTypesClientListPager)` to `(*runtime.Pager[TestTypesClientListResponse])`
+- Function `NewSKUsClient` return value(s) have been changed from `(*SKUsClient)` to `(*SKUsClient, error)`
+- Function `*AnalysisResultsClient.List` parameter(s) have been changed from `(context.Context, string, string, string, string, AnalysisResultType, *AnalysisResultsClientListOptions)` to `(string, string, string, string, AnalysisResultType, *AnalysisResultsClientListOptions)`
+- Function `*AnalysisResultsClient.List` return value(s) have been changed from `(AnalysisResultsClientListResponse, error)` to `(*runtime.Pager[AnalysisResultsClientListResponse])`
+- Function `*SKUsClient.List` return value(s) have been changed from `(*SKUsClientListPager)` to `(*runtime.Pager[SKUsClientListResponse])`
+- Function `NewAnalysisResultsClient` return value(s) have been changed from `(*AnalysisResultsClient)` to `(*AnalysisResultsClient, error)`
+- Function `NewUsageClient` return value(s) have been changed from `(*UsageClient)` to `(*UsageClient, error)`
+- Function `*AvailableOSClient.List` return value(s) have been changed from `(*AvailableOSClientListPager)` to `(*runtime.Pager[AvailableOSClientListResponse])`
+- Function `NewAccountsClient` return value(s) have been changed from `(*AccountsClient)` to `(*AccountsClient, error)`
+- Function `*TestResultsClient.List` return value(s) have been changed from `(*TestResultsClientListPager)` to `(*runtime.Pager[TestResultsClientListResponse])`
+- Function `NewFlightingRingsClient` return value(s) have been changed from `(*FlightingRingsClient)` to `(*FlightingRingsClient, error)`
+- Function `*AccountsClient.BeginUpdate` return value(s) have been changed from `(AccountsClientUpdatePollerResponse, error)` to `(*armruntime.Poller[AccountsClientUpdateResponse], error)`
+- Function `NewEmailEventsClient` return value(s) have been changed from `(*EmailEventsClient)` to `(*EmailEventsClient, error)`
+- Function `NewCustomerEventsClient` return value(s) have been changed from `(*CustomerEventsClient)` to `(*CustomerEventsClient, error)`
+- Function `NewPackagesClient` return value(s) have been changed from `(*PackagesClient)` to `(*PackagesClient, error)`
+- Function `NewTestTypesClient` return value(s) have been changed from `(*TestTypesClient)` to `(*TestTypesClient, error)`
+- Function `*CustomerEventsClient.ListByTestBaseAccount` return value(s) have been changed from `(*CustomerEventsClientListByTestBaseAccountPager)` to `(*runtime.Pager[CustomerEventsClientListByTestBaseAccountResponse])`
+- Function `*OSUpdatesClient.List` return value(s) have been changed from `(*OSUpdatesClientListPager)` to `(*runtime.Pager[OSUpdatesClientListResponse])`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `NewOSUpdatesClient` return value(s) have been changed from `(*OSUpdatesClient)` to `(*OSUpdatesClient, error)`
+- Function `*AccountsClient.ListBySubscription` return value(s) have been changed from `(*AccountsClientListBySubscriptionPager)` to `(*runtime.Pager[AccountsClientListBySubscriptionResponse])`
+- Function `*PackagesClient.BeginDelete` return value(s) have been changed from `(PackagesClientDeletePollerResponse, error)` to `(*armruntime.Poller[PackagesClientDeleteResponse], error)`
+- Function `NewAvailableOSClient` return value(s) have been changed from `(*AvailableOSClient)` to `(*AvailableOSClient, error)`
+- Function `*UsageClient.List` return value(s) have been changed from `(*UsageClientListPager)` to `(*runtime.Pager[UsageClientListResponse])`
+- Function `NewFavoriteProcessesClient` return value(s) have been changed from `(*FavoriteProcessesClient)` to `(*FavoriteProcessesClient, error)`
+- Function `*PackagesClient.BeginCreate` return value(s) have been changed from `(PackagesClientCreatePollerResponse, error)` to `(*armruntime.Poller[PackagesClientCreateResponse], error)`
+- Function `*PackagesClient.ListByTestBaseAccount` return value(s) have been changed from `(*PackagesClientListByTestBaseAccountPager)` to `(*runtime.Pager[PackagesClientListByTestBaseAccountResponse])`
+- Function `*AccountsClient.BeginCreate` return value(s) have been changed from `(AccountsClientCreatePollerResponse, error)` to `(*armruntime.Poller[AccountsClientCreateResponse], error)`
+- Function `*FavoriteProcessesClient.List` return value(s) have been changed from `(*FavoriteProcessesClientListPager)` to `(*runtime.Pager[FavoriteProcessesClientListResponse])`
+- Function `*AccountsClient.BeginDelete` return value(s) have been changed from `(AccountsClientDeletePollerResponse, error)` to `(*armruntime.Poller[AccountsClientDeleteResponse], error)`
+- Function `*AccountsClient.BeginOffboard` return value(s) have been changed from `(AccountsClientOffboardPollerResponse, error)` to `(*armruntime.Poller[AccountsClientOffboardResponse], error)`
+- Function `*CustomerEventsClient.BeginCreate` return value(s) have been changed from `(CustomerEventsClientCreatePollerResponse, error)` to `(*armruntime.Poller[CustomerEventsClientCreateResponse], error)`
+- Type of `Operation.Properties` has been changed from `map[string]interface{}` to `interface{}`
+- Function `*AccountsClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*OSUpdatesClientListPager.PageResponse` has been removed
+- Function `*SKUsClientListPager.NextPage` has been removed
+- Function `*CustomerEventsClientCreatePoller.ResumeToken` has been removed
+- Function `*TestTypesClientListPager.Err` has been removed
+- Function `*AccountsClientListBySubscriptionPager.Err` has been removed
+- Function `*FlightingRingsClientListPager.PageResponse` has been removed
+- Function `TestStatus.ToPtr` has been removed
+- Function `Grade.ToPtr` has been removed
+- Function `*PackagesClientHardDeletePoller.ResumeToken` has been removed
+- Function `*FavoriteProcessesClientListPager.Err` has been removed
+- Function `*OSUpdatesClientListPager.NextPage` has been removed
+- Function `*UsageClientListPager.NextPage` has been removed
+- Function `*AccountsClientOffboardPollerResponse.Resume` has been removed
+- Function `*AccountsClientCreatePoller.Poll` has been removed
+- Function `*AccountsClientListByResourceGroupPager.NextPage` has been removed
+- Function `*FlightingRingsClientListPager.NextPage` has been removed
+- Function `*TestResultsClientListPager.Err` has been removed
+- Function `*AvailableOSClientListPager.Err` has been removed
+- Function `*AccountsClientOffboardPoller.FinalResponse` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `Category.ToPtr` has been removed
+- Function `PackagesClientCreatePollerResponse.PollUntilDone` has been removed
+- Function `AnalysisResultType.ToPtr` has been removed
+- Function `*CustomerEventsClientCreatePoller.Done` has been removed
+- Function `*PackagesClientHardDeletePoller.Done` has been removed
+- Function `*CustomerEventsClientListByTestBaseAccountPager.NextPage` has been removed
+- Function `*CustomerEventsClientCreatePoller.FinalResponse` has been removed
+- Function `*AccountsClientOffboardPoller.Done` has been removed
+- Function `*AvailableOSClientListPager.PageResponse` has been removed
+- Function `*CustomerEventsClientCreatePollerResponse.Resume` has been removed
+- Function `*AccountsClientListBySubscriptionPager.PageResponse` has been removed
+- Function `*AccountsClientCreatePoller.Done` has been removed
+- Function `*TestSummariesClientListPager.NextPage` has been removed
+- Function `*AccountsClientUpdatePoller.Done` has been removed
+- Function `Type.ToPtr` has been removed
+- Function `*AccountsClientDeletePollerResponse.Resume` has been removed
+- Function `*TestResultsClientListPager.PageResponse` has been removed
+- Function `TestAnalysisStatus.ToPtr` has been removed
+- Function `*FlightingRingsClientListPager.Err` has been removed
+- Function `PackagesClientHardDeletePollerResponse.PollUntilDone` has been removed
+- Function `CustomerEventsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*EmailEventsClientListPager.Err` has been removed
+- Function `*PackagesClientUpdatePoller.FinalResponse` has been removed
+- Function `*TestSummariesClientListPager.Err` has been removed
+- Function `*AccountsClientUpdatePoller.ResumeToken` has been removed
+- Function `*OSUpdatesClientListPager.Err` has been removed
+- Function `*PackagesClientDeletePollerResponse.Resume` has been removed
+- Function `PackageStatus.ToPtr` has been removed
+- Function `Tier.ToPtr` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Function `*PackagesClientListByTestBaseAccountPager.PageResponse` has been removed
+- Function `*AccountsClientCreatePoller.ResumeToken` has been removed
+- Function `*CustomerEventsClientDeletePoller.Poll` has been removed
+- Function `*SKUsClientListPager.PageResponse` has been removed
+- Function `AccountsClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*PackagesClientUpdatePoller.Poll` has been removed
+- Function `ValidationRunStatus.ToPtr` has been removed
+- Function `*AccountsClientUpdatePoller.FinalResponse` has been removed
+- Function `*PackagesClientUpdatePoller.ResumeToken` has been removed
+- Function `*PackagesClientHardDeletePoller.FinalResponse` has been removed
+- Function `*AccountsClientDeletePoller.Done` has been removed
+- Function `Reason.ToPtr` has been removed
+- Function `*CustomerEventsClientDeletePoller.FinalResponse` has been removed
+- Function `*TestTypesClientListPager.NextPage` has been removed
+- Function `*PackagesClientCreatePoller.FinalResponse` has been removed
+- Function `*UsageClientListPager.Err` has been removed
+- Function `*CustomerEventsClientListByTestBaseAccountPager.PageResponse` has been removed
+- Function `*PackagesClientDeletePoller.Done` has been removed
+- Function `*EmailEventsClientListPager.NextPage` has been removed
+- Function `*AccountsClientListBySubscriptionPager.NextPage` has been removed
+- Function `*CustomerEventsClientDeletePollerResponse.Resume` has been removed
+- Function `PackagesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*AccountsClientDeletePoller.Poll` has been removed
+- Function `AccountsClientOffboardPollerResponse.PollUntilDone` has been removed
+- Function `*CustomerEventsClientDeletePoller.Done` has been removed
+- Function `*CustomerEventsClientDeletePoller.ResumeToken` has been removed
+- Function `*AccountsClientCreatePoller.FinalResponse` has been removed
+- Function `*PackagesClientListByTestBaseAccountPager.Err` has been removed
+- Function `Action.ToPtr` has been removed
+- Function `*AccountsClientListByResourceGroupPager.Err` has been removed
+- Function `AccountsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*PackagesClientDeletePoller.Poll` has been removed
+- Function `ContentType.ToPtr` has been removed
+- Function `*PackagesClientCreatePoller.Poll` has been removed
+- Function `*TestResultsClientListPager.NextPage` has been removed
+- Function `*PackagesClientCreatePollerResponse.Resume` has been removed
+- Function `*PackagesClientUpdatePoller.Done` has been removed
+- Function `AnalysisStatus.ToPtr` has been removed
+- Function `*SKUsClientListPager.Err` has been removed
+- Function `*EmailEventsClientListPager.PageResponse` has been removed
+- Function `*FavoriteProcessesClientListPager.PageResponse` has been removed
+- Function `ExecutionStatus.ToPtr` has been removed
+- Function `*CustomerEventsClientListByTestBaseAccountPager.Err` has been removed
+- Function `*TestSummariesClientListPager.PageResponse` has been removed
+- Function `*PackagesClientDeletePoller.FinalResponse` has been removed
+- Function `CustomerEventsClientCreatePollerResponse.PollUntilDone` has been removed
+- Function `*AccountsClientOffboardPoller.Poll` has been removed
+- Function `*TestTypesClientListPager.PageResponse` has been removed
+- Function `AccountsClientCreatePollerResponse.PollUntilDone` has been removed
+- Function `*AvailableOSClientListPager.NextPage` has been removed
+- Function `*PackagesClientCreatePoller.Done` has been removed
+- Function `PackagesClientUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `ProvisioningState.ToPtr` has been removed
+- Function `OsUpdateType.ToPtr` has been removed
+- Function `*PackagesClientCreatePoller.ResumeToken` has been removed
+- Function `*UsageClientListPager.PageResponse` has been removed
+- Function `*PackagesClientDeletePoller.ResumeToken` has been removed
+- Function `*PackagesClientListByTestBaseAccountPager.NextPage` has been removed
+- Function `AnalysisResultName.ToPtr` has been removed
+- Function `CreatedByType.ToPtr` has been removed
+- Function `*FavoriteProcessesClientListPager.NextPage` has been removed
+- Function `*PackagesClientUpdatePollerResponse.Resume` has been removed
+- Function `*AccountsClientDeletePoller.ResumeToken` has been removed
+- Function `*AccountsClientDeletePoller.FinalResponse` has been removed
+- Function `*PackagesClientHardDeletePollerResponse.Resume` has been removed
+- Function `TestType.ToPtr` has been removed
+- Function `*AccountsClientCreatePollerResponse.Resume` has been removed
+- Function `*AccountsClientUpdatePoller.Poll` has been removed
+- Function `*PackagesClientHardDeletePoller.Poll` has been removed
+- Function `*AccountsClientUpdatePollerResponse.Resume` has been removed
+- Function `*CustomerEventsClientCreatePoller.Poll` has been removed
+- Function `*AccountsClientOffboardPoller.ResumeToken` has been removed
+- Struct `AccountsClientCheckPackageNameAvailabilityResult` has been removed
+- Struct `AccountsClientCreatePoller` has been removed
+- Struct `AccountsClientCreatePollerResponse` has been removed
+- Struct `AccountsClientCreateResult` has been removed
+- Struct `AccountsClientDeletePoller` has been removed
+- Struct `AccountsClientDeletePollerResponse` has been removed
+- Struct `AccountsClientGetFileUploadURLResult` has been removed
+- Struct `AccountsClientGetResult` has been removed
+- Struct `AccountsClientListByResourceGroupPager` has been removed
+- Struct `AccountsClientListByResourceGroupResult` has been removed
+- Struct `AccountsClientListBySubscriptionPager` has been removed
+- Struct `AccountsClientListBySubscriptionResult` has been removed
+- Struct `AccountsClientOffboardPoller` has been removed
+- Struct `AccountsClientOffboardPollerResponse` has been removed
+- Struct `AccountsClientUpdatePoller` has been removed
+- Struct `AccountsClientUpdatePollerResponse` has been removed
+- Struct `AccountsClientUpdateResult` has been removed
+- Struct `AnalysisResultsClientGetResult` has been removed
+- Struct `AnalysisResultsClientListResult` has been removed
+- Struct `AvailableOSClientGetResult` has been removed
+- Struct `AvailableOSClientListPager` has been removed
+- Struct `AvailableOSClientListResult` has been removed
+- Struct `CustomerEventsClientCreatePoller` has been removed
+- Struct `CustomerEventsClientCreatePollerResponse` has been removed
+- Struct `CustomerEventsClientCreateResult` has been removed
+- Struct `CustomerEventsClientDeletePoller` has been removed
+- Struct `CustomerEventsClientDeletePollerResponse` has been removed
+- Struct `CustomerEventsClientGetResult` has been removed
+- Struct `CustomerEventsClientListByTestBaseAccountPager` has been removed
+- Struct `CustomerEventsClientListByTestBaseAccountResult` has been removed
+- Struct `EmailEventsClientGetResult` has been removed
+- Struct `EmailEventsClientListPager` has been removed
+- Struct `EmailEventsClientListResult` has been removed
+- Struct `FavoriteProcessesClientCreateResult` has been removed
+- Struct `FavoriteProcessesClientGetResult` has been removed
+- Struct `FavoriteProcessesClientListPager` has been removed
+- Struct `FavoriteProcessesClientListResult` has been removed
+- Struct `FlightingRingsClientGetResult` has been removed
+- Struct `FlightingRingsClientListPager` has been removed
+- Struct `FlightingRingsClientListResult` has been removed
+- Struct `OSUpdatesClientGetResult` has been removed
+- Struct `OSUpdatesClientListPager` has been removed
+- Struct `OSUpdatesClientListResult` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `PackagesClientCreatePoller` has been removed
+- Struct `PackagesClientCreatePollerResponse` has been removed
+- Struct `PackagesClientCreateResult` has been removed
+- Struct `PackagesClientDeletePoller` has been removed
+- Struct `PackagesClientDeletePollerResponse` has been removed
+- Struct `PackagesClientGetDownloadURLResult` has been removed
+- Struct `PackagesClientGetResult` has been removed
+- Struct `PackagesClientHardDeletePoller` has been removed
+- Struct `PackagesClientHardDeletePollerResponse` has been removed
+- Struct `PackagesClientListByTestBaseAccountPager` has been removed
+- Struct `PackagesClientListByTestBaseAccountResult` has been removed
+- Struct `PackagesClientUpdatePoller` has been removed
+- Struct `PackagesClientUpdatePollerResponse` has been removed
+- Struct `PackagesClientUpdateResult` has been removed
+- Struct `SKUsClientListPager` has been removed
+- Struct `SKUsClientListResult` has been removed
+- Struct `TestResultsClientGetDownloadURLResult` has been removed
+- Struct `TestResultsClientGetResult` has been removed
+- Struct `TestResultsClientGetVideoDownloadURLResult` has been removed
+- Struct `TestResultsClientListPager` has been removed
+- Struct `TestResultsClientListResult` has been removed
+- Struct `TestSummariesClientGetResult` has been removed
+- Struct `TestSummariesClientListPager` has been removed
+- Struct `TestSummariesClientListResult` has been removed
+- Struct `TestTypesClientGetResult` has been removed
+- Struct `TestTypesClientListPager` has been removed
+- Struct `TestTypesClientListResult` has been removed
+- Struct `UsageClientListPager` has been removed
+- Struct `UsageClientListResult` has been removed
+- Field `EmailEventsClientListResult` of struct `EmailEventsClientListResponse` has been removed
+- Field `RawResponse` of struct `EmailEventsClientListResponse` has been removed
+- Field `FavoriteProcessesClientCreateResult` of struct `FavoriteProcessesClientCreateResponse` has been removed
+- Field `RawResponse` of struct `FavoriteProcessesClientCreateResponse` has been removed
+- Field `RawResponse` of struct `PackagesClientHardDeleteResponse` has been removed
+- Field `TestSummariesClientListResult` of struct `TestSummariesClientListResponse` has been removed
+- Field `RawResponse` of struct `TestSummariesClientListResponse` has been removed
+- Field `AvailableOSClientListResult` of struct `AvailableOSClientListResponse` has been removed
+- Field `RawResponse` of struct `AvailableOSClientListResponse` has been removed
+- Field `AnalysisResultsClientGetResult` of struct `AnalysisResultsClientGetResponse` has been removed
+- Field `RawResponse` of struct `AnalysisResultsClientGetResponse` has been removed
+- Field `FlightingRingsClientListResult` of struct `FlightingRingsClientListResponse` has been removed
+- Field `RawResponse` of struct `FlightingRingsClientListResponse` has been removed
+- Field `PackagesClientCreateResult` of struct `PackagesClientCreateResponse` has been removed
+- Field `RawResponse` of struct `PackagesClientCreateResponse` has been removed
+- Field `CustomerEventsClientListByTestBaseAccountResult` of struct `CustomerEventsClientListByTestBaseAccountResponse` has been removed
+- Field `RawResponse` of struct `CustomerEventsClientListByTestBaseAccountResponse` has been removed
+- Field `RawResponse` of struct `PackagesClientDeleteResponse` has been removed
+- Field `AccountsClientListBySubscriptionResult` of struct `AccountsClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientDeleteResponse` has been removed
+- Field `FavoriteProcessesClientListResult` of struct `FavoriteProcessesClientListResponse` has been removed
+- Field `RawResponse` of struct `FavoriteProcessesClientListResponse` has been removed
+- Field `TestResultsClientGetResult` of struct `TestResultsClientGetResponse` has been removed
+- Field `RawResponse` of struct `TestResultsClientGetResponse` has been removed
+- Field `OSUpdatesClientGetResult` of struct `OSUpdatesClientGetResponse` has been removed
+- Field `RawResponse` of struct `OSUpdatesClientGetResponse` has been removed
+- Field `AnalysisResultsClientListResult` of struct `AnalysisResultsClientListResponse` has been removed
+- Field `RawResponse` of struct `AnalysisResultsClientListResponse` has been removed
+- Field `PackagesClientGetDownloadURLResult` of struct `PackagesClientGetDownloadURLResponse` has been removed
+- Field `RawResponse` of struct `PackagesClientGetDownloadURLResponse` has been removed
+- Field `UsageClientListResult` of struct `UsageClientListResponse` has been removed
+- Field `RawResponse` of struct `UsageClientListResponse` has been removed
+- Field `TestTypesClientListResult` of struct `TestTypesClientListResponse` has been removed
+- Field `RawResponse` of struct `TestTypesClientListResponse` has been removed
+- Field `AccountsClientListByResourceGroupResult` of struct `AccountsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientListByResourceGroupResponse` has been removed
+- Field `AccountsClientCreateResult` of struct `AccountsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientOffboardResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `FavoriteProcessesClientDeleteResponse` has been removed
+- Field `AccountsClientGetFileUploadURLResult` of struct `AccountsClientGetFileUploadURLResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientGetFileUploadURLResponse` has been removed
+- Field `PackagesClientListByTestBaseAccountResult` of struct `PackagesClientListByTestBaseAccountResponse` has been removed
+- Field `RawResponse` of struct `PackagesClientListByTestBaseAccountResponse` has been removed
+- Field `CustomerEventsClientCreateResult` of struct `CustomerEventsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `CustomerEventsClientCreateResponse` has been removed
+- Field `PackagesClientUpdateResult` of struct `PackagesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `PackagesClientUpdateResponse` has been removed
+- Field `TestResultsClientListResult` of struct `TestResultsClientListResponse` has been removed
+- Field `RawResponse` of struct `TestResultsClientListResponse` has been removed
+- Field `OSUpdatesClientListResult` of struct `OSUpdatesClientListResponse` has been removed
+- Field `RawResponse` of struct `OSUpdatesClientListResponse` has been removed
+- Field `TestResultsClientGetDownloadURLResult` of struct `TestResultsClientGetDownloadURLResponse` has been removed
+- Field `RawResponse` of struct `TestResultsClientGetDownloadURLResponse` has been removed
+- Field `AvailableOSClientGetResult` of struct `AvailableOSClientGetResponse` has been removed
+- Field `RawResponse` of struct `AvailableOSClientGetResponse` has been removed
+- Field `AccountsClientGetResult` of struct `AccountsClientGetResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientGetResponse` has been removed
+- Field `AccountsClientUpdateResult` of struct `AccountsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientUpdateResponse` has been removed
+- Field `SKUsClientListResult` of struct `SKUsClientListResponse` has been removed
+- Field `RawResponse` of struct `SKUsClientListResponse` has been removed
+- Field `EmailEventsClientGetResult` of struct `EmailEventsClientGetResponse` has been removed
+- Field `RawResponse` of struct `EmailEventsClientGetResponse` has been removed
+- Field `RawResponse` of struct `CustomerEventsClientDeleteResponse` has been removed
+- Field `TestResultsClientGetVideoDownloadURLResult` of struct `TestResultsClientGetVideoDownloadURLResponse` has been removed
+- Field `RawResponse` of struct `TestResultsClientGetVideoDownloadURLResponse` has been removed
+- Field `TestTypesClientGetResult` of struct `TestTypesClientGetResponse` has been removed
+- Field `RawResponse` of struct `TestTypesClientGetResponse` has been removed
+- Field `AccountsClientCheckPackageNameAvailabilityResult` of struct `AccountsClientCheckPackageNameAvailabilityResponse` has been removed
+- Field `RawResponse` of struct `AccountsClientCheckPackageNameAvailabilityResponse` has been removed
+- Field `TestSummariesClientGetResult` of struct `TestSummariesClientGetResponse` has been removed
+- Field `RawResponse` of struct `TestSummariesClientGetResponse` has been removed
+- Field `CustomerEventsClientGetResult` of struct `CustomerEventsClientGetResponse` has been removed
+- Field `RawResponse` of struct `CustomerEventsClientGetResponse` has been removed
+- Field `FlightingRingsClientGetResult` of struct `FlightingRingsClientGetResponse` has been removed
+- Field `RawResponse` of struct `FlightingRingsClientGetResponse` has been removed
+- Field `FavoriteProcessesClientGetResult` of struct `FavoriteProcessesClientGetResponse` has been removed
+- Field `RawResponse` of struct `FavoriteProcessesClientGetResponse` has been removed
+- Field `PackagesClientGetResult` of struct `PackagesClientGetResponse` has been removed
+- Field `RawResponse` of struct `PackagesClientGetResponse` has been removed
+
+### Features Added
+
+- New anonymous field `AccountResource` in struct `AccountsClientCreateResponse`
+- New anonymous field `TestTypeListResult` in struct `TestTypesClientListResponse`
+- New anonymous field `AccountResource` in struct `AccountsClientGetResponse`
+- New anonymous field `OSUpdateListResult` in struct `OSUpdatesClientListResponse`
+- New anonymous field `CheckNameAvailabilityResult` in struct `AccountsClientCheckPackageNameAvailabilityResponse`
+- New anonymous field `AccountListResult` in struct `AccountsClientListBySubscriptionResponse`
+- New field `ResumeToken` in struct `CustomerEventsClientBeginDeleteOptions`
+- New anonymous field `TestSummaryListResult` in struct `TestSummariesClientListResponse`
+- New anonymous field `AccountUsageDataList` in struct `UsageClientListResponse`
+- New anonymous field `AnalysisResultSingletonResource` in struct `AnalysisResultsClientGetResponse`
+- New anonymous field `CustomerEventResource` in struct `CustomerEventsClientGetResponse`
+- New anonymous field `DownloadURLResponse` in struct `TestResultsClientGetVideoDownloadURLResponse`
+- New anonymous field `FlightingRingResource` in struct `FlightingRingsClientGetResponse`
+- New field `ResumeToken` in struct `AccountsClientBeginOffboardOptions`
+- New field `ResumeToken` in struct `PackagesClientBeginCreateOptions`
+- New anonymous field `EmailEventListResult` in struct `EmailEventsClientListResponse`
+- New anonymous field `CustomerEventResource` in struct `CustomerEventsClientCreateResponse`
+- New field `ResumeToken` in struct `AccountsClientBeginCreateOptions`
+- New anonymous field `AccountResource` in struct `AccountsClientUpdateResponse`
+- New anonymous field `TestSummaryResource` in struct `TestSummariesClientGetResponse`
+- New anonymous field `OSUpdateResource` in struct `OSUpdatesClientGetResponse`
+- New anonymous field `AccountListResult` in struct `AccountsClientListByResourceGroupResponse`
+- New anonymous field `PackageResource` in struct `PackagesClientUpdateResponse`
+- New anonymous field `TestResultListResult` in struct `TestResultsClientListResponse`
+- New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
+- New anonymous field `AvailableOSResource` in struct `AvailableOSClientGetResponse`
+- New anonymous field `PackageResource` in struct `PackagesClientCreateResponse`
+- New anonymous field `AnalysisResultListResult` in struct `AnalysisResultsClientListResponse`
+- New field `ResumeToken` in struct `PackagesClientBeginHardDeleteOptions`
+- New anonymous field `FileUploadURLResponse` in struct `AccountsClientGetFileUploadURLResponse`
+- New anonymous field `TestTypeResource` in struct `TestTypesClientGetResponse`
+- New anonymous field `EmailEventResource` in struct `EmailEventsClientGetResponse`
+- New anonymous field `FlightingRingListResult` in struct `FlightingRingsClientListResponse`
+- New anonymous field `PackageListResult` in struct `PackagesClientListByTestBaseAccountResponse`
+- New field `ResumeToken` in struct `CustomerEventsClientBeginCreateOptions`
+- New field `ResumeToken` in struct `AccountsClientBeginUpdateOptions`
+- New anonymous field `DownloadURLResponse` in struct `PackagesClientGetDownloadURLResponse`
+- New field `ResumeToken` in struct `AccountsClientBeginDeleteOptions`
+- New anonymous field `DownloadURLResponse` in struct `TestResultsClientGetDownloadURLResponse`
+- New anonymous field `PackageResource` in struct `PackagesClientGetResponse`
+- New anonymous field `AccountSKUListResult` in struct `SKUsClientListResponse`
+- New field `ResumeToken` in struct `PackagesClientBeginUpdateOptions`
+- New anonymous field `FavoriteProcessResource` in struct `FavoriteProcessesClientGetResponse`
+- New anonymous field `FavoriteProcessResource` in struct `FavoriteProcessesClientCreateResponse`
+- New field `ResumeToken` in struct `PackagesClientBeginDeleteOptions`
+- New anonymous field `CustomerEventListResult` in struct `CustomerEventsClientListByTestBaseAccountResponse`
+- New anonymous field `FavoriteProcessListResult` in struct `FavoriteProcessesClientListResponse`
+- New anonymous field `TestResultResource` in struct `TestResultsClientGetResponse`
+- New anonymous field `AvailableOSListResult` in struct `AvailableOSClientListResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

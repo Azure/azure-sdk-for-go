@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,96 +19,122 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport"
 )
 
-// x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/CheckNameAvailabilityForSupportTicketCommunication.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/CheckNameAvailabilityForSupportTicketCommunication.json
 func ExampleCommunicationsClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsupport.NewCommunicationsClient("<subscription-id>", cred, nil)
+	client, err := armsupport.NewCommunicationsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.CheckNameAvailability(ctx,
 		"<support-ticket-name>",
 		armsupport.CheckNameAvailabilityInput{
-			Name: to.StringPtr("<name>"),
-			Type: armsupport.TypeMicrosoftSupportCommunications.ToPtr(),
+			Name: to.Ptr("<name>"),
+			Type: to.Ptr(armsupport.TypeMicrosoftSupportCommunications),
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.CommunicationsClientCheckNameAvailabilityResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/ListCommunicationsForSubscriptionSupportTicket.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/ListCommunicationsForSubscriptionSupportTicket.json
 func ExampleCommunicationsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsupport.NewCommunicationsClient("<subscription-id>", cred, nil)
+	client, err := armsupport.NewCommunicationsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.List("<support-ticket-name>",
 		&armsupport.CommunicationsClientListOptions{Top: nil,
 			Filter: nil,
 		})
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/GetCommunicationDetailsForSubscriptionSupportTicket.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/GetCommunicationDetailsForSubscriptionSupportTicket.json
 func ExampleCommunicationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsupport.NewCommunicationsClient("<subscription-id>", cred, nil)
+	client, err := armsupport.NewCommunicationsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<support-ticket-name>",
 		"<communication-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.CommunicationsClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/CreateSupportTicketCommunication.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/CreateSupportTicketCommunication.json
 func ExampleCommunicationsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsupport.NewCommunicationsClient("<subscription-id>", cred, nil)
+	client, err := armsupport.NewCommunicationsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreate(ctx,
 		"<support-ticket-name>",
 		"<communication-name>",
 		armsupport.CommunicationDetails{
 			Properties: &armsupport.CommunicationDetailsProperties{
-				Body:    to.StringPtr("<body>"),
-				Sender:  to.StringPtr("<sender>"),
-				Subject: to.StringPtr("<subject>"),
+				Body:    to.Ptr("<body>"),
+				Sender:  to.Ptr("<sender>"),
+				Subject: to.Ptr("<subject>"),
 			},
 		},
-		nil)
+		&armsupport.CommunicationsClientBeginCreateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.CommunicationsClientCreateResult)
+	// TODO: use response item
+	_ = res
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ClustersClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewClustersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ClustersClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewClustersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClustersClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ClustersClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates a Stream Analytics Cluster or replaces an already existing cluster.
@@ -56,22 +61,16 @@ func NewClustersClient(subscriptionID string, credential azcore.TokenCredential,
 // cluster - The definition of the cluster that will be used to create a new cluster or replace the existing one.
 // options - ClustersClientBeginCreateOrUpdateOptions contains the optional parameters for the ClustersClient.BeginCreateOrUpdate
 // method.
-func (client *ClustersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, cluster Cluster, options *ClustersClientBeginCreateOrUpdateOptions) (ClustersClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, clusterName, cluster, options)
-	if err != nil {
-		return ClustersClientCreateOrUpdatePollerResponse{}, err
+func (client *ClustersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, cluster Cluster, options *ClustersClientBeginCreateOrUpdateOptions) (*armruntime.Poller[ClustersClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, clusterName, cluster, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ClustersClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ClustersClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ClustersClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ClustersClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return ClustersClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &ClustersClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates a Stream Analytics Cluster or replaces an already existing cluster.
@@ -128,22 +127,16 @@ func (client *ClustersClient) createOrUpdateCreateRequest(ctx context.Context, r
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // clusterName - The name of the cluster.
 // options - ClustersClientBeginDeleteOptions contains the optional parameters for the ClustersClient.BeginDelete method.
-func (client *ClustersClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientBeginDeleteOptions) (ClustersClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, clusterName, options)
-	if err != nil {
-		return ClustersClientDeletePollerResponse{}, err
+func (client *ClustersClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientBeginDeleteOptions) (*armruntime.Poller[ClustersClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, clusterName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ClustersClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ClustersClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ClustersClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ClustersClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return ClustersClientDeletePollerResponse{}, err
-	}
-	result.Poller = &ClustersClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes the specified cluster.
@@ -237,7 +230,7 @@ func (client *ClustersClient) getCreateRequest(ctx context.Context, resourceGrou
 
 // getHandleResponse handles the Get response.
 func (client *ClustersClient) getHandleResponse(resp *http.Response) (ClustersClientGetResponse, error) {
-	result := ClustersClientGetResponse{RawResponse: resp}
+	result := ClustersClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Cluster); err != nil {
 		return ClustersClientGetResponse{}, err
 	}
@@ -249,16 +242,32 @@ func (client *ClustersClient) getHandleResponse(resp *http.Response) (ClustersCl
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - ClustersClientListByResourceGroupOptions contains the optional parameters for the ClustersClient.ListByResourceGroup
 // method.
-func (client *ClustersClient) ListByResourceGroup(resourceGroupName string, options *ClustersClientListByResourceGroupOptions) *ClustersClientListByResourceGroupPager {
-	return &ClustersClientListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+func (client *ClustersClient) ListByResourceGroup(resourceGroupName string, options *ClustersClientListByResourceGroupOptions) *runtime.Pager[ClustersClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ClustersClientListByResourceGroupResponse]{
+		More: func(page ClustersClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ClustersClientListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ClusterListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ClustersClientListByResourceGroupResponse) (ClustersClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ClustersClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ClustersClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ClustersClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -285,7 +294,7 @@ func (client *ClustersClient) listByResourceGroupCreateRequest(ctx context.Conte
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *ClustersClient) listByResourceGroupHandleResponse(resp *http.Response) (ClustersClientListByResourceGroupResponse, error) {
-	result := ClustersClientListByResourceGroupResponse{RawResponse: resp}
+	result := ClustersClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterListResult); err != nil {
 		return ClustersClientListByResourceGroupResponse{}, err
 	}
@@ -296,16 +305,32 @@ func (client *ClustersClient) listByResourceGroupHandleResponse(resp *http.Respo
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ClustersClientListBySubscriptionOptions contains the optional parameters for the ClustersClient.ListBySubscription
 // method.
-func (client *ClustersClient) ListBySubscription(options *ClustersClientListBySubscriptionOptions) *ClustersClientListBySubscriptionPager {
-	return &ClustersClientListBySubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySubscriptionCreateRequest(ctx, options)
+func (client *ClustersClient) ListBySubscription(options *ClustersClientListBySubscriptionOptions) *runtime.Pager[ClustersClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ClustersClientListBySubscriptionResponse]{
+		More: func(page ClustersClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ClustersClientListBySubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ClusterListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ClustersClientListBySubscriptionResponse) (ClustersClientListBySubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySubscriptionCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ClustersClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ClustersClientListBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ClustersClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
@@ -328,7 +353,7 @@ func (client *ClustersClient) listBySubscriptionCreateRequest(ctx context.Contex
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
 func (client *ClustersClient) listBySubscriptionHandleResponse(resp *http.Response) (ClustersClientListBySubscriptionResponse, error) {
-	result := ClustersClientListBySubscriptionResponse{RawResponse: resp}
+	result := ClustersClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterListResult); err != nil {
 		return ClustersClientListBySubscriptionResponse{}, err
 	}
@@ -341,16 +366,32 @@ func (client *ClustersClient) listBySubscriptionHandleResponse(resp *http.Respon
 // clusterName - The name of the cluster.
 // options - ClustersClientListStreamingJobsOptions contains the optional parameters for the ClustersClient.ListStreamingJobs
 // method.
-func (client *ClustersClient) ListStreamingJobs(resourceGroupName string, clusterName string, options *ClustersClientListStreamingJobsOptions) *ClustersClientListStreamingJobsPager {
-	return &ClustersClientListStreamingJobsPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listStreamingJobsCreateRequest(ctx, resourceGroupName, clusterName, options)
+func (client *ClustersClient) ListStreamingJobs(resourceGroupName string, clusterName string, options *ClustersClientListStreamingJobsOptions) *runtime.Pager[ClustersClientListStreamingJobsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ClustersClientListStreamingJobsResponse]{
+		More: func(page ClustersClientListStreamingJobsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ClustersClientListStreamingJobsResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ClusterJobListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ClustersClientListStreamingJobsResponse) (ClustersClientListStreamingJobsResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listStreamingJobsCreateRequest(ctx, resourceGroupName, clusterName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ClustersClientListStreamingJobsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ClustersClientListStreamingJobsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ClustersClientListStreamingJobsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listStreamingJobsHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listStreamingJobsCreateRequest creates the ListStreamingJobs request.
@@ -381,7 +422,7 @@ func (client *ClustersClient) listStreamingJobsCreateRequest(ctx context.Context
 
 // listStreamingJobsHandleResponse handles the ListStreamingJobs response.
 func (client *ClustersClient) listStreamingJobsHandleResponse(resp *http.Response) (ClustersClientListStreamingJobsResponse, error) {
-	result := ClustersClientListStreamingJobsResponse{RawResponse: resp}
+	result := ClustersClientListStreamingJobsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterJobListResult); err != nil {
 		return ClustersClientListStreamingJobsResponse{}, err
 	}
@@ -396,22 +437,16 @@ func (client *ClustersClient) listStreamingJobsHandleResponse(resp *http.Respons
 // cluster - The properties specified here will overwrite the corresponding properties in the existing cluster (ie. Those
 // properties will be updated).
 // options - ClustersClientBeginUpdateOptions contains the optional parameters for the ClustersClient.BeginUpdate method.
-func (client *ClustersClient) BeginUpdate(ctx context.Context, resourceGroupName string, clusterName string, cluster Cluster, options *ClustersClientBeginUpdateOptions) (ClustersClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, clusterName, cluster, options)
-	if err != nil {
-		return ClustersClientUpdatePollerResponse{}, err
+func (client *ClustersClient) BeginUpdate(ctx context.Context, resourceGroupName string, clusterName string, cluster Cluster, options *ClustersClientBeginUpdateOptions) (*armruntime.Poller[ClustersClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, clusterName, cluster, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ClustersClientUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ClustersClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ClustersClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ClustersClient.Update", "", resp, client.pl)
-	if err != nil {
-		return ClustersClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &ClustersClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Updates an existing cluster. This can be used to partially update (ie. update one or two properties) a cluster

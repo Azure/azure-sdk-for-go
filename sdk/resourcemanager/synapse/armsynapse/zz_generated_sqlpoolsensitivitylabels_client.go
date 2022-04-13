@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type SQLPoolSensitivityLabelsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewSQLPoolSensitivityLabelsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SQLPoolSensitivityLabelsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewSQLPoolSensitivityLabelsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SQLPoolSensitivityLabelsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &SQLPoolSensitivityLabelsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates the sensitivity label of a given column in a Sql pool
@@ -121,7 +126,7 @@ func (client *SQLPoolSensitivityLabelsClient) createOrUpdateCreateRequest(ctx co
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *SQLPoolSensitivityLabelsClient) createOrUpdateHandleResponse(resp *http.Response) (SQLPoolSensitivityLabelsClientCreateOrUpdateResponse, error) {
-	result := SQLPoolSensitivityLabelsClientCreateOrUpdateResponse{RawResponse: resp}
+	result := SQLPoolSensitivityLabelsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SensitivityLabel); err != nil {
 		return SQLPoolSensitivityLabelsClientCreateOrUpdateResponse{}, err
 	}
@@ -150,7 +155,7 @@ func (client *SQLPoolSensitivityLabelsClient) Delete(ctx context.Context, resour
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return SQLPoolSensitivityLabelsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return SQLPoolSensitivityLabelsClientDeleteResponse{RawResponse: resp}, nil
+	return SQLPoolSensitivityLabelsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -217,7 +222,7 @@ func (client *SQLPoolSensitivityLabelsClient) DisableRecommendation(ctx context.
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return SQLPoolSensitivityLabelsClientDisableRecommendationResponse{}, runtime.NewResponseError(resp)
 	}
-	return SQLPoolSensitivityLabelsClientDisableRecommendationResponse{RawResponse: resp}, nil
+	return SQLPoolSensitivityLabelsClientDisableRecommendationResponse{}, nil
 }
 
 // disableRecommendationCreateRequest creates the DisableRecommendation request.
@@ -285,7 +290,7 @@ func (client *SQLPoolSensitivityLabelsClient) EnableRecommendation(ctx context.C
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return SQLPoolSensitivityLabelsClientEnableRecommendationResponse{}, runtime.NewResponseError(resp)
 	}
-	return SQLPoolSensitivityLabelsClientEnableRecommendationResponse{RawResponse: resp}, nil
+	return SQLPoolSensitivityLabelsClientEnableRecommendationResponse{}, nil
 }
 
 // enableRecommendationCreateRequest creates the EnableRecommendation request.
@@ -404,7 +409,7 @@ func (client *SQLPoolSensitivityLabelsClient) getCreateRequest(ctx context.Conte
 
 // getHandleResponse handles the Get response.
 func (client *SQLPoolSensitivityLabelsClient) getHandleResponse(resp *http.Response) (SQLPoolSensitivityLabelsClientGetResponse, error) {
-	result := SQLPoolSensitivityLabelsClientGetResponse{RawResponse: resp}
+	result := SQLPoolSensitivityLabelsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SensitivityLabel); err != nil {
 		return SQLPoolSensitivityLabelsClientGetResponse{}, err
 	}
@@ -418,16 +423,32 @@ func (client *SQLPoolSensitivityLabelsClient) getHandleResponse(resp *http.Respo
 // sqlPoolName - SQL pool name
 // options - SQLPoolSensitivityLabelsClientListCurrentOptions contains the optional parameters for the SQLPoolSensitivityLabelsClient.ListCurrent
 // method.
-func (client *SQLPoolSensitivityLabelsClient) ListCurrent(resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolSensitivityLabelsClientListCurrentOptions) *SQLPoolSensitivityLabelsClientListCurrentPager {
-	return &SQLPoolSensitivityLabelsClientListCurrentPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCurrentCreateRequest(ctx, resourceGroupName, workspaceName, sqlPoolName, options)
+func (client *SQLPoolSensitivityLabelsClient) ListCurrent(resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolSensitivityLabelsClientListCurrentOptions) *runtime.Pager[SQLPoolSensitivityLabelsClientListCurrentResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SQLPoolSensitivityLabelsClientListCurrentResponse]{
+		More: func(page SQLPoolSensitivityLabelsClientListCurrentResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SQLPoolSensitivityLabelsClientListCurrentResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SensitivityLabelListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *SQLPoolSensitivityLabelsClientListCurrentResponse) (SQLPoolSensitivityLabelsClientListCurrentResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCurrentCreateRequest(ctx, resourceGroupName, workspaceName, sqlPoolName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SQLPoolSensitivityLabelsClientListCurrentResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SQLPoolSensitivityLabelsClientListCurrentResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SQLPoolSensitivityLabelsClientListCurrentResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listCurrentHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCurrentCreateRequest creates the ListCurrent request.
@@ -465,7 +486,7 @@ func (client *SQLPoolSensitivityLabelsClient) listCurrentCreateRequest(ctx conte
 
 // listCurrentHandleResponse handles the ListCurrent response.
 func (client *SQLPoolSensitivityLabelsClient) listCurrentHandleResponse(resp *http.Response) (SQLPoolSensitivityLabelsClientListCurrentResponse, error) {
-	result := SQLPoolSensitivityLabelsClientListCurrentResponse{RawResponse: resp}
+	result := SQLPoolSensitivityLabelsClientListCurrentResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SensitivityLabelListResult); err != nil {
 		return SQLPoolSensitivityLabelsClientListCurrentResponse{}, err
 	}
@@ -479,16 +500,32 @@ func (client *SQLPoolSensitivityLabelsClient) listCurrentHandleResponse(resp *ht
 // sqlPoolName - SQL pool name
 // options - SQLPoolSensitivityLabelsClientListRecommendedOptions contains the optional parameters for the SQLPoolSensitivityLabelsClient.ListRecommended
 // method.
-func (client *SQLPoolSensitivityLabelsClient) ListRecommended(resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolSensitivityLabelsClientListRecommendedOptions) *SQLPoolSensitivityLabelsClientListRecommendedPager {
-	return &SQLPoolSensitivityLabelsClientListRecommendedPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listRecommendedCreateRequest(ctx, resourceGroupName, workspaceName, sqlPoolName, options)
+func (client *SQLPoolSensitivityLabelsClient) ListRecommended(resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolSensitivityLabelsClientListRecommendedOptions) *runtime.Pager[SQLPoolSensitivityLabelsClientListRecommendedResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SQLPoolSensitivityLabelsClientListRecommendedResponse]{
+		More: func(page SQLPoolSensitivityLabelsClientListRecommendedResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SQLPoolSensitivityLabelsClientListRecommendedResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SensitivityLabelListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *SQLPoolSensitivityLabelsClientListRecommendedResponse) (SQLPoolSensitivityLabelsClientListRecommendedResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listRecommendedCreateRequest(ctx, resourceGroupName, workspaceName, sqlPoolName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SQLPoolSensitivityLabelsClientListRecommendedResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SQLPoolSensitivityLabelsClientListRecommendedResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SQLPoolSensitivityLabelsClientListRecommendedResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listRecommendedHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listRecommendedCreateRequest creates the ListRecommended request.
@@ -532,7 +569,7 @@ func (client *SQLPoolSensitivityLabelsClient) listRecommendedCreateRequest(ctx c
 
 // listRecommendedHandleResponse handles the ListRecommended response.
 func (client *SQLPoolSensitivityLabelsClient) listRecommendedHandleResponse(resp *http.Response) (SQLPoolSensitivityLabelsClientListRecommendedResponse, error) {
-	result := SQLPoolSensitivityLabelsClientListRecommendedResponse{RawResponse: resp}
+	result := SQLPoolSensitivityLabelsClientListRecommendedResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SensitivityLabelListResult); err != nil {
 		return SQLPoolSensitivityLabelsClientListRecommendedResponse{}, err
 	}
@@ -558,7 +595,7 @@ func (client *SQLPoolSensitivityLabelsClient) Update(ctx context.Context, resour
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return SQLPoolSensitivityLabelsClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
-	return SQLPoolSensitivityLabelsClientUpdateResponse{RawResponse: resp}, nil
+	return SQLPoolSensitivityLabelsClientUpdateResponse{}, nil
 }
 
 // updateCreateRequest creates the Update request.

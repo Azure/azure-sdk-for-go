@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type EmailEventsClient struct {
 // subscriptionID - The Azure subscription ID. This is a GUID-formatted string.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewEmailEventsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *EmailEventsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewEmailEventsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EmailEventsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &EmailEventsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Gets a email event of a Test Base Account.
@@ -102,7 +107,7 @@ func (client *EmailEventsClient) getCreateRequest(ctx context.Context, resourceG
 
 // getHandleResponse handles the Get response.
 func (client *EmailEventsClient) getHandleResponse(resp *http.Response) (EmailEventsClientGetResponse, error) {
-	result := EmailEventsClientGetResponse{RawResponse: resp}
+	result := EmailEventsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EmailEventResource); err != nil {
 		return EmailEventsClientGetResponse{}, err
 	}
@@ -114,16 +119,32 @@ func (client *EmailEventsClient) getHandleResponse(resp *http.Response) (EmailEv
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
 // options - EmailEventsClientListOptions contains the optional parameters for the EmailEventsClient.List method.
-func (client *EmailEventsClient) List(resourceGroupName string, testBaseAccountName string, options *EmailEventsClientListOptions) *EmailEventsClientListPager {
-	return &EmailEventsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, testBaseAccountName, options)
+func (client *EmailEventsClient) List(resourceGroupName string, testBaseAccountName string, options *EmailEventsClientListOptions) *runtime.Pager[EmailEventsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[EmailEventsClientListResponse]{
+		More: func(page EmailEventsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp EmailEventsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.EmailEventListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *EmailEventsClientListResponse) (EmailEventsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, testBaseAccountName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return EmailEventsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return EmailEventsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return EmailEventsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -154,7 +175,7 @@ func (client *EmailEventsClient) listCreateRequest(ctx context.Context, resource
 
 // listHandleResponse handles the List response.
 func (client *EmailEventsClient) listHandleResponse(resp *http.Response) (EmailEventsClientListResponse, error) {
-	result := EmailEventsClientListResponse{RawResponse: resp}
+	result := EmailEventsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EmailEventListResult); err != nil {
 		return EmailEventsClientListResponse{}, err
 	}

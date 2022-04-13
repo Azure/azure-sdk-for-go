@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type AzureADOnlyAuthenticationsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewAzureADOnlyAuthenticationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AzureADOnlyAuthenticationsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewAzureADOnlyAuthenticationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AzureADOnlyAuthenticationsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &AzureADOnlyAuthenticationsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreate - Create or Update a Azure Active Directory only authentication property for the workspaces
@@ -57,22 +62,18 @@ func NewAzureADOnlyAuthenticationsClient(subscriptionID string, credential azcor
 // azureADOnlyAuthenticationInfo - Azure Active Directory Property
 // options - AzureADOnlyAuthenticationsClientBeginCreateOptions contains the optional parameters for the AzureADOnlyAuthenticationsClient.BeginCreate
 // method.
-func (client *AzureADOnlyAuthenticationsClient) BeginCreate(ctx context.Context, resourceGroupName string, workspaceName string, azureADOnlyAuthenticationName AzureADOnlyAuthenticationName, azureADOnlyAuthenticationInfo AzureADOnlyAuthentication, options *AzureADOnlyAuthenticationsClientBeginCreateOptions) (AzureADOnlyAuthenticationsClientCreatePollerResponse, error) {
-	resp, err := client.create(ctx, resourceGroupName, workspaceName, azureADOnlyAuthenticationName, azureADOnlyAuthenticationInfo, options)
-	if err != nil {
-		return AzureADOnlyAuthenticationsClientCreatePollerResponse{}, err
+func (client *AzureADOnlyAuthenticationsClient) BeginCreate(ctx context.Context, resourceGroupName string, workspaceName string, azureADOnlyAuthenticationName AzureADOnlyAuthenticationName, azureADOnlyAuthenticationInfo AzureADOnlyAuthentication, options *AzureADOnlyAuthenticationsClientBeginCreateOptions) (*armruntime.Poller[AzureADOnlyAuthenticationsClientCreateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.create(ctx, resourceGroupName, workspaceName, azureADOnlyAuthenticationName, azureADOnlyAuthenticationInfo, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[AzureADOnlyAuthenticationsClientCreateResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[AzureADOnlyAuthenticationsClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := AzureADOnlyAuthenticationsClientCreatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("AzureADOnlyAuthenticationsClient.Create", "location", resp, client.pl)
-	if err != nil {
-		return AzureADOnlyAuthenticationsClientCreatePollerResponse{}, err
-	}
-	result.Poller = &AzureADOnlyAuthenticationsClientCreatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Create - Create or Update a Azure Active Directory only authentication property for the workspaces
@@ -176,7 +177,7 @@ func (client *AzureADOnlyAuthenticationsClient) getCreateRequest(ctx context.Con
 
 // getHandleResponse handles the Get response.
 func (client *AzureADOnlyAuthenticationsClient) getHandleResponse(resp *http.Response) (AzureADOnlyAuthenticationsClientGetResponse, error) {
-	result := AzureADOnlyAuthenticationsClientGetResponse{RawResponse: resp}
+	result := AzureADOnlyAuthenticationsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AzureADOnlyAuthentication); err != nil {
 		return AzureADOnlyAuthenticationsClientGetResponse{}, err
 	}
@@ -189,16 +190,32 @@ func (client *AzureADOnlyAuthenticationsClient) getHandleResponse(resp *http.Res
 // workspaceName - The name of the workspace.
 // options - AzureADOnlyAuthenticationsClientListOptions contains the optional parameters for the AzureADOnlyAuthenticationsClient.List
 // method.
-func (client *AzureADOnlyAuthenticationsClient) List(resourceGroupName string, workspaceName string, options *AzureADOnlyAuthenticationsClientListOptions) *AzureADOnlyAuthenticationsClientListPager {
-	return &AzureADOnlyAuthenticationsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, workspaceName, options)
+func (client *AzureADOnlyAuthenticationsClient) List(resourceGroupName string, workspaceName string, options *AzureADOnlyAuthenticationsClientListOptions) *runtime.Pager[AzureADOnlyAuthenticationsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AzureADOnlyAuthenticationsClientListResponse]{
+		More: func(page AzureADOnlyAuthenticationsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AzureADOnlyAuthenticationsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AzureADOnlyAuthenticationListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *AzureADOnlyAuthenticationsClientListResponse) (AzureADOnlyAuthenticationsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, workspaceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AzureADOnlyAuthenticationsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AzureADOnlyAuthenticationsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AzureADOnlyAuthenticationsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -229,7 +246,7 @@ func (client *AzureADOnlyAuthenticationsClient) listCreateRequest(ctx context.Co
 
 // listHandleResponse handles the List response.
 func (client *AzureADOnlyAuthenticationsClient) listHandleResponse(resp *http.Response) (AzureADOnlyAuthenticationsClientListResponse, error) {
-	result := AzureADOnlyAuthenticationsClientListResponse{RawResponse: resp}
+	result := AzureADOnlyAuthenticationsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AzureADOnlyAuthenticationListResult); err != nil {
 		return AzureADOnlyAuthenticationsClientListResponse{}, err
 	}

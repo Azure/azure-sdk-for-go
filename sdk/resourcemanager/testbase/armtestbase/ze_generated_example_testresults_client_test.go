@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,41 +17,50 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/testbase/armtestbase"
 )
 
-// x-ms-original-file: specification/testbase/resource-manager/Microsoft.TestBase/preview/2020-12-16-preview/examples/TestResultsList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/testbase/resource-manager/Microsoft.TestBase/preview/2020-12-16-preview/examples/TestResultsList.json
 func ExampleTestResultsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armtestbase.NewTestResultsClient("<subscription-id>", cred, nil)
+	client, err := armtestbase.NewTestResultsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.List("<resource-group-name>",
 		"<test-base-account-name>",
 		"<package-name>",
-		armtestbase.OsUpdateType("SecurityUpdate"),
-		&armtestbase.TestResultsClientListOptions{Filter: to.StringPtr("<filter>")})
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+		armtestbase.OsUpdateTypeSecurityUpdate,
+		&armtestbase.TestResultsClientListOptions{Filter: to.Ptr("<filter>")})
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/testbase/resource-manager/Microsoft.TestBase/preview/2020-12-16-preview/examples/TestResultGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/testbase/resource-manager/Microsoft.TestBase/preview/2020-12-16-preview/examples/TestResultGet.json
 func ExampleTestResultsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armtestbase.NewTestResultsClient("<subscription-id>", cred, nil)
+	client, err := armtestbase.NewTestResultsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<test-base-account-name>",
@@ -59,19 +68,26 @@ func ExampleTestResultsClient_Get() {
 		"<test-result-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.TestResultsClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/testbase/resource-manager/Microsoft.TestBase/preview/2020-12-16-preview/examples/TestResultGetDownloadURL.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/testbase/resource-manager/Microsoft.TestBase/preview/2020-12-16-preview/examples/TestResultGetDownloadURL.json
 func ExampleTestResultsClient_GetDownloadURL() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armtestbase.NewTestResultsClient("<subscription-id>", cred, nil)
+	client, err := armtestbase.NewTestResultsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GetDownloadURL(ctx,
 		"<resource-group-name>",
 		"<test-base-account-name>",
@@ -79,19 +95,26 @@ func ExampleTestResultsClient_GetDownloadURL() {
 		"<test-result-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.TestResultsClientGetDownloadURLResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/testbase/resource-manager/Microsoft.TestBase/preview/2020-12-16-preview/examples/TestResultGetVideoDownloadURL.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/testbase/resource-manager/Microsoft.TestBase/preview/2020-12-16-preview/examples/TestResultGetVideoDownloadURL.json
 func ExampleTestResultsClient_GetVideoDownloadURL() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armtestbase.NewTestResultsClient("<subscription-id>", cred, nil)
+	client, err := armtestbase.NewTestResultsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GetVideoDownloadURL(ctx,
 		"<resource-group-name>",
 		"<test-base-account-name>",
@@ -99,7 +122,9 @@ func ExampleTestResultsClient_GetVideoDownloadURL() {
 		"<test-result-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.TestResultsClientGetVideoDownloadURLResult)
+	// TODO: use response item
+	_ = res
 }

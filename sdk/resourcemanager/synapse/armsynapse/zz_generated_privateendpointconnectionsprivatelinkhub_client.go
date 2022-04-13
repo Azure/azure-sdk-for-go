@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type PrivateEndpointConnectionsPrivateLinkHubClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewPrivateEndpointConnectionsPrivateLinkHubClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PrivateEndpointConnectionsPrivateLinkHubClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewPrivateEndpointConnectionsPrivateLinkHubClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateEndpointConnectionsPrivateLinkHubClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &PrivateEndpointConnectionsPrivateLinkHubClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Get all PrivateEndpointConnection in the PrivateLinkHub by name
@@ -103,7 +108,7 @@ func (client *PrivateEndpointConnectionsPrivateLinkHubClient) getCreateRequest(c
 
 // getHandleResponse handles the Get response.
 func (client *PrivateEndpointConnectionsPrivateLinkHubClient) getHandleResponse(resp *http.Response) (PrivateEndpointConnectionsPrivateLinkHubClientGetResponse, error) {
-	result := PrivateEndpointConnectionsPrivateLinkHubClientGetResponse{RawResponse: resp}
+	result := PrivateEndpointConnectionsPrivateLinkHubClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnectionForPrivateLinkHub); err != nil {
 		return PrivateEndpointConnectionsPrivateLinkHubClientGetResponse{}, err
 	}
@@ -116,16 +121,32 @@ func (client *PrivateEndpointConnectionsPrivateLinkHubClient) getHandleResponse(
 // privateLinkHubName - Name of the privateLinkHub
 // options - PrivateEndpointConnectionsPrivateLinkHubClientListOptions contains the optional parameters for the PrivateEndpointConnectionsPrivateLinkHubClient.List
 // method.
-func (client *PrivateEndpointConnectionsPrivateLinkHubClient) List(resourceGroupName string, privateLinkHubName string, options *PrivateEndpointConnectionsPrivateLinkHubClientListOptions) *PrivateEndpointConnectionsPrivateLinkHubClientListPager {
-	return &PrivateEndpointConnectionsPrivateLinkHubClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, privateLinkHubName, options)
+func (client *PrivateEndpointConnectionsPrivateLinkHubClient) List(resourceGroupName string, privateLinkHubName string, options *PrivateEndpointConnectionsPrivateLinkHubClientListOptions) *runtime.Pager[PrivateEndpointConnectionsPrivateLinkHubClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PrivateEndpointConnectionsPrivateLinkHubClientListResponse]{
+		More: func(page PrivateEndpointConnectionsPrivateLinkHubClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PrivateEndpointConnectionsPrivateLinkHubClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponse.NextLink)
+		Fetcher: func(ctx context.Context, page *PrivateEndpointConnectionsPrivateLinkHubClientListResponse) (PrivateEndpointConnectionsPrivateLinkHubClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, privateLinkHubName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return PrivateEndpointConnectionsPrivateLinkHubClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PrivateEndpointConnectionsPrivateLinkHubClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PrivateEndpointConnectionsPrivateLinkHubClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -156,7 +177,7 @@ func (client *PrivateEndpointConnectionsPrivateLinkHubClient) listCreateRequest(
 
 // listHandleResponse handles the List response.
 func (client *PrivateEndpointConnectionsPrivateLinkHubClient) listHandleResponse(resp *http.Response) (PrivateEndpointConnectionsPrivateLinkHubClientListResponse, error) {
-	result := PrivateEndpointConnectionsPrivateLinkHubClientListResponse{RawResponse: resp}
+	result := PrivateEndpointConnectionsPrivateLinkHubClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponse); err != nil {
 		return PrivateEndpointConnectionsPrivateLinkHubClientListResponse{}, err
 	}

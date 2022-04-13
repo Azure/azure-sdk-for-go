@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type FavoriteProcessesClient struct {
 // subscriptionID - The Azure subscription ID. This is a GUID-formatted string.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewFavoriteProcessesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *FavoriteProcessesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewFavoriteProcessesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FavoriteProcessesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &FavoriteProcessesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Create - Create or replace a favorite process for a Test Base Package.
@@ -111,7 +116,7 @@ func (client *FavoriteProcessesClient) createCreateRequest(ctx context.Context, 
 
 // createHandleResponse handles the Create response.
 func (client *FavoriteProcessesClient) createHandleResponse(resp *http.Response) (FavoriteProcessesClientCreateResponse, error) {
-	result := FavoriteProcessesClientCreateResponse{RawResponse: resp}
+	result := FavoriteProcessesClientCreateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FavoriteProcessResource); err != nil {
 		return FavoriteProcessesClientCreateResponse{}, err
 	}
@@ -140,7 +145,7 @@ func (client *FavoriteProcessesClient) Delete(ctx context.Context, resourceGroup
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return FavoriteProcessesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return FavoriteProcessesClientDeleteResponse{RawResponse: resp}, nil
+	return FavoriteProcessesClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -237,7 +242,7 @@ func (client *FavoriteProcessesClient) getCreateRequest(ctx context.Context, res
 
 // getHandleResponse handles the Get response.
 func (client *FavoriteProcessesClient) getHandleResponse(resp *http.Response) (FavoriteProcessesClientGetResponse, error) {
-	result := FavoriteProcessesClientGetResponse{RawResponse: resp}
+	result := FavoriteProcessesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FavoriteProcessResource); err != nil {
 		return FavoriteProcessesClientGetResponse{}, err
 	}
@@ -250,16 +255,32 @@ func (client *FavoriteProcessesClient) getHandleResponse(resp *http.Response) (F
 // testBaseAccountName - The resource name of the Test Base Account.
 // packageName - The resource name of the Test Base Package.
 // options - FavoriteProcessesClientListOptions contains the optional parameters for the FavoriteProcessesClient.List method.
-func (client *FavoriteProcessesClient) List(resourceGroupName string, testBaseAccountName string, packageName string, options *FavoriteProcessesClientListOptions) *FavoriteProcessesClientListPager {
-	return &FavoriteProcessesClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, testBaseAccountName, packageName, options)
+func (client *FavoriteProcessesClient) List(resourceGroupName string, testBaseAccountName string, packageName string, options *FavoriteProcessesClientListOptions) *runtime.Pager[FavoriteProcessesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[FavoriteProcessesClientListResponse]{
+		More: func(page FavoriteProcessesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp FavoriteProcessesClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.FavoriteProcessListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *FavoriteProcessesClientListResponse) (FavoriteProcessesClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, testBaseAccountName, packageName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return FavoriteProcessesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return FavoriteProcessesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return FavoriteProcessesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -294,7 +315,7 @@ func (client *FavoriteProcessesClient) listCreateRequest(ctx context.Context, re
 
 // listHandleResponse handles the List response.
 func (client *FavoriteProcessesClient) listHandleResponse(resp *http.Response) (FavoriteProcessesClientListResponse, error) {
-	result := FavoriteProcessesClientListResponse{RawResponse: resp}
+	result := FavoriteProcessesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FavoriteProcessListResult); err != nil {
 		return FavoriteProcessesClientListResponse{}, err
 	}

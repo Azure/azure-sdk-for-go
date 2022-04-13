@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type OSUpdatesClient struct {
 // subscriptionID - The Azure subscription ID. This is a GUID-formatted string.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewOSUpdatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *OSUpdatesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewOSUpdatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OSUpdatesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &OSUpdatesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Gets an OS Update by name in which the package was tested before.
@@ -107,7 +112,7 @@ func (client *OSUpdatesClient) getCreateRequest(ctx context.Context, resourceGro
 
 // getHandleResponse handles the Get response.
 func (client *OSUpdatesClient) getHandleResponse(resp *http.Response) (OSUpdatesClientGetResponse, error) {
-	result := OSUpdatesClientGetResponse{RawResponse: resp}
+	result := OSUpdatesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OSUpdateResource); err != nil {
 		return OSUpdatesClientGetResponse{}, err
 	}
@@ -121,16 +126,32 @@ func (client *OSUpdatesClient) getHandleResponse(resp *http.Response) (OSUpdates
 // packageName - The resource name of the Test Base Package.
 // osUpdateType - The type of the OS Update.
 // options - OSUpdatesClientListOptions contains the optional parameters for the OSUpdatesClient.List method.
-func (client *OSUpdatesClient) List(resourceGroupName string, testBaseAccountName string, packageName string, osUpdateType OsUpdateType, options *OSUpdatesClientListOptions) *OSUpdatesClientListPager {
-	return &OSUpdatesClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, testBaseAccountName, packageName, osUpdateType, options)
+func (client *OSUpdatesClient) List(resourceGroupName string, testBaseAccountName string, packageName string, osUpdateType OsUpdateType, options *OSUpdatesClientListOptions) *runtime.Pager[OSUpdatesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[OSUpdatesClientListResponse]{
+		More: func(page OSUpdatesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp OSUpdatesClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.OSUpdateListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *OSUpdatesClientListResponse) (OSUpdatesClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, testBaseAccountName, packageName, osUpdateType, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return OSUpdatesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return OSUpdatesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return OSUpdatesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -166,7 +187,7 @@ func (client *OSUpdatesClient) listCreateRequest(ctx context.Context, resourceGr
 
 // listHandleResponse handles the List response.
 func (client *OSUpdatesClient) listHandleResponse(resp *http.Response) (OSUpdatesClientListResponse, error) {
-	result := OSUpdatesClientListResponse{RawResponse: resp}
+	result := OSUpdatesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OSUpdateListResult); err != nil {
 		return OSUpdatesClientListResponse{}, err
 	}

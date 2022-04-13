@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type TestSummariesClient struct {
 // subscriptionID - The Azure subscription ID. This is a GUID-formatted string.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewTestSummariesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *TestSummariesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewTestSummariesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TestSummariesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &TestSummariesClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Gets a Test Summary with specific name from all the Test Summaries of all the packages under a Test Base Account.
@@ -102,7 +107,7 @@ func (client *TestSummariesClient) getCreateRequest(ctx context.Context, resourc
 
 // getHandleResponse handles the Get response.
 func (client *TestSummariesClient) getHandleResponse(resp *http.Response) (TestSummariesClientGetResponse, error) {
-	result := TestSummariesClientGetResponse{RawResponse: resp}
+	result := TestSummariesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TestSummaryResource); err != nil {
 		return TestSummariesClientGetResponse{}, err
 	}
@@ -114,16 +119,32 @@ func (client *TestSummariesClient) getHandleResponse(resp *http.Response) (TestS
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
 // options - TestSummariesClientListOptions contains the optional parameters for the TestSummariesClient.List method.
-func (client *TestSummariesClient) List(resourceGroupName string, testBaseAccountName string, options *TestSummariesClientListOptions) *TestSummariesClientListPager {
-	return &TestSummariesClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, testBaseAccountName, options)
+func (client *TestSummariesClient) List(resourceGroupName string, testBaseAccountName string, options *TestSummariesClientListOptions) *runtime.Pager[TestSummariesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[TestSummariesClientListResponse]{
+		More: func(page TestSummariesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp TestSummariesClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.TestSummaryListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *TestSummariesClientListResponse) (TestSummariesClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, testBaseAccountName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return TestSummariesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return TestSummariesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return TestSummariesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -154,7 +175,7 @@ func (client *TestSummariesClient) listCreateRequest(ctx context.Context, resour
 
 // listHandleResponse handles the List response.
 func (client *TestSummariesClient) listHandleResponse(resp *http.Response) (TestSummariesClientListResponse, error) {
-	result := TestSummariesClientListResponse{RawResponse: resp}
+	result := TestSummariesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TestSummaryListResult); err != nil {
 		return TestSummariesClientListResponse{}, err
 	}

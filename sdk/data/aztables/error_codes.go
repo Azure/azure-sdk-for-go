@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"errors"
 	"io/ioutil"
+	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
@@ -90,6 +91,7 @@ func parseErrorCode(svcErr error) error {
 			return svcErr
 		}
 
+		log.Println(string(body))
 		var oerr oDataError
 		err = json.Unmarshal(body, &oerr)
 		if err != nil {

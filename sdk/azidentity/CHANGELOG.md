@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+* `GetToken()` returns an error when the caller specifies no scope
 
 ## 0.14.0 (2022-04-05)
 

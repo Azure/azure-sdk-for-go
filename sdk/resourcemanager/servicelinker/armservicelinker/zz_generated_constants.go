@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armservicelinker
 
 const (
 	moduleName    = "armservicelinker"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -25,11 +25,6 @@ func PossibleActionTypeValues() []ActionType {
 	return []ActionType{
 		ActionTypeInternal,
 	}
-}
-
-// ToPtr returns a *ActionType pointing to the current value.
-func (c ActionType) ToPtr() *ActionType {
-	return &c
 }
 
 // AuthType - The authentication type.
@@ -52,11 +47,6 @@ func PossibleAuthTypeValues() []AuthType {
 		AuthTypeSystemAssignedIdentity,
 		AuthTypeUserAssignedIdentity,
 	}
-}
-
-// ToPtr returns a *AuthType pointing to the current value.
-func (c AuthType) ToPtr() *AuthType {
-	return &c
 }
 
 // ClientType - The application client type
@@ -91,11 +81,6 @@ func PossibleClientTypeValues() []ClientType {
 	}
 }
 
-// ToPtr returns a *ClientType pointing to the current value.
-func (c ClientType) ToPtr() *ClientType {
-	return &c
-}
-
 // CreatedByType - The type of identity that created the resource.
 type CreatedByType string
 
@@ -114,32 +99,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
 	}
-}
-
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
-}
-
-// LinkerStatus - Specifies if the linker is healthy.
-type LinkerStatus string
-
-const (
-	LinkerStatusHealthy    LinkerStatus = "Healthy"
-	LinkerStatusNotHealthy LinkerStatus = "Not healthy"
-)
-
-// PossibleLinkerStatusValues returns the possible values for the LinkerStatus const type.
-func PossibleLinkerStatusValues() []LinkerStatus {
-	return []LinkerStatus{
-		LinkerStatusHealthy,
-		LinkerStatusNotHealthy,
-	}
-}
-
-// ToPtr returns a *LinkerStatus pointing to the current value.
-func (c LinkerStatus) ToPtr() *LinkerStatus {
-	return &c
 }
 
 // Origin - The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
@@ -161,7 +120,74 @@ func PossibleOriginValues() []Origin {
 	}
 }
 
-// ToPtr returns a *Origin pointing to the current value.
-func (c Origin) ToPtr() *Origin {
-	return &c
+// SecretType - The secret type.
+type SecretType string
+
+const (
+	SecretTypeKeyVaultSecretReference SecretType = "keyVaultSecretReference"
+	SecretTypeKeyVaultSecretURI       SecretType = "keyVaultSecretUri"
+	SecretTypeRawValue                SecretType = "rawValue"
+)
+
+// PossibleSecretTypeValues returns the possible values for the SecretType const type.
+func PossibleSecretTypeValues() []SecretType {
+	return []SecretType{
+		SecretTypeKeyVaultSecretReference,
+		SecretTypeKeyVaultSecretURI,
+		SecretTypeRawValue,
+	}
+}
+
+// Type - The target service type.
+type Type string
+
+const (
+	TypeAzureResource            Type = "AzureResource"
+	TypeConfluentBootstrapServer Type = "ConfluentBootstrapServer"
+	TypeConfluentSchemaRegistry  Type = "ConfluentSchemaRegistry"
+	TypeKeyVault                 Type = "KeyVault"
+)
+
+// PossibleTypeValues returns the possible values for the Type const type.
+func PossibleTypeValues() []Type {
+	return []Type{
+		TypeAzureResource,
+		TypeConfluentBootstrapServer,
+		TypeConfluentSchemaRegistry,
+		TypeKeyVault,
+	}
+}
+
+// VNetSolutionType - Type of VNet solution.
+type VNetSolutionType string
+
+const (
+	VNetSolutionTypePrivateLink     VNetSolutionType = "privateLink"
+	VNetSolutionTypeServiceEndpoint VNetSolutionType = "serviceEndpoint"
+)
+
+// PossibleVNetSolutionTypeValues returns the possible values for the VNetSolutionType const type.
+func PossibleVNetSolutionTypeValues() []VNetSolutionType {
+	return []VNetSolutionType{
+		VNetSolutionTypePrivateLink,
+		VNetSolutionTypeServiceEndpoint,
+	}
+}
+
+// ValidationItemResult - The result of validation
+type ValidationItemResult string
+
+const (
+	ValidationItemResultFailed  ValidationItemResult = "failed"
+	ValidationItemResultSuccess ValidationItemResult = "success"
+	ValidationItemResultWarning ValidationItemResult = "warning"
+)
+
+// PossibleValidationItemResultValues returns the possible values for the ValidationItemResult const type.
+func PossibleValidationItemResultValues() []ValidationItemResult {
+	return []ValidationItemResult{
+		ValidationItemResultFailed,
+		ValidationItemResultSuccess,
+		ValidationItemResultWarning,
+	}
 }

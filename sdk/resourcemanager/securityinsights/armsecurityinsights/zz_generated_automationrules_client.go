@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type AutomationRulesClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewAutomationRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AutomationRulesClient {
+func NewAutomationRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AutomationRulesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &AutomationRulesClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates the automation rule.
@@ -95,7 +100,7 @@ func (client *AutomationRulesClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	if options != nil && options.AutomationRuleToUpsert != nil {
@@ -106,7 +111,7 @@ func (client *AutomationRulesClient) createOrUpdateCreateRequest(ctx context.Con
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *AutomationRulesClient) createOrUpdateHandleResponse(resp *http.Response) (AutomationRulesClientCreateOrUpdateResponse, error) {
-	result := AutomationRulesClientCreateOrUpdateResponse{RawResponse: resp}
+	result := AutomationRulesClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AutomationRule); err != nil {
 		return AutomationRulesClientCreateOrUpdateResponse{}, err
 	}
@@ -158,7 +163,7 @@ func (client *AutomationRulesClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -166,7 +171,7 @@ func (client *AutomationRulesClient) deleteCreateRequest(ctx context.Context, re
 
 // deleteHandleResponse handles the Delete response.
 func (client *AutomationRulesClient) deleteHandleResponse(resp *http.Response) (AutomationRulesClientDeleteResponse, error) {
-	result := AutomationRulesClientDeleteResponse{RawResponse: resp}
+	result := AutomationRulesClientDeleteResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Interface); err != nil {
 		return AutomationRulesClientDeleteResponse{}, err
 	}
@@ -218,7 +223,7 @@ func (client *AutomationRulesClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -226,7 +231,7 @@ func (client *AutomationRulesClient) getCreateRequest(ctx context.Context, resou
 
 // getHandleResponse handles the Get response.
 func (client *AutomationRulesClient) getHandleResponse(resp *http.Response) (AutomationRulesClientGetResponse, error) {
-	result := AutomationRulesClientGetResponse{RawResponse: resp}
+	result := AutomationRulesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AutomationRule); err != nil {
 		return AutomationRulesClientGetResponse{}, err
 	}
@@ -238,16 +243,32 @@ func (client *AutomationRulesClient) getHandleResponse(resp *http.Response) (Aut
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - AutomationRulesClientListOptions contains the optional parameters for the AutomationRulesClient.List method.
-func (client *AutomationRulesClient) List(resourceGroupName string, workspaceName string, options *AutomationRulesClientListOptions) *AutomationRulesClientListPager {
-	return &AutomationRulesClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, workspaceName, options)
+func (client *AutomationRulesClient) List(resourceGroupName string, workspaceName string, options *AutomationRulesClientListOptions) *runtime.Pager[AutomationRulesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AutomationRulesClientListResponse]{
+		More: func(page AutomationRulesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AutomationRulesClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AutomationRulesList.NextLink)
+		Fetcher: func(ctx context.Context, page *AutomationRulesClientListResponse) (AutomationRulesClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, workspaceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AutomationRulesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AutomationRulesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AutomationRulesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -270,7 +291,7 @@ func (client *AutomationRulesClient) listCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -278,72 +299,9 @@ func (client *AutomationRulesClient) listCreateRequest(ctx context.Context, reso
 
 // listHandleResponse handles the List response.
 func (client *AutomationRulesClient) listHandleResponse(resp *http.Response) (AutomationRulesClientListResponse, error) {
-	result := AutomationRulesClientListResponse{RawResponse: resp}
+	result := AutomationRulesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AutomationRulesList); err != nil {
 		return AutomationRulesClientListResponse{}, err
-	}
-	return result, nil
-}
-
-// ManualTriggerPlaybook - Triggers playbook on a specific incident
-// If the operation fails it returns an *azcore.ResponseError type.
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// options - AutomationRulesClientManualTriggerPlaybookOptions contains the optional parameters for the AutomationRulesClient.ManualTriggerPlaybook
-// method.
-func (client *AutomationRulesClient) ManualTriggerPlaybook(ctx context.Context, resourceGroupName string, workspaceName string, incidentIdentifier string, options *AutomationRulesClientManualTriggerPlaybookOptions) (AutomationRulesClientManualTriggerPlaybookResponse, error) {
-	req, err := client.manualTriggerPlaybookCreateRequest(ctx, resourceGroupName, workspaceName, incidentIdentifier, options)
-	if err != nil {
-		return AutomationRulesClientManualTriggerPlaybookResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return AutomationRulesClientManualTriggerPlaybookResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
-		return AutomationRulesClientManualTriggerPlaybookResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.manualTriggerPlaybookHandleResponse(resp)
-}
-
-// manualTriggerPlaybookCreateRequest creates the ManualTriggerPlaybook request.
-func (client *AutomationRulesClient) manualTriggerPlaybookCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, incidentIdentifier string, options *AutomationRulesClientManualTriggerPlaybookOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/incidents/{incidentIdentifier}/runPlaybook"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	if incidentIdentifier == "" {
-		return nil, errors.New("parameter incidentIdentifier cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{incidentIdentifier}", url.PathEscape(incidentIdentifier))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
-	if options != nil && options.RequestBody != nil {
-		return req, runtime.MarshalAsJSON(req, *options.RequestBody)
-	}
-	return req, nil
-}
-
-// manualTriggerPlaybookHandleResponse handles the ManualTriggerPlaybook response.
-func (client *AutomationRulesClient) manualTriggerPlaybookHandleResponse(resp *http.Response) (AutomationRulesClientManualTriggerPlaybookResponse, error) {
-	result := AutomationRulesClientManualTriggerPlaybookResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.Interface); err != nil {
-		return AutomationRulesClientManualTriggerPlaybookResponse{}, err
 	}
 	return result, nil
 }

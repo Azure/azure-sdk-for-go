@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,112 +17,136 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights"
 )
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-10-01-preview/examples/entityQueries/GetEntityQueries.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/entityQueries/GetEntityQueries.json
 func ExampleEntityQueriesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurityinsights.NewEntityQueriesClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewEntityQueriesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.List("<resource-group-name>",
 		"<workspace-name>",
-		&armsecurityinsights.EntityQueriesClientListOptions{Kind: armsecurityinsights.Enum13("Expansion").ToPtr()})
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+		&armsecurityinsights.EntityQueriesClientListOptions{Kind: to.Ptr(armsecurityinsights.Enum13Expansion)})
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-10-01-preview/examples/entityQueries/GetActivityEntityQueryById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/entityQueries/GetActivityEntityQueryById.json
 func ExampleEntityQueriesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurityinsights.NewEntityQueriesClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewEntityQueriesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		"<entity-query-id>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.EntityQueriesClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-10-01-preview/examples/entityQueries/CreateEntityQueryActivity.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/entityQueries/CreateEntityQueryActivity.json
 func ExampleEntityQueriesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurityinsights.NewEntityQueriesClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewEntityQueriesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.CreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		"<entity-query-id>",
 		&armsecurityinsights.ActivityCustomEntityQuery{
-			Etag: to.StringPtr("<etag>"),
-			Kind: armsecurityinsights.CustomEntityQueryKind("Activity").ToPtr(),
+			Etag: to.Ptr("<etag>"),
+			Kind: to.Ptr(armsecurityinsights.CustomEntityQueryKindActivity),
 			Properties: &armsecurityinsights.ActivityEntityQueriesProperties{
-				Description: to.StringPtr("<description>"),
-				Content:     to.StringPtr("<content>"),
-				Enabled:     to.BoolPtr(true),
+				Description: to.Ptr("<description>"),
+				Content:     to.Ptr("<content>"),
+				Enabled:     to.Ptr(true),
 				EntitiesFilter: map[string][]*string{
 					"Host_OsFamily": {
-						to.StringPtr("Windows")},
+						to.Ptr("Windows")},
 				},
-				InputEntityType: armsecurityinsights.EntityType("Host").ToPtr(),
+				InputEntityType: to.Ptr(armsecurityinsights.EntityTypeHost),
 				QueryDefinitions: &armsecurityinsights.ActivityEntityQueriesPropertiesQueryDefinitions{
-					Query: to.StringPtr("<query>"),
+					Query: to.Ptr("<query>"),
 				},
 				RequiredInputFieldsSets: [][]*string{
 					{
-						to.StringPtr("Host_HostName"),
-						to.StringPtr("Host_NTDomain")},
+						to.Ptr("Host_HostName"),
+						to.Ptr("Host_NTDomain")},
 					{
-						to.StringPtr("Host_HostName"),
-						to.StringPtr("Host_DnsDomain")},
+						to.Ptr("Host_HostName"),
+						to.Ptr("Host_DnsDomain")},
 					{
-						to.StringPtr("Host_AzureID")},
+						to.Ptr("Host_AzureID")},
 					{
-						to.StringPtr("Host_OMSAgentID")}},
-				Title: to.StringPtr("<title>"),
+						to.Ptr("Host_OMSAgentID")}},
+				Title: to.Ptr("<title>"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.EntityQueriesClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-10-01-preview/examples/entityQueries/DeleteEntityQuery.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/entityQueries/DeleteEntityQuery.json
 func ExampleEntityQueriesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurityinsights.NewEntityQueriesClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewEntityQueriesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Delete(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		"<entity-query-id>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type DataConnectorsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewDataConnectorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DataConnectorsClient {
+func NewDataConnectorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DataConnectorsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &DataConnectorsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Connect - Connects a data connector.
@@ -68,7 +73,7 @@ func (client *DataConnectorsClient) Connect(ctx context.Context, resourceGroupNa
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return DataConnectorsClientConnectResponse{}, runtime.NewResponseError(resp)
 	}
-	return DataConnectorsClientConnectResponse{RawResponse: resp}, nil
+	return DataConnectorsClientConnectResponse{}, nil
 }
 
 // connectCreateRequest creates the Connect request.
@@ -95,7 +100,7 @@ func (client *DataConnectorsClient) connectCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, connectBody)
@@ -148,7 +153,7 @@ func (client *DataConnectorsClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, dataConnector)
@@ -156,7 +161,7 @@ func (client *DataConnectorsClient) createOrUpdateCreateRequest(ctx context.Cont
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *DataConnectorsClient) createOrUpdateHandleResponse(resp *http.Response) (DataConnectorsClientCreateOrUpdateResponse, error) {
-	result := DataConnectorsClientCreateOrUpdateResponse{RawResponse: resp}
+	result := DataConnectorsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
 		return DataConnectorsClientCreateOrUpdateResponse{}, err
 	}
@@ -181,7 +186,7 @@ func (client *DataConnectorsClient) Delete(ctx context.Context, resourceGroupNam
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return DataConnectorsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return DataConnectorsClientDeleteResponse{RawResponse: resp}, nil
+	return DataConnectorsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -208,7 +213,7 @@ func (client *DataConnectorsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -233,7 +238,7 @@ func (client *DataConnectorsClient) Disconnect(ctx context.Context, resourceGrou
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return DataConnectorsClientDisconnectResponse{}, runtime.NewResponseError(resp)
 	}
-	return DataConnectorsClientDisconnectResponse{RawResponse: resp}, nil
+	return DataConnectorsClientDisconnectResponse{}, nil
 }
 
 // disconnectCreateRequest creates the Disconnect request.
@@ -260,7 +265,7 @@ func (client *DataConnectorsClient) disconnectCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -311,7 +316,7 @@ func (client *DataConnectorsClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -319,7 +324,7 @@ func (client *DataConnectorsClient) getCreateRequest(ctx context.Context, resour
 
 // getHandleResponse handles the Get response.
 func (client *DataConnectorsClient) getHandleResponse(resp *http.Response) (DataConnectorsClientGetResponse, error) {
-	result := DataConnectorsClientGetResponse{RawResponse: resp}
+	result := DataConnectorsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
 		return DataConnectorsClientGetResponse{}, err
 	}
@@ -331,16 +336,32 @@ func (client *DataConnectorsClient) getHandleResponse(resp *http.Response) (Data
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - DataConnectorsClientListOptions contains the optional parameters for the DataConnectorsClient.List method.
-func (client *DataConnectorsClient) List(resourceGroupName string, workspaceName string, options *DataConnectorsClientListOptions) *DataConnectorsClientListPager {
-	return &DataConnectorsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, workspaceName, options)
+func (client *DataConnectorsClient) List(resourceGroupName string, workspaceName string, options *DataConnectorsClientListOptions) *runtime.Pager[DataConnectorsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[DataConnectorsClientListResponse]{
+		More: func(page DataConnectorsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DataConnectorsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DataConnectorList.NextLink)
+		Fetcher: func(ctx context.Context, page *DataConnectorsClientListResponse) (DataConnectorsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, workspaceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DataConnectorsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DataConnectorsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DataConnectorsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -363,7 +384,7 @@ func (client *DataConnectorsClient) listCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -371,7 +392,7 @@ func (client *DataConnectorsClient) listCreateRequest(ctx context.Context, resou
 
 // listHandleResponse handles the List response.
 func (client *DataConnectorsClient) listHandleResponse(resp *http.Response) (DataConnectorsClientListResponse, error) {
-	result := DataConnectorsClientListResponse{RawResponse: resp}
+	result := DataConnectorsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataConnectorList); err != nil {
 		return DataConnectorsClientListResponse{}, err
 	}

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type SourceControlClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewSourceControlClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SourceControlClient {
+func NewSourceControlClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SourceControlClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &SourceControlClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // ListRepositories - Gets a list of repositories metadata.
@@ -56,16 +61,32 @@ func NewSourceControlClient(subscriptionID string, credential azcore.TokenCreden
 // repoType - The repo type.
 // options - SourceControlClientListRepositoriesOptions contains the optional parameters for the SourceControlClient.ListRepositories
 // method.
-func (client *SourceControlClient) ListRepositories(resourceGroupName string, workspaceName string, repoType RepoType, options *SourceControlClientListRepositoriesOptions) *SourceControlClientListRepositoriesPager {
-	return &SourceControlClientListRepositoriesPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listRepositoriesCreateRequest(ctx, resourceGroupName, workspaceName, repoType, options)
+func (client *SourceControlClient) ListRepositories(resourceGroupName string, workspaceName string, repoType RepoType, options *SourceControlClientListRepositoriesOptions) *runtime.Pager[SourceControlClientListRepositoriesResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SourceControlClientListRepositoriesResponse]{
+		More: func(page SourceControlClientListRepositoriesResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SourceControlClientListRepositoriesResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.RepoList.NextLink)
+		Fetcher: func(ctx context.Context, page *SourceControlClientListRepositoriesResponse) (SourceControlClientListRepositoriesResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listRepositoriesCreateRequest(ctx, resourceGroupName, workspaceName, repoType, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SourceControlClientListRepositoriesResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SourceControlClientListRepositoriesResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SourceControlClientListRepositoriesResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listRepositoriesHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listRepositoriesCreateRequest creates the ListRepositories request.
@@ -88,7 +109,7 @@ func (client *SourceControlClient) listRepositoriesCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, repoType)
@@ -96,7 +117,7 @@ func (client *SourceControlClient) listRepositoriesCreateRequest(ctx context.Con
 
 // listRepositoriesHandleResponse handles the ListRepositories response.
 func (client *SourceControlClient) listRepositoriesHandleResponse(resp *http.Response) (SourceControlClientListRepositoriesResponse, error) {
-	result := SourceControlClientListRepositoriesResponse{RawResponse: resp}
+	result := SourceControlClientListRepositoriesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RepoList); err != nil {
 		return SourceControlClientListRepositoriesResponse{}, err
 	}

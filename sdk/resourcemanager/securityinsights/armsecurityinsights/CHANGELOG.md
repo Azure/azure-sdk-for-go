@@ -1,5 +1,712 @@
 # Release History
 
+## 0.2.0 (2022-04-13)
+### Breaking Changes
+
+- Function `*ThreatIntelligenceIndicatorClient.CreateIndicator` parameter(s) have been changed from `(context.Context, string, string, ThreatIntelligenceIndicatorModelForRequestBody, *ThreatIntelligenceIndicatorClientCreateIndicatorOptions)` to `(context.Context, string, string, ThreatIntelligenceIndicatorModel, *ThreatIntelligenceIndicatorClientCreateIndicatorOptions)`
+- Function `NewEntitiesRelationsClient` return value(s) have been changed from `(*EntitiesRelationsClient)` to `(*EntitiesRelationsClient, error)`
+- Function `NewSourceControlsClient` return value(s) have been changed from `(*SourceControlsClient)` to `(*SourceControlsClient, error)`
+- Function `NewBookmarkClient` return value(s) have been changed from `(*BookmarkClient)` to `(*BookmarkClient, error)`
+- Function `*AutomationRulesClient.List` return value(s) have been changed from `(*AutomationRulesClientListPager)` to `(*runtime.Pager[AutomationRulesClientListResponse])`
+- Function `*AlertRulesClient.List` return value(s) have been changed from `(*AlertRulesClientListPager)` to `(*runtime.Pager[AlertRulesClientListResponse])`
+- Function `NewIPGeodataClient` return value(s) have been changed from `(*IPGeodataClient)` to `(*IPGeodataClient, error)`
+- Function `NewEntityRelationsClient` return value(s) have been changed from `(*EntityRelationsClient)` to `(*EntityRelationsClient, error)`
+- Function `*AlertRuleTemplatesClient.List` return value(s) have been changed from `(*AlertRuleTemplatesClientListPager)` to `(*runtime.Pager[AlertRuleTemplatesClientListResponse])`
+- Function `NewIncidentsClient` return value(s) have been changed from `(*IncidentsClient)` to `(*IncidentsClient, error)`
+- Function `*ThreatIntelligenceIndicatorClient.Create` parameter(s) have been changed from `(context.Context, string, string, string, ThreatIntelligenceIndicatorModelForRequestBody, *ThreatIntelligenceIndicatorClientCreateOptions)` to `(context.Context, string, string, string, ThreatIntelligenceIndicatorModel, *ThreatIntelligenceIndicatorClientCreateOptions)`
+- Function `NewBookmarksClient` return value(s) have been changed from `(*BookmarksClient)` to `(*BookmarksClient, error)`
+- Function `NewThreatIntelligenceIndicatorClient` return value(s) have been changed from `(*ThreatIntelligenceIndicatorClient)` to `(*ThreatIntelligenceIndicatorClient, error)`
+- Function `NewSentinelOnboardingStatesClient` return value(s) have been changed from `(*SentinelOnboardingStatesClient)` to `(*SentinelOnboardingStatesClient, error)`
+- Function `*SourceControlClient.ListRepositories` return value(s) have been changed from `(*SourceControlClientListRepositoriesPager)` to `(*runtime.Pager[SourceControlClientListRepositoriesResponse])`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `*EntitiesClient.List` return value(s) have been changed from `(*EntitiesClientListPager)` to `(*runtime.Pager[EntitiesClientListResponse])`
+- Function `*ThreatIntelligenceIndicatorClient.QueryIndicators` return value(s) have been changed from `(*ThreatIntelligenceIndicatorClientQueryIndicatorsPager)` to `(*runtime.Pager[ThreatIntelligenceIndicatorClientQueryIndicatorsResponse])`
+- Function `*ThreatIntelligenceIndicatorsClient.List` return value(s) have been changed from `(*ThreatIntelligenceIndicatorsClientListPager)` to `(*runtime.Pager[ThreatIntelligenceIndicatorsClientListResponse])`
+- Function `NewProductSettingsClient` return value(s) have been changed from `(*ProductSettingsClient)` to `(*ProductSettingsClient, error)`
+- Function `*EntityQueryTemplatesClient.List` return value(s) have been changed from `(*EntityQueryTemplatesClientListPager)` to `(*runtime.Pager[EntityQueryTemplatesClientListResponse])`
+- Function `*SourceControlsClient.List` return value(s) have been changed from `(*SourceControlsClientListPager)` to `(*runtime.Pager[SourceControlsClientListResponse])`
+- Function `NewIncidentRelationsClient` return value(s) have been changed from `(*IncidentRelationsClient)` to `(*IncidentRelationsClient, error)`
+- Function `NewDataConnectorsClient` return value(s) have been changed from `(*DataConnectorsClient)` to `(*DataConnectorsClient, error)`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `NewAlertRuleTemplatesClient` return value(s) have been changed from `(*AlertRuleTemplatesClient)` to `(*AlertRuleTemplatesClient, error)`
+- Function `*ThreatIntelligenceIndicatorClient.ReplaceTags` parameter(s) have been changed from `(context.Context, string, string, string, ThreatIntelligenceIndicatorModelForRequestBody, *ThreatIntelligenceIndicatorClientReplaceTagsOptions)` to `(context.Context, string, string, string, ThreatIntelligenceIndicatorModel, *ThreatIntelligenceIndicatorClientReplaceTagsOptions)`
+- Function `NewEntitiesClient` return value(s) have been changed from `(*EntitiesClient)` to `(*EntitiesClient, error)`
+- Function `*IncidentRelationsClient.List` return value(s) have been changed from `(*IncidentRelationsClientListPager)` to `(*runtime.Pager[IncidentRelationsClientListResponse])`
+- Function `*BookmarkRelationsClient.List` return value(s) have been changed from `(*BookmarkRelationsClientListPager)` to `(*runtime.Pager[BookmarkRelationsClientListResponse])`
+- Function `*EntityQueriesClient.List` return value(s) have been changed from `(*EntityQueriesClientListPager)` to `(*runtime.Pager[EntityQueriesClientListResponse])`
+- Function `NewSourceControlClient` return value(s) have been changed from `(*SourceControlClient)` to `(*SourceControlClient, error)`
+- Function `NewEntityQueryTemplatesClient` return value(s) have been changed from `(*EntityQueryTemplatesClient)` to `(*EntityQueryTemplatesClient, error)`
+- Function `NewEntitiesGetTimelineClient` return value(s) have been changed from `(*EntitiesGetTimelineClient)` to `(*EntitiesGetTimelineClient, error)`
+- Function `NewActionsClient` return value(s) have been changed from `(*ActionsClient)` to `(*ActionsClient, error)`
+- Function `*IncidentCommentsClient.List` return value(s) have been changed from `(*IncidentCommentsClientListPager)` to `(*runtime.Pager[IncidentCommentsClientListResponse])`
+- Function `*MetadataClient.List` return value(s) have been changed from `(*MetadataClientListPager)` to `(*runtime.Pager[MetadataClientListResponse])`
+- Function `*EntitiesRelationsClient.List` return value(s) have been changed from `(*EntitiesRelationsClientListPager)` to `(*runtime.Pager[EntitiesRelationsClientListResponse])`
+- Function `NewAutomationRulesClient` return value(s) have been changed from `(*AutomationRulesClient)` to `(*AutomationRulesClient, error)`
+- Function `NewAlertRulesClient` return value(s) have been changed from `(*AlertRulesClient)` to `(*AlertRulesClient, error)`
+- Function `*WatchlistItemsClient.List` return value(s) have been changed from `(*WatchlistItemsClientListPager)` to `(*runtime.Pager[WatchlistItemsClientListResponse])`
+- Function `*IncidentsClient.List` return value(s) have been changed from `(*IncidentsClientListPager)` to `(*runtime.Pager[IncidentsClientListResponse])`
+- Function `NewBookmarkRelationsClient` return value(s) have been changed from `(*BookmarkRelationsClient)` to `(*BookmarkRelationsClient, error)`
+- Function `NewWatchlistsClient` return value(s) have been changed from `(*WatchlistsClient)` to `(*WatchlistsClient, error)`
+- Function `NewOfficeConsentsClient` return value(s) have been changed from `(*OfficeConsentsClient)` to `(*OfficeConsentsClient, error)`
+- Function `NewEntityQueriesClient` return value(s) have been changed from `(*EntityQueriesClient)` to `(*EntityQueriesClient, error)`
+- Function `*ActionsClient.ListByAlertRule` return value(s) have been changed from `(*ActionsClientListByAlertRulePager)` to `(*runtime.Pager[ActionsClientListByAlertRuleResponse])`
+- Function `*DataConnectorsClient.List` return value(s) have been changed from `(*DataConnectorsClientListPager)` to `(*runtime.Pager[DataConnectorsClientListResponse])`
+- Function `NewDataConnectorsCheckRequirementsClient` return value(s) have been changed from `(*DataConnectorsCheckRequirementsClient)` to `(*DataConnectorsCheckRequirementsClient, error)`
+- Function `*WatchlistsClient.List` return value(s) have been changed from `(*WatchlistsClientListPager)` to `(*runtime.Pager[WatchlistsClientListResponse])`
+- Function `NewDomainWhoisClient` return value(s) have been changed from `(*DomainWhoisClient)` to `(*DomainWhoisClient, error)`
+- Function `NewThreatIntelligenceIndicatorMetricsClient` return value(s) have been changed from `(*ThreatIntelligenceIndicatorMetricsClient)` to `(*ThreatIntelligenceIndicatorMetricsClient, error)`
+- Function `NewIncidentCommentsClient` return value(s) have been changed from `(*IncidentCommentsClient)` to `(*IncidentCommentsClient, error)`
+- Function `*OfficeConsentsClient.List` return value(s) have been changed from `(*OfficeConsentsClientListPager)` to `(*runtime.Pager[OfficeConsentsClientListResponse])`
+- Function `*BookmarksClient.List` return value(s) have been changed from `(*BookmarksClientListPager)` to `(*runtime.Pager[BookmarksClientListResponse])`
+- Function `NewMetadataClient` return value(s) have been changed from `(*MetadataClient)` to `(*MetadataClient, error)`
+- Function `NewWatchlistItemsClient` return value(s) have been changed from `(*WatchlistItemsClient)` to `(*WatchlistItemsClient, error)`
+- Function `NewThreatIntelligenceIndicatorsClient` return value(s) have been changed from `(*ThreatIntelligenceIndicatorsClient)` to `(*ThreatIntelligenceIndicatorsClient, error)`
+- Type of `WatchlistItemProperties.ItemsKeyValue` has been changed from `interface{}` to `map[string]interface{}`
+- Type of `WatchlistItemProperties.EntityMapping` has been changed from `interface{}` to `map[string]interface{}`
+- Type of `WatchlistProperties.Source` has been changed from `*Source` to `*string`
+- Const `SourceRemoteStorage` has been removed
+- Const `IncidentLabelTypeSystem` has been removed
+- Const `SourceLocalFile` has been removed
+- Function `Operator.ToPtr` has been removed
+- Function `*BookmarkRelationsClientListPager.Err` has been removed
+- Function `*IncidentRelationsClientListPager.PageResponse` has been removed
+- Function `AlertStatus.ToPtr` has been removed
+- Function `AlertRuleKind.ToPtr` has been removed
+- Function `*IncidentCommentsClientListPager.PageResponse` has been removed
+- Function `*EntityQueriesClientListPager.Err` has been removed
+- Function `*EntityQueryTemplatesClientGetResult.UnmarshalJSON` has been removed
+- Function `*WatchlistItemsClientListPager.Err` has been removed
+- Function `Kind.ToPtr` has been removed
+- Function `SupportTier.ToPtr` has been removed
+- Function `*EntityQueriesClientListPager.PageResponse` has been removed
+- Function `*IncidentsClientListPager.NextPage` has been removed
+- Function `DataConnectorKind.ToPtr` has been removed
+- Function `TemplateStatus.ToPtr` has been removed
+- Function `*ThreatIntelligenceInformation.UnmarshalJSON` has been removed
+- Function `*QueryBasedAlertRuleProperties.UnmarshalJSON` has been removed
+- Function `ContentType.ToPtr` has been removed
+- Function `CreatedByType.ToPtr` has been removed
+- Function `*BookmarksClientListPager.PageResponse` has been removed
+- Function `IncidentClassification.ToPtr` has been removed
+- Function `*ThreatIntelligenceIndicatorClientReplaceTagsResult.UnmarshalJSON` has been removed
+- Function `ThreatIntelligenceInformation.MarshalJSON` has been removed
+- Function `*EntitiesRelationsClientListPager.NextPage` has been removed
+- Function `DeliveryLocation.ToPtr` has been removed
+- Function `*AlertRulesClientGetResult.UnmarshalJSON` has been removed
+- Function `EntityTimelineKind.ToPtr` has been removed
+- Function `*ThreatIntelligenceIndicatorClientQueryIndicatorsPager.NextPage` has been removed
+- Function `*IncidentRelationsClientListPager.NextPage` has been removed
+- Function `*OfficeConsentsClientListPager.PageResponse` has been removed
+- Function `*ThreatIntelligenceIndicatorModel.GetThreatIntelligenceResourceKind` has been removed
+- Function `ThreatIntelligenceIndicatorModelForRequestBody.MarshalJSON` has been removed
+- Function `DataConnectorLicenseState.ToPtr` has been removed
+- Function `ConfidenceScoreStatus.ToPtr` has been removed
+- Function `*WatchlistItemsClientListPager.PageResponse` has been removed
+- Function `*EntitiesClientGetResult.UnmarshalJSON` has been removed
+- Function `*DataConnectorsClientCreateOrUpdateResult.UnmarshalJSON` has been removed
+- Function `TriggersOn.ToPtr` has been removed
+- Function `AutomationRulePropertyConditionSupportedOperator.ToPtr` has been removed
+- Function `*EntityQueriesClientGetResult.UnmarshalJSON` has been removed
+- Function `PollingFrequency.ToPtr` has been removed
+- Function `*DataConnectorsClientGetResult.UnmarshalJSON` has been removed
+- Function `*MetadataClientListPager.Err` has been removed
+- Function `*ThreatIntelligenceIndicatorClientCreateResult.UnmarshalJSON` has been removed
+- Function `*AlertRulesClientListPager.PageResponse` has been removed
+- Function `*BookmarkRelationsClientListPager.PageResponse` has been removed
+- Function `*ProductSettingsClientGetResult.UnmarshalJSON` has been removed
+- Function `*SourceControlClientListRepositoriesPager.PageResponse` has been removed
+- Function `PermissionProviderScope.ToPtr` has been removed
+- Function `*ThreatIntelligenceIndicatorClientGetResult.UnmarshalJSON` has been removed
+- Function `*ThreatIntelligenceInformation.GetThreatIntelligenceResourceKind` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `*EntityQueriesClientListPager.NextPage` has been removed
+- Function `*IncidentsClientListPager.PageResponse` has been removed
+- Function `*IncidentsClientListPager.Err` has been removed
+- Function `EntityType.ToPtr` has been removed
+- Function `*IncidentRelationsClientListPager.Err` has been removed
+- Function `AlertSeverity.ToPtr` has been removed
+- Function `ActionType.ToPtr` has been removed
+- Function `*WatchlistsClientListPager.NextPage` has been removed
+- Function `*SourceControlsClientListPager.Err` has been removed
+- Function `ThreatIntelligenceResourceKindEnum.ToPtr` has been removed
+- Function `GetInsightsErrorKind.ToPtr` has been removed
+- Function `SettingKind.ToPtr` has been removed
+- Function `KillChainIntent.ToPtr` has been removed
+- Function `QueryBasedAlertRuleProperties.MarshalJSON` has been removed
+- Function `OSFamily.ToPtr` has been removed
+- Function `*AlertRuleTemplatesClientListPager.PageResponse` has been removed
+- Function `ConnectivityType.ToPtr` has been removed
+- Function `*EntitiesClientListPager.Err` has been removed
+- Function `UebaDataSources.ToPtr` has been removed
+- Function `*ThreatIntelligenceResourceKind.GetThreatIntelligenceResourceKind` has been removed
+- Function `*ActionsClientListByAlertRulePager.PageResponse` has been removed
+- Function `ConnectAuthKind.ToPtr` has been removed
+- Function `Source.ToPtr` has been removed
+- Function `*ThreatIntelligenceIndicatorsClientListPager.NextPage` has been removed
+- Function `OwnerType.ToPtr` has been removed
+- Function `ConfidenceLevel.ToPtr` has been removed
+- Function `SourceKind.ToPtr` has been removed
+- Function `*ThreatIntelligenceIndicatorModelForRequestBody.GetThreatIntelligenceResourceKind` has been removed
+- Function `EntityQueryTemplateKind.ToPtr` has been removed
+- Function `*MetadataClientListPager.PageResponse` has been removed
+- Function `SKUKind.ToPtr` has been removed
+- Function `AlertDetail.ToPtr` has been removed
+- Function `SettingType.ToPtr` has been removed
+- Function `*AutomationRulesClientListPager.NextPage` has been removed
+- Function `*WatchlistItemsClientListPager.NextPage` has been removed
+- Function `DeliveryAction.ToPtr` has been removed
+- Function `*WatchlistsClientListPager.PageResponse` has been removed
+- Function `MatchingMethod.ToPtr` has been removed
+- Function `*OfficeConsentsClientListPager.Err` has been removed
+- Function `*AlertRuleTemplatesClientGetResult.UnmarshalJSON` has been removed
+- Function `*ProductSettingsClientUpdateResult.UnmarshalJSON` has been removed
+- Function `*ThreatIntelligenceIndicatorModelForRequestBody.UnmarshalJSON` has been removed
+- Function `*ActionsClientListByAlertRulePager.Err` has been removed
+- Function `IncidentClassificationReason.ToPtr` has been removed
+- Function `*OfficeConsentsClientListPager.NextPage` has been removed
+- Function `*AlertRulesClientCreateOrUpdateResult.UnmarshalJSON` has been removed
+- Function `AutomationRulePropertyConditionSupportedProperty.ToPtr` has been removed
+- Function `*SourceControlClientListRepositoriesPager.NextPage` has been removed
+- Function `EntityQueryKind.ToPtr` has been removed
+- Function `*AlertRuleTemplatesClientListPager.Err` has been removed
+- Function `*BookmarksClientListPager.NextPage` has been removed
+- Function `*EntityQueryTemplatesClientListPager.Err` has been removed
+- Function `*DataConnectorsClientListPager.PageResponse` has been removed
+- Function `RegistryValueKind.ToPtr` has been removed
+- Function `*SourceControlClientListRepositoriesPager.Err` has been removed
+- Function `EntityItemQueryKind.ToPtr` has been removed
+- Function `*EntityQueryTemplatesClientListPager.PageResponse` has been removed
+- Function `AntispamMailDirection.ToPtr` has been removed
+- Function `*IncidentCommentsClientListPager.NextPage` has been removed
+- Function `*EntityQueryTemplatesClientListPager.NextPage` has been removed
+- Function `*EntitiesClientListPager.NextPage` has been removed
+- Function `*AutomationRulesClient.ManualTriggerPlaybook` has been removed
+- Function `RegistryHive.ToPtr` has been removed
+- Function `AttackTactic.ToPtr` has been removed
+- Function `*EntitiesRelationsClientListPager.Err` has been removed
+- Function `Enum15.ToPtr` has been removed
+- Function `OutputType.ToPtr` has been removed
+- Function `DataTypeState.ToPtr` has been removed
+- Function `*SourceControlsClientListPager.PageResponse` has been removed
+- Function `IncidentSeverity.ToPtr` has been removed
+- Function `FileHashAlgorithm.ToPtr` has been removed
+- Function `*IncidentCommentsClientListPager.Err` has been removed
+- Function `*ThreatIntelligenceIndicatorsClientListPager.PageResponse` has been removed
+- Function `IncidentLabelType.ToPtr` has been removed
+- Function `*ActionsClientListByAlertRulePager.NextPage` has been removed
+- Function `EntityMappingType.ToPtr` has been removed
+- Function `ElevationToken.ToPtr` has been removed
+- Function `*DataConnectorsClientListPager.Err` has been removed
+- Function `*AlertRulesClientListPager.Err` has been removed
+- Function `DataConnectorAuthorizationState.ToPtr` has been removed
+- Function `MicrosoftSecurityProductName.ToPtr` has been removed
+- Function `*MetadataClientListPager.NextPage` has been removed
+- Function `*WatchlistsClientListPager.Err` has been removed
+- Function `ConditionType.ToPtr` has been removed
+- Function `EventGroupingAggregationKind.ToPtr` has been removed
+- Function `CustomEntityQueryKind.ToPtr` has been removed
+- Function `*EntityQueriesClientCreateOrUpdateResult.UnmarshalJSON` has been removed
+- Function `*SourceControlsClientListPager.NextPage` has been removed
+- Function `PossibleSourceValues` has been removed
+- Function `*BookmarksClientListPager.Err` has been removed
+- Function `ProviderName.ToPtr` has been removed
+- Function `TriggerOperator.ToPtr` has been removed
+- Function `*BookmarkRelationsClientListPager.NextPage` has been removed
+- Function `*AutomationRulesClientListPager.Err` has been removed
+- Function `ThreatIntelligenceSortingCriteriaEnum.ToPtr` has been removed
+- Function `*ThreatIntelligenceIndicatorsClientListPager.Err` has been removed
+- Function `*AlertRuleTemplatesClientListPager.NextPage` has been removed
+- Function `*AutomationRulesClientListPager.PageResponse` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Function `*EntitiesClientListPager.PageResponse` has been removed
+- Function `RepoType.ToPtr` has been removed
+- Function `*ThreatIntelligenceIndicatorClientQueryIndicatorsPager.PageResponse` has been removed
+- Function `*ThreatIntelligenceIndicatorClientQueryIndicatorsPager.Err` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `*DataConnectorsClientListPager.NextPage` has been removed
+- Function `*AlertRulesClientListPager.NextPage` has been removed
+- Function `IncidentStatus.ToPtr` has been removed
+- Function `*ThreatIntelligenceIndicatorClientCreateIndicatorResult.UnmarshalJSON` has been removed
+- Function `EntityKind.ToPtr` has been removed
+- Function `*EntitiesRelationsClientListPager.PageResponse` has been removed
+- Function `TriggersWhen.ToPtr` has been removed
+- Function `Enum13.ToPtr` has been removed
+- Struct `ActionsClientCreateOrUpdateResult` has been removed
+- Struct `ActionsClientGetResult` has been removed
+- Struct `ActionsClientListByAlertRulePager` has been removed
+- Struct `ActionsClientListByAlertRuleResult` has been removed
+- Struct `AlertRuleTemplatesClientGetResult` has been removed
+- Struct `AlertRuleTemplatesClientListPager` has been removed
+- Struct `AlertRuleTemplatesClientListResult` has been removed
+- Struct `AlertRulesClientCreateOrUpdateResult` has been removed
+- Struct `AlertRulesClientGetResult` has been removed
+- Struct `AlertRulesClientListPager` has been removed
+- Struct `AlertRulesClientListResult` has been removed
+- Struct `AutomationRulesClientCreateOrUpdateResult` has been removed
+- Struct `AutomationRulesClientDeleteResult` has been removed
+- Struct `AutomationRulesClientGetResult` has been removed
+- Struct `AutomationRulesClientListPager` has been removed
+- Struct `AutomationRulesClientListResult` has been removed
+- Struct `AutomationRulesClientManualTriggerPlaybookOptions` has been removed
+- Struct `AutomationRulesClientManualTriggerPlaybookResponse` has been removed
+- Struct `AutomationRulesClientManualTriggerPlaybookResult` has been removed
+- Struct `BookmarkClientExpandResult` has been removed
+- Struct `BookmarkRelationsClientCreateOrUpdateResult` has been removed
+- Struct `BookmarkRelationsClientGetResult` has been removed
+- Struct `BookmarkRelationsClientListPager` has been removed
+- Struct `BookmarkRelationsClientListResult` has been removed
+- Struct `BookmarksClientCreateOrUpdateResult` has been removed
+- Struct `BookmarksClientGetResult` has been removed
+- Struct `BookmarksClientListPager` has been removed
+- Struct `BookmarksClientListResult` has been removed
+- Struct `DataConnectorsCheckRequirementsClientPostResult` has been removed
+- Struct `DataConnectorsClientCreateOrUpdateResult` has been removed
+- Struct `DataConnectorsClientGetResult` has been removed
+- Struct `DataConnectorsClientListPager` has been removed
+- Struct `DataConnectorsClientListResult` has been removed
+- Struct `DomainWhoisClientGetResult` has been removed
+- Struct `EntitiesClientExpandResult` has been removed
+- Struct `EntitiesClientGetInsightsResult` has been removed
+- Struct `EntitiesClientGetResult` has been removed
+- Struct `EntitiesClientListPager` has been removed
+- Struct `EntitiesClientListResult` has been removed
+- Struct `EntitiesClientQueriesResult` has been removed
+- Struct `EntitiesGetTimelineClientListResult` has been removed
+- Struct `EntitiesRelationsClientListPager` has been removed
+- Struct `EntitiesRelationsClientListResult` has been removed
+- Struct `EntityQueriesClientCreateOrUpdateResult` has been removed
+- Struct `EntityQueriesClientGetResult` has been removed
+- Struct `EntityQueriesClientListPager` has been removed
+- Struct `EntityQueriesClientListResult` has been removed
+- Struct `EntityQueryTemplatesClientGetResult` has been removed
+- Struct `EntityQueryTemplatesClientListPager` has been removed
+- Struct `EntityQueryTemplatesClientListResult` has been removed
+- Struct `EntityRelationsClientGetRelationResult` has been removed
+- Struct `IPGeodataClientGetResult` has been removed
+- Struct `IncidentCommentsClientCreateOrUpdateResult` has been removed
+- Struct `IncidentCommentsClientGetResult` has been removed
+- Struct `IncidentCommentsClientListPager` has been removed
+- Struct `IncidentCommentsClientListResult` has been removed
+- Struct `IncidentRelationsClientCreateOrUpdateResult` has been removed
+- Struct `IncidentRelationsClientGetResult` has been removed
+- Struct `IncidentRelationsClientListPager` has been removed
+- Struct `IncidentRelationsClientListResult` has been removed
+- Struct `IncidentsClientCreateOrUpdateResult` has been removed
+- Struct `IncidentsClientCreateTeamResult` has been removed
+- Struct `IncidentsClientGetResult` has been removed
+- Struct `IncidentsClientListAlertsResult` has been removed
+- Struct `IncidentsClientListBookmarksResult` has been removed
+- Struct `IncidentsClientListEntitiesResult` has been removed
+- Struct `IncidentsClientListPager` has been removed
+- Struct `IncidentsClientListResult` has been removed
+- Struct `MetadataClientCreateResult` has been removed
+- Struct `MetadataClientGetResult` has been removed
+- Struct `MetadataClientListPager` has been removed
+- Struct `MetadataClientListResult` has been removed
+- Struct `MetadataClientUpdateResult` has been removed
+- Struct `OfficeConsentsClientGetResult` has been removed
+- Struct `OfficeConsentsClientListPager` has been removed
+- Struct `OfficeConsentsClientListResult` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `ProductSettingsClientGetResult` has been removed
+- Struct `ProductSettingsClientListResult` has been removed
+- Struct `ProductSettingsClientUpdateResult` has been removed
+- Struct `QueryBasedAlertRuleProperties` has been removed
+- Struct `SentinelOnboardingStatesClientCreateResult` has been removed
+- Struct `SentinelOnboardingStatesClientGetResult` has been removed
+- Struct `SentinelOnboardingStatesClientListResult` has been removed
+- Struct `SourceControlClientListRepositoriesPager` has been removed
+- Struct `SourceControlClientListRepositoriesResult` has been removed
+- Struct `SourceControlsClientCreateResult` has been removed
+- Struct `SourceControlsClientGetResult` has been removed
+- Struct `SourceControlsClientListPager` has been removed
+- Struct `SourceControlsClientListResult` has been removed
+- Struct `ThreatIntelligenceIndicatorClientCreateIndicatorResult` has been removed
+- Struct `ThreatIntelligenceIndicatorClientCreateResult` has been removed
+- Struct `ThreatIntelligenceIndicatorClientGetResult` has been removed
+- Struct `ThreatIntelligenceIndicatorClientQueryIndicatorsPager` has been removed
+- Struct `ThreatIntelligenceIndicatorClientQueryIndicatorsResult` has been removed
+- Struct `ThreatIntelligenceIndicatorClientReplaceTagsResult` has been removed
+- Struct `ThreatIntelligenceIndicatorMetricsClientListResult` has been removed
+- Struct `ThreatIntelligenceIndicatorModelForRequestBody` has been removed
+- Struct `ThreatIntelligenceIndicatorsClientListPager` has been removed
+- Struct `ThreatIntelligenceIndicatorsClientListResult` has been removed
+- Struct `ThreatIntelligenceResourceKind` has been removed
+- Struct `WatchlistItemsClientCreateOrUpdateResult` has been removed
+- Struct `WatchlistItemsClientGetResult` has been removed
+- Struct `WatchlistItemsClientListPager` has been removed
+- Struct `WatchlistItemsClientListResult` has been removed
+- Struct `WatchlistsClientCreateOrUpdateResult` has been removed
+- Struct `WatchlistsClientGetResult` has been removed
+- Struct `WatchlistsClientListPager` has been removed
+- Struct `WatchlistsClientListResult` has been removed
+- Field `SourceControlsClientCreateResult` of struct `SourceControlsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `SourceControlsClientCreateResponse` has been removed
+- Field `ThreatIntelligenceIndicatorsClientListResult` of struct `ThreatIntelligenceIndicatorsClientListResponse` has been removed
+- Field `RawResponse` of struct `ThreatIntelligenceIndicatorsClientListResponse` has been removed
+- Field `IncidentRelationsClientCreateOrUpdateResult` of struct `IncidentRelationsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `IncidentRelationsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ProductSettingsClientDeleteResponse` has been removed
+- Field `EntityQueryTemplatesClientGetResult` of struct `EntityQueryTemplatesClientGetResponse` has been removed
+- Field `RawResponse` of struct `EntityQueryTemplatesClientGetResponse` has been removed
+- Field `RawResponse` of struct `BookmarkRelationsClientDeleteResponse` has been removed
+- Field `ActionsClientGetResult` of struct `ActionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ActionsClientGetResponse` has been removed
+- Field `WatchlistItemsClientGetResult` of struct `WatchlistItemsClientGetResponse` has been removed
+- Field `RawResponse` of struct `WatchlistItemsClientGetResponse` has been removed
+- Field `AutomationRulesClientGetResult` of struct `AutomationRulesClientGetResponse` has been removed
+- Field `RawResponse` of struct `AutomationRulesClientGetResponse` has been removed
+- Field `SourceControlClientListRepositoriesResult` of struct `SourceControlClientListRepositoriesResponse` has been removed
+- Field `RawResponse` of struct `SourceControlClientListRepositoriesResponse` has been removed
+- Field `AlertRulesClientListResult` of struct `AlertRulesClientListResponse` has been removed
+- Field `RawResponse` of struct `AlertRulesClientListResponse` has been removed
+- Field `DomainWhoisClientGetResult` of struct `DomainWhoisClientGetResponse` has been removed
+- Field `RawResponse` of struct `DomainWhoisClientGetResponse` has been removed
+- Field `SourceControlsClientGetResult` of struct `SourceControlsClientGetResponse` has been removed
+- Field `RawResponse` of struct `SourceControlsClientGetResponse` has been removed
+- Field `IncidentsClientListBookmarksResult` of struct `IncidentsClientListBookmarksResponse` has been removed
+- Field `RawResponse` of struct `IncidentsClientListBookmarksResponse` has been removed
+- Field `EntitiesClientQueriesResult` of struct `EntitiesClientQueriesResponse` has been removed
+- Field `RawResponse` of struct `EntitiesClientQueriesResponse` has been removed
+- Field `EntitiesClientListResult` of struct `EntitiesClientListResponse` has been removed
+- Field `RawResponse` of struct `EntitiesClientListResponse` has been removed
+- Field `EntitiesClientGetResult` of struct `EntitiesClientGetResponse` has been removed
+- Field `RawResponse` of struct `EntitiesClientGetResponse` has been removed
+- Field `DataConnectorsCheckRequirementsClientPostResult` of struct `DataConnectorsCheckRequirementsClientPostResponse` has been removed
+- Field `RawResponse` of struct `DataConnectorsCheckRequirementsClientPostResponse` has been removed
+- Field `DataConnectorsClientCreateOrUpdateResult` of struct `DataConnectorsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `DataConnectorsClientCreateOrUpdateResponse` has been removed
+- Field `EntityQueryTemplatesClientListResult` of struct `EntityQueryTemplatesClientListResponse` has been removed
+- Field `RawResponse` of struct `EntityQueryTemplatesClientListResponse` has been removed
+- Field `EntityQueriesClientGetResult` of struct `EntityQueriesClientGetResponse` has been removed
+- Field `RawResponse` of struct `EntityQueriesClientGetResponse` has been removed
+- Field `AlertRulesClientGetResult` of struct `AlertRulesClientGetResponse` has been removed
+- Field `RawResponse` of struct `AlertRulesClientGetResponse` has been removed
+- Field `RawResponse` of struct `DataConnectorsClientDisconnectResponse` has been removed
+- Field `IncidentsClientListResult` of struct `IncidentsClientListResponse` has been removed
+- Field `RawResponse` of struct `IncidentsClientListResponse` has been removed
+- Field `RawResponse` of struct `ThreatIntelligenceIndicatorClientAppendTagsResponse` has been removed
+- Field `IncidentsClientCreateOrUpdateResult` of struct `IncidentsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `IncidentsClientCreateOrUpdateResponse` has been removed
+- Field `IncidentRelationsClientGetResult` of struct `IncidentRelationsClientGetResponse` has been removed
+- Field `RawResponse` of struct `IncidentRelationsClientGetResponse` has been removed
+- Field `BookmarksClientCreateOrUpdateResult` of struct `BookmarksClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `BookmarksClientCreateOrUpdateResponse` has been removed
+- Field `IsEnabled` of struct `EntityAnalyticsProperties` has been removed
+- Field `EntitiesClientExpandResult` of struct `EntitiesClientExpandResponse` has been removed
+- Field `RawResponse` of struct `EntitiesClientExpandResponse` has been removed
+- Field `WatchlistItemsClientCreateOrUpdateResult` of struct `WatchlistItemsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `WatchlistItemsClientCreateOrUpdateResponse` has been removed
+- Field `IncidentsClientListAlertsResult` of struct `IncidentsClientListAlertsResponse` has been removed
+- Field `RawResponse` of struct `IncidentsClientListAlertsResponse` has been removed
+- Field `AlertRuleTemplatesClientGetResult` of struct `AlertRuleTemplatesClientGetResponse` has been removed
+- Field `RawResponse` of struct `AlertRuleTemplatesClientGetResponse` has been removed
+- Field `IncidentRelationsClientListResult` of struct `IncidentRelationsClientListResponse` has been removed
+- Field `RawResponse` of struct `IncidentRelationsClientListResponse` has been removed
+- Field `BookmarkRelationsClientListResult` of struct `BookmarkRelationsClientListResponse` has been removed
+- Field `RawResponse` of struct `BookmarkRelationsClientListResponse` has been removed
+- Field `WatchlistItemsClientListResult` of struct `WatchlistItemsClientListResponse` has been removed
+- Field `RawResponse` of struct `WatchlistItemsClientListResponse` has been removed
+- Field `ProductSettingsClientListResult` of struct `ProductSettingsClientListResponse` has been removed
+- Field `RawResponse` of struct `ProductSettingsClientListResponse` has been removed
+- Field `RawResponse` of struct `ThreatIntelligenceIndicatorClientDeleteResponse` has been removed
+- Field `WatchlistsClientGetResult` of struct `WatchlistsClientGetResponse` has been removed
+- Field `RawResponse` of struct `WatchlistsClientGetResponse` has been removed
+- Field `EntityQueriesClientListResult` of struct `EntityQueriesClientListResponse` has been removed
+- Field `RawResponse` of struct `EntityQueriesClientListResponse` has been removed
+- Field `BookmarkRelationsClientGetResult` of struct `BookmarkRelationsClientGetResponse` has been removed
+- Field `RawResponse` of struct `BookmarkRelationsClientGetResponse` has been removed
+- Field `ProductSettingsClientGetResult` of struct `ProductSettingsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ProductSettingsClientGetResponse` has been removed
+- Field `MetadataClientGetResult` of struct `MetadataClientGetResponse` has been removed
+- Field `RawResponse` of struct `MetadataClientGetResponse` has been removed
+- Field `BookmarksClientGetResult` of struct `BookmarksClientGetResponse` has been removed
+- Field `RawResponse` of struct `BookmarksClientGetResponse` has been removed
+- Field `EntitiesRelationsClientListResult` of struct `EntitiesRelationsClientListResponse` has been removed
+- Field `RawResponse` of struct `EntitiesRelationsClientListResponse` has been removed
+- Field `AutomationRulesClientCreateOrUpdateResult` of struct `AutomationRulesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `AutomationRulesClientCreateOrUpdateResponse` has been removed
+- Field `WatchlistItemsCount` of struct `WatchlistProperties` has been removed
+- Field `DataConnectorsClientListResult` of struct `DataConnectorsClientListResponse` has been removed
+- Field `RawResponse` of struct `DataConnectorsClientListResponse` has been removed
+- Field `ActionsClientCreateOrUpdateResult` of struct `ActionsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ActionsClientCreateOrUpdateResponse` has been removed
+- Field `OfficeConsentsClientListResult` of struct `OfficeConsentsClientListResponse` has been removed
+- Field `RawResponse` of struct `OfficeConsentsClientListResponse` has been removed
+- Field `DataConnectorsClientGetResult` of struct `DataConnectorsClientGetResponse` has been removed
+- Field `RawResponse` of struct `DataConnectorsClientGetResponse` has been removed
+- Field `BookmarkRelationsClientCreateOrUpdateResult` of struct `BookmarkRelationsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `BookmarkRelationsClientCreateOrUpdateResponse` has been removed
+- Field `ThreatIntelligenceIndicatorMetricsClientListResult` of struct `ThreatIntelligenceIndicatorMetricsClientListResponse` has been removed
+- Field `RawResponse` of struct `ThreatIntelligenceIndicatorMetricsClientListResponse` has been removed
+- Field `RawResponse` of struct `EntityQueriesClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `DataConnectorsClientConnectResponse` has been removed
+- Field `SentinelOnboardingStatesClientGetResult` of struct `SentinelOnboardingStatesClientGetResponse` has been removed
+- Field `RawResponse` of struct `SentinelOnboardingStatesClientGetResponse` has been removed
+- Field `RawResponse` of struct `WatchlistsClientDeleteResponse` has been removed
+- Field `ActionsClientListByAlertRuleResult` of struct `ActionsClientListByAlertRuleResponse` has been removed
+- Field `RawResponse` of struct `ActionsClientListByAlertRuleResponse` has been removed
+- Field `EntityRelationsClientGetRelationResult` of struct `EntityRelationsClientGetRelationResponse` has been removed
+- Field `RawResponse` of struct `EntityRelationsClientGetRelationResponse` has been removed
+- Field `RawResponse` of struct `ActionsClientDeleteResponse` has been removed
+- Field `IncidentCommentsClientCreateOrUpdateResult` of struct `IncidentCommentsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `IncidentCommentsClientCreateOrUpdateResponse` has been removed
+- Field `MetadataClientCreateResult` of struct `MetadataClientCreateResponse` has been removed
+- Field `RawResponse` of struct `MetadataClientCreateResponse` has been removed
+- Field `RawResponse` of struct `DataConnectorsClientDeleteResponse` has been removed
+- Field `AlertRuleTemplatesClientListResult` of struct `AlertRuleTemplatesClientListResponse` has been removed
+- Field `RawResponse` of struct `AlertRuleTemplatesClientListResponse` has been removed
+- Field `RawResponse` of struct `BookmarksClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `IncidentsClientDeleteResponse` has been removed
+- Field `MetadataClientListResult` of struct `MetadataClientListResponse` has been removed
+- Field `RawResponse` of struct `MetadataClientListResponse` has been removed
+- Field `WatchlistsClientCreateOrUpdateResult` of struct `WatchlistsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `WatchlistsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `IncidentRelationsClientDeleteResponse` has been removed
+- Field `EntitiesGetTimelineClientListResult` of struct `EntitiesGetTimelineClientListResponse` has been removed
+- Field `RawResponse` of struct `EntitiesGetTimelineClientListResponse` has been removed
+- Field `RawResponse` of struct `SentinelOnboardingStatesClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `WatchlistItemsClientDeleteResponse` has been removed
+- Field `IncidentCommentsClientGetResult` of struct `IncidentCommentsClientGetResponse` has been removed
+- Field `RawResponse` of struct `IncidentCommentsClientGetResponse` has been removed
+- Field `IncidentCommentsClientListResult` of struct `IncidentCommentsClientListResponse` has been removed
+- Field `RawResponse` of struct `IncidentCommentsClientListResponse` has been removed
+- Field `ThreatIntelligenceIndicatorClientCreateIndicatorResult` of struct `ThreatIntelligenceIndicatorClientCreateIndicatorResponse` has been removed
+- Field `RawResponse` of struct `ThreatIntelligenceIndicatorClientCreateIndicatorResponse` has been removed
+- Field `BookmarkClientExpandResult` of struct `BookmarkClientExpandResponse` has been removed
+- Field `RawResponse` of struct `BookmarkClientExpandResponse` has been removed
+- Field `ProductSettingsClientUpdateResult` of struct `ProductSettingsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ProductSettingsClientUpdateResponse` has been removed
+- Field `IncidentsClientCreateTeamResult` of struct `IncidentsClientCreateTeamResponse` has been removed
+- Field `RawResponse` of struct `IncidentsClientCreateTeamResponse` has been removed
+- Field `BookmarksClientListResult` of struct `BookmarksClientListResponse` has been removed
+- Field `RawResponse` of struct `BookmarksClientListResponse` has been removed
+- Field `WatchlistsClientListResult` of struct `WatchlistsClientListResponse` has been removed
+- Field `RawResponse` of struct `WatchlistsClientListResponse` has been removed
+- Field `EntitiesClientGetInsightsResult` of struct `EntitiesClientGetInsightsResponse` has been removed
+- Field `RawResponse` of struct `EntitiesClientGetInsightsResponse` has been removed
+- Field `SourceControlsClientListResult` of struct `SourceControlsClientListResponse` has been removed
+- Field `RawResponse` of struct `SourceControlsClientListResponse` has been removed
+- Field `RawResponse` of struct `AlertRulesClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `SourceControlsClientDeleteResponse` has been removed
+- Field `SentinelOnboardingStatesClientListResult` of struct `SentinelOnboardingStatesClientListResponse` has been removed
+- Field `RawResponse` of struct `SentinelOnboardingStatesClientListResponse` has been removed
+- Field `ThreatIntelligenceIndicatorClientCreateResult` of struct `ThreatIntelligenceIndicatorClientCreateResponse` has been removed
+- Field `RawResponse` of struct `ThreatIntelligenceIndicatorClientCreateResponse` has been removed
+- Field `EntityQueriesClientCreateOrUpdateResult` of struct `EntityQueriesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `EntityQueriesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `IncidentCommentsClientDeleteResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `MetadataClientDeleteResponse` has been removed
+- Field `AutomationRulesClientListResult` of struct `AutomationRulesClientListResponse` has been removed
+- Field `RawResponse` of struct `AutomationRulesClientListResponse` has been removed
+- Field `AutomationRulesClientDeleteResult` of struct `AutomationRulesClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `AutomationRulesClientDeleteResponse` has been removed
+- Field `MetadataClientUpdateResult` of struct `MetadataClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `MetadataClientUpdateResponse` has been removed
+- Field `SentinelOnboardingStatesClientCreateResult` of struct `SentinelOnboardingStatesClientCreateResponse` has been removed
+- Field `RawResponse` of struct `SentinelOnboardingStatesClientCreateResponse` has been removed
+- Field `OfficeConsentsClientGetResult` of struct `OfficeConsentsClientGetResponse` has been removed
+- Field `RawResponse` of struct `OfficeConsentsClientGetResponse` has been removed
+- Field `IncidentsClientListEntitiesResult` of struct `IncidentsClientListEntitiesResponse` has been removed
+- Field `RawResponse` of struct `IncidentsClientListEntitiesResponse` has been removed
+- Field `ThreatIntelligenceIndicatorClientGetResult` of struct `ThreatIntelligenceIndicatorClientGetResponse` has been removed
+- Field `RawResponse` of struct `ThreatIntelligenceIndicatorClientGetResponse` has been removed
+- Field `AlertRulesClientCreateOrUpdateResult` of struct `AlertRulesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `AlertRulesClientCreateOrUpdateResponse` has been removed
+- Field `IPGeodataClientGetResult` of struct `IPGeodataClientGetResponse` has been removed
+- Field `RawResponse` of struct `IPGeodataClientGetResponse` has been removed
+- Field `ThreatIntelligenceIndicatorClientReplaceTagsResult` of struct `ThreatIntelligenceIndicatorClientReplaceTagsResponse` has been removed
+- Field `RawResponse` of struct `ThreatIntelligenceIndicatorClientReplaceTagsResponse` has been removed
+- Field `IncidentsClientGetResult` of struct `IncidentsClientGetResponse` has been removed
+- Field `RawResponse` of struct `IncidentsClientGetResponse` has been removed
+- Field `ThreatIntelligenceIndicatorClientQueryIndicatorsResult` of struct `ThreatIntelligenceIndicatorClientQueryIndicatorsResponse` has been removed
+- Field `RawResponse` of struct `ThreatIntelligenceIndicatorClientQueryIndicatorsResponse` has been removed
+- Field `RawResponse` of struct `OfficeConsentsClientDeleteResponse` has been removed
+
+### Features Added
+
+- New const `DeploymentStateQueued`
+- New const `EntityProvidersActiveDirectory`
+- New const `DeploymentStateInProgress`
+- New const `DeploymentStateCanceling`
+- New const `DeploymentFetchStatusUnauthorized`
+- New const `KindAutomationRule`
+- New const `DeploymentFetchStatusNotFound`
+- New const `KindLogicAppsCustomConnector`
+- New const `VersionV1`
+- New const `IncidentLabelTypeAutoAssigned`
+- New const `DataConnectorKindIOT`
+- New const `DeploymentStateCompleted`
+- New const `DeploymentResultFailed`
+- New const `SourceTypeLocalFile`
+- New const `EntityProvidersAzureActiveDirectory`
+- New const `KindAzureFunction`
+- New const `SourceTypeRemoteStorage`
+- New const `VersionV2`
+- New const `DeploymentResultCanceled`
+- New const `DeploymentResultSuccess`
+- New const `DeploymentFetchStatusSuccess`
+- New function `*EntityQueryTemplatesClientGetResponse.UnmarshalJSON([]byte) error`
+- New function `PossibleSourceTypeValues() []SourceType`
+- New function `*EntityQueriesClientGetResponse.UnmarshalJSON([]byte) error`
+- New function `PossibleDeploymentStateValues() []DeploymentState`
+- New function `*AlertRuleTemplatesClientGetResponse.UnmarshalJSON([]byte) error`
+- New function `*IoTCheckRequirements.GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements`
+- New function `*ProductSettingsClientGetResponse.UnmarshalJSON([]byte) error`
+- New function `PossibleVersionValues() []Version`
+- New function `PossibleEntityProvidersValues() []EntityProviders`
+- New function `*AlertRulesClientCreateOrUpdateResponse.UnmarshalJSON([]byte) error`
+- New function `IoTCheckRequirements.MarshalJSON() ([]byte, error)`
+- New function `EntityAnalyticsProperties.MarshalJSON() ([]byte, error)`
+- New function `*Deployment.UnmarshalJSON([]byte) error`
+- New function `*ThreatIntelligenceIndicatorClientGetResponse.UnmarshalJSON([]byte) error`
+- New function `IoTDataConnector.MarshalJSON() ([]byte, error)`
+- New function `*ProductSettingsClientUpdateResponse.UnmarshalJSON([]byte) error`
+- New function `Deployment.MarshalJSON() ([]byte, error)`
+- New function `*IoTDataConnector.UnmarshalJSON([]byte) error`
+- New function `*IncidentsClient.RunPlaybook(context.Context, string, string, string, *IncidentsClientRunPlaybookOptions) (IncidentsClientRunPlaybookResponse, error)`
+- New function `PossibleDeploymentResultValues() []DeploymentResult`
+- New function `ScheduledAlertRuleCommonProperties.MarshalJSON() ([]byte, error)`
+- New function `*ThreatIntelligenceIndicatorClientReplaceTagsResponse.UnmarshalJSON([]byte) error`
+- New function `PossibleDeploymentFetchStatusValues() []DeploymentFetchStatus`
+- New function `*IoTDataConnector.GetDataConnector() *DataConnector`
+- New function `*DataConnectorsClientGetResponse.UnmarshalJSON([]byte) error`
+- New function `*ThreatIntelligenceIndicatorClientCreateResponse.UnmarshalJSON([]byte) error`
+- New function `*EntitiesClientGetResponse.UnmarshalJSON([]byte) error`
+- New function `*IoTCheckRequirements.UnmarshalJSON([]byte) error`
+- New function `*AlertRulesClientGetResponse.UnmarshalJSON([]byte) error`
+- New function `*DataConnectorsClientCreateOrUpdateResponse.UnmarshalJSON([]byte) error`
+- New function `*ThreatIntelligenceIndicatorClientCreateIndicatorResponse.UnmarshalJSON([]byte) error`
+- New function `*EntityQueriesClientCreateOrUpdateResponse.UnmarshalJSON([]byte) error`
+- New struct `AzureDevOpsResourceInfo`
+- New struct `CloudError`
+- New struct `CloudErrorBody`
+- New struct `Deployment`
+- New struct `DeploymentInfo`
+- New struct `GitHubResourceInfo`
+- New struct `IncidentsClientRunPlaybookOptions`
+- New struct `IncidentsClientRunPlaybookResponse`
+- New struct `IoTCheckRequirements`
+- New struct `IoTCheckRequirementsProperties`
+- New struct `IoTDataConnector`
+- New struct `IoTDataConnectorProperties`
+- New struct `RepositoryResourceInfo`
+- New struct `SKU`
+- New struct `Webhook`
+- New anonymous field `GetQueriesResponse` in struct `EntitiesClientQueriesResponse`
+- New anonymous field `SettingsClassification` in struct `ProductSettingsClientGetResponse`
+- New anonymous field `MetadataList` in struct `MetadataClientListResponse`
+- New field `EntityMappings` in struct `ScheduledAlertRuleCommonProperties`
+- New field `AlertDetailsOverride` in struct `ScheduledAlertRuleCommonProperties`
+- New field `Query` in struct `ScheduledAlertRuleCommonProperties`
+- New field `Severity` in struct `ScheduledAlertRuleCommonProperties`
+- New field `CustomDetails` in struct `ScheduledAlertRuleCommonProperties`
+- New anonymous field `BookmarkList` in struct `BookmarksClientListResponse`
+- New anonymous field `IncidentComment` in struct `IncidentCommentsClientGetResponse`
+- New field `PreviewImages` in struct `MetadataPropertiesPatch`
+- New field `ThreatAnalysisTechniques` in struct `MetadataPropertiesPatch`
+- New field `ThreatAnalysisTactics` in struct `MetadataPropertiesPatch`
+- New field `ContentSchemaVersion` in struct `MetadataPropertiesPatch`
+- New field `Icon` in struct `MetadataPropertiesPatch`
+- New field `CustomVersion` in struct `MetadataPropertiesPatch`
+- New field `PreviewImagesDark` in struct `MetadataPropertiesPatch`
+- New anonymous field `Relation` in struct `IncidentRelationsClientCreateOrUpdateResponse`
+- New anonymous field `SourceControl` in struct `SourceControlsClientCreateResponse`
+- New anonymous field `ThreatIntelligenceInformationList` in struct `ThreatIntelligenceIndicatorClientQueryIndicatorsResponse`
+- New anonymous field `IncidentList` in struct `IncidentsClientListResponse`
+- New anonymous field `EntityGetInsightsResponse` in struct `EntitiesClientGetInsightsResponse`
+- New anonymous field `EntityQueryTemplateList` in struct `EntityQueryTemplatesClientListResponse`
+- New anonymous field `Bookmark` in struct `BookmarksClientGetResponse`
+- New anonymous field `IncidentAlertList` in struct `IncidentsClientListAlertsResponse`
+- New anonymous field `OperationsList` in struct `OperationsClientListResponse`
+- New anonymous field `MetadataModel` in struct `MetadataClientGetResponse`
+- New anonymous field `ThreatIntelligenceInformationClassification` in struct `ThreatIntelligenceIndicatorClientReplaceTagsResponse`
+- New field `PreviewImagesDark` in struct `MetadataProperties`
+- New field `ThreatAnalysisTechniques` in struct `MetadataProperties`
+- New field `ThreatAnalysisTactics` in struct `MetadataProperties`
+- New field `ContentSchemaVersion` in struct `MetadataProperties`
+- New field `CustomVersion` in struct `MetadataProperties`
+- New field `Icon` in struct `MetadataProperties`
+- New field `PreviewImages` in struct `MetadataProperties`
+- New anonymous field `IncidentEntitiesResponse` in struct `IncidentsClientListEntitiesResponse`
+- New anonymous field `Incident` in struct `IncidentsClientGetResponse`
+- New anonymous field `SentinelOnboardingState` in struct `SentinelOnboardingStatesClientCreateResponse`
+- New anonymous field `AlertRuleClassification` in struct `AlertRulesClientGetResponse`
+- New anonymous field `Relation` in struct `IncidentRelationsClientGetResponse`
+- New field `SourceType` in struct `WatchlistProperties`
+- New field `AzureAsyncOperation` in struct `WatchlistsClientDeleteResponse`
+- New anonymous field `WatchlistItem` in struct `WatchlistItemsClientGetResponse`
+- New anonymous field `RepoList` in struct `SourceControlClientListRepositoriesResponse`
+- New anonymous field `OfficeConsentList` in struct `OfficeConsentsClientListResponse`
+- New anonymous field `AlertRulesList` in struct `AlertRulesClientListResponse`
+- New anonymous field `DataConnectorClassification` in struct `DataConnectorsClientGetResponse`
+- New anonymous field `AlertRuleTemplateClassification` in struct `AlertRuleTemplatesClientGetResponse`
+- New anonymous field `MetadataModel` in struct `MetadataClientCreateResponse`
+- New anonymous field `EntityList` in struct `EntitiesClientListResponse`
+- New field `EntityProviders` in struct `EntityAnalyticsProperties`
+- New anonymous field `Watchlist` in struct `WatchlistsClientCreateOrUpdateResponse`
+- New field `AzureAsyncOperation` in struct `WatchlistsClientCreateOrUpdateResponse`
+- New anonymous field `DataConnectorList` in struct `DataConnectorsClientListResponse`
+- New anonymous field `IncidentComment` in struct `IncidentCommentsClientCreateOrUpdateResponse`
+- New anonymous field `AutomationRule` in struct `AutomationRulesClientGetResponse`
+- New field `SkipToken` in struct `WatchlistItemsClientListOptions`
+- New field `SkipToken` in struct `WatchlistsClientListOptions`
+- New anonymous field `WatchlistItem` in struct `WatchlistItemsClientCreateOrUpdateResponse`
+- New anonymous field `WatchlistList` in struct `WatchlistsClientListResponse`
+- New anonymous field `ThreatIntelligenceInformationClassification` in struct `ThreatIntelligenceIndicatorClientGetResponse`
+- New anonymous field `SourceControl` in struct `SourceControlsClientGetResponse`
+- New anonymous field `EntityQueryClassification` in struct `EntityQueriesClientGetResponse`
+- New anonymous field `EntityQueryClassification` in struct `EntityQueriesClientCreateOrUpdateResponse`
+- New anonymous field `ThreatIntelligenceInformationClassification` in struct `ThreatIntelligenceIndicatorClientCreateIndicatorResponse`
+- New anonymous field `AutomationRule` in struct `AutomationRulesClientCreateOrUpdateResponse`
+- New anonymous field `DataConnectorRequirementsState` in struct `DataConnectorsCheckRequirementsClientPostResponse`
+- New anonymous field `EntityClassification` in struct `EntitiesClientGetResponse`
+- New anonymous field `SettingsClassification` in struct `ProductSettingsClientUpdateResponse`
+- New anonymous field `Relation` in struct `BookmarkRelationsClientCreateOrUpdateResponse`
+- New anonymous field `Bookmark` in struct `BookmarksClientCreateOrUpdateResponse`
+- New anonymous field `SentinelOnboardingStatesList` in struct `SentinelOnboardingStatesClientListResponse`
+- New anonymous field `EntityTimelineResponse` in struct `EntitiesGetTimelineClientListResponse`
+- New field `LastDeploymentInfo` in struct `SourceControlProperties`
+- New field `RepositoryResourceInfo` in struct `SourceControlProperties`
+- New field `Version` in struct `SourceControlProperties`
+- New anonymous field `IncidentCommentList` in struct `IncidentCommentsClientListResponse`
+- New anonymous field `SourceControlList` in struct `SourceControlsClientListResponse`
+- New anonymous field `OfficeConsent` in struct `OfficeConsentsClientGetResponse`
+- New anonymous field `AutomationRulesList` in struct `AutomationRulesClientListResponse`
+- New anonymous field `TeamInformation` in struct `IncidentsClientCreateTeamResponse`
+- New anonymous field `MetadataModel` in struct `MetadataClientUpdateResponse`
+- New anonymous field `WatchlistItemList` in struct `WatchlistItemsClientListResponse`
+- New anonymous field `RelationList` in struct `IncidentRelationsClientListResponse`
+- New anonymous field `AlertRuleClassification` in struct `AlertRulesClientCreateOrUpdateResponse`
+- New anonymous field `BookmarkExpandResponse` in struct `BookmarkClientExpandResponse`
+- New anonymous field `AlertRuleTemplatesList` in struct `AlertRuleTemplatesClientListResponse`
+- New anonymous field `ThreatIntelligenceMetricsList` in struct `ThreatIntelligenceIndicatorMetricsClientListResponse`
+- New anonymous field `ActionsList` in struct `ActionsClientListByAlertRuleResponse`
+- New anonymous field `Relation` in struct `BookmarkRelationsClientGetResponse`
+- New anonymous field `Incident` in struct `IncidentsClientCreateOrUpdateResponse`
+- New anonymous field `SentinelOnboardingState` in struct `SentinelOnboardingStatesClientGetResponse`
+- New anonymous field `RelationList` in struct `BookmarkRelationsClientListResponse`
+- New anonymous field `EnrichmentDomainWhois` in struct `DomainWhoisClientGetResponse`
+- New anonymous field `ActionResponse` in struct `ActionsClientGetResponse`
+- New anonymous field `Watchlist` in struct `WatchlistsClientGetResponse`
+- New anonymous field `DataConnectorClassification` in struct `DataConnectorsClientCreateOrUpdateResponse`
+- New anonymous field `IncidentBookmarkList` in struct `IncidentsClientListBookmarksResponse`
+- New anonymous field `SettingList` in struct `ProductSettingsClientListResponse`
+- New anonymous field `RelationList` in struct `EntitiesRelationsClientListResponse`
+- New anonymous field `EnrichmentIPGeodata` in struct `IPGeodataClientGetResponse`
+- New anonymous field `ThreatIntelligenceInformationList` in struct `ThreatIntelligenceIndicatorsClientListResponse`
+- New anonymous field `EntityExpandResponse` in struct `EntitiesClientExpandResponse`
+- New anonymous field `ThreatIntelligenceInformationClassification` in struct `ThreatIntelligenceIndicatorClientCreateResponse`
+- New anonymous field `EntityQueryList` in struct `EntityQueriesClientListResponse`
+- New anonymous field `EntityQueryTemplateClassification` in struct `EntityQueryTemplatesClientGetResponse`
+- New anonymous field `ActionResponse` in struct `ActionsClientCreateOrUpdateResponse`
+- New field `Interface` in struct `AutomationRulesClientDeleteResponse`
+- New anonymous field `Relation` in struct `EntityRelationsClientGetRelationResponse`
+
+
 ## 0.1.1 (2022-02-22)
 
 ### Other Changes

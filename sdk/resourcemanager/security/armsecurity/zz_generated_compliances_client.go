@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -31,19 +32,23 @@ type CompliancesClient struct {
 // NewCompliancesClient creates a new instance of CompliancesClient with the specified values.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewCompliancesClient(credential azcore.TokenCredential, options *arm.ClientOptions) *CompliancesClient {
+func NewCompliancesClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*CompliancesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &CompliancesClient{
-		host: string(ep),
-		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host: ep,
+		pl:   pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Details of a specific Compliance.
@@ -88,7 +93,7 @@ func (client *CompliancesClient) getCreateRequest(ctx context.Context, scope str
 
 // getHandleResponse handles the Get response.
 func (client *CompliancesClient) getHandleResponse(resp *http.Response) (CompliancesClientGetResponse, error) {
-	result := CompliancesClientGetResponse{RawResponse: resp}
+	result := CompliancesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Compliance); err != nil {
 		return CompliancesClientGetResponse{}, err
 	}
@@ -100,16 +105,32 @@ func (client *CompliancesClient) getHandleResponse(resp *http.Response) (Complia
 // scope - Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or management group
 // (/providers/Microsoft.Management/managementGroups/mgName).
 // options - CompliancesClientListOptions contains the optional parameters for the CompliancesClient.List method.
-func (client *CompliancesClient) List(scope string, options *CompliancesClientListOptions) *CompliancesClientListPager {
-	return &CompliancesClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, scope, options)
+func (client *CompliancesClient) List(scope string, options *CompliancesClientListOptions) *runtime.Pager[CompliancesClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[CompliancesClientListResponse]{
+		More: func(page CompliancesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp CompliancesClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ComplianceList.NextLink)
+		Fetcher: func(ctx context.Context, page *CompliancesClientListResponse) (CompliancesClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, scope, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return CompliancesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return CompliancesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return CompliancesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -129,7 +150,7 @@ func (client *CompliancesClient) listCreateRequest(ctx context.Context, scope st
 
 // listHandleResponse handles the List response.
 func (client *CompliancesClient) listHandleResponse(resp *http.Response) (CompliancesClientListResponse, error) {
-	result := CompliancesClientListResponse{RawResponse: resp}
+	result := CompliancesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComplianceList); err != nil {
 		return CompliancesClientListResponse{}, err
 	}

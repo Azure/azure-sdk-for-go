@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,116 +19,140 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights"
 )
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-10-01-preview/examples/bookmarks/GetBookmarks.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/bookmarks/GetBookmarks.json
 func ExampleBookmarksClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurityinsights.NewBookmarksClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewBookmarksClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.List("<resource-group-name>",
 		"<workspace-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-10-01-preview/examples/bookmarks/GetBookmarkById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/bookmarks/GetBookmarkById.json
 func ExampleBookmarksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurityinsights.NewBookmarksClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewBookmarksClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		"<bookmark-id>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.BookmarksClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-10-01-preview/examples/bookmarks/CreateBookmark.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/bookmarks/CreateBookmark.json
 func ExampleBookmarksClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurityinsights.NewBookmarksClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewBookmarksClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.CreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		"<bookmark-id>",
 		armsecurityinsights.Bookmark{
-			Etag: to.StringPtr("<etag>"),
+			Etag: to.Ptr("<etag>"),
 			Properties: &armsecurityinsights.BookmarkProperties{
-				Created: to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-01T13:15:30Z"); return t }()),
+				Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-01T13:15:30Z"); return t }()),
 				CreatedBy: &armsecurityinsights.UserInfo{
-					ObjectID: to.StringPtr("<object-id>"),
+					ObjectID: to.Ptr("<object-id>"),
 				},
-				DisplayName: to.StringPtr("<display-name>"),
+				DisplayName: to.Ptr("<display-name>"),
 				EntityMappings: []*armsecurityinsights.BookmarkEntityMappings{
 					{
-						EntityType: to.StringPtr("<entity-type>"),
+						EntityType: to.Ptr("<entity-type>"),
 						FieldMappings: []*armsecurityinsights.EntityFieldMapping{
 							{
-								Identifier: to.StringPtr("<identifier>"),
-								Value:      to.StringPtr("<value>"),
+								Identifier: to.Ptr("<identifier>"),
+								Value:      to.Ptr("<value>"),
 							}},
 					}},
 				Labels: []*string{
-					to.StringPtr("Tag1"),
-					to.StringPtr("Tag2")},
-				Notes:       to.StringPtr("<notes>"),
-				Query:       to.StringPtr("<query>"),
-				QueryResult: to.StringPtr("<query-result>"),
+					to.Ptr("Tag1"),
+					to.Ptr("Tag2")},
+				Notes:       to.Ptr("<notes>"),
+				Query:       to.Ptr("<query>"),
+				QueryResult: to.Ptr("<query-result>"),
 				Tactics: []*armsecurityinsights.AttackTactic{
-					armsecurityinsights.AttackTactic("Execution").ToPtr()},
+					to.Ptr(armsecurityinsights.AttackTacticExecution)},
 				Techniques: []*string{
-					to.StringPtr("T1609")},
-				Updated: to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-01T13:15:30Z"); return t }()),
+					to.Ptr("T1609")},
+				Updated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-01T13:15:30Z"); return t }()),
 				UpdatedBy: &armsecurityinsights.UserInfo{
-					ObjectID: to.StringPtr("<object-id>"),
+					ObjectID: to.Ptr("<object-id>"),
 				},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.BookmarksClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-10-01-preview/examples/bookmarks/DeleteBookmark.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/bookmarks/DeleteBookmark.json
 func ExampleBookmarksClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurityinsights.NewBookmarksClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewBookmarksClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Delete(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		"<bookmark-id>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }

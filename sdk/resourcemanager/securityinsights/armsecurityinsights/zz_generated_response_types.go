@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,64 +8,33 @@
 
 package armsecurityinsights
 
-import "net/http"
-
 // ActionsClientCreateOrUpdateResponse contains the response from method ActionsClient.CreateOrUpdate.
 type ActionsClientCreateOrUpdateResponse struct {
-	ActionsClientCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ActionsClientCreateOrUpdateResult contains the result from method ActionsClient.CreateOrUpdate.
-type ActionsClientCreateOrUpdateResult struct {
 	ActionResponse
 }
 
 // ActionsClientDeleteResponse contains the response from method ActionsClient.Delete.
 type ActionsClientDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	// placeholder for future response values
 }
 
 // ActionsClientGetResponse contains the response from method ActionsClient.Get.
 type ActionsClientGetResponse struct {
-	ActionsClientGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ActionsClientGetResult contains the result from method ActionsClient.Get.
-type ActionsClientGetResult struct {
 	ActionResponse
 }
 
 // ActionsClientListByAlertRuleResponse contains the response from method ActionsClient.ListByAlertRule.
 type ActionsClientListByAlertRuleResponse struct {
-	ActionsClientListByAlertRuleResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ActionsClientListByAlertRuleResult contains the result from method ActionsClient.ListByAlertRule.
-type ActionsClientListByAlertRuleResult struct {
 	ActionsList
 }
 
 // AlertRuleTemplatesClientGetResponse contains the response from method AlertRuleTemplatesClient.Get.
 type AlertRuleTemplatesClientGetResponse struct {
-	AlertRuleTemplatesClientGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AlertRuleTemplatesClientGetResult contains the result from method AlertRuleTemplatesClient.Get.
-type AlertRuleTemplatesClientGetResult struct {
 	AlertRuleTemplateClassification
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AlertRuleTemplatesClientGetResult.
-func (a *AlertRuleTemplatesClientGetResult) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type AlertRuleTemplatesClientGetResponse.
+func (a *AlertRuleTemplatesClientGetResponse) UnmarshalJSON(data []byte) error {
 	res, err := unmarshalAlertRuleTemplateClassification(data)
 	if err != nil {
 		return err
@@ -76,30 +45,16 @@ func (a *AlertRuleTemplatesClientGetResult) UnmarshalJSON(data []byte) error {
 
 // AlertRuleTemplatesClientListResponse contains the response from method AlertRuleTemplatesClient.List.
 type AlertRuleTemplatesClientListResponse struct {
-	AlertRuleTemplatesClientListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AlertRuleTemplatesClientListResult contains the result from method AlertRuleTemplatesClient.List.
-type AlertRuleTemplatesClientListResult struct {
 	AlertRuleTemplatesList
 }
 
 // AlertRulesClientCreateOrUpdateResponse contains the response from method AlertRulesClient.CreateOrUpdate.
 type AlertRulesClientCreateOrUpdateResponse struct {
-	AlertRulesClientCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AlertRulesClientCreateOrUpdateResult contains the result from method AlertRulesClient.CreateOrUpdate.
-type AlertRulesClientCreateOrUpdateResult struct {
 	AlertRuleClassification
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AlertRulesClientCreateOrUpdateResult.
-func (a *AlertRulesClientCreateOrUpdateResult) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type AlertRulesClientCreateOrUpdateResponse.
+func (a *AlertRulesClientCreateOrUpdateResponse) UnmarshalJSON(data []byte) error {
 	res, err := unmarshalAlertRuleClassification(data)
 	if err != nil {
 		return err
@@ -110,24 +65,16 @@ func (a *AlertRulesClientCreateOrUpdateResult) UnmarshalJSON(data []byte) error 
 
 // AlertRulesClientDeleteResponse contains the response from method AlertRulesClient.Delete.
 type AlertRulesClientDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	// placeholder for future response values
 }
 
 // AlertRulesClientGetResponse contains the response from method AlertRulesClient.Get.
 type AlertRulesClientGetResponse struct {
-	AlertRulesClientGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AlertRulesClientGetResult contains the result from method AlertRulesClient.Get.
-type AlertRulesClientGetResult struct {
 	AlertRuleClassification
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AlertRulesClientGetResult.
-func (a *AlertRulesClientGetResult) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type AlertRulesClientGetResponse.
+func (a *AlertRulesClientGetResponse) UnmarshalJSON(data []byte) error {
 	res, err := unmarshalAlertRuleClassification(data)
 	if err != nil {
 		return err
@@ -138,206 +85,92 @@ func (a *AlertRulesClientGetResult) UnmarshalJSON(data []byte) error {
 
 // AlertRulesClientListResponse contains the response from method AlertRulesClient.List.
 type AlertRulesClientListResponse struct {
-	AlertRulesClientListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AlertRulesClientListResult contains the result from method AlertRulesClient.List.
-type AlertRulesClientListResult struct {
 	AlertRulesList
 }
 
 // AutomationRulesClientCreateOrUpdateResponse contains the response from method AutomationRulesClient.CreateOrUpdate.
 type AutomationRulesClientCreateOrUpdateResponse struct {
-	AutomationRulesClientCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AutomationRulesClientCreateOrUpdateResult contains the result from method AutomationRulesClient.CreateOrUpdate.
-type AutomationRulesClientCreateOrUpdateResult struct {
 	AutomationRule
 }
 
 // AutomationRulesClientDeleteResponse contains the response from method AutomationRulesClient.Delete.
 type AutomationRulesClientDeleteResponse struct {
-	AutomationRulesClientDeleteResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AutomationRulesClientDeleteResult contains the result from method AutomationRulesClient.Delete.
-type AutomationRulesClientDeleteResult struct {
 	// Anything
 	Interface interface{}
 }
 
 // AutomationRulesClientGetResponse contains the response from method AutomationRulesClient.Get.
 type AutomationRulesClientGetResponse struct {
-	AutomationRulesClientGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AutomationRulesClientGetResult contains the result from method AutomationRulesClient.Get.
-type AutomationRulesClientGetResult struct {
 	AutomationRule
 }
 
 // AutomationRulesClientListResponse contains the response from method AutomationRulesClient.List.
 type AutomationRulesClientListResponse struct {
-	AutomationRulesClientListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AutomationRulesClientListResult contains the result from method AutomationRulesClient.List.
-type AutomationRulesClientListResult struct {
 	AutomationRulesList
-}
-
-// AutomationRulesClientManualTriggerPlaybookResponse contains the response from method AutomationRulesClient.ManualTriggerPlaybook.
-type AutomationRulesClientManualTriggerPlaybookResponse struct {
-	AutomationRulesClientManualTriggerPlaybookResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AutomationRulesClientManualTriggerPlaybookResult contains the result from method AutomationRulesClient.ManualTriggerPlaybook.
-type AutomationRulesClientManualTriggerPlaybookResult struct {
-	// Anything
-	Interface interface{}
 }
 
 // BookmarkClientExpandResponse contains the response from method BookmarkClient.Expand.
 type BookmarkClientExpandResponse struct {
-	BookmarkClientExpandResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BookmarkClientExpandResult contains the result from method BookmarkClient.Expand.
-type BookmarkClientExpandResult struct {
 	BookmarkExpandResponse
 }
 
 // BookmarkRelationsClientCreateOrUpdateResponse contains the response from method BookmarkRelationsClient.CreateOrUpdate.
 type BookmarkRelationsClientCreateOrUpdateResponse struct {
-	BookmarkRelationsClientCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BookmarkRelationsClientCreateOrUpdateResult contains the result from method BookmarkRelationsClient.CreateOrUpdate.
-type BookmarkRelationsClientCreateOrUpdateResult struct {
 	Relation
 }
 
 // BookmarkRelationsClientDeleteResponse contains the response from method BookmarkRelationsClient.Delete.
 type BookmarkRelationsClientDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	// placeholder for future response values
 }
 
 // BookmarkRelationsClientGetResponse contains the response from method BookmarkRelationsClient.Get.
 type BookmarkRelationsClientGetResponse struct {
-	BookmarkRelationsClientGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BookmarkRelationsClientGetResult contains the result from method BookmarkRelationsClient.Get.
-type BookmarkRelationsClientGetResult struct {
 	Relation
 }
 
 // BookmarkRelationsClientListResponse contains the response from method BookmarkRelationsClient.List.
 type BookmarkRelationsClientListResponse struct {
-	BookmarkRelationsClientListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BookmarkRelationsClientListResult contains the result from method BookmarkRelationsClient.List.
-type BookmarkRelationsClientListResult struct {
 	RelationList
 }
 
 // BookmarksClientCreateOrUpdateResponse contains the response from method BookmarksClient.CreateOrUpdate.
 type BookmarksClientCreateOrUpdateResponse struct {
-	BookmarksClientCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BookmarksClientCreateOrUpdateResult contains the result from method BookmarksClient.CreateOrUpdate.
-type BookmarksClientCreateOrUpdateResult struct {
 	Bookmark
 }
 
 // BookmarksClientDeleteResponse contains the response from method BookmarksClient.Delete.
 type BookmarksClientDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	// placeholder for future response values
 }
 
 // BookmarksClientGetResponse contains the response from method BookmarksClient.Get.
 type BookmarksClientGetResponse struct {
-	BookmarksClientGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BookmarksClientGetResult contains the result from method BookmarksClient.Get.
-type BookmarksClientGetResult struct {
 	Bookmark
 }
 
 // BookmarksClientListResponse contains the response from method BookmarksClient.List.
 type BookmarksClientListResponse struct {
-	BookmarksClientListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BookmarksClientListResult contains the result from method BookmarksClient.List.
-type BookmarksClientListResult struct {
 	BookmarkList
 }
 
 // DataConnectorsCheckRequirementsClientPostResponse contains the response from method DataConnectorsCheckRequirementsClient.Post.
 type DataConnectorsCheckRequirementsClientPostResponse struct {
-	DataConnectorsCheckRequirementsClientPostResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DataConnectorsCheckRequirementsClientPostResult contains the result from method DataConnectorsCheckRequirementsClient.Post.
-type DataConnectorsCheckRequirementsClientPostResult struct {
 	DataConnectorRequirementsState
 }
 
 // DataConnectorsClientConnectResponse contains the response from method DataConnectorsClient.Connect.
 type DataConnectorsClientConnectResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	// placeholder for future response values
 }
 
 // DataConnectorsClientCreateOrUpdateResponse contains the response from method DataConnectorsClient.CreateOrUpdate.
 type DataConnectorsClientCreateOrUpdateResponse struct {
-	DataConnectorsClientCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DataConnectorsClientCreateOrUpdateResult contains the result from method DataConnectorsClient.CreateOrUpdate.
-type DataConnectorsClientCreateOrUpdateResult struct {
 	DataConnectorClassification
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type DataConnectorsClientCreateOrUpdateResult.
-func (d *DataConnectorsClientCreateOrUpdateResult) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type DataConnectorsClientCreateOrUpdateResponse.
+func (d *DataConnectorsClientCreateOrUpdateResponse) UnmarshalJSON(data []byte) error {
 	res, err := unmarshalDataConnectorClassification(data)
 	if err != nil {
 		return err
@@ -348,30 +181,21 @@ func (d *DataConnectorsClientCreateOrUpdateResult) UnmarshalJSON(data []byte) er
 
 // DataConnectorsClientDeleteResponse contains the response from method DataConnectorsClient.Delete.
 type DataConnectorsClientDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	// placeholder for future response values
 }
 
 // DataConnectorsClientDisconnectResponse contains the response from method DataConnectorsClient.Disconnect.
 type DataConnectorsClientDisconnectResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	// placeholder for future response values
 }
 
 // DataConnectorsClientGetResponse contains the response from method DataConnectorsClient.Get.
 type DataConnectorsClientGetResponse struct {
-	DataConnectorsClientGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DataConnectorsClientGetResult contains the result from method DataConnectorsClient.Get.
-type DataConnectorsClientGetResult struct {
 	DataConnectorClassification
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type DataConnectorsClientGetResult.
-func (d *DataConnectorsClientGetResult) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type DataConnectorsClientGetResponse.
+func (d *DataConnectorsClientGetResponse) UnmarshalJSON(data []byte) error {
 	res, err := unmarshalDataConnectorClassification(data)
 	if err != nil {
 		return err
@@ -382,66 +206,31 @@ func (d *DataConnectorsClientGetResult) UnmarshalJSON(data []byte) error {
 
 // DataConnectorsClientListResponse contains the response from method DataConnectorsClient.List.
 type DataConnectorsClientListResponse struct {
-	DataConnectorsClientListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DataConnectorsClientListResult contains the result from method DataConnectorsClient.List.
-type DataConnectorsClientListResult struct {
 	DataConnectorList
 }
 
 // DomainWhoisClientGetResponse contains the response from method DomainWhoisClient.Get.
 type DomainWhoisClientGetResponse struct {
-	DomainWhoisClientGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DomainWhoisClientGetResult contains the result from method DomainWhoisClient.Get.
-type DomainWhoisClientGetResult struct {
 	EnrichmentDomainWhois
 }
 
 // EntitiesClientExpandResponse contains the response from method EntitiesClient.Expand.
 type EntitiesClientExpandResponse struct {
-	EntitiesClientExpandResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// EntitiesClientExpandResult contains the result from method EntitiesClient.Expand.
-type EntitiesClientExpandResult struct {
 	EntityExpandResponse
 }
 
 // EntitiesClientGetInsightsResponse contains the response from method EntitiesClient.GetInsights.
 type EntitiesClientGetInsightsResponse struct {
-	EntitiesClientGetInsightsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// EntitiesClientGetInsightsResult contains the result from method EntitiesClient.GetInsights.
-type EntitiesClientGetInsightsResult struct {
 	EntityGetInsightsResponse
 }
 
 // EntitiesClientGetResponse contains the response from method EntitiesClient.Get.
 type EntitiesClientGetResponse struct {
-	EntitiesClientGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// EntitiesClientGetResult contains the result from method EntitiesClient.Get.
-type EntitiesClientGetResult struct {
 	EntityClassification
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type EntitiesClientGetResult.
-func (e *EntitiesClientGetResult) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type EntitiesClientGetResponse.
+func (e *EntitiesClientGetResponse) UnmarshalJSON(data []byte) error {
 	res, err := unmarshalEntityClassification(data)
 	if err != nil {
 		return err
@@ -452,66 +241,31 @@ func (e *EntitiesClientGetResult) UnmarshalJSON(data []byte) error {
 
 // EntitiesClientListResponse contains the response from method EntitiesClient.List.
 type EntitiesClientListResponse struct {
-	EntitiesClientListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// EntitiesClientListResult contains the result from method EntitiesClient.List.
-type EntitiesClientListResult struct {
 	EntityList
 }
 
 // EntitiesClientQueriesResponse contains the response from method EntitiesClient.Queries.
 type EntitiesClientQueriesResponse struct {
-	EntitiesClientQueriesResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// EntitiesClientQueriesResult contains the result from method EntitiesClient.Queries.
-type EntitiesClientQueriesResult struct {
 	GetQueriesResponse
 }
 
 // EntitiesGetTimelineClientListResponse contains the response from method EntitiesGetTimelineClient.List.
 type EntitiesGetTimelineClientListResponse struct {
-	EntitiesGetTimelineClientListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// EntitiesGetTimelineClientListResult contains the result from method EntitiesGetTimelineClient.List.
-type EntitiesGetTimelineClientListResult struct {
 	EntityTimelineResponse
 }
 
 // EntitiesRelationsClientListResponse contains the response from method EntitiesRelationsClient.List.
 type EntitiesRelationsClientListResponse struct {
-	EntitiesRelationsClientListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// EntitiesRelationsClientListResult contains the result from method EntitiesRelationsClient.List.
-type EntitiesRelationsClientListResult struct {
 	RelationList
 }
 
 // EntityQueriesClientCreateOrUpdateResponse contains the response from method EntityQueriesClient.CreateOrUpdate.
 type EntityQueriesClientCreateOrUpdateResponse struct {
-	EntityQueriesClientCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// EntityQueriesClientCreateOrUpdateResult contains the result from method EntityQueriesClient.CreateOrUpdate.
-type EntityQueriesClientCreateOrUpdateResult struct {
 	EntityQueryClassification
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type EntityQueriesClientCreateOrUpdateResult.
-func (e *EntityQueriesClientCreateOrUpdateResult) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type EntityQueriesClientCreateOrUpdateResponse.
+func (e *EntityQueriesClientCreateOrUpdateResponse) UnmarshalJSON(data []byte) error {
 	res, err := unmarshalEntityQueryClassification(data)
 	if err != nil {
 		return err
@@ -522,24 +276,16 @@ func (e *EntityQueriesClientCreateOrUpdateResult) UnmarshalJSON(data []byte) err
 
 // EntityQueriesClientDeleteResponse contains the response from method EntityQueriesClient.Delete.
 type EntityQueriesClientDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	// placeholder for future response values
 }
 
 // EntityQueriesClientGetResponse contains the response from method EntityQueriesClient.Get.
 type EntityQueriesClientGetResponse struct {
-	EntityQueriesClientGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// EntityQueriesClientGetResult contains the result from method EntityQueriesClient.Get.
-type EntityQueriesClientGetResult struct {
 	EntityQueryClassification
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type EntityQueriesClientGetResult.
-func (e *EntityQueriesClientGetResult) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type EntityQueriesClientGetResponse.
+func (e *EntityQueriesClientGetResponse) UnmarshalJSON(data []byte) error {
 	res, err := unmarshalEntityQueryClassification(data)
 	if err != nil {
 		return err
@@ -550,30 +296,16 @@ func (e *EntityQueriesClientGetResult) UnmarshalJSON(data []byte) error {
 
 // EntityQueriesClientListResponse contains the response from method EntityQueriesClient.List.
 type EntityQueriesClientListResponse struct {
-	EntityQueriesClientListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// EntityQueriesClientListResult contains the result from method EntityQueriesClient.List.
-type EntityQueriesClientListResult struct {
 	EntityQueryList
 }
 
 // EntityQueryTemplatesClientGetResponse contains the response from method EntityQueryTemplatesClient.Get.
 type EntityQueryTemplatesClientGetResponse struct {
-	EntityQueryTemplatesClientGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// EntityQueryTemplatesClientGetResult contains the result from method EntityQueryTemplatesClient.Get.
-type EntityQueryTemplatesClientGetResult struct {
 	EntityQueryTemplateClassification
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type EntityQueryTemplatesClientGetResult.
-func (e *EntityQueryTemplatesClientGetResult) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type EntityQueryTemplatesClientGetResponse.
+func (e *EntityQueryTemplatesClientGetResponse) UnmarshalJSON(data []byte) error {
 	res, err := unmarshalEntityQueryTemplateClassification(data)
 	if err != nil {
 		return err
@@ -584,330 +316,162 @@ func (e *EntityQueryTemplatesClientGetResult) UnmarshalJSON(data []byte) error {
 
 // EntityQueryTemplatesClientListResponse contains the response from method EntityQueryTemplatesClient.List.
 type EntityQueryTemplatesClientListResponse struct {
-	EntityQueryTemplatesClientListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// EntityQueryTemplatesClientListResult contains the result from method EntityQueryTemplatesClient.List.
-type EntityQueryTemplatesClientListResult struct {
 	EntityQueryTemplateList
 }
 
 // EntityRelationsClientGetRelationResponse contains the response from method EntityRelationsClient.GetRelation.
 type EntityRelationsClientGetRelationResponse struct {
-	EntityRelationsClientGetRelationResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// EntityRelationsClientGetRelationResult contains the result from method EntityRelationsClient.GetRelation.
-type EntityRelationsClientGetRelationResult struct {
 	Relation
 }
 
 // IPGeodataClientGetResponse contains the response from method IPGeodataClient.Get.
 type IPGeodataClientGetResponse struct {
-	IPGeodataClientGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IPGeodataClientGetResult contains the result from method IPGeodataClient.Get.
-type IPGeodataClientGetResult struct {
 	EnrichmentIPGeodata
 }
 
 // IncidentCommentsClientCreateOrUpdateResponse contains the response from method IncidentCommentsClient.CreateOrUpdate.
 type IncidentCommentsClientCreateOrUpdateResponse struct {
-	IncidentCommentsClientCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IncidentCommentsClientCreateOrUpdateResult contains the result from method IncidentCommentsClient.CreateOrUpdate.
-type IncidentCommentsClientCreateOrUpdateResult struct {
 	IncidentComment
 }
 
 // IncidentCommentsClientDeleteResponse contains the response from method IncidentCommentsClient.Delete.
 type IncidentCommentsClientDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	// placeholder for future response values
 }
 
 // IncidentCommentsClientGetResponse contains the response from method IncidentCommentsClient.Get.
 type IncidentCommentsClientGetResponse struct {
-	IncidentCommentsClientGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IncidentCommentsClientGetResult contains the result from method IncidentCommentsClient.Get.
-type IncidentCommentsClientGetResult struct {
 	IncidentComment
 }
 
 // IncidentCommentsClientListResponse contains the response from method IncidentCommentsClient.List.
 type IncidentCommentsClientListResponse struct {
-	IncidentCommentsClientListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IncidentCommentsClientListResult contains the result from method IncidentCommentsClient.List.
-type IncidentCommentsClientListResult struct {
 	IncidentCommentList
 }
 
 // IncidentRelationsClientCreateOrUpdateResponse contains the response from method IncidentRelationsClient.CreateOrUpdate.
 type IncidentRelationsClientCreateOrUpdateResponse struct {
-	IncidentRelationsClientCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IncidentRelationsClientCreateOrUpdateResult contains the result from method IncidentRelationsClient.CreateOrUpdate.
-type IncidentRelationsClientCreateOrUpdateResult struct {
 	Relation
 }
 
 // IncidentRelationsClientDeleteResponse contains the response from method IncidentRelationsClient.Delete.
 type IncidentRelationsClientDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	// placeholder for future response values
 }
 
 // IncidentRelationsClientGetResponse contains the response from method IncidentRelationsClient.Get.
 type IncidentRelationsClientGetResponse struct {
-	IncidentRelationsClientGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IncidentRelationsClientGetResult contains the result from method IncidentRelationsClient.Get.
-type IncidentRelationsClientGetResult struct {
 	Relation
 }
 
 // IncidentRelationsClientListResponse contains the response from method IncidentRelationsClient.List.
 type IncidentRelationsClientListResponse struct {
-	IncidentRelationsClientListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IncidentRelationsClientListResult contains the result from method IncidentRelationsClient.List.
-type IncidentRelationsClientListResult struct {
 	RelationList
 }
 
 // IncidentsClientCreateOrUpdateResponse contains the response from method IncidentsClient.CreateOrUpdate.
 type IncidentsClientCreateOrUpdateResponse struct {
-	IncidentsClientCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IncidentsClientCreateOrUpdateResult contains the result from method IncidentsClient.CreateOrUpdate.
-type IncidentsClientCreateOrUpdateResult struct {
 	Incident
 }
 
 // IncidentsClientCreateTeamResponse contains the response from method IncidentsClient.CreateTeam.
 type IncidentsClientCreateTeamResponse struct {
-	IncidentsClientCreateTeamResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IncidentsClientCreateTeamResult contains the result from method IncidentsClient.CreateTeam.
-type IncidentsClientCreateTeamResult struct {
 	TeamInformation
 }
 
 // IncidentsClientDeleteResponse contains the response from method IncidentsClient.Delete.
 type IncidentsClientDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	// placeholder for future response values
 }
 
 // IncidentsClientGetResponse contains the response from method IncidentsClient.Get.
 type IncidentsClientGetResponse struct {
-	IncidentsClientGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IncidentsClientGetResult contains the result from method IncidentsClient.Get.
-type IncidentsClientGetResult struct {
 	Incident
 }
 
 // IncidentsClientListAlertsResponse contains the response from method IncidentsClient.ListAlerts.
 type IncidentsClientListAlertsResponse struct {
-	IncidentsClientListAlertsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IncidentsClientListAlertsResult contains the result from method IncidentsClient.ListAlerts.
-type IncidentsClientListAlertsResult struct {
 	IncidentAlertList
 }
 
 // IncidentsClientListBookmarksResponse contains the response from method IncidentsClient.ListBookmarks.
 type IncidentsClientListBookmarksResponse struct {
-	IncidentsClientListBookmarksResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IncidentsClientListBookmarksResult contains the result from method IncidentsClient.ListBookmarks.
-type IncidentsClientListBookmarksResult struct {
 	IncidentBookmarkList
 }
 
 // IncidentsClientListEntitiesResponse contains the response from method IncidentsClient.ListEntities.
 type IncidentsClientListEntitiesResponse struct {
-	IncidentsClientListEntitiesResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IncidentsClientListEntitiesResult contains the result from method IncidentsClient.ListEntities.
-type IncidentsClientListEntitiesResult struct {
 	IncidentEntitiesResponse
 }
 
 // IncidentsClientListResponse contains the response from method IncidentsClient.List.
 type IncidentsClientListResponse struct {
-	IncidentsClientListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	IncidentList
 }
 
-// IncidentsClientListResult contains the result from method IncidentsClient.List.
-type IncidentsClientListResult struct {
-	IncidentList
+// IncidentsClientRunPlaybookResponse contains the response from method IncidentsClient.RunPlaybook.
+type IncidentsClientRunPlaybookResponse struct {
+	// Anything
+	Interface interface{}
 }
 
 // MetadataClientCreateResponse contains the response from method MetadataClient.Create.
 type MetadataClientCreateResponse struct {
-	MetadataClientCreateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// MetadataClientCreateResult contains the result from method MetadataClient.Create.
-type MetadataClientCreateResult struct {
 	MetadataModel
 }
 
 // MetadataClientDeleteResponse contains the response from method MetadataClient.Delete.
 type MetadataClientDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	// placeholder for future response values
 }
 
 // MetadataClientGetResponse contains the response from method MetadataClient.Get.
 type MetadataClientGetResponse struct {
-	MetadataClientGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// MetadataClientGetResult contains the result from method MetadataClient.Get.
-type MetadataClientGetResult struct {
 	MetadataModel
 }
 
 // MetadataClientListResponse contains the response from method MetadataClient.List.
 type MetadataClientListResponse struct {
-	MetadataClientListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// MetadataClientListResult contains the result from method MetadataClient.List.
-type MetadataClientListResult struct {
 	MetadataList
 }
 
 // MetadataClientUpdateResponse contains the response from method MetadataClient.Update.
 type MetadataClientUpdateResponse struct {
-	MetadataClientUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// MetadataClientUpdateResult contains the result from method MetadataClient.Update.
-type MetadataClientUpdateResult struct {
 	MetadataModel
 }
 
 // OfficeConsentsClientDeleteResponse contains the response from method OfficeConsentsClient.Delete.
 type OfficeConsentsClientDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	// placeholder for future response values
 }
 
 // OfficeConsentsClientGetResponse contains the response from method OfficeConsentsClient.Get.
 type OfficeConsentsClientGetResponse struct {
-	OfficeConsentsClientGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// OfficeConsentsClientGetResult contains the result from method OfficeConsentsClient.Get.
-type OfficeConsentsClientGetResult struct {
 	OfficeConsent
 }
 
 // OfficeConsentsClientListResponse contains the response from method OfficeConsentsClient.List.
 type OfficeConsentsClientListResponse struct {
-	OfficeConsentsClientListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// OfficeConsentsClientListResult contains the result from method OfficeConsentsClient.List.
-type OfficeConsentsClientListResult struct {
 	OfficeConsentList
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.List.
 type OperationsClientListResponse struct {
-	OperationsClientListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// OperationsClientListResult contains the result from method OperationsClient.List.
-type OperationsClientListResult struct {
 	OperationsList
 }
 
 // ProductSettingsClientDeleteResponse contains the response from method ProductSettingsClient.Delete.
 type ProductSettingsClientDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	// placeholder for future response values
 }
 
 // ProductSettingsClientGetResponse contains the response from method ProductSettingsClient.Get.
 type ProductSettingsClientGetResponse struct {
-	ProductSettingsClientGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ProductSettingsClientGetResult contains the result from method ProductSettingsClient.Get.
-type ProductSettingsClientGetResult struct {
 	SettingsClassification
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ProductSettingsClientGetResult.
-func (p *ProductSettingsClientGetResult) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ProductSettingsClientGetResponse.
+func (p *ProductSettingsClientGetResponse) UnmarshalJSON(data []byte) error {
 	res, err := unmarshalSettingsClassification(data)
 	if err != nil {
 		return err
@@ -918,30 +482,16 @@ func (p *ProductSettingsClientGetResult) UnmarshalJSON(data []byte) error {
 
 // ProductSettingsClientListResponse contains the response from method ProductSettingsClient.List.
 type ProductSettingsClientListResponse struct {
-	ProductSettingsClientListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ProductSettingsClientListResult contains the result from method ProductSettingsClient.List.
-type ProductSettingsClientListResult struct {
 	SettingList
 }
 
 // ProductSettingsClientUpdateResponse contains the response from method ProductSettingsClient.Update.
 type ProductSettingsClientUpdateResponse struct {
-	ProductSettingsClientUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ProductSettingsClientUpdateResult contains the result from method ProductSettingsClient.Update.
-type ProductSettingsClientUpdateResult struct {
 	SettingsClassification
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ProductSettingsClientUpdateResult.
-func (p *ProductSettingsClientUpdateResult) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ProductSettingsClientUpdateResponse.
+func (p *ProductSettingsClientUpdateResponse) UnmarshalJSON(data []byte) error {
 	res, err := unmarshalSettingsClassification(data)
 	if err != nil {
 		return err
@@ -952,120 +502,61 @@ func (p *ProductSettingsClientUpdateResult) UnmarshalJSON(data []byte) error {
 
 // SentinelOnboardingStatesClientCreateResponse contains the response from method SentinelOnboardingStatesClient.Create.
 type SentinelOnboardingStatesClientCreateResponse struct {
-	SentinelOnboardingStatesClientCreateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SentinelOnboardingStatesClientCreateResult contains the result from method SentinelOnboardingStatesClient.Create.
-type SentinelOnboardingStatesClientCreateResult struct {
 	SentinelOnboardingState
 }
 
 // SentinelOnboardingStatesClientDeleteResponse contains the response from method SentinelOnboardingStatesClient.Delete.
 type SentinelOnboardingStatesClientDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	// placeholder for future response values
 }
 
 // SentinelOnboardingStatesClientGetResponse contains the response from method SentinelOnboardingStatesClient.Get.
 type SentinelOnboardingStatesClientGetResponse struct {
-	SentinelOnboardingStatesClientGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SentinelOnboardingStatesClientGetResult contains the result from method SentinelOnboardingStatesClient.Get.
-type SentinelOnboardingStatesClientGetResult struct {
 	SentinelOnboardingState
 }
 
 // SentinelOnboardingStatesClientListResponse contains the response from method SentinelOnboardingStatesClient.List.
 type SentinelOnboardingStatesClientListResponse struct {
-	SentinelOnboardingStatesClientListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SentinelOnboardingStatesClientListResult contains the result from method SentinelOnboardingStatesClient.List.
-type SentinelOnboardingStatesClientListResult struct {
 	SentinelOnboardingStatesList
 }
 
 // SourceControlClientListRepositoriesResponse contains the response from method SourceControlClient.ListRepositories.
 type SourceControlClientListRepositoriesResponse struct {
-	SourceControlClientListRepositoriesResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SourceControlClientListRepositoriesResult contains the result from method SourceControlClient.ListRepositories.
-type SourceControlClientListRepositoriesResult struct {
 	RepoList
 }
 
 // SourceControlsClientCreateResponse contains the response from method SourceControlsClient.Create.
 type SourceControlsClientCreateResponse struct {
-	SourceControlsClientCreateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SourceControlsClientCreateResult contains the result from method SourceControlsClient.Create.
-type SourceControlsClientCreateResult struct {
 	SourceControl
 }
 
 // SourceControlsClientDeleteResponse contains the response from method SourceControlsClient.Delete.
 type SourceControlsClientDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	// placeholder for future response values
 }
 
 // SourceControlsClientGetResponse contains the response from method SourceControlsClient.Get.
 type SourceControlsClientGetResponse struct {
-	SourceControlsClientGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SourceControlsClientGetResult contains the result from method SourceControlsClient.Get.
-type SourceControlsClientGetResult struct {
 	SourceControl
 }
 
 // SourceControlsClientListResponse contains the response from method SourceControlsClient.List.
 type SourceControlsClientListResponse struct {
-	SourceControlsClientListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SourceControlsClientListResult contains the result from method SourceControlsClient.List.
-type SourceControlsClientListResult struct {
 	SourceControlList
 }
 
 // ThreatIntelligenceIndicatorClientAppendTagsResponse contains the response from method ThreatIntelligenceIndicatorClient.AppendTags.
 type ThreatIntelligenceIndicatorClientAppendTagsResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	// placeholder for future response values
 }
 
 // ThreatIntelligenceIndicatorClientCreateIndicatorResponse contains the response from method ThreatIntelligenceIndicatorClient.CreateIndicator.
 type ThreatIntelligenceIndicatorClientCreateIndicatorResponse struct {
-	ThreatIntelligenceIndicatorClientCreateIndicatorResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ThreatIntelligenceIndicatorClientCreateIndicatorResult contains the result from method ThreatIntelligenceIndicatorClient.CreateIndicator.
-type ThreatIntelligenceIndicatorClientCreateIndicatorResult struct {
 	ThreatIntelligenceInformationClassification
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ThreatIntelligenceIndicatorClientCreateIndicatorResult.
-func (t *ThreatIntelligenceIndicatorClientCreateIndicatorResult) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ThreatIntelligenceIndicatorClientCreateIndicatorResponse.
+func (t *ThreatIntelligenceIndicatorClientCreateIndicatorResponse) UnmarshalJSON(data []byte) error {
 	res, err := unmarshalThreatIntelligenceInformationClassification(data)
 	if err != nil {
 		return err
@@ -1076,18 +567,11 @@ func (t *ThreatIntelligenceIndicatorClientCreateIndicatorResult) UnmarshalJSON(d
 
 // ThreatIntelligenceIndicatorClientCreateResponse contains the response from method ThreatIntelligenceIndicatorClient.Create.
 type ThreatIntelligenceIndicatorClientCreateResponse struct {
-	ThreatIntelligenceIndicatorClientCreateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ThreatIntelligenceIndicatorClientCreateResult contains the result from method ThreatIntelligenceIndicatorClient.Create.
-type ThreatIntelligenceIndicatorClientCreateResult struct {
 	ThreatIntelligenceInformationClassification
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ThreatIntelligenceIndicatorClientCreateResult.
-func (t *ThreatIntelligenceIndicatorClientCreateResult) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ThreatIntelligenceIndicatorClientCreateResponse.
+func (t *ThreatIntelligenceIndicatorClientCreateResponse) UnmarshalJSON(data []byte) error {
 	res, err := unmarshalThreatIntelligenceInformationClassification(data)
 	if err != nil {
 		return err
@@ -1098,24 +582,16 @@ func (t *ThreatIntelligenceIndicatorClientCreateResult) UnmarshalJSON(data []byt
 
 // ThreatIntelligenceIndicatorClientDeleteResponse contains the response from method ThreatIntelligenceIndicatorClient.Delete.
 type ThreatIntelligenceIndicatorClientDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	// placeholder for future response values
 }
 
 // ThreatIntelligenceIndicatorClientGetResponse contains the response from method ThreatIntelligenceIndicatorClient.Get.
 type ThreatIntelligenceIndicatorClientGetResponse struct {
-	ThreatIntelligenceIndicatorClientGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ThreatIntelligenceIndicatorClientGetResult contains the result from method ThreatIntelligenceIndicatorClient.Get.
-type ThreatIntelligenceIndicatorClientGetResult struct {
 	ThreatIntelligenceInformationClassification
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ThreatIntelligenceIndicatorClientGetResult.
-func (t *ThreatIntelligenceIndicatorClientGetResult) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ThreatIntelligenceIndicatorClientGetResponse.
+func (t *ThreatIntelligenceIndicatorClientGetResponse) UnmarshalJSON(data []byte) error {
 	res, err := unmarshalThreatIntelligenceInformationClassification(data)
 	if err != nil {
 		return err
@@ -1126,30 +602,16 @@ func (t *ThreatIntelligenceIndicatorClientGetResult) UnmarshalJSON(data []byte) 
 
 // ThreatIntelligenceIndicatorClientQueryIndicatorsResponse contains the response from method ThreatIntelligenceIndicatorClient.QueryIndicators.
 type ThreatIntelligenceIndicatorClientQueryIndicatorsResponse struct {
-	ThreatIntelligenceIndicatorClientQueryIndicatorsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ThreatIntelligenceIndicatorClientQueryIndicatorsResult contains the result from method ThreatIntelligenceIndicatorClient.QueryIndicators.
-type ThreatIntelligenceIndicatorClientQueryIndicatorsResult struct {
 	ThreatIntelligenceInformationList
 }
 
 // ThreatIntelligenceIndicatorClientReplaceTagsResponse contains the response from method ThreatIntelligenceIndicatorClient.ReplaceTags.
 type ThreatIntelligenceIndicatorClientReplaceTagsResponse struct {
-	ThreatIntelligenceIndicatorClientReplaceTagsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ThreatIntelligenceIndicatorClientReplaceTagsResult contains the result from method ThreatIntelligenceIndicatorClient.ReplaceTags.
-type ThreatIntelligenceIndicatorClientReplaceTagsResult struct {
 	ThreatIntelligenceInformationClassification
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ThreatIntelligenceIndicatorClientReplaceTagsResult.
-func (t *ThreatIntelligenceIndicatorClientReplaceTagsResult) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ThreatIntelligenceIndicatorClientReplaceTagsResponse.
+func (t *ThreatIntelligenceIndicatorClientReplaceTagsResponse) UnmarshalJSON(data []byte) error {
 	res, err := unmarshalThreatIntelligenceInformationClassification(data)
 	if err != nil {
 		return err
@@ -1160,108 +622,53 @@ func (t *ThreatIntelligenceIndicatorClientReplaceTagsResult) UnmarshalJSON(data 
 
 // ThreatIntelligenceIndicatorMetricsClientListResponse contains the response from method ThreatIntelligenceIndicatorMetricsClient.List.
 type ThreatIntelligenceIndicatorMetricsClientListResponse struct {
-	ThreatIntelligenceIndicatorMetricsClientListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ThreatIntelligenceIndicatorMetricsClientListResult contains the result from method ThreatIntelligenceIndicatorMetricsClient.List.
-type ThreatIntelligenceIndicatorMetricsClientListResult struct {
 	ThreatIntelligenceMetricsList
 }
 
 // ThreatIntelligenceIndicatorsClientListResponse contains the response from method ThreatIntelligenceIndicatorsClient.List.
 type ThreatIntelligenceIndicatorsClientListResponse struct {
-	ThreatIntelligenceIndicatorsClientListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ThreatIntelligenceIndicatorsClientListResult contains the result from method ThreatIntelligenceIndicatorsClient.List.
-type ThreatIntelligenceIndicatorsClientListResult struct {
 	ThreatIntelligenceInformationList
 }
 
 // WatchlistItemsClientCreateOrUpdateResponse contains the response from method WatchlistItemsClient.CreateOrUpdate.
 type WatchlistItemsClientCreateOrUpdateResponse struct {
-	WatchlistItemsClientCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// WatchlistItemsClientCreateOrUpdateResult contains the result from method WatchlistItemsClient.CreateOrUpdate.
-type WatchlistItemsClientCreateOrUpdateResult struct {
 	WatchlistItem
 }
 
 // WatchlistItemsClientDeleteResponse contains the response from method WatchlistItemsClient.Delete.
 type WatchlistItemsClientDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	// placeholder for future response values
 }
 
 // WatchlistItemsClientGetResponse contains the response from method WatchlistItemsClient.Get.
 type WatchlistItemsClientGetResponse struct {
-	WatchlistItemsClientGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// WatchlistItemsClientGetResult contains the result from method WatchlistItemsClient.Get.
-type WatchlistItemsClientGetResult struct {
 	WatchlistItem
 }
 
 // WatchlistItemsClientListResponse contains the response from method WatchlistItemsClient.List.
 type WatchlistItemsClientListResponse struct {
-	WatchlistItemsClientListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// WatchlistItemsClientListResult contains the result from method WatchlistItemsClient.List.
-type WatchlistItemsClientListResult struct {
 	WatchlistItemList
 }
 
 // WatchlistsClientCreateOrUpdateResponse contains the response from method WatchlistsClient.CreateOrUpdate.
 type WatchlistsClientCreateOrUpdateResponse struct {
-	WatchlistsClientCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// WatchlistsClientCreateOrUpdateResult contains the result from method WatchlistsClient.CreateOrUpdate.
-type WatchlistsClientCreateOrUpdateResult struct {
 	Watchlist
+	// AzureAsyncOperation contains the information returned from the Azure-AsyncOperation header response.
+	AzureAsyncOperation *string
 }
 
 // WatchlistsClientDeleteResponse contains the response from method WatchlistsClient.Delete.
 type WatchlistsClientDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	// AzureAsyncOperation contains the information returned from the Azure-AsyncOperation header response.
+	AzureAsyncOperation *string
 }
 
 // WatchlistsClientGetResponse contains the response from method WatchlistsClient.Get.
 type WatchlistsClientGetResponse struct {
-	WatchlistsClientGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// WatchlistsClientGetResult contains the result from method WatchlistsClient.Get.
-type WatchlistsClientGetResult struct {
 	Watchlist
 }
 
 // WatchlistsClientListResponse contains the response from method WatchlistsClient.List.
 type WatchlistsClientListResponse struct {
-	WatchlistsClientListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// WatchlistsClientListResult contains the result from method WatchlistsClient.List.
-type WatchlistsClientListResult struct {
 	WatchlistList
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,51 +19,59 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations"
 )
 
-// x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2021-07-01/examples/CalculateExchange.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/reservations/resource-manager/Microsoft.Capacity/stable/2022-03-01/examples/CalculateExchange.json
 func ExampleCalculateExchangeClient_BeginPost() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armreservations.NewCalculateExchangeClient(cred, nil)
+	client, err := armreservations.NewCalculateExchangeClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginPost(ctx,
 		armreservations.CalculateExchangeRequest{
 			Properties: &armreservations.CalculateExchangeRequestProperties{
 				ReservationsToExchange: []*armreservations.ReservationToReturn{
 					{
-						Quantity:      to.Int32Ptr(1),
-						ReservationID: to.StringPtr("<reservation-id>"),
+						Quantity:      to.Ptr[int32](1),
+						ReservationID: to.Ptr("<reservation-id>"),
 					}},
 				ReservationsToPurchase: []*armreservations.PurchaseRequest{
 					{
-						Location: to.StringPtr("<location>"),
+						Location: to.Ptr("<location>"),
 						Properties: &armreservations.PurchaseRequestProperties{
-							AppliedScopeType: armreservations.AppliedScopeType("Shared").ToPtr(),
-							BillingPlan:      armreservations.ReservationBillingPlan("Upfront").ToPtr(),
-							BillingScopeID:   to.StringPtr("<billing-scope-id>"),
-							DisplayName:      to.StringPtr("<display-name>"),
-							Quantity:         to.Int32Ptr(1),
-							Renew:            to.BoolPtr(false),
+							AppliedScopeType: to.Ptr(armreservations.AppliedScopeTypeShared),
+							BillingPlan:      to.Ptr(armreservations.ReservationBillingPlanUpfront),
+							BillingScopeID:   to.Ptr("<billing-scope-id>"),
+							DisplayName:      to.Ptr("<display-name>"),
+							Quantity:         to.Ptr[int32](1),
+							Renew:            to.Ptr(false),
 							ReservedResourceProperties: &armreservations.PurchaseRequestPropertiesReservedResourceProperties{
-								InstanceFlexibility: armreservations.InstanceFlexibility("On").ToPtr(),
+								InstanceFlexibility: to.Ptr(armreservations.InstanceFlexibilityOn),
 							},
-							ReservedResourceType: armreservations.ReservedResourceType("VirtualMachines").ToPtr(),
-							Term:                 armreservations.ReservationTerm("P1Y").ToPtr(),
+							ReservedResourceType: to.Ptr(armreservations.ReservedResourceTypeVirtualMachines),
+							Term:                 to.Ptr(armreservations.ReservationTermP1Y),
 						},
 						SKU: &armreservations.SKUName{
-							Name: to.StringPtr("<name>"),
+							Name: to.Ptr("<name>"),
 						},
 					}},
 			},
 		},
-		nil)
+		&armreservations.CalculateExchangeClientBeginPostOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.CalculateExchangeClientPostResult)
+	// TODO: use response item
+	_ = res
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type OfficeConsentsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewOfficeConsentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *OfficeConsentsClient {
+func NewOfficeConsentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OfficeConsentsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &OfficeConsentsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Delete - Delete the office365 consent.
@@ -67,7 +72,7 @@ func (client *OfficeConsentsClient) Delete(ctx context.Context, resourceGroupNam
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return OfficeConsentsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return OfficeConsentsClientDeleteResponse{RawResponse: resp}, nil
+	return OfficeConsentsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -94,7 +99,7 @@ func (client *OfficeConsentsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -145,7 +150,7 @@ func (client *OfficeConsentsClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -153,7 +158,7 @@ func (client *OfficeConsentsClient) getCreateRequest(ctx context.Context, resour
 
 // getHandleResponse handles the Get response.
 func (client *OfficeConsentsClient) getHandleResponse(resp *http.Response) (OfficeConsentsClientGetResponse, error) {
-	result := OfficeConsentsClientGetResponse{RawResponse: resp}
+	result := OfficeConsentsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OfficeConsent); err != nil {
 		return OfficeConsentsClientGetResponse{}, err
 	}
@@ -165,16 +170,32 @@ func (client *OfficeConsentsClient) getHandleResponse(resp *http.Response) (Offi
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - OfficeConsentsClientListOptions contains the optional parameters for the OfficeConsentsClient.List method.
-func (client *OfficeConsentsClient) List(resourceGroupName string, workspaceName string, options *OfficeConsentsClientListOptions) *OfficeConsentsClientListPager {
-	return &OfficeConsentsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, workspaceName, options)
+func (client *OfficeConsentsClient) List(resourceGroupName string, workspaceName string, options *OfficeConsentsClientListOptions) *runtime.Pager[OfficeConsentsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[OfficeConsentsClientListResponse]{
+		More: func(page OfficeConsentsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp OfficeConsentsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.OfficeConsentList.NextLink)
+		Fetcher: func(ctx context.Context, page *OfficeConsentsClientListResponse) (OfficeConsentsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, workspaceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return OfficeConsentsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return OfficeConsentsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return OfficeConsentsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -197,7 +218,7 @@ func (client *OfficeConsentsClient) listCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -205,7 +226,7 @@ func (client *OfficeConsentsClient) listCreateRequest(ctx context.Context, resou
 
 // listHandleResponse handles the List response.
 func (client *OfficeConsentsClient) listHandleResponse(resp *http.Response) (OfficeConsentsClientListResponse, error) {
-	result := OfficeConsentsClientListResponse{RawResponse: resp}
+	result := OfficeConsentsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OfficeConsentList); err != nil {
 		return OfficeConsentsClientListResponse{}, err
 	}

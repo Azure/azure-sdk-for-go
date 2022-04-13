@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,167 +17,193 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity"
 )
 
-// x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/ApplicationWhitelistings/GetAdaptiveApplicationControlsSubscription_example.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/ApplicationWhitelistings/GetAdaptiveApplicationControlsSubscription_example.json
 func ExampleAdaptiveApplicationControlsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurity.NewAdaptiveApplicationControlsClient("<subscription-id>",
-		"<asc-location>", cred, nil)
+	client, err := armsecurity.NewAdaptiveApplicationControlsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.List(ctx,
-		&armsecurity.AdaptiveApplicationControlsClientListOptions{IncludePathRecommendations: to.BoolPtr(true),
-			Summary: to.BoolPtr(false),
+		&armsecurity.AdaptiveApplicationControlsClientListOptions{IncludePathRecommendations: to.Ptr(true),
+			Summary: to.Ptr(false),
 		})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.AdaptiveApplicationControlsClientListResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/ApplicationWhitelistings/GetAdaptiveApplicationControlsGroup_example.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/ApplicationWhitelistings/GetAdaptiveApplicationControlsGroup_example.json
 func ExampleAdaptiveApplicationControlsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurity.NewAdaptiveApplicationControlsClient("<subscription-id>",
-		"<asc-location>", cred, nil)
+	client, err := armsecurity.NewAdaptiveApplicationControlsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
+		"<asc-location>",
 		"<group-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.AdaptiveApplicationControlsClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/ApplicationWhitelistings/PutAdaptiveApplicationControls_example.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/ApplicationWhitelistings/PutAdaptiveApplicationControls_example.json
 func ExampleAdaptiveApplicationControlsClient_Put() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurity.NewAdaptiveApplicationControlsClient("<subscription-id>",
-		"<asc-location>", cred, nil)
+	client, err := armsecurity.NewAdaptiveApplicationControlsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Put(ctx,
+		"<asc-location>",
 		"<group-name>",
 		armsecurity.AdaptiveApplicationControlGroup{
 			Properties: &armsecurity.AdaptiveApplicationControlGroupData{
-				EnforcementMode: armsecurity.EnforcementMode("Audit").ToPtr(),
+				EnforcementMode: to.Ptr(armsecurity.EnforcementModeAudit),
 				PathRecommendations: []*armsecurity.PathRecommendation{
 					{
-						Type:                armsecurity.RecommendationType("PublisherSignature").ToPtr(),
-						Path:                to.StringPtr("<path>"),
-						Action:              armsecurity.RecommendationAction("Recommended").ToPtr(),
-						Common:              to.BoolPtr(true),
-						ConfigurationStatus: armsecurity.ConfigurationStatus("Configured").ToPtr(),
-						FileType:            armsecurity.FileType("Exe").ToPtr(),
+						Type:                to.Ptr(armsecurity.RecommendationType("PublisherSignature")),
+						Path:                to.Ptr("<path>"),
+						Action:              to.Ptr(armsecurity.RecommendationActionRecommended),
+						Common:              to.Ptr(true),
+						ConfigurationStatus: to.Ptr(armsecurity.ConfigurationStatusConfigured),
+						FileType:            to.Ptr(armsecurity.FileTypeExe),
 						PublisherInfo: &armsecurity.PublisherInfo{
-							BinaryName:    to.StringPtr("<binary-name>"),
-							ProductName:   to.StringPtr("<product-name>"),
-							PublisherName: to.StringPtr("<publisher-name>"),
-							Version:       to.StringPtr("<version>"),
+							BinaryName:    to.Ptr("<binary-name>"),
+							ProductName:   to.Ptr("<product-name>"),
+							PublisherName: to.Ptr("<publisher-name>"),
+							Version:       to.Ptr("<version>"),
 						},
 						UserSids: []*string{
-							to.StringPtr("S-1-1-0")},
+							to.Ptr("S-1-1-0")},
 						Usernames: []*armsecurity.UserRecommendation{
 							{
-								RecommendationAction: armsecurity.RecommendationAction("Recommended").ToPtr(),
-								Username:             to.StringPtr("<username>"),
+								RecommendationAction: to.Ptr(armsecurity.RecommendationActionRecommended),
+								Username:             to.Ptr("<username>"),
 							}},
 					},
 					{
-						Type:                armsecurity.RecommendationType("ProductSignature").ToPtr(),
-						Path:                to.StringPtr("<path>"),
-						Action:              armsecurity.RecommendationAction("Recommended").ToPtr(),
-						Common:              to.BoolPtr(true),
-						ConfigurationStatus: armsecurity.ConfigurationStatus("Configured").ToPtr(),
-						FileType:            armsecurity.FileType("Exe").ToPtr(),
+						Type:                to.Ptr(armsecurity.RecommendationType("ProductSignature")),
+						Path:                to.Ptr("<path>"),
+						Action:              to.Ptr(armsecurity.RecommendationActionRecommended),
+						Common:              to.Ptr(true),
+						ConfigurationStatus: to.Ptr(armsecurity.ConfigurationStatusConfigured),
+						FileType:            to.Ptr(armsecurity.FileTypeExe),
 						PublisherInfo: &armsecurity.PublisherInfo{
-							BinaryName:    to.StringPtr("<binary-name>"),
-							ProductName:   to.StringPtr("<product-name>"),
-							PublisherName: to.StringPtr("<publisher-name>"),
-							Version:       to.StringPtr("<version>"),
+							BinaryName:    to.Ptr("<binary-name>"),
+							ProductName:   to.Ptr("<product-name>"),
+							PublisherName: to.Ptr("<publisher-name>"),
+							Version:       to.Ptr("<version>"),
 						},
 						UserSids: []*string{
-							to.StringPtr("S-1-1-0")},
+							to.Ptr("S-1-1-0")},
 						Usernames: []*armsecurity.UserRecommendation{
 							{
-								RecommendationAction: armsecurity.RecommendationAction("Recommended").ToPtr(),
-								Username:             to.StringPtr("<username>"),
+								RecommendationAction: to.Ptr(armsecurity.RecommendationActionRecommended),
+								Username:             to.Ptr("<username>"),
 							}},
 					},
 					{
-						Type:                armsecurity.RecommendationType("PublisherSignature").ToPtr(),
-						Path:                to.StringPtr("<path>"),
-						Action:              armsecurity.RecommendationAction("Recommended").ToPtr(),
-						Common:              to.BoolPtr(true),
-						ConfigurationStatus: armsecurity.ConfigurationStatus("Configured").ToPtr(),
-						FileType:            armsecurity.FileType("Exe").ToPtr(),
+						Type:                to.Ptr(armsecurity.RecommendationType("PublisherSignature")),
+						Path:                to.Ptr("<path>"),
+						Action:              to.Ptr(armsecurity.RecommendationActionRecommended),
+						Common:              to.Ptr(true),
+						ConfigurationStatus: to.Ptr(armsecurity.ConfigurationStatusConfigured),
+						FileType:            to.Ptr(armsecurity.FileTypeExe),
 						PublisherInfo: &armsecurity.PublisherInfo{
-							BinaryName:    to.StringPtr("<binary-name>"),
-							ProductName:   to.StringPtr("<product-name>"),
-							PublisherName: to.StringPtr("<publisher-name>"),
-							Version:       to.StringPtr("<version>"),
+							BinaryName:    to.Ptr("<binary-name>"),
+							ProductName:   to.Ptr("<product-name>"),
+							PublisherName: to.Ptr("<publisher-name>"),
+							Version:       to.Ptr("<version>"),
 						},
 						UserSids: []*string{
-							to.StringPtr("S-1-1-0")},
+							to.Ptr("S-1-1-0")},
 						Usernames: []*armsecurity.UserRecommendation{
 							{
-								RecommendationAction: armsecurity.RecommendationAction("Recommended").ToPtr(),
-								Username:             to.StringPtr("<username>"),
+								RecommendationAction: to.Ptr(armsecurity.RecommendationActionRecommended),
+								Username:             to.Ptr("<username>"),
 							}},
 					},
 					{
-						Type:   armsecurity.RecommendationType("File").ToPtr(),
-						Path:   to.StringPtr("<path>"),
-						Action: armsecurity.RecommendationAction("Add").ToPtr(),
-						Common: to.BoolPtr(true),
+						Type:   to.Ptr(armsecurity.RecommendationType("File")),
+						Path:   to.Ptr("<path>"),
+						Action: to.Ptr(armsecurity.RecommendationActionAdd),
+						Common: to.Ptr(true),
 					}},
 				ProtectionMode: &armsecurity.ProtectionMode{
-					Exe:    armsecurity.EnforcementMode("Audit").ToPtr(),
-					Msi:    armsecurity.EnforcementMode("None").ToPtr(),
-					Script: armsecurity.EnforcementMode("None").ToPtr(),
+					Exe:    to.Ptr(armsecurity.EnforcementModeAudit),
+					Msi:    to.Ptr(armsecurity.EnforcementModeNone),
+					Script: to.Ptr(armsecurity.EnforcementModeNone),
 				},
 				VMRecommendations: []*armsecurity.VMRecommendation{
 					{
-						ConfigurationStatus:  armsecurity.ConfigurationStatus("Configured").ToPtr(),
-						EnforcementSupport:   armsecurity.EnforcementSupport("Supported").ToPtr(),
-						RecommendationAction: armsecurity.RecommendationAction("Recommended").ToPtr(),
-						ResourceID:           to.StringPtr("<resource-id>"),
+						ConfigurationStatus:  to.Ptr(armsecurity.ConfigurationStatusConfigured),
+						EnforcementSupport:   to.Ptr(armsecurity.EnforcementSupportSupported),
+						RecommendationAction: to.Ptr(armsecurity.RecommendationActionRecommended),
+						ResourceID:           to.Ptr("<resource-id>"),
 					},
 					{
-						ConfigurationStatus:  armsecurity.ConfigurationStatus("Configured").ToPtr(),
-						EnforcementSupport:   armsecurity.EnforcementSupport("Supported").ToPtr(),
-						RecommendationAction: armsecurity.RecommendationAction("Recommended").ToPtr(),
-						ResourceID:           to.StringPtr("<resource-id>"),
+						ConfigurationStatus:  to.Ptr(armsecurity.ConfigurationStatusConfigured),
+						EnforcementSupport:   to.Ptr(armsecurity.EnforcementSupportSupported),
+						RecommendationAction: to.Ptr(armsecurity.RecommendationActionRecommended),
+						ResourceID:           to.Ptr("<resource-id>"),
 					}},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.AdaptiveApplicationControlsClientPutResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/ApplicationWhitelistings/DeleteAdaptiveApplicationControls_example.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/ApplicationWhitelistings/DeleteAdaptiveApplicationControls_example.json
 func ExampleAdaptiveApplicationControlsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurity.NewAdaptiveApplicationControlsClient("<subscription-id>",
-		"<asc-location>", cred, nil)
+	client, err := armsecurity.NewAdaptiveApplicationControlsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Delete(ctx,
+		"<asc-location>",
 		"<group-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }

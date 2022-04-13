@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -31,41 +32,41 @@ type Client struct {
 // NewClient creates a new instance of Client with the specified values.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewClient(credential azcore.TokenCredential, options *arm.ClientOptions) *Client {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*Client, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &Client{
-		host: string(cp.Endpoint),
-		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host: ep,
+		pl:   pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateResource - Creates a SaaS resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // parameters - Parameters supplied to the create saas operation.
 // options - ClientBeginCreateResourceOptions contains the optional parameters for the Client.BeginCreateResource method.
-func (client *Client) BeginCreateResource(ctx context.Context, parameters ResourceCreation, options *ClientBeginCreateResourceOptions) (ClientCreateResourcePollerResponse, error) {
-	resp, err := client.createResource(ctx, parameters, options)
-	if err != nil {
-		return ClientCreateResourcePollerResponse{}, err
+func (client *Client) BeginCreateResource(ctx context.Context, parameters ResourceCreation, options *ClientBeginCreateResourceOptions) (*armruntime.Poller[ClientCreateResourceResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createResource(ctx, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ClientCreateResourceResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[ClientCreateResourceResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ClientCreateResourcePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("Client.CreateResource", "location", resp, client.pl)
-	if err != nil {
-		return ClientCreateResourcePollerResponse{}, err
-	}
-	result.Poller = &ClientCreateResourcePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateResource - Creates a SaaS resource.
@@ -104,22 +105,18 @@ func (client *Client) createResourceCreateRequest(ctx context.Context, parameter
 // resourceID - The Saas resource ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000)
 // parameters - Parameters supplied to delete saas operation.
 // options - ClientBeginDeleteOptions contains the optional parameters for the Client.BeginDelete method.
-func (client *Client) BeginDelete(ctx context.Context, resourceID string, parameters DeleteOptions, options *ClientBeginDeleteOptions) (ClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceID, parameters, options)
-	if err != nil {
-		return ClientDeletePollerResponse{}, err
+func (client *Client) BeginDelete(ctx context.Context, resourceID string, parameters DeleteOptions, options *ClientBeginDeleteOptions) (*armruntime.Poller[ClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceID, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ClientDeleteResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[ClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("Client.Delete", "location", resp, client.pl)
-	if err != nil {
-		return ClientDeletePollerResponse{}, err
-	}
-	result.Poller = &ClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes the specified SaaS.
@@ -196,7 +193,7 @@ func (client *Client) getResourceCreateRequest(ctx context.Context, resourceID s
 
 // getResourceHandleResponse handles the GetResource response.
 func (client *Client) getResourceHandleResponse(resp *http.Response) (ClientGetResourceResponse, error) {
-	result := ClientGetResourceResponse{RawResponse: resp}
+	result := ClientGetResourceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Resource); err != nil {
 		return ClientGetResourceResponse{}, err
 	}
@@ -208,22 +205,18 @@ func (client *Client) getResourceHandleResponse(resp *http.Response) (ClientGetR
 // resourceID - The Saas resource ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000)
 // parameters - Parameters supplied to the update saas operation.
 // options - ClientBeginUpdateResourceOptions contains the optional parameters for the Client.BeginUpdateResource method.
-func (client *Client) BeginUpdateResource(ctx context.Context, resourceID string, parameters ResourceCreation, options *ClientBeginUpdateResourceOptions) (ClientUpdateResourcePollerResponse, error) {
-	resp, err := client.updateResource(ctx, resourceID, parameters, options)
-	if err != nil {
-		return ClientUpdateResourcePollerResponse{}, err
+func (client *Client) BeginUpdateResource(ctx context.Context, resourceID string, parameters ResourceCreation, options *ClientBeginUpdateResourceOptions) (*armruntime.Poller[ClientUpdateResourceResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.updateResource(ctx, resourceID, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ClientUpdateResourceResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[ClientUpdateResourceResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ClientUpdateResourcePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("Client.UpdateResource", "location", resp, client.pl)
-	if err != nil {
-		return ClientUpdateResourcePollerResponse{}, err
-	}
-	result.Poller = &ClientUpdateResourcePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // UpdateResource - Updates a SaaS resource.

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armscheduler
 
 const (
 	moduleName    = "armscheduler"
-	moduleVersion = "v0.3.1"
+	moduleVersion = "v0.4.0"
 )
 
 type DayOfWeek string
@@ -38,11 +38,6 @@ func PossibleDayOfWeekValues() []DayOfWeek {
 	}
 }
 
-// ToPtr returns a *DayOfWeek pointing to the current value.
-func (c DayOfWeek) ToPtr() *DayOfWeek {
-	return &c
-}
-
 // HTTPAuthenticationType - Gets or sets the HTTP authentication type.
 type HTTPAuthenticationType string
 
@@ -61,11 +56,6 @@ func PossibleHTTPAuthenticationTypeValues() []HTTPAuthenticationType {
 		HTTPAuthenticationTypeActiveDirectoryOAuth,
 		HTTPAuthenticationTypeBasic,
 	}
-}
-
-// ToPtr returns a *HTTPAuthenticationType pointing to the current value.
-func (c HTTPAuthenticationType) ToPtr() *HTTPAuthenticationType {
-	return &c
 }
 
 // JobActionType - Gets or sets the job action type.
@@ -90,11 +80,6 @@ func PossibleJobActionTypeValues() []JobActionType {
 	}
 }
 
-// ToPtr returns a *JobActionType pointing to the current value.
-func (c JobActionType) ToPtr() *JobActionType {
-	return &c
-}
-
 // JobCollectionState - Gets or sets the state.
 type JobCollectionState string
 
@@ -115,11 +100,6 @@ func PossibleJobCollectionStateValues() []JobCollectionState {
 	}
 }
 
-// ToPtr returns a *JobCollectionState pointing to the current value.
-func (c JobCollectionState) ToPtr() *JobCollectionState {
-	return &c
-}
-
 // JobExecutionStatus - Gets the job execution status.
 type JobExecutionStatus string
 
@@ -138,11 +118,6 @@ func PossibleJobExecutionStatusValues() []JobExecutionStatus {
 	}
 }
 
-// ToPtr returns a *JobExecutionStatus pointing to the current value.
-func (c JobExecutionStatus) ToPtr() *JobExecutionStatus {
-	return &c
-}
-
 // JobHistoryActionName - Gets the job history action name.
 type JobHistoryActionName string
 
@@ -157,11 +132,6 @@ func PossibleJobHistoryActionNameValues() []JobHistoryActionName {
 		JobHistoryActionNameMainAction,
 		JobHistoryActionNameErrorAction,
 	}
-}
-
-// ToPtr returns a *JobHistoryActionName pointing to the current value.
-func (c JobHistoryActionName) ToPtr() *JobHistoryActionName {
-	return &c
 }
 
 // JobScheduleDay - Gets or sets the day. Must be one of monday, tuesday, wednesday, thursday, friday, saturday, sunday.
@@ -190,11 +160,6 @@ func PossibleJobScheduleDayValues() []JobScheduleDay {
 	}
 }
 
-// ToPtr returns a *JobScheduleDay pointing to the current value.
-func (c JobScheduleDay) ToPtr() *JobScheduleDay {
-	return &c
-}
-
 // JobState - Gets or set the job state.
 type JobState string
 
@@ -213,11 +178,6 @@ func PossibleJobStateValues() []JobState {
 		JobStateFaulted,
 		JobStateCompleted,
 	}
-}
-
-// ToPtr returns a *JobState pointing to the current value.
-func (c JobState) ToPtr() *JobState {
-	return &c
 }
 
 // RecurrenceFrequency - Gets or sets the frequency of recurrence (second, minute, hour, day, week, month).
@@ -242,11 +202,6 @@ func PossibleRecurrenceFrequencyValues() []RecurrenceFrequency {
 	}
 }
 
-// ToPtr returns a *RecurrenceFrequency pointing to the current value.
-func (c RecurrenceFrequency) ToPtr() *RecurrenceFrequency {
-	return &c
-}
-
 // RetryType - Gets or sets the retry strategy to be used.
 type RetryType string
 
@@ -261,11 +216,6 @@ func PossibleRetryTypeValues() []RetryType {
 		RetryTypeNone,
 		RetryTypeFixed,
 	}
-}
-
-// ToPtr returns a *RetryType pointing to the current value.
-func (c RetryType) ToPtr() *RetryType {
-	return &c
 }
 
 // SKUDefinition - Gets or set the SKU.
@@ -288,11 +238,6 @@ func PossibleSKUDefinitionValues() []SKUDefinition {
 	}
 }
 
-// ToPtr returns a *SKUDefinition pointing to the current value.
-func (c SKUDefinition) ToPtr() *SKUDefinition {
-	return &c
-}
-
 // ServiceBusAuthenticationType - Gets or sets the authentication type.
 type ServiceBusAuthenticationType string
 
@@ -307,11 +252,6 @@ func PossibleServiceBusAuthenticationTypeValues() []ServiceBusAuthenticationType
 		ServiceBusAuthenticationTypeNotSpecified,
 		ServiceBusAuthenticationTypeSharedAccessKey,
 	}
-}
-
-// ToPtr returns a *ServiceBusAuthenticationType pointing to the current value.
-func (c ServiceBusAuthenticationType) ToPtr() *ServiceBusAuthenticationType {
-	return &c
 }
 
 // ServiceBusTransportType - Gets or sets the transport type.
@@ -330,9 +270,4 @@ func PossibleServiceBusTransportTypeValues() []ServiceBusTransportType {
 		ServiceBusTransportTypeNetMessaging,
 		ServiceBusTransportTypeAMQP,
 	}
-}
-
-// ToPtr returns a *ServiceBusTransportType pointing to the current value.
-func (c ServiceBusTransportType) ToPtr() *ServiceBusTransportType {
-	return &c
 }

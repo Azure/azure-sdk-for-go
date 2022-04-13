@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -7,12 +7,6 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package armsearch
-
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-)
 
 // AdminKeyResult - Response containing the primary and secondary admin API keys for a given Azure Cognitive Search service.
 type AdminKeyResult struct {
@@ -87,16 +81,6 @@ type CloudErrorBody struct {
 	Target *string `json:"target,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CloudErrorBody.
-func (c CloudErrorBody) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "code", c.Code)
-	populate(objectMap, "details", c.Details)
-	populate(objectMap, "message", c.Message)
-	populate(objectMap, "target", c.Target)
-	return json.Marshal(objectMap)
-}
-
 // IPRule - The IP restriction rule of the Azure Cognitive Search service.
 type IPRule struct {
 	// Value corresponding to a single IPv4 address (eg., 123.1.2.3) or an IP range in CIDR format (eg., 123.1.2.3/24) to be allowed.
@@ -125,14 +109,6 @@ type ListQueryKeysResult struct {
 	Value []*QueryKey `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ListQueryKeysResult.
-func (l ListQueryKeysResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", l.NextLink)
-	populate(objectMap, "value", l.Value)
-	return json.Marshal(objectMap)
-}
-
 // NetworkRuleSet - Network specific rules that determine how the Azure Cognitive Search service may be reached.
 type NetworkRuleSet struct {
 	// A list of IP restriction rules that defines the inbound network(s) with allowing access to the search service endpoint.
@@ -141,13 +117,6 @@ type NetworkRuleSet struct {
 	// over public interface is not allowed even with any public IP rules, and private
 	// endpoint connections would be the exclusive access method.
 	IPRules []*IPRule `json:"ipRules,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type NetworkRuleSet.
-func (n NetworkRuleSet) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "ipRules", n.IPRules)
-	return json.Marshal(objectMap)
 }
 
 // Operation - Describes a REST API operation.
@@ -184,14 +153,6 @@ type OperationListResult struct {
 	Value []*Operation `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
-func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
-}
-
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -220,14 +181,6 @@ type PrivateEndpointConnectionListResult struct {
 
 	// READ-ONLY; The list of Private Endpoint connections.
 	Value []*PrivateEndpointConnection `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PrivateEndpointConnectionListResult.
-func (p PrivateEndpointConnectionListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
 }
 
 // PrivateEndpointConnectionProperties - Describes the properties of an existing Private Endpoint connection to the Azure
@@ -315,16 +268,6 @@ type PrivateLinkResourceProperties struct {
 	ShareablePrivateLinkResourceTypes []*ShareablePrivateLinkResourceType `json:"shareablePrivateLinkResourceTypes,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkResourceProperties.
-func (p PrivateLinkResourceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "groupId", p.GroupID)
-	populate(objectMap, "requiredMembers", p.RequiredMembers)
-	populate(objectMap, "requiredZoneNames", p.RequiredZoneNames)
-	populate(objectMap, "shareablePrivateLinkResourceTypes", p.ShareablePrivateLinkResourceTypes)
-	return json.Marshal(objectMap)
-}
-
 // PrivateLinkResourcesClientListSupportedOptions contains the optional parameters for the PrivateLinkResourcesClient.ListSupported
 // method.
 type PrivateLinkResourcesClientListSupportedOptions struct {
@@ -335,13 +278,6 @@ type PrivateLinkResourcesClientListSupportedOptions struct {
 type PrivateLinkResourcesResult struct {
 	// READ-ONLY; The list of supported Private Link Resources.
 	Value []*PrivateLinkResource `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkResourcesResult.
-func (p PrivateLinkResourcesResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
 }
 
 // QueryKey - Describes an API key for a given Azure Cognitive Search service that has permissions for query operations only.
@@ -428,20 +364,6 @@ type Service struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Service.
-func (s Service) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", s.ID)
-	populate(objectMap, "identity", s.Identity)
-	populate(objectMap, "location", s.Location)
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "properties", s.Properties)
-	populate(objectMap, "sku", s.SKU)
-	populate(objectMap, "tags", s.Tags)
-	populate(objectMap, "type", s.Type)
-	return json.Marshal(objectMap)
-}
-
 // ServiceListResult - Response containing a list of Azure Cognitive Search services.
 type ServiceListResult struct {
 	// READ-ONLY; Request URL that can be used to query next page of search services. Returned when the total number of requested
@@ -450,14 +372,6 @@ type ServiceListResult struct {
 
 	// READ-ONLY; The list of search services.
 	Value []*Service `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ServiceListResult.
-func (s ServiceListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
 }
 
 // ServiceProperties - Properties of the search service.
@@ -515,22 +429,6 @@ type ServiceProperties struct {
 	StatusDetails *string `json:"statusDetails,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ServiceProperties.
-func (s ServiceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "hostingMode", s.HostingMode)
-	populate(objectMap, "networkRuleSet", s.NetworkRuleSet)
-	populate(objectMap, "partitionCount", s.PartitionCount)
-	populate(objectMap, "privateEndpointConnections", s.PrivateEndpointConnections)
-	populate(objectMap, "provisioningState", s.ProvisioningState)
-	populate(objectMap, "publicNetworkAccess", s.PublicNetworkAccess)
-	populate(objectMap, "replicaCount", s.ReplicaCount)
-	populate(objectMap, "sharedPrivateLinkResources", s.SharedPrivateLinkResources)
-	populate(objectMap, "status", s.Status)
-	populate(objectMap, "statusDetails", s.StatusDetails)
-	return json.Marshal(objectMap)
-}
-
 // ServiceUpdate - The parameters used to update an Azure Cognitive Search service.
 type ServiceUpdate struct {
 	// The identity of the resource.
@@ -561,23 +459,10 @@ type ServiceUpdate struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ServiceUpdate.
-func (s ServiceUpdate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", s.ID)
-	populate(objectMap, "identity", s.Identity)
-	populate(objectMap, "location", s.Location)
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "properties", s.Properties)
-	populate(objectMap, "sku", s.SKU)
-	populate(objectMap, "tags", s.Tags)
-	populate(objectMap, "type", s.Type)
-	return json.Marshal(objectMap)
-}
-
 // ServicesClientBeginCreateOrUpdateOptions contains the optional parameters for the ServicesClient.BeginCreateOrUpdate method.
 type ServicesClientBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ServicesClientCheckNameAvailabilityOptions contains the optional parameters for the ServicesClient.CheckNameAvailability
@@ -663,14 +548,6 @@ type SharedPrivateLinkResourceListResult struct {
 	Value []*SharedPrivateLinkResource `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SharedPrivateLinkResourceListResult.
-func (s SharedPrivateLinkResourceListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
-}
-
 // SharedPrivateLinkResourceProperties - Describes the properties of an existing Shared Private Link Resource managed by the
 // Azure Cognitive Search service.
 type SharedPrivateLinkResourceProperties struct {
@@ -698,13 +575,15 @@ type SharedPrivateLinkResourceProperties struct {
 // SharedPrivateLinkResourcesClientBeginCreateOrUpdateOptions contains the optional parameters for the SharedPrivateLinkResourcesClient.BeginCreateOrUpdate
 // method.
 type SharedPrivateLinkResourcesClientBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // SharedPrivateLinkResourcesClientBeginDeleteOptions contains the optional parameters for the SharedPrivateLinkResourcesClient.BeginDelete
 // method.
 type SharedPrivateLinkResourcesClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // SharedPrivateLinkResourcesClientGetOptions contains the optional parameters for the SharedPrivateLinkResourcesClient.Get
@@ -736,25 +615,4 @@ type TrackedResource struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type TrackedResource.
-func (t TrackedResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", t.ID)
-	populate(objectMap, "location", t.Location)
-	populate(objectMap, "name", t.Name)
-	populate(objectMap, "tags", t.Tags)
-	populate(objectMap, "type", t.Type)
-	return json.Marshal(objectMap)
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
 }

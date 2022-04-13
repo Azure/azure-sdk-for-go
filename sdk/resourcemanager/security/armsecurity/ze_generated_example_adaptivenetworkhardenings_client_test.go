@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,41 +19,50 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity"
 )
 
-// x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/AdaptiveNetworkHardenings/ListByExtendedResourceAdaptiveNetworkHardenings_example.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/AdaptiveNetworkHardenings/ListByExtendedResourceAdaptiveNetworkHardenings_example.json
 func ExampleAdaptiveNetworkHardeningsClient_ListByExtendedResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurity.NewAdaptiveNetworkHardeningsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewAdaptiveNetworkHardeningsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	pager := client.ListByExtendedResource("<resource-group-name>",
 		"<resource-namespace>",
 		"<resource-type>",
 		"<resource-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/AdaptiveNetworkHardenings/GetAdaptiveNetworkHardening_example.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/AdaptiveNetworkHardenings/GetAdaptiveNetworkHardening_example.json
 func ExampleAdaptiveNetworkHardeningsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurity.NewAdaptiveNetworkHardeningsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewAdaptiveNetworkHardeningsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<resource-namespace>",
@@ -62,19 +71,26 @@ func ExampleAdaptiveNetworkHardeningsClient_Get() {
 		"<adaptive-network-hardening-resource-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.AdaptiveNetworkHardeningsClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/AdaptiveNetworkHardenings/EnforceAdaptiveNetworkHardeningRules_example.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/AdaptiveNetworkHardenings/EnforceAdaptiveNetworkHardeningRules_example.json
 func ExampleAdaptiveNetworkHardeningsClient_BeginEnforce() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsecurity.NewAdaptiveNetworkHardeningsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewAdaptiveNetworkHardeningsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginEnforce(ctx,
 		"<resource-group-name>",
 		"<resource-namespace>",
@@ -83,35 +99,37 @@ func ExampleAdaptiveNetworkHardeningsClient_BeginEnforce() {
 		"<adaptive-network-hardening-resource-name>",
 		armsecurity.AdaptiveNetworkHardeningEnforceRequest{
 			NetworkSecurityGroups: []*string{
-				to.StringPtr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/rg1/providers/Microsoft.Network/networkSecurityGroups/nsg1"),
-				to.StringPtr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/rg2/providers/Microsoft.Network/networkSecurityGroups/nsg2")},
+				to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/rg1/providers/Microsoft.Network/networkSecurityGroups/nsg1"),
+				to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/rg2/providers/Microsoft.Network/networkSecurityGroups/nsg2")},
 			Rules: []*armsecurity.Rule{
 				{
-					Name:            to.StringPtr("<name>"),
-					DestinationPort: to.Int32Ptr(3389),
-					Direction:       armsecurity.Direction("Inbound").ToPtr(),
+					Name:            to.Ptr("<name>"),
+					DestinationPort: to.Ptr[int32](3389),
+					Direction:       to.Ptr(armsecurity.DirectionInbound),
 					IPAddresses: []*string{
-						to.StringPtr("100.10.1.1"),
-						to.StringPtr("200.20.2.2"),
-						to.StringPtr("81.199.3.0/24")},
+						to.Ptr("100.10.1.1"),
+						to.Ptr("200.20.2.2"),
+						to.Ptr("81.199.3.0/24")},
 					Protocols: []*armsecurity.TransportProtocol{
-						armsecurity.TransportProtocol("TCP").ToPtr()},
+						to.Ptr(armsecurity.TransportProtocolTCP)},
 				},
 				{
-					Name:            to.StringPtr("<name>"),
-					DestinationPort: to.Int32Ptr(22),
-					Direction:       armsecurity.Direction("Inbound").ToPtr(),
+					Name:            to.Ptr("<name>"),
+					DestinationPort: to.Ptr[int32](22),
+					Direction:       to.Ptr(armsecurity.DirectionInbound),
 					IPAddresses:     []*string{},
 					Protocols: []*armsecurity.TransportProtocol{
-						armsecurity.TransportProtocol("TCP").ToPtr()},
+						to.Ptr(armsecurity.TransportProtocolTCP)},
 				}},
 		},
-		nil)
+		&armsecurity.AdaptiveNetworkHardeningsClientBeginEnforceOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }

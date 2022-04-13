@@ -1,5 +1,216 @@
 # Release History
 
+## 0.3.0 (2022-04-13)
+### Breaking Changes
+
+- Function `*MoveCollectionsClient.BeginInitiateMove` return value(s) have been changed from `(MoveCollectionsClientInitiateMovePollerResponse, error)` to `(*armruntime.Poller[MoveCollectionsClientInitiateMoveResponse], error)`
+- Function `*MoveCollectionsClient.BeginCommit` return value(s) have been changed from `(MoveCollectionsClientCommitPollerResponse, error)` to `(*armruntime.Poller[MoveCollectionsClientCommitResponse], error)`
+- Function `*MoveResourcesClient.BeginDelete` return value(s) have been changed from `(MoveResourcesClientDeletePollerResponse, error)` to `(*armruntime.Poller[MoveResourcesClientDeleteResponse], error)`
+- Function `*MoveCollectionsClient.BeginDiscard` return value(s) have been changed from `(MoveCollectionsClientDiscardPollerResponse, error)` to `(*armruntime.Poller[MoveCollectionsClientDiscardResponse], error)`
+- Function `NewMoveResourcesClient` return value(s) have been changed from `(*MoveResourcesClient)` to `(*MoveResourcesClient, error)`
+- Function `*MoveResourcesClient.BeginCreate` return value(s) have been changed from `(MoveResourcesClientCreatePollerResponse, error)` to `(*armruntime.Poller[MoveResourcesClientCreateResponse], error)`
+- Function `*MoveCollectionsClient.BeginDelete` return value(s) have been changed from `(MoveCollectionsClientDeletePollerResponse, error)` to `(*armruntime.Poller[MoveCollectionsClientDeleteResponse], error)`
+- Function `NewUnresolvedDependenciesClient` return value(s) have been changed from `(*UnresolvedDependenciesClient)` to `(*UnresolvedDependenciesClient, error)`
+- Function `*MoveCollectionsClient.BeginPrepare` return value(s) have been changed from `(MoveCollectionsClientPreparePollerResponse, error)` to `(*armruntime.Poller[MoveCollectionsClientPrepareResponse], error)`
+- Function `*MoveResourcesClient.List` return value(s) have been changed from `(*MoveResourcesClientListPager)` to `(*runtime.Pager[MoveResourcesClientListResponse])`
+- Function `NewOperationsDiscoveryClient` return value(s) have been changed from `(*OperationsDiscoveryClient)` to `(*OperationsDiscoveryClient, error)`
+- Function `*MoveCollectionsClient.ListMoveCollectionsBySubscription` return value(s) have been changed from `(*MoveCollectionsClientListMoveCollectionsBySubscriptionPager)` to `(*runtime.Pager[MoveCollectionsClientListMoveCollectionsBySubscriptionResponse])`
+- Function `*MoveCollectionsClient.BeginBulkRemove` return value(s) have been changed from `(MoveCollectionsClientBulkRemovePollerResponse, error)` to `(*armruntime.Poller[MoveCollectionsClientBulkRemoveResponse], error)`
+- Function `*MoveCollectionsClient.BeginResolveDependencies` return value(s) have been changed from `(MoveCollectionsClientResolveDependenciesPollerResponse, error)` to `(*armruntime.Poller[MoveCollectionsClientResolveDependenciesResponse], error)`
+- Function `NewMoveCollectionsClient` return value(s) have been changed from `(*MoveCollectionsClient)` to `(*MoveCollectionsClient, error)`
+- Function `*MoveCollectionsClient.ListMoveCollectionsByResourceGroup` return value(s) have been changed from `(*MoveCollectionsClientListMoveCollectionsByResourceGroupPager)` to `(*runtime.Pager[MoveCollectionsClientListMoveCollectionsByResourceGroupResponse])`
+- Function `*UnresolvedDependenciesClient.Get` return value(s) have been changed from `(*UnresolvedDependenciesClientGetPager)` to `(*runtime.Pager[UnresolvedDependenciesClientGetResponse])`
+- Type of `OperationsDiscovery.Properties` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `OperationStatus.Properties` has been changed from `map[string]interface{}` to `interface{}`
+- Function `TargetAvailabilityZone.ToPtr` has been removed
+- Function `*MoveResourcesClientDeletePoller.ResumeToken` has been removed
+- Function `*MoveCollectionsClientResolveDependenciesPollerResponse.Resume` has been removed
+- Function `*MoveCollectionsClientDeletePollerResponse.Resume` has been removed
+- Function `MoveCollectionsClientCommitPollerResponse.PollUntilDone` has been removed
+- Function `ResourceIdentityType.ToPtr` has been removed
+- Function `*MoveCollectionsClientPreparePoller.Poll` has been removed
+- Function `*MoveCollectionsClientInitiateMovePoller.Done` has been removed
+- Function `*MoveResourcesClientCreatePollerResponse.Resume` has been removed
+- Function `*MoveCollectionsClientCommitPollerResponse.Resume` has been removed
+- Function `*MoveCollectionsClientDeletePoller.Done` has been removed
+- Function `*MoveCollectionsClientListMoveCollectionsBySubscriptionPager.NextPage` has been removed
+- Function `ProvisioningState.ToPtr` has been removed
+- Function `*MoveResourcesClientDeletePoller.Done` has been removed
+- Function `*MoveCollectionsClientDeletePoller.ResumeToken` has been removed
+- Function `*MoveResourcesClientListPager.NextPage` has been removed
+- Function `*MoveCollectionsClientBulkRemovePoller.FinalResponse` has been removed
+- Function `*MoveCollectionsClientListMoveCollectionsByResourceGroupPager.Err` has been removed
+- Function `*MoveCollectionsClientListMoveCollectionsBySubscriptionPager.Err` has been removed
+- Function `MoveResourcesClientCreatePollerResponse.PollUntilDone` has been removed
+- Function `*MoveCollectionsClientInitiateMovePoller.FinalResponse` has been removed
+- Function `MoveCollectionsClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*MoveCollectionsClientPreparePoller.ResumeToken` has been removed
+- Function `*MoveCollectionsClientResolveDependenciesPoller.Done` has been removed
+- Function `MoveCollectionsClientPreparePollerResponse.PollUntilDone` has been removed
+- Function `*MoveCollectionsClientDiscardPollerResponse.Resume` has been removed
+- Function `*MoveCollectionsClientResolveDependenciesPoller.FinalResponse` has been removed
+- Function `*MoveResourcesClientDeletePollerResponse.Resume` has been removed
+- Function `*MoveCollectionsClientBulkRemovePoller.ResumeToken` has been removed
+- Function `*MoveResourcesClientCreatePoller.ResumeToken` has been removed
+- Function `*MoveCollectionsClientCommitPoller.Poll` has been removed
+- Function `*MoveCollectionsClientPreparePollerResponse.Resume` has been removed
+- Function `MoveResourceInputType.ToPtr` has been removed
+- Function `*MoveCollectionsClientDiscardPoller.Done` has been removed
+- Function `ResolutionType.ToPtr` has been removed
+- Function `*MoveCollectionsClientDiscardPoller.Poll` has been removed
+- Function `*MoveResourcesClientCreatePoller.Poll` has been removed
+- Function `*MoveCollectionsClientResolveDependenciesPoller.ResumeToken` has been removed
+- Function `*MoveCollectionsClientBulkRemovePoller.Done` has been removed
+- Function `*MoveCollectionsClientListMoveCollectionsBySubscriptionPager.PageResponse` has been removed
+- Function `*MoveResourcesClientDeletePoller.FinalResponse` has been removed
+- Function `MoveCollectionsClientResolveDependenciesPollerResponse.PollUntilDone` has been removed
+- Function `*MoveResourcesClientCreatePoller.Done` has been removed
+- Function `*MoveCollectionsClientPreparePoller.Done` has been removed
+- Function `*MoveCollectionsClientCommitPoller.FinalResponse` has been removed
+- Function `*MoveCollectionsClientListMoveCollectionsByResourceGroupPager.PageResponse` has been removed
+- Function `*MoveCollectionsClientBulkRemovePollerResponse.Resume` has been removed
+- Function `*MoveCollectionsClientResolveDependenciesPoller.Poll` has been removed
+- Function `*MoveCollectionsClientBulkRemovePoller.Poll` has been removed
+- Function `*MoveCollectionsClientDiscardPoller.ResumeToken` has been removed
+- Function `MoveCollectionsClientInitiateMovePollerResponse.PollUntilDone` has been removed
+- Function `*UnresolvedDependenciesClientGetPager.Err` has been removed
+- Function `MoveState.ToPtr` has been removed
+- Function `*MoveCollectionsClientInitiateMovePollerResponse.Resume` has been removed
+- Function `ZoneRedundant.ToPtr` has been removed
+- Function `*MoveCollectionsClientDeletePoller.Poll` has been removed
+- Function `*MoveResourcesClientListPager.Err` has been removed
+- Function `JobName.ToPtr` has been removed
+- Function `*MoveCollectionsClientInitiateMovePoller.ResumeToken` has been removed
+- Function `MoveResourcesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*MoveResourcesClientListPager.PageResponse` has been removed
+- Function `*MoveResourcesClientCreatePoller.FinalResponse` has been removed
+- Function `*MoveResourcesClientDeletePoller.Poll` has been removed
+- Function `*MoveCollectionsClientCommitPoller.Done` has been removed
+- Function `*MoveCollectionsClientListMoveCollectionsByResourceGroupPager.NextPage` has been removed
+- Function `CreatedByType.ToPtr` has been removed
+- Function `DependencyType.ToPtr` has been removed
+- Function `*UnresolvedDependenciesClientGetPager.NextPage` has been removed
+- Function `MoveCollectionsClientBulkRemovePollerResponse.PollUntilDone` has been removed
+- Function `*MoveCollectionsClientDeletePoller.FinalResponse` has been removed
+- Function `*UnresolvedDependenciesClientGetPager.PageResponse` has been removed
+- Function `MoveCollectionsClientDiscardPollerResponse.PollUntilDone` has been removed
+- Function `*MoveCollectionsClientDiscardPoller.FinalResponse` has been removed
+- Function `*MoveCollectionsClientPreparePoller.FinalResponse` has been removed
+- Function `*MoveCollectionsClientCommitPoller.ResumeToken` has been removed
+- Function `DependencyLevel.ToPtr` has been removed
+- Function `*MoveCollectionsClientInitiateMovePoller.Poll` has been removed
+- Struct `MoveCollectionsClientBulkRemovePoller` has been removed
+- Struct `MoveCollectionsClientBulkRemovePollerResponse` has been removed
+- Struct `MoveCollectionsClientBulkRemoveResult` has been removed
+- Struct `MoveCollectionsClientCommitPoller` has been removed
+- Struct `MoveCollectionsClientCommitPollerResponse` has been removed
+- Struct `MoveCollectionsClientCommitResult` has been removed
+- Struct `MoveCollectionsClientCreateResult` has been removed
+- Struct `MoveCollectionsClientDeletePoller` has been removed
+- Struct `MoveCollectionsClientDeletePollerResponse` has been removed
+- Struct `MoveCollectionsClientDeleteResult` has been removed
+- Struct `MoveCollectionsClientDiscardPoller` has been removed
+- Struct `MoveCollectionsClientDiscardPollerResponse` has been removed
+- Struct `MoveCollectionsClientDiscardResult` has been removed
+- Struct `MoveCollectionsClientGetResult` has been removed
+- Struct `MoveCollectionsClientInitiateMovePoller` has been removed
+- Struct `MoveCollectionsClientInitiateMovePollerResponse` has been removed
+- Struct `MoveCollectionsClientInitiateMoveResult` has been removed
+- Struct `MoveCollectionsClientListMoveCollectionsByResourceGroupPager` has been removed
+- Struct `MoveCollectionsClientListMoveCollectionsByResourceGroupResult` has been removed
+- Struct `MoveCollectionsClientListMoveCollectionsBySubscriptionPager` has been removed
+- Struct `MoveCollectionsClientListMoveCollectionsBySubscriptionResult` has been removed
+- Struct `MoveCollectionsClientListRequiredForResult` has been removed
+- Struct `MoveCollectionsClientPreparePoller` has been removed
+- Struct `MoveCollectionsClientPreparePollerResponse` has been removed
+- Struct `MoveCollectionsClientPrepareResult` has been removed
+- Struct `MoveCollectionsClientResolveDependenciesPoller` has been removed
+- Struct `MoveCollectionsClientResolveDependenciesPollerResponse` has been removed
+- Struct `MoveCollectionsClientResolveDependenciesResult` has been removed
+- Struct `MoveCollectionsClientUpdateResult` has been removed
+- Struct `MoveResourcesClientCreatePoller` has been removed
+- Struct `MoveResourcesClientCreatePollerResponse` has been removed
+- Struct `MoveResourcesClientCreateResult` has been removed
+- Struct `MoveResourcesClientDeletePoller` has been removed
+- Struct `MoveResourcesClientDeletePollerResponse` has been removed
+- Struct `MoveResourcesClientDeleteResult` has been removed
+- Struct `MoveResourcesClientGetResult` has been removed
+- Struct `MoveResourcesClientListPager` has been removed
+- Struct `MoveResourcesClientListResult` has been removed
+- Struct `OperationsDiscoveryClientGetResult` has been removed
+- Struct `UnresolvedDependenciesClientGetPager` has been removed
+- Struct `UnresolvedDependenciesClientGetResult` has been removed
+- Field `MoveCollectionsClientUpdateResult` of struct `MoveCollectionsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `MoveCollectionsClientUpdateResponse` has been removed
+- Field `MoveCollectionsClientListRequiredForResult` of struct `MoveCollectionsClientListRequiredForResponse` has been removed
+- Field `RawResponse` of struct `MoveCollectionsClientListRequiredForResponse` has been removed
+- Field `OperationsDiscoveryClientGetResult` of struct `OperationsDiscoveryClientGetResponse` has been removed
+- Field `RawResponse` of struct `OperationsDiscoveryClientGetResponse` has been removed
+- Field `MoveCollectionsClientResolveDependenciesResult` of struct `MoveCollectionsClientResolveDependenciesResponse` has been removed
+- Field `RawResponse` of struct `MoveCollectionsClientResolveDependenciesResponse` has been removed
+- Field `MoveResourcesClientListResult` of struct `MoveResourcesClientListResponse` has been removed
+- Field `RawResponse` of struct `MoveResourcesClientListResponse` has been removed
+- Field `MoveCollectionsClientDeleteResult` of struct `MoveCollectionsClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `MoveCollectionsClientDeleteResponse` has been removed
+- Field `MoveCollectionsClientListMoveCollectionsByResourceGroupResult` of struct `MoveCollectionsClientListMoveCollectionsByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `MoveCollectionsClientListMoveCollectionsByResourceGroupResponse` has been removed
+- Field `MoveCollectionsClientCreateResult` of struct `MoveCollectionsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `MoveCollectionsClientCreateResponse` has been removed
+- Field `MoveCollectionsClientGetResult` of struct `MoveCollectionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `MoveCollectionsClientGetResponse` has been removed
+- Field `MoveCollectionsClientBulkRemoveResult` of struct `MoveCollectionsClientBulkRemoveResponse` has been removed
+- Field `RawResponse` of struct `MoveCollectionsClientBulkRemoveResponse` has been removed
+- Field `UnresolvedDependenciesClientGetResult` of struct `UnresolvedDependenciesClientGetResponse` has been removed
+- Field `RawResponse` of struct `UnresolvedDependenciesClientGetResponse` has been removed
+- Field `MoveCollectionsClientInitiateMoveResult` of struct `MoveCollectionsClientInitiateMoveResponse` has been removed
+- Field `RawResponse` of struct `MoveCollectionsClientInitiateMoveResponse` has been removed
+- Field `MoveCollectionsClientCommitResult` of struct `MoveCollectionsClientCommitResponse` has been removed
+- Field `RawResponse` of struct `MoveCollectionsClientCommitResponse` has been removed
+- Field `MoveCollectionsClientPrepareResult` of struct `MoveCollectionsClientPrepareResponse` has been removed
+- Field `RawResponse` of struct `MoveCollectionsClientPrepareResponse` has been removed
+- Field `MoveCollectionsClientDiscardResult` of struct `MoveCollectionsClientDiscardResponse` has been removed
+- Field `RawResponse` of struct `MoveCollectionsClientDiscardResponse` has been removed
+- Field `MoveCollectionsClientListMoveCollectionsBySubscriptionResult` of struct `MoveCollectionsClientListMoveCollectionsBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `MoveCollectionsClientListMoveCollectionsBySubscriptionResponse` has been removed
+- Field `MoveResourcesClientCreateResult` of struct `MoveResourcesClientCreateResponse` has been removed
+- Field `RawResponse` of struct `MoveResourcesClientCreateResponse` has been removed
+- Field `MoveResourcesClientDeleteResult` of struct `MoveResourcesClientDeleteResponse` has been removed
+- Field `RawResponse` of struct `MoveResourcesClientDeleteResponse` has been removed
+- Field `MoveResourcesClientGetResult` of struct `MoveResourcesClientGetResponse` has been removed
+- Field `RawResponse` of struct `MoveResourcesClientGetResponse` has been removed
+
+### Features Added
+
+- New field `ResumeToken` in struct `MoveCollectionsClientBeginDiscardOptions`
+- New anonymous field `MoveCollectionResultList` in struct `MoveCollectionsClientListMoveCollectionsBySubscriptionResponse`
+- New anonymous field `OperationStatus` in struct `MoveCollectionsClientInitiateMoveResponse`
+- New field `ResumeToken` in struct `MoveCollectionsClientBeginDeleteOptions`
+- New anonymous field `MoveCollection` in struct `MoveCollectionsClientGetResponse`
+- New anonymous field `OperationsDiscoveryCollection` in struct `OperationsDiscoveryClientGetResponse`
+- New anonymous field `OperationStatus` in struct `MoveCollectionsClientResolveDependenciesResponse`
+- New anonymous field `OperationStatus` in struct `MoveCollectionsClientDiscardResponse`
+- New anonymous field `MoveCollection` in struct `MoveCollectionsClientCreateResponse`
+- New anonymous field `OperationStatus` in struct `MoveCollectionsClientDeleteResponse`
+- New field `ResumeToken` in struct `MoveCollectionsClientBeginCommitOptions`
+- New anonymous field `MoveResource` in struct `MoveResourcesClientCreateResponse`
+- New anonymous field `MoveResourceCollection` in struct `MoveResourcesClientListResponse`
+- New anonymous field `OperationStatus` in struct `MoveCollectionsClientCommitResponse`
+- New field `ResumeToken` in struct `MoveResourcesClientBeginDeleteOptions`
+- New anonymous field `MoveResource` in struct `MoveResourcesClientGetResponse`
+- New field `ResumeToken` in struct `MoveCollectionsClientBeginPrepareOptions`
+- New anonymous field `RequiredForResourcesCollection` in struct `MoveCollectionsClientListRequiredForResponse`
+- New field `ResumeToken` in struct `MoveResourcesClientBeginCreateOptions`
+- New anonymous field `UnresolvedDependencyCollection` in struct `UnresolvedDependenciesClientGetResponse`
+- New field `ResumeToken` in struct `MoveCollectionsClientBeginResolveDependenciesOptions`
+- New anonymous field `MoveCollectionResultList` in struct `MoveCollectionsClientListMoveCollectionsByResourceGroupResponse`
+- New anonymous field `MoveCollection` in struct `MoveCollectionsClientUpdateResponse`
+- New anonymous field `OperationStatus` in struct `MoveCollectionsClientBulkRemoveResponse`
+- New field `ResumeToken` in struct `MoveCollectionsClientBeginBulkRemoveOptions`
+- New field `ResumeToken` in struct `MoveCollectionsClientBeginInitiateMoveOptions`
+- New anonymous field `OperationStatus` in struct `MoveCollectionsClientPrepareResponse`
+- New anonymous field `OperationStatus` in struct `MoveResourcesClientDeleteResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

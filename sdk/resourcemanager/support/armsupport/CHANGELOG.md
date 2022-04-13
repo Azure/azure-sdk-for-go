@@ -1,5 +1,116 @@
 # Release History
 
+## 0.3.0 (2022-04-13)
+### Breaking Changes
+
+- Function `*ProblemClassificationsClient.List` parameter(s) have been changed from `(context.Context, string, *ProblemClassificationsClientListOptions)` to `(string, *ProblemClassificationsClientListOptions)`
+- Function `*ProblemClassificationsClient.List` return value(s) have been changed from `(ProblemClassificationsClientListResponse, error)` to `(*runtime.Pager[ProblemClassificationsClientListResponse])`
+- Function `NewTicketsClient` return value(s) have been changed from `(*TicketsClient)` to `(*TicketsClient, error)`
+- Function `NewProblemClassificationsClient` return value(s) have been changed from `(*ProblemClassificationsClient)` to `(*ProblemClassificationsClient, error)`
+- Function `*CommunicationsClient.List` return value(s) have been changed from `(*CommunicationsClientListPager)` to `(*runtime.Pager[CommunicationsClientListResponse])`
+- Function `*CommunicationsClient.BeginCreate` return value(s) have been changed from `(CommunicationsClientCreatePollerResponse, error)` to `(*armruntime.Poller[CommunicationsClientCreateResponse], error)`
+- Function `*ServicesClient.List` parameter(s) have been changed from `(context.Context, *ServicesClientListOptions)` to `(*ServicesClientListOptions)`
+- Function `*ServicesClient.List` return value(s) have been changed from `(ServicesClientListResponse, error)` to `(*runtime.Pager[ServicesClientListResponse])`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(context.Context, *OperationsClientListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(OperationsClientListResponse, error)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `*TicketsClient.List` return value(s) have been changed from `(*TicketsClientListPager)` to `(*runtime.Pager[TicketsClientListResponse])`
+- Function `NewCommunicationsClient` return value(s) have been changed from `(*CommunicationsClient)` to `(*CommunicationsClient, error)`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `NewServicesClient` return value(s) have been changed from `(*ServicesClient)` to `(*ServicesClient, error)`
+- Function `*TicketsClient.BeginCreate` return value(s) have been changed from `(TicketsClientCreatePollerResponse, error)` to `(*armruntime.Poller[TicketsClientCreateResponse], error)`
+- Function `Type.ToPtr` has been removed
+- Function `SeverityLevel.ToPtr` has been removed
+- Function `*CommunicationsClientListPager.PageResponse` has been removed
+- Function `Status.ToPtr` has been removed
+- Function `CommunicationType.ToPtr` has been removed
+- Function `*CommunicationsClientCreatePoller.ResumeToken` has been removed
+- Function `CommunicationsClientCreatePollerResponse.PollUntilDone` has been removed
+- Function `*TicketsClientCreatePollerResponse.Resume` has been removed
+- Function `*CommunicationsClientCreatePoller.FinalResponse` has been removed
+- Function `*TicketsClientListPager.NextPage` has been removed
+- Function `*CommunicationsClientCreatePollerResponse.Resume` has been removed
+- Function `*TicketsClientCreatePoller.Done` has been removed
+- Function `*TicketsClientCreatePoller.FinalResponse` has been removed
+- Function `*TicketsClientListPager.Err` has been removed
+- Function `*CommunicationsClientListPager.Err` has been removed
+- Function `*TicketsClientListPager.PageResponse` has been removed
+- Function `*TicketsClientCreatePoller.ResumeToken` has been removed
+- Function `*TicketsClientCreatePoller.Poll` has been removed
+- Function `CommunicationDirection.ToPtr` has been removed
+- Function `PreferredContactMethod.ToPtr` has been removed
+- Function `*CommunicationsClientCreatePoller.Done` has been removed
+- Function `*CommunicationsClientListPager.NextPage` has been removed
+- Function `*CommunicationsClientCreatePoller.Poll` has been removed
+- Function `TicketsClientCreatePollerResponse.PollUntilDone` has been removed
+- Struct `CommunicationsClientCheckNameAvailabilityResult` has been removed
+- Struct `CommunicationsClientCreatePoller` has been removed
+- Struct `CommunicationsClientCreatePollerResponse` has been removed
+- Struct `CommunicationsClientCreateResult` has been removed
+- Struct `CommunicationsClientGetResult` has been removed
+- Struct `CommunicationsClientListPager` has been removed
+- Struct `CommunicationsClientListResult` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `ProblemClassificationsClientGetResult` has been removed
+- Struct `ProblemClassificationsClientListResult` has been removed
+- Struct `ServicesClientGetResult` has been removed
+- Struct `ServicesClientListResult` has been removed
+- Struct `TicketsClientCheckNameAvailabilityResult` has been removed
+- Struct `TicketsClientCreatePoller` has been removed
+- Struct `TicketsClientCreatePollerResponse` has been removed
+- Struct `TicketsClientCreateResult` has been removed
+- Struct `TicketsClientGetResult` has been removed
+- Struct `TicketsClientListPager` has been removed
+- Struct `TicketsClientListResult` has been removed
+- Struct `TicketsClientUpdateResult` has been removed
+- Field `ServicesClientGetResult` of struct `ServicesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ServicesClientGetResponse` has been removed
+- Field `ProblemClassificationsClientListResult` of struct `ProblemClassificationsClientListResponse` has been removed
+- Field `RawResponse` of struct `ProblemClassificationsClientListResponse` has been removed
+- Field `ProblemClassificationsClientGetResult` of struct `ProblemClassificationsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ProblemClassificationsClientGetResponse` has been removed
+- Field `TicketsClientCreateResult` of struct `TicketsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `TicketsClientCreateResponse` has been removed
+- Field `TicketsClientListResult` of struct `TicketsClientListResponse` has been removed
+- Field `RawResponse` of struct `TicketsClientListResponse` has been removed
+- Field `CommunicationsClientCheckNameAvailabilityResult` of struct `CommunicationsClientCheckNameAvailabilityResponse` has been removed
+- Field `RawResponse` of struct `CommunicationsClientCheckNameAvailabilityResponse` has been removed
+- Field `TicketsClientCheckNameAvailabilityResult` of struct `TicketsClientCheckNameAvailabilityResponse` has been removed
+- Field `RawResponse` of struct `TicketsClientCheckNameAvailabilityResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `CommunicationsClientCreateResult` of struct `CommunicationsClientCreateResponse` has been removed
+- Field `RawResponse` of struct `CommunicationsClientCreateResponse` has been removed
+- Field `TicketsClientUpdateResult` of struct `TicketsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `TicketsClientUpdateResponse` has been removed
+- Field `CommunicationsClientGetResult` of struct `CommunicationsClientGetResponse` has been removed
+- Field `RawResponse` of struct `CommunicationsClientGetResponse` has been removed
+- Field `CommunicationsClientListResult` of struct `CommunicationsClientListResponse` has been removed
+- Field `RawResponse` of struct `CommunicationsClientListResponse` has been removed
+- Field `ServicesClientListResult` of struct `ServicesClientListResponse` has been removed
+- Field `RawResponse` of struct `ServicesClientListResponse` has been removed
+- Field `TicketsClientGetResult` of struct `TicketsClientGetResponse` has been removed
+- Field `RawResponse` of struct `TicketsClientGetResponse` has been removed
+
+### Features Added
+
+- New anonymous field `ProblemClassificationsListResult` in struct `ProblemClassificationsClientListResponse`
+- New anonymous field `CommunicationDetails` in struct `CommunicationsClientGetResponse`
+- New field `ResumeToken` in struct `TicketsClientBeginCreateOptions`
+- New anonymous field `TicketDetails` in struct `TicketsClientUpdateResponse`
+- New anonymous field `TicketDetails` in struct `TicketsClientCreateResponse`
+- New anonymous field `Service` in struct `ServicesClientGetResponse`
+- New anonymous field `CheckNameAvailabilityOutput` in struct `TicketsClientCheckNameAvailabilityResponse`
+- New field `ResumeToken` in struct `CommunicationsClientBeginCreateOptions`
+- New anonymous field `CheckNameAvailabilityOutput` in struct `CommunicationsClientCheckNameAvailabilityResponse`
+- New anonymous field `ProblemClassification` in struct `ProblemClassificationsClientGetResponse`
+- New anonymous field `TicketsListResult` in struct `TicketsClientListResponse`
+- New anonymous field `CommunicationDetails` in struct `CommunicationsClientCreateResponse`
+- New anonymous field `OperationsListResult` in struct `OperationsClientListResponse`
+- New anonymous field `TicketDetails` in struct `TicketsClientGetResponse`
+- New anonymous field `CommunicationsListResult` in struct `CommunicationsClientListResponse`
+- New anonymous field `ServicesListResult` in struct `ServicesClientListResponse`
+
+
 ## 0.2.1 (2022-02-22)
 
 ### Other Changes

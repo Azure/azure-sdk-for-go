@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type CommunicationsClient struct {
 // subscriptionID - Azure subscription Id.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewCommunicationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CommunicationsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewCommunicationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CommunicationsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &CommunicationsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CheckNameAvailability - Check the availability of a resource name. This API should be used to check the uniqueness of the
@@ -96,7 +101,7 @@ func (client *CommunicationsClient) checkNameAvailabilityCreateRequest(ctx conte
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
 func (client *CommunicationsClient) checkNameAvailabilityHandleResponse(resp *http.Response) (CommunicationsClientCheckNameAvailabilityResponse, error) {
-	result := CommunicationsClientCheckNameAvailabilityResponse{RawResponse: resp}
+	result := CommunicationsClientCheckNameAvailabilityResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameAvailabilityOutput); err != nil {
 		return CommunicationsClientCheckNameAvailabilityResponse{}, err
 	}
@@ -110,22 +115,18 @@ func (client *CommunicationsClient) checkNameAvailabilityHandleResponse(resp *ht
 // createCommunicationParameters - Communication object.
 // options - CommunicationsClientBeginCreateOptions contains the optional parameters for the CommunicationsClient.BeginCreate
 // method.
-func (client *CommunicationsClient) BeginCreate(ctx context.Context, supportTicketName string, communicationName string, createCommunicationParameters CommunicationDetails, options *CommunicationsClientBeginCreateOptions) (CommunicationsClientCreatePollerResponse, error) {
-	resp, err := client.create(ctx, supportTicketName, communicationName, createCommunicationParameters, options)
-	if err != nil {
-		return CommunicationsClientCreatePollerResponse{}, err
+func (client *CommunicationsClient) BeginCreate(ctx context.Context, supportTicketName string, communicationName string, createCommunicationParameters CommunicationDetails, options *CommunicationsClientBeginCreateOptions) (*armruntime.Poller[CommunicationsClientCreateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.create(ctx, supportTicketName, communicationName, createCommunicationParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[CommunicationsClientCreateResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[CommunicationsClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := CommunicationsClientCreatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("CommunicationsClient.Create", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return CommunicationsClientCreatePollerResponse{}, err
-	}
-	result.Poller = &CommunicationsClientCreatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Create - Adds a new customer communication to an Azure support ticket.
@@ -219,7 +220,7 @@ func (client *CommunicationsClient) getCreateRequest(ctx context.Context, suppor
 
 // getHandleResponse handles the Get response.
 func (client *CommunicationsClient) getHandleResponse(resp *http.Response) (CommunicationsClientGetResponse, error) {
-	result := CommunicationsClientGetResponse{RawResponse: resp}
+	result := CommunicationsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CommunicationDetails); err != nil {
 		return CommunicationsClientGetResponse{}, err
 	}
@@ -235,16 +236,32 @@ func (client *CommunicationsClient) getHandleResponse(resp *http.Response) (Comm
 // If the operation fails it returns an *azcore.ResponseError type.
 // supportTicketName - Support ticket name.
 // options - CommunicationsClientListOptions contains the optional parameters for the CommunicationsClient.List method.
-func (client *CommunicationsClient) List(supportTicketName string, options *CommunicationsClientListOptions) *CommunicationsClientListPager {
-	return &CommunicationsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, supportTicketName, options)
+func (client *CommunicationsClient) List(supportTicketName string, options *CommunicationsClientListOptions) *runtime.Pager[CommunicationsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[CommunicationsClientListResponse]{
+		More: func(page CommunicationsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp CommunicationsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.CommunicationsListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *CommunicationsClientListResponse) (CommunicationsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, supportTicketName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return CommunicationsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return CommunicationsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return CommunicationsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -277,7 +294,7 @@ func (client *CommunicationsClient) listCreateRequest(ctx context.Context, suppo
 
 // listHandleResponse handles the List response.
 func (client *CommunicationsClient) listHandleResponse(resp *http.Response) (CommunicationsClientListResponse, error) {
-	result := CommunicationsClientListResponse{RawResponse: resp}
+	result := CommunicationsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CommunicationsListResult); err != nil {
 		return CommunicationsClientListResponse{}, err
 	}

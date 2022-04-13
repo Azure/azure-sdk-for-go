@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armsupport
 
 const (
 	moduleName    = "armsupport"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.3.0"
 )
 
 // CommunicationDirection - Direction of communication.
@@ -29,11 +29,6 @@ func PossibleCommunicationDirectionValues() []CommunicationDirection {
 	}
 }
 
-// ToPtr returns a *CommunicationDirection pointing to the current value.
-func (c CommunicationDirection) ToPtr() *CommunicationDirection {
-	return &c
-}
-
 // CommunicationType - Communication type.
 type CommunicationType string
 
@@ -50,11 +45,6 @@ func PossibleCommunicationTypeValues() []CommunicationType {
 	}
 }
 
-// ToPtr returns a *CommunicationType pointing to the current value.
-func (c CommunicationType) ToPtr() *CommunicationType {
-	return &c
-}
-
 // PreferredContactMethod - Preferred contact method.
 type PreferredContactMethod string
 
@@ -69,11 +59,6 @@ func PossiblePreferredContactMethodValues() []PreferredContactMethod {
 		PreferredContactMethodEmail,
 		PreferredContactMethodPhone,
 	}
-}
-
-// ToPtr returns a *PreferredContactMethod pointing to the current value.
-func (c PreferredContactMethod) ToPtr() *PreferredContactMethod {
-	return &c
 }
 
 // SeverityLevel - A value that indicates the urgency of the case, which in turn determines the response time according to
@@ -99,11 +84,6 @@ func PossibleSeverityLevelValues() []SeverityLevel {
 	}
 }
 
-// ToPtr returns a *SeverityLevel pointing to the current value.
-func (c SeverityLevel) ToPtr() *SeverityLevel {
-	return &c
-}
-
 // Status - Status to be updated on the ticket.
 type Status string
 
@@ -120,11 +100,6 @@ func PossibleStatusValues() []Status {
 	}
 }
 
-// ToPtr returns a *Status pointing to the current value.
-func (c Status) ToPtr() *Status {
-	return &c
-}
-
 // Type - The type of resource.
 type Type string
 
@@ -139,9 +114,4 @@ func PossibleTypeValues() []Type {
 		TypeMicrosoftSupportSupportTickets,
 		TypeMicrosoftSupportCommunications,
 	}
-}
-
-// ToPtr returns a *Type pointing to the current value.
-func (c Type) ToPtr() *Type {
-	return &c
 }

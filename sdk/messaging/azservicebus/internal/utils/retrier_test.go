@@ -18,13 +18,15 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+const testLogEvent = log.Event("testLogEvent")
+
 func TestRetrier(t *testing.T) {
 	t.Run("Succeeds", func(t *testing.T) {
 		ctx := context.Background()
 
 		called := 0
 
-		err := Retry(ctx, "Retrier", func(ctx context.Context, args *RetryFnArgs) error {
+		err := Retry(ctx, testLogEvent, "notused", func(ctx context.Context, args *RetryFnArgs) error {
 			called++
 			return nil
 		}, func(err error) bool {
@@ -48,7 +50,7 @@ func TestRetrier(t *testing.T) {
 			return false
 		}
 
-		err := Retry(ctx, "FailsThenSucceeds", func(ctx context.Context, args *RetryFnArgs) error {
+		err := Retry(ctx, testLogEvent, "notused", func(ctx context.Context, args *RetryFnArgs) error {
 			called++
 
 			if args.I == 3 {
@@ -75,7 +77,7 @@ func TestRetrier(t *testing.T) {
 			return true
 		}
 
-		err := Retry(ctx, "FatalFailure", func(ctx context.Context, args *RetryFnArgs) error {
+		err := Retry(ctx, testLogEvent, "notused", func(ctx context.Context, args *RetryFnArgs) error {
 			called++
 			return errors.New("isFatalFn says this is a fatal error")
 		}, isFatalFn, RetryOptions{})
@@ -93,7 +95,7 @@ func TestRetrier(t *testing.T) {
 		}
 
 		// it's up to
-		err := Retry(ctx, "Cancellation", func(ctx context.Context, args *RetryFnArgs) error {
+		err := Retry(ctx, testLogEvent, "notused", func(ctx context.Context, args *RetryFnArgs) error {
 			// NOTE: it's up to the underlying function to handle cancellation. `Retry` doesn't
 			// do anything but propagate it.
 			select {
@@ -120,7 +122,7 @@ func TestRetrier(t *testing.T) {
 
 		maxRetries := int32(2)
 
-		err := Retry(context.Background(), "ResetAttempts", func(ctx context.Context, args *RetryFnArgs) error {
+		err := Retry(context.Background(), testLogEvent, "notused", func(ctx context.Context, args *RetryFnArgs) error {
 			actualAttempts = append(actualAttempts, args.I)
 
 			if len(actualAttempts) == int(maxRetries+1) {
@@ -153,7 +155,7 @@ func TestRetrier(t *testing.T) {
 
 		called := 0
 
-		err := Retry(context.Background(), "ResetAttempts", func(ctx context.Context, args *RetryFnArgs) error {
+		err := Retry(context.Background(), testLogEvent, "notused", func(ctx context.Context, args *RetryFnArgs) error {
 			called++
 			return errors.New("whatever")
 		}, isFatalFn, customRetryOptions)
@@ -252,7 +254,7 @@ func TestRetryLogging(t *testing.T) {
 	t.Run("normal error", func(t *testing.T) {
 		logs = nil
 
-		err := Retry(context.Background(), "retry", func(ctx context.Context, args *RetryFnArgs) error {
+		err := Retry(context.Background(), testLogEvent, "my_operation", func(ctx context.Context, args *RetryFnArgs) error {
 			log.Writef("TestFunc", "Attempt %d, within test func, returning error hello", args.I)
 			return errors.New("hello")
 		}, func(err error) bool {
@@ -264,26 +266,26 @@ func TestRetryLogging(t *testing.T) {
 
 		require.Equal(t, []string{
 			"[TestFunc  ] Attempt 0, within test func, returning error hello",
+			"[testLogEvent] (my_operation) Retry attempt 0 returned retryable error: hello",
 
-			"[azsb.Retry] (retry) Attempt 0 returned retryable error: hello",
-			"[azsb.Retry] (retry) Attempt 1 sleeping for <time elided>",
+			"[testLogEvent] (my_operation) Retry attempt 1 sleeping for <time elided>",
 			"[TestFunc  ] Attempt 1, within test func, returning error hello",
-			"[azsb.Retry] (retry) Attempt 1 returned retryable error: hello",
+			"[testLogEvent] (my_operation) Retry attempt 1 returned retryable error: hello",
 
-			"[azsb.Retry] (retry) Attempt 2 sleeping for <time elided>",
+			"[testLogEvent] (my_operation) Retry attempt 2 sleeping for <time elided>",
 			"[TestFunc  ] Attempt 2, within test func, returning error hello",
-			"[azsb.Retry] (retry) Attempt 2 returned retryable error: hello",
+			"[testLogEvent] (my_operation) Retry attempt 2 returned retryable error: hello",
 
-			"[azsb.Retry] (retry) Attempt 3 sleeping for <time elided>",
+			"[testLogEvent] (my_operation) Retry attempt 3 sleeping for <time elided>",
 			"[TestFunc  ] Attempt 3, within test func, returning error hello",
-			"[azsb.Retry] (retry) Attempt 3 returned retryable error: hello",
+			"[testLogEvent] (my_operation) Retry attempt 3 returned retryable error: hello",
 		}, normalizeRetryLogLines(logs))
 	})
 
 	t.Run("cancellation error", func(t *testing.T) {
 		logs = nil
 
-		err := Retry(context.Background(), "retry", func(ctx context.Context, args *RetryFnArgs) error {
+		err := Retry(context.Background(), testLogEvent, "test_operation", func(ctx context.Context, args *RetryFnArgs) error {
 			log.Writef("TestFunc",
 				"Attempt %d, within test func", args.I)
 			return context.Canceled
@@ -296,14 +298,14 @@ func TestRetryLogging(t *testing.T) {
 
 		require.Equal(t, []string{
 			"[TestFunc  ] Attempt 0, within test func",
-			"[azsb.Retry] (retry) Attempt 0 was cancelled, stopping: context canceled",
+			"[testLogEvent] (test_operation) Retry attempt 0 was cancelled, stopping: context canceled",
 		}, normalizeRetryLogLines(logs))
 	})
 
 	t.Run("custom fatal error", func(t *testing.T) {
 		logs = nil
 
-		err := Retry(context.Background(), "retry", func(ctx context.Context, args *RetryFnArgs) error {
+		err := Retry(context.Background(), testLogEvent, "test_operation", func(ctx context.Context, args *RetryFnArgs) error {
 			log.Writef("TestFunc",
 				"Attempt %d, within test func", args.I)
 			return errors.New("custom fatal error")
@@ -316,7 +318,7 @@ func TestRetryLogging(t *testing.T) {
 
 		require.Equal(t, []string{
 			"[TestFunc  ] Attempt 0, within test func",
-			"[azsb.Retry] (retry) Attempt 0 returned non-retryable error: custom fatal error",
+			"[testLogEvent] (test_operation) Retry attempt 0 returned non-retryable error: custom fatal error",
 		}, normalizeRetryLogLines(logs))
 	})
 
@@ -325,7 +327,7 @@ func TestRetryLogging(t *testing.T) {
 
 		reset := false
 
-		err := Retry(context.Background(), "retry", func(ctx context.Context, args *RetryFnArgs) error {
+		err := Retry(context.Background(), testLogEvent, "test_operation", func(ctx context.Context, args *RetryFnArgs) error {
 			log.Writef("TestFunc", "Attempt %d, within test func", args.I)
 
 			if !reset {
@@ -352,8 +354,8 @@ func TestRetryLogging(t *testing.T) {
 		require.Equal(t, []string{
 			"[TestFunc  ] Attempt 0, within test func",
 			"[TestFunc  ] Attempt 0, resetting",
-			"[azsb.Retry] (retry) Resetting attempts",
-			"[azsb.Retry] (retry) Attempt -1 returned retryable error: link detached, reason: *Error(nil)",
+			"[testLogEvent] (test_operation) Resetting retry attempts",
+			"[testLogEvent] (test_operation) Retry attempt -1 returned retryable error: link detached, reason: *Error(nil)",
 			"[TestFunc  ] Attempt 0, within test func",
 			"[TestFunc  ] Attempt 0, return nil",
 		}, normalizeRetryLogLines(logs))

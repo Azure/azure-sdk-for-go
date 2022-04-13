@@ -419,7 +419,7 @@ func (ns *Namespace) startNegotiateClaimRenewer(ctx context.Context,
 				return
 			case <-time.After(nextClaimAt):
 				for {
-					err := utils.Retry(refreshCtx, "claimrefresh", func(ctx context.Context, args *utils.RetryFnArgs) error {
+					err := utils.Retry(refreshCtx, EventAuth, "NegotiateClaimRefresh", func(ctx context.Context, args *utils.RetryFnArgs) error {
 						tmpExpiresOn, err := refreshClaim(ctx)
 
 						if err != nil {

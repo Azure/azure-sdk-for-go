@@ -36,7 +36,7 @@ type AMQPLinks interface {
 	Get(ctx context.Context) (*LinksWithID, error)
 
 	// Retry will run your callback, recovering links when necessary.
-	Retry(ctx context.Context, name string, fn RetryWithLinksFn, o utils.RetryOptions) error
+	Retry(ctx context.Context, name log.Event, operation string, fn RetryWithLinksFn, o utils.RetryOptions) error
 
 	// RecoverIfNeeded will check if an error requires recovery, and will recover
 	// the link or, possibly, the connection.
@@ -298,7 +298,7 @@ func (l *AMQPLinksImpl) Get(ctx context.Context) (*LinksWithID, error) {
 	}, nil
 }
 
-func (l *AMQPLinksImpl) Retry(ctx context.Context, name string, fn RetryWithLinksFn, o utils.RetryOptions) error {
+func (l *AMQPLinksImpl) Retry(ctx context.Context, eventName log.Event, operation string, fn RetryWithLinksFn, o utils.RetryOptions) error {
 	var lastID LinkID
 
 	didQuickRetry := false
@@ -307,7 +307,7 @@ func (l *AMQPLinksImpl) Retry(ctx context.Context, name string, fn RetryWithLink
 		return l.getRecoveryKindFunc(err) == RecoveryKindFatal
 	}
 
-	return utils.Retry(ctx, name, func(ctx context.Context, args *utils.RetryFnArgs) error {
+	return utils.Retry(ctx, eventName, operation, func(ctx context.Context, args *utils.RetryFnArgs) error {
 		if err := l.RecoverIfNeeded(ctx, lastID, args.LastErr); err != nil {
 			return err
 		}

@@ -8,7 +8,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
 )
 
-// NOTE: these are intended to mirror the constant values in azservicebus/log.go
+// NOTE: these are publicly exported via type-aliasing in azservicebus/log.go
 const (
 	// EventConn is used whenever we create a connection or any links (ie: receivers, senders).
 	EventConn log.Event = "azsb.Conn"
